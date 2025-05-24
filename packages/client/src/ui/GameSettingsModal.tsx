@@ -1,40 +1,21 @@
-import { Box, Select, Slider, Switch, Tooltip } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
+import { Box, Slider, Switch, Tooltip } from "@mantine/core";
 import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
-import { Languages } from "@spaceship-idle/shared/src/game/Languages";
-import { clearFlag, hasFlag, mapOf, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
+import { clearFlag, hasFlag, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { resetGame } from "../game/LoadSave";
 import { getVersion } from "../game/Version";
-import { G, setLanguage } from "../utils/Global";
+import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
+import { ChangeLanguageComp } from "./ChangeLanguageComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 
 export function GameSettingsModal(): React.ReactNode {
    refreshOnTypedEvent(GameOptionUpdated);
    return (
       <>
-         <div className="row mb10">
-            <div className="mi">translate</div>
-            <div className="f1"></div>
-            <Select
-               value={G.save.options.language}
-               data={mapOf(Languages, (lang, content) => ({ label: content.$Language, value: lang }))}
-               onChange={(lang) => {
-                  if (lang) {
-                     setLanguage(lang as keyof typeof Languages);
-                     notifications.show({
-                        message: t(L.LanguageChangeWarning),
-                        position: "top-center",
-                        color: "yellow",
-                        withBorder: true,
-                     });
-                     GameOptionUpdated.emit();
-                  }
-               }}
-            />
-         </div>
-         <div className="row mb10">
+         <ChangeLanguageComp />
+         <div className="divider my10 mx-10" />
+         <div className="row">
             {t(L.RetroFilter)}
             <Tooltip label={t(L.RequireGameRestart)}>
                <div className="mi text-space">info</div>
@@ -50,7 +31,8 @@ export function GameSettingsModal(): React.ReactNode {
                }}
             />
          </div>
-         <div className="row mb10">
+         <div className="h10" />
+         <div className="row">
             {t(L.SoundVolume)}
             <Slider
                flex={1}
@@ -64,6 +46,7 @@ export function GameSettingsModal(): React.ReactNode {
                step={0.1}
             />
          </div>
+         <div className="h10" />
          <div className="row">
             <div className="f1">{t(L.HardReset)}</div>
             <button
@@ -76,7 +59,6 @@ export function GameSettingsModal(): React.ReactNode {
                {t(L.HardReset)}
             </button>
          </div>
-         <div className="10"></div>
          <div className="divider my10 mx-10" />
          <Box flex={1} fz="sm" c="dimmed" ta="center" tt="uppercase">
             <RenderHTML html={t(L.VersionNumber, getVersion())} />
