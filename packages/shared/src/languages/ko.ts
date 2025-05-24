@@ -89,7 +89,8 @@ export const KO = {
    ElementBoostThisRun: "%%의 생산 승수 +%%",
    ElementPermanent: "%% 원소 (영구)",
    ElementThisRun: "이번 실행의 원소",
-   ElementThisRunTooltipHTML: "이번 실행의 원소는 <b>생산 승수</b>를 증가시키고 프레스티지 후 <b>원소 파편</b>이 됩니다",
+   ElementThisRunTooltipHTML:
+      "이번 실행의 원소는 <b>생산 승수</b>를 증가시키고 프레스티지 후 <b>원소 파편</b>이 됩니다",
    EnemySalvage: "적 잔해",
    Energy: "에너지",
    EVA1Booster: "EVA1 부스터",
@@ -100,7 +101,8 @@ export const KO = {
    Explosive: "폭발",
    ExportSpaceship: "우주선 내보내기",
    ExtraElementShards: "추가 원소 파편",
-   ExtraElementShardsTooltipHTML: "<b>원소 파편</b>은 <b>영구 원소</b>를 업그레이드하는 데 사용할 수 있으며, <b>경험치 승수</b>를 증가시킵니다",
+   ExtraElementShardsTooltipHTML:
+      "<b>원소 파편</b>은 <b>영구 원소</b>를 업그레이드하는 데 사용할 수 있으며, <b>경험치 승수</b>를 증가시킵니다",
    FindOpponent: "상대 찾기",
    FireCooldown: "발사 쿨다운",
    GameSettings: "게임 설정",
@@ -130,7 +132,8 @@ export const KO = {
    LA1E: "LA1E 테트라",
    LA1EAmmo: "LA1E 탄약",
    LaserProjectile: "레이저 발사체",
-   LaserProjectileDesc: "레이저 발사체는 여러 모듈을 관통하며, 각 후속 모듈에 감소된 피해를 줍니다. N번째 모듈에 주는 피해는 원래 피해를 N으로 나눈 값과 같습니다",
+   LaserProjectileDesc:
+      "레이저 발사체는 여러 모듈을 관통하며, 각 후속 모듈에 감소된 피해를 줍니다. N번째 모듈에 주는 피해는 원래 피해를 N으로 나눈 값과 같습니다",
    LevelX: "레벨 %%",
    LifeSteal: "피해 흡수",
    LifeStealDesc: "입힌 피해의 %%를 HP로 회복",
@@ -181,7 +184,8 @@ export const KO = {
    PrestigeAnyway: "그래도 프레스티지",
    Priority: "우선순위",
    Production: "생산",
-   ProductionBuildingXPHTML: "이 건물은 경험치 승수가 없으면 경험치를 생산하지 않습니다. 경험치 승수가 있으면 (예: 영구 원소에서) <b>경험치 = 생산 값 (생산 승수 적용 전) x 경험치 승수</b>",
+   ProductionBuildingXPHTML:
+      "이 건물은 경험치 승수가 없으면 경험치를 생산하지 않습니다. 경험치 승수가 있으면 (예: 영구 원소에서) <b>경험치 = 생산 값 (생산 승수 적용 전) x 경험치 승수</b>",
    ProductionMultiplier: "생산 승수",
    ProductionMultiplierBoost: "생산 승수 부스트",
    ProductionMultiplierBoostDesc: "생산 승수 +%%",
@@ -343,10 +347,12 @@ export const KO = {
    Victory: "승리",
    ViewShip: "우주선 보기",
    WarpSpeed: "워프 속도",
-   WeaponBuildingXPHTML: "이 건물은 탄약이 소비될 때 경험치를 생산합니다. <b>경험치 = 소비된 탄약 가치 x 경험치 승수</b>",
+   WeaponBuildingXPHTML:
+      "이 건물은 탄약이 소비될 때 경험치를 생산합니다. <b>경험치 = 소비된 탄약 가치 x 경험치 승수</b>",
    WeaponFire: "무기 발사",
    WelcomeToSpaceshipIdle: "스페이스십 아이들에 오신 것을 환영합니다",
    XP: "경험치",
    XPCollector: "경험치 수집기",
    XPMultiplier: "경험치 승수",
+   LanguageChangeWarning: "일부 게임 텍스트는 게임 재시작 후 새 언어로 표시됩니다",
 };

@@ -89,7 +89,8 @@ export const JA = {
    ElementBoostThisRun: "%%の生産倍率+%%",
    ElementPermanent: "%%元素（永続）",
    ElementThisRun: "今回の実行の元素",
-   ElementThisRunTooltipHTML: "今回の実行の元素は<b>生産倍率</b>を増加させ、プレステージ後に<b>元素の欠片</b>になります",
+   ElementThisRunTooltipHTML:
+      "今回の実行の元素は<b>生産倍率</b>を増加させ、プレステージ後に<b>元素の欠片</b>になります",
    EnemySalvage: "敵の残骸",
    Energy: "エネルギー",
    EVA1Booster: "EVA1ブースター",
@@ -100,7 +101,8 @@ export const JA = {
    Explosive: "爆発",
    ExportSpaceship: "宇宙船をエクスポート",
    ExtraElementShards: "追加元素の欠片",
-   ExtraElementShardsTooltipHTML: "<b>元素の欠片</b>は<b>永続元素</b>のアップグレードに使用でき、<b>経験値倍率</b>を増加させます",
+   ExtraElementShardsTooltipHTML:
+      "<b>元素の欠片</b>は<b>永続元素</b>のアップグレードに使用でき、<b>経験値倍率</b>を増加させます",
    FindOpponent: "対戦相手を探す",
    FireCooldown: "発射クールダウン",
    GameSettings: "ゲーム設定",
@@ -130,7 +132,8 @@ export const JA = {
    LA1E: "LA1E テトラ",
    LA1EAmmo: "LA1E 弾薬",
    LaserProjectile: "レーザー弾",
-   LaserProjectileDesc: "レーザー弾は複数のモジュールを貫通し、各後続モジュールに減少したダメージを与えます。N番目のモジュールに与えるダメージは元のダメージをNで割った値に等しいです",
+   LaserProjectileDesc:
+      "レーザー弾は複数のモジュールを貫通し、各後続モジュールに減少したダメージを与えます。N番目のモジュールに与えるダメージは元のダメージをNで割った値に等しいです",
    LevelX: "レベル%%",
    LifeSteal: "ダメージ吸収",
    LifeStealDesc: "与えたダメージの%%をHPとして回復",
@@ -181,7 +184,8 @@ export const JA = {
    PrestigeAnyway: "それでもプレステージ",
    Priority: "優先度",
    Production: "生産",
-   ProductionBuildingXPHTML: "この建物は経験値倍率がないと経験値を生産しません。経験値倍率がある場合（例：永続元素から）、<b>経験値 = 生産値（生産倍率適用前）x 経験値倍率</b>",
+   ProductionBuildingXPHTML:
+      "この建物は経験値倍率がないと経験値を生産しません。経験値倍率がある場合（例：永続元素から）、<b>経験値 = 生産値（生産倍率適用前）x 経験値倍率</b>",
    ProductionMultiplier: "生産倍率",
    ProductionMultiplierBoost: "生産倍率ブースト",
    ProductionMultiplierBoostDesc: "生産倍率+%%",
@@ -194,7 +198,8 @@ export const JA = {
    QualifierBattle: "資格戦",
    Quantum: "量子",
    QuantumLimit: "量子制限",
-   QuantumMatchmakingDesc: "宇宙船が戦闘で良い成績を収めると、マッチメイキングプールに入ります - 良い名前を付けてください！",
+   QuantumMatchmakingDesc:
+      "宇宙船が戦闘で良い成績を収めると、マッチメイキングプールに入ります - 良い名前を付けてください！",
    QuantumProgress: "量子進行度",
    QuantumQualifier: "量子-%%資格",
    QuantumQualifierDesc: "同じ量子の宇宙船との戦闘に勝利して、より高い量子の資格を取得します",
@@ -343,10 +348,12 @@ export const JA = {
    Victory: "勝利",
    ViewShip: "宇宙船を表示",
    WarpSpeed: "ワープ速度",
-   WeaponBuildingXPHTML: "この建物は弾薬が消費されたときに経験値を生産します。<b>経験値 = 消費された弾薬価値 x 経験値倍率</b>",
+   WeaponBuildingXPHTML:
+      "この建物は弾薬が消費されたときに経験値を生産します。<b>経験値 = 消費された弾薬価値 x 経験値倍率</b>",
    WeaponFire: "武器発射",
    WelcomeToSpaceshipIdle: "スペースシップアイドルへようこそ",
    XP: "経験値",
    XPCollector: "経験値収集機",
    XPMultiplier: "経験値倍率",
+   LanguageChangeWarning: "一部のゲームテキストはゲームの再起動後に新しい言語で表示されます",
 };

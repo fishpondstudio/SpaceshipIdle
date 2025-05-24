@@ -1,4 +1,5 @@
 import { Box, Select, Slider, Switch, Tooltip } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { Languages } from "@spaceship-idle/shared/src/game/Languages";
 import { clearFlag, hasFlag, mapOf, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
@@ -23,6 +24,12 @@ export function GameSettingsModal(): React.ReactNode {
                   if (lang) {
                      G.save.options.language = lang as keyof typeof Languages;
                      Object.assign(L, Languages[G.save.options.language]);
+                     notifications.show({
+                        message: t(L.LanguageChangeWarning),
+                        position: "top-center",
+                        color: "yellow",
+                        withBorder: true,
+                     });
                      GameOptionUpdated.emit();
                   }
                }}

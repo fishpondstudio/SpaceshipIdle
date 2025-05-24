@@ -89,7 +89,8 @@ export const EN = {
    ElementBoostThisRun: "+%% Production Multiplier for %%",
    ElementPermanent: "Element %% (Permanent)",
    ElementThisRun: "Element This Run",
-   ElementThisRunTooltipHTML: "Elements from this run boosts <b>Production Multiplier</b> and becomes <b>Element Shards</b> after prestige",
+   ElementThisRunTooltipHTML:
+      "Elements from this run boosts <b>Production Multiplier</b> and becomes <b>Element Shards</b> after prestige",
    EnemySalvage: "Enemy Salvage",
    Energy: "Energy",
    EVA1Booster: "EVA1 Booster",
@@ -100,7 +101,8 @@ export const EN = {
    Explosive: "Explosive",
    ExportSpaceship: "Export Spaceship",
    ExtraElementShards: "Extra Element Shards",
-   ExtraElementShardsTooltipHTML: "<b>Element Shards</b> can be used to upgrade <b>Permanent Elements</b>, which boost <b>XP Multiplier</b>",
+   ExtraElementShardsTooltipHTML:
+      "<b>Element Shards</b> can be used to upgrade <b>Permanent Elements</b>, which boost <b>XP Multiplier</b>",
    FindOpponent: "Find Opponent",
    FireCooldown: "Fire Cooldown",
    GameSettings: "Game Settings",
@@ -130,7 +132,8 @@ export const EN = {
    LA1E: "LA1E Tetra",
    LA1EAmmo: "LA1E Ammo",
    LaserProjectile: "Laser Projectile",
-   LaserProjectileDesc: "Laser projectiles pierce through multiple modules, dealing reduced damage to each subsequent module. The damage dealt to the Nth module is equal to the original damage divided by N",
+   LaserProjectileDesc:
+      "Laser projectiles pierce through multiple modules, dealing reduced damage to each subsequent module. The damage dealt to the Nth module is equal to the original damage divided by N",
    LevelX: "Level %%",
    LifeSteal: "Damage Reclaim",
    LifeStealDesc: "Reclaim %% of the damage dealt as HP",
@@ -161,7 +164,8 @@ export const EN = {
    NotEnoughResources: "Not Enough Resources",
    NotWithinExtent: "Modules need to be within the ship's extent",
    OfflineTime: "Offline Time",
-   OfflineTimeDesc: "Your offline time has been converted to %% time warp, which can be activated to gain additional XP",
+   OfflineTimeDesc:
+      "Your offline time has been converted to %% time warp, which can be activated to gain additional XP",
    OperationSuccessful: "Operation Successful",
    PatchNotes: "Patch Notes",
    PermanentLevel: "Permanent Level",
@@ -181,7 +185,8 @@ export const EN = {
    PrestigeAnyway: "Prestige Anyway",
    Priority: "Priority",
    Production: "Production",
-   ProductionBuildingXPHTML: "This building does not produce XP without XP multiplier. With XP multiplier (e.g. from Permanent Element), <b>XP = Production Value (before Production Multiplier) x XP Multiplier</b>",
+   ProductionBuildingXPHTML:
+      "This building does not produce XP without XP multiplier. With XP multiplier (e.g. from Permanent Element), <b>XP = Production Value (before Production Multiplier) x XP Multiplier</b>",
    ProductionMultiplier: "Production Multiplier",
    ProductionMultiplierBoost: "Production Multiplier Boost",
    ProductionMultiplierBoostDesc: "+%% Production Multiplier",
@@ -194,7 +199,8 @@ export const EN = {
    QualifierBattle: "Qualifier Battle",
    Quantum: "Quantum",
    QuantumLimit: "Quantum Limit",
-   QuantumMatchmakingDesc: "If your spaceship performs well in the battle, it will enter the matchmaking pool - make sure you give it a good name!",
+   QuantumMatchmakingDesc:
+      "If your spaceship performs well in the battle, it will enter the matchmaking pool - make sure you give it a good name!",
    QuantumProgress: "Quantum Progress",
    QuantumQualifier: "Quantum-%% Qualifier",
    QuantumQualifierDesc: "Win a battle against a spaceship with the same quantum to qualify for higher quantum.",
@@ -211,7 +217,8 @@ export const EN = {
    RC50Ammo: "RC50 Ammo",
    RC50E: "RC50E Culpeo",
    RC50EAmmo: "RC50E",
-   ReachedQuantumLimit: "You've reached the quantum limit: %%. You can unlock the next quantum limit by winning a quantum qualifier battle",
+   ReachedQuantumLimit:
+      "You've reached the quantum limit: %%. You can unlock the next quantum limit by winning a quantum qualifier battle",
    RecoverHp: "Repair",
    RecoverHpDesc: "Recover %% HP every second",
    RecoverHpOnDealingDamage10: "Proactive Regen (10%)",
@@ -237,7 +244,8 @@ export const EN = {
    Rocket: "Rocket",
    RocketFab: "Rocket Fab",
    SecondChance: "Second Chance",
-   SecondChanceDescHTML: "Because this is your first qualifier battle, you get a second chance with higher quantum limit",
+   SecondChanceDescHTML:
+      "Because this is your first qualifier battle, you get a second chance with higher quantum limit",
    SelectedXModules: "%% Modules Selected",
    Shards: "Shards",
    Shield: "Shield",
@@ -343,10 +351,12 @@ export const EN = {
    Victory: "Victory",
    ViewShip: "View Ship",
    WarpSpeed: "Warp Speed",
-   WeaponBuildingXPHTML: "This building produces XP when ammo is consumed. <b>XP = Consumed Ammo Value x XP Multiplier</b>",
+   WeaponBuildingXPHTML:
+      "This building produces XP when ammo is consumed. <b>XP = Consumed Ammo Value x XP Multiplier</b>",
    WeaponFire: "Weapon Fire",
    WelcomeToSpaceshipIdle: "Welcome to Spaceship Idle",
    XP: "XP",
    XPCollector: "XP Collector",
    XPMultiplier: "XP Multiplier",
+   LanguageChangeWarning: "Some in-game texts require a game restart to display in the new language",
 };

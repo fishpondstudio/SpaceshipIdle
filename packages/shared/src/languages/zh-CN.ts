@@ -181,7 +181,8 @@ export const ZH_CN = {
    PrestigeAnyway: "强制重置",
    Priority: "优先级",
    Production: "生产",
-   ProductionBuildingXPHTML: "此建筑没有经验倍率时不产生经验。有经验倍率时（例如来自永久元素），<b>经验 = 生产值（生产倍率前）x 经验倍率</b>",
+   ProductionBuildingXPHTML:
+      "此建筑没有经验倍率时不产生经验。有经验倍率时（例如来自永久元素），<b>经验 = 生产值（生产倍率前）x 经验倍率</b>",
    ProductionMultiplier: "生产倍率",
    ProductionMultiplierBoost: "生产倍率提升",
    ProductionMultiplierBoostDesc: "+%%生产倍率",
@@ -349,4 +350,5 @@ export const ZH_CN = {
    XP: "经验",
    XPCollector: "经验收集器",
    XPMultiplier: "经验倍率",
+   LanguageChangeWarning: "某些文本需要游戏重启才能更新到新语言",
 };
