@@ -140,6 +140,9 @@ export class Runtime {
    }
 
    private _checkSpeed(g: { speed: number }) {
+      if (this.battleType !== BattleType.Peace) {
+         return;
+      }
       const cost = (g.speed - 1) / g.speed;
       if (cost > 0) {
          if ((this.left.resources.get("Warp") ?? 0) >= cost) {
