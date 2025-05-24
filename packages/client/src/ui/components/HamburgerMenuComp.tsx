@@ -3,14 +3,16 @@ import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/ga
 import { clearFlag, hasFlag, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
-import { G } from "../../utils/Global";
+import { G, OnLanguageChanged } from "../../utils/Global";
 import { showModal } from "../../utils/ToggleModal";
 import { GameSettingsModal } from "../GameSettingsModal";
 import { PatchNotesModal } from "../PatchNotesModal";
 import { PlayerProfileModal } from "../PlayerProfileModal";
 import { ShipGalleryModal } from "../ShipGalleryModal";
+import { refreshOnTypedEvent } from "../../utils/Hook";
 
 export function _HamburgerMenuComp({ flag }: { flag: GameOptionFlag }): React.ReactNode {
+   refreshOnTypedEvent(OnLanguageChanged);
    return (
       <Menu position="bottom-start">
          <Menu.Target>

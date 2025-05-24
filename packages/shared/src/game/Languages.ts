@@ -11,13 +11,13 @@ import { ZH_CN } from "../languages/zh-CN";
 export const Languages = {
    en: EN,
    zh_CN: ZH_CN,
+   ru: RU,
    es: ES,
    pt_BR: PT_BR,
-   ru: RU,
    de: DE,
+   ko: KO,
    fr: FR,
    ja: JA,
-   ko: KO,
 } as const satisfies Record<string, Record<string, string>>;
 
 export const ChatLanguages = {

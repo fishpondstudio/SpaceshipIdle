@@ -6,6 +6,7 @@ import { L } from "@spaceship-idle/shared/src/utils/i18n";
 import type { Application, Texture } from "pixi.js";
 import type { Starfield } from "../scenes/Starfield";
 import type { SceneManager } from "./SceneManager";
+import { TypedEvent } from "@spaceship-idle/shared/src/utils/TypedEvent";
 
 export const ShipMode = {
    Peace: 0,
@@ -36,7 +37,10 @@ export interface IGlobals {
    speed: number;
 }
 
+export const OnLanguageChanged = new TypedEvent<void>();
+
 export function setLanguage(lang: keyof typeof Languages) {
    G.save.options.language = lang;
    Object.assign(L, Languages[lang]);
+   OnLanguageChanged.emit();
 }

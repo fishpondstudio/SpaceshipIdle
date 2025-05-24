@@ -6,7 +6,7 @@ import { clearFlag, hasFlag, mapOf, setFlag } from "@spaceship-idle/shared/src/u
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { resetGame } from "../game/LoadSave";
 import { getVersion } from "../game/Version";
-import { G } from "../utils/Global";
+import { G, setLanguage } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { RenderHTML } from "./components/RenderHTMLComp";
 
@@ -22,8 +22,7 @@ export function GameSettingsModal(): React.ReactNode {
                data={mapOf(Languages, (lang, content) => ({ label: content.$Language, value: lang }))}
                onChange={(lang) => {
                   if (lang) {
-                     G.save.options.language = lang as keyof typeof Languages;
-                     Object.assign(L, Languages[G.save.options.language]);
+                     setLanguage(lang as keyof typeof Languages);
                      notifications.show({
                         message: t(L.LanguageChangeWarning),
                         position: "top-center",

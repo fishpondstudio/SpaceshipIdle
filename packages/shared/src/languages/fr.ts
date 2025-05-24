@@ -89,8 +89,7 @@ export const FR = {
    ElementBoostThisRun: "+%% Multiplicateur de Production pour %%",
    ElementPermanent: "Élément %% (Permanent)",
    ElementThisRun: "Élément Cette Partie",
-   ElementThisRunTooltipHTML:
-      "Les éléments de cette partie augmentent le <b>Multiplicateur de Production</b> et deviennent des <b>Éclats d'Élément</b> après le prestige",
+   ElementThisRunTooltipHTML: "Les éléments de cette partie augmentent le <b>Multiplicateur de Production</b> et deviennent des <b>Éclats d'Élément</b> après le prestige",
    EnemySalvage: "Récupération Ennemie",
    Energy: "Énergie",
    EVA1Booster: "Booster EVA1",
@@ -101,8 +100,7 @@ export const FR = {
    Explosive: "Explosif",
    ExportSpaceship: "Exporter le Vaisseau",
    ExtraElementShards: "Éclats d'Élément Supplémentaires",
-   ExtraElementShardsTooltipHTML:
-      "Les <b>Éclats d'Élément</b> peuvent être utilisés pour améliorer les <b>Éléments Permanents</b>, qui augmentent le <b>Multiplicateur d'XP</b>",
+   ExtraElementShardsTooltipHTML: "Les <b>Éclats d'Élément</b> peuvent être utilisés pour améliorer les <b>Éléments Permanents</b>, qui augmentent le <b>Multiplicateur d'XP</b>",
    FindOpponent: "Trouver un Adversaire",
    FireCooldown: "Temps de Recharge",
    GameSettings: "Paramètres du Jeu",
@@ -131,9 +129,9 @@ export const FR = {
    LA1Ammo: "Munitions LA1",
    LA1E: "LA1E Tétra",
    LA1EAmmo: "Munitions LA1E",
+   LanguageChangeWarning: "Certains textes du jeu nécessitent un redémarrage du jeu pour s'afficher dans la nouvelle langue",
    LaserProjectile: "Projectile Laser",
-   LaserProjectileDesc:
-      "Les projectiles laser traversent plusieurs modules, infligeant des dégâts réduits à chaque module suivant. Les dégâts infligés au Nième module sont égaux aux dégâts originaux divisés par N",
+   LaserProjectileDesc: "Les projectiles laser traversent plusieurs modules, infligeant des dégâts réduits à chaque module suivant. Les dégâts infligés au Nième module sont égaux aux dégâts originaux divisés par N",
    LevelX: "Niveau %%",
    LifeSteal: "Vol de Vie",
    LifeStealDesc: "Récupère %% des dégâts infligés en PV",
@@ -164,8 +162,7 @@ export const FR = {
    NotEnoughResources: "Pas Assez de Ressources",
    NotWithinExtent: "Les modules doivent être dans l'étendue du vaisseau",
    OfflineTime: "Temps Hors Ligne",
-   OfflineTimeDesc:
-      "Votre temps hors ligne a été converti en %% distorsion temporelle, qui peut être activée pour gagner de l'XP supplémentaire",
+   OfflineTimeDesc: "Votre temps hors ligne a été converti en %% distorsion temporelle, qui peut être activée pour gagner de l'XP supplémentaire",
    OperationSuccessful: "Opération Réussie",
    PatchNotes: "Notes de Version",
    PermanentLevel: "Niveau Permanent",
@@ -185,8 +182,7 @@ export const FR = {
    PrestigeAnyway: "Prestige Quand Même",
    Priority: "Priorité",
    Production: "Production",
-   ProductionBuildingXPHTML:
-      "Ce bâtiment ne produit pas d'XP sans multiplicateur d'XP. Avec un multiplicateur d'XP (ex: d'un Élément Permanent), <b>XP = Valeur de Production (avant Multiplicateur de Production) x Multiplicateur d'XP</b>",
+   ProductionBuildingXPHTML: "Ce bâtiment ne produit pas d'XP sans multiplicateur d'XP. Avec un multiplicateur d'XP (ex: d'un Élément Permanent), <b>XP = Valeur de Production (avant Multiplicateur de Production) x Multiplicateur d'XP</b>",
    ProductionMultiplier: "Multiplicateur de Production",
    ProductionMultiplierBoost: "Boost de Multiplicateur de Production",
    ProductionMultiplierBoostDesc: "+%% Multiplicateur de Production",
@@ -199,12 +195,10 @@ export const FR = {
    QualifierBattle: "Combat de Qualification",
    Quantum: "Quantum",
    QuantumLimit: "Limite de Quantum",
-   QuantumMatchmakingDesc:
-      "Si votre vaisseau performe bien au combat, il entrera dans le pool de matchmaking - assurez-vous de lui donner un bon nom !",
+   QuantumMatchmakingDesc: "Si votre vaisseau performe bien au combat, il entrera dans le pool de matchmaking - assurez-vous de lui donner un bon nom !",
    QuantumProgress: "Progression du Quantum",
    QuantumQualifier: "Qualification Quantum-%%",
-   QuantumQualifierDesc:
-      "Gagnez un combat contre un vaisseau du même quantum pour vous qualifier pour un quantum plus élevé",
+   QuantumQualifierDesc: "Gagnez un combat contre un vaisseau du même quantum pour vous qualifier pour un quantum plus élevé",
    QuantumTooltip: "Quantum Disponible/Total",
    RawActualDPS: "DPS Brut / DPS Réel",
    RC: "Canon à Rail",
@@ -218,8 +212,7 @@ export const FR = {
    RC50Ammo: "Munitions RC50",
    RC50E: "RC50E Culpeo",
    RC50EAmmo: "RC50E",
-   ReachedQuantumLimit:
-      "Vous avez atteint la limite de quantum: %%. Vous pouvez débloquer la prochaine limite de quantum en gagnant un combat de qualification",
+   ReachedQuantumLimit: "Vous avez atteint la limite de quantum: %%. Vous pouvez débloquer la prochaine limite de quantum en gagnant un combat de qualification",
    RecoverHp: "Réparation",
    RecoverHpDesc: "Récupère %% PV par seconde",
    RecoverHpOnDealingDamage10: "Régénération Proactive (10%)",
@@ -245,8 +238,7 @@ export const FR = {
    Rocket: "Fusée",
    RocketFab: "Fabrique de Fusées",
    SecondChance: "Seconde Chance",
-   SecondChanceDescHTML:
-      "Comme c'est votre premier combat de qualification, vous obtenez une seconde chance avec une limite de quantum plus élevée",
+   SecondChanceDescHTML: "Comme c'est votre premier combat de qualification, vous obtenez une seconde chance avec une limite de quantum plus élevée",
    SelectedXModules: "%% Modules Sélectionnés",
    Shards: "Éclats",
    Shield: "Bouclier",
@@ -352,13 +344,10 @@ export const FR = {
    Victory: "Victoire",
    ViewShip: "Voir le Vaisseau",
    WarpSpeed: "Vitesse de Distorsion",
-   WeaponBuildingXPHTML:
-      "Ce bâtiment produit de l'XP lorsque des munitions sont consommées. <b>XP = Valeur des Munitions Consommées x Multiplicateur d'XP</b>",
+   WeaponBuildingXPHTML: "Ce bâtiment produit de l'XP lorsque des munitions sont consommées. <b>XP = Valeur des Munitions Consommées x Multiplicateur d'XP</b>",
    WeaponFire: "Tir d'Arme",
    WelcomeToSpaceshipIdle: "Bienvenue dans Spaceship Idle",
    XP: "XP",
    XPCollector: "Collecteur d'XP",
    XPMultiplier: "Multiplicateur d'XP",
-   LanguageChangeWarning:
-      "Certains textes du jeu nécessitent un redémarrage du jeu pour s'afficher dans la nouvelle langue",
 };

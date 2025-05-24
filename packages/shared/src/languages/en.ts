@@ -131,6 +131,7 @@ export const EN = {
    LA1Ammo: "LA1 Ammo",
    LA1E: "LA1E Tetra",
    LA1EAmmo: "LA1E Ammo",
+   LanguageChangeWarning: "Some in-game texts require a game restart to display in the new language",
    LaserProjectile: "Laser Projectile",
    LaserProjectileDesc:
       "Laser projectiles pierce through multiple modules, dealing reduced damage to each subsequent module. The damage dealt to the Nth module is equal to the original damage divided by N",
@@ -358,5 +359,5 @@ export const EN = {
    XP: "XP",
    XPCollector: "XP Collector",
    XPMultiplier: "XP Multiplier",
-   LanguageChangeWarning: "Some in-game texts require a game restart to display in the new language",
+   WarpPerSec: "warp/s",
 };
