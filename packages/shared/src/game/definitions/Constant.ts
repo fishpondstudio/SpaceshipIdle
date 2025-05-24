@@ -1,0 +1,11 @@
+export const BattleTickInterval = 0.05;
+export const ProductionTickInterval = 1;
+export const ClientTickInterval = 5;
+export const StatusEffectTickInterval = ProductionTickInterval;
+export const GoldenRatio = (1 + Math.sqrt(5)) / 2;
+export const QuantumToElement = 10;
+export const BattleQuantum = 10;
+export const TrialQuantum = 5;
+export const DefaultElementChoices = 3;
+export const BalanceVersion = 1;
+export const DefaultCooldown = 2;

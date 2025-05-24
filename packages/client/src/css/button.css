@@ -1,0 +1,42 @@
+.btn {
+   border: 1px solid var(--mantine-color-space-text);
+   background: transparent;
+   color: var(--mantine-color-space-text);
+   border-radius: 5px;
+   cursor: pointer;
+   opacity: 0.8;
+   transition: opacity 0.15s ease-in-out;
+}
+
+.btn:hover {
+   opacity: 1;
+}
+
+.btn.red {
+   border-color: var(--mantine-color-red-text);
+   color: var(--mantine-color-red-text);
+}
+
+.btn:disabled {
+   opacity: 0.5;
+   cursor: not-allowed;
+   filter: grayscale(1);
+}
+
+.btn:active {
+   transform: translateY(1px);
+}
+
+.btn:disabled:active {
+   transform: none;
+}
+
+.btn.filled {
+   background: var(--mantine-color-space-9);
+   color: var(--mantine-color-space-0);
+   border: 1px solid var(--mantine-color-space-7);
+}
+
+.btn.filled:disabled {
+   background: var(--mantine-color-space-9);
+}

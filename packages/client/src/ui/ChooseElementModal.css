@@ -1,0 +1,13 @@
+.element-card {
+   flex: 1;
+   cursor: pointer;
+   padding: 15px;
+}
+
+.element-card img {
+   transition: transform 0.25s ease;
+}
+
+.element-card:hover img {
+   transform: scale(1.03);
+}

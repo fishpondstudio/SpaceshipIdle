@@ -1,0 +1,27 @@
+{
+   "version": "2.0.0",
+   "tasks": [
+      {
+         "type": "npm",
+         "script": "dev",
+         "path": "packages/client",
+         "problemMatcher": [],
+         "label": "npm: dev - packages/client",
+         "isBackground": true,
+         "runOptions": {
+            "runOn": "folderOpen"
+         }
+      },
+      {
+         "type": "npm",
+         "script": "watch",
+         "path": "packages/server",
+         "problemMatcher": [],
+         "label": "npm: watch - packages/server",
+         "isBackground": true,
+         "runOptions": {
+            "runOn": "folderOpen"
+         }
+      }
+   ]
+}

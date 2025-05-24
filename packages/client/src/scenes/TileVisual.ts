@@ -1,0 +1,231 @@
+import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
+import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { GridSize } from "@spaceship-idle/shared/src/game/Grid";
+import type { ITileData } from "@spaceship-idle/shared/src/game/ITileData";
+import { BuildingFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import { type Tile, type ValueOf, clamp, formatNumber, hasFlag, lookAt } from "@spaceship-idle/shared/src/utils/Helper";
+import type { Disposable } from "@spaceship-idle/shared/src/utils/TypedEvent";
+import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
+import {
+   BitmapText,
+   type ColorSource,
+   Container,
+   type IDestroyOptions,
+   NineSlicePlane,
+   Sprite,
+   Texture,
+} from "pixi.js";
+import { Fonts } from "../assets";
+import { G } from "../utils/Global";
+import { runFunc, sequence, to } from "../utils/actions/Actions";
+import { Easing } from "../utils/actions/Easing";
+import { ShipScene } from "./ShipScene";
+
+export const TileVisualFlag = {
+   None: 0,
+   Static: 1 << 0,
+   FlipHorizontal: 1 << 1,
+} as const;
+
+export type TileVisualFlag = ValueOf<typeof TileVisualFlag>;
+
+export class TileVisual extends Container {
+   private _sprite: Sprite;
+   private _transform = { x: 0, y: 0, rotation: 0 };
+   private _healthBar: NineSlicePlane;
+   private _floaterValue = 0;
+   private _damageValue = 0;
+   private _floaterTimer = 0;
+   private _disposables: Disposable[] = [];
+   private _bottomRightText: BitmapText;
+   private _bottomLeftSprite: Sprite;
+   private _isProducing = false;
+   private _healthBarBg: Sprite;
+   private _background: Sprite;
+
+   constructor(
+      private _tile: Tile,
+      public data: ITileData,
+      flag: TileVisualFlag,
+   ) {
+      super();
+      const texture = G.textures.get(`Building/${data.type}`);
+      if (!texture) {
+         throw new Error(`Texture not found for Building_${data.type}`);
+      }
+
+      this._background = this.addChild(new Sprite(G.textures.get("Misc/FrameFilled")));
+      this._background.position.set(-GridSize / 2, -GridSize / 2);
+      this._background.alpha = 0.25;
+
+      this._sprite = this.addChild(new Sprite(texture));
+      this._sprite.position.set(0, 0);
+      this._sprite.anchor.set(0.5);
+      this._sprite.scale.set(0.75);
+      this._sprite.tint = G.save.options.buildingColors.get(data.type) ?? 0xffffff;
+
+      if (!hasFlag(this.flag, BuildingFlag.CanRotate)) {
+         this._sprite.rotation += hasFlag(flag, TileVisualFlag.FlipHorizontal) ? -Math.PI / 2 : Math.PI / 2;
+      }
+
+      this._healthBarBg = this.addChild(new Sprite(G.textures.get("Misc/HealthBar")));
+      this._healthBarBg.tint = 0x000000;
+      this._healthBarBg.alpha = 0.7;
+      this._healthBarBg.anchor.set(0, 0);
+      this._healthBarBg.position.set(-40, -41);
+      this._healthBarBg.width = 80;
+
+      this._healthBar = this._healthBarBg.addChild(new NineSlicePlane(G.textures.get("Misc/HealthBar")!, 4, 0, 4, 0));
+      this._healthBar.width = 80;
+      this._healthBar.tint = 0x2ecc71;
+
+      this._bottomRightText = this.addChild(
+         new BitmapText(this.levelLabel, {
+            fontName: Fonts.SpaceshipIdle,
+            fontSize: 16,
+            tint: 0xffffff,
+         }),
+      );
+
+      this._bottomRightText.anchor.set(1, 1);
+      this._bottomRightText.position.set(40, 40);
+
+      this._bottomLeftSprite = this.addChild(new Sprite());
+      this._bottomLeftSprite.scale.set(0.5);
+      this._bottomLeftSprite.anchor.set(0, 1);
+      this._bottomLeftSprite.position.set(-40, 40);
+
+      this._disposables.push(GameOptionUpdated.on(this.onGameOptionUpdated.bind(this)));
+      this._disposables.push(GameStateUpdated.on(this.onGameStateUpdated.bind(this)));
+
+      if (hasFlag(flag, TileVisualFlag.Static)) {
+         this._healthBarBg.visible = false;
+         this._healthBar.visible = false;
+         this._background.visible = false;
+      } else {
+         this.alpha = 0;
+         to<Container>(this, { alpha: 1 }, 0.25, Easing.OutSine).start();
+      }
+   }
+
+   override destroy(options?: IDestroyOptions | boolean): void {
+      this._disposables.forEach((d) => d.dispose());
+      this._disposables = [];
+      super.destroy(options);
+   }
+
+   private get levelLabel(): string {
+      if (hasFlag(this.flag, BuildingFlag.Booster)) {
+         return "";
+      }
+      return String(this.data.level);
+   }
+
+   private onGameOptionUpdated(): void {
+      this._sprite.tint = G.save.options.buildingColors.get(this.data.type) ?? 0xffffff;
+   }
+
+   public get tint(): ColorSource {
+      return this._sprite.tint;
+   }
+
+   private onGameStateUpdated(): void {
+      this._bottomRightText.text = this.levelLabel;
+      const insufficient = G.runtime.get(this._tile)?.insufficient;
+      if (!insufficient) return;
+      this._isProducing = insufficient.size === 0;
+
+      const text: string[] = [];
+      insufficient.forEach((res) => {
+         text.push(Config.Resources[res].name());
+      });
+      if (insufficient.has("Power")) {
+         this._bottomLeftSprite.texture = G.textures.get("Misc/NoPower")!;
+      } else if (insufficient.size > 0) {
+         this._bottomLeftSprite.texture = G.textures.get("Misc/NoResource")!;
+      } else {
+         this._bottomLeftSprite.texture = Texture.EMPTY;
+      }
+   }
+
+   public update(dt: number) {
+      if (this._isProducing) {
+         if (hasFlag(this.flag, BuildingFlag.CanRotate)) {
+            this._sprite.angle += dt * 50;
+         }
+         this._sprite.alpha = clamp(this._sprite.alpha + dt, 0.5, 1);
+      } else {
+         this._sprite.alpha = clamp(this._sprite.alpha - dt, 0.5, 1);
+         this._bottomLeftSprite.alpha = 0.5 * (Math.sin(0.005 * G.pixi.ticker.lastTime) + 1);
+      }
+      const rs = G.runtime.get(this._tile);
+      if (rs) {
+         this._healthBar.width = 80 * (1 - rs.damageTaken / rs.props.hp);
+      }
+      this._floaterTimer += dt;
+      if (this._floaterTimer >= G.speed) {
+         this._floaterTimer = 0;
+         this.flushFloater();
+      }
+   }
+
+   public addFloater(value: number): void {
+      this._floaterValue += value;
+   }
+
+   public addDamage(value: number): void {
+      this._damageValue += value;
+   }
+
+   private flushFloater(): void {
+      if (this._floaterValue > 0) {
+         const t = ShipScene.TooltipPool.allocate();
+         t.text = `+${formatNumber(this._floaterValue)}`;
+         this._floaterValue = 0;
+         t.tint = 0xffffff;
+         t.alpha = 0;
+         t.anchor.set(0, 1);
+         t.x = this.x - 40;
+         t.y = this.y + 50;
+         sequence(
+            to(t, { y: t.y - 10, alpha: 1 }, 0.25, Easing.OutQuad),
+            to(t, { y: t.y - 40, alpha: 0 }, 1.25, Easing.InQuad),
+            runFunc(() => {
+               ShipScene.TooltipPool.release(t);
+            }),
+         ).start();
+      }
+      if (this._damageValue !== 0) {
+         const t = ShipScene.TooltipPool.allocate();
+         t.text = `${this._damageValue >= 0 ? "-" : "+"}${formatNumber(Math.abs(this._damageValue))}`;
+         t.tint = this._damageValue > 0 ? 0xe74c3c : 0x2ecc71;
+         this._damageValue = 0;
+         t.alpha = 0;
+         t.anchor.set(0.5, 0.5);
+         t.x = this.x;
+         t.y = this.y - 50;
+         sequence(
+            to(t, { y: t.y + 10, alpha: 1 }, 0.25, Easing.OutQuad),
+            to(t, { y: t.y + 40, alpha: 0 }, 1.25, Easing.InQuad),
+            runFunc(() => {
+               ShipScene.TooltipPool.release(t);
+            }),
+         ).start();
+      }
+   }
+
+   get flag() {
+      return Config.Buildings[this.data.type].buildingFlag;
+   }
+
+   lookAt(target: IHaveXY) {
+      if (!hasFlag(this.flag, BuildingFlag.CanTarget)) {
+         return;
+      }
+      this._transform.x = this.x;
+      this._transform.y = this.y;
+      lookAt(this._transform, target);
+      this._sprite.rotation = this._transform.rotation;
+   }
+}

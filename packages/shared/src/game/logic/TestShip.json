@@ -1,0 +1,50 @@
+{
+   "id": "bcc8e828-9ee6-4356-b13c-9bbfe797ba2f",
+   "tiles": {
+      "$type": "Map",
+      "value": [
+         [6160433, { "type": "AC30", "level": 13, "priority": 5, "capacity": 1 }],
+         [6291505, { "type": "AC30x3", "level": 17, "priority": 5, "capacity": 0.25 }],
+         [6094897, { "type": "SiCollector", "level": 19, "priority": 5, "capacity": 1 }],
+         [6094898, { "type": "TiCollector", "level": 19, "priority": 5, "capacity": 1 }],
+         [6357041, { "type": "AC30x3", "level": 17, "priority": 5, "capacity": 0.25 }],
+         [6422577, { "type": "AC30x3", "level": 17, "priority": 5, "capacity": 0.25 }],
+         [6291506, { "type": "AC30x3", "level": 17, "priority": 5, "capacity": 0.25 }],
+         [6094896, { "type": "H2Reactor", "level": 16, "priority": 5, "capacity": 1 }],
+         [6357042, { "type": "AC30x3", "level": 17, "priority": 5, "capacity": 0.25 }],
+         [6422578, { "type": "AC30x3", "level": 17, "priority": 5, "capacity": 0.25 }],
+         [6094895, { "type": "H2Reactor", "level": 16, "priority": 5, "capacity": 1 }],
+         [6225970, { "type": "AC30", "level": 15, "priority": 5, "capacity": 1 }],
+         [6160434, { "type": "AC30", "level": 13, "priority": 5, "capacity": 1 }],
+         [6094899, { "type": "HCollector", "level": 17, "priority": 10, "capacity": 1 }],
+         [6094900, { "type": "H2Reactor", "level": 17, "priority": 10, "capacity": 1 }],
+         [6225969, { "type": "AC30", "level": 14, "priority": 5, "capacity": 1 }],
+         [6357040, { "type": "AC30x3", "level": 17, "priority": 5, "capacity": 0.25 }],
+         [6357043, { "type": "AC30x3", "level": 17, "priority": 5, "capacity": 0.25 }],
+         [6225968, { "type": "AC30x3", "level": 17, "priority": 5, "capacity": 0.25 }],
+         [6225971, { "type": "AC30x3", "level": 16, "priority": 5, "capacity": 0.25 }]
+      ]
+   },
+   "resources": {
+      "$type": "Map",
+      "value": [
+         ["Power", 245],
+         ["XP", 1012583767],
+         ["Si", 25253],
+         ["Ti", 20371],
+         ["AC30", 105872],
+         ["H", 54779],
+         ["AC30x3", 11438.5]
+      ]
+   },
+   "unlockedTech": { "$type": "Set", "value": ["A1", "B4", "B2", "B3", "C3", "B1", "C1", "C2", "D4", "C4"] },
+   "battleCount": 0,
+   "trialCount": 0,
+   "elements": { "$type": "Map", "value": [["Li", 1], ["Be", 1]] },
+   "discoveredElements": 2,
+   "elementChoices": [],
+   "name": "FishPond Mk2",
+   "flags": 0,
+   "qualifierCount": 0,
+   "seq": 0
+}

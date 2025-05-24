@@ -1,0 +1,150 @@
+@import "./frame.css";
+@import "./modal.css";
+@import "./button.css";
+@import "./chat-panel.css";
+@import "./quantum-progress.css";
+@import "./utils.css";
+
+@font-face {
+   font-family: "IconFont";
+   font-style: normal;
+   src: url("../assets/fonts/MaterialSymbolsRounded.woff2") format("woff");
+}
+
+.mi {
+   font-family: "IconFont";
+   font-weight: normal;
+   font-style: normal;
+   font-size: 24px;
+   line-height: 1;
+   text-transform: none;
+   letter-spacing: normal;
+   word-wrap: normal;
+   white-space: nowrap;
+   direction: ltr;
+}
+
+.mi.inline {
+   display: inline-block;
+}
+
+.mi.sm {
+   font-size: 20px;
+}
+
+.mi.lg {
+   font-size: 32px;
+}
+
+body {
+   cursor: url("../assets/images/Cursor.svg?url"), default;
+   user-select: none;
+   -webkit-user-select: none;
+   overflow: hidden;
+   position: fixed;
+   left: 0;
+   top: 0;
+   bottom: 0;
+   right: 0;
+   margin: 0;
+   padding: 0;
+}
+
+::-webkit-scrollbar {
+   width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+   background-color: rgba(116, 143, 191, 0.25);
+   border: 2px solid transparent;
+   background-clip: padding-box;
+   transition: background-color 0.32s ease-in-out;
+}
+
+.breathing {
+   animation: 1s ease infinite alternate breathing;
+}
+
+@keyframes breathing {
+   0% {
+      opacity: 0.5;
+      scale: 0.9;
+   }
+
+   100% {
+      opacity: 1;
+      scale: 1;
+   }
+}
+
+.spin {
+   animation: 1s linear infinite spin;
+}
+
+@keyframes spin {
+   0% {
+      transform: rotate(0deg);
+   }
+   100% {
+      transform: rotate(360deg);
+   }
+}
+
+.divider {
+   background: var(--mantine-color-dark-4);
+   align-self: stretch;
+   height: 1px;
+}
+
+.divider.vertical {
+   height: auto;
+   width: 1px;
+}
+
+.tooltip {
+   color: var(--mantine-color-dark-text);
+   background: var(--mantine-color-space-2);
+   border: 1px solid var(--mantine-color-light-7);
+   border-radius: 5px;
+   padding: 5px 10px;
+   font-size: var(--mantine-font-size-sm);
+   max-width: 30vw;
+   z-index: calc(var(--mantine-z-index-popover) + 1);
+}
+
+.subtitle {
+   font-size: var(--mantine-font-size-sm);
+   color: var(--mantine-color-space-text);
+   text-align: center;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: center;
+}
+
+.subtitle::before {
+   content: "";
+   flex: 1;
+   border-top: 1px dashed var(--mantine-color-dark-4);
+   margin-right: 10px;
+}
+
+.subtitle:after {
+   content: "";
+   flex: 1;
+   border-top: 1px dashed var(--mantine-color-dark-4);
+   margin-left: 10px;
+}
+
+.panel {
+   border: 1px solid var(--mantine-color-dark-4);
+   border-radius: 5px;
+   padding: 10px;
+}
+
+.mantine-Tooltip-tooltip {
+   b {
+      color: var(--mantine-color-space-6);
+      font-family: "SpaceshipIdle", sans-serif;
+   }
+}

@@ -1,0 +1,30 @@
+.sf-frame ::-webkit-scrollbar-thumb,
+.sf-frame::-webkit-scrollbar-thumb {
+   border-left-width: 1px;
+   border-bottom-width: 12px;
+}
+
+.sf-frame ::-webkit-scrollbar-thumb:horizontal,
+.sf-frame::-webkit-scrollbar-thumb:horizontal {
+   border-width: 5px 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+   background-color: rgba(116, 143, 191, 0.5);
+}
+
+.sf-frame {
+   border-image: url("../assets/images/Frame.svg") 10 10 10 10 fill / 10px 10px 10px 10px;
+   min-width: 10px;
+   min-height: 10px;
+   background-color: transparent;
+}
+
+.sf-frame .title {
+   display: flex;
+   font-size: var(--mantine-font-size-sm);
+   margin: -5px 10px;
+   text-transform: uppercase;
+   font-weight: bold;
+   color: var(--mantine-color-dark-2);
+}

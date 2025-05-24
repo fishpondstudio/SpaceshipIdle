@@ -1,0 +1,19 @@
+{
+   "name": "spaceship-idle",
+   "version": "1.0.0",
+   "description": "",
+   "main": "index.js",
+   "scripts": {
+      "watch": "tsc -b . --watch",
+      "translate": "node scripts/Translate.js",
+      "lint": "node scripts/Lint.js"
+   },
+   "keywords": [],
+   "author": "",
+   "license": "ISC",
+   "devDependencies": {
+      "@biomejs/biome": "1.9.4",
+      "glob": "^11.0.2",
+      "typescript": "~5.8.3"
+   }
+}

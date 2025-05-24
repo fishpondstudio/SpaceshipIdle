@@ -1,0 +1,37 @@
+.modal {
+    position: fixed;
+    z-index: 300;
+    left: 50%;
+    top: 10vh;
+    transform: translateX(-50%);
+}
+
+.modal.xl {
+    max-width: 80vw;
+    width: 800px;
+}
+
+.modal.lg {
+    max-width: 60vw;
+    width: 600px;
+}
+
+.modal.md {
+    max-width: 50vw;
+    width: 500px;
+}
+
+.modal.sm {
+    max-width: 40vw;
+    width: 400px;
+}
+
+.modal.xs {
+    max-width: 30vw;
+    width: 300px;
+}
+
+.modal .modal-content {
+    padding: 10px;
+    max-height: calc(80vh - 50px);
+}

@@ -1,0 +1,23 @@
+{
+  "bundles": [
+    {
+      "name": "default",
+      "assets": [
+        {
+          "alias": [
+            "atlas"
+          ],
+          "src": [
+            "atlas.png.json"
+          ],
+          "data": {
+            "tags": {
+              "tps": true,
+              "fix": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+.cc {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   align-self: stretch;
+}
+
+.row {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: center;
+   gap: 10px;
+}
+
+.row .stretch {
+   align-self: stretch;
+}
+
+.col {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+}
+
+.g0 {
+   gap: 0;
+}
+
+.g5 {
+   gap: 5px;
+}
+
+.gap15 {
+   gap: 15px;
+}
+
+.gap20 {
+   gap: 20px;
+}
+
+.m10 {
+   margin: 10px;
+}
+
+.mx10 {
+   margin-left: 10px;
+   margin-right: 10px;
+}
+
+.mx-10 {
+   margin-left: -10px;
+   margin-right: -10px;
+}
+
+.mx-15 {
+   margin-left: -15px;
+   margin-right: -15px;
+}
+
+.my10 {
+   margin-top: 10px;
+   margin-bottom: 10px;
+}
+
+.mx5 {
+   margin-left: 5px;
+   margin-right: 5px;
+}
+
+.my5 {
+   margin-top: 5px;
+   margin-bottom: 5px;
+}
+
+.mt10 {
+   margin-top: 10px;
+}
+
+.mb10 {
+   margin-bottom: 10px;
+}
+
+.mt5 {
+   margin-top: 5px;
+}
+
+.mb5 {
+   margin-bottom: 5px;
+}
+
+.p10 {
+   padding: 10px;
+}
+
+.p5 {
+   padding: 5px;
+}
+
+.px10 {
+   padding-left: 10px;
+   padding-right: 10px;
+}
+
+.py5 {
+   padding-top: 5px;
+   padding-bottom: 5px;
+}
+
+.px5 {
+   padding-left: 5px;
+   padding-right: 5px;
+}
+
+.f1 {
+   flex: 1;
+}
+
+.h5 {
+   height: 5px;
+}
+
+.h10 {
+   height: 10px;
+}
+
+.h15 {
+   height: 15px;
+}
+
+.h20 {
+   height: 20px;
+}
+
+.w100 {
+   width: 100%;
+}
+
+.text-dimmed {
+   color: var(--mantine-color-dark-2);
+}
+
+.text-space {
+   color: var(--mantine-color-space-5);
+}
+
+.text-green {
+   color: var(--mantine-color-green-5);
+}
+
+.text-red {
+   color: var(--mantine-color-red-5);
+}
+
+.text-blue {
+   color: var(--mantine-color-blue-5);
+}
+
+.text-yellow {
+   color: var(--mantine-color-yellow-5);
+}
+
+.text-uppercase {
+   text-transform: uppercase;
+}
+
+.text-sm {
+   font-size: var(--mantine-font-size-sm);
+}
+
+.text-xs {
+   font-size: var(--mantine-font-size-xs);
+}
+
+.text-md {
+   font-size: var(--mantine-font-size-md);
+}
+
+.text-lg {
+   font-size: var(--mantine-font-size-lg);
+}
+
+.text-xl {
+   font-size: var(--mantine-font-size-xl);
+}
+
+.text-left {
+   text-align: left;
+}
+
+.text-center {
+   text-align: center;
+}
+
+.text-right {
+   text-align: right;
+}
+
+.pointer {
+   cursor: pointer;
+}
+
+.fade {
+   transition-property: opacity, transform;
+   backface-visibility: hidden;
+   will-change: transform, opacity;
+   transition-duration: 250ms;
+   transition-timing-function: ease;
+}
