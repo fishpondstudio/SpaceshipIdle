@@ -1,4 +1,5 @@
 export const JA = {
+   $Language: "日本語",
    Ability: "能力",
    AbilityDuration: "持続時間",
    AbilityDurationSeconds: "%%秒",

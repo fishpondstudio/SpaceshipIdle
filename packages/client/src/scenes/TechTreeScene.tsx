@@ -4,21 +4,14 @@ import type { Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefin
 import { isTechUnderDevelopment, techDesc, techName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { equal, forEach, mapSafePush, numberToRoman } from "@spaceship-idle/shared/src/utils/Helper";
 import { AABB, type IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
-import {
-   BitmapText,
-   Container,
-   LINE_CAP,
-   LINE_JOIN,
-   Sprite,
-   type ColorSource,
-   type FederatedPointerEvent,
-} from "pixi.js";
+import { Container, LINE_CAP, LINE_JOIN, Sprite, type ColorSource, type FederatedPointerEvent } from "pixi.js";
 import { Fonts } from "../assets";
 import { hideSidebar, setSidebar } from "../ui/Sidebar";
 import { playClick } from "../ui/Sound";
 import { TechPage } from "../ui/TechPage";
 import { G } from "../utils/Global";
 import { destroyAllChildren, Scene, type ISceneContext } from "../utils/SceneManager";
+import { UnicodeText } from "../utils/UnicodeText";
 
 const BoxWidth = 200;
 const BoxHeight = 75;
@@ -86,7 +79,7 @@ export class TechTreeScene extends Scene {
                frame.position.set(width / 2 + x, height / 2 + y);
                frame.alpha = 0.5;
                const tier = this.viewport.addChild(
-                  new BitmapText(numberToRoman(ring) ?? "", {
+                  new UnicodeText(numberToRoman(ring) ?? "", {
                      fontName: Fonts.SpaceshipIdle,
                      fontSize: 16,
                      tint: 0xffffff,
@@ -97,7 +90,7 @@ export class TechTreeScene extends Scene {
 
                if (import.meta.env.DEV) {
                   const id = this.viewport.addChild(
-                     new BitmapText(numberToRoman(ring) ?? "", {
+                     new UnicodeText(numberToRoman(ring) ?? "", {
                         fontName: Fonts.SpaceshipIdle,
                         fontSize: 16,
                         tint: 0xffffff,
@@ -110,27 +103,27 @@ export class TechTreeScene extends Scene {
 
                if (!isTechUnderDevelopment(tech)) {
                   const text = this.viewport.addChild(
-                     new BitmapText(techName(tech), {
+                     new UnicodeText(techName(tech), {
                         fontName: Fonts.SpaceshipIdle,
                         fontSize: 20,
                         tint: 0xffffff,
                      }),
                   );
                   while (text.width > BoxWidth - 20) {
-                     text.fontSize--;
+                     text.size--;
                   }
                   text.anchor.set(0.5);
                   text.position.set(width / 2 + x, height / 2 + y - 14);
 
                   const desc = this.viewport.addChild(
-                     new BitmapText(techDesc(tech), {
+                     new UnicodeText(techDesc(tech), {
                         fontName: Fonts.SpaceshipIdle,
                         fontSize: 14,
                         tint: 0xffffff,
                      }),
                   );
                   while (desc.width > BoxWidth - 20) {
-                     desc.fontSize--;
+                     desc.size--;
                   }
                   desc.anchor.set(0.5);
                   desc.position.set(width / 2 + x, height / 2 + y + 10);

@@ -1,4 +1,5 @@
 export const ZH_CN = {
+   $Language: "简体中文",
    Ability: "能力",
    AbilityDuration: "持续时间",
    AbilityDurationSeconds: "%%秒",

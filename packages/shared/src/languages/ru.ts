@@ -1,4 +1,5 @@
 export const RU = {
+   $Language: "Русский",
    Ability: "Способность",
    AbilityDuration: "Длительность",
    AbilityDurationSeconds: "%%с",

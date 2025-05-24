@@ -1,4 +1,5 @@
 export const PT_BR = {
+   $Language: "Português (Brasil)",
    Ability: "Habilidade",
    AbilityDuration: "Duração",
    AbilityDurationSeconds: "%%s",

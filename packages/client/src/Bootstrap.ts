@@ -15,7 +15,7 @@ import { connectWebSocket } from "./rpc/RPCClient";
 import { subscribeToEvents } from "./SubscribeToEvents";
 import { hideLoading } from "./ui/components/LoadingComp";
 import { loadSounds } from "./ui/Sound";
-import { G } from "./utils/Global";
+import { G, setLanguage } from "./utils/Global";
 import { SceneManager } from "./utils/SceneManager";
 import { isSteam } from "./utils/Steam";
 
@@ -75,6 +75,7 @@ export async function bootstrap(): Promise<void> {
       initGameState(G.save.current);
    }
    migrateSave(G.save);
+   setLanguage(G.save.options.language);
    subscribeToEvents();
    loadSounds();
    addDebugFunctions();

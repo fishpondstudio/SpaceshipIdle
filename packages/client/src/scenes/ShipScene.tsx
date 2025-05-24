@@ -46,7 +46,6 @@ import { ObjectPool } from "@spaceship-idle/shared/src/utils/ObjectPool";
 import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import {
-   BitmapText,
    type ColorSource,
    Container,
    type FederatedPointerEvent,
@@ -62,6 +61,7 @@ import { playClick, playError } from "../ui/Sound";
 import { TilePage } from "../ui/TilePage";
 import { G } from "../utils/Global";
 import { type ISceneContext, Scene, destroyAllChildren } from "../utils/SceneManager";
+import { UnicodeText } from "../utils/UnicodeText";
 import { delay, runFunc, sequence, to } from "../utils/actions/Actions";
 import { Easing } from "../utils/actions/Easing";
 import { TileVisual, TileVisualFlag } from "./TileVisual";
@@ -77,7 +77,7 @@ export class ShipScene extends Scene {
    private _grid: Container;
    private _renderedExtent = 0;
 
-   public static TooltipPool: ObjectPool<BitmapText>;
+   public static TooltipPool: ObjectPool<UnicodeText>;
    public static ShieldPool: ObjectPool<Sprite>;
    public static Explosion: ObjectPool<Sprite>;
    public static Selector: ObjectPool<Sprite>;
@@ -103,10 +103,10 @@ export class ShipScene extends Scene {
       this.viewport.center = { x: width / 2, y: height / 2 };
       this.viewport.setWorldSize(width, height);
 
-      ShipScene.TooltipPool = new ObjectPool<BitmapText>({
+      ShipScene.TooltipPool = new ObjectPool<UnicodeText>({
          create: () => {
             const t = this.viewport.addChild(
-               new BitmapText("", { fontName: Fonts.SpaceshipIdleBold, fontSize: 16, tint: 0xffffff }),
+               new UnicodeText("", { fontName: Fonts.SpaceshipIdleBold, fontSize: 16, tint: 0xffffff }),
             );
             return t;
          },

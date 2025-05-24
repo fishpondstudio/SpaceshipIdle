@@ -1,4 +1,5 @@
 export const KO = {
+   $Language: "한국어",
    Ability: "능력",
    AbilityDuration: "지속시간",
    AbilityDurationSeconds: "%%초",

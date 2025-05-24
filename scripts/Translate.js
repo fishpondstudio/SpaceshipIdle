@@ -23,7 +23,7 @@ const file = readFileSync(EN_FILE_PATH, {
 let en = eval(`(${file})`);
 
 Object.keys(en).forEach((key) => {
-   if (!sourceFiles.includes(`L.${key}`)) {
+   if (!key.startsWith("$") && !sourceFiles.includes(`L.${key}`)) {
       console.log(`Translation not used: ${key}`);
       delete en[key];
    }

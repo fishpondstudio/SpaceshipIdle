@@ -1,6 +1,7 @@
-import { Box, Slider, Switch, Tooltip } from "@mantine/core";
+import { Box, Select, Slider, Switch, Tooltip } from "@mantine/core";
 import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
-import { clearFlag, hasFlag, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
+import { Languages } from "@spaceship-idle/shared/src/game/Languages";
+import { clearFlag, hasFlag, mapOf, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { resetGame } from "../game/LoadSave";
 import { getVersion } from "../game/Version";
@@ -12,6 +13,21 @@ export function GameSettingsModal(): React.ReactNode {
    refreshOnTypedEvent(GameOptionUpdated);
    return (
       <>
+         <div className="row mb10">
+            <div className="mi">translate</div>
+            <div className="f1"></div>
+            <Select
+               value={G.save.options.language}
+               data={mapOf(Languages, (lang, content) => ({ label: content.$Language, value: lang }))}
+               onChange={(lang) => {
+                  if (lang) {
+                     G.save.options.language = lang as keyof typeof Languages;
+                     Object.assign(L, Languages[G.save.options.language]);
+                     GameOptionUpdated.emit();
+                  }
+               }}
+            />
+         </div>
          <div className="row mb10">
             {t(L.RetroFilter)}
             <Tooltip label={t(L.RequireGameRestart)}>
