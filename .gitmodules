@@ -1,0 +1,3 @@
+[submodule "packages/server"]
+	path = packages/server
+	url = git@github.com:fishpondstudio/SpaceshipIdleServer.git
