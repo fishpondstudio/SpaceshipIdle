@@ -33,6 +33,18 @@ export function TutorialQuantumModal(): React.ReactNode {
          <div className="row">
             <div className="fstart">
                <div className="mi" style={{ fontSize: 50 }}>
+                  category
+               </div>
+            </div>
+            <div className="f1">
+               <div className="text-lg text-space">{t(L.TutorialElement)}</div>
+               <RenderHTML className="render-html" html={t(L.TutorialElementContent)} />
+            </div>
+         </div>
+         <div className="h10" />
+         <div className="row">
+            <div className="fstart">
+               <div className="mi" style={{ fontSize: 50 }}>
                   explosion
                </div>
             </div>
