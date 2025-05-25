@@ -1,3 +1,4 @@
+import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { BattleQuantum, TrialQuantum } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
@@ -105,8 +106,12 @@ function QuantumBlock({
             </div>
          </div>
          <div className="row g0">
-            <div className="f1">{formatNumber(quantumToSpaceshipValue(start))}</div>
-            <div className="f1">{formatNumber(quantumToSpaceshipValue(start + TrialQuantum))}</div>
+            <Tooltip label={t(L.MaxSpaceshipValue)}>
+               <div className="f1">{formatNumber(quantumToSpaceshipValue(start))}</div>
+            </Tooltip>
+            <Tooltip label={t(L.MaxSpaceshipValue)}>
+               <div className="f1">{formatNumber(quantumToSpaceshipValue(start + TrialQuantum))}</div>
+            </Tooltip>
          </div>
       </div>
    );

@@ -12,6 +12,8 @@ export const GameOptionFlag = {
    ShowResources: 1 << 1,
    RetroFilter: 1 << 2,
    TutorialDone: 1 << 3,
+   HideSteamIcon: 1 << 4,
+   HideDiscordIcon: 1 << 5,
 };
 
 export type GameOptionFlag = ValueOf<typeof GameOptionFlag>;

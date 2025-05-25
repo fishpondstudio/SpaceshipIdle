@@ -8,25 +8,24 @@ import { G, setLanguage } from "../utils/Global";
 
 export function ChangeLanguageComp(): React.ReactNode {
    return (
-      <div className="row">
-         <div className="mi">translate</div>
-         <Select
-            className="f1"
-            value={G.save.options.language}
-            data={mapOf(Languages, (lang, content) => ({ label: content.$Language, value: lang }))}
-            onChange={(lang) => {
-               if (lang) {
-                  setLanguage(lang as keyof typeof Languages);
-                  notifications.show({
-                     message: t(L.LanguageChangeWarning),
-                     position: "top-center",
-                     color: "yellow",
-                     withBorder: true,
-                  });
-                  GameOptionUpdated.emit();
-               }
-            }}
-         />
-      </div>
+      <Select
+         checkIconPosition="right"
+         leftSection={<div className="mi">translate</div>}
+         className="f1"
+         value={G.save.options.language}
+         data={mapOf(Languages, (lang, content) => ({ label: content.$Language, value: lang }))}
+         onChange={(lang) => {
+            if (lang) {
+               setLanguage(lang as keyof typeof Languages);
+               notifications.show({
+                  message: t(L.LanguageChangeWarning),
+                  position: "top-center",
+                  color: "yellow",
+                  withBorder: true,
+               });
+               GameOptionUpdated.emit();
+            }
+         }}
+      />
    );
 }

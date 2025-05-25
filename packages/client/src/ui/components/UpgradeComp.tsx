@@ -123,7 +123,10 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             <Tooltip
                label={
                   canRecycle ? (
-                     <ResourceListComp res={totalBuildingValue(data.type, data.level, 0)} showColor={false} />
+                     <>
+                        <div>{t(L.RecycleModule)}</div>
+                        <ResourceListComp res={totalBuildingValue(data.type, data.level, 0)} showColor={false} />
+                     </>
                   ) : (
                      t(L.CannotRecycle)
                   )

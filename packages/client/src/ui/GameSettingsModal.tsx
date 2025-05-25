@@ -1,9 +1,11 @@
 import { Box, Slider, Switch, Tooltip } from "@mantine/core";
+import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { clearFlag, hasFlag, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { resetGame } from "../game/LoadSave";
 import { getVersion } from "../game/Version";
+import { openUrl } from "../rpc/SteamClient";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { ChangeLanguageComp } from "./ChangeLanguageComp";
@@ -32,6 +34,40 @@ export function GameSettingsModal(): React.ReactNode {
             />
          </div>
          <div className="h10" />
+         <div className="row">
+            {t(L.HideSteamIcon)}
+            <div className="mi text-space pointer" onClick={() => openUrl(SteamUrl)}>
+               open_in_new
+            </div>
+            <div className="f1" />
+            <Switch
+               checked={hasFlag(G.save.options.flag, GameOptionFlag.HideSteamIcon)}
+               onChange={(e) => {
+                  G.save.options.flag = e.target.checked
+                     ? setFlag(G.save.options.flag, GameOptionFlag.HideSteamIcon)
+                     : clearFlag(G.save.options.flag, GameOptionFlag.HideSteamIcon);
+                  GameOptionUpdated.emit();
+               }}
+            />
+         </div>
+         <div className="h10" />
+         <div className="row">
+            {t(L.HideDiscordIcon)}
+            <div className="mi text-space pointer" onClick={() => openUrl(DiscordUrl)}>
+               open_in_new
+            </div>
+            <div className="f1" />
+            <Switch
+               checked={hasFlag(G.save.options.flag, GameOptionFlag.HideDiscordIcon)}
+               onChange={(e) => {
+                  G.save.options.flag = e.target.checked
+                     ? setFlag(G.save.options.flag, GameOptionFlag.HideDiscordIcon)
+                     : clearFlag(G.save.options.flag, GameOptionFlag.HideDiscordIcon);
+                  GameOptionUpdated.emit();
+               }}
+            />
+         </div>
+         <div className="h10"></div>
          <div className="row">
             {t(L.SoundVolume)}
             <Slider

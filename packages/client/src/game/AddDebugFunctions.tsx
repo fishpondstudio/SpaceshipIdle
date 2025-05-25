@@ -135,9 +135,9 @@ export function addDebugFunctions(): void {
    globalThis.newPlayer = async () => {
       showModal({
          children: <NewPlayerModal />,
-         size: "md",
+         size: "lg",
          title: t(L.WelcomeToSpaceshipIdle),
-         dismiss: true,
+         dismiss: false,
       });
    };
 }

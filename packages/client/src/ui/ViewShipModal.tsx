@@ -24,7 +24,7 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
                <Box>{formatNumber(usedQuantum(ship.json))}</Box>
             </Group>
             <Group>
-               <Box flex={1}>{t(L.SpaceshipValue)}</Box>
+               <Box flex={1}>{t(L.SpaceshipXP)}</Box>
                <Box>{formatNumber(calculateSpaceshipValue(ship.json))}</Box>
             </Group>
             <Space h="sm" />

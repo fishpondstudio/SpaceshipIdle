@@ -1,0 +1,21 @@
+.ship-info {
+   padding: 1px;
+   position: absolute;
+   top: 10px;
+   left: 10px;
+   text-align: center;
+   font-size: var(--mantine-font-size-xs);
+   color: white;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+
+   .progress {
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      transition: width 0.2s ease-in-out;
+      background-color: var(--mantine-color-blue-filled);
+      height: 3px;
+   }
+}

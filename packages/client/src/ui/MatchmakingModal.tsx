@@ -133,7 +133,7 @@ function ShipInfoComp({ gs, side }: { gs: GameState; side: Side }): React.ReactN
             <Grid.Col span={6}>
                <Box fz={32}>{formatNumber(calculateSpaceshipValue(gs))}</Box>
                <Box fz="xs" c="dimmed" mt={-10} mb={5}>
-                  {t(L.SpaceshipValue)}
+                  {t(L.SpaceshipXP)}
                </Box>
             </Grid.Col>
             <Grid.Col span={6}>

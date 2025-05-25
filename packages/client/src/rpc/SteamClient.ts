@@ -25,3 +25,11 @@ window.addEventListener("DOMContentLoaded", () => {
       SteamClient.quit();
    });
 });
+
+export function openUrl(url: string): void {
+   if (isSteam()) {
+      SteamClient.openUrl(url);
+      return;
+   }
+   window.open(url, "_blank");
+}

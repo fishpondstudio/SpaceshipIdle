@@ -17,7 +17,7 @@ export function ResourceListComp({
             const color = canSpend(new Map([[res, amount]]), G.save.current) ? "text-green" : "text-red";
             return (
                <div className="row" key={res}>
-                  <div>{Config.Resources[res].name()}</div>
+                  <div className="f1">{Config.Resources[res].name()}</div>
                   <div className={classNames(showColor ? color : null)}>
                      <ResourceAmount res={res} amount={amount} />
                   </div>

@@ -4,19 +4,19 @@ import { clearFlag, hasFlag, setFlag } from "@spaceship-idle/shared/src/utils/He
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
 import { G, OnLanguageChanged } from "../../utils/Global";
+import { refreshOnTypedEvent } from "../../utils/Hook";
 import { showModal } from "../../utils/ToggleModal";
 import { GameSettingsModal } from "../GameSettingsModal";
 import { PatchNotesModal } from "../PatchNotesModal";
 import { PlayerProfileModal } from "../PlayerProfileModal";
 import { ShipGalleryModal } from "../ShipGalleryModal";
-import { refreshOnTypedEvent } from "../../utils/Hook";
 
 export function _HamburgerMenuComp({ flag }: { flag: GameOptionFlag }): React.ReactNode {
    refreshOnTypedEvent(OnLanguageChanged);
    return (
       <Menu position="bottom-start">
          <Menu.Target>
-            <div className="cc" style={{ width: 40, alignSelf: "stretch" }}>
+            <div className="cc" style={{ width: 40 }}>
                <div className="mi lg">menu</div>
             </div>
          </Menu.Target>

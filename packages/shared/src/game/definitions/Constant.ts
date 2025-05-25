@@ -9,3 +9,5 @@ export const TrialQuantum = 5;
 export const DefaultElementChoices = 3;
 export const BalanceVersion = 1;
 export const DefaultCooldown = 2;
+export const DiscordUrl = "https://discord.com/invite/Z3kFpawyts";
+export const SteamUrl = "https://store.steampowered.com/app/3454630";

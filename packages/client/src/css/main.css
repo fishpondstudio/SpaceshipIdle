@@ -2,6 +2,7 @@
 @import "./modal.css";
 @import "./button.css";
 @import "./chat-panel.css";
+@import "./ship-info.css";
 @import "./quantum-progress.css";
 @import "./utils.css";
 
@@ -142,9 +143,10 @@ body {
    padding: 10px;
 }
 
-.mantine-Tooltip-tooltip {
+.mantine-Tooltip-tooltip,
+.render-html {
    b {
-      color: var(--mantine-color-space-6);
+      color: var(--mantine-color-space-5);
       font-family: "SpaceshipIdle", sans-serif;
    }
 }
