@@ -89,8 +89,7 @@ export const JA = {
    ElementBoostThisRun: "%%の生産倍率+%%",
    ElementPermanent: "%%元素（永続）",
    ElementThisRun: "今回の実行の元素",
-   ElementThisRunTooltipHTML:
-      "今回の実行の元素は<b>生産倍率</b>を増加させ、プレステージ後に<b>元素の欠片</b>になります",
+   ElementThisRunTooltipHTML: "今回の実行の元素は<b>生産倍率</b>を増加させ、プレステージ後に<b>元素の欠片</b>になります",
    EnemySalvage: "敵の残骸",
    Energy: "エネルギー",
    EVA1Booster: "EVA1ブースター",
@@ -101,8 +100,7 @@ export const JA = {
    Explosive: "爆発",
    ExportSpaceship: "宇宙船をエクスポート",
    ExtraElementShards: "追加元素の欠片",
-   ExtraElementShardsTooltipHTML:
-      "<b>元素の欠片</b>は<b>永続元素</b>のアップグレードに使用でき、<b>経験値倍率</b>を増加させます",
+   ExtraElementShardsTooltipHTML: "<b>元素の欠片</b>は<b>永続元素</b>のアップグレードに使用でき、<b>経験値倍率</b>を増加させます",
    FindOpponent: "対戦相手を探す",
    FireCooldown: "発射クールダウン",
    GameSettings: "ゲーム設定",
@@ -136,8 +134,7 @@ export const JA = {
    LA1EAmmo: "LA1E 弾薬",
    LanguageChangeWarning: "一部のゲームテキストはゲームの再起動後に新しい言語で表示されます",
    LaserProjectile: "レーザー弾",
-   LaserProjectileDesc:
-      "レーザー弾は複数のモジュールを貫通し、各後続モジュールに減少したダメージを与えます。N番目のモジュールに与えるダメージは元のダメージをNで割った値に等しいです",
+   LaserProjectileDesc: "レーザー弾は複数のモジュールを貫通し、各後続モジュールに減少したダメージを与えます。N番目のモジュールに与えるダメージは元のダメージをNで割った値に等しいです",
    LevelX: "レベル%%",
    LifeSteal: "ダメージ吸収",
    LifeStealDesc: "与えたダメージの%%をHPとして回復",
@@ -190,8 +187,7 @@ export const JA = {
    PrestigeAnyway: "それでもプレステージ",
    Priority: "優先度",
    Production: "生産",
-   ProductionBuildingXPHTML:
-      "この建物は経験値倍率がないと経験値を生産しません。経験値倍率がある場合（例：永続元素から）、<b>経験値 = 生産値（生産倍率適用前）x 経験値倍率</b>",
+   ProductionBuildingXPHTML: "この建物は経験値倍率がないと経験値を生産しません。経験値倍率がある場合（例：永続元素から）、<b>経験値 = 生産値（生産倍率適用前）x 経験値倍率</b>",
    ProductionMultiplier: "生産倍率",
    ProductionMultiplierBoost: "生産倍率ブースト",
    ProductionMultiplierBoostDesc: "生産倍率+%%",
@@ -203,8 +199,7 @@ export const JA = {
    QualifierBattle: "資格戦",
    Quantum: "量子",
    QuantumLimit: "量子制限",
-   QuantumMatchmakingDesc:
-      "宇宙船が戦闘で良い成績を収めると、マッチメイキングプールに入ります - 良い名前を付けてください！",
+   QuantumMatchmakingDesc: "宇宙船が戦闘で良い成績を収めると、マッチメイキングプールに入ります - 良い名前を付けてください！",
    QuantumProgress: "量子進行度",
    QuantumQualifier: "量子-%%資格",
    QuantumQualifierDesc: "同じ量子の宇宙船との戦闘に勝利して、より高い量子の資格を取得します",
@@ -344,30 +339,23 @@ export const JA = {
    TimeWarp: "時間歪曲",
    TimeWarpTooltip: "時間歪曲 / ワープ速度",
    TutorialAutoBattle: "(自動)戦闘",
-   TutorialAutoBattleContent:
-      "戦闘は自動で行われます。公平性を確保するため、あなたの宇宙船は<b>同じ量子レベル</b>の宇宙船と対戦します。宇宙船が良い成績を収めると、マッチメイキングプールに入ります。",
+   TutorialAutoBattleContent: "戦闘は自動で行われます。公平性を確保するため、あなたの宇宙船は<b>同じ量子レベル</b>の宇宙船と対戦します。宇宙船が良い成績を収めると、マッチメイキングプールに入ります。",
    TutorialBasicConcept: "基本概念",
    TutorialChat: "ヘルプを求める",
-   TutorialChatContent:
-      "迷った場合は、ゲーム内チャットがいつでも助けになります。また、プレイヤーハンドルを設定して、他のプレイヤーに認識してもらいましょう！",
+   TutorialChatContent: "迷った場合は、ゲーム内チャットがいつでも助けになります。また、プレイヤーハンドルを設定して、他のプレイヤーに認識してもらいましょう！",
    TutorialCommunity: "ゲーム内コミュニティ",
+   TutorialElement: "Element",
+   TutorialElementContent: "Elements are discovered as you gain quantum. You can pick one out of three choices and they boost <b>production multipliers</b>. When you prestige, all elements from this run becomes permanent element shards. Permanent elements boosts <b>XP multiplier</b>.",
    TutorialGameControl: "ゲーム操作",
-   TutorialGameControlContent:
-      "<b>クリック</b>でモジュールを選択。<b>ドラッグ</b>で移動。<b>スクロール</b>でズームイン/アウト。<b>空のモジュール</b>をクリックして建造。<b>Ctrl + クリック</b>で複数選択。",
-   TutorialIntro:
-      "<b>スペースシップアイドル</b>では、独自のモジュラー宇宙船を設計し、広大な技術ツリーを探索し、ユニークな武器をアンロックし、壮大な宇宙(自動)戦闘で勝利を収めましょう！",
-   TutorialPower:
-      "電力は<b>発電機</b>モジュールによって生成されます。あなたの船は太陽光パネルモジュールから始まり、これはリソースを消費せずに電力を生成します。後で、リソースを消費するより強力な発電機をアンロックできます。",
-   TutorialQualifierBattle:
-      "量子が一定レベルに達すると、より多くの量子をアンロックするために<b>資格戦に勝利</b>する必要があります。あなたの資格量子は宇宙船に投資できる<b>最大XP</b>を決定します。",
+   TutorialGameControlContent: "<b>クリック</b>でモジュールを選択。<b>ドラッグ</b>で移動。<b>スクロール</b>でズームイン/アウト。<b>空のモジュール</b>をクリックして建造。<b>Ctrl + クリック</b>で複数選択。",
+   TutorialIntro: "<b>スペースシップアイドル</b>では、独自のモジュラー宇宙船を設計し、広大な技術ツリーを探索し、ユニークな武器をアンロックし、壮大な宇宙(自動)戦闘で勝利を収めましょう！",
+   TutorialPower: "電力は<b>発電機</b>モジュールによって生成されます。あなたの船は太陽光パネルモジュールから始まり、これはリソースを消費せずに電力を生成します。後で、リソースを消費するより強力な発電機をアンロックできます。",
+   TutorialQualifierBattle: "量子が一定レベルに達すると、より多くの量子をアンロックするために<b>資格戦に勝利</b>する必要があります。あなたの資格量子は宇宙船に投資できる<b>最大XP</b>を決定します。",
    TutorialQuantum: "量子と戦闘",
-   TutorialQuantumContent:
-      "総生産XPが一定レベルに達すると、新しい量子がアンロックされます。量子は<b>技術をアンロックするか、新しいモジュールを建造する</b>ために使用できます。",
+   TutorialQuantumContent: "総生産XPが一定レベルに達すると、新しい量子がアンロックされます。量子は<b>技術をアンロックするか、新しいモジュールを建造する</b>ために使用できます。",
    TutorialWeapon: "武器",
-   TutorialWeaponContent:
-      "武器は技術ツリーの研究でアンロックされます。武器はリソースを消費して<b>弾薬を生産</b>し、発射時に<b>弾薬を消費</b>します。武器には異なるステータスと能力があり、アップグレードできます。",
-   TutorialXP:
-      "XPは武器モジュールが<b>発射</b>するときに生成されます。より高度で高レベルの武器はより多くのXPを生成します。宇宙船モジュールの建造とアップグレードにはXPが必要です。",
+   TutorialWeaponContent: "武器は技術ツリーの研究でアンロックされます。武器はリソースを消費して<b>弾薬を生産</b>し、発射時に<b>弾薬を消費</b>します。武器には異なるステータスと能力があり、アップグレードできます。",
+   TutorialXP: "XPは武器モジュールが<b>発射</b>するときに生成されます。より高度で高レベルの武器はより多くのXPを生成します。宇宙船モジュールの建造とアップグレードにはXPが必要です。",
    UnlockBuildings: "建物を解除",
    UnlockUpgrades: "アップグレードを解除",
    Upgrade: "アップグレード",
@@ -381,8 +369,7 @@ export const JA = {
    ViewShip: "宇宙船を表示",
    WarpPerSec: "warp/s",
    WarpSpeed: "ワープ速度",
-   WeaponBuildingXPHTML:
-      "この建物は弾薬が消費されたときに経験値を生産します。<b>経験値 = 消費された弾薬価値 x 経験値倍率</b>",
+   WeaponBuildingXPHTML: "この建物は弾薬が消費されたときに経験値を生産します。<b>経験値 = 消費された弾薬価値 x 経験値倍率</b>",
    WeaponFire: "武器発射",
    WelcomeToSpaceshipIdle: "スペースシップアイドルへようこそ",
    WishlistFullGame: "Steamでフルゲームをウィッシュリストに追加！",

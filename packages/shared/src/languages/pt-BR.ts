@@ -89,8 +89,7 @@ export const PT_BR = {
    ElementBoostThisRun: "+%% Multiplicador de Produção para %%",
    ElementPermanent: "Elemento %% (Permanente)",
    ElementThisRun: "Elemento Desta Jornada",
-   ElementThisRunTooltipHTML:
-      "Elementos desta jornada aumentam o <b>Multiplicador de Produção</b> e se tornam <b>Fragmentos de Elemento</b> após o prestígio",
+   ElementThisRunTooltipHTML: "Elementos desta jornada aumentam o <b>Multiplicador de Produção</b> e se tornam <b>Fragmentos de Elemento</b> após o prestígio",
    EnemySalvage: "Sucata Inimiga",
    Energy: "Energia",
    EVA1Booster: "Propulsor EVA1",
@@ -101,8 +100,7 @@ export const PT_BR = {
    Explosive: "Explosivo",
    ExportSpaceship: "Exportar Nave Espacial",
    ExtraElementShards: "Fragmentos de Elemento Extras",
-   ExtraElementShardsTooltipHTML:
-      "<b>Fragmentos de Elemento</b> podem ser usados para melhorar <b>Elementos Permanentes</b>, que aumentam o <b>Multiplicador de XP</b>",
+   ExtraElementShardsTooltipHTML: "<b>Fragmentos de Elemento</b> podem ser usados para melhorar <b>Elementos Permanentes</b>, que aumentam o <b>Multiplicador de XP</b>",
    FindOpponent: "Encontrar Oponente",
    FireCooldown: "Tempo de Recarga",
    GameSettings: "Configurações do Jogo",
@@ -136,8 +134,7 @@ export const PT_BR = {
    LA1EAmmo: "Munição LA1E",
    LanguageChangeWarning: "Alguns elementos de texto requerem um reinício do jogo para exibir no novo idioma",
    LaserProjectile: "Projétil de Laser",
-   LaserProjectileDesc:
-      "Projéteis de laser atravessam múltiplos módulos, causando dano reduzido a cada módulo subsequente. O dano causado ao N-ésimo módulo é igual ao dano original dividido por N",
+   LaserProjectileDesc: "Projéteis de laser atravessam múltiplos módulos, causando dano reduzido a cada módulo subsequente. O dano causado ao N-ésimo módulo é igual ao dano original dividido por N",
    LevelX: "Nível %%",
    LifeSteal: "Recuperação de Dano",
    LifeStealDesc: "Recupera %% do dano causado como HP",
@@ -170,8 +167,7 @@ export const PT_BR = {
    NotEnoughResources: "Recursos Insuficientes",
    NotWithinExtent: "Os módulos precisam estar dentro da extensão da nave",
    OfflineTime: "Tempo Offline",
-   OfflineTimeDesc:
-      "Seu tempo offline foi convertido em %% dobra temporal, que pode ser ativada para ganhar XP adicional",
+   OfflineTimeDesc: "Seu tempo offline foi convertido em %% dobra temporal, que pode ser ativada para ganhar XP adicional",
    OperationSuccessful: "Operação Bem-sucedida",
    PatchNotes: "Notas de Atualização",
    PermanentLevel: "Nível Permanente",
@@ -191,8 +187,7 @@ export const PT_BR = {
    PrestigeAnyway: "Prestigiar Mesmo Assim",
    Priority: "Prioridade",
    Production: "Produção",
-   ProductionBuildingXPHTML:
-      "Este prédio não produz XP sem multiplicador de XP. Com multiplicador de XP (ex: de Elemento Permanente), <b>XP = Valor de Produção (antes do Multiplicador de Produção) x Multiplicador de XP</b>",
+   ProductionBuildingXPHTML: "Este prédio não produz XP sem multiplicador de XP. Com multiplicador de XP (ex: de Elemento Permanente), <b>XP = Valor de Produção (antes do Multiplicador de Produção) x Multiplicador de XP</b>",
    ProductionMultiplier: "Multiplicador de Produção",
    ProductionMultiplierBoost: "Aumento de Multiplicador de Produção",
    ProductionMultiplierBoostDesc: "+%% Multiplicador de Produção",
@@ -204,12 +199,10 @@ export const PT_BR = {
    QualifierBattle: "Batalha Classificatória",
    Quantum: "Quantum",
    QuantumLimit: "Limite de Quantum",
-   QuantumMatchmakingDesc:
-      "Se sua nave espacial se sair bem na batalha, ela entrará no pool de matchmaking - certifique-se de dar um bom nome a ela!",
+   QuantumMatchmakingDesc: "Se sua nave espacial se sair bem na batalha, ela entrará no pool de matchmaking - certifique-se de dar um bom nome a ela!",
    QuantumProgress: "Progresso do Quantum",
    QuantumQualifier: "Classificatória Quantum-%%",
-   QuantumQualifierDesc:
-      "Vença uma batalha contra uma nave espacial com o mesmo quantum para se classificar para um quantum maior.",
+   QuantumQualifierDesc: "Vença uma batalha contra uma nave espacial com o mesmo quantum para se classificar para um quantum maior.",
    QuantumTooltip: "Quantum Disponível/Total",
    RawActualDPS: "DPS Bruto / DPS Real",
    RC: "Canhão de Trilho",
@@ -223,8 +216,7 @@ export const PT_BR = {
    RC50Ammo: "Munição RC50",
    RC50E: "RC50E Culpeo",
    RC50EAmmo: "Munição RC50E",
-   ReachedQuantumLimit:
-      "Você atingiu o limite de quantum: %%. Você pode desbloquear o próximo limite de quantum vencendo uma batalha classificatória de quantum",
+   ReachedQuantumLimit: "Você atingiu o limite de quantum: %%. Você pode desbloquear o próximo limite de quantum vencendo uma batalha classificatória de quantum",
    RecoverHp: "Reparar",
    RecoverHpDesc: "Recupera %% de HP a cada segundo",
    RecoverHpOnDealingDamage10: "Regeneração Proativa (10%)",
@@ -251,8 +243,7 @@ export const PT_BR = {
    Rocket: "Foguete",
    RocketFab: "Fábrica de Foguetes",
    SecondChance: "Segunda Chance",
-   SecondChanceDescHTML:
-      "Por ser sua primeira batalha classificatória, você tem uma segunda chance com limite de quantum maior",
+   SecondChanceDescHTML: "Por ser sua primeira batalha classificatória, você tem uma segunda chance com limite de quantum maior",
    SelectedXModules: "%% Módulos Selecionados",
    Shards: "Fragmentos",
    Shield: "Escudo",
@@ -348,30 +339,23 @@ export const PT_BR = {
    TimeWarp: "Dobra Temporal",
    TimeWarpTooltip: "Dobra Temporal / Velocidade de Dobra",
    TutorialAutoBattle: "(Auto)batalha",
-   TutorialAutoBattleContent:
-      "As batalhas são automáticas. Para garantir a justiça, sua nave é confrontada com uma nave do <b>mesmo nível de quantum</b>. Se sua nave se sair bem, ela entrará no pool de matchmaking.",
+   TutorialAutoBattleContent: "As batalhas são automáticas. Para garantir a justiça, sua nave é confrontada com uma nave do <b>mesmo nível de quantum</b>. Se sua nave se sair bem, ela entrará no pool de matchmaking.",
    TutorialBasicConcept: "Conceito Básico",
    TutorialChat: "Obter Ajuda",
-   TutorialChatContent:
-      "Se você estiver perdido, o chat do jogo está sempre pronto para ajudar, basta pedir gentilmente. Também escolha seu nome de jogador para que as pessoas o reconheçam!",
+   TutorialChatContent: "Se você estiver perdido, o chat do jogo está sempre pronto para ajudar, basta pedir gentilmente. Também escolha seu nome de jogador para que as pessoas o reconheçam!",
    TutorialCommunity: "Comunidade do Jogo",
+   TutorialElement: "Element",
+   TutorialElementContent: "Elements are discovered as you gain quantum. You can pick one out of three choices and they boost <b>production multipliers</b>. When you prestige, all elements from this run becomes permanent element shards. Permanent elements boosts <b>XP multiplier</b>.",
    TutorialGameControl: "Controle do Jogo",
-   TutorialGameControlContent:
-      "<b>Clique</b> para selecionar um módulo. <b>Arraste</b> para se mover. <b>Rolagem</b> para zoom in e out. Clique em um <b>módulo vazio</b> para construir. <b>Ctrl + Clique</b> para seleção múltipla.",
-   TutorialIntro:
-      "Em <b>Spaceship Idle</b>, você projeta sua própria nave espacial modular, explora a vasta árvore tecnológica, desbloqueia armas únicas e vence épicas (auto)batalhas espaciais!",
-   TutorialPower:
-      "A energia é gerada por módulos <b>geradores</b>. Sua nave começa com um módulo de painel solar, que gera energia sem consumir recursos. Mais tarde, você desbloqueará geradores mais poderosos que consomem recursos.",
-   TutorialQualifierBattle:
-      "Quando seu quantum atingir um certo nível, você terá que <b>vencer uma batalha de qualificação</b> para desbloquear mais quantum. Seu quantum qualificado determina a <b>XP máxima</b> que você pode investir em sua nave.",
+   TutorialGameControlContent: "<b>Clique</b> para selecionar um módulo. <b>Arraste</b> para se mover. <b>Rolagem</b> para zoom in e out. Clique em um <b>módulo vazio</b> para construir. <b>Ctrl + Clique</b> para seleção múltipla.",
+   TutorialIntro: "Em <b>Spaceship Idle</b>, você projeta sua própria nave espacial modular, explora a vasta árvore tecnológica, desbloqueia armas únicas e vence épicas (auto)batalhas espaciais!",
+   TutorialPower: "A energia é gerada por módulos <b>geradores</b>. Sua nave começa com um módulo de painel solar, que gera energia sem consumir recursos. Mais tarde, você desbloqueará geradores mais poderosos que consomem recursos.",
+   TutorialQualifierBattle: "Quando seu quantum atingir um certo nível, você terá que <b>vencer uma batalha de qualificação</b> para desbloquear mais quantum. Seu quantum qualificado determina a <b>XP máxima</b> que você pode investir em sua nave.",
    TutorialQuantum: "Quantum e Batalha",
-   TutorialQuantumContent:
-      "Quando sua XP total produzida atingir um certo nível, você desbloqueará um novo quantum. O quantum pode ser usado para <b>desbloquear uma tecnologia ou construir um novo módulo</b>.",
+   TutorialQuantumContent: "Quando sua XP total produzida atingir um certo nível, você desbloqueará um novo quantum. O quantum pode ser usado para <b>desbloquear uma tecnologia ou construir um novo módulo</b>.",
    TutorialWeapon: "Armas",
-   TutorialWeaponContent:
-      "As armas são desbloqueadas pesquisando a árvore tecnológica. As armas consomem recursos e <b>produzem munição</b> - elas também <b>consomem munição</b> ao atirar. As armas têm diferentes estatísticas e habilidades, que podem ser melhoradas.",
-   TutorialXP:
-      "A XP é gerada quando os módulos de armas <b>atirem</b>. Armas mais avançadas e de nível superior geram mais XP. Construir e melhorar módulos de nave espacial custa XP.",
+   TutorialWeaponContent: "As armas são desbloqueadas pesquisando a árvore tecnológica. As armas consomem recursos e <b>produzem munição</b> - elas também <b>consomem munição</b> ao atirar. As armas têm diferentes estatísticas e habilidades, que podem ser melhoradas.",
+   TutorialXP: "A XP é gerada quando os módulos de armas <b>atirem</b>. Armas mais avançadas e de nível superior geram mais XP. Construir e melhorar módulos de nave espacial custa XP.",
    UnlockBuildings: "Desbloquear Edifícios",
    UnlockUpgrades: "Desbloquear Melhorias",
    Upgrade: "Melhorar",
@@ -385,8 +369,7 @@ export const PT_BR = {
    ViewShip: "Ver Nave",
    WarpPerSec: "warp/s",
    WarpSpeed: "Velocidade de Dobra",
-   WeaponBuildingXPHTML:
-      "Este prédio produz XP quando munição é consumida. <b>XP = Valor da Munição Consumida x Multiplicador de XP</b>",
+   WeaponBuildingXPHTML: "Este prédio produz XP quando munição é consumida. <b>XP = Valor da Munição Consumida x Multiplicador de XP</b>",
    WeaponFire: "Tiro de Arma",
    WelcomeToSpaceshipIdle: "Bem-vindo ao Spaceship Idle",
    WishlistFullGame: "Adicione o Jogo Completo à sua Lista de Desejos no Steam!",

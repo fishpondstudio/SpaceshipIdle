@@ -187,8 +187,7 @@ export const ZH_CN = {
    PrestigeAnyway: "强制重置",
    Priority: "优先级",
    Production: "生产",
-   ProductionBuildingXPHTML:
-      "此建筑没有经验倍率时不产生经验。有经验倍率时（例如来自永久元素），<b>经验 = 生产值（生产倍率前）x 经验倍率</b>",
+   ProductionBuildingXPHTML: "此建筑没有经验倍率时不产生经验。有经验倍率时（例如来自永久元素），<b>经验 = 生产值（生产倍率前）x 经验倍率</b>",
    ProductionMultiplier: "生产倍率",
    ProductionMultiplierBoost: "生产倍率提升",
    ProductionMultiplierBoostDesc: "+%%生产倍率",
@@ -340,30 +339,23 @@ export const ZH_CN = {
    TimeWarp: "时间跃迁",
    TimeWarpTooltip: "时间跃迁 / 跃迁速度",
    TutorialAutoBattle: "（自动）战斗",
-   TutorialAutoBattleContent:
-      "战斗是自动进行的。为确保公平性，您的飞船将与<b>相同量子等级</b>的飞船对战。如果您的飞船表现良好，它将进入匹配池。",
+   TutorialAutoBattleContent: "战斗是自动进行的。为确保公平性，您的飞船将与<b>相同量子等级</b>的飞船对战。如果您的飞船表现良好，它将进入匹配池。",
    TutorialBasicConcept: "基本概念",
    TutorialChat: "获取帮助",
-   TutorialChatContent:
-      "如果您迷路了，游戏内聊天随时准备帮助您，只需礼貌地询问。同时选择您的玩家昵称，以便人们认出您！",
+   TutorialChatContent: "如果您迷路了，游戏内聊天随时准备帮助您，只需礼貌地询问。同时选择您的玩家昵称，以便人们认出您！",
    TutorialCommunity: "游戏社区",
+   TutorialElement: "Element",
+   TutorialElementContent: "Elements are discovered as you gain quantum. You can pick one out of three choices and they boost <b>production multipliers</b>. When you prestige, all elements from this run becomes permanent element shards. Permanent elements boosts <b>XP multiplier</b>.",
    TutorialGameControl: "游戏控制",
-   TutorialGameControlContent:
-      "<b>点击</b>选择模块。<b>拖动</b>移动。<b>滚动</b>缩放。点击<b>空模块</b>进行建造。<b>Ctrl + 点击</b>进行多选。",
-   TutorialIntro:
-      "在<b>Spaceship Idle</b>中，您设计自己的模块化飞船，探索广阔的科技树，解锁独特武器，并在史诗般的太空（自动）战斗中获胜！",
-   TutorialPower:
-      "能量由<b>发电机</b>模块产生。您的飞船从太阳能板模块开始，它可以在不消耗资源的情况下产生能量。之后，您将解锁更强大的消耗资源的发电机。",
-   TutorialQualifierBattle:
-      "当您的量子达到特定等级时，您需要<b>赢得资格战</b>才能解锁更多量子。您的合格量子决定了您可以投资于飞船的<b>最大经验值</b>。",
+   TutorialGameControlContent: "<b>点击</b>选择模块。<b>拖动</b>移动。<b>滚动</b>缩放。点击<b>空模块</b>进行建造。<b>Ctrl + 点击</b>进行多选。",
+   TutorialIntro: "在<b>Spaceship Idle</b>中，您设计自己的模块化飞船，探索广阔的科技树，解锁独特武器，并在史诗般的太空（自动）战斗中获胜！",
+   TutorialPower: "能量由<b>发电机</b>模块产生。您的飞船从太阳能板模块开始，它可以在不消耗资源的情况下产生能量。之后，您将解锁更强大的消耗资源的发电机。",
+   TutorialQualifierBattle: "当您的量子达到特定等级时，您需要<b>赢得资格战</b>才能解锁更多量子。您的合格量子决定了您可以投资于飞船的<b>最大经验值</b>。",
    TutorialQuantum: "量子与战斗",
-   TutorialQuantumContent:
-      "当您产生的总经验值达到特定等级时，您将解锁新的量子。量子可用于<b>解锁科技或建造新模块</b>。",
+   TutorialQuantumContent: "当您产生的总经验值达到特定等级时，您将解锁新的量子。量子可用于<b>解锁科技或建造新模块</b>。",
    TutorialWeapon: "武器",
-   TutorialWeaponContent:
-      "武器通过研究科技树解锁。武器消耗资源并<b>生产弹药</b> - 它们在射击时也<b>消耗弹药</b>。武器具有不同的属性和能力，可以升级。",
-   TutorialXP:
-      "当武器模块<b>射击</b>时产生经验值。更先进和更高级别的武器产生更多经验值。建造和升级飞船模块需要消耗经验值。",
+   TutorialWeaponContent: "武器通过研究科技树解锁。武器消耗资源并<b>生产弹药</b> - 它们在射击时也<b>消耗弹药</b>。武器具有不同的属性和能力，可以升级。",
+   TutorialXP: "当武器模块<b>射击</b>时产生经验值。更先进和更高级别的武器产生更多经验值。建造和升级飞船模块需要消耗经验值。",
    UnlockBuildings: "解锁建筑",
    UnlockUpgrades: "解锁升级",
    Upgrade: "升级",

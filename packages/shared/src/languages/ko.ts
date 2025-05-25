@@ -89,8 +89,7 @@ export const KO = {
    ElementBoostThisRun: "%%의 생산 승수 +%%",
    ElementPermanent: "%% 원소 (영구)",
    ElementThisRun: "이번 실행의 원소",
-   ElementThisRunTooltipHTML:
-      "이번 실행의 원소는 <b>생산 승수</b>를 증가시키고 프레스티지 후 <b>원소 파편</b>이 됩니다",
+   ElementThisRunTooltipHTML: "이번 실행의 원소는 <b>생산 승수</b>를 증가시키고 프레스티지 후 <b>원소 파편</b>이 됩니다",
    EnemySalvage: "적 잔해",
    Energy: "에너지",
    EVA1Booster: "EVA1 부스터",
@@ -101,8 +100,7 @@ export const KO = {
    Explosive: "폭발",
    ExportSpaceship: "우주선 내보내기",
    ExtraElementShards: "추가 원소 파편",
-   ExtraElementShardsTooltipHTML:
-      "<b>원소 파편</b>은 <b>영구 원소</b>를 업그레이드하는 데 사용할 수 있으며, <b>경험치 승수</b>를 증가시킵니다",
+   ExtraElementShardsTooltipHTML: "<b>원소 파편</b>은 <b>영구 원소</b>를 업그레이드하는 데 사용할 수 있으며, <b>경험치 승수</b>를 증가시킵니다",
    FindOpponent: "상대 찾기",
    FireCooldown: "발사 쿨다운",
    GameSettings: "게임 설정",
@@ -136,8 +134,7 @@ export const KO = {
    LA1EAmmo: "LA1E 탄약",
    LanguageChangeWarning: "일부 게임 텍스트는 게임 재시작 후 새 언어로 표시됩니다",
    LaserProjectile: "레이저 발사체",
-   LaserProjectileDesc:
-      "레이저 발사체는 여러 모듈을 관통하며, 각 후속 모듈에 감소된 피해를 줍니다. N번째 모듈에 주는 피해는 원래 피해를 N으로 나눈 값과 같습니다",
+   LaserProjectileDesc: "레이저 발사체는 여러 모듈을 관통하며, 각 후속 모듈에 감소된 피해를 줍니다. N번째 모듈에 주는 피해는 원래 피해를 N으로 나눈 값과 같습니다",
    LevelX: "레벨 %%",
    LifeSteal: "피해 흡수",
    LifeStealDesc: "입힌 피해의 %%를 HP로 회복",
@@ -190,8 +187,7 @@ export const KO = {
    PrestigeAnyway: "그래도 프레스티지",
    Priority: "우선순위",
    Production: "생산",
-   ProductionBuildingXPHTML:
-      "이 건물은 경험치 승수가 없으면 경험치를 생산하지 않습니다. 경험치 승수가 있으면 (예: 영구 원소에서) <b>경험치 = 생산 값 (생산 승수 적용 전) x 경험치 승수</b>",
+   ProductionBuildingXPHTML: "이 건물은 경험치 승수가 없으면 경험치를 생산하지 않습니다. 경험치 승수가 있으면 (예: 영구 원소에서) <b>경험치 = 생산 값 (생산 승수 적용 전) x 경험치 승수</b>",
    ProductionMultiplier: "생산 승수",
    ProductionMultiplierBoost: "생산 승수 부스트",
    ProductionMultiplierBoostDesc: "생산 승수 +%%",
@@ -343,30 +339,23 @@ export const KO = {
    TimeWarp: "시간 왜곡",
    TimeWarpTooltip: "시간 왜곡 / 왜곡 속도",
    TutorialAutoBattle: "(자동)전투",
-   TutorialAutoBattleContent:
-      "전투는 자동으로 진행됩니다. 공정성을 위해 귀하의 우주선은 <b>동일한 퀀텀 레벨</b>의 우주선과 매칭됩니다. 우주선이 잘 수행하면 매치메이킹 풀에 들어갑니다.",
+   TutorialAutoBattleContent: "전투는 자동으로 진행됩니다. 공정성을 위해 귀하의 우주선은 <b>동일한 퀀텀 레벨</b>의 우주선과 매칭됩니다. 우주선이 잘 수행하면 매치메이킹 풀에 들어갑니다.",
    TutorialBasicConcept: "기본 개념",
    TutorialChat: "도움 받기",
-   TutorialChatContent:
-      "길을 잃으셨다면, 게임 내 채팅이 항상 도움을 드릴 준비가 되어 있습니다. 친절하게 물어보세요. 또한 사람들이 당신을 인식할 수 있도록 플레이어 핸들을 선택하세요!",
+   TutorialChatContent: "길을 잃으셨다면, 게임 내 채팅이 항상 도움을 드릴 준비가 되어 있습니다. 친절하게 물어보세요. 또한 사람들이 당신을 인식할 수 있도록 플레이어 핸들을 선택하세요!",
    TutorialCommunity: "게임 내 커뮤니티",
+   TutorialElement: "Element",
+   TutorialElementContent: "Elements are discovered as you gain quantum. You can pick one out of three choices and they boost <b>production multipliers</b>. When you prestige, all elements from this run becomes permanent element shards. Permanent elements boosts <b>XP multiplier</b>.",
    TutorialGameControl: "게임 조작",
-   TutorialGameControlContent:
-      "<b>클릭</b>하여 모듈을 선택합니다. <b>드래그</b>하여 이동합니다. <b>스크롤</b>하여 확대/축소합니다. <b>빈 모듈</b>을 클릭하여 건설합니다. <b>Ctrl + 클릭</b>으로 다중 선택합니다.",
-   TutorialIntro:
-      "<b>Spaceship Idle</b>에서 당신만의 모듈식 우주선을 설계하고, 방대한 기술 트리를 탐험하며, 독특한 무기를 해제하고, 장엄한 우주 (자동)전투에서 승리하세요!",
-   TutorialPower:
-      "전력은 <b>발전기</b> 모듈에서 생성됩니다. 당신의 우주선은 자원을 소비하지 않고 전력을 생성하는 태양광 패널 모듈로 시작합니다. 나중에 자원을 소비하는 더 강력한 발전기를 해제할 수 있습니다.",
-   TutorialQualifierBattle:
-      "퀀텀이 특정 레벨에 도달하면 더 많은 퀀텀을 해제하기 위해 <b>자격전투에서 승리</b>해야 합니다. 자격 있는 퀀텀은 우주선에 투자할 수 있는 <b>최대 XP</b>를 결정합니다.",
+   TutorialGameControlContent: "<b>클릭</b>하여 모듈을 선택합니다. <b>드래그</b>하여 이동합니다. <b>스크롤</b>하여 확대/축소합니다. <b>빈 모듈</b>을 클릭하여 건설합니다. <b>Ctrl + 클릭</b>으로 다중 선택합니다.",
+   TutorialIntro: "<b>Spaceship Idle</b>에서 당신만의 모듈식 우주선을 설계하고, 방대한 기술 트리를 탐험하며, 독특한 무기를 해제하고, 장엄한 우주 (자동)전투에서 승리하세요!",
+   TutorialPower: "전력은 <b>발전기</b> 모듈에서 생성됩니다. 당신의 우주선은 자원을 소비하지 않고 전력을 생성하는 태양광 패널 모듈로 시작합니다. 나중에 자원을 소비하는 더 강력한 발전기를 해제할 수 있습니다.",
+   TutorialQualifierBattle: "퀀텀이 특정 레벨에 도달하면 더 많은 퀀텀을 해제하기 위해 <b>자격전투에서 승리</b>해야 합니다. 자격 있는 퀀텀은 우주선에 투자할 수 있는 <b>최대 XP</b>를 결정합니다.",
    TutorialQuantum: "퀀텀과 전투",
-   TutorialQuantumContent:
-      "생산된 총 XP가 특정 레벨에 도달하면 새로운 퀀텀을 해제합니다. 퀀텀은 <b>기술을 해제하거나 새 모듈을 건설</b>하는 데 사용할 수 있습니다.",
+   TutorialQuantumContent: "생산된 총 XP가 특정 레벨에 도달하면 새로운 퀀텀을 해제합니다. 퀀텀은 <b>기술을 해제하거나 새 모듈을 건설</b>하는 데 사용할 수 있습니다.",
    TutorialWeapon: "무기",
-   TutorialWeaponContent:
-      "무기는 기술 트리를 연구하여 해제됩니다. 무기는 자원을 소비하고 <b>탄약을 생산</b>합니다 - 발사할 때도 <b>탄약을 소비</b>합니다. 무기는 다양한 통계와 능력을 가지며, 업그레이드할 수 있습니다.",
-   TutorialXP:
-      "무기 모듈이 <b>발사</b>할 때 XP가 생성됩니다. 더 발전되고 레벨이 높은 무기는 더 많은 XP를 생성합니다. 우주선 모듈을 건설하고 업그레이드하는 데 XP가 소비됩니다.",
+   TutorialWeaponContent: "무기는 기술 트리를 연구하여 해제됩니다. 무기는 자원을 소비하고 <b>탄약을 생산</b>합니다 - 발사할 때도 <b>탄약을 소비</b>합니다. 무기는 다양한 통계와 능력을 가지며, 업그레이드할 수 있습니다.",
+   TutorialXP: "무기 모듈이 <b>발사</b>할 때 XP가 생성됩니다. 더 발전되고 레벨이 높은 무기는 더 많은 XP를 생성합니다. 우주선 모듈을 건설하고 업그레이드하는 데 XP가 소비됩니다.",
    UnlockBuildings: "건물 해제",
    UnlockUpgrades: "업그레이드 해제",
    Upgrade: "업그레이드",
@@ -380,8 +369,7 @@ export const KO = {
    ViewShip: "우주선 보기",
    WarpPerSec: "warp/s",
    WarpSpeed: "워프 속도",
-   WeaponBuildingXPHTML:
-      "이 건물은 탄약이 소비될 때 경험치를 생산합니다. <b>경험치 = 소비된 탄약 가치 x 경험치 승수</b>",
+   WeaponBuildingXPHTML: "이 건물은 탄약이 소비될 때 경험치를 생산합니다. <b>경험치 = 소비된 탄약 가치 x 경험치 승수</b>",
    WeaponFire: "무기 발사",
    WelcomeToSpaceshipIdle: "Spaceship Idle에 오신 것을 환영합니다",
    WishlistFullGame: "Steam에서 전체 게임을 위시리스트에 추가하세요!",
