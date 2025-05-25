@@ -79,10 +79,7 @@ export function ShipInfoPanel(): React.ReactNode {
          <div className="divider vertical" />
          <WarpSpeedMenuComp gs={state} />
          <div className="divider vertical" />
-         <ElementComp
-            key={mReduceOf(G.save.current.elements, (prev, _, value) => prev + value, 0)}
-            animate={G.save.current.elementChoices.length > 0}
-         />
+         <ElementComp count={mReduceOf(G.save.current.elements, (prev, curr, value) => prev + value, 0)} />
          <div className="divider vertical" />
          <DPSComp
             raw={reduceOf(rawDamages, (prev, curr, value) => prev + value, 0)}
@@ -232,7 +229,7 @@ const QuantumComp = memo(
       prev.quantumProgress === next.quantumProgress,
 );
 
-function _ElementComp({ animate }: { animate: boolean }): React.ReactNode {
+function _ElementComp({ count }: { count: number }): React.ReactNode {
    return (
       <Tooltip
          label={
@@ -247,15 +244,26 @@ function _ElementComp({ animate }: { animate: boolean }): React.ReactNode {
             </div>
          }
       >
-         <div style={{ width: 40 }} className={classNames(animate ? "text-green breathing" : null)}>
+         <div
+            className="pointer"
+            style={{ width: 40 }}
+            onClick={() => {
+               showModal({
+                  children: <QuantumProgressModal />,
+                  title: t(L.QuantumProgress),
+                  dismiss: true,
+                  size: "lg",
+               });
+            }}
+         >
             <div className="mi">category</div>
-            <div>{mReduceOf(G.save.current.elements, (prev, curr, value) => prev + value, 0)}</div>
+            <div>{count}</div>
          </div>
       </Tooltip>
    );
 }
 
-const ElementComp = memo(_ElementComp, (prev, next) => prev.animate === next.animate);
+const ElementComp = memo(_ElementComp, (prev, next) => prev.count === next.count);
 
 function _DiscordComp({ show }: { show: boolean }): React.ReactNode {
    if (!show) return null;
