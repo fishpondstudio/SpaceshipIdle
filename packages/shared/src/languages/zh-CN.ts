@@ -379,7 +379,7 @@ export const ZH_CN = {
    WarpSpeed: "曲速",
    WeaponBuildingXPHTML: "此建筑在消耗弹药时产生经验。<b>经验 = 消耗弹药价值 x 经验倍率</b>",
    WeaponFire: "武器射击",
-   WelcomeToSpaceshipIdle: "欢迎来到Spaceship Idle",
+   WelcomeToSpaceshipIdle: "欢迎来到放置飞船",
    WishlistFullGame: "在Steam上将完整版游戏加入愿望单！",
    XP: "经验值",
    XPCollector: "经验收集器",
