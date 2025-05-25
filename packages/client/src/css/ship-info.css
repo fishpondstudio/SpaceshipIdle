@@ -9,7 +9,14 @@
    display: flex;
    flex-direction: row;
    align-items: center;
-
+   line-height: 1;
+   .block {
+      align-self: stretch;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0 5px;
+   }
    .progress {
       position: absolute;
       left: 0;

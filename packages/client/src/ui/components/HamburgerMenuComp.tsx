@@ -16,8 +16,10 @@ export function _HamburgerMenuComp({ flag }: { flag: GameOptionFlag }): React.Re
    return (
       <Menu position="bottom-start">
          <Menu.Target>
-            <div className="cc" style={{ width: 40 }}>
-               <div className="mi lg">menu</div>
+            <div className="cc pointer" style={{ width: 36, height: 36 }}>
+               <div className="mi" style={{ fontSize: 26 }}>
+                  menu
+               </div>
             </div>
          </Menu.Target>
          <Menu.Dropdown className="sf-frame">

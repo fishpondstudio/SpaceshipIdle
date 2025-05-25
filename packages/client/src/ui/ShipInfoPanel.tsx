@@ -96,18 +96,18 @@ export function ShipInfoPanel(): React.ReactNode {
 function _PowerComp({ power, delta }: { power: number; delta: number }): React.ReactNode {
    return (
       <Tooltip label={t(L.Power)}>
-         <div className="col" style={{ width: 80 }} title={t(L.Power)}>
+         <div className="block" style={{ width: 80 }}>
             <div className="mi">bolt</div>
-            <div>
+            <div className="f1 text-right">
                <ResourceAmount res="Power" amount={power} />
-               <span
+               <div
                   style={{
                      color: delta >= 0 ? "var(--mantine-color-green-text)" : "var(--mantine-color-red-text)",
                   }}
                >
                   {mathSign(delta)}
                   {formatNumber(Math.abs(delta))}
-               </span>
+               </div>
             </div>
          </div>
       </Tooltip>
@@ -119,18 +119,18 @@ const PowerComp = memo(_PowerComp, (prev, next) => prev.power === next.power && 
 function _XPComp({ xp, delta }: { xp: number; delta: number }): React.ReactNode {
    return (
       <Tooltip label={t(L.XP)}>
-         <div className="col" style={{ width: 90 }}>
+         <div className="block" style={{ width: 80 }}>
             <div className="mi">view_in_ar</div>
-            <div>
+            <div className="f1 text-right">
                <ResourceAmount res="XP" amount={xp} />
-               <span
+               <div
                   style={{
                      color: delta >= 0 ? "var(--mantine-color-green-text)" : "var(--mantine-color-red-text)",
                   }}
                >
                   {mathSign(delta)}
                   {formatNumber(Math.abs(delta))}
-               </span>
+               </div>
             </div>
          </div>
       </Tooltip>
@@ -142,11 +142,12 @@ const XPComp = memo(_XPComp, (prev, next) => prev.xp === next.xp && prev.delta =
 function _SpaceshipValueComp({ sv, maxSV }: { sv: number; maxSV: number }): React.ReactNode {
    return (
       <Tooltip label={t(L.SpaceshipXPTooltip)}>
-         <div className="col" style={{ width: 90, position: "relative" }}>
-            <div className="progress" style={{ width: clamp(sv / maxSV, 0, 1) * 90 }}></div>
+         <div className="block" style={{ width: 80, position: "relative" }}>
+            <div className="progress" style={{ width: clamp(sv / maxSV, 0, 1) * 80 }}></div>
             <div className="mi">paid</div>
-            <div>
-               {formatNumber(sv)}/{formatNumber(maxSV)}
+            <div className="f1 text-right">
+               <div>{formatNumber(sv)}</div>
+               <div>{formatNumber(maxSV)}</div>
             </div>
          </div>
       </Tooltip>
@@ -158,10 +159,11 @@ const SpaceshipValueComp = memo(_SpaceshipValueComp, (prev, next) => prev.sv ===
 function _DPSComp({ raw, actual }: { raw: number; actual: number }): React.ReactNode {
    return (
       <Tooltip label={t(L.RawActualDPS)}>
-         <div className="col" style={{ width: 90 }}>
+         <div className="block" style={{ width: 80 }}>
             <div className="mi">explosion</div>
-            <div>
-               {formatNumber(raw)}/{formatNumber(actual)}
+            <div className="f1 text-right">
+               <div>{formatNumber(raw)}</div>
+               <div>{formatNumber(actual)}</div>
             </div>
          </div>
       </Tooltip>
@@ -184,8 +186,8 @@ function _QuantumComp({
    return (
       <Tooltip label={t(L.QuantumTooltip, formatPercent(quantumProgress))}>
          <div
-            className="col pointer"
-            style={{ width: 90, position: "relative" }}
+            className="block pointer"
+            style={{ width: 80, position: "relative" }}
             onClick={() => {
                showModal({
                   children: <QuantumProgressModal />,
@@ -195,25 +197,29 @@ function _QuantumComp({
                });
             }}
          >
-            <div className="progress" style={{ width: quantumProgress * 90 }}></div>
+            <div className="progress" style={{ width: quantumProgress * 80 }}></div>
             <div className="mi">orbit</div>
-            <div>
-               <span
-                  style={{
-                     color: availableQuantum >= 0 ? "var(--mantine-color-green-text)" : "var(--mantine-color-red-text)",
-                  }}
-               >
-                  {formatNumber(availableQuantum)}
-               </span>
-               /{formatNumber(currentQuantum)}
-               <span
+            <div className="f1 text-right">
+               <div>
+                  <span
+                     style={{
+                        color:
+                           availableQuantum >= 0 ? "var(--mantine-color-green-text)" : "var(--mantine-color-red-text)",
+                     }}
+                  >
+                     {formatNumber(availableQuantum)}
+                  </span>
+                  {" / "}
+                  {formatNumber(currentQuantum)}
+               </div>
+               <div
                   style={{
                      color: quantumDelta >= 0 ? "var(--mantine-color-green-text)" : "var(--mantine-color-red-text)",
                   }}
                >
                   {mathSign(quantumDelta)}
                   {formatPercent(Math.abs(quantumDelta), 0)}
-               </span>
+               </div>
             </div>
          </div>
       </Tooltip>
@@ -245,8 +251,7 @@ function _ElementComp({ count }: { count: number }): React.ReactNode {
          }
       >
          <div
-            className="pointer"
-            style={{ width: 40 }}
+            className="block pointer"
             onClick={() => {
                showModal({
                   children: <QuantumProgressModal />,
@@ -257,7 +262,8 @@ function _ElementComp({ count }: { count: number }): React.ReactNode {
             }}
          >
             <div className="mi">category</div>
-            <div>{count}</div>
+            <div className="w5" />
+            <div className="f1 text-right">{count}</div>
          </div>
       </Tooltip>
    );
@@ -272,7 +278,7 @@ function _DiscordComp({ show }: { show: boolean }): React.ReactNode {
          <div className="divider vertical" />
          <Tooltip label={t(L.JoinDiscord)}>
             <div className="pointer" style={{ width: 40 }} onClick={() => openUrl(DiscordUrl)}>
-               <img src={Discord} style={{ width: 30 }} />
+               <img src={Discord} style={{ height: 20 }} />
             </div>
          </Tooltip>
       </>
@@ -288,7 +294,7 @@ function _SteamComp({ show }: { show: boolean }): React.ReactNode {
          <div className="divider vertical" />
          <Tooltip label={t(L.WishlistFullGame)}>
             <div className="pointer" style={{ width: 40 }} onClick={() => openUrl(SteamUrl)}>
-               <img src={Steam} style={{ width: 24 }} />
+               <img src={Steam} style={{ height: 20 }} />
             </div>
          </Tooltip>
       </>
@@ -312,7 +318,7 @@ function _BattleComp({ highlight, quantum }: { highlight: boolean; quantum: numb
             }}
             style={{ width: 40 }}
          >
-            <div style={{ fontSize: 28 }} className={classNames("mi", highlight ? "breathing text-red" : null)}>
+            <div style={{ fontSize: 24 }} className={classNames("mi", highlight ? "breathing text-red" : null)}>
                swords
             </div>
          </div>
