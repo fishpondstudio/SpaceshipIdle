@@ -106,10 +106,10 @@ function QuantumBlock({
             </div>
          </div>
          <div className="row g0">
-            <Tooltip label={t(L.MaxSpaceshipValueV2)}>
+            <Tooltip label={t(L.MaxSpaceshipValue)}>
                <div className="f1">{formatNumber(quantumToSpaceshipValue(start))}</div>
             </Tooltip>
-            <Tooltip label={t(L.MaxSpaceshipValueV2)}>
+            <Tooltip label={t(L.MaxSpaceshipValue)}>
                <div className="f1">{formatNumber(quantumToSpaceshipValue(start + TrialQuantum))}</div>
             </Tooltip>
          </div>

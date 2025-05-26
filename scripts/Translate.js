@@ -55,7 +55,7 @@ readdirSync(LANG_PATH).forEach((fileName) => {
    const language = eval(`(${file})`);
    const result = {};
    Object.keys(en).forEach((k) => {
-      if (language[k]) {
+      if (k.startsWith("$") || language[k]) {
          result[k] = language[k];
       } else {
          result[k] = en[k];
