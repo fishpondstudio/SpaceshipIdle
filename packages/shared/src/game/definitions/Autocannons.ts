@@ -1,6 +1,6 @@
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import { cooldownMultiplier, normalizedValue } from "../logic/BattleLogic";
+import { getCooldownMultiplier, getNormalizedValue } from "../logic/BattleLogic";
 import { AbilityRange, AbilityTiming } from "./Ability";
 import { BaseDefenseProps, BaseWeaponProps, BuildingFlag, type IWeaponDefinition } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
@@ -114,7 +114,7 @@ export const AC76R: IWeaponDefinition = {
       effect: "TickKineticDamage",
       value: (building, level) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
-         const damage = normalizedValue({ type: building, level }) * cooldownMultiplier({ type: building });
+         const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
          return (damage * (1 - def.damagePct)) / 2;
       },
       duration: (building, level) => 1,
@@ -145,7 +145,7 @@ export const AC130E: IWeaponDefinition = {
       effect: "TickExplosiveDamage",
       value: (building, level) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
-         const damage = normalizedValue({ type: building, level }) * cooldownMultiplier({ type: building });
+         const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
          return (damage * (1 - def.damagePct)) / 2.5;
       },
       duration: (building, level) => 5,

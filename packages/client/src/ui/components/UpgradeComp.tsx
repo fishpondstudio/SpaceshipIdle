@@ -4,10 +4,10 @@ import { AbilityRangeLabel } from "@spaceship-idle/shared/src/game/definitions/A
 import { BuildingFlag, type IBoosterDefinition } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
-   buildingValue,
    canSpend,
+   getBuildingValue,
    getNextLevel,
-   totalBuildingValue,
+   getTotalBuildingValue,
    trySpend,
    upgradeMax,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
@@ -66,13 +66,13 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                return (
                   <Tooltip
                      key={idx}
-                     label={<ResourceListComp res={totalBuildingValue(data.type, data.level, target)} />}
+                     label={<ResourceListComp res={getTotalBuildingValue(data.type, data.level, target)} />}
                   >
                      <button
                         className="btn f1"
-                        disabled={!canSpend(totalBuildingValue(data.type, data.level, target), G.save.current)}
+                        disabled={!canSpend(getTotalBuildingValue(data.type, data.level, target), G.save.current)}
                         onClick={() => {
-                           if (trySpend(totalBuildingValue(data.type, data.level, target), G.save.current)) {
+                           if (trySpend(getTotalBuildingValue(data.type, data.level, target), G.save.current)) {
                               data.level = target;
                               GameStateUpdated.emit();
                            }
@@ -85,7 +85,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             })}
             <button
                className="btn f1"
-               disabled={!canSpend(buildingValue(data.type, data.level + 1), G.save.current)}
+               disabled={!canSpend(getBuildingValue(data.type, data.level + 1), G.save.current)}
                onClick={() => {
                   upgradeMax(data, G.save.current);
                   GameStateUpdated.emit();
@@ -101,14 +101,17 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   <Tooltip
                      key={idx}
                      label={
-                        <ResourceListComp res={totalBuildingValue(data.type, data.level, target)} showColor={false} />
+                        <ResourceListComp
+                           res={getTotalBuildingValue(data.type, data.level, target)}
+                           showColor={false}
+                        />
                      }
                   >
                      <button
                         className="btn f1"
                         disabled={target <= 0}
                         onClick={() => {
-                           totalBuildingValue(data.type, data.level, target).forEach((amount, res) => {
+                           getTotalBuildingValue(data.type, data.level, target).forEach((amount, res) => {
                               mapSafeAdd(gs.resources, res, amount);
                            });
                            data.level = target;
@@ -125,7 +128,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   canRecycle ? (
                      <>
                         <div>{t(L.RecycleModule)}</div>
-                        <ResourceListComp res={totalBuildingValue(data.type, data.level, 0)} showColor={false} />
+                        <ResourceListComp res={getTotalBuildingValue(data.type, data.level, 0)} showColor={false} />
                      </>
                   ) : (
                      t(L.CannotRecycle)
@@ -137,7 +140,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   disabled={!canRecycle}
                   onClick={() => {
                      G.runtime.delete(tile);
-                     totalBuildingValue(data.type, data.level, 0).forEach((amount, res) => {
+                     getTotalBuildingValue(data.type, data.level, 0).forEach((amount, res) => {
                         mapSafeAdd(gs.resources, res, amount);
                      });
                      GameStateUpdated.emit();

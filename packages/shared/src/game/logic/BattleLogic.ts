@@ -141,7 +141,7 @@ export function tickTiles(
       }
       if (target) {
          forEach(def.output, (res, _amount) => {
-            const amount = cooldownMultiplier(data) * _amount * data.level;
+            const amount = getCooldownMultiplier(data) * _amount * data.level;
             mapSafeAdd(from.resources, res, -amount);
             mapSafeAdd(stat.consumed, res, amount);
 
@@ -190,7 +190,7 @@ export function tickTiles(
    });
 }
 
-export function normalizedValue(data: { type: Building; level: number }): number {
+export function getNormalizedValue(data: { type: Building; level: number }): number {
    const def = Config.Buildings[data.type];
    let value = 0;
    if (hasFlag(def.buildingFlag, BuildingFlag.Booster)) {
@@ -214,7 +214,7 @@ export function normalizedValue(data: { type: Building; level: number }): number
    return value * data.level;
 }
 
-export function cooldownMultiplier(data: { type: Building }): number {
+export function getCooldownMultiplier(data: { type: Building }): number {
    const def = Config.Buildings[data.type];
    if ("fireCooldown" in def) {
       return def.fireCooldown / DefaultCooldown;
@@ -238,7 +238,7 @@ export function evasionChance(value: number): number {
    return 1 - 1 / (1 + value);
 }
 
-export function calculateScore(ship: GameState, reference: GameState): number {
+export function calcShipScore(ship: GameState, reference: GameState): number {
    const me = structuredClone(ship);
    me.resources.clear();
    const enemy = structuredClone(reference);
@@ -254,7 +254,7 @@ export function calculateScore(ship: GameState, reference: GameState): number {
    return left / right;
 }
 
-export function shipScoreRank(score: number): string {
+export function getShipScoreRank(score: number): string {
    if (score >= 1.75) {
       return "S";
    }

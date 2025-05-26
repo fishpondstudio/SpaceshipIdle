@@ -1,6 +1,6 @@
 import { Button, Paper, SimpleGrid, Space } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { shipScoreRank } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { getShipScoreRank } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { classNames, range } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -85,7 +85,7 @@ export function ShipGalleryModal(): React.ReactNode {
                      }}
                      justify="space-between"
                      leftSection={t(L.SpaceshipPrefix, ship.json.name)}
-                     rightSection={`${ship.quantum} (${shipScoreRank(ship.score)})`}
+                     rightSection={`${ship.quantum} (${getShipScoreRank(ship.score)})`}
                      fullWidth
                   ></Button>
                </Paper>

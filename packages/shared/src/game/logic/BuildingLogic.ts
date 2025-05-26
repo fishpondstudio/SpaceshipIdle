@@ -6,7 +6,7 @@ import type { Building } from "../definitions/Buildings";
 import type { Resource } from "../definitions/Resource";
 import type { GameState } from "../GameState";
 import type { ITileData } from "../ITileData";
-import { calculateSpaceshipValue, maxSpaceshipValue, resourceValue } from "./ResourceLogic";
+import { calcSpaceshipValue, getMaxSpaceshipValue, resourceValueOf } from "./ResourceLogic";
 
 export function getNextLevel(currentLevel: number, x: number): number {
    return (Math.floor(currentLevel / x) + 1) * x;
@@ -24,7 +24,7 @@ export function fib(n: number): number {
    return a;
 }
 
-export function buildingValue(
+export function getBuildingValue(
    building: Building,
    level: number,
    result: Map<Resource, number> | null = null,
@@ -48,7 +48,7 @@ export function buildingValue(
    return result;
 }
 
-export function totalBuildingValue(
+export function getTotalBuildingValue(
    building: Building,
    currentLevel: number,
    targetLevel: number,
@@ -58,24 +58,24 @@ export function totalBuildingValue(
    const max = Math.max(currentLevel, targetLevel);
    result ??= new Map<Resource, number>();
    for (let level = min + 1; level <= max; ++level) {
-      buildingValue(building, level, result);
+      getBuildingValue(building, level, result);
    }
    return result;
 }
 
 export function upgradeMax(tile: ITileData, gs: GameState): void {
    const def = Config.Buildings[tile.type];
-   let resources = buildingValue(tile.type, tile.level + 1);
-   while (resourceValue(resources) < maxSpaceshipValue(gs) && trySpend(resources, gs)) {
+   let resources = getBuildingValue(tile.type, tile.level + 1);
+   while (resourceValueOf(resources) < getMaxSpaceshipValue(gs) && trySpend(resources, gs)) {
       tile.level++;
-      resources = buildingValue(tile.type, tile.level + 1);
+      resources = getBuildingValue(tile.type, tile.level + 1);
    }
 }
 
 export function canSpend(resources: Map<Resource, number>, gs: GameState): boolean {
    return (
       hasEnoughResources(resources, gs.resources) &&
-      calculateSpaceshipValue(gs) + resourceValue(resources) < maxSpaceshipValue(gs)
+      calcSpaceshipValue(gs) + resourceValueOf(resources) < getMaxSpaceshipValue(gs)
    );
 }
 
@@ -110,7 +110,7 @@ export function getUnlockedBuildings(gs: GameState): Building[] {
    return Array.from(gs.unlockedTech).flatMap((t) => Config.Tech[t].unlockBuildings ?? []);
 }
 
-export function buildingDesc(building: Building): string {
+export function getBuildingDesc(building: Building): string {
    const def = Config.Buildings[building];
    if (hasFlag(def.buildingFlag, BuildingFlag.Booster)) {
       const booster = def as IBoosterDefinition;

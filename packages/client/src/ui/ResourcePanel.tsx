@@ -1,6 +1,6 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
-import { resourceDiff } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { resourceDiffOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { classNames, formatNumber, hasFlag, mMapOf, mathSign } from "@spaceship-idle/shared/src/utils/Helper";
 import "../css/resource-panel.css";
 import { G } from "../utils/Global";
@@ -14,7 +14,11 @@ export function ResourcePanel(): React.ReactNode {
       <div className="resource-panel">
          {mMapOf(state.resources, (res, amount) => {
             const name = Config.Resources[res].name();
-            const diff = resourceDiff(res, hasFlag(options.flag, GameOptionFlag.TheoreticalValue), G.runtime.leftStat);
+            const diff = resourceDiffOf(
+               res,
+               hasFlag(options.flag, GameOptionFlag.TheoreticalValue),
+               G.runtime.leftStat,
+            );
             if (res === "Power" || res === "XP") return null;
             return (
                <div key={res} className="row g10">

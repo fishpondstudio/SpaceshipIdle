@@ -1,7 +1,7 @@
 import { clamp } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import { cooldownMultiplier, normalizedValue } from "../logic/BattleLogic";
+import { getCooldownMultiplier, getNormalizedValue } from "../logic/BattleLogic";
 import { damageToHp } from "../logic/BuildingLogic";
 import { AbilityRange, AbilityTiming } from "./Ability";
 import { BaseDefenseProps, BaseWeaponProps, BuildingFlag, DamageType, type IWeaponDefinition } from "./BuildingProps";
@@ -24,7 +24,7 @@ export const MS1: IWeaponDefinition = {
       effect: "TickEnergyDamage",
       value: (building, level) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
-         const damage = normalizedValue({ type: building, level }) * cooldownMultiplier({ type: building });
+         const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
          return (damage * (1 - def.damagePct)) / 5 / 3;
       },
       duration: (building, level) => 5,
@@ -48,7 +48,7 @@ export const MS1H: IWeaponDefinition = {
       effect: "RecoverHp",
       value: (building, level) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
-         const damage = normalizedValue({ type: building, level }) * cooldownMultiplier({ type: building });
+         const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
          return (damage * (1 - def.damagePct)) / 3;
       },
       duration: (building, level) => 1,
@@ -132,7 +132,7 @@ export const MS1F: IWeaponDefinition = {
       effect: "IncreaseMaxHp",
       value: (building, level) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
-         const damage = normalizedValue({ type: building, level }) * cooldownMultiplier({ type: building });
+         const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
          return (damageToHp(damage, building) * (1 - def.damagePct)) / 3;
       },
       duration: (building, level) => 5,

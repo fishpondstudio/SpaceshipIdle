@@ -6,16 +6,16 @@ import { BuildingFlag, type IBoosterDefinition } from "@spaceship-idle/shared/sr
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { CodeLabel, type CodeNumber } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
 import {
-   buildingDesc,
-   buildingValue,
    canSpend,
+   getBuildingDesc,
+   getBuildingValue,
    getUnlockedBuildings,
    hasConstructed,
    hasEnoughResources,
    tryDeductResources,
    trySpend,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { availableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { isTileConnected, isWithinShipExtent } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { entriesOf, formatNumber, hasFlag, type Tile, toMap } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -118,7 +118,7 @@ function BoostComp({ building, tile, gs }: { building: Building; tile: Tile; gs:
                   <div className="text-xs text-space">{label}</div>
                   <div className="f1"></div>
                </div>
-               <div className="text-xs">{buildingDesc(building)}</div>
+               <div className="text-xs">{getBuildingDesc(building)}</div>
             </div>
          </div>
       </Tooltip>
@@ -129,22 +129,26 @@ function BuildingComp({ building, tile, gs }: { building: Building; tile: Tile; 
    const def = Config.Buildings[building];
    const label = CodeLabel[def.code]();
    const constructed = G.runtime.leftStat.constructed.get(building);
-   const canBuild = canSpend(buildingValue(building, 1), gs) && availableQuantum(gs) > 0;
+   const canBuild = canSpend(getBuildingValue(building, 1), gs) && getAvailableQuantum(gs) > 0;
    return (
       <Tooltip
          label={
-            availableQuantum(gs) <= 0 ? t(L.NotEnoughQuantum) : <ResourceListComp res={buildingValue(building, 1)} />
+            getAvailableQuantum(gs) <= 0 ? (
+               t(L.NotEnoughQuantum)
+            ) : (
+               <ResourceListComp res={getBuildingValue(building, 1)} />
+            )
          }
          key={building}
       >
          <div
             className="row p10 m10"
             onClick={() => {
-               if (!canSpend(buildingValue(building, 1), gs) || availableQuantum(gs) <= 0) {
+               if (!canSpend(getBuildingValue(building, 1), gs) || getAvailableQuantum(gs) <= 0) {
                   playError();
                   return;
                }
-               if (trySpend(buildingValue(building, 1), gs)) {
+               if (trySpend(getBuildingValue(building, 1), gs)) {
                   gs.tiles.set(tile, makeTile(building, 1));
                   GameStateUpdated.emit();
                }
@@ -163,7 +167,7 @@ function BuildingComp({ building, tile, gs }: { building: Building; tile: Tile; 
                   <div className="text-xs text-space">{label}</div>
                   <div className="f1"></div>
                </div>
-               <div className="text-xs">{buildingDesc(building)}</div>
+               <div className="text-xs">{getBuildingDesc(building)}</div>
             </div>
             {constructed ? (
                <Badge color="gray" variant="default">

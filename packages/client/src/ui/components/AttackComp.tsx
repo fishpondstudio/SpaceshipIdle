@@ -1,7 +1,7 @@
 import { Badge, Divider, Space, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageTypeLabel, WeaponFlag, WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
-import { cooldownMultiplier } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { getCooldownMultiplier } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { formatNumber, hasFlag, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
@@ -59,7 +59,7 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             ) : null}
             <div className="subtitle">{t(L.Ammo)}</div>
             {mapOf(def.output, (res, amount_) => {
-               const amount = amount_ * cooldownMultiplier(data);
+               const amount = amount_ * getCooldownMultiplier(data);
                return (
                   <div key={res}>
                      <div className="row" key={res}>

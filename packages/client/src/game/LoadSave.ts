@@ -1,5 +1,5 @@
 import type { GameState, SaveGame } from "@spaceship-idle/shared/src/game/GameState";
-import { currentQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getCurrentQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { jsonDecode, jsonEncode } from "@spaceship-idle/shared/src/utils/Serialization";
 import { compressToUint8Array, decompressFromUint8Array } from "lz-string";
 import { idbDel, idbGet, idbSet } from "../utils/BrowserStorage";
@@ -34,7 +34,7 @@ export async function resetGame(): Promise<void> {
 
 export async function saveGameStateToFile(gs: GameState): Promise<void> {
    const fileHandle = await window.showSaveFilePicker({
-      suggestedName: `SS-${gs.name}-Q${currentQuantum(gs)}.ship`,
+      suggestedName: `SS-${gs.name}-Q${getCurrentQuantum(gs)}.ship`,
    });
    const writable = await fileHandle.createWritable();
    await writable.write(compressToUint8Array(jsonEncode(gs)));

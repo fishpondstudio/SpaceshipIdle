@@ -2,12 +2,12 @@ import { Badge, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import type { Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { buildingDesc } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { availableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getBuildingDesc } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
+import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import {
    checkTechPrerequisites,
    checkTierRequirement,
-   techName,
+   getTechName,
 } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { formatNumber, mapOf, numberToRoman } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -32,7 +32,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
          title={
             <div className="row">
                {tier ? <Badge variant="outline">{t(L.TierX, tier)}</Badge> : null}
-               <div className="f1">{techName(tech)}</div>
+               <div className="f1">{getTechName(tech)}</div>
             </div>
          }
       >
@@ -54,7 +54,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                {def.requires.map((req) => {
                   return (
                      <div className="row mx10 my5" key={req}>
-                        <div className="f1">{techName(req)}</div>
+                        <div className="f1">{getTechName(req)}</div>
                         {G.save.current.unlockedTech.has(req) ? (
                            <div className="mi text-green">check_circle</div>
                         ) : (
@@ -65,13 +65,13 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                })}
                <div className="divider my10" />
                <div className="mx10">
-                  <Tooltip disabled={availableQuantum(G.save.current) > 0} label={t(L.NotEnoughQuantum)}>
+                  <Tooltip disabled={getAvailableQuantum(G.save.current) > 0} label={t(L.NotEnoughQuantum)}>
                      <button
                         className="btn filled w100 row px10 py5"
                         onClick={() => {
                            if (
                               !checkTechPrerequisites(tech, G.save.current) ||
-                              availableQuantum(G.save.current) <= 0 ||
+                              getAvailableQuantum(G.save.current) <= 0 ||
                               unlocked < required
                            ) {
                               return;
@@ -81,7 +81,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                            GameStateUpdated.emit();
                            G.scene.enqueue(TechTreeScene, (t) => t.refresh());
                         }}
-                        disabled={!canUnlock || availableQuantum(G.save.current) <= 0}
+                        disabled={!canUnlock || getAvailableQuantum(G.save.current) <= 0}
                      >
                         <div>{t(L.Research)}</div>
                         <div className="f1" />
@@ -113,7 +113,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                               <TextureComp name={`Building/${b}`} size={50} />
                               <div className="f1">
                                  <div>{Config.Buildings[b].name()}</div>
-                                 <div className="text-dimmed text-xs">{buildingDesc(b)}</div>
+                                 <div className="text-dimmed text-xs">{getBuildingDesc(b)}</div>
                               </div>
                            </div>
                         </Tooltip>

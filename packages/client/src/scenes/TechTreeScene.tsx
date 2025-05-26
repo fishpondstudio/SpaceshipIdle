@@ -1,7 +1,7 @@
 import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import type { Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
-import { isTechUnderDevelopment, techDesc, techName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
+import { getTechDesc, getTechName, isTechUnderDevelopment } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { equal, forEach, mapSafePush, numberToRoman } from "@spaceship-idle/shared/src/utils/Helper";
 import { AABB, type IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
 import { Container, LINE_CAP, LINE_JOIN, Sprite, type ColorSource, type FederatedPointerEvent } from "pixi.js";
@@ -103,7 +103,7 @@ export class TechTreeScene extends Scene {
 
                if (!isTechUnderDevelopment(tech)) {
                   const text = this.viewport.addChild(
-                     new UnicodeText(techName(tech), {
+                     new UnicodeText(getTechName(tech), {
                         fontName: Fonts.SpaceshipIdle,
                         fontSize: 20,
                         tint: 0xffffff,
@@ -116,7 +116,7 @@ export class TechTreeScene extends Scene {
                   text.position.set(width / 2 + x, height / 2 + y - 14);
 
                   const desc = this.viewport.addChild(
-                     new UnicodeText(techDesc(tech), {
+                     new UnicodeText(getTechDesc(tech), {
                         fontName: Fonts.SpaceshipIdle,
                         fontSize: 14,
                         tint: 0xffffff,

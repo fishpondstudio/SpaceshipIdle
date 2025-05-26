@@ -1,7 +1,7 @@
 import { Box, Divider, Group, Paper, Space } from "@mantine/core";
-import { calculateSpaceshipValue, usedQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { calcSpaceshipValue, getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
-import { techName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
+import { getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { ShipImageComp } from "../game/ShipImageComp";
@@ -21,11 +21,11 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
          <Paper withBorder p="xs" fz="sm">
             <Group>
                <Box flex={1}>{t(L.Quantum)}</Box>
-               <Box>{formatNumber(usedQuantum(ship.json))}</Box>
+               <Box>{formatNumber(getUsedQuantum(ship.json))}</Box>
             </Group>
             <Group>
                <Box flex={1}>{t(L.SpaceshipXP)}</Box>
-               <Box>{formatNumber(calculateSpaceshipValue(ship.json))}</Box>
+               <Box>{formatNumber(calcSpaceshipValue(ship.json))}</Box>
             </Group>
             <Space h="sm" />
             <Divider mx="-xs" />
@@ -35,7 +35,7 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
             </Box>
             <Box>
                {Array.from(ship.json.unlockedTech)
-                  .map((tech) => techName(tech))
+                  .map((tech) => getTechName(tech))
                   .join(", ")}
             </Box>
          </Paper>

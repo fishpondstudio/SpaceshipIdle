@@ -21,12 +21,12 @@ import { type StatusEffect, statusEffectOf } from "../definitions/StatusEffect";
 import {
    OnDamaged,
    OnEvasion,
-   cooldownMultiplier,
    damageAfterArmor,
    damageAfterDeflection,
    damageAfterShield,
    evasionChance,
-   normalizedValue,
+   getCooldownMultiplier,
+   getNormalizedValue,
 } from "./BattleLogic";
 import { BattleType } from "./BattleType";
 import { damageToHp } from "./BuildingLogic";
@@ -227,10 +227,10 @@ export class RuntimeTile {
             }
          }
       });
-      const normVal = normalizedValue(this.data);
+      const normVal = getNormalizedValue(this.data);
       this.props.hp = damageToHp(normVal, this.data.type);
       if (WeaponKey in def) {
-         const dmg = normVal * cooldownMultiplier(this.data);
+         const dmg = normVal * getCooldownMultiplier(this.data);
          this.props.damagePerProjectile = (def.damagePct * dmg) / def.projectiles;
       }
       Object.assign(this.originalProps, this.props);

@@ -1,7 +1,7 @@
 import { TextInput } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { quantumQualified } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getQuantumQualified } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { loadGameStateFromFile } from "../game/LoadSave";
@@ -60,7 +60,7 @@ export function PrepareForBattleModal(): React.ReactNode {
                try {
                   playClick();
                   showLoading();
-                  const ship = await RPCClient.findShip(quantumQualified(G.save.current), [0.75, 1.1]);
+                  const ship = await RPCClient.findShip(getQuantumQualified(G.save.current), [0.75, 1.1]);
                   await resolveIn(1, null);
                   hideLoading();
                   showModal({

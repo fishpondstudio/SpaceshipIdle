@@ -1,6 +1,6 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { GameState } from "@spaceship-idle/shared/src/game/GameState";
-import { calculateScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { rollElementShards } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
 import { randomColor } from "@spaceship-idle/shared/src/thirdparty/RandomColor";
@@ -77,7 +77,7 @@ export function addDebugFunctions(): void {
    // @ts-expect-error
    globalThis.battle = async () => {
       const enemy = await loadGameStateFromFile();
-      console.log(calculateScore(G.save.current, enemy));
+      console.log(calcShipScore(G.save.current, enemy));
    };
    // @ts-expect-error
    globalThis.prestige = async () => {

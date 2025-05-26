@@ -3,11 +3,11 @@ import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { BattleQuantum, TrialQuantum } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
-   currentQuantum,
-   quantumLimit,
-   quantumQualified,
+   getCurrentQuantum,
+   getQuantumLimit,
+   getQuantumQualified,
+   getUsedQuantum,
    quantumToSpaceshipValue,
-   usedQuantum,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { clamp, formatNumber, mMapOf, range } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -17,10 +17,10 @@ import { refreshOnTypedEvent } from "../utils/Hook";
 
 export function QuantumProgressModal(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
-   const start = Math.floor(quantumLimit(G.save.current) / BattleQuantum - 1) * BattleQuantum;
-   const qualified = quantumQualified(G.save.current);
-   const current = currentQuantum(G.save.current);
-   const used = usedQuantum(G.save.current);
+   const start = Math.floor(getQuantumLimit(G.save.current) / BattleQuantum - 1) * BattleQuantum;
+   const qualified = getQuantumQualified(G.save.current);
+   const current = getCurrentQuantum(G.save.current);
+   const used = getUsedQuantum(G.save.current);
    return (
       <>
          <div className="panel p5 text-center text-xs mb10 row" style={{ padding: "5px 10px" }}>

@@ -2,10 +2,10 @@ import { Box, Grid, Space, Switch, Text, Tooltip } from "@mantine/core";
 import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
-   calculateSpaceshipValue,
-   quantumLimit,
-   quantumQualified,
-   usedQuantum,
+   calcSpaceshipValue,
+   getQuantumLimit,
+   getQuantumQualified,
+   getUsedQuantum,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
@@ -21,7 +21,9 @@ import { hideLoading, showLoading } from "./components/LoadingComp";
 import { hideSidebar } from "./Sidebar";
 
 export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNode {
-   const [isPracticeBattle, setIsPracticeBattle] = useState(usedQuantum(enemy) < quantumQualified(G.save.current));
+   const [isPracticeBattle, setIsPracticeBattle] = useState(
+      getUsedQuantum(enemy) < getQuantumQualified(G.save.current),
+   );
    return (
       <div style={{ padding: 5 }}>
          <div className="row">
@@ -43,7 +45,7 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
             <Switch
                checked={isPracticeBattle}
                onChange={(e) => {
-                  if (usedQuantum(enemy) < quantumLimit(G.save.current)) {
+                  if (getUsedQuantum(enemy) < getQuantumLimit(G.save.current)) {
                      setIsPracticeBattle(true);
                      return;
                   }
@@ -125,13 +127,13 @@ function ShipInfoComp({ gs, side }: { gs: GameState; side: Side }): React.ReactN
          <Space h="sm" />
          <Grid>
             <Grid.Col span={6}>
-               <Box fz={32}>{formatNumber(usedQuantum(gs))}</Box>
+               <Box fz={32}>{formatNumber(getUsedQuantum(gs))}</Box>
                <Box fz="xs" c="dimmed" mt={-10} mb={5}>
                   {t(L.Quantum)}
                </Box>
             </Grid.Col>
             <Grid.Col span={6}>
-               <Box fz={32}>{formatNumber(calculateSpaceshipValue(gs))}</Box>
+               <Box fz={32}>{formatNumber(calcSpaceshipValue(gs))}</Box>
                <Box fz="xs" c="dimmed" mt={-10} mb={5}>
                   {t(L.SpaceshipXP)}
                </Box>

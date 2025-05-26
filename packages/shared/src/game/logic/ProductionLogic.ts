@@ -6,12 +6,12 @@ import type { Inventory } from "../GameOption";
 import type { GameState } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { BuildingFlag, DamageType, type IBoosterDefinition, WeaponKey } from "../definitions/BuildingProps";
-import { cooldownMultiplier, normalizedValue } from "./BattleLogic";
+import { getCooldownMultiplier, getNormalizedValue } from "./BattleLogic";
 import { BattleType } from "./BattleType";
 import type { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
 import type { RuntimeTile } from "./RuntimeTile";
-import { techName } from "./TechLogic";
+import { getTechName } from "./TechLogic";
 
 export const TickProductionOption = {
    None: 0,
@@ -58,7 +58,7 @@ export function tickProduction(
          const def = Config.Tech[tech];
          forEach(def.multiplier, (building, amount) => {
             if (data.type === building) {
-               rs.productionMultiplier.add(amount, techName(tech));
+               rs.productionMultiplier.add(amount, getTechName(tech));
             }
          });
       });
@@ -134,7 +134,7 @@ export function tickProduction(
 
       if (WeaponKey in def) {
          forEach(def.output, (res, _amount) => {
-            const ammo = cooldownMultiplier(data) * _amount * data.level;
+            const ammo = getCooldownMultiplier(data) * _amount * data.level;
             const xp = (Config.Price.get(res) ?? 0) * ammo;
             mapSafeAdd(stat.theoreticalConsumed, res, ammo / def.fireCooldown);
             mapSafeAdd(stat.theoreticalProduced, "XP", xp / def.fireCooldown);
@@ -169,5 +169,5 @@ export function getNonWeaponBuildingXP(rs: RuntimeTile): number {
    if (WeaponKey in rs.def) {
       return 0;
    }
-   return normalizedValue(rs.data) * rs.data.capacity * rs.productionMultiplier.value * (rs.xpMultiplier.value - 1);
+   return getNormalizedValue(rs.data) * rs.data.capacity * rs.productionMultiplier.value * (rs.xpMultiplier.value - 1);
 }

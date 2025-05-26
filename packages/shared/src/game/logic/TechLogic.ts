@@ -20,12 +20,12 @@ export function isTechUnderDevelopment(tech: Tech): boolean {
    return def.ring > 0 && def.requires.length <= 0;
 }
 
-export function techName(tech: Tech): string {
+export function getTechName(tech: Tech): string {
    const def = Config.Tech[tech];
    return def.name?.() ?? camelToHuman(tech);
 }
 
-export function techDesc(tech: Tech): string {
+export function getTechDesc(tech: Tech): string {
    const def = Config.Tech[tech];
    const desc: string[] = [];
    def.unlockBuildings?.forEach((b) => desc.push(Config.Buildings[b].name()));

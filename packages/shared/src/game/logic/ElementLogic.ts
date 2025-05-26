@@ -6,15 +6,15 @@ import type { GameState } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { fib, getUnlockedBuildings } from "./BuildingLogic";
 import {
-   calculateSpaceshipValue,
-   currentQuantum,
-   resourceValue,
+   calcSpaceshipValue,
+   getCurrentQuantum,
+   resourceValueOf,
    spaceshipValueToQuantum,
    StartQuantum,
 } from "./ResourceLogic";
 
 export function tickElement(gs: GameState): void {
-   const quantum = currentQuantum(gs);
+   const quantum = getCurrentQuantum(gs);
    const expectedElements = quantumToElement(quantum);
    while (gs.discoveredElements < expectedElements) {
       gs.discoveredElements++;
@@ -30,7 +30,7 @@ export function tickElement(gs: GameState): void {
 }
 
 export function shardsFromShipValue(gs: GameState): number {
-   const totalValue = calculateSpaceshipValue(gs) + resourceValue(gs.resources);
+   const totalValue = calcSpaceshipValue(gs) + resourceValueOf(gs.resources);
    const quantum = Math.max(0, spaceshipValueToQuantum(totalValue) - elementToQuantum(gs.discoveredElements));
    return Math.max(0, quantumToElement(quantum));
 }

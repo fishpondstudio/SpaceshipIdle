@@ -1,6 +1,6 @@
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import { cooldownMultiplier, normalizedValue } from "../logic/BattleLogic";
+import { getCooldownMultiplier, getNormalizedValue } from "../logic/BattleLogic";
 import { AbilityRange, AbilityTiming } from "./Ability";
 import {
    type IWeaponDefinition,
@@ -43,7 +43,7 @@ export const LA1E: IWeaponDefinition = {
       effect: "TickExplosiveDamage",
       value: (building, level) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
-         const damage = normalizedValue({ type: building, level }) * cooldownMultiplier({ type: building });
+         const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
          return (damage * (1 - def.damagePct)) / 3;
       },
       duration: (building, level) => 2,

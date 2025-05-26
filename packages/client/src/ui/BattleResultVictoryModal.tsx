@@ -1,7 +1,7 @@
 import { BattleQuantum } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { calculateSpaceshipValue } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { calcSpaceshipValue } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, mapSafeAdd } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -13,7 +13,7 @@ import { PrestigeModal } from "./PrestigeModal";
 
 export function BattleResultVictoryModal(): React.ReactNode {
    const weaponFire = G.runtime.left.resources.get("XP") ?? 0;
-   const enemySalvage = calculateSpaceshipValue(G.runtime.originalRight);
+   const enemySalvage = calcSpaceshipValue(G.runtime.originalRight);
    const xpGained = weaponFire + enemySalvage;
    return (
       <div style={{ padding: 5 }}>
