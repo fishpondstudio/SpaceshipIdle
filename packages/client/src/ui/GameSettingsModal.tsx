@@ -3,7 +3,7 @@ import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definition
 import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { clearFlag, hasFlag, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { resetGame } from "../game/LoadSave";
+import { resetGame, saveGameStateToFile } from "../game/LoadSave";
 import { getVersion } from "../game/Version";
 import { openUrl } from "../rpc/SteamClient";
 import { G } from "../utils/Global";
@@ -31,6 +31,21 @@ export function GameSettingsModal(): React.ReactNode {
                      : clearFlag(G.save.options.flag, GameOptionFlag.RetroFilter);
                   GameOptionUpdated.emit();
                }}
+            />
+         </div>
+         <div className="h10"></div>
+         <div className="row">
+            <div className="f1">{t(L.SoundVolume)}</div>
+            <Slider
+               flex={1}
+               value={G.save.options.volume}
+               onChange={(v) => {
+                  G.save.options.volume = v;
+                  GameOptionUpdated.emit();
+               }}
+               min={0}
+               max={1}
+               step={0.1}
             />
          </div>
          <div className="h10" />
@@ -67,22 +82,7 @@ export function GameSettingsModal(): React.ReactNode {
                }}
             />
          </div>
-         <div className="h10"></div>
-         <div className="row">
-            {t(L.SoundVolume)}
-            <Slider
-               flex={1}
-               value={G.save.options.volume}
-               onChange={(v) => {
-                  G.save.options.volume = v;
-                  GameOptionUpdated.emit();
-               }}
-               min={0}
-               max={1}
-               step={0.1}
-            />
-         </div>
-         <div className="h10" />
+         <div className="divider dashed my10 mx-10" />
          <div className="row">
             <div className="f1">{t(L.HardReset)}</div>
             <button
@@ -93,6 +93,14 @@ export function GameSettingsModal(): React.ReactNode {
                }}
             >
                {t(L.HardReset)}
+            </button>
+            <button
+               className="btn stretch"
+               onClick={() => {
+                  saveGameStateToFile(G.save.current);
+               }}
+            >
+               {t(L.ExportSpaceship)}
             </button>
          </div>
          <div className="divider my10 mx-10" />

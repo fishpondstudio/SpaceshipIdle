@@ -40,7 +40,7 @@ export function isAdmin(): boolean {
    return hasFlag(user?.json.flags ?? UserFlags.None, UserFlags.Admin);
 }
 
-export const UserUpdated = new TypedEvent<void>();
+export const UserUpdated = new TypedEvent<IUser>();
 export const OnChatMessage = new TypedEvent<IChat[]>();
 export const OnConnectionChanged = new TypedEvent<boolean>();
 export const useConnected = makeObservableHook<boolean, void>(OnConnectionChanged, isConnected);
@@ -64,6 +64,7 @@ export function handleMessage(e: MessageEvent<any>) {
             `[Server Time] Server Now: ${w.time}, Client Now = ${Date.now()}, Offset = ${serverTimeOffset}, Adjusted = ${serverNow()}`,
          );
          G.save.current.offlineTime += w.offlineTime;
+         UserUpdated.emit(user);
          OnConnectionChanged.emit(true);
          break;
       }

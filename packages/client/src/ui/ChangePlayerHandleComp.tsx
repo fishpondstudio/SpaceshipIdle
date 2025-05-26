@@ -59,7 +59,7 @@ export function ChangePlayerHandleComp(): React.ReactNode {
                                        className="pointer"
                                        onClick={() => {
                                           G.save.options.country = code;
-                                          UserUpdated.emit();
+                                          UserUpdated.emit(user);
                                           setOpened(false);
                                        }}
                                     />
@@ -78,7 +78,7 @@ export function ChangePlayerHandleComp(): React.ReactNode {
                   try {
                      await RPCClient.changePlayerHandle(name);
                      user.handle = name;
-                     UserUpdated.emit();
+                     UserUpdated.emit(user);
                      notifications.show({
                         message: t(L.OperationSuccessful),
                         color: "green",
