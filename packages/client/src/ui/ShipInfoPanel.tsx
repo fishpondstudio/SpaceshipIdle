@@ -139,7 +139,7 @@ const XPComp = memo(_XPComp, (prev, next) => prev.xp === next.xp && prev.delta =
 
 function _SpaceshipValueComp({ sv, maxSV, quantum }: { sv: number; maxSV: number; quantum: number }): React.ReactNode {
    return (
-      <Tooltip label={t(L.SpaceshipXPTooltip, formatNumber(quantum))}>
+      <Tooltip label={t(L.SpaceshipXPTooltipV2, formatNumber(quantum))}>
          <div className="block" style={{ width: 85, position: "relative" }}>
             <div className="progress" style={{ width: clamp(sv / maxSV, 0, 1) * 85 }}></div>
             <div className="mi">paid</div>
@@ -181,7 +181,7 @@ function _QuantumComp({
    currentQuantum: number;
 }): React.ReactNode {
    return (
-      <Tooltip label={t(L.QuantumTooltip)}>
+      <Tooltip label={t(L.QuantumTooltipV2)}>
          <div
             className="block pointer"
             style={{ width: 85, position: "relative" }}
