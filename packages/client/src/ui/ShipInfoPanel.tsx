@@ -34,6 +34,7 @@ import { HamburgerMenuComp } from "./components/HamburgerMenuComp";
 import { ResourceAmount } from "./components/ResourceAmountComp";
 import { PrepareForBattleModal } from "./PrepareForBattleModal";
 import { QuantumProgressModal } from "./QuantumProgressModal";
+import { playBling } from "./Sound";
 import { WarpSpeedMenuComp } from "./WarpSpeedMenuComp";
 
 const rawDamages: Record<DamageType, number> = {
@@ -182,6 +183,23 @@ function _DPSComp({ raw, actual }: { raw: number; actual: number }): React.React
 
 const DPSComp = memo(_DPSComp, (prev, next) => prev.raw === next.raw && prev.actual === next.actual);
 
+function playQuantumParticle(): void {
+   playBling();
+   const target = document.getElementById("ship-info-quantum")?.getBoundingClientRect();
+   G.starfield.playParticle(
+      G.textures.get("Misc/Quantum"),
+      {
+         x: document.body.clientWidth / 2,
+         y: document.body.clientHeight / 2,
+      },
+      {
+         x: target ? target.x + target.width / 2 : 0,
+         y: target ? target.y + target.height / 2 : 0,
+      },
+      1,
+   );
+}
+
 function _QuantumComp({
    usedQuantum,
    currentQuantum,
@@ -208,8 +226,20 @@ function _QuantumComp({
             }}
          >
             <div className="progress" style={{ width: progress * 130 }}></div>
-            <div className="mi">orbit</div>
+            <div className="mi" id="ship-info-quantum">
+               orbit
+            </div>
             <div className="f1" />
+            <Tooltip label={t(L.QuantumProgressTooltip)}>
+               <div className="text-right">
+                  <div>{formatPercent(progress)}</div>
+                  <div className={classNames("xs", delta >= 0 ? "text-green" : "text-red")}>
+                     {mathSign(delta)}
+                     {formatPercent(Math.abs(delta))}
+                  </div>
+               </div>
+            </Tooltip>
+            <div className="w10" />
             <Tooltip label={t(L.QuantumTooltip)}>
                <div className="text-right">
                   <div
@@ -225,29 +255,22 @@ function _QuantumComp({
                   <div className="xs">{formatNumber(currentQuantum)}</div>
                </div>
             </Tooltip>
-            <div className="w10" />
-            <Tooltip label={t(L.QuantumProgressTooltip)}>
-               <div>
-                  <div>{formatPercent(progress)}</div>
-                  <div className={classNames("xs", delta >= 0 ? "text-green" : "text-red")}>
-                     {mathSign(delta)}
-                     {formatPercent(Math.abs(delta))}
-                  </div>
-               </div>
-            </Tooltip>
          </div>
       </>
    );
 }
 
-const QuantumComp = memo(
-   _QuantumComp,
-   (prev, next) =>
+const QuantumComp = memo(_QuantumComp, (prev, next) => {
+   if (prev.currentQuantum !== next.currentQuantum) {
+      playQuantumParticle();
+   }
+   return (
       prev.usedQuantum === next.usedQuantum &&
       prev.currentQuantum === next.currentQuantum &&
       prev.progress === next.progress &&
-      prev.delta === next.delta,
-);
+      prev.delta === next.delta
+   );
+});
 
 function _ElementComp({ count }: { count: number }): React.ReactNode {
    return (

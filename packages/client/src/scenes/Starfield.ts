@@ -1,5 +1,5 @@
 import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
-import { Container, Geometry, type IDestroyOptions, Mesh, Shader, Sprite } from "pixi.js";
+import { Container, Geometry, type IDestroyOptions, Mesh, Shader, Sprite, type Texture } from "pixi.js";
 import { runFunc, sequence, to } from "../utils/actions/Actions";
 import { Easing } from "../utils/actions/Easing";
 import { G } from "../utils/Global";
@@ -28,9 +28,9 @@ export class Starfield extends Container {
       G.pixi.renderer.on("resize", this.onResize, this);
    }
 
-   playTimeWarp(from: IHaveXY, target: IHaveXY, count: number): void {
+   playParticle(texture: Texture | undefined, from: IHaveXY, target: IHaveXY, count: number): void {
       for (let i = 0; i < count; i++) {
-         const particle = this.addChild(new Sprite(G.textures.get("Misc/TimeWarp")));
+         const particle = this.addChild(new Sprite(texture));
          particle.anchor.set(0.5, 0.5);
          particle.scale.set(0.1);
          particle.position.set(from.x, from.y);
@@ -45,7 +45,7 @@ export class Starfield extends Container {
                0.5 + 0.1 * i,
                Easing.OutQuad,
             ),
-            to(particle, { x: target.x, y: target.y, alpha: 0.5 }, 0.5 + Math.random() * 0.5, Easing.InQuad),
+            to(particle, { x: target.x, y: target.y, alpha: 0.5 }, 1 * (1 + Math.random() * 0.25), Easing.InOutQuad),
             runFunc(() => {
                particle.destroy();
             }),

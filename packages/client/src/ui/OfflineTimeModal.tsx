@@ -23,7 +23,8 @@ export function OfflineTimeModal({ offlineTime }: { offlineTime: number }): Reac
                   mapSafeAdd(G.save.current.resources, "Warp", warp);
                   hideModal();
                   playBling();
-                  G.starfield.playTimeWarp(
+                  G.starfield.playParticle(
+                     G.textures.get("Misc/TimeWarp"),
                      {
                         x: rect.x + rect.width / 2,
                         y: rect.y + rect.height / 2,
