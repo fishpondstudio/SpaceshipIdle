@@ -15,6 +15,7 @@ export type Tiles = Map<Tile, ITileData>;
 export const GameStateFlags = {
    None: 0,
    Prestige: 1 << 0,
+   ShowTutorial: 1 << 1,
 } as const;
 
 export type GameStateFlags = (typeof GameStateFlags)[keyof typeof GameStateFlags];

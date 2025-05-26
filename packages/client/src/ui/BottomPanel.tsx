@@ -1,4 +1,4 @@
-import { Paper, SegmentedControl } from "@mantine/core";
+import { Paper, Progress, SegmentedControl } from "@mantine/core";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { round } from "@spaceship-idle/shared/src/utils/Helper";
@@ -46,12 +46,34 @@ const sceneWidth = 330;
 function _SceneSwitcher(): React.ReactNode {
    refreshOnTypedEvent(OnSceneSwitched);
    return (
-      <Paper
-         style={{ position: "absolute", width: sceneWidth, bottom: 10, left: `calc(50vw - ${sceneWidth / 2}px)` }}
-         withBorder
-      >
+      <>
+         <div
+            className="row panel g5"
+            style={{
+               position: "absolute",
+               width: sceneWidth,
+               bottom: 55,
+               padding: "5px 6px",
+               left: `calc(50vw - ${sceneWidth / 2}px)`,
+               background: "var(--mantine-color-dark-8)",
+            }}
+         >
+            <div className="mi lg">flag</div>
+            <div className="f1 text-sm">
+               Build 5 Spaceship Modules
+               <Progress value={50} />
+               <div className="h5" />
+            </div>
+            <div className="mi pointer">unfold_more</div>
+         </div>
          <SegmentedControl
-            style={{ width: sceneWidth - 2 }}
+            style={{
+               position: "absolute",
+               width: sceneWidth,
+               bottom: 10,
+               left: `calc(50vw - ${sceneWidth / 2}px)`,
+               border: "1px solid var(--mantine-color-default-border)",
+            }}
             onChange={(value) => {
                playClick();
                hideSidebar();
@@ -80,7 +102,7 @@ function _SceneSwitcher(): React.ReactNode {
                { label: "Elements", value: Scenes.ElementsScene },
             ]}
          />
-      </Paper>
+      </>
    );
 }
 

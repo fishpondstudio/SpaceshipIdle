@@ -137,12 +137,6 @@ body {
    margin-left: 10px;
 }
 
-.panel {
-   border: 1px solid var(--mantine-color-dark-4);
-   border-radius: 5px;
-   padding: 10px;
-}
-
 .mantine-Tooltip-tooltip,
 .render-html {
    b {

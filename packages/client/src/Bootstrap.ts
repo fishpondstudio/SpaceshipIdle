@@ -1,6 +1,6 @@
 import { notifications } from "@mantine/notifications";
-import { initGameState, SaveGame } from "@spaceship-idle/shared/src/game/GameState";
-import { forEach, rejectIn } from "@spaceship-idle/shared/src/utils/Helper";
+import { GameStateFlags, initGameState, SaveGame } from "@spaceship-idle/shared/src/game/GameState";
+import { forEach, rejectIn, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { Assets, BitmapFont, type Spritesheet, type TextStyleFontWeight, type Texture } from "pixi.js";
 import { FontFaces, Fonts } from "./assets";
 import { checkBuildingTextures } from "./CheckBuildingTextures";
@@ -73,6 +73,7 @@ export async function bootstrap(): Promise<void> {
       isNewPlayer = true;
       G.save = new SaveGame();
       initGameState(G.save.current);
+      G.save.current.flags = setFlag(G.save.current.flags, GameStateFlags.ShowTutorial);
    }
    migrateSave(G.save);
    setLanguage(G.save.options.language);
