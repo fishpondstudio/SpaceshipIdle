@@ -395,4 +395,20 @@ export const EN = {
    XP: "XP",
    XPCollector: "XP Collector",
    XPMultiplier: "XP Multiplier",
+   TutorialBuildXModules: "Build %% Modules",
+   TutorialBuild6ModulesDescHTML:
+      "To build a module, click on an empty tile and select the module you want to build from the side panel.",
+   TutorialResearchXTech: "Research %% Techs",
+   TutorialResearch8TechDescHTML:
+      "To research a tech, click Research tab and select the tech you want to research. Keep in mind that each tech <b>costs one quantum</b> to research and cannot be undone.",
+   TutorialUseXQuantum: "Use %% Quantum",
+   TutorialDiscoverXElement: "Discover %% Element",
+   TutorialReachXSpaceshipXP: "Reach %% Spaceship XP",
+   TutorialDiscover1ElementDescHTML:
+      "You will discover your first element when you reach <b>15 quantum</b>. You can pick one out of three choices. Each element boosts <b>production multipliers</b>. They become permanent element shards when you prestige.",
+   TutorialProgress: "Tutorial Progress",
+   TutorialUse25QuantumDescHTML:
+      "Quantum is generated based on the XP you've gained, which includes the <b>XP invested in your ship</b> and remaining <b>XP in the storage</b>. You can use quantum to either unlock a tech or build a new module. When you recycle a module, the quantum is refunded.",
+   TutorialReach260SpaceshipXPDescHTML:
+      "The <b>qualified quantum</b> determines the amount of XP you can invest in your spaceship. To prepare for your first qualifier battle, you should invest as much XP as possible.",
 };

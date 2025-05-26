@@ -1,8 +1,10 @@
-import { Paper, Progress, SegmentedControl } from "@mantine/core";
+import { Progress, SegmentedControl, Tooltip } from "@mantine/core";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { round } from "@spaceship-idle/shared/src/utils/Helper";
+import { formatNumber, round } from "@spaceship-idle/shared/src/utils/Helper";
+import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
+import { getCurrentTutorial } from "../game/Tutorial";
 import { ElementsScene } from "../scenes/ElementsScene";
 import { ShipScene } from "../scenes/ShipScene";
 import { TechTreeScene } from "../scenes/TechTreeScene";
@@ -12,60 +14,101 @@ import { OnSceneSwitched } from "../utils/SceneManager";
 import { Scenes } from "../utils/Scenes";
 import { showModal } from "../utils/ToggleModal";
 import { ChooseElementModal } from "./ChooseElementModal";
+import { RenderHTML } from "./components/RenderHTMLComp";
 import { hideSidebar } from "./Sidebar";
 import { playClick } from "./Sound";
+import { TutorialProgressModal } from "./TutorialProgressModal";
 
 const speedWidth = 300;
 function _SpeedSwitcher({ speed }: { speed: number }): React.ReactNode {
    return (
-      <Paper
-         style={{ position: "absolute", width: speedWidth, bottom: 10, left: `calc(50vw - ${speedWidth / 2}px)` }}
-         withBorder
-      >
-         <SegmentedControl
-            style={{ width: speedWidth - 2 }}
-            onChange={(value) => {
-               G.speed = round(Number.parseFloat(value), 1);
-               GameStateUpdated.emit();
-            }}
-            value={String(speed)}
-            data={[
-               { label: "0.5x", value: "0.5" },
-               { label: "1x", value: "1" },
-               { label: "2x", value: "2" },
-               { label: "4x", value: "4" },
-               { label: "8x", value: "8" },
-            ]}
-         />
-      </Paper>
+      <SegmentedControl
+         style={{
+            position: "absolute",
+            width: speedWidth,
+            bottom: 10,
+            left: `calc(50vw - ${sceneWidth / 2}px)`,
+            border: "1px solid var(--mantine-color-default-border)",
+         }}
+         onChange={(value) => {
+            G.speed = round(Number.parseFloat(value), 1);
+            GameStateUpdated.emit();
+         }}
+         value={String(speed)}
+         data={[
+            { label: "0.5x", value: "0.5" },
+            { label: "1x", value: "1" },
+            { label: "2x", value: "2" },
+            { label: "4x", value: "4" },
+            { label: "8x", value: "8" },
+         ]}
+      />
    );
 }
 
 const sceneWidth = 330;
 
+function Tutorial(): React.ReactNode {
+   refreshOnTypedEvent(GameStateUpdated);
+   const tutorial = getCurrentTutorial();
+   if (!tutorial) {
+      return null;
+   }
+   const [progress, total] = tutorial.progress(G.save.current);
+   return (
+      <div
+         className="row panel g5"
+         style={{
+            position: "absolute",
+            width: sceneWidth,
+            bottom: 55,
+            padding: "5px 6px",
+            left: `calc(50vw - ${sceneWidth / 2}px)`,
+            background: "var(--mantine-color-dark-8)",
+         }}
+      >
+         <div className="mi lg">flag</div>
+         <Tooltip
+            label={tutorial.desc ? <RenderHTML html={tutorial.desc()} /> : null}
+            disabled={!tutorial.desc}
+            multiline
+            maw="30vw"
+         >
+            <div className="f1 text-sm">
+               <div className="row">
+                  <div className="f1">{tutorial.name()}</div>
+                  <div>
+                     {formatNumber(progress)}/{formatNumber(total)}
+                  </div>
+               </div>
+               <ProgressMemo value={(100 * progress) / total} />
+               <div className="h5" />
+            </div>
+         </Tooltip>
+         <div
+            className="mi pointer"
+            onClick={() => {
+               showModal({
+                  children: <TutorialProgressModal />,
+                  size: "lg",
+                  dismiss: true,
+                  title: t(L.TutorialProgress),
+               });
+            }}
+         >
+            more_vert
+         </div>
+      </div>
+   );
+}
+
+const ProgressMemo = memo(Progress, (prev, next) => prev.value === next.value);
+
 function _SceneSwitcher(): React.ReactNode {
    refreshOnTypedEvent(OnSceneSwitched);
    return (
       <>
-         <div
-            className="row panel g5"
-            style={{
-               position: "absolute",
-               width: sceneWidth,
-               bottom: 55,
-               padding: "5px 6px",
-               left: `calc(50vw - ${sceneWidth / 2}px)`,
-               background: "var(--mantine-color-dark-8)",
-            }}
-         >
-            <div className="mi lg">flag</div>
-            <div className="f1 text-sm">
-               Build 5 Spaceship Modules
-               <Progress value={50} />
-               <div className="h5" />
-            </div>
-            <div className="mi pointer">unfold_more</div>
-         </div>
+         <Tutorial />
          <SegmentedControl
             style={{
                position: "absolute",
