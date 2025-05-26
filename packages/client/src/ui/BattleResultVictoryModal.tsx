@@ -64,7 +64,7 @@ export function BattleResultVictoryModal(): React.ReactNode {
             className="btn w100 p5 row text-lg"
             onClick={() => {
                showModal({
-                  children: <PrestigeModal defeated={false} />,
+                  children: <PrestigeModal defeated={false} showClose={true} />,
                   size: "sm",
                   dismiss: true,
                });

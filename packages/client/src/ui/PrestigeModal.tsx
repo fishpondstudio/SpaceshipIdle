@@ -10,7 +10,7 @@ import { DefeatedHeaderComp, PrestigeHeaderComp } from "./components/BattleResul
 import { showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 
-export function PrestigeModal({ defeated }: { defeated: boolean }): React.ReactNode {
+export function PrestigeModal({ defeated, showClose }: { defeated: boolean; showClose: boolean }): React.ReactNode {
    const fromThisRun = mReduceOf(G.save.current.elements, (prev, k, v) => prev + v, 0);
    const extraShards = shardsFromShipValue(G.save.current);
    return (
@@ -51,6 +51,11 @@ export function PrestigeModal({ defeated }: { defeated: boolean }): React.ReactN
                +{fromThisRun + extraShards} {t(L.Shards)}
             </div>
          </button>
+         {showClose ? (
+            <button className="btn w100 p5 row text-lg mt10" onClick={hideModal}>
+               <div>{t(L.Close)}</div>
+            </button>
+         ) : null}
       </div>
    );
 }

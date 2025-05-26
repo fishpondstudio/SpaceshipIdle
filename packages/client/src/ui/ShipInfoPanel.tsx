@@ -173,8 +173,8 @@ function _DPSComp({ raw, actual }: { raw: number; actual: number }): React.React
          <div className="block" style={{ width: 80 }}>
             <div className="mi">explosion</div>
             <div className="f1 text-right">
-               <div>{formatNumber(raw)}</div>
                <div>{formatNumber(actual)}</div>
+               <div className="xs">{formatNumber(raw)}</div>
             </div>
          </div>
       </Tooltip>
@@ -261,7 +261,7 @@ function _QuantumComp({
 }
 
 const QuantumComp = memo(_QuantumComp, (prev, next) => {
-   if (prev.currentQuantum !== next.currentQuantum) {
+   if (next.currentQuantum > prev.currentQuantum) {
       playQuantumParticle();
    }
    return (

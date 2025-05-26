@@ -95,7 +95,7 @@ export function GameSettingsModal(): React.ReactNode {
                {t(L.HardReset)}
             </button>
             <button
-               className="btn stretch"
+               className="btn text-sm"
                onClick={() => {
                   saveGameStateToFile(G.save.current);
                }}

@@ -34,7 +34,7 @@ export function subscribeToEvents(): void {
                      modal = <SecondChanceBattleResultModal />;
                      G.save.current.trialCount = 1;
                   } else {
-                     modal = <PrestigeModal defeated={true} />;
+                     modal = <PrestigeModal defeated={true} showClose={false} />;
                      G.save.current.flags = setFlag(G.save.current.flags, GameStateFlags.Prestige);
                   }
                } else {

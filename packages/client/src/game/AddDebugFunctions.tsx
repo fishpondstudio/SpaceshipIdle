@@ -83,14 +83,14 @@ export function addDebugFunctions(): void {
    globalThis.prestige = async () => {
       G.runtime.battleStatus = BattleStatus.RightWin;
       showModal({
-         children: <PrestigeModal defeated={false} />,
+         children: <PrestigeModal defeated={false} showClose={true} />,
          size: "sm",
       });
    };
    // @ts-expect-error
    globalThis.defeated = async () => {
       showModal({
-         children: <PrestigeModal defeated={true} />,
+         children: <PrestigeModal defeated={true} showClose={true} />,
          size: "sm",
       });
    };

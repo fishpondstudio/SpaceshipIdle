@@ -1,6 +1,7 @@
 import { Box } from "@mantine/core";
 import { TrialQuantum } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
@@ -9,7 +10,6 @@ import { DefeatedHeaderComp } from "./components/BattleResultHeader";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { PrestigeModal } from "./PrestigeModal";
-import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 
 export function SecondChanceBattleResultModal(): React.ReactNode {
    return (
@@ -50,7 +50,7 @@ export function SecondChanceBattleResultModal(): React.ReactNode {
             className="btn w100 p5 row text-lg"
             onClick={() => {
                showModal({
-                  children: <PrestigeModal defeated={false} />,
+                  children: <PrestigeModal defeated={false} showClose={true} />,
                   size: "sm",
                });
             }}

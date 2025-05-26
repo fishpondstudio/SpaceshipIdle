@@ -5,7 +5,7 @@ import { hasFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { CRTFilter } from "pixi-filters";
 import { clientUpdate } from "./ClientUpdate";
 import { ShipScene } from "./scenes/ShipScene";
-import { showPrestigeModal } from "./ui/ShowPrestigeModal";
+import { showForcePrestigeModal } from "./ui/ShowPrestigeModal";
 import { G } from "./utils/Global";
 
 export function startGameLoop(): void {
@@ -24,7 +24,7 @@ export function startGameLoop(): void {
       const unscaled = G.pixi.ticker.deltaMS / 1000;
       const dt = unscaled * G.speed;
       if (hasFlag(G.save.current.flags, GameStateFlags.Prestige)) {
-         showPrestigeModal();
+         showForcePrestigeModal();
          return;
       }
       G.runtime.tick(dt, G);

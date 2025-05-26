@@ -1,4 +1,3 @@
-import { TextInput } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getQuantumQualified } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -21,39 +20,24 @@ export function PrepareForBattleModal(): React.ReactNode {
          <div className="text-dimmed text-sm">{t(L.QuantumQualifierDesc)}</div>
          <div className="h10" />
          <div className="text-dimmed text-sm">{t(L.QuantumMatchmakingDesc)}</div>
-         <div className="h10" />
-         <div className="row">
-            <TextInput
-               className="f1"
-               leftSection="SS"
-               rightSection={
-                  <div
-                     className="mi pointer"
-                     onClick={async () => {
-                        playClick();
-                        const enemy = await loadGameStateFromFile();
-                        showLoading();
-                        setTimeout(() => {
-                           hideLoading();
-                           showModal({
-                              children: <MatchMakingModal enemy={enemy} />,
-                              size: "lg",
-                              dismiss: true,
-                           });
-                        }, 1000);
-                     }}
-                  >
-                     <div className="mi">folder_open</div>
-                  </div>
-               }
-               value={G.save.current.name}
-               onChange={(e) => {
-                  G.save.current.name = e.target.value;
-                  GameStateUpdated.emit();
-               }}
-            />
+         <div
+            className="mi pointer mb10 mt5"
+            onClick={async () => {
+               playClick();
+               const enemy = await loadGameStateFromFile();
+               showLoading();
+               setTimeout(() => {
+                  hideLoading();
+                  showModal({
+                     children: <MatchMakingModal enemy={enemy} />,
+                     size: "lg",
+                     dismiss: true,
+                  });
+               }, 1000);
+            }}
+         >
+            folder_open
          </div>
-         <div className="h10" />
          <button
             className="btn filled w100 py5 px10 text-lg"
             onClick={async () => {
@@ -82,7 +66,7 @@ export function PrepareForBattleModal(): React.ReactNode {
             className="btn w100 p5 row text-lg"
             onClick={() => {
                showModal({
-                  children: <PrestigeModal defeated={false} />,
+                  children: <PrestigeModal defeated={false} showClose={true} />,
                   size: "sm",
                   dismiss: true,
                });
