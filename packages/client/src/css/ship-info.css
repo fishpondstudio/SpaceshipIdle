@@ -4,12 +4,15 @@
    top: 10px;
    left: 10px;
    text-align: center;
-   font-size: var(--mantine-font-size-xs);
+   font-size: var(--mantine-font-size-sm);
    color: white;
    display: flex;
    flex-direction: row;
    align-items: center;
    line-height: 1;
+   .xs {
+      font-size: var(--mantine-font-size-xs);
+   }
    .block {
       align-self: stretch;
       display: flex;

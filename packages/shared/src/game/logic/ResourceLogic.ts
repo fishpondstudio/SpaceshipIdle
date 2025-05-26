@@ -71,7 +71,7 @@ export function spaceshipValueToQuantum(spaceshipValue: number): number {
    populateQuantumLookup();
    for (const [q, sv] of qToSVLookup) {
       if (spaceshipValue >= sv) {
-         return clamp(q, StartQuantum, Number.POSITIVE_INFINITY);
+         return clamp(q + StartQuantum, StartQuantum, Number.POSITIVE_INFINITY);
       }
    }
    return StartQuantum;
@@ -82,7 +82,7 @@ export function quantumToSpaceshipValue(quantum: number): number {
    if (quantum <= StartQuantum) {
       return 0;
    }
-   return qToSVLookup.get(quantum) ?? 0;
+   return qToSVLookup.get(quantum - 10) ?? 0;
 }
 
 export function svToQ(sv: number): number {
@@ -113,6 +113,6 @@ export function nextQuantumProgress(gs: GameState): [number, number] {
    const sv = totalXP(gs);
    const q = spaceshipValueToQuantum(sv);
    const denominator = quantumToSpaceshipValue(q + 1) - quantumToSpaceshipValue(q);
-   const progress = q >= quantumLimit(gs) ? 1 : (sv - quantumToSpaceshipValue(q)) / denominator;
+   const progress = q >= quantumLimit(gs) ? 0 : (sv - quantumToSpaceshipValue(q)) / denominator;
    return [progress, denominator];
 }

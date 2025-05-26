@@ -16,7 +16,7 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
       <Menu position="bottom-start">
          <Menu.Target>
             <Tooltip label={t(L.TimeWarpTooltip)}>
-               <div className="block pointer" style={{ width: 80 }}>
+               <div className="block pointer" style={{ width: 85 }}>
                   <TextureComp
                      id="ship-info-warp"
                      className={classNames(G.speed > 1 ? "spin" : null)}
@@ -25,8 +25,8 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
                      size={24}
                   />
                   <div className="f1 text-right">
-                     <div>{formatNumber(gs.resources.get("Warp") ?? 0)}</div>
                      <div>{formatNumber(G.speed)}x</div>
+                     <div className="xs">{formatNumber(gs.resources.get("Warp") ?? 0)}</div>
                   </div>
                </div>
             </Tooltip>
