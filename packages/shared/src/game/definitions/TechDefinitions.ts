@@ -104,7 +104,7 @@ export class TechDefinitions {
       name: () => t(L.TechMissile),
       ring: 3,
       requires: ["C2"],
-      unlockBuildings: ["MS1", "DMG1Booster"],
+      unlockBuildings: ["MS1"],
       multiplier: { RocketFab: 1 },
    };
    D3: ITechDefinition = {
@@ -146,7 +146,7 @@ export class TechDefinitions {
       name: () => t(L.TechNuclearFission),
       ring: 3,
       requires: ["C6", "C1"],
-      unlockBuildings: ["UReactor", "EVA1Booster"],
+      unlockBuildings: ["UReactor"],
       multiplier: { UCollector: 1 },
    };
 
@@ -162,7 +162,7 @@ export class TechDefinitions {
       ring: 4,
       requires: ["D2"],
       name: () => t(L.CriticalStrike),
-      unlockBuildings: ["MS2"],
+      unlockBuildings: ["MS2", "DMG1Booster"],
       multiplier: { MS1: 1 },
    };
    E3: ITechDefinition = {
@@ -217,7 +217,7 @@ export class TechDefinitions {
       ring: 4,
       name: () => t(L.TechLaserArray),
       requires: ["D8", "D1"],
-      unlockBuildings: ["LA1"],
+      unlockBuildings: ["LA1", "EVA1Booster"],
       multiplier: { UCollector: 1, MS1H: 1 },
    };
 

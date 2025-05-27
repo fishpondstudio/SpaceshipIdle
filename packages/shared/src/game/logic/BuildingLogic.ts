@@ -1,4 +1,4 @@
-import { forEach, hasFlag, mapOf, mapSafeAdd } from "../../utils/Helper";
+import { forEach, hasFlag, mapOf, mapSafeAdd, sizeOf } from "../../utils/Helper";
 import { Config } from "../Config";
 import { AbilityRangeLabel } from "../definitions/Ability";
 import { BuildingFlag, type IBoosterDefinition, WeaponKey } from "../definitions/BuildingProps";
@@ -138,6 +138,21 @@ export function damageToHp(damage: number, building: Building): number {
    return damage * 100;
 }
 
+export function boosterHpToUnlockCost(hp: number, building: Building): Map<Resource, number> {
+   const def = Config.Buildings[building];
+   if (!hasFlag(def.buildingFlag, BuildingFlag.Booster)) {
+      throw new Error("Building is not a Booster");
+   }
+   const damage = (hp * 10000) / 20;
+   const booster = def as IBoosterDefinition;
+   const perResource = damage / sizeOf(booster.unlock);
+   const result = new Map<Resource, number>();
+   forEach(booster.unlock, (k, v) => {
+      result.set(k, perResource / (Config.NormalizedPrice.get(k) ?? 0));
+   });
+   return result;
+}
+
 export function hasConstructed(building: Building, gs: GameState): boolean {
    for (const [tile, data] of gs.tiles) {
       if (data.type === building) {
@@ -145,4 +160,14 @@ export function hasConstructed(building: Building, gs: GameState): boolean {
       }
    }
    return false;
+}
+
+export function getBoosterCount(gs: GameState): number {
+   let result = 0;
+   for (const [_, data] of gs.tiles) {
+      if (hasFlag(Config.Buildings[data.type].buildingFlag, BuildingFlag.Booster)) {
+         result++;
+      }
+   }
+   return result;
 }

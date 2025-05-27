@@ -116,7 +116,7 @@ forEach(Config.Tech, (tech, def) => {
    });
 });
 
-console.log(Config.Price);
-console.log(Config.NormalizedPrice);
-console.log(Config.ResourceTier);
+console.log("Price", Config.Price);
+console.log("Normalized Price", Config.NormalizedPrice);
+console.log("Resource Tier", Config.ResourceTier);
 console.log(`# of techs: ${sizeOf(Config.Tech)}`);

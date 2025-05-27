@@ -1,6 +1,7 @@
 import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import {
    calcSpaceshipValue,
+   getCurrentQuantum,
    getUsedQuantum,
    quantumToSpaceshipValue,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -48,6 +49,13 @@ export const Tutorial: ITutorial[] = [
       desc: () => t(L.TutorialReach260SpaceshipXPDescHTML),
       progress: (gs) => {
          return [calcSpaceshipValue(gs), quantumToSpaceshipValue(30) * 0.9];
+      },
+   },
+   {
+      name: () => t(L.TutorialReachXQuantum, 36),
+      desc: () => t(L.TutorialReach36QuantumDescHTML),
+      progress: (gs) => {
+         return [getCurrentQuantum(gs), 36];
       },
    },
 ] as const;

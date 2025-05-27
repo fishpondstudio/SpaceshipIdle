@@ -42,7 +42,7 @@ export const EN = {
    AC76RAmmo: "AC76R Ammo",
    AC76x2: "AC76x2 Ocelot",
    AC76x2Ammo: "AC76x2 Ammo",
-   AchievedQuantum: "Achieved Quantum",
+   ReachedQuantum: "Reached Quantum",
    Ammo: "Ammo",
    AnElementHasBeenDiscovered: "An Element Has Been Discovered",
    Antimatter: "Antimatter",
@@ -402,6 +402,7 @@ export const EN = {
    TutorialResearch8TechDescHTML:
       "To research a tech, click Research tab and select the tech you want to research. Keep in mind that each tech <b>costs one quantum</b> to research and cannot be undone.",
    TutorialUseXQuantum: "Use %% Quantum",
+   TutorialReachXQuantum: "Reach %% Quantum",
    TutorialDiscoverXElement: "Discover %% Element",
    TutorialReachXSpaceshipXP: "Reach %% Spaceship XP",
    TutorialDiscover1ElementDescHTML:
@@ -411,4 +412,6 @@ export const EN = {
       "Quantum is generated based on the XP you've gained, which includes the <b>XP invested in your ship</b> and remaining <b>XP in the storage</b>. You can use quantum to either unlock a tech or build a new module. When you recycle a module, the quantum is refunded.",
    TutorialReach260SpaceshipXPDescHTML:
       "The <b>qualified quantum</b> determines the amount of XP you can invest in your spaceship. To prepare for your first qualifier battle, you should invest as much XP as possible.",
+   TutorialReach36QuantumDescHTML:
+      "To reach 36 quantum, you need to qualify for Quantum 30. This can be achieved by either winning the <b>qualifier battle</b> at Quantum 30 or <b>second chance</b> battle at Quantum 35.",
 };

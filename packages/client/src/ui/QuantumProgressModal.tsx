@@ -25,7 +25,7 @@ export function QuantumProgressModal(): React.ReactNode {
       <>
          <div className="panel p5 text-center text-xs mb10 row" style={{ padding: "5px 10px" }}>
             <div className="f1 text-left text-space">{t(L.QualifiedQuantum)}</div>
-            <div className="f1 text-center text-blue">{t(L.AchievedQuantum)}</div>
+            <div className="f1 text-center text-blue">{t(L.ReachedQuantum)}</div>
             <div className="f1 text-right text-green">{t(L.UsedQuantum)}</div>
          </div>
          <div className="quantum-progress">

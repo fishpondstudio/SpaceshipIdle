@@ -47,7 +47,7 @@ export const DMG1Booster: IBoosterDefinition = {
    buildingFlag: BuildingFlag.CanRotate | BuildingFlag.Booster,
    input: {},
    output: {},
-   unlock: { MS1: 100_000 },
+   unlock: { MS2: 100_000 },
    tick: (self, rs, rt) => {
       boostTarget(rs.tile, self.range, rt).forEach((target) => {
          if (target === rs.tile) return;
@@ -65,7 +65,7 @@ export const EVA1Booster: IBoosterDefinition = {
    buildingFlag: BuildingFlag.CanRotate | BuildingFlag.Booster,
    input: {},
    output: {},
-   unlock: { U: 300_000 },
+   unlock: { LA1: 21_430 },
    tick: (self, rs, rt) => {
       boostTarget(rs.tile, self.range, rt).forEach((target) => {
          if (target === rs.tile) return;
