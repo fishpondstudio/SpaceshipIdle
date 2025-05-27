@@ -19,7 +19,7 @@ import { hideSidebar } from "./Sidebar";
 import { playClick } from "./Sound";
 import { TutorialProgressModal } from "./TutorialProgressModal";
 
-const speedWidth = 300;
+const speedWidth = 360;
 function _SpeedSwitcher({ speed }: { speed: number }): React.ReactNode {
    return (
       <SegmentedControl
@@ -46,7 +46,7 @@ function _SpeedSwitcher({ speed }: { speed: number }): React.ReactNode {
    );
 }
 
-const sceneWidth = 330;
+const sceneWidth = 360;
 
 function Tutorial(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
@@ -71,10 +71,24 @@ function Tutorial(): React.ReactNode {
          }}
       >
          <div className="mi lg">flag</div>
-         <Tooltip label={<RenderHTML html={tutorial.desc()} />} multiline maw="30vw">
-            <div className="f1 text-sm">
+         <Tooltip
+            label={
+               <>
+                  <div>{tutorial.name()}</div>
+                  <RenderHTML html={tutorial.desc()} />
+               </>
+            }
+            multiline
+            maw="30vw"
+         >
+            <div className="f1 text-sm" style={{ overflow: "hidden" }}>
                <div className="row">
-                  <div className="f1">{tutorial.name()}</div>
+                  <div
+                     className="f1"
+                     style={{ minWidth: 0, textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}
+                  >
+                     {tutorial.name()}
+                  </div>
                   <div>
                      {formatNumber(progress)}/{formatNumber(total)}
                   </div>
