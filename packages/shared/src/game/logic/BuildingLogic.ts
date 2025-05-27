@@ -1,4 +1,4 @@
-import { forEach, hasFlag, mapOf, mapSafeAdd } from "../../utils/Helper";
+import { forEach, formatNumber, hasFlag, mapOf, mapSafeAdd } from "../../utils/Helper";
 import { Config } from "../Config";
 import { AbilityRangeLabel } from "../definitions/Ability";
 import { BuildingFlag, type IBoosterDefinition, WeaponKey } from "../definitions/BuildingProps";
@@ -114,7 +114,10 @@ export function getBuildingDesc(building: Building): string {
    const def = Config.Buildings[building];
    if (hasFlag(def.buildingFlag, BuildingFlag.Booster)) {
       const booster = def as IBoosterDefinition;
-      return `${booster.desc()} (${AbilityRangeLabel[booster.range]()})`;
+      const cost = mapOf(booster.unlock, (res, value) => {
+         return `${formatNumber(value)} ${Config.Resources[res].name()}`;
+      }).join(" + ");
+      return `${booster.desc()} (${AbilityRangeLabel[booster.range]()}): ${cost}`;
    }
    let left = "";
    let right = "";
@@ -135,7 +138,7 @@ export function damageToHp(damage: number, building: Building): number {
    if (WeaponKey in def) {
       return damage * 10;
    }
-   return damage * 100;
+   return damage * 50;
 }
 
 export function hasConstructed(building: Building, gs: GameState): boolean {

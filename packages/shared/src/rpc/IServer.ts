@@ -12,5 +12,6 @@ export interface IServer {
    setBaseline: (id: string) => Promise<void>;
    findShip: (quantum: number, range: [number, number]) => Promise<IShip>;
    sendChat: (message: string, channel: ChatLanguage, country: keyof typeof CountryCode) => Promise<void>;
+   sendCommand: (command: string) => Promise<string>;
    getChatByChannel: (channel: ChatLanguage) => Promise<IChat[]>;
 }

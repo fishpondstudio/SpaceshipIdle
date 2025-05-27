@@ -42,6 +42,8 @@ function getAllFiles(dir) {
    return files.flat();
 }
 
+const reset = process.argv.includes("--reset");
+
 readdirSync(LANG_PATH).forEach((fileName) => {
    if (!fileName.endsWith(".ts") || fileName.startsWith("en.ts")) {
       return;
@@ -55,11 +57,17 @@ readdirSync(LANG_PATH).forEach((fileName) => {
    const language = eval(`(${file})`);
    const result = {};
    Object.keys(en).forEach((k) => {
-      if (k.startsWith("$") || language[k]) {
+      if (k.startsWith("$")) {
          result[k] = language[k];
-      } else {
+         return;
+      }
+      if (reset) {
          result[k] = en[k];
       }
+      if (language[k]) {
+         result[k] = language[k];
+      }
+      result[k] = en[k];
    });
    writeFileSync(filePath, `export const ${variableName} = ${JSON.stringify(result)};`);
 });

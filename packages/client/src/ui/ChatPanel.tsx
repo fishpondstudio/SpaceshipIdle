@@ -1,15 +1,16 @@
 import { Menu } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { type ChatLanguage, ChatLanguages } from "@spaceship-idle/shared/src/game/Languages";
 import type { IChat } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
-import { mapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { classNames, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { OnChatMessage, useConnected } from "../rpc/HandleMessage";
 import { RPCClient } from "../rpc/RPCClient";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
-import { playError } from "./Sound";
+import { playBling, playError } from "./Sound";
 import { TextureComp } from "./components/TextureComp";
 
 const _messages: IChat[] = [];
@@ -49,6 +50,7 @@ export function ChatPanelSingle({
    const isMouseOver = useRef(false);
    const handle = refreshOnTypedEvent(OnChatMessage);
    refreshOnTypedEvent(GameOptionUpdated);
+   const [message, setMessage] = useState("");
 
    useEffect(() => {
       _messages.length = 0;
@@ -79,6 +81,8 @@ export function ChatPanelSingle({
       });
    }, [handle]);
 
+   const isCommand = message.startsWith("/");
+
    return (
       <div className="chat-panel" style={style}>
          <div
@@ -103,10 +107,10 @@ export function ChatPanelSingle({
                </div>
             ))}
          </div>
-         <div className="chat-input">
+         <div className={classNames("chat-input", isCommand ? "command" : null)}>
             <Menu position="bottom-start">
                <Menu.Target>
-                  <div className="mi">apps</div>
+                  <div className="mi">{isCommand ? "terminal" : "apps"}</div>
                </Menu.Target>
                <Menu.Dropdown>
                   {mapOf(ChatLanguages, (language, label) => {
@@ -135,7 +139,11 @@ export function ChatPanelSingle({
             </Menu>
             <input
                type="text"
-               className="f1"
+               className={classNames("f1", message.startsWith("/") ? "command" : null)}
+               value={message}
+               onChange={(e) => {
+                  setMessage(e.target.value);
+               }}
                onKeyDown={(e) => {
                   if (e.key === "Enter") {
                      e.preventDefault();
@@ -145,12 +153,48 @@ export function ChatPanelSingle({
                      if (message.length === 0) {
                         return;
                      }
+                     setMessage("");
+                     if (message.startsWith("/")) {
+                        const command = message.substring(1);
+                        RPCClient.sendCommand(command)
+                           .then((message) => {
+                              playBling();
+                              notifications.show({
+                                 message: <CommandOutput command={command} result={message} />,
+                                 color: "blue",
+                                 autoClose: false,
+                                 position: "top-center",
+                              });
+                           })
+                           .catch((e) => {
+                              playError();
+                              notifications.show({
+                                 message: <CommandOutput command={command} result={String(e)} />,
+                                 color: "red",
+                                 autoClose: false,
+                                 position: "top-center",
+                              });
+                           });
+                        return;
+                     }
                      RPCClient.sendChat(message, channel, G.save.options.country);
-                     target.value = "";
                   }
                }}
             />
          </div>
+      </div>
+   );
+}
+
+function CommandOutput({ command, result }: { command: string; result: string }): React.ReactNode {
+   return (
+      <div style={{ fontFamily: "monospace" }}>
+         <div className="row">
+            <div className="mi">terminal</div>
+            <div className="f1">{command}</div>
+         </div>
+         <div className="divider my5" />
+         <div>{result}</div>
       </div>
    );
 }
