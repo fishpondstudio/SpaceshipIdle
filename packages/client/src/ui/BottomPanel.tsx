@@ -1,7 +1,7 @@
 import { Progress, SegmentedControl, Tooltip } from "@mantine/core";
-import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { formatNumber, round } from "@spaceship-idle/shared/src/utils/Helper";
+import { formatNumber, hasFlag, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
 import { getCurrentTutorial } from "../game/Tutorial";
@@ -50,6 +50,9 @@ const sceneWidth = 330;
 
 function Tutorial(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
+   if (!hasFlag(G.save.current.flags, GameStateFlags.ShowTutorial)) {
+      return null;
+   }
    const tutorial = getCurrentTutorial();
    if (!tutorial) {
       return null;
@@ -68,12 +71,7 @@ function Tutorial(): React.ReactNode {
          }}
       >
          <div className="mi lg">flag</div>
-         <Tooltip
-            label={tutorial.desc ? <RenderHTML html={tutorial.desc()} /> : null}
-            disabled={!tutorial.desc}
-            multiline
-            maw="30vw"
-         >
+         <Tooltip label={<RenderHTML html={tutorial.desc()} />} multiline maw="30vw">
             <div className="f1 text-sm">
                <div className="row">
                   <div className="f1">{tutorial.name()}</div>

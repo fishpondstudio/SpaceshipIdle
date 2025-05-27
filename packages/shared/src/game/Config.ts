@@ -23,6 +23,7 @@ export const Config = {
       ["XP", 1],
    ]),
    ResourceTier: new Map<Resource, number>([["Power", 1]]),
+   BuildingTier: new Map<Building, number>(),
 } as const;
 
 function getBuildingThatProduces(res: Resource): [Building, IBuildingDefinition] {
@@ -108,6 +109,7 @@ forEach(Config.Tech, (tech, def) => {
             console.error(`Tech ${tech} should add multiplier for building ${b}`);
          }
       });
+      Config.BuildingTier.set(b, def.ring);
       // forEach(def.multiplier, (b, multiplier) => {
       //    if (!buildings.has(b)) {
       //       console.error(`Tech ${tech} should remove multiplier for building ${b}`);
@@ -119,4 +121,5 @@ forEach(Config.Tech, (tech, def) => {
 console.log("Price", Config.Price);
 console.log("Normalized Price", Config.NormalizedPrice);
 console.log("Resource Tier", Config.ResourceTier);
+console.log("Building Tier", Config.BuildingTier);
 console.log(`# of techs: ${sizeOf(Config.Tech)}`);

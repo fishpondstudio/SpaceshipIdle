@@ -1,6 +1,7 @@
 import { Box, Slider, Switch, Tooltip } from "@mantine/core";
 import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
+import { GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { clearFlag, hasFlag, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { resetGame, saveGameStateToFile } from "../game/LoadSave";
@@ -13,6 +14,7 @@ import { RenderHTML } from "./components/RenderHTMLComp";
 
 export function GameSettingsModal(): React.ReactNode {
    refreshOnTypedEvent(GameOptionUpdated);
+   refreshOnTypedEvent(GameStateUpdated);
    return (
       <>
          <ChangeLanguageComp />
@@ -46,6 +48,19 @@ export function GameSettingsModal(): React.ReactNode {
                min={0}
                max={1}
                step={0.1}
+            />
+         </div>
+         <div className="h10"></div>
+         <div className="row">
+            <div className="f1">{t(L.ShowTutorial)}</div>
+            <Switch
+               checked={hasFlag(G.save.current.flags, GameStateFlags.ShowTutorial)}
+               onChange={(e) => {
+                  G.save.current.flags = e.target.checked
+                     ? setFlag(G.save.current.flags, GameStateFlags.ShowTutorial)
+                     : clearFlag(G.save.current.flags, GameStateFlags.ShowTutorial);
+                  GameStateUpdated.emit();
+               }}
             />
          </div>
          <div className="h10" />

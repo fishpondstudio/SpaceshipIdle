@@ -2,7 +2,6 @@ import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
-import { boosterHpToUnlockCost } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { rollElementShards } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
 import { randomColor } from "@spaceship-idle/shared/src/thirdparty/RandomColor";
 import { forEach } from "@spaceship-idle/shared/src/utils/Helper";
@@ -141,6 +140,4 @@ export function addDebugFunctions(): void {
          dismiss: false,
       });
    };
-   // @ts-expect-error
-   globalThis.boosterHpToUnlockCost = boosterHpToUnlockCost;
 }

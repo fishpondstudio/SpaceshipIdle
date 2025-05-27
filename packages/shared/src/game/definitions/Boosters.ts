@@ -11,7 +11,7 @@ export const PM1Booster: IBoosterDefinition = {
    buildingFlag: BuildingFlag.CanRotate | BuildingFlag.Booster,
    input: {},
    output: {},
-   unlock: { Circuit: 300_000 },
+   unlock: { RC100: 100_000 },
    tick: (self, rs, rt) => {
       boostTarget(rs.tile, self.range, rt).forEach((target) => {
          if (target === rs.tile) return;
@@ -29,7 +29,7 @@ export const HP1Booster: IBoosterDefinition = {
    buildingFlag: BuildingFlag.CanRotate | BuildingFlag.Booster,
    input: {},
    output: {},
-   unlock: { AC30x3: 100_000 },
+   unlock: { AC130: 100_000 },
    tick: (self, rs, rt) => {
       boostTarget(rs.tile, self.range, rt).forEach((target) => {
          if (target === rs.tile) return;
@@ -65,7 +65,7 @@ export const EVA1Booster: IBoosterDefinition = {
    buildingFlag: BuildingFlag.CanRotate | BuildingFlag.Booster,
    input: {},
    output: {},
-   unlock: { LA1: 21_430 },
+   unlock: { LA1: 100_000 },
    tick: (self, rs, rt) => {
       boostTarget(rs.tile, self.range, rt).forEach((target) => {
          if (target === rs.tile) return;

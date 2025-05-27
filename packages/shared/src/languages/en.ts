@@ -398,20 +398,25 @@ export const EN = {
    TutorialBuildXModules: "Build %% Modules",
    TutorialBuild6ModulesDescHTML:
       "To build a module, click on an empty tile and select the module you want to build from the side panel.",
-   TutorialResearchXTech: "Research %% Techs",
+   TutorialResearchXTech: "Research %% Tech(s)",
    TutorialResearch8TechDescHTML:
       "To research a tech, click Research tab and select the tech you want to research. Keep in mind that each tech <b>costs one quantum</b> to research and cannot be undone.",
    TutorialUseXQuantum: "Use %% Quantum",
-   TutorialReachXQuantum: "Reach %% Quantum",
+   TutorialWinSpaceshipBattle: "Win %% Spaceship Battle(s)",
    TutorialDiscoverXElement: "Discover %% Element",
    TutorialReachXSpaceshipXP: "Reach %% Spaceship XP",
    TutorialDiscover1ElementDescHTML:
       "You will discover your first element when you reach <b>15 quantum</b>. You can pick one out of three choices. Each element boosts <b>production multipliers</b>. They become permanent element shards when you prestige.",
-   TutorialProgress: "Tutorial Progress",
+   TutorialProgress: "Tutorial",
    TutorialUse25QuantumDescHTML:
       "Quantum is generated based on the XP you've gained, which includes the <b>XP invested in your ship</b> and remaining <b>XP in the storage</b>. You can use quantum to either unlock a tech or build a new module. When you recycle a module, the quantum is refunded.",
    TutorialReach260SpaceshipXPDescHTML:
       "The <b>qualified quantum</b> determines the amount of XP you can invest in your spaceship. To prepare for your first qualifier battle, you should invest as much XP as possible.",
-   TutorialReach36QuantumDescHTML:
-      "To reach 36 quantum, you need to qualify for Quantum 30. This can be achieved by either winning the <b>qualifier battle</b> at Quantum 30 or <b>second chance</b> battle at Quantum 35.",
+   TutorialWinSpaceshipBattleDescHTML:
+      "Winning a qualifier battle will unlock higher quantum limit. This can be achieved by either winning the <b>qualifier battle</b> at Quantum 30 or the <b>second chance</b> battle at Quantum 35.",
+   TutorialBuildXBoosters: "Build %% Booster(s)",
+   TutorialBuild1BoosterDescHTML:
+      "Each type of booster module can only be built once. They provide significant boost effects, do not consume quantum and do not contribute to Spaceship XP. They cost resources, rather than XP to build.",
+   HideTutorial: "Hide Tutorial",
+   ShowTutorial: "Show Tutorial",
 };

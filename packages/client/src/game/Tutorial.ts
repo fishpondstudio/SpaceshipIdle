@@ -1,7 +1,7 @@
 import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
+import { getBoosterCount } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import {
    calcSpaceshipValue,
-   getCurrentQuantum,
    getUsedQuantum,
    quantumToSpaceshipValue,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -11,7 +11,7 @@ import { G } from "../utils/Global";
 
 export interface ITutorial {
    name: () => string;
-   desc?: () => string;
+   desc: () => string;
    progress: (gs: GameState) => [number, number];
 }
 
@@ -52,10 +52,17 @@ export const Tutorial: ITutorial[] = [
       },
    },
    {
-      name: () => t(L.TutorialReachXQuantum, 36),
-      desc: () => t(L.TutorialReach36QuantumDescHTML),
+      name: () => t(L.TutorialWinSpaceshipBattle, 1),
+      desc: () => t(L.TutorialWinSpaceshipBattleDescHTML),
       progress: (gs) => {
-         return [getCurrentQuantum(gs), 36];
+         return [gs.battleCount, 1];
+      },
+   },
+   {
+      name: () => t(L.TutorialBuildXBoosters, 1),
+      desc: () => t(L.TutorialBuild1BoosterDescHTML),
+      progress: (gs) => {
+         return [getBoosterCount(gs), 1];
       },
    },
 ] as const;

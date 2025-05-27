@@ -118,7 +118,7 @@ export class TechDefinitions {
       name: () => t(L.TechRapidFire),
       ring: 3,
       requires: ["C3"],
-      unlockBuildings: ["AC30x3", "HP1Booster"],
+      unlockBuildings: ["AC30x3"],
       multiplier: { AC30: 1 },
    };
    D5: ITechDefinition = {
@@ -132,7 +132,6 @@ export class TechDefinitions {
       name: () => t(L.TechCorvette),
       ring: 3,
       requires: ["C5", "C4"],
-      unlockBuildings: ["PM1Booster"],
       unlockUpgrades: [{ name: () => t(L.Size10x10), desc: () => t(L.Size10x10Desc) }],
    };
    D7: ITechDefinition = {
@@ -183,7 +182,7 @@ export class TechDefinitions {
       name: () => t(L.TechHeavyArtillery),
       ring: 4,
       requires: ["D4"],
-      unlockBuildings: ["AC130"],
+      unlockBuildings: ["AC130", "HP1Booster"],
       multiplier: { AC30x3: 1 },
    };
    E6: ITechDefinition = {
@@ -197,7 +196,7 @@ export class TechDefinitions {
       ring: 4,
       requires: ["E6"],
       name: () => t(L.TechOffenseDisruptor),
-      unlockBuildings: ["RC100"],
+      unlockBuildings: ["RC100", "PM1Booster"],
       multiplier: { RC50: 1 },
    };
    E8: ITechDefinition = {
