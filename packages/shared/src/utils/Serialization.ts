@@ -64,7 +64,7 @@ export function msgpackDecode<T>(data: Uint8Array): T {
    return decode(data, { extensionCodec }) as T;
 }
 
-export function jsonEncode(obj: any): string {
+export function jsonEncode(obj: unknown): string {
    return JSON.stringify(obj, replacer);
 }
 
@@ -72,7 +72,7 @@ export function jsonDecode<T>(json: string): T {
    return JSON.parse(json, reviver) as T;
 }
 
-function replacer(key: string, value: any): any {
+function replacer(key: string, value: unknown): unknown {
    if (value instanceof Map) {
       return {
          $type: "Map",

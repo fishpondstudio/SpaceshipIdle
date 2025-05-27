@@ -2,10 +2,11 @@ import { Menu } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { type ChatLanguage, ChatLanguages } from "@spaceship-idle/shared/src/game/Languages";
-import type { IChat } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
-import { classNames, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { ChatFlag, type IChat } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
+import { classNames, hasFlag, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useEffect, useRef, useState } from "react";
+import Mod from "../assets/images/Mod.png";
 import { OnChatMessage, useConnected } from "../rpc/HandleMessage";
 import { RPCClient } from "../rpc/RPCClient";
 import { G } from "../utils/Global";
@@ -100,6 +101,7 @@ export function ChatPanelSingle({
                   <div className="name">
                      <div>{message.name}</div>
                      <TextureComp name={`Flag/${message.country}`} size={20} />
+                     {hasFlag(message.flag, ChatFlag.Moderator) ? <img src={Mod} style={{ height: 15 }} /> : null}
                      <div className="f1" />
                      <div>{new Date(message.time).toLocaleTimeString()}</div>
                   </div>
