@@ -1,11 +1,12 @@
-import { Button, Divider, Flex, Space, Tooltip } from "@mantine/core";
+import { Tooltip } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { round, type Tile } from "@spaceship-idle/shared/src/utils/Helper";
+import { getTotalBuildingValue, trySpend } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
+import { mapSafeAdd, round, type Tile } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type { ReactNode } from "react";
 import { G } from "../utils/Global";
 import { SidebarComp } from "./components/SidebarComp";
-import { TitleComp } from "./components/TitleComp";
 
 export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile> }): ReactNode {
    const tiles = new Set<Tile>();
@@ -16,17 +17,122 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
    }
    return (
       <SidebarComp title={t(L.SelectedXModules, tiles.size)}>
-         <Space h="sm" />
-         <TitleComp>{t(L.Priority)}</TitleComp>
-         <Divider my="sm" />
-         <Flex mx="sm" wrap="wrap" gap="xs">
+         <div className="h10" />
+         <div className="title">{t(L.Upgrade)}</div>
+         <div className="divider my10" />
+         <div className="mx10 row">
+            <button
+               className="f1 btn"
+               onClick={() => {
+                  let success = 0;
+                  let total = 0;
+                  for (const tile of tiles) {
+                     const data = G.save.current.tiles.get(tile);
+                     if (data) {
+                        if (trySpend(getTotalBuildingValue(data.type, data.level, data.level + 1), G.save.current)) {
+                           ++data.level;
+                           ++success;
+                        }
+                        ++total;
+                     }
+                  }
+                  if (success < total) {
+                     notifications.show({
+                        message: t(L.BatchOperationResult, success, total),
+                        position: "top-center",
+                        color: "yellow",
+                        withBorder: true,
+                     });
+                  }
+                  GameStateUpdated.emit();
+               }}
+            >
+               +1
+            </button>
+            <button
+               className="f1 btn"
+               onClick={() => {
+                  let success = 0;
+                  let total = 0;
+                  for (const tile of tiles) {
+                     const data = G.save.current.tiles.get(tile);
+                     if (data) {
+                        if (data.level > 1) {
+                           getTotalBuildingValue(data.type, data.level, data.level - 1).forEach((amount, res) => {
+                              mapSafeAdd(G.save.current.resources, res, amount);
+                           });
+                           --data.level;
+                           ++success;
+                        }
+                        ++total;
+                     }
+                  }
+                  if (success < total) {
+                     notifications.show({
+                        message: t(L.BatchOperationResult, success, total),
+                        position: "top-center",
+                        color: "yellow",
+                        withBorder: true,
+                     });
+                  }
+                  GameStateUpdated.emit();
+               }}
+            >
+               -1
+            </button>
+            <button
+               className="btn"
+               style={{ flex: 2 }}
+               onClick={() => {
+                  const resources = G.save.current.resources;
+                  G.save.current.resources = new Map();
+
+                  for (const tile of tiles) {
+                     const data = G.save.current.tiles.get(tile);
+                     if (data) {
+                        if (data.level > 1) {
+                           getTotalBuildingValue(data.type, data.level, 1).forEach((amount, res) => {
+                              mapSafeAdd(G.save.current.resources, res, amount);
+                           });
+                           data.level = 1;
+                        }
+                     }
+                  }
+
+                  let shouldContinue = true;
+                  while (shouldContinue) {
+                     shouldContinue = false;
+                     for (const tile of tiles) {
+                        const data = G.save.current.tiles.get(tile);
+                        if (data) {
+                           if (trySpend(getTotalBuildingValue(data.type, data.level, data.level + 1), G.save.current)) {
+                              ++data.level;
+                              shouldContinue = true;
+                           }
+                        }
+                     }
+                  }
+
+                  G.save.current.resources.forEach((amount, res) => {
+                     mapSafeAdd(resources, res, amount);
+                  });
+                  G.save.current.resources = resources;
+
+                  GameStateUpdated.emit();
+               }}
+            >
+               {t(L.DistributeEvenly)}
+            </button>
+         </div>
+         <div className="divider my10" />
+         <div className="title">{t(L.Priority)}</div>
+         <div className="divider my10" />
+         <div className="mx10" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((p) => {
                return (
-                  <Button
-                     w="80"
+                  <button
+                     className="btn"
                      key={p}
-                     variant="outline"
-                     size="compact-sm"
                      onClick={() => {
                         for (const tile of tiles) {
                            const data = G.save.current.tiles.get(tile);
@@ -38,21 +144,19 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                      }}
                   >
                      {p}
-                  </Button>
+                  </button>
                );
             })}
-         </Flex>
-         <Divider my="sm" />
-         <TitleComp>{t(L.Capacity)}</TitleComp>
-         <Divider my="sm" />
-         <Flex mx="sm" wrap="wrap" gap="xs">
+         </div>
+         <div className="divider my10" />
+         <div className="title">{t(L.Capacity)}</div>
+         <div className="divider my10" />
+         <div className="mx10" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
             {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((p) => {
                return (
-                  <Button
-                     w="80"
+                  <button
                      key={p}
-                     variant="outline"
-                     size="compact-sm"
+                     className="btn"
                      onClick={() => {
                         for (const tile of tiles) {
                            const data = G.save.current.tiles.get(tile);
@@ -64,14 +168,12 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                      }}
                   >
                      {p}
-                  </Button>
+                  </button>
                );
             })}
             <Tooltip label={t(L.MatchCapacityTooltip)}>
-               <Button
-                  w="80"
-                  variant="outline"
-                  size="compact-sm"
+               <button
+                  className="btn"
                   onClick={() => {
                      for (const tile of tiles) {
                         G.runtime.get(tile)?.matchCapacity();
@@ -80,9 +182,9 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                   }}
                >
                   <div className="mi">wand_stars</div>
-               </Button>
+               </button>
             </Tooltip>
-         </Flex>
+         </div>
       </SidebarComp>
    );
 }
