@@ -42,14 +42,16 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                <TitleComp>{t(L.Prerequisites)}</TitleComp>
                <div className="divider my10" />
                {prevTier ? (
-                  <div className="row mx10 my5">
-                     <div className="f1">{t(L.ResearchTierTech, required, prevTier)}</div>
-                     {unlocked >= required ? (
-                        <div className="mi text-green">check_circle</div>
-                     ) : (
-                        <div className="mi text-red">cancel</div>
-                     )}
-                  </div>
+                  <Tooltip label={t(L.TechResearched, unlocked, required)}>
+                     <div className="row mx10 my5">
+                        <div className="f1">{t(L.ResearchTierTech, required, prevTier)}</div>
+                        {unlocked >= required ? (
+                           <div className="mi text-green">check_circle</div>
+                        ) : (
+                           <div className="mi text-red">cancel</div>
+                        )}
+                     </div>
+                  </Tooltip>
                ) : null}
                {def.requires.map((req) => {
                   return (

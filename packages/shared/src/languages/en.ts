@@ -419,5 +419,7 @@ export const EN = {
    XPCollector: "XP Collector",
    XPMultiplier: "XP Multiplier",
    DistributeEvenly: "Distribute Evenly",
+   DistributeEvenlyDesc: "Distribute upgrades evenly across all selected modules",
    BatchOperationResult: "Batch Operation Result: %%/%% Succeeded",
+   TechResearched: "%%/%% Tech Researched",
 };

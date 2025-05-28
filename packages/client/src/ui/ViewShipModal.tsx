@@ -1,4 +1,3 @@
-import { Box, Divider, Group, Paper, Space } from "@mantine/core";
 import { calcSpaceshipValue, getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
@@ -18,28 +17,24 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
    }
    return (
       <>
-         <Paper withBorder p="xs" fz="sm">
-            <Group>
-               <Box flex={1}>{t(L.Quantum)}</Box>
-               <Box>{formatNumber(getUsedQuantum(ship.json))}</Box>
-            </Group>
-            <Group>
-               <Box flex={1}>{t(L.SpaceshipXP)}</Box>
-               <Box>{formatNumber(calcSpaceshipValue(ship.json))}</Box>
-            </Group>
-            <Space h="sm" />
-            <Divider mx="-xs" />
-            <Space h="sm" />
-            <Box c="space" flex={1}>
-               {t(L.Research)}
-            </Box>
-            <Box>
+         <div className="panel bg-dark">
+            <div className="row">
+               <div className="f1">{t(L.Quantum)}</div>
+               <div>{formatNumber(getUsedQuantum(ship.json))}</div>
+            </div>
+            <div className="row">
+               <div className="f1">{t(L.SpaceshipXP)}</div>
+               <div>{formatNumber(calcSpaceshipValue(ship.json))}</div>
+            </div>
+            <div className="divider mx-10 my10" />
+            <div className="f1">{t(L.Research)}</div>
+            <div>
                {Array.from(ship.json.unlockedTech)
                   .map((tech) => getTechName(tech))
                   .join(", ")}
-            </Box>
-         </Paper>
-         <Space h="sm" />
+            </div>
+         </div>
+         <div className="h10" />
          <DevOrAdminOnly>
             <div className="row">
                <button
@@ -73,7 +68,7 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
                <div className="f1" />
             </div>
          </DevOrAdminOnly>
-         <Space h="sm" />
+         <div className="h10" />
          <ShipImageComp ship={ship.json} side={Side.Left} />
       </>
    );

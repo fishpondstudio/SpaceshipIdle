@@ -1,4 +1,4 @@
-import { Box, Grid, Space, Switch, Text, Tooltip } from "@mantine/core";
+import { Grid, Space, Switch, Text, Tooltip } from "@mantine/core";
 import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
@@ -127,28 +127,20 @@ function ShipInfoComp({ gs, side }: { gs: GameState; side: Side }): React.ReactN
          <Space h="sm" />
          <Grid>
             <Grid.Col span={6}>
-               <Box fz={32}>{formatNumber(getUsedQuantum(gs))}</Box>
-               <Box fz="xs" c="dimmed" mt={-10} mb={5}>
-                  {t(L.Quantum)}
-               </Box>
+               <div style={{ fontSize: 32 }}>{formatNumber(getUsedQuantum(gs))}</div>
+               <div className="text-sm text-dimmed">{t(L.Quantum)}</div>
             </Grid.Col>
             <Grid.Col span={6}>
-               <Box fz={32}>{formatNumber(calcSpaceshipValue(gs))}</Box>
-               <Box fz="xs" c="dimmed" mt={-10} mb={5}>
-                  {t(L.SpaceshipXP)}
-               </Box>
+               <div style={{ fontSize: 32 }}>{formatNumber(calcSpaceshipValue(gs))}</div>
+               <div className="text-sm text-dimmed">{t(L.SpaceshipXP)}</div>
             </Grid.Col>
             <Grid.Col span={6}>
-               <Box fz={32}>{formatNumber(gs.tiles.size)}</Box>
-               <Box fz="xs" c="dimmed" mt={-10} mb={5}>
-                  {t(L.Modules)}
-               </Box>
+               <div style={{ fontSize: 32 }}>{formatNumber(gs.tiles.size)}</div>
+               <div className="text-sm text-dimmed">{t(L.Modules)}</div>
             </Grid.Col>
             <Grid.Col span={6}>
-               <Box fz={32}>{formatNumber(gs.unlockedTech.size)}</Box>
-               <Box fz="xs" c="dimmed" mt={-10} mb={5}>
-                  {t(L.Tech)}
-               </Box>
+               <div style={{ fontSize: 32 }}>{formatNumber(gs.unlockedTech.size)}</div>
+               <div className="text-sm text-dimmed">{t(L.Tech)}</div>
             </Grid.Col>
          </Grid>
       </div>

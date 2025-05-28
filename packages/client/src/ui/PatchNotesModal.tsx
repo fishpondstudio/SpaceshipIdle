@@ -1,4 +1,4 @@
-import { Box, Text } from "@mantine/core";
+import { Text } from "@mantine/core";
 import { PatchNotes } from "../game/PatchNotes";
 
 export function PatchNotesModal(): React.ReactNode {
@@ -6,8 +6,8 @@ export function PatchNotesModal(): React.ReactNode {
       <div style={{ width: "35vw" }}>
          {PatchNotes.map((patch) => {
             return (
-               <Box key={patch.version}>
-                  <Text size="xl">{patch.version}</Text>
+               <div key={patch.version}>
+                  <div className="text-lg">{patch.version}</div>
                   {patch.content.map((line, idx) => {
                      return (
                         <Text key={idx} size="sm">
@@ -18,7 +18,7 @@ export function PatchNotesModal(): React.ReactNode {
                         </Text>
                      );
                   })}
-               </Box>
+               </div>
             );
          })}
       </div>

@@ -1,4 +1,3 @@
-import { Box } from "@mantine/core";
 import { TrialQuantum } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
@@ -21,8 +20,8 @@ export function SecondChanceBattleResultModal(): React.ReactNode {
          <div className="h10" />
          <div className="panel">
             <div className="row">
-               <Box flex={1}>{t(L.QuantumLimit)}</Box>
-               <Box c="green">+{TrialQuantum}</Box>
+               <div className="f1">{t(L.QuantumLimit)}</div>
+               <div className="text-green">+{TrialQuantum}</div>
             </div>
          </div>
          <div className="h10" />

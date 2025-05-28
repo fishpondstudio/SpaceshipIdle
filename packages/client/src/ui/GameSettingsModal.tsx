@@ -1,4 +1,4 @@
-import { Box, Slider, Switch, Tooltip } from "@mantine/core";
+import { Slider, Switch, Tooltip } from "@mantine/core";
 import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
@@ -119,9 +119,9 @@ export function GameSettingsModal(): React.ReactNode {
             </button>
          </div>
          <div className="divider my10 mx-10" />
-         <Box flex={1} fz="sm" c="dimmed" ta="center" tt="uppercase">
+         <div className="text-center text-sm text-dimmed">
             <RenderHTML html={t(L.VersionNumber, getVersion())} />
-         </Box>
+         </div>
       </>
    );
 }

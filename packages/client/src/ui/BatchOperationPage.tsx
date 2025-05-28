@@ -80,49 +80,53 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
             >
                -1
             </button>
-            <button
-               className="btn"
-               style={{ flex: 2 }}
-               onClick={() => {
-                  const resources = G.save.current.resources;
-                  G.save.current.resources = new Map();
+            <Tooltip label={t(L.DistributeEvenlyDesc)}>
+               <button
+                  className="btn"
+                  style={{ flex: 2 }}
+                  onClick={() => {
+                     const resources = G.save.current.resources;
+                     G.save.current.resources = new Map();
 
-                  for (const tile of tiles) {
-                     const data = G.save.current.tiles.get(tile);
-                     if (data) {
-                        if (data.level > 1) {
-                           getTotalBuildingValue(data.type, data.level, 1).forEach((amount, res) => {
-                              mapSafeAdd(G.save.current.resources, res, amount);
-                           });
-                           data.level = 1;
-                        }
-                     }
-                  }
-
-                  let shouldContinue = true;
-                  while (shouldContinue) {
-                     shouldContinue = false;
                      for (const tile of tiles) {
                         const data = G.save.current.tiles.get(tile);
                         if (data) {
-                           if (trySpend(getTotalBuildingValue(data.type, data.level, data.level + 1), G.save.current)) {
-                              ++data.level;
-                              shouldContinue = true;
+                           if (data.level > 1) {
+                              getTotalBuildingValue(data.type, data.level, 1).forEach((amount, res) => {
+                                 mapSafeAdd(G.save.current.resources, res, amount);
+                              });
+                              data.level = 1;
                            }
                         }
                      }
-                  }
 
-                  G.save.current.resources.forEach((amount, res) => {
-                     mapSafeAdd(resources, res, amount);
-                  });
-                  G.save.current.resources = resources;
+                     let shouldContinue = true;
+                     while (shouldContinue) {
+                        shouldContinue = false;
+                        for (const tile of tiles) {
+                           const data = G.save.current.tiles.get(tile);
+                           if (data) {
+                              if (
+                                 trySpend(getTotalBuildingValue(data.type, data.level, data.level + 1), G.save.current)
+                              ) {
+                                 ++data.level;
+                                 shouldContinue = true;
+                              }
+                           }
+                        }
+                     }
 
-                  GameStateUpdated.emit();
-               }}
-            >
-               {t(L.DistributeEvenly)}
-            </button>
+                     G.save.current.resources.forEach((amount, res) => {
+                        mapSafeAdd(resources, res, amount);
+                     });
+                     G.save.current.resources = resources;
+
+                     GameStateUpdated.emit();
+                  }}
+               >
+                  {t(L.DistributeEvenly)}
+               </button>
+            </Tooltip>
          </div>
          <div className="divider my10" />
          <div className="title">{t(L.Priority)}</div>

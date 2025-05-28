@@ -1,4 +1,4 @@
-import { Box, ColorInput, Tooltip } from "@mantine/core";
+import { ColorInput, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { CodeLabel } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
@@ -38,7 +38,7 @@ export function BuildingPage({ tile, gs, readonly }: ITileWithGameState & { read
       <SidebarComp
          title={
             <Tooltip label={codeLabel} disabled={codeLabel.length <= 0} position="left">
-               <Box>{def.name()}</Box>
+               <div>{def.name()}</div>
             </Tooltip>
          }
       >

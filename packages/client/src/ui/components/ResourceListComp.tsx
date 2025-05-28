@@ -1,4 +1,3 @@
-import { Box } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import type { Resource } from "@spaceship-idle/shared/src/game/definitions/Resource";
 import { canSpend } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
@@ -12,7 +11,7 @@ export function ResourceListComp({
    showColor = true,
 }: { res: Map<Resource, number>; showColor?: boolean }): React.ReactNode {
    return (
-      <Box>
+      <div>
          {mMapOf(res, (res, amount) => {
             const color = canSpend(new Map([[res, amount]]), G.save.current) ? "text-green" : "text-red";
             return (
@@ -24,6 +23,6 @@ export function ResourceListComp({
                </div>
             );
          })}
-      </Box>
+      </div>
    );
 }
