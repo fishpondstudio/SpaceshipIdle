@@ -28,46 +28,49 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
             </div>
             <div className="divider mx-10 my10" />
             <div className="f1">{t(L.Research)}</div>
-            <div>
+            <div className="text-sm">
                {Array.from(ship.json.unlockedTech)
                   .map((tech) => getTechName(tech))
                   .join(", ")}
             </div>
          </div>
          <div className="h10" />
-         <DevOrAdminOnly>
-            <div className="row">
-               <button
-                  className="btn text-sm"
-                  onClick={async () => {
-                     await RPCClient.deleteShip(id);
-                     showModal({
-                        children: <ShipGalleryModal />,
-                        title: t(L.ShipGallery),
-                        size: "xl",
-                        dismiss: true,
-                     });
-                  }}
-               >
-                  Delete
-               </button>
-               <button
-                  className="btn text-sm"
-                  onClick={async () => {
-                     await RPCClient.setBaseline(id);
-                     showModal({
-                        children: <ShipGalleryModal />,
-                        title: t(L.ShipGallery),
-                        size: "xl",
-                        dismiss: true,
-                     });
-                  }}
-               >
-                  Set Baseline
-               </button>
-               <div className="f1" />
-            </div>
-         </DevOrAdminOnly>
+         <div className="row">
+            <button className="btn text-sm">{t(L.PracticeBattle)}</button>
+            <div className="f1" />
+            <DevOrAdminOnly>
+               <>
+                  <button
+                     className="btn text-sm red"
+                     onClick={async () => {
+                        await RPCClient.deleteShip(id);
+                        showModal({
+                           children: <ShipGalleryModal />,
+                           title: t(L.ShipGallery),
+                           size: "xl",
+                           dismiss: true,
+                        });
+                     }}
+                  >
+                     Delete
+                  </button>
+                  <button
+                     className="btn text-sm red"
+                     onClick={async () => {
+                        await RPCClient.setBaseline(id);
+                        showModal({
+                           children: <ShipGalleryModal />,
+                           title: t(L.ShipGallery),
+                           size: "xl",
+                           dismiss: true,
+                        });
+                     }}
+                  >
+                     Set Baseline
+                  </button>
+               </>
+            </DevOrAdminOnly>
+         </div>
          <div className="h10" />
          <ShipImageComp ship={ship.json} side={Side.Left} />
       </>

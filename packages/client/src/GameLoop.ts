@@ -35,7 +35,7 @@ export function startGameLoop(): void {
    G.pixi.ticker.add(() => {
       fps.push(G.pixi.ticker.FPS);
       const result = fps.reduce(sum, 0);
-      watermark.text = `FPS: ${Math.round(result / fps.size)}   ${navigator.onLine ? "ONLINE" : "OFFLINE"}\nVERSION: ${version}`;
+      watermark.text = `FPS: ${Math.round(result / fps.size)}    VERSION: ${version}    ${navigator.onLine ? "ONLINE" : "OFFLINE"}`;
 
       const unscaled = G.pixi.ticker.deltaMS / 1000;
       const dt = unscaled * G.speed;

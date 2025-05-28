@@ -821,3 +821,54 @@ export function removeFrom<T>(array: T[], item: T): boolean {
 export function classNames(...classes: (string | null | undefined)[]): string {
    return classes.filter(Boolean).join(" ");
 }
+
+export function mergeSort<T>(array: T[], compare: (a: T, b: T) => number): T[] {
+   const n = array.length;
+   const temp = new Array<T>(n);
+
+   // Start with subarrays of size 1 and double the size in each iteration
+   for (let size = 1; size < n; size *= 2) {
+      // Merge adjacent subarrays
+      for (let leftStart = 0; leftStart < n - 1; leftStart += 2 * size) {
+         const mid = Math.min(leftStart + size, n);
+         const rightEnd = Math.min(leftStart + 2 * size, n);
+
+         // Merge the two subarrays
+         let left = leftStart;
+         let right = mid;
+         let tempIndex = leftStart;
+
+         while (left < mid && right < rightEnd) {
+            if (compare(array[left], array[right]) <= 0) {
+               temp[tempIndex] = array[left];
+               left++;
+            } else {
+               temp[tempIndex] = array[right];
+               right++;
+            }
+            tempIndex++;
+         }
+
+         // Copy remaining elements from left subarray
+         while (left < mid) {
+            temp[tempIndex] = array[left];
+            left++;
+            tempIndex++;
+         }
+
+         // Copy remaining elements from right subarray
+         while (right < rightEnd) {
+            temp[tempIndex] = array[right];
+            right++;
+            tempIndex++;
+         }
+
+         // Copy back to original array
+         for (let i = leftStart; i < rightEnd; i++) {
+            array[i] = temp[i];
+         }
+      }
+   }
+
+   return array;
+}
