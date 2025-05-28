@@ -148,4 +148,14 @@ export class RingBuffer<T> {
          }
       }
    }
+
+   reduce(
+      callback: (previousValue: T, currentValue: T, currentIndex: number, array: RingBuffer<T>) => T,
+      initialValue: T,
+   ): T {
+      this.forEach((value, index) => {
+         initialValue = callback(initialValue, value, index, this);
+      });
+      return initialValue;
+   }
 }

@@ -1,8 +1,11 @@
 import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
 import { Container, Geometry, type IDestroyOptions, Mesh, Shader, Sprite, type Texture } from "pixi.js";
+import { Fonts } from "../assets";
+import { getVersion } from "../game/Version";
 import { runFunc, sequence, to } from "../utils/actions/Actions";
 import { Easing } from "../utils/actions/Easing";
 import { G } from "../utils/Global";
+import { UnicodeText } from "../utils/UnicodeText";
 import vert from "./shader.vert?raw";
 import frag from "./starfield.frag?raw";
 
@@ -26,6 +29,16 @@ export class Starfield extends Container {
          shader.uniforms.iTime += G.pixi.ticker.elapsedMS / 1000;
       });
       G.pixi.renderer.on("resize", this.onResize, this);
+
+      const version = this.addChild(
+         new UnicodeText(getVersion(), {
+            fontName: Fonts.SpaceshipIdle,
+            fontSize: 20,
+            tint: 0xffffff,
+         }),
+      );
+      version.anchor.set(1, 1);
+      version.position.set(app.renderer.width, app.renderer.height);
    }
 
    playParticle(texture: Texture | undefined, from: IHaveXY, target: IHaveXY, count: number): void {

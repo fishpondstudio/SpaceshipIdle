@@ -12,6 +12,7 @@ import { loadGameScene } from "./LoadGameScene";
 import { migrateSave } from "./MigrateSave";
 import { OnConnectionChanged } from "./rpc/HandleMessage";
 import { connectWebSocket } from "./rpc/RPCClient";
+import { Starfield } from "./scenes/Starfield";
 import { subscribeToEvents } from "./SubscribeToEvents";
 import { hideLoading } from "./ui/components/LoadingComp";
 import { loadSounds } from "./ui/Sound";
@@ -64,6 +65,7 @@ export async function bootstrap(): Promise<void> {
    console.timeEnd("Load Sprites");
 
    G.scene = new SceneManager({ app: G.pixi, textures });
+   G.starfield = G.scene.root.addChild(new Starfield());
 
    let isNewPlayer = false;
 

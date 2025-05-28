@@ -1,6 +1,6 @@
 import { TypedEvent } from "@spaceship-idle/shared/src/utils/TypedEvent";
 import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
-import type { Application, ColorSource, Container, FederatedPointerEvent, Texture } from "pixi.js";
+import { type Application, type ColorSource, Container, type FederatedPointerEvent, type Texture } from "pixi.js";
 import { Camera } from "./Camera";
 import type { SceneLifecycle } from "./SceneLifecycle";
 
@@ -58,12 +58,19 @@ export class SceneManager {
    private context: ISceneContext;
    private scenes = new Map<string, Scene>();
    private queuedActions = new Map<string, SceneAction[]>();
+   public readonly root: Container;
+   public readonly overlay: Container;
 
    constructor(context: ISceneContext) {
       this.context = context;
       context.app.renderer.on("resize", (width: number, height: number) => {
          this.currentScene?.onResize(width, height);
       });
+      context.app.stage.name = "Stage";
+      this.root = context.app.stage.addChild(new Container());
+      this.root.name = "SceneManager.Root";
+      this.overlay = context.app.stage.addChild(new Container());
+      this.overlay.name = "SceneManager.Overlay";
    }
 
    public getContext(): ISceneContext {
@@ -82,7 +89,7 @@ export class SceneManager {
       let scene = this.scenes.get(SceneClass.name);
       if (!scene) {
          scene = new SceneClass(this.context);
-         this.context.app.stage.addChild(scene.viewport);
+         this.root.addChild(scene.viewport);
          this.scenes.set(SceneClass.name, scene);
       }
 
