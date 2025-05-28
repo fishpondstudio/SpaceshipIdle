@@ -37,13 +37,25 @@ export class GameState {
 
 const HASH_SEED = BigInt(0xdeadbeef);
 
-export function hashGameState(gs: GameState): bigint {
-   const json = jsonEncode({
+function toHashString(gs: GameState): string {
+   return jsonEncode({
       tiles: Array.from(gs.tiles.entries()).sort((a, b) => a[0] - b[0]),
       unlockedTech: Array.from(gs.unlockedTech.values()).sort(),
       elements: Array.from(gs.elements.entries()).sort((a, b) => a[0].localeCompare(b[0])),
    });
+}
+
+export function hashGameState(gs: GameState): bigint {
+   const json = toHashString(gs);
    return wyhash_str(json, HASH_SEED);
+}
+
+export function hashGameStatePair(gs1: GameState, gs2: GameState): bigint {
+   const json1 = toHashString(gs1);
+   const json2 = toHashString(gs2);
+   const hash1 = wyhash_str(json1, HASH_SEED);
+   const hash2 = wyhash_str(json2, HASH_SEED);
+   return hash1 < hash2 ? wyhash_str(json1 + json2, HASH_SEED) : wyhash_str(json2 + json1, HASH_SEED);
 }
 
 export interface ElementChoice {

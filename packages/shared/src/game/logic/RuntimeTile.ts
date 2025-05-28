@@ -51,7 +51,7 @@ export interface ICriticalDamage {
 export class RuntimeTile {
    public target: Tile | null = null;
    public readonly insufficient: Set<Resource> = new Set();
-   public cooldown = 0;
+   public cooldown = Number.POSITIVE_INFINITY;
    public readonly statusEffects = new Map<Tile, IRuntimeEffect>();
 
    public readonly productionMultiplier = new Multiplier();

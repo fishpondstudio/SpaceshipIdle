@@ -79,7 +79,7 @@ export function tickProduction(
          const amount = _amount * data.level * data.capacity;
          mapSafeAdd(stat.theoreticalConsumed, res, amount);
          if (rt.productionTick === 0) {
-            mapSafeAdd(gs.resources, res, amount * 10);
+            mapSafeAdd(gs.resources, res, amount * 5);
          }
          if ((gs.resources.get(res) ?? 0) < amount) {
             rs.insufficient.add(res);
