@@ -179,6 +179,10 @@
    border-radius: 10px;
 }
 
+.text-mono {
+   font-family: "SpaceshipIdleMono", monospace;
+}
+
 .text-dimmed {
    color: var(--mantine-color-dark-2);
 }

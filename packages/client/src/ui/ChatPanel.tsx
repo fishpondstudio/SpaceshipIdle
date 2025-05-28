@@ -7,7 +7,7 @@ import { classNames, hasFlag, mapOf } from "@spaceship-idle/shared/src/utils/Hel
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useEffect, useRef, useState } from "react";
 import Mod from "../assets/images/Mod.png";
-import { OnChatMessage, useConnected } from "../rpc/HandleMessage";
+import { getUser, OnChatMessage, useConnected } from "../rpc/HandleMessage";
 import { RPCClient } from "../rpc/RPCClient";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
@@ -73,7 +73,7 @@ export function ChatPanelSingle({
       if (!scrollArea.current) {
          return;
       }
-      if (isMouseOver.current) {
+      if (!isLastMessageByMe() && isMouseOver.current) {
          return;
       }
       scrollArea.current.scrollTo({
@@ -190,7 +190,7 @@ export function ChatPanelSingle({
 
 function CommandOutput({ command, result }: { command: string; result: string }): React.ReactNode {
    return (
-      <div style={{ fontFamily: "monospace" }}>
+      <div className="text-mono">
          <div className="row">
             <div className="mi">terminal</div>
             <div className="f1">{command}</div>
@@ -199,4 +199,12 @@ function CommandOutput({ command, result }: { command: string; result: string })
          <div>{result}</div>
       </div>
    );
+}
+
+function isLastMessageByMe(): boolean {
+   if (_messages.length === 0) {
+      return false;
+   }
+   const lastMessage = _messages[_messages.length - 1];
+   return lastMessage.name === getUser()?.handle;
 }
