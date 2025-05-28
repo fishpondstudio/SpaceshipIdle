@@ -11,6 +11,12 @@
    align-items: center;
    justify-content: center;
    gap: 10px;
+   &.fstart {
+      justify-content: flex-start;
+   }
+   &.wrap {
+      flex-wrap: wrap;
+   }
 }
 
 .row .stretch {
@@ -106,6 +112,14 @@
 
 .mb5 {
    margin-bottom: 5px;
+}
+
+.mb-5 {
+   margin-bottom: -5px;
+}
+
+.mt-5 {
+   margin-top: -5px;
 }
 
 .p10 {

@@ -77,13 +77,13 @@ export function _HamburgerMenuComp({ flag }: { flag: GameOptionFlag }): React.Re
                onClick={() => {
                   showModal({
                      children: <ShipGalleryModal />,
-                     title: t(L.ShipGallery),
+                     title: t(L.ShipRanking),
                      size: "xl",
                      dismiss: true,
                   });
                }}
             >
-               {t(L.ShipGallery)}
+               {t(L.ShipRanking)}
             </Menu.Item>
             <Menu.Item
                leftSection={<div className="mi">settings</div>}

@@ -1,3 +1,5 @@
+import { Tooltip } from "@mantine/core";
+import { getShipScoreRank } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { calcSpaceshipValue, getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
@@ -7,8 +9,9 @@ import { ShipImageComp } from "../game/ShipImageComp";
 import { RPCClient } from "../rpc/RPCClient";
 import { showModal } from "../utils/ToggleModal";
 import { usePromise } from "../utils/UsePromise";
-import { ShipGalleryModal } from "./ShipGalleryModal";
 import { DevOrAdminOnly } from "./components/DevOnly";
+import { MatchMakingModal } from "./MatchmakingModal";
+import { ShipGalleryModal } from "./ShipGalleryModal";
 
 export function ViewShipModal({ id }: { id: string }): React.ReactNode {
    const ship = usePromise(RPCClient.viewShip(id), [id]);
@@ -18,6 +21,13 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
    return (
       <>
          <div className="panel bg-dark">
+            <div className="row text-space">
+               <div>SS {ship.json.name}</div>
+               <div className="f1" />
+               <Tooltip label={t(L.ShipRatingTooltip)}>
+                  <div>{getShipScoreRank(ship.score)}</div>
+               </Tooltip>
+            </div>
             <div className="row">
                <div className="f1">{t(L.Quantum)}</div>
                <div>{formatNumber(getUsedQuantum(ship.json))}</div>
@@ -35,8 +45,27 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
             </div>
          </div>
          <div className="h10" />
-         <div className="row">
-            <button className="btn text-sm">{t(L.PracticeBattle)}</button>
+         <div className="row" style={{ alignItems: "stretch" }}>
+            <button
+               className="btn text-sm"
+               onClick={() => {
+                  showModal({ children: <ShipGalleryModal />, title: t(L.ShipRanking), size: "xl", dismiss: true });
+               }}
+            >
+               <div className="mi">arrow_back</div>
+            </button>
+            <button
+               className="btn text-sm"
+               onClick={() => {
+                  showModal({
+                     children: <MatchMakingModal enemy={ship.json} />,
+                     size: "lg",
+                     dismiss: true,
+                  });
+               }}
+            >
+               {t(L.PracticeBattle)}
+            </button>
             <div className="f1" />
             <DevOrAdminOnly>
                <>
@@ -46,7 +75,7 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
                         await RPCClient.deleteShip(id);
                         showModal({
                            children: <ShipGalleryModal />,
-                           title: t(L.ShipGallery),
+                           title: t(L.ShipRanking),
                            size: "xl",
                            dismiss: true,
                         });
@@ -60,7 +89,7 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
                         await RPCClient.setBaseline(id);
                         showModal({
                            children: <ShipGalleryModal />,
-                           title: t(L.ShipGallery),
+                           title: t(L.ShipRanking),
                            size: "xl",
                            dismiss: true,
                         });
