@@ -1,8 +1,10 @@
+import { L, t } from "../utils/i18n";
+
 export const PeriodicTable = {
    H: {
       atomicNumber: "1",
       symbol: "H",
-      name: "Hydrogen",
+      name: t(L.ElementHydrogen),
       atomicMass: "1.0080",
       standardState: "Gas",
       groupBlock: "Nonmetal",
@@ -10,7 +12,7 @@ export const PeriodicTable = {
    He: {
       atomicNumber: "2",
       symbol: "He",
-      name: "Helium",
+      name: t(L.ElementHelium),
       atomicMass: "4.00260",
       standardState: "Gas",
       groupBlock: "Noble Gas",
@@ -18,7 +20,7 @@ export const PeriodicTable = {
    Li: {
       atomicNumber: "3",
       symbol: "Li",
-      name: "Lithium",
+      name: t(L.ElementLithium),
       atomicMass: "7.0",
       standardState: "Solid",
       groupBlock: "Alkali Metal",
@@ -26,7 +28,7 @@ export const PeriodicTable = {
    Be: {
       atomicNumber: "4",
       symbol: "Be",
-      name: "Beryllium",
+      name: t(L.ElementBeryllium),
       atomicMass: "9.012183",
       standardState: "Solid",
       groupBlock: "Alkaline Earth Metal",
@@ -34,7 +36,7 @@ export const PeriodicTable = {
    B: {
       atomicNumber: "5",
       symbol: "B",
-      name: "Boron",
+      name: t(L.ElementBoron),
       atomicMass: "10.81",
       standardState: "Solid",
       groupBlock: "Metalloid",
@@ -42,7 +44,7 @@ export const PeriodicTable = {
    C: {
       atomicNumber: "6",
       symbol: "C",
-      name: "Carbon",
+      name: t(L.ElementCarbon),
       atomicMass: "12.011",
       standardState: "Solid",
       groupBlock: "Nonmetal",
@@ -50,7 +52,7 @@ export const PeriodicTable = {
    N: {
       atomicNumber: "7",
       symbol: "N",
-      name: "Nitrogen",
+      name: t(L.ElementNitrogen),
       atomicMass: "14.007",
       standardState: "Gas",
       groupBlock: "Nonmetal",
@@ -58,7 +60,7 @@ export const PeriodicTable = {
    O: {
       atomicNumber: "8",
       symbol: "O",
-      name: "Oxygen",
+      name: t(L.ElementOxygen),
       atomicMass: "15.999",
       standardState: "Gas",
       groupBlock: "Nonmetal",
@@ -66,7 +68,7 @@ export const PeriodicTable = {
    F: {
       atomicNumber: "9",
       symbol: "F",
-      name: "Fluorine",
+      name: t(L.ElementFluorine),
       atomicMass: "18.99840316",
       standardState: "Gas",
       groupBlock: "Halogen",
@@ -74,7 +76,7 @@ export const PeriodicTable = {
    Ne: {
       atomicNumber: "10",
       symbol: "Ne",
-      name: "Neon",
+      name: t(L.ElementNeon),
       atomicMass: "20.180",
       standardState: "Gas",
       groupBlock: "Noble Gas",
@@ -82,7 +84,7 @@ export const PeriodicTable = {
    Na: {
       atomicNumber: "11",
       symbol: "Na",
-      name: "Sodium",
+      name: t(L.ElementSodium),
       atomicMass: "22.9897693",
       standardState: "Solid",
       groupBlock: "Alkali Metal",
@@ -90,7 +92,7 @@ export const PeriodicTable = {
    Mg: {
       atomicNumber: "12",
       symbol: "Mg",
-      name: "Magnesium",
+      name: t(L.ElementMagnesium),
       atomicMass: "24.305",
       standardState: "Solid",
       groupBlock: "Alkaline Earth Metal",
@@ -98,7 +100,7 @@ export const PeriodicTable = {
    Al: {
       atomicNumber: "13",
       symbol: "Al",
-      name: "Aluminum",
+      name: t(L.ElementAluminum),
       atomicMass: "26.981538",
       standardState: "Solid",
       groupBlock: "Post-Transition Metal",
@@ -106,7 +108,7 @@ export const PeriodicTable = {
    Si: {
       atomicNumber: "14",
       symbol: "Si",
-      name: "Silicon",
+      name: t(L.ElementSilicon),
       atomicMass: "28.085",
       standardState: "Solid",
       groupBlock: "Metalloid",
@@ -114,7 +116,7 @@ export const PeriodicTable = {
    P: {
       atomicNumber: "15",
       symbol: "P",
-      name: "Phosphorus",
+      name: t(L.ElementPhosphorus),
       atomicMass: "30.97376200",
       standardState: "Solid",
       groupBlock: "Nonmetal",
@@ -122,7 +124,7 @@ export const PeriodicTable = {
    S: {
       atomicNumber: "16",
       symbol: "S",
-      name: "Sulfur",
+      name: t(L.ElementSulfur),
       atomicMass: "32.07",
       standardState: "Solid",
       groupBlock: "Nonmetal",
@@ -130,7 +132,7 @@ export const PeriodicTable = {
    Cl: {
       atomicNumber: "17",
       symbol: "Cl",
-      name: "Chlorine",
+      name: t(L.ElementChlorine),
       atomicMass: "35.45",
       standardState: "Gas",
       groupBlock: "Halogen",
@@ -138,7 +140,7 @@ export const PeriodicTable = {
    Ar: {
       atomicNumber: "18",
       symbol: "Ar",
-      name: "Argon",
+      name: t(L.ElementArgon),
       atomicMass: "39.9",
       standardState: "Gas",
       groupBlock: "Noble Gas",
@@ -146,7 +148,7 @@ export const PeriodicTable = {
    K: {
       atomicNumber: "19",
       symbol: "K",
-      name: "Potassium",
+      name: t(L.ElementPotassium),
       atomicMass: "39.0983",
       standardState: "Solid",
       groupBlock: "Alkali Metal",
@@ -154,7 +156,7 @@ export const PeriodicTable = {
    Ca: {
       atomicNumber: "20",
       symbol: "Ca",
-      name: "Calcium",
+      name: t(L.ElementCalcium),
       atomicMass: "40.08",
       standardState: "Solid",
       groupBlock: "Alkaline Earth Metal",
@@ -162,7 +164,7 @@ export const PeriodicTable = {
    Sc: {
       atomicNumber: "21",
       symbol: "Sc",
-      name: "Scandium",
+      name: t(L.ElementScandium),
       atomicMass: "44.95591",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -170,7 +172,7 @@ export const PeriodicTable = {
    Ti: {
       atomicNumber: "22",
       symbol: "Ti",
-      name: "Titanium",
+      name: t(L.ElementTitanium),
       atomicMass: "47.867",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -178,7 +180,7 @@ export const PeriodicTable = {
    V: {
       atomicNumber: "23",
       symbol: "V",
-      name: "Vanadium",
+      name: t(L.ElementVanadium),
       atomicMass: "50.9415",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -186,7 +188,7 @@ export const PeriodicTable = {
    Cr: {
       atomicNumber: "24",
       symbol: "Cr",
-      name: "Chromium",
+      name: t(L.ElementChromium),
       atomicMass: "51.996",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -194,7 +196,7 @@ export const PeriodicTable = {
    Mn: {
       atomicNumber: "25",
       symbol: "Mn",
-      name: "Manganese",
+      name: t(L.ElementManganese),
       atomicMass: "54.93804",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -202,7 +204,7 @@ export const PeriodicTable = {
    Fe: {
       atomicNumber: "26",
       symbol: "Fe",
-      name: "Iron",
+      name: t(L.ElementIron),
       atomicMass: "55.84",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -210,7 +212,7 @@ export const PeriodicTable = {
    Co: {
       atomicNumber: "27",
       symbol: "Co",
-      name: "Cobalt",
+      name: t(L.ElementCobalt),
       atomicMass: "58.93319",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -218,7 +220,7 @@ export const PeriodicTable = {
    Ni: {
       atomicNumber: "28",
       symbol: "Ni",
-      name: "Nickel",
+      name: t(L.ElementNickel),
       atomicMass: "58.693",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -226,7 +228,7 @@ export const PeriodicTable = {
    Cu: {
       atomicNumber: "29",
       symbol: "Cu",
-      name: "Copper",
+      name: t(L.ElementCopper),
       atomicMass: "63.55",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -234,7 +236,7 @@ export const PeriodicTable = {
    Zn: {
       atomicNumber: "30",
       symbol: "Zn",
-      name: "Zinc",
+      name: t(L.ElementZinc),
       atomicMass: "65.4",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -242,7 +244,7 @@ export const PeriodicTable = {
    Ga: {
       atomicNumber: "31",
       symbol: "Ga",
-      name: "Gallium",
+      name: t(L.ElementGallium),
       atomicMass: "69.723",
       standardState: "Solid",
       groupBlock: "Post-Transition Metal",
@@ -250,7 +252,7 @@ export const PeriodicTable = {
    Ge: {
       atomicNumber: "32",
       symbol: "Ge",
-      name: "Germanium",
+      name: t(L.ElementGermanium),
       atomicMass: "72.63",
       standardState: "Solid",
       groupBlock: "Metalloid",
@@ -258,7 +260,7 @@ export const PeriodicTable = {
    As: {
       atomicNumber: "33",
       symbol: "As",
-      name: "Arsenic",
+      name: t(L.ElementArsenic),
       atomicMass: "74.92159",
       standardState: "Solid",
       groupBlock: "Metalloid",
@@ -266,7 +268,7 @@ export const PeriodicTable = {
    Se: {
       atomicNumber: "34",
       symbol: "Se",
-      name: "Selenium",
+      name: t(L.ElementSelenium),
       atomicMass: "78.97",
       standardState: "Solid",
       groupBlock: "Nonmetal",
@@ -274,7 +276,7 @@ export const PeriodicTable = {
    Br: {
       atomicNumber: "35",
       symbol: "Br",
-      name: "Bromine",
+      name: t(L.ElementBromine),
       atomicMass: "79.90",
       standardState: "Liquid",
       groupBlock: "Halogen",
@@ -282,7 +284,7 @@ export const PeriodicTable = {
    Kr: {
       atomicNumber: "36",
       symbol: "Kr",
-      name: "Krypton",
+      name: t(L.ElementKrypton),
       atomicMass: "83.80",
       standardState: "Gas",
       groupBlock: "Noble Gas",
@@ -290,7 +292,7 @@ export const PeriodicTable = {
    Rb: {
       atomicNumber: "37",
       symbol: "Rb",
-      name: "Rubidium",
+      name: t(L.ElementRubidium),
       atomicMass: "85.468",
       standardState: "Solid",
       groupBlock: "Alkali Metal",
@@ -298,7 +300,7 @@ export const PeriodicTable = {
    Sr: {
       atomicNumber: "38",
       symbol: "Sr",
-      name: "Strontium",
+      name: t(L.ElementStrontium),
       atomicMass: "87.62",
       standardState: "Solid",
       groupBlock: "Alkaline Earth Metal",
@@ -306,7 +308,7 @@ export const PeriodicTable = {
    Y: {
       atomicNumber: "39",
       symbol: "Y",
-      name: "Yttrium",
+      name: t(L.ElementYttrium),
       atomicMass: "88.90584",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -314,7 +316,7 @@ export const PeriodicTable = {
    Zr: {
       atomicNumber: "40",
       symbol: "Zr",
-      name: "Zirconium",
+      name: t(L.ElementZirconium),
       atomicMass: "91.22",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -322,7 +324,7 @@ export const PeriodicTable = {
    Nb: {
       atomicNumber: "41",
       symbol: "Nb",
-      name: "Niobium",
+      name: t(L.ElementNiobium),
       atomicMass: "92.90637",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -330,7 +332,7 @@ export const PeriodicTable = {
    Mo: {
       atomicNumber: "42",
       symbol: "Mo",
-      name: "Molybdenum",
+      name: t(L.ElementMolybdenum),
       atomicMass: "95.95",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -338,7 +340,7 @@ export const PeriodicTable = {
    Tc: {
       atomicNumber: "43",
       symbol: "Tc",
-      name: "Technetium",
+      name: t(L.ElementTechnetium),
       atomicMass: "96.90636",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -346,7 +348,7 @@ export const PeriodicTable = {
    Ru: {
       atomicNumber: "44",
       symbol: "Ru",
-      name: "Ruthenium",
+      name: t(L.ElementRuthenium),
       atomicMass: "101.1",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -354,7 +356,7 @@ export const PeriodicTable = {
    Rh: {
       atomicNumber: "45",
       symbol: "Rh",
-      name: "Rhodium",
+      name: t(L.ElementRhodium),
       atomicMass: "102.9055",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -362,7 +364,7 @@ export const PeriodicTable = {
    Pd: {
       atomicNumber: "46",
       symbol: "Pd",
-      name: "Palladium",
+      name: t(L.ElementPalladium),
       atomicMass: "106.42",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -370,7 +372,7 @@ export const PeriodicTable = {
    Ag: {
       atomicNumber: "47",
       symbol: "Ag",
-      name: "Silver",
+      name: t(L.ElementSilver),
       atomicMass: "107.868",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -378,7 +380,7 @@ export const PeriodicTable = {
    Cd: {
       atomicNumber: "48",
       symbol: "Cd",
-      name: "Cadmium",
+      name: t(L.ElementCadmium),
       atomicMass: "112.41",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -386,7 +388,7 @@ export const PeriodicTable = {
    In: {
       atomicNumber: "49",
       symbol: "In",
-      name: "Indium",
+      name: t(L.ElementIndium),
       atomicMass: "114.818",
       standardState: "Solid",
       groupBlock: "Post-Transition Metal",
@@ -394,7 +396,7 @@ export const PeriodicTable = {
    Sn: {
       atomicNumber: "50",
       symbol: "Sn",
-      name: "Tin",
+      name: t(L.ElementTin),
       atomicMass: "118.71",
       standardState: "Solid",
       groupBlock: "Post-Transition Metal",
@@ -402,7 +404,7 @@ export const PeriodicTable = {
    Sb: {
       atomicNumber: "51",
       symbol: "Sb",
-      name: "Antimony",
+      name: t(L.ElementAntimony),
       atomicMass: "121.760",
       standardState: "Solid",
       groupBlock: "Metalloid",
@@ -410,7 +412,7 @@ export const PeriodicTable = {
    Te: {
       atomicNumber: "52",
       symbol: "Te",
-      name: "Tellurium",
+      name: t(L.ElementTellurium),
       atomicMass: "127.6",
       standardState: "Solid",
       groupBlock: "Metalloid",
@@ -418,7 +420,7 @@ export const PeriodicTable = {
    I: {
       atomicNumber: "53",
       symbol: "I",
-      name: "Iodine",
+      name: t(L.ElementIodine),
       atomicMass: "126.9045",
       standardState: "Solid",
       groupBlock: "Halogen",
@@ -426,7 +428,7 @@ export const PeriodicTable = {
    Xe: {
       atomicNumber: "54",
       symbol: "Xe",
-      name: "Xenon",
+      name: t(L.ElementXenon),
       atomicMass: "131.29",
       standardState: "Gas",
       groupBlock: "Noble Gas",
@@ -434,7 +436,7 @@ export const PeriodicTable = {
    Cs: {
       atomicNumber: "55",
       symbol: "Cs",
-      name: "Cesium",
+      name: t(L.ElementCesium),
       atomicMass: "132.9054520",
       standardState: "Solid",
       groupBlock: "Alkali Metal",
@@ -442,7 +444,7 @@ export const PeriodicTable = {
    Ba: {
       atomicNumber: "56",
       symbol: "Ba",
-      name: "Barium",
+      name: t(L.ElementBarium),
       atomicMass: "137.33",
       standardState: "Solid",
       groupBlock: "Alkaline Earth Metal",
@@ -450,7 +452,7 @@ export const PeriodicTable = {
    La: {
       atomicNumber: "57",
       symbol: "La",
-      name: "Lanthanum",
+      name: t(L.ElementLanthanum),
       atomicMass: "138.9055",
       standardState: "Solid",
       groupBlock: "Lanthanide",
@@ -458,7 +460,7 @@ export const PeriodicTable = {
    Ce: {
       atomicNumber: "58",
       symbol: "Ce",
-      name: "Cerium",
+      name: t(L.ElementCerium),
       atomicMass: "140.116",
       standardState: "Solid",
       groupBlock: "Lanthanide",
@@ -466,7 +468,7 @@ export const PeriodicTable = {
    Pr: {
       atomicNumber: "59",
       symbol: "Pr",
-      name: "Praseodymium",
+      name: t(L.ElementPraseodymium),
       atomicMass: "140.90766",
       standardState: "Solid",
       groupBlock: "Lanthanide",
@@ -474,7 +476,7 @@ export const PeriodicTable = {
    Nd: {
       atomicNumber: "60",
       symbol: "Nd",
-      name: "Neodymium",
+      name: t(L.ElementNeodymium),
       atomicMass: "144.24",
       standardState: "Solid",
       groupBlock: "Lanthanide",
@@ -482,7 +484,7 @@ export const PeriodicTable = {
    Pm: {
       atomicNumber: "61",
       symbol: "Pm",
-      name: "Promethium",
+      name: t(L.ElementPromethium),
       atomicMass: "144.91276",
       standardState: "Solid",
       groupBlock: "Lanthanide",
@@ -490,7 +492,7 @@ export const PeriodicTable = {
    Sm: {
       atomicNumber: "62",
       symbol: "Sm",
-      name: "Samarium",
+      name: t(L.ElementSamarium),
       atomicMass: "150.4",
       standardState: "Solid",
       groupBlock: "Lanthanide",
@@ -498,7 +500,7 @@ export const PeriodicTable = {
    Eu: {
       atomicNumber: "63",
       symbol: "Eu",
-      name: "Europium",
+      name: t(L.ElementEuropium),
       atomicMass: "151.964",
       standardState: "Solid",
       groupBlock: "Lanthanide",
@@ -506,7 +508,7 @@ export const PeriodicTable = {
    Gd: {
       atomicNumber: "64",
       symbol: "Gd",
-      name: "Gadolinium",
+      name: t(L.ElementGadolinium),
       atomicMass: "157.25",
       standardState: "Solid",
       groupBlock: "Lanthanide",
@@ -514,7 +516,7 @@ export const PeriodicTable = {
    Tb: {
       atomicNumber: "65",
       symbol: "Tb",
-      name: "Terbium",
+      name: t(L.ElementTerbium),
       atomicMass: "158.92535",
       standardState: "Solid",
       groupBlock: "Lanthanide",
@@ -522,7 +524,7 @@ export const PeriodicTable = {
    Dy: {
       atomicNumber: "66",
       symbol: "Dy",
-      name: "Dysprosium",
+      name: t(L.ElementDysprosium),
       atomicMass: "162.500",
       standardState: "Solid",
       groupBlock: "Lanthanide",
@@ -530,7 +532,7 @@ export const PeriodicTable = {
    Ho: {
       atomicNumber: "67",
       symbol: "Ho",
-      name: "Holmium",
+      name: t(L.ElementHolmium),
       atomicMass: "164.93033",
       standardState: "Solid",
       groupBlock: "Lanthanide",
@@ -538,7 +540,7 @@ export const PeriodicTable = {
    Er: {
       atomicNumber: "68",
       symbol: "Er",
-      name: "Erbium",
+      name: t(L.ElementErbium),
       atomicMass: "167.26",
       standardState: "Solid",
       groupBlock: "Lanthanide",
@@ -546,7 +548,7 @@ export const PeriodicTable = {
    Tm: {
       atomicNumber: "69",
       symbol: "Tm",
-      name: "Thulium",
+      name: t(L.ElementThulium),
       atomicMass: "168.93422",
       standardState: "Solid",
       groupBlock: "Lanthanide",
@@ -554,7 +556,7 @@ export const PeriodicTable = {
    Yb: {
       atomicNumber: "70",
       symbol: "Yb",
-      name: "Ytterbium",
+      name: t(L.ElementYtterbium),
       atomicMass: "173.05",
       standardState: "Solid",
       groupBlock: "Lanthanide",
@@ -562,7 +564,7 @@ export const PeriodicTable = {
    Lu: {
       atomicNumber: "71",
       symbol: "Lu",
-      name: "Lutetium",
+      name: t(L.ElementLutetium),
       atomicMass: "174.9667",
       standardState: "Solid",
       groupBlock: "Lanthanide",
@@ -570,7 +572,7 @@ export const PeriodicTable = {
    Hf: {
       atomicNumber: "72",
       symbol: "Hf",
-      name: "Hafnium",
+      name: t(L.ElementHafnium),
       atomicMass: "178.49",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -578,7 +580,7 @@ export const PeriodicTable = {
    Ta: {
       atomicNumber: "73",
       symbol: "Ta",
-      name: "Tantalum",
+      name: t(L.ElementTantalum),
       atomicMass: "180.9479",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -586,7 +588,7 @@ export const PeriodicTable = {
    W: {
       atomicNumber: "74",
       symbol: "W",
-      name: "Tungsten",
+      name: t(L.ElementTungsten),
       atomicMass: "183.84",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -594,7 +596,7 @@ export const PeriodicTable = {
    Re: {
       atomicNumber: "75",
       symbol: "Re",
-      name: "Rhenium",
+      name: t(L.ElementRhenium),
       atomicMass: "186.207",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -602,7 +604,7 @@ export const PeriodicTable = {
    Os: {
       atomicNumber: "76",
       symbol: "Os",
-      name: "Osmium",
+      name: t(L.ElementOsmium),
       atomicMass: "190.2",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -610,7 +612,7 @@ export const PeriodicTable = {
    Ir: {
       atomicNumber: "77",
       symbol: "Ir",
-      name: "Iridium",
+      name: t(L.ElementIridium),
       atomicMass: "192.22",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -618,7 +620,7 @@ export const PeriodicTable = {
    Pt: {
       atomicNumber: "78",
       symbol: "Pt",
-      name: "Platinum",
+      name: t(L.ElementPlatinum),
       atomicMass: "195.08",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -626,7 +628,7 @@ export const PeriodicTable = {
    Au: {
       atomicNumber: "79",
       symbol: "Au",
-      name: "Gold",
+      name: t(L.ElementGold),
       atomicMass: "196.96657",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -634,7 +636,7 @@ export const PeriodicTable = {
    Hg: {
       atomicNumber: "80",
       symbol: "Hg",
-      name: "Mercury",
+      name: t(L.ElementMercury),
       atomicMass: "200.59",
       standardState: "Liquid",
       groupBlock: "Transition Metal",
@@ -642,7 +644,7 @@ export const PeriodicTable = {
    Tl: {
       atomicNumber: "81",
       symbol: "Tl",
-      name: "Thallium",
+      name: t(L.ElementThallium),
       atomicMass: "204.383",
       standardState: "Solid",
       groupBlock: "Post-Transition Metal",
@@ -650,7 +652,7 @@ export const PeriodicTable = {
    Pb: {
       atomicNumber: "82",
       symbol: "Pb",
-      name: "Lead",
+      name: t(L.ElementLead),
       atomicMass: "207",
       standardState: "Solid",
       groupBlock: "Post-Transition Metal",
@@ -658,7 +660,7 @@ export const PeriodicTable = {
    Bi: {
       atomicNumber: "83",
       symbol: "Bi",
-      name: "Bismuth",
+      name: t(L.ElementBismuth),
       atomicMass: "208.98040",
       standardState: "Solid",
       groupBlock: "Post-Transition Metal",
@@ -666,7 +668,7 @@ export const PeriodicTable = {
    Po: {
       atomicNumber: "84",
       symbol: "Po",
-      name: "Polonium",
+      name: t(L.ElementPolonium),
       atomicMass: "208.98243",
       standardState: "Solid",
       groupBlock: "Metalloid",
@@ -674,7 +676,7 @@ export const PeriodicTable = {
    At: {
       atomicNumber: "85",
       symbol: "At",
-      name: "Astatine",
+      name: t(L.ElementAstatine),
       atomicMass: "209.98715",
       standardState: "Solid",
       groupBlock: "Halogen",
@@ -682,7 +684,7 @@ export const PeriodicTable = {
    Rn: {
       atomicNumber: "86",
       symbol: "Rn",
-      name: "Radon",
+      name: t(L.ElementRadon),
       atomicMass: "222.01758",
       standardState: "Gas",
       groupBlock: "Noble Gas",
@@ -690,7 +692,7 @@ export const PeriodicTable = {
    Fr: {
       atomicNumber: "87",
       symbol: "Fr",
-      name: "Francium",
+      name: t(L.ElementFrancium),
       atomicMass: "223.01973",
       standardState: "Solid",
       groupBlock: "Alkali Metal",
@@ -698,7 +700,7 @@ export const PeriodicTable = {
    Ra: {
       atomicNumber: "88",
       symbol: "Ra",
-      name: "Radium",
+      name: t(L.ElementRadium),
       atomicMass: "226.02541",
       standardState: "Solid",
       groupBlock: "Alkaline Earth Metal",
@@ -706,7 +708,7 @@ export const PeriodicTable = {
    Ac: {
       atomicNumber: "89",
       symbol: "Ac",
-      name: "Actinium",
+      name: t(L.ElementActinium),
       atomicMass: "227.02775",
       standardState: "Solid",
       groupBlock: "Actinide",
@@ -714,7 +716,7 @@ export const PeriodicTable = {
    Th: {
       atomicNumber: "90",
       symbol: "Th",
-      name: "Thorium",
+      name: t(L.ElementThorium),
       atomicMass: "232.038",
       standardState: "Solid",
       groupBlock: "Actinide",
@@ -722,7 +724,7 @@ export const PeriodicTable = {
    Pa: {
       atomicNumber: "91",
       symbol: "Pa",
-      name: "Protactinium",
+      name: t(L.ElementProtactinium),
       atomicMass: "231.03588",
       standardState: "Solid",
       groupBlock: "Actinide",
@@ -730,7 +732,7 @@ export const PeriodicTable = {
    U: {
       atomicNumber: "92",
       symbol: "U",
-      name: "Uranium",
+      name: t(L.ElementUranium),
       atomicMass: "238.0289",
       standardState: "Solid",
       groupBlock: "Actinide",
@@ -738,7 +740,7 @@ export const PeriodicTable = {
    Np: {
       atomicNumber: "93",
       symbol: "Np",
-      name: "Neptunium",
+      name: t(L.ElementNeptunium),
       atomicMass: "237.048172",
       standardState: "Solid",
       groupBlock: "Actinide",
@@ -746,7 +748,7 @@ export const PeriodicTable = {
    Pu: {
       atomicNumber: "94",
       symbol: "Pu",
-      name: "Plutonium",
+      name: t(L.ElementPlutonium),
       atomicMass: "244.06420",
       standardState: "Solid",
       groupBlock: "Actinide",
@@ -754,7 +756,7 @@ export const PeriodicTable = {
    Am: {
       atomicNumber: "95",
       symbol: "Am",
-      name: "Americium",
+      name: t(L.ElementAmericium),
       atomicMass: "243.061380",
       standardState: "Solid",
       groupBlock: "Actinide",
@@ -762,7 +764,7 @@ export const PeriodicTable = {
    Cm: {
       atomicNumber: "96",
       symbol: "Cm",
-      name: "Curium",
+      name: t(L.ElementCurium),
       atomicMass: "247.07035",
       standardState: "Solid",
       groupBlock: "Actinide",
@@ -770,7 +772,7 @@ export const PeriodicTable = {
    Bk: {
       atomicNumber: "97",
       symbol: "Bk",
-      name: "Berkelium",
+      name: t(L.ElementBerkelium),
       atomicMass: "247.07031",
       standardState: "Solid",
       groupBlock: "Actinide",
@@ -778,7 +780,7 @@ export const PeriodicTable = {
    Cf: {
       atomicNumber: "98",
       symbol: "Cf",
-      name: "Californium",
+      name: t(L.ElementCalifornium),
       atomicMass: "251.07959",
       standardState: "Solid",
       groupBlock: "Actinide",
@@ -786,7 +788,7 @@ export const PeriodicTable = {
    Es: {
       atomicNumber: "99",
       symbol: "Es",
-      name: "Einsteinium",
+      name: t(L.ElementEinsteinium),
       atomicMass: "252.0830",
       standardState: "Solid",
       groupBlock: "Actinide",
@@ -794,7 +796,7 @@ export const PeriodicTable = {
    Fm: {
       atomicNumber: "100",
       symbol: "Fm",
-      name: "Fermium",
+      name: t(L.ElementFermium),
       atomicMass: "257.09511",
       standardState: "Solid",
       groupBlock: "Actinide",
@@ -802,7 +804,7 @@ export const PeriodicTable = {
    Md: {
       atomicNumber: "101",
       symbol: "Md",
-      name: "Mendelevium",
+      name: t(L.ElementMendelevium),
       atomicMass: "258.09843",
       standardState: "Solid",
       groupBlock: "Actinide",
@@ -810,7 +812,7 @@ export const PeriodicTable = {
    No: {
       atomicNumber: "102",
       symbol: "No",
-      name: "Nobelium",
+      name: t(L.ElementNobelium),
       atomicMass: "259.10100",
       standardState: "Solid",
       groupBlock: "Actinide",
@@ -818,7 +820,7 @@ export const PeriodicTable = {
    Lr: {
       atomicNumber: "103",
       symbol: "Lr",
-      name: "Lawrencium",
+      name: t(L.ElementLawrencium),
       atomicMass: "266.120",
       standardState: "Solid",
       groupBlock: "Actinide",
@@ -826,7 +828,7 @@ export const PeriodicTable = {
    Rf: {
       atomicNumber: "104",
       symbol: "Rf",
-      name: "Rutherfordium",
+      name: t(L.ElementRutherfordium),
       atomicMass: "267.122",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -834,7 +836,7 @@ export const PeriodicTable = {
    Db: {
       atomicNumber: "105",
       symbol: "Db",
-      name: "Dubnium",
+      name: t(L.ElementDubnium),
       atomicMass: "268.126",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -842,7 +844,7 @@ export const PeriodicTable = {
    Sg: {
       atomicNumber: "106",
       symbol: "Sg",
-      name: "Seaborgium",
+      name: t(L.ElementSeaborgium),
       atomicMass: "269.128",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -850,7 +852,7 @@ export const PeriodicTable = {
    Bh: {
       atomicNumber: "107",
       symbol: "Bh",
-      name: "Bohrium",
+      name: t(L.ElementBohrium),
       atomicMass: "270.133",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -858,7 +860,7 @@ export const PeriodicTable = {
    Hs: {
       atomicNumber: "108",
       symbol: "Hs",
-      name: "Hassium",
+      name: t(L.ElementHassium),
       atomicMass: "269.1336",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -866,7 +868,7 @@ export const PeriodicTable = {
    Mt: {
       atomicNumber: "109",
       symbol: "Mt",
-      name: "Meitnerium",
+      name: t(L.ElementMeitnerium),
       atomicMass: "277.154",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -874,7 +876,7 @@ export const PeriodicTable = {
    Ds: {
       atomicNumber: "110",
       symbol: "Ds",
-      name: "Darmstadtium",
+      name: t(L.ElementDarmstadtium),
       atomicMass: "282.166",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -882,7 +884,7 @@ export const PeriodicTable = {
    Rg: {
       atomicNumber: "111",
       symbol: "Rg",
-      name: "Roentgenium",
+      name: t(L.ElementRoentgenium),
       atomicMass: "282.169",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -890,7 +892,7 @@ export const PeriodicTable = {
    Cn: {
       atomicNumber: "112",
       symbol: "Cn",
-      name: "Copernicium",
+      name: t(L.ElementCopernicium),
       atomicMass: "286.179",
       standardState: "Solid",
       groupBlock: "Transition Metal",
@@ -898,7 +900,7 @@ export const PeriodicTable = {
    Nh: {
       atomicNumber: "113",
       symbol: "Nh",
-      name: "Nihonium",
+      name: t(L.ElementNihonium),
       atomicMass: "286.182",
       standardState: "Solid",
       groupBlock: "Post-Transition Metal",
@@ -906,7 +908,7 @@ export const PeriodicTable = {
    Fl: {
       atomicNumber: "114",
       symbol: "Fl",
-      name: "Flerovium",
+      name: t(L.ElementFlerovium),
       atomicMass: "290.192",
       standardState: "Solid",
       groupBlock: "Post-Transition Metal",
@@ -914,7 +916,7 @@ export const PeriodicTable = {
    Mc: {
       atomicNumber: "115",
       symbol: "Mc",
-      name: "Moscovium",
+      name: t(L.ElementMoscovium),
       atomicMass: "290.196",
       standardState: "Solid",
       groupBlock: "Post-Transition Metal",
@@ -922,7 +924,7 @@ export const PeriodicTable = {
    Lv: {
       atomicNumber: "116",
       symbol: "Lv",
-      name: "Livermorium",
+      name: t(L.ElementLivermorium),
       atomicMass: "293.205",
       standardState: "Solid",
       groupBlock: "Post-Transition Metal",
@@ -930,7 +932,7 @@ export const PeriodicTable = {
    Ts: {
       atomicNumber: "117",
       symbol: "Ts",
-      name: "Tennessine",
+      name: t(L.ElementTennessine),
       atomicMass: "294.211",
       standardState: "Solid",
       groupBlock: "Halogen",
@@ -938,7 +940,7 @@ export const PeriodicTable = {
    Og: {
       atomicNumber: "118",
       symbol: "Og",
-      name: "Oganesson",
+      name: t(L.ElementOganesson),
       atomicMass: "295.216",
       standardState: "Gas",
       groupBlock: "Noble Gas",
@@ -955,6 +957,11 @@ export interface IElementData {
 }
 
 export const StandardStates = ["Solid", "Liquid", "Gas"] as const;
+export const StandardStateLabel: Record<StandardState, () => string> = {
+   Solid: () => t(L.StandardStateSolid),
+   Liquid: () => t(L.StandardStateLiquid),
+   Gas: () => t(L.StandardStateGas),
+};
 export type StandardState = (typeof StandardStates)[number];
 
 export const GroupBlocks = [
@@ -969,6 +976,19 @@ export const GroupBlocks = [
    "Lanthanide",
    "Actinide",
 ] as const;
+
+export const GroupBlockLabel: Record<GroupBlock, () => string> = {
+   "Alkali Metal": () => t(L.GroupBlockAlkaliMetal),
+   "Alkaline Earth Metal": () => t(L.GroupBlockAlkalineEarthMetal),
+   "Transition Metal": () => t(L.GroupBlockTransitionMetal),
+   "Post-Transition Metal": () => t(L.GroupBlockPostTransitionMetal),
+   Metalloid: () => t(L.GroupBlockMetalloid),
+   Nonmetal: () => t(L.GroupBlockNonmetal),
+   Halogen: () => t(L.GroupBlockHalogen),
+   "Noble Gas": () => t(L.GroupBlockNobleGas),
+   Lanthanide: () => t(L.GroupBlockLanthanide),
+   Actinide: () => t(L.GroupBlockActinide),
+};
 
 export type GroupBlock = (typeof GroupBlocks)[number];
 

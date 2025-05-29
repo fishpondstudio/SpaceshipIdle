@@ -6,7 +6,12 @@ import {
    getElementUpgradeCost,
    tryUpgradeElement,
 } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
-import { PeriodicTable, type ElementSymbol } from "@spaceship-idle/shared/src/game/PeriodicTable";
+import {
+   GroupBlockLabel,
+   PeriodicTable,
+   StandardStateLabel,
+   type ElementSymbol,
+} from "@spaceship-idle/shared/src/game/PeriodicTable";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { ElementImageComp } from "../game/ElementImage";
 import { G } from "../utils/Global";
@@ -29,37 +34,37 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
          </div>
          <div className="f1">
             <div className="row">
-               <div className="f1">Element</div>
+               <div className="f1">{t(L.Element)}</div>
                <div>
                   {element.name} ({element.symbol})
                </div>
             </div>
             <div className="row">
-               <div className="f1">Atomic Number</div>
+               <div className="f1">{t(L.AtomicNumber)}</div>
                <div>{element.atomicNumber}</div>
             </div>
             <div className="row">
-               <div className="f1">Atomic Mass</div>
+               <div className="f1">{t(L.AtomicMass)}</div>
                <div>{element.atomicMass}</div>
             </div>
             <div className="row">
-               <div className="f1">Standard State</div>
-               <div>{element.standardState}</div>
+               <div className="f1">{t(L.StandardState)}</div>
+               <div>{StandardStateLabel[element.standardState]()}</div>
             </div>
             <div className="row">
-               <div className="f1">Category</div>
-               <div>{element.groupBlock}</div>
+               <div className="f1">{t(L.Category)}</div>
+               <div>{GroupBlockLabel[element.groupBlock]()}</div>
             </div>
             <div className="divider my10" />
             <div className="row">
-               <div className="f1">Level</div>
+               <div className="f1">{t(L.Level)}</div>
                <div>{inventory.level}</div>
             </div>
             <div className="text-right text-sm text-dimmed">
                {t(L.PlusXPMultiplier, inventory.level, Config.Buildings[b].name())}
             </div>
             <div className="row">
-               <div className="f1">Shards</div>
+               <div className="f1">{t(L.Shards)}</div>
                <div>
                   {inventory.amount}/{getElementUpgradeCost(inventory.level + 1)}
                </div>
