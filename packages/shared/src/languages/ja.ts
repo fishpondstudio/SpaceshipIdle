@@ -109,6 +109,7 @@ export const JA = {
    H2Reactor: "Hydrogen Reactor",
    HardReset: "Hard Reset",
    HCollector: "Hydrogen Collector",
+   HelpImproveTranslation: "Help improve this translation",
    HideDiscordIcon: "Hide Discord Icon",
    HideSteamIcon: "Hide Steam Icon",
    HideTutorial: "Hide Tutorial",
