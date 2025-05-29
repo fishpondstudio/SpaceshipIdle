@@ -91,8 +91,7 @@ export const DE = {
    ElementBoostThisRun: "+%% Produktionsmultiplikator für %%",
    ElementPermanent: "Element %% (Permanent)",
    ElementThisRun: "Element Dieser Durchlauf",
-   ElementThisRunTooltipHTML:
-      "Elemente aus diesem Durchlauf verstärken den <b>Produktionsmultiplikator</b> und werden nach dem Prestige zu <b>Elementsplittern</b>",
+   ElementThisRunTooltipHTML: "Elemente aus diesem Durchlauf verstärken den <b>Produktionsmultiplikator</b> und werden nach dem Prestige zu <b>Elementsplittern</b>",
    EnemySalvage: "Gegnerische Beute",
    Energy: "Energie",
    EVA1Booster: "EVA1 Booster",
@@ -103,8 +102,7 @@ export const DE = {
    Explosive: "Explosiv",
    ExportSpaceship: "Raumschiff exportieren",
    ExtraElementShards: "Zusätzliche Elementsplitter",
-   ExtraElementShardsTooltipHTML:
-      "<b>Elementsplitter</b> können verwendet werden, um <b>permanente Elemente</b> zu verbessern, die den <b>XP-Multiplikator</b> erhöhen",
+   ExtraElementShardsTooltipHTML: "<b>Elementsplitter</b> können verwendet werden, um <b>permanente Elemente</b> zu verbessern, die den <b>XP-Multiplikator</b> erhöhen",
    FindOpponent: "Gegner finden",
    FireCooldown: "Feuerabklingzeit",
    GameSettings: "Spieleinstellungen",
@@ -138,11 +136,9 @@ export const DE = {
    LA1Ammo: "LA1 Munition",
    LA1E: "LA1E Tetra",
    LA1EAmmo: "LA1E Munition",
-   LanguageChangeWarning:
-      "Einige Spieltexte erfordern einen Neustart des Spiels, um in der neuen Sprache angezeigt zu werden",
+   LanguageChangeWarning: "Einige Spieltexte erfordern einen Neustart des Spiels, um in der neuen Sprache angezeigt zu werden",
    LaserProjectile: "Laserprojektil",
-   LaserProjectileDesc:
-      "Laserprojektile durchdringen mehrere Module und richten an jedem nachfolgenden Modul reduzierten Schaden an. Der Schaden am N-ten Modul entspricht dem ursprünglichen Schaden geteilt durch N",
+   LaserProjectileDesc: "Laserprojektile durchdringen mehrere Module und richten an jedem nachfolgenden Modul reduzierten Schaden an. Der Schaden am N-ten Modul entspricht dem ursprünglichen Schaden geteilt durch N",
    LevelX: "Level %%",
    LifeSteal: "Schadensrückgewinnung",
    LifeStealDesc: "Gewinnt %% des verursachten Schadens als HP zurück",
@@ -175,8 +171,7 @@ export const DE = {
    NotEnoughResources: "Nicht genug Ressourcen",
    NotWithinExtent: "Module müssen innerhalb der Schiffsgrenzen sein",
    OfflineTime: "Offline-Zeit",
-   OfflineTimeDesc:
-      "Ihre Offline-Zeit wurde in %% Zeitwarp umgewandelt, der aktiviert werden kann, um zusätzliches XP zu erhalten",
+   OfflineTimeDesc: "Ihre Offline-Zeit wurde in %% Zeitwarp umgewandelt, der aktiviert werden kann, um zusätzliches XP zu erhalten",
    OperationSuccessful: "Operation erfolgreich",
    PatchNotes: "Patch-Notizen",
    PermanentLevel: "Permanentes Level",
@@ -196,8 +191,7 @@ export const DE = {
    PrestigeAnyway: "Trotzdem Prestige",
    Priority: "Priorität",
    Production: "Produktion",
-   ProductionBuildingXPHTML:
-      "Dieses Gebäude produziert kein XP ohne XP-Multiplikator. Mit XP-Multiplikator (z.B. von permanentem Element) ist <b>XP = Produktionswert (vor Produktionsmultiplikator) x XP-Multiplikator</b>",
+   ProductionBuildingXPHTML: "Dieses Gebäude produziert kein XP ohne XP-Multiplikator. Mit XP-Multiplikator (z.B. von permanentem Element) ist <b>XP = Produktionswert (vor Produktionsmultiplikator) x XP-Multiplikator</b>",
    ProductionMultiplier: "Produktionsmultiplikator",
    ProductionMultiplierBoost: "Produktionsmultiplikator-Boost",
    ProductionMultiplierBoostDesc: "+%% Produktionsmultiplikator",
@@ -213,8 +207,7 @@ export const DE = {
    QuantumProgress: "Quantum-Fortschritt",
    QuantumProgressTooltip: "Fortschritt zum nächsten Quantum",
    QuantumQualifier: "Quantum-%% Qualifikation",
-   QuantumQualifierDesc:
-      "Gewinnen Sie einen Kampf gegen ein Raumschiff mit dem gleichen Quantum, um sich für ein höheres Quantum zu qualifizieren.",
+   QuantumQualifierDesc: "Gewinnen Sie einen Kampf gegen ein Raumschiff mit dem gleichen Quantum, um sich für ein höheres Quantum zu qualifizieren.",
    QuantumTooltip: "Verwendetes Quantum / Maximales Quantum",
    RawActualDPS: "Tatsächlicher DPS / Roher DPS",
    RC: "Schienenkanone",
@@ -229,8 +222,7 @@ export const DE = {
    RC50E: "RC50E Culpeo",
    RC50EAmmo: "RC50E Munition",
    ReachedQuantum: "Quantum erreicht",
-   ReachedQuantumLimit:
-      "Sie haben das Quantum-Limit erreicht: %%. Sie können das nächste Quantum-Limit freischalten, indem Sie einen Quantum-Qualifikationskampf gewinnen",
+   ReachedQuantumLimit: "Sie haben das Quantum-Limit erreicht: %%. Sie können das nächste Quantum-Limit freischalten, indem Sie einen Quantum-Qualifikationskampf gewinnen",
    RecoverHp: "Reparieren",
    RecoverHpDesc: "Stellt %% HP pro Sekunde wieder her",
    RecoverHpOnDealingDamage10: "Proaktive Regeneration (10%)",
@@ -257,8 +249,7 @@ export const DE = {
    Rocket: "Rakete",
    RocketFab: "Raketenfabrik",
    SecondChance: "Zweite Chance",
-   SecondChanceDescHTML:
-      "Da dies Ihr erster Qualifikationskampf ist, erhalten Sie eine zweite Chance mit höherem Quantum-Limit",
+   SecondChanceDescHTML: "Da dies Ihr erster Qualifikationskampf ist, erhalten Sie eine zweite Chance mit höherem Quantum-Limit",
    SelectedXModules: "%% Module ausgewählt",
    Shards: "Splitter",
    Shield: "Schild",
@@ -356,55 +347,40 @@ export const DE = {
    TimeWarp: "Zeitwarp",
    TimeWarpTooltip: "Warp-Geschwindigkeit / Verfügbarer Zeitwarp",
    TutorialAutoBattle: "(Auto)Kampf",
-   TutorialAutoBattleContent:
-      "Kämpfe sind automatisch. Um Fairness zu gewährleisten, wird Ihr Raumschiff gegen ein Raumschiff der <b>gleichen Quantum-Stufe</b> gematcht. Wenn Ihr Raumschiff gut abschneidet, wird es in den Matchmaking-Pool aufgenommen.",
+   TutorialAutoBattleContent: "Kämpfe sind automatisch. Um Fairness zu gewährleisten, wird Ihr Raumschiff gegen ein Raumschiff der <b>gleichen Quantum-Stufe</b> gematcht. Wenn Ihr Raumschiff gut abschneidet, wird es in den Matchmaking-Pool aufgenommen.",
    TutorialBasicConcept: "Grundkonzept",
-   TutorialBuild1BoosterDescHTML:
-      "Jeder Booster-Modultyp kann nur einmal gebaut werden. Sie bieten signifikante Verstärkungseffekte, verbrauchen kein Quantum und tragen nicht zum Raumschiff-XP bei. Sie kosten Ressourcen statt XP zum Bau.",
-   TutorialBuild6ModulesDescHTML:
-      "Um ein Modul zu bauen, klicken Sie auf ein leeres Feld und wählen Sie das gewünschte Modul aus dem Seitenpanel aus.",
+   TutorialBuild1BoosterDescHTML: "Jeder Booster-Modultyp kann nur einmal gebaut werden. Sie bieten signifikante Verstärkungseffekte, verbrauchen kein Quantum und tragen nicht zum Raumschiff-XP bei. Sie kosten Ressourcen statt XP zum Bau.",
+   TutorialBuild6ModulesDescHTML: "Um ein Modul zu bauen, klicken Sie auf ein leeres Feld und wählen Sie das gewünschte Modul aus dem Seitenpanel aus.",
    TutorialBuildXBoosters: "%% Booster bauen",
    TutorialBuildXModules: "%% Module bauen",
    TutorialChat: "Hilfe erhalten",
-   TutorialChatContent:
-      "Wenn Sie sich verloren fühlen, ist der In-Game-Chat immer bereit zu helfen, fragen Sie einfach freundlich. Wählen Sie auch Ihren Spielernamen, damit Sie andere erkennen können!",
+   TutorialChatContent: "Wenn Sie sich verloren fühlen, ist der In-Game-Chat immer bereit zu helfen, fragen Sie einfach freundlich. Wählen Sie auch Ihren Spielernamen, damit Sie andere erkennen können!",
    TutorialCommunity: "In-Game-Community",
-   TutorialDiscover1ElementDescHTML:
-      "Sie werden Ihr erstes Element entdecken, wenn Sie <b>15 Quantum</b> erreichen. Sie können eines aus drei Optionen wählen. Jedes Element verstärkt den <b>Produktionsmultiplikator</b>. Sie werden zu permanenten Elementsplittern, wenn Sie Prestige erreichen.",
+   TutorialDiscover1ElementDescHTML: "Sie werden Ihr erstes Element entdecken, wenn Sie <b>15 Quantum</b> erreichen. Sie können eines aus drei Optionen wählen. Jedes Element verstärkt den <b>Produktionsmultiplikator</b>. Sie werden zu permanenten Elementsplittern, wenn Sie Prestige erreichen.",
    TutorialDiscoverXElement: "%% Element entdecken",
    TutorialElement: "Element",
    TutorialElementContent:
       "Elemente werden entdeckt, während Sie Quantum gewinnen. Sie können eines aus drei Optionen wählen und sie verstärken den <b>Produktionsmultiplikator</b>. Wenn Sie Prestige erreichen, werden alle Elemente aus diesem Durchlauf zu permanenten Elementsplittern. Permanente Elemente verstärken den <b>XP-Multiplikator</b>.",
    TutorialGameControl: "Spielsteuerung",
-   TutorialGameControlContent:
-      "<b>Klicken</b> zum Auswählen eines Moduls. <b>Ziehen</b> zum Bewegen. <b>Scrollen</b> zum Hinein- und Herauszoomen. Klicken Sie auf ein <b>leeres Modul</b> zum Bauen. <b>Strg + Klick</b> für Mehrfachauswahl.",
-   TutorialIntro:
-      "In <b>Spaceship Idle</b> entwerfen Sie Ihr eigenes modulares Raumschiff, erforschen den riesigen Technologiebaum, schalten einzigartige Waffen frei und gewinnen epische Weltraum-(Auto)Kämpfe!",
-   TutorialPower:
-      "Energie wird von <b>Generator</b>-Modulen erzeugt. Ihr Schiff startet mit einem Solarmodul, das Energie ohne Ressourcenverbrauch erzeugt. Später schalten Sie leistungsstärkere Generatoren frei, die Ressourcen verbrauchen.",
+   TutorialGameControlContent: "<b>Klicken</b> zum Auswählen eines Moduls. <b>Ziehen</b> zum Bewegen. <b>Scrollen</b> zum Hinein- und Herauszoomen. Klicken Sie auf ein <b>leeres Modul</b> zum Bauen. <b>Strg + Klick</b> für Mehrfachauswahl.",
+   TutorialIntro: "In <b>Spaceship Idle</b> entwerfen Sie Ihr eigenes modulares Raumschiff, erforschen den riesigen Technologiebaum, schalten einzigartige Waffen frei und gewinnen epische Weltraum-(Auto)Kämpfe!",
+   TutorialPower: "Energie wird von <b>Generator</b>-Modulen erzeugt. Ihr Schiff startet mit einem Solarmodul, das Energie ohne Ressourcenverbrauch erzeugt. Später schalten Sie leistungsstärkere Generatoren frei, die Ressourcen verbrauchen.",
    TutorialProgress: "Tutorial",
-   TutorialQualifierBattle:
-      "Wenn Ihr Quantum ein bestimmtes Level erreicht, müssen Sie einen <b>Qualifikationskampf gewinnen</b>, um mehr Quantum freizuschalten. Ihr qualifiziertes Quantum bestimmt das <b>maximale XP</b>, das Sie in Ihr Raumschiff investieren können.",
+   TutorialQualifierBattle: "Wenn Ihr Quantum ein bestimmtes Level erreicht, müssen Sie einen <b>Qualifikationskampf gewinnen</b>, um mehr Quantum freizuschalten. Ihr qualifiziertes Quantum bestimmt das <b>maximale XP</b>, das Sie in Ihr Raumschiff investieren können.",
    TutorialQuantum: "Quantum und Kampf",
-   TutorialQuantumContent:
-      "Wenn Ihr insgesamt produziertes XP ein bestimmtes Level erreicht, schalten Sie ein neues Quantum frei. Quantum kann verwendet werden, um <b>entweder eine Technologie freizuschalten oder ein neues Modul zu bauen</b>.",
-   TutorialReach260SpaceshipXPDescHTML:
-      "Das <b>qualifizierte Quantum</b> bestimmt die Menge an XP, die Sie in Ihr Raumschiff investieren können. Um sich auf Ihren ersten Qualifikationskampf vorzubereiten, sollten Sie so viel XP wie möglich investieren.",
+   TutorialQuantumContent: "Wenn Ihr insgesamt produziertes XP ein bestimmtes Level erreicht, schalten Sie ein neues Quantum frei. Quantum kann verwendet werden, um <b>entweder eine Technologie freizuschalten oder ein neues Modul zu bauen</b>.",
+   TutorialReach260SpaceshipXPDescHTML: "Das <b>qualifizierte Quantum</b> bestimmt die Menge an XP, die Sie in Ihr Raumschiff investieren können. Um sich auf Ihren ersten Qualifikationskampf vorzubereiten, sollten Sie so viel XP wie möglich investieren.",
    TutorialReachXSpaceshipXP: "%% Raumschiff-XP erreichen",
-   TutorialResearch8TechDescHTML:
-      "Um eine Technologie zu erforschen, klicken Sie auf den Forschungstab und wählen Sie die gewünschte Technologie aus. Beachten Sie, dass jede Technologie <b>ein Quantum kostet</b> und nicht rückgängig gemacht werden kann.",
+   TutorialResearch8TechDescHTML: "Um eine Technologie zu erforschen, klicken Sie auf den Forschungstab und wählen Sie die gewünschte Technologie aus. Beachten Sie, dass jede Technologie <b>ein Quantum kostet</b> und nicht rückgängig gemacht werden kann.",
    TutorialResearchXTech: "%% Technologie(n) erforschen",
    TutorialUse25QuantumDescHTML:
       "Quantum wird basierend auf dem gewonnenen XP generiert, was das <b>in Ihr Schiff investierte XP</b> und das verbleibende <b>XP im Speicher</b> umfasst. Sie können Quantum verwenden, um entweder eine Technologie freizuschalten oder ein neues Modul zu bauen. Wenn Sie ein Modul recyceln, wird das Quantum zurückerstattet.",
    TutorialUseXQuantum: "%% Quantum verwenden",
    TutorialWeapon: "Waffen",
-   TutorialWeaponContent:
-      "Waffen werden durch Erforschung des Technologiebaums freigeschaltet. Waffen verbrauchen Ressourcen und <b>produzieren Munition</b> - sie <b>verbrauchen auch Munition</b> beim Abfeuern. Waffen haben verschiedene Statistiken und Fähigkeiten, die aufgerüstet werden können.",
+   TutorialWeaponContent: "Waffen werden durch Erforschung des Technologiebaums freigeschaltet. Waffen verbrauchen Ressourcen und <b>produzieren Munition</b> - sie <b>verbrauchen auch Munition</b> beim Abfeuern. Waffen haben verschiedene Statistiken und Fähigkeiten, die aufgerüstet werden können.",
    TutorialWinSpaceshipBattle: "%% Raumschiff-Kampf(e) gewinnen",
-   TutorialWinSpaceshipBattleDescHTML:
-      "Das Gewinnen eines Qualifikationskampfs schaltet ein höheres Quantum-Limit frei. Dies kann entweder durch Gewinnen des <b>Qualifikationskampfs</b> bei Quantum 30 oder des <b>Zweite-Chance</b>-Kampfs bei Quantum 35 erreicht werden.",
-   TutorialXP:
-      "XP wird generiert, wenn Waffenmodule <b>feuern</b>. Fortgeschrittenere und höherlevelige Waffen generieren mehr XP. Das Bauen und Aufrüsten von Raumschiffmodulen kostet XP.",
+   TutorialWinSpaceshipBattleDescHTML: "Das Gewinnen eines Qualifikationskampfs schaltet ein höheres Quantum-Limit frei. Dies kann entweder durch Gewinnen des <b>Qualifikationskampfs</b> bei Quantum 30 oder des <b>Zweite-Chance</b>-Kampfs bei Quantum 35 erreicht werden.",
+   TutorialXP: "XP wird generiert, wenn Waffenmodule <b>feuern</b>. Fortgeschrittenere und höherlevelige Waffen generieren mehr XP. Das Bauen und Aufrüsten von Raumschiffmodulen kostet XP.",
    UnlockBuildings: "Gebäude freischalten",
    UnlockUpgrades: "Upgrades freischalten",
    Upgrade: "Upgrade",
@@ -418,8 +394,7 @@ export const DE = {
    ViewShip: "Schiff anzeigen",
    WarpPerSec: "Warp/s",
    WarpSpeed: "Warp-Geschwindigkeit",
-   WeaponBuildingXPHTML:
-      "Dieses Gebäude produziert XP, wenn Munition verbraucht wird. <b>XP = Verbrauchter Munitionswert x XP-Multiplikator</b>",
+   WeaponBuildingXPHTML: "Dieses Gebäude produziert XP, wenn Munition verbraucht wird. <b>XP = Verbrauchter Munitionswert x XP-Multiplikator</b>",
    WeaponFire: "Waffenfeuer",
    WelcomeToSpaceshipIdle: "Willkommen bei Spaceship Idle",
    WishlistFullGame: "Wünschen Sie das Vollspiel auf Steam!",
