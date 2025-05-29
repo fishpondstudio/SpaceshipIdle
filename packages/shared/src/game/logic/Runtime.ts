@@ -134,7 +134,7 @@ export class Runtime {
          this.battleTimer -= BattleTickInterval;
          this._tickBattle();
       }
-      this.gameStateUpdateTimer += dt / g.speed;
+      this.gameStateUpdateTimer += g.speed === 0 ? 0 : dt / g.speed;
       this.productionTimer += dt;
       this.battleTimer += dt;
    }

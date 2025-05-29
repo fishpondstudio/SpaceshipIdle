@@ -5,10 +5,11 @@ import { type Language, Languages, LanguagesImage } from "@spaceship-idle/shared
 import { ChatFlag, type IChat } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
 import { classNames, hasFlag, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import Mod from "../assets/images/Mod.png";
 import { getUser, OnChatMessage, useConnected } from "../rpc/HandleMessage";
 import { RPCClient } from "../rpc/RPCClient";
+import { openUrl } from "../rpc/SteamClient";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { playBling, playError } from "./Sound";
@@ -82,6 +83,16 @@ export function _ChatPanelSingle({ left, channel }: { left: number; channel: Lan
       });
    }, [handle]);
 
+   const onImageLoaded = useCallback(() => {
+      if (!scrollArea.current) {
+         return;
+      }
+      scrollArea.current.scrollTo({
+         top: scrollArea.current.scrollHeight,
+         behavior: "smooth",
+      });
+   }, []);
+
    return (
       <div className="chat-panel" style={{ left }}>
          <div
@@ -103,7 +114,9 @@ export function _ChatPanelSingle({ left, channel }: { left: number; channel: Lan
                      <div className="f1" />
                      <div>{new Date(message.time).toLocaleTimeString()}</div>
                   </div>
-                  <div className="body">{message.message}</div>
+                  <div className="body">
+                     <ChatMessage message={message.message} onImageLoaded={onImageLoaded} />
+                  </div>
                </div>
             ))}
          </div>
@@ -240,6 +253,24 @@ function CommandOutput({ command, result }: { command: string; result: string })
       </div>
    );
 }
+
+function _ChatMessage({ message, onImageLoaded }: { message: string; onImageLoaded: () => void }): React.ReactNode {
+   const isDomainWhitelisted =
+      message.startsWith("https://i.imgur.com/") ||
+      message.startsWith("https://i.gyazo.com/") ||
+      message.startsWith("https://i.ibb.co/") ||
+      message.startsWith("https://gcdnb.pbrd.co/") ||
+      message.startsWith("https://i.postimg.cc/");
+   const isExtensionWhitelisted = message.endsWith(".jpg") || message.endsWith(".png") || message.endsWith(".jpeg");
+   if (isDomainWhitelisted && isExtensionWhitelisted) {
+      return <img className="chat-image" src={message} onClick={() => openUrl(message)} onLoad={onImageLoaded} />;
+   }
+   return message;
+}
+
+const ChatMessage = memo(_ChatMessage, (prev, next) => {
+   return prev.message === next.message && prev.onImageLoaded === next.onImageLoaded;
+});
 
 function isLastMessageByMe(messages: IChat[]): boolean {
    if (messages.length === 0) {

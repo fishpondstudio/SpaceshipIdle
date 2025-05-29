@@ -1,12 +1,15 @@
 import { Tooltip } from "@mantine/core";
+import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { getShipScoreRank } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { calcSpaceshipValue, getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
-import { formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
+import { formatNumber, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { saveGame } from "../game/LoadSave";
 import { ShipImageComp } from "../game/ShipImageComp";
 import { RPCClient } from "../rpc/RPCClient";
+import { G } from "../utils/Global";
 import { showModal } from "../utils/ToggleModal";
 import { usePromise } from "../utils/UsePromise";
 import { DevOrAdminOnly } from "./components/DevOnly";
@@ -42,6 +45,24 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
                {Array.from(ship.json.unlockedTech)
                   .map((tech) => getTechName(tech))
                   .join(", ")}
+            </div>{" "}
+            <div className="divider mx-10 my10" />
+            <div className="f1">{t(L.ElementThisRun)}</div>
+            <div className="text-sm">
+               {mMapOf(ship.json.elements, (element, amount) => {
+                  const building = Config.Element.get(element);
+                  if (!building) {
+                     return null;
+                  }
+                  return (
+                     <div className="row" key={element}>
+                        <div>
+                           {element} <span className="text-dimmed">({Config.Buildings[building].name()})</span>
+                        </div>
+                        <div className="f1 text-right">{amount}</div>
+                     </div>
+                  );
+               })}
             </div>
          </div>
          <div className="h10" />
@@ -69,6 +90,16 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
             <div className="f1" />
             <DevOrAdminOnly>
                <>
+                  <button
+                     className="btn text-sm red"
+                     onClick={async () => {
+                        G.save.current = ship.json;
+                        await saveGame(G.save);
+                        window.location.reload();
+                     }}
+                  >
+                     Load
+                  </button>
                   <button
                      className="btn text-sm red"
                      onClick={async () => {

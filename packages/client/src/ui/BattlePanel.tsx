@@ -1,16 +1,13 @@
 import { type DefaultMantineColor, Progress } from "@mantine/core";
 import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
-import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import type { RuntimeStat } from "@spaceship-idle/shared/src/game/logic/RuntimeStat";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { classNames, formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
-import { refreshOnTypedEvent } from "../utils/Hook";
 
 export function BattlePanel({ side }: { side: Side }): React.ReactNode {
-   refreshOnTypedEvent(GameStateUpdated);
    if (!G.runtime) return null;
    if (G.runtime.battleType === BattleType.Peace) return null;
    const stat = side === Side.Right ? G.runtime.rightStat : G.runtime.leftStat;
