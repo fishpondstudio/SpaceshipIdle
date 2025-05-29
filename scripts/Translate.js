@@ -63,9 +63,11 @@ readdirSync(LANG_PATH).forEach((fileName) => {
       }
       if (reset) {
          result[k] = en[k];
+         return;
       }
       if (language[k]) {
          result[k] = language[k];
+         return;
       }
       result[k] = en[k];
    });
