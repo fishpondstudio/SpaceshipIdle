@@ -64,7 +64,7 @@ export class RuntimeStat {
          }
       }
       forEach(result, (k, v) => {
-         result[k] = v / n;
+         result[k] = n === 0 ? 0 : v / n;
       });
       return result;
    }

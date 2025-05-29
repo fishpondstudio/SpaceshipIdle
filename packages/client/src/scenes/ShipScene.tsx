@@ -148,7 +148,8 @@ export class ShipScene extends Scene {
 
       ShipScene.Selector = new ObjectPool<Sprite>({
          create: () => {
-            return this.viewport.addChild(new Sprite(G.textures.get("Misc/FrameSelected")));
+            const sprite = this.viewport.addChild(new Sprite(G.textures.get("Misc/FrameSelected")));
+            return sprite;
          },
          onAllocate: (t) => {
             t.visible = true;
