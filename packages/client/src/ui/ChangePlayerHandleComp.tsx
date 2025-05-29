@@ -41,7 +41,7 @@ export function ChangePlayerHandleComp(): React.ReactNode {
                               className="pointer"
                               onClick={() => setOpened(!opened)}
                               name={`Flag/${G.save.options.country}`}
-                              size={30}
+                              width={30}
                            />
                         </Tooltip>
                      </Popover.Target>
@@ -55,7 +55,7 @@ export function ChangePlayerHandleComp(): React.ReactNode {
                                  <Tooltip label={CountryCode[code]}>
                                     <TextureComp
                                        name={`Flag/${code}`}
-                                       size={30}
+                                       width={30}
                                        className="pointer"
                                        onClick={() => {
                                           G.save.options.country = code;

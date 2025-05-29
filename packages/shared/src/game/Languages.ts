@@ -7,6 +7,7 @@ import { KO } from "../languages/ko";
 import { PT_BR } from "../languages/pt-BR";
 import { RU } from "../languages/ru";
 import { ZH_CN } from "../languages/zh-CN";
+import type { CountryCode } from "../utils/CountryCode";
 
 export const Languages = {
    en: EN,
@@ -20,8 +21,16 @@ export const Languages = {
    ja: JA,
 } as const satisfies Record<string, Record<string, string>>;
 
-export const ChatLanguages = {
-   en: EN.$Language,
-} as const satisfies Partial<Record<keyof typeof Languages, string>>;
+export const LanguagesImage = {
+   en: "GB",
+   zh_CN: "CN",
+   ru: "RU",
+   es: "ES",
+   pt_BR: "BR",
+   de: "DE",
+   ko: "KR",
+   fr: "FR",
+   ja: "JP",
+} as const satisfies Record<Language, keyof typeof CountryCode>;
 
-export type ChatLanguage = keyof typeof ChatLanguages;
+export type Language = keyof typeof Languages;

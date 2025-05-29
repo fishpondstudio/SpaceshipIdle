@@ -1,5 +1,5 @@
 import type { GameState } from "../game/GameState";
-import type { ChatLanguage } from "../game/Languages";
+import type { Language } from "../game/Languages";
 import type { CountryCode } from "../utils/CountryCode";
 import type { IChat, IShip } from "./ServerMessageTypes";
 
@@ -12,7 +12,7 @@ export interface IServer {
    setBaseline: (id: string) => Promise<void>;
    findShip: (quantum: number, range: [number, number]) => Promise<IShip>;
    rankShips: (quantum: number, count: number) => Promise<IShip[]>;
-   sendChat: (message: string, channel: ChatLanguage, country: keyof typeof CountryCode) => Promise<void>;
+   sendChat: (message: string, channel: Language, country: keyof typeof CountryCode) => Promise<void>;
    sendCommand: (command: string) => Promise<string>;
-   getChatByChannel: (channel: ChatLanguage) => Promise<IChat[]>;
+   getChatByChannel: (channel: Language) => Promise<IChat[]>;
 }

@@ -112,7 +112,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                            }
                         >
                            <div className="row m10">
-                              <TextureComp name={`Building/${b}`} size={50} />
+                              <TextureComp name={`Building/${b}`} width={50} />
                               <div className="f1">
                                  <div>{Config.Buildings[b].name()}</div>
                                  <div className="text-dimmed text-xs">{getBuildingDesc(b)}</div>

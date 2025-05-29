@@ -1,5 +1,5 @@
 import { Slider, Switch, Tooltip } from "@mantine/core";
-import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { DiscordUrl, SteamUrl, TranslationUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { clearFlag, hasFlag, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
@@ -18,6 +18,10 @@ export function GameSettingsModal(): React.ReactNode {
    return (
       <>
          <ChangeLanguageComp />
+         <div className="row g5 text-sm text-space mt10 fstart pointer" onClick={() => openUrl(TranslationUrl)}>
+            <div className="mi sm">open_in_new</div>
+            <div>{t(L.HelpImproveTranslation)}</div>
+         </div>
          <div className="divider my10 mx-10" />
          <div className="row">
             {t(L.RetroFilter)}

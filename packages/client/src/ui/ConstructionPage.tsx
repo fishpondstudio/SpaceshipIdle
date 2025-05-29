@@ -111,7 +111,7 @@ function BoostComp({ building, tile, gs }: { building: Building; tile: Tile; gs:
                opacity: canBuild ? 1 : 0.25,
             }}
          >
-            <TextureComp name={`Building/${building}`} size={50} />
+            <TextureComp name={`Building/${building}`} width={50} />
             <div className="f1">
                <div className="row g5">
                   <div>{def.name()}</div>
@@ -160,7 +160,7 @@ function BuildingComp({ building, tile, gs }: { building: Building; tile: Tile; 
                opacity: canBuild ? 1 : 0.25,
             }}
          >
-            <TextureComp name={`Building/${building}`} size={50} />
+            <TextureComp name={`Building/${building}`} width={50} />
             <div className="f1">
                <div className="row g5">
                   <div>{def.name()}</div>

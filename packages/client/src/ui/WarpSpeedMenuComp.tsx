@@ -22,7 +22,7 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
                      className={classNames(G.speed > 1 ? "spin" : null)}
                      style={{ animationDuration: `${8 / G.speed}s` }}
                      name="Misc/TimeWarp"
-                     size={24}
+                     width={24}
                   />
                   <div className="f1 text-right">
                      <div>{formatNumber(G.speed)}x</div>

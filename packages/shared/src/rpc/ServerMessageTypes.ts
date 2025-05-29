@@ -1,5 +1,5 @@
 import type { GameState } from "../game/GameState";
-import type { ChatLanguage } from "../game/Languages";
+import type { Language } from "../game/Languages";
 import type { CountryCode } from "../utils/CountryCode";
 import type { ValueOf } from "../utils/Helper";
 
@@ -70,7 +70,7 @@ export interface IChat {
    time: number;
    country: keyof typeof CountryCode;
    flag: ChatFlag;
-   channel: ChatLanguage;
+   channel: Language;
 }
 
 export const ChatFlag = {

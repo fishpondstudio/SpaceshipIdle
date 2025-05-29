@@ -2,14 +2,15 @@ import { G } from "../../utils/Global";
 
 export function TextureComp({
    name,
-   size,
+   width,
+   height,
    ...attrs
-}: { name: string; size: number } & React.HTMLAttributes<HTMLDivElement>): React.ReactNode {
+}: { name: string; width?: number; height?: number } & React.HTMLAttributes<HTMLDivElement>): React.ReactNode {
    const texture = G.textures.get(name);
    if (!texture) {
       return null;
    }
-   const scale = size / texture.width;
+   const scale = width ? width / texture.width : height ? height / texture.height : 1;
    const { style, ...rest } = attrs;
    return (
       <div

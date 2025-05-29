@@ -13,7 +13,7 @@ export function TutorialBasicConceptModal(): React.ReactNode {
          <div className="h10" />
          <div className="row">
             <div className="fstart">
-               <TextureComp name={"Building/SolarPower"} size={50} />
+               <TextureComp name={"Building/SolarPower"} width={50} />
             </div>
             <div className="f1">
                <div className="text-lg text-space">{t(L.Power)}</div>
@@ -35,7 +35,7 @@ export function TutorialBasicConceptModal(): React.ReactNode {
          <div className="h10" />
          <div className="row">
             <div className="fstart">
-               <TextureComp name={"Building/AC30"} size={50} />
+               <TextureComp name={"Building/AC30"} width={50} />
             </div>
             <div className="f1">
                <div className="text-lg text-space">{t(L.TutorialWeapon)}</div>

@@ -1,11 +1,11 @@
 import { Menu } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
-import { type ChatLanguage, ChatLanguages } from "@spaceship-idle/shared/src/game/Languages";
+import { type Language, Languages, LanguagesImage } from "@spaceship-idle/shared/src/game/Languages";
 import { ChatFlag, type IChat } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
 import { classNames, hasFlag, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import Mod from "../assets/images/Mod.png";
 import { getUser, OnChatMessage, useConnected } from "../rpc/HandleMessage";
 import { RPCClient } from "../rpc/RPCClient";
@@ -14,9 +14,8 @@ import { refreshOnTypedEvent } from "../utils/Hook";
 import { playBling, playError } from "./Sound";
 import { TextureComp } from "./components/TextureComp";
 
-const _messages: IChat[] = [];
-
 export function ChatPanel(): React.ReactNode {
+   refreshOnTypedEvent(GameOptionUpdated);
    const connected = useConnected();
    if (!connected) {
       return (
@@ -36,32 +35,33 @@ export function ChatPanel(): React.ReactNode {
          </div>
       );
    }
-   return (
-      <>
-         <ChatPanelSingle channel="en" style={{ left: 10 }} />
-      </>
-   );
+
+   return Array.from(G.save.options.chatLanguages).map((language, i) => (
+      <ChatPanelSingle key={language} channel={language} left={10 + i * 310} />
+   ));
 }
 
-export function ChatPanelSingle({
-   style,
-   channel,
-}: { style: React.CSSProperties; channel: ChatLanguage }): React.ReactNode {
+const MAX_MESSAGES = 200;
+
+export function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }): React.ReactNode {
    const scrollArea = useRef<HTMLDivElement>(null);
    const isMouseOver = useRef(false);
    const handle = refreshOnTypedEvent(OnChatMessage);
-   refreshOnTypedEvent(GameOptionUpdated);
-   const [message, setMessage] = useState("");
+   const messages = useRef<IChat[]>([]);
 
    useEffect(() => {
-      _messages.length = 0;
       RPCClient.getChatByChannel(channel).then((messages) => {
          OnChatMessage.emit(messages);
       });
       const dispose = OnChatMessage.on((chat) => {
          chat.forEach((c) => {
-            _messages.push(c);
+            if (c.channel === channel) {
+               messages.current.push(c);
+            }
          });
+         if (messages.current.length > MAX_MESSAGES) {
+            messages.current.splice(0, messages.current.length - MAX_MESSAGES);
+         }
       });
       return () => {
          dispose.dispose();
@@ -73,7 +73,7 @@ export function ChatPanelSingle({
       if (!scrollArea.current) {
          return;
       }
-      if (!isLastMessageByMe() && isMouseOver.current) {
+      if (!isLastMessageByMe(messages.current) && isMouseOver.current) {
          return;
       }
       scrollArea.current.scrollTo({
@@ -82,10 +82,8 @@ export function ChatPanelSingle({
       });
    }, [handle]);
 
-   const isCommand = message.startsWith("/");
-
    return (
-      <div className="chat-panel" style={style}>
+      <div className="chat-panel" style={{ left }}>
          <div
             className="chat-message-list"
             onMouseEnter={() => {
@@ -96,11 +94,11 @@ export function ChatPanelSingle({
             }}
             ref={scrollArea}
          >
-            {_messages.map((message, index) => (
+            {messages.current.map((message, index) => (
                <div className="message" key={index}>
                   <div className="name">
                      <div>{message.name}</div>
-                     <TextureComp name={`Flag/${message.country}`} size={20} />
+                     <TextureComp name={`Flag/${message.country}`} width={20} />
                      {hasFlag(message.flag, ChatFlag.Moderator) ? <img src={Mod} style={{ height: 15 }} /> : null}
                      <div className="f1" />
                      <div>{new Date(message.time).toLocaleTimeString()}</div>
@@ -109,84 +107,126 @@ export function ChatPanelSingle({
                </div>
             ))}
          </div>
-         <div className={classNames("chat-input", isCommand ? "command" : null)}>
-            <Menu position="bottom-start">
-               <Menu.Target>
-                  <div className="mi">{isCommand ? "terminal" : "apps"}</div>
-               </Menu.Target>
-               <Menu.Dropdown>
-                  {mapOf(ChatLanguages, (language, label) => {
-                     return (
-                        <Menu.Item
-                           key={language}
-                           onClick={() => {
-                              if (G.save.options.chatLanguages.size === 1) {
-                                 playError();
-                                 return;
-                              }
-                              if (G.save.options.chatLanguages.has(language)) {
-                                 G.save.options.chatLanguages.delete(language);
-                              } else {
-                                 G.save.options.chatLanguages.add(language);
-                              }
-                              GameOptionUpdated.emit();
-                           }}
-                           leftSection={<div className="mi">check_box</div>}
-                        >
-                           {label}
-                        </Menu.Item>
-                     );
-                  })}
-               </Menu.Dropdown>
-            </Menu>
-            <input
-               type="text"
-               className={classNames("f1", message.startsWith("/") ? "command" : null)}
-               value={message}
-               onChange={(e) => {
-                  setMessage(e.target.value);
-               }}
-               onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                     e.preventDefault();
-                     e.stopPropagation();
-                     const target = e.target as HTMLInputElement;
-                     const message = target.value.trim();
-                     if (message.length === 0) {
-                        return;
-                     }
-                     setMessage("");
-                     if (message.startsWith("/")) {
-                        const command = message.substring(1);
-                        RPCClient.sendCommand(command)
-                           .then((message) => {
-                              playBling();
-                              notifications.show({
-                                 message: <CommandOutput command={command} result={message} />,
-                                 color: "blue",
-                                 autoClose: false,
-                                 position: "top-center",
-                              });
-                           })
-                           .catch((e) => {
-                              playError();
-                              notifications.show({
-                                 message: <CommandOutput command={command} result={String(e)} />,
-                                 color: "red",
-                                 autoClose: false,
-                                 position: "top-center",
-                              });
-                           });
-                        return;
-                     }
-                     RPCClient.sendChat(message, channel, G.save.options.country);
-                  }
-               }}
-            />
-         </div>
+         <ChatInput channel={channel} />
       </div>
    );
 }
+
+const ChatPanelSingle = memo(_ChatPanelSingle, (prev, next) => {
+   return prev.channel === next.channel && prev.left === next.left;
+});
+
+function _ChatInput({ channel }: { channel: Language }): React.ReactNode {
+   const [message, setMessage] = useState("");
+   const isCommand = message.startsWith("/");
+   return (
+      <div className={classNames("chat-input", isCommand ? "command" : null)}>
+         <LanguageMenu channel={channel} isCommand={isCommand} />
+         <input
+            type="text"
+            className={classNames("f1", isCommand ? "command" : null)}
+            value={message}
+            onChange={(e) => {
+               setMessage(e.target.value);
+            }}
+            onKeyDown={(e) => {
+               if (e.key === "Enter") {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  const target = e.target as HTMLInputElement;
+                  const message = target.value.trim();
+                  if (message.length === 0) {
+                     return;
+                  }
+                  setMessage("");
+                  if (message.startsWith("/")) {
+                     const command = message.substring(1);
+                     RPCClient.sendCommand(command)
+                        .then((message) => {
+                           playBling();
+                           notifications.show({
+                              message: <CommandOutput command={command} result={message} />,
+                              color: "blue",
+                              autoClose: false,
+                              position: "top-center",
+                           });
+                        })
+                        .catch((e) => {
+                           playError();
+                           notifications.show({
+                              message: <CommandOutput command={command} result={String(e)} />,
+                              color: "red",
+                              autoClose: false,
+                              position: "top-center",
+                           });
+                        });
+                     return;
+                  }
+                  RPCClient.sendChat(message, channel, G.save.options.country);
+               }
+            }}
+         />
+      </div>
+   );
+}
+
+const ChatInput = memo(_ChatInput, (prev, next) => {
+   return prev.channel === next.channel;
+});
+
+function _LanguageMenu({ channel, isCommand }: { channel: Language; isCommand: boolean }): React.ReactNode {
+   refreshOnTypedEvent(GameOptionUpdated);
+   return (
+      <Menu position="bottom-start">
+         <Menu.Target>
+            {isCommand ? (
+               <div className="mi">terminal</div>
+            ) : (
+               <TextureComp name={`Flag/${LanguagesImage[channel]}`} height={24} />
+            )}
+         </Menu.Target>
+         <Menu.Dropdown>
+            {mapOf(Languages, (language, value) => {
+               return (
+                  <Menu.Item
+                     key={language}
+                     onClick={() => {
+                        const lang = G.save.options.chatLanguages;
+
+                        if (lang.has(language)) {
+                           lang.delete(language);
+                        } else {
+                           lang.add(language);
+                        }
+
+                        if (lang.size === 0) {
+                           playError();
+                           lang.add(language);
+                           return;
+                        }
+
+                        GameOptionUpdated.emit();
+                     }}
+                     leftSection={
+                        G.save.options.chatLanguages.has(language) ? (
+                           <div className="mi">check_box</div>
+                        ) : (
+                           <div className="mi">check_box_outline_blank</div>
+                        )
+                     }
+                  >
+                     {value.$Language}
+                  </Menu.Item>
+               );
+            })}
+         </Menu.Dropdown>
+      </Menu>
+   );
+}
+
+const LanguageMenu = memo(_LanguageMenu, (prev, next) => {
+   return prev.channel === next.channel && prev.isCommand === next.isCommand;
+});
 
 function CommandOutput({ command, result }: { command: string; result: string }): React.ReactNode {
    return (
@@ -201,10 +241,10 @@ function CommandOutput({ command, result }: { command: string; result: string })
    );
 }
 
-function isLastMessageByMe(): boolean {
-   if (_messages.length === 0) {
+function isLastMessageByMe(messages: IChat[]): boolean {
+   if (messages.length === 0) {
       return false;
    }
-   const lastMessage = _messages[_messages.length - 1];
+   const lastMessage = messages[messages.length - 1];
    return lastMessage.name === getUser()?.handle;
 }
