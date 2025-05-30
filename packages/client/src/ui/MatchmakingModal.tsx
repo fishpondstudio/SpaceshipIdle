@@ -3,8 +3,8 @@ import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/gam
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
    calcSpaceshipValue,
+   getMatchmakingQuantum,
    getQuantumLimit,
-   getQuantumQualified,
    getUsedQuantum,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
@@ -22,7 +22,7 @@ import { hideSidebar } from "./Sidebar";
 
 export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNode {
    const [isPracticeBattle, setIsPracticeBattle] = useState(
-      getUsedQuantum(enemy) < getQuantumQualified(G.save.current),
+      getUsedQuantum(enemy) < getMatchmakingQuantum(G.save.current),
    );
    return (
       <div style={{ padding: 5 }}>

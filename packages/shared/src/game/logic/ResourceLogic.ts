@@ -29,10 +29,10 @@ export function getMaxSpaceshipValue(gs: GameState): number {
 }
 
 export function getQuantumLimit(gs: GameState): number {
-   return getQuantumQualified(gs) + gs.trialCount * TrialQuantum;
+   return getMatchmakingQuantum(gs) + gs.trialCount * TrialQuantum;
 }
 
-export function getQuantumQualified(gs: GameState): number {
+export function getMatchmakingQuantum(gs: GameState): number {
    return gs.battleCount * BattleQuantum + 30;
 }
 

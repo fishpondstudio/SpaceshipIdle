@@ -334,7 +334,6 @@ export const JA = {
    ProjectileCount: "発射あたりの弾数",
    ProjectileSpeed: "弾速",
    PropertyTooltip: "基本: %%, レベルごとの成長: %%",
-   QualifiedQuantum: "認定量子",
    Qualifier: "認定者",
    QualifierBattle: "認定戦",
    QualifierBattleShort: "認定",

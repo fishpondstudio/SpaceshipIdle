@@ -334,7 +334,6 @@ export const KO = {
    ProjectileCount: "발사당 발사체 수",
    ProjectileSpeed: "발사체 속도",
    PropertyTooltip: "기본: %%, 레벨당 성장: %%",
-   QualifiedQuantum: "인증된 양자",
    Qualifier: "인증자",
    QualifierBattle: "인증 전투",
    QualifierBattleShort: "인증",

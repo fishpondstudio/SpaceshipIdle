@@ -5,7 +5,6 @@ import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
    getCurrentQuantum,
    getQuantumLimit,
-   getQuantumQualified,
    getUsedQuantum,
    quantumToSpaceshipValue,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -18,13 +17,13 @@ import { refreshOnTypedEvent } from "../utils/Hook";
 export function QuantumProgressModal(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const start = Math.floor(getQuantumLimit(G.save.current) / BattleQuantum - 1) * BattleQuantum;
-   const qualified = getQuantumQualified(G.save.current);
+   const limit = getQuantumLimit(G.save.current);
    const current = getCurrentQuantum(G.save.current);
    const used = getUsedQuantum(G.save.current);
    return (
       <>
          <div className="panel p5 text-center text-xs mb10 row" style={{ padding: "5px 10px" }}>
-            <div className="f1 text-left text-space">{t(L.QualifiedQuantum)}</div>
+            <div className="f1 text-left text-space">{t(L.QuantumLimit)}</div>
             <div className="f1 text-center text-blue">{t(L.ReachedQuantum)}</div>
             <div className="f1 text-right text-green">{t(L.UsedQuantum)}</div>
          </div>
@@ -35,7 +34,7 @@ export function QuantumProgressModal(): React.ReactNode {
                      <QuantumBlock
                         key={i}
                         start={start + BattleQuantum * i}
-                        qualified={qualified}
+                        qualified={limit}
                         current={current}
                         used={used}
                      />

@@ -8,7 +8,6 @@ import {
    getMaxSpaceshipValue,
    getNextQuantumProgress,
    getQuantumLimit,
-   getQuantumQualified,
    getUsedQuantum,
    resourceDiffOf,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -63,7 +62,7 @@ export function ShipInfoPanel(): React.ReactNode {
    G.runtime.rightStat.averageRawDamage(10, rawDamages);
    G.runtime.rightStat.averageActualDamage(10, actualDamages);
    const maxSV = getMaxSpaceshipValue(state);
-   const qualified = getQuantumQualified(state);
+   const quantumLimit = getQuantumLimit(state);
    return (
       <div className="sf-frame ship-info">
          <HamburgerMenuComp flag={options.flag} />
@@ -72,7 +71,7 @@ export function ShipInfoPanel(): React.ReactNode {
          <div className="divider vertical" />
          <XPComp xp={state.resources.get("XP") ?? 0} delta={xpDelta} />
          <div className="divider vertical" />
-         <SpaceshipValueComp sv={sv} maxSV={maxSV} quantum={qualified} />
+         <SpaceshipValueComp sv={sv} maxSV={maxSV} quantum={quantumLimit} />
          <div className="divider vertical" />
          <QuantumComp
             usedQuantum={getUsedQuantum(state)}
@@ -90,7 +89,7 @@ export function ShipInfoPanel(): React.ReactNode {
             actual={reduceOf(actualDamages, (prev, curr, value) => prev + value, 0)}
          />
          <div className="divider vertical" />
-         <BattleComp highlight={getUsedQuantum(G.save.current) >= getQuantumLimit(state)} quantum={qualified} />
+         <BattleComp highlight={getUsedQuantum(G.save.current) >= getQuantumLimit(state)} quantum={quantumLimit} />
          <SteamComp show={!hasFlag(options.flag, GameOptionFlag.HideSteamIcon)} />
          <DiscordComp show={!hasFlag(options.flag, GameOptionFlag.HideDiscordIcon)} />
       </div>

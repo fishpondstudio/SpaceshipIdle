@@ -334,7 +334,6 @@ export const EN = {
    ProjectileCount: "Projectile Per Fire",
    ProjectileSpeed: "Projectile Speed",
    PropertyTooltip: "Base: %%, Growth Per Level: %%",
-   QualifiedQuantum: "Qualified Quantum",
    Qualifier: "Qualifier",
    QualifierBattle: "Qualifier Battle",
    QualifierBattleShort: "Qualifier",

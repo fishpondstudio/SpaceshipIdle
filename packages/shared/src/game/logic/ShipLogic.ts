@@ -1,8 +1,11 @@
 import { createTile, type Tile, tileToPoint } from "../../utils/Helper";
 import { AABB, type IHaveXY } from "../../utils/Vector2";
+import { Config } from "../Config";
+import type { Building } from "../definitions/Buildings";
 import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
 import type { ITileData } from "../ITileData";
+import { calcSpaceshipValue, getMaxSpaceshipValue, getQuantumLimit, getUsedQuantum } from "./ResourceLogic";
 import { Side } from "./Side";
 
 export function calculateAABB(tiles: Tiles): AABB {
@@ -115,4 +118,43 @@ export function isWithinShipExtent(tile: Tile, gs: GameState): boolean {
    const { x, y } = tileToPoint(tile);
    const center = { x: (MaxX >> 1) - ext - 1, y: MaxY >> 1 };
    return x >= center.x - ext && x < center.x + ext && y >= center.y - ext && y < center.y + ext;
+}
+
+export function validateShip(gs: GameState): boolean {
+   const quantumLimit = getQuantumLimit(gs);
+   const usedQuantum = getUsedQuantum(gs);
+   if (usedQuantum > quantumLimit) {
+      return false;
+   }
+
+   const sv = calcSpaceshipValue(gs);
+   const maxSV = getMaxSpaceshipValue(gs);
+   if (sv > maxSV) {
+      return false;
+   }
+
+   const buildings = new Set<Building>();
+   gs.unlockedTech.forEach((tech) => {
+      Config.Tech[tech].unlockBuildings?.forEach((b) => {
+         buildings.add(b);
+      });
+   });
+
+   for (const [tile, data] of gs.tiles) {
+      if (!buildings.has(data.type)) {
+         return false;
+      }
+   }
+
+   for (const [element, amount] of gs.elements) {
+      const building = Config.Element.get(element);
+      if (!building) {
+         return false;
+      }
+      if (!buildings.has(building)) {
+         return false;
+      }
+   }
+
+   return true;
 }

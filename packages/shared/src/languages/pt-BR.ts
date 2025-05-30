@@ -334,7 +334,6 @@ export const PT_BR = {
    ProjectileCount: "Projéteis por Disparo",
    ProjectileSpeed: "Velocidade do Projétil",
    PropertyTooltip: "Base: %%, Crescimento por Nível: %%",
-   QualifiedQuantum: "Quantum Qualificado",
    Qualifier: "Qualificador",
    QualifierBattle: "Batalha Qualificadora",
    QualifierBattleShort: "Qualificatória",

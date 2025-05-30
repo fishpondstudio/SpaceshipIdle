@@ -334,7 +334,6 @@ export const ZH_CN = {
    ProjectileCount: "每次射击射弹数",
    ProjectileSpeed: "射弹速度",
    PropertyTooltip: "基础：%%，每级成长：%%",
-   QualifiedQuantum: "合格量子",
    Qualifier: "资格战",
    QualifierBattle: "资格战",
    QualifierBattleShort: "资格战",

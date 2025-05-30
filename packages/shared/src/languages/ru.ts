@@ -334,7 +334,6 @@ export const RU = {
    ProjectileCount: "Снарядов за выстрел",
    ProjectileSpeed: "Скорость снаряда",
    PropertyTooltip: "База: %%, Рост за уровень: %%",
-   QualifiedQuantum: "Квалифицированный квант",
    Qualifier: "Квалификация",
    QualifierBattle: "Квалификационный бой",
    QualifierBattleShort: "Квалификация",
