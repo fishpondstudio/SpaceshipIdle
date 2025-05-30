@@ -14,11 +14,8 @@ import { DevOrAdminOnly } from "./components/DevOnly";
 import { playError } from "./Sound";
 import { ViewShipModal } from "./ViewShipModal";
 
-const PerPage = 9;
-
 export function ShipGalleryModal(): React.ReactNode {
    const [counter, setCounter] = useState(0);
-   const [page, setPage] = useState(0);
    const [result, setResult] = useState<{ total: number; ships: IShip[] } | null>(null);
    const [quantum, setQuantum] = useState(30);
    useEffect(() => {
@@ -26,11 +23,10 @@ export function ShipGalleryModal(): React.ReactNode {
          setResult({ total: 9, ships });
       });
    }, [quantum]);
-   const totalPages = Math.ceil((result?.total ?? 0) / PerPage);
    return (
       <>
-         <div className="row mb10 fstart">
-            {[30, 40, 50, 60, 70, 80, 90].map((q) => {
+         <div className="row mb10 fstart wrap">
+            {[30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150].map((q) => {
                return (
                   <button
                      key={q}
