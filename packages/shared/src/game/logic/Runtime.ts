@@ -1,9 +1,10 @@
-import { createTile, mapSafeAdd, type Tile } from "../../utils/Helper";
+import { clamp, createTile, mapSafeAdd, type Tile } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { GameOption } from "../GameOption";
 import { type GameState, GameStateUpdated, type SaveGame, type Tiles } from "../GameState";
 import { makeTile } from "../ITileData";
-import { BattleTickInterval, ProductionTickInterval } from "../definitions/Constant";
+import { DamageType } from "../definitions/BuildingProps";
+import { BattleTickInterval, ProductionTickInterval, SuddenDeathTick } from "../definitions/Constant";
 import { tickProjectiles, tickTiles } from "./BattleLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType } from "./BattleType";
@@ -108,6 +109,18 @@ export class Runtime {
       this.tiles.delete(tile);
    }
 
+   destroy(tile: Tile): void {
+      const rs = this.get(tile);
+      if (!rs) return;
+      rs.onDestroyed();
+      if (isEnemy(tile)) {
+         this.rightStat.destroyedHP += rs.props.hp;
+      } else {
+         this.leftStat.destroyedHP += rs.props.hp;
+      }
+      this.delete(tile);
+   }
+
    public schedule(action: () => void, second: number): void {
       if (second === 0) {
          action();
@@ -128,6 +141,7 @@ export class Runtime {
          this._prepareForProduction();
          this._tickStatusEffect();
          this._tickProduction();
+         this._checkLifeTime();
          this.gameStateDirty = true;
       }
       while (this.battleTimer >= BattleTickInterval) {
@@ -176,15 +190,6 @@ export class Runtime {
       }
    }
 
-   public onBuildingDestroyed(tile: Tile, hp: number): void {
-      this.get(tile)?.onDestroyed();
-      if (isEnemy(tile)) {
-         this.rightStat.destroyedHP += hp;
-      } else {
-         this.leftStat.destroyedHP += hp;
-      }
-   }
-
    public tabulateHP(tiles: Tiles): [number, number] {
       let hp = 0;
       let totalHP = 0;
@@ -221,8 +226,7 @@ export class Runtime {
       for (const [key, val] of this.tiles) {
          val.tickStatusEffect();
          if (val.isDead) {
-            this.onBuildingDestroyed(key, val.props.hp);
-            this.delete(key);
+            this.destroy(key);
          }
       }
    }
@@ -239,6 +243,26 @@ export class Runtime {
       tickProduction(this.right, this.rightStat, this, null);
       tickElement(this.left);
       ++this.productionTick;
+   }
+
+   public suddenDeathDamage(): number {
+      return clamp(this.productionTick - SuddenDeathTick, 0, Number.POSITIVE_INFINITY);
+   }
+
+   private _checkLifeTime(): void {
+      if (this.battleType === BattleType.Peace) {
+         return;
+      }
+      const damage = this.suddenDeathDamage();
+      this.tiles.forEach((rs) => {
+         if (this.productionTick >= rs.props.lifeTime) {
+            this.destroy(rs.tile);
+         } else if (damage > 0) {
+            rs.takeDamage(damage, DamageType.Kinetic);
+            rs.takeDamage(damage, DamageType.Explosive);
+            rs.takeDamage(damage, DamageType.Energy);
+         }
+      });
    }
 
    private checkBattleStatus(): BattleStatus {

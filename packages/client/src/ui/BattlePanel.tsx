@@ -1,11 +1,38 @@
-import { type DefaultMantineColor, Progress } from "@mantine/core";
+import { type DefaultMantineColor, Progress, Tooltip } from "@mantine/core";
 import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import type { RuntimeStat } from "@spaceship-idle/shared/src/game/logic/RuntimeStat";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
-import { classNames, formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
+import { classNames, formatHMS, formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
+
+const timerPanelWidth = 300;
+
+export function TimerPanel(): React.ReactNode {
+   if (!G.runtime) return null;
+   if (G.runtime.battleType === BattleType.Peace) return null;
+   const suddenDeathDamage = G.runtime.suddenDeathDamage();
+   return (
+      <div
+         className={classNames("timer-panel", suddenDeathDamage > 0 ? "text-red breathing" : null)}
+         style={{
+            width: timerPanelWidth,
+            left: `calc(50vw - ${timerPanelWidth / 2}px)`,
+         }}
+      >
+         <div className="timer">{formatHMS(G.runtime.productionTick * 1000)}</div>
+         <Tooltip disabled={suddenDeathDamage <= 0} label={t(L.SuddenDeathTooltip, suddenDeathDamage)}>
+            <div className="row g5">
+               <div className="text-sm">
+                  {G.runtime.battleType === BattleType.Qualifier ? t(L.QualifierBattleShort) : t(L.PracticeBattleShort)}
+               </div>
+               {suddenDeathDamage > 0 ? <div className="mi sm">skull</div> : null}
+            </div>
+         </Tooltip>
+      </div>
+   );
+}
 
 export function BattlePanel({ side }: { side: Side }): React.ReactNode {
    if (!G.runtime) return null;

@@ -41,7 +41,8 @@ export interface IRuntimeEffect {
    timeLeft: number;
 }
 
-export type RuntimeProps = DefenseProp & Omit<WeaponProp, "damagePct"> & { hp: number; damagePerProjectile: number };
+export type RuntimeProps = DefenseProp &
+   Omit<WeaponProp, "damagePct"> & { hp: number; damagePerProjectile: number; lifeTime: number };
 
 export interface ICriticalDamage {
    chance: number;
@@ -65,6 +66,7 @@ export class RuntimeTile {
    public props: RuntimeProps = {
       hp: 0,
       damagePerProjectile: 0,
+      lifeTime: Number.POSITIVE_INFINITY,
       armor: 0,
       shield: 0,
       deflection: 0,
@@ -79,6 +81,7 @@ export class RuntimeTile {
    public originalProps: RuntimeProps = {
       hp: 0,
       damagePerProjectile: 0,
+      lifeTime: Number.POSITIVE_INFINITY,
       armor: 0,
       shield: 0,
       deflection: 0,
@@ -227,6 +230,9 @@ export class RuntimeTile {
       });
       const normVal = getNormalizedValue(this.data);
       this.props.hp = damageToHp(normVal, this.data.type);
+      if ("lifeTime" in def) {
+         this.props.lifeTime = def.lifeTime;
+      }
       if (WeaponKey in def) {
          const dmg = normVal * getCooldownMultiplier(this.data);
          this.props.damagePerProjectile = (def.damagePct * dmg) / def.projectiles;

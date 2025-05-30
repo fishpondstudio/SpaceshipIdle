@@ -4,7 +4,7 @@ import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
-import { BattlePanel } from "./BattlePanel";
+import { BattlePanel, TimerPanel } from "./BattlePanel";
 import { ResourcePanel } from "./ResourcePanel";
 import { ShipInfoPanel } from "./ShipInfoPanel";
 
@@ -23,6 +23,7 @@ export function TopPanel(): React.ReactNode {
    return (
       <>
          <BattlePanel side={Side.Left} />
+         <TimerPanel />
          <BattlePanel side={Side.Right} />
       </>
    );

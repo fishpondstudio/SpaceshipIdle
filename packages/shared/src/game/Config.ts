@@ -8,7 +8,6 @@ import { getTechForBuilding } from "./logic/TechLogic";
 import type { ElementSymbol } from "./PeriodicTable";
 
 export const Config = {
-   initialized: false,
    Buildings,
    Resources,
    Tech: new TechDefinitions(),
@@ -83,9 +82,6 @@ export function priceMultiplier(inputSize: number): number {
 }
 
 function initConfig(): void {
-   if (Config.initialized) {
-      return;
-   }
    forEach(Config.Resources, (res) => {
       calculatePrice(res);
    });
@@ -128,7 +124,6 @@ function initConfig(): void {
    console.log("Resource Tier", Config.ResourceTier);
    console.log("Building Tier", Config.BuildingTier);
    console.log(`# of techs: ${sizeOf(Config.Tech)}`);
-   Config.initialized = true;
 }
 
 initConfig();

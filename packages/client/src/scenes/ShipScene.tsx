@@ -14,6 +14,7 @@ import {
 import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
 import { BuildingFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { OnDamaged, OnEvasion, OnProjectileHit } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
    canSpend,
    getBuildingValue,
@@ -299,7 +300,7 @@ export class ShipScene extends Scene {
          if (!rt.left.tiles.has(tile) && !rt.right.tiles.has(tile)) {
             visual.destroy({ children: true, baseTexture: false });
             this._tileVisuals.delete(tile);
-            if (dt > 0 && isEnemy(tile)) {
+            if ((dt > 0 && rt.battleType !== BattleType.Peace) || isEnemy(tile)) {
                this.explode(tileToPosCenter(tile), visual.tint);
             }
          }

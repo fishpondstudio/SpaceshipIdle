@@ -8,7 +8,7 @@ import { GridSize, posToTile } from "../Grid";
 import { abilityTarget, AbilityTiming } from "../definitions/Ability";
 import { BuildingFlag, type IBoosterDefinition, WeaponFlag, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
-import { BattleTickInterval, DefaultCooldown } from "../definitions/Constant";
+import { BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType } from "./BattleType";
 import { Projectile } from "./Projectile";
@@ -76,8 +76,7 @@ export function tickProjectiles(
             damageSource?.onDealingDamage(damage, projectile.damageType, damageTarget);
          }
          if (damageTarget.isDead) {
-            runtime.onBuildingDestroyed(tile, damageTarget.props.hp);
-            runtime.delete(tile);
+            runtime.destroy(tile);
          }
       }
       projectile.time += BattleTickInterval;
@@ -249,11 +248,11 @@ export function calcShipScore(ship: GameState, reference: GameState): [number, R
    const rt = new Runtime({ current: me, options: new GameOption() }, enemy);
    rt.battleType = BattleType.Simulated;
    const speed = { speed: 1 };
-   while (rt.battleStatus === BattleStatus.InProgress && rt.productionTick <= 10 * 50) {
+   while (rt.battleStatus === BattleStatus.InProgress && rt.productionTick <= MaxBattleTick) {
       rt.tick(BattleTickInterval, speed);
    }
-   if (rt.productionTick >= 10 * 50) {
-      console.log(ship.id, ship.name, reference.id, reference.name);
+   if (rt.productionTick >= MaxBattleTick) {
+      console.log(`${ship.name} (${ship.id}) vs ${reference.name} (${reference.id}): ${rt.productionTick}s`);
    }
    const [left, right] = rt.totalDealtDamage();
    return [left / right, rt];

@@ -2,7 +2,6 @@ import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { resourceDiffOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { classNames, formatNumber, hasFlag, mMapOf, mathSign } from "@spaceship-idle/shared/src/utils/Helper";
-import "../css/resource-panel.css";
 import { G } from "../utils/Global";
 import { ResourceAmount } from "./components/ResourceAmountComp";
 

@@ -209,14 +209,14 @@ export const StatusEffects = {
          damageSource?.takeDamage(damage * value, damageType);
       },
    },
-   RecoverHpOnTakingDamage10: {
-      name: () => t(L.RecoverHpOnTakingDamage10),
-      desc: (value) => t(L.RecoverHpOnTakingDamage10Desc, formatPercent(value)),
+   RecoverHpOnTakingDamage2x: {
+      name: () => t(L.RecoverHpOnTakingDamage2x),
+      desc: (value) => t(L.RecoverHpOnTakingDamage2xDesc, formatPercent(value)),
       flag: StatusEffectFlag.Positive,
       type: StatusEffectType.Electrical,
       onTakingDamage: (value, damage, damageType, damageSource, damageTarget) => {
          if (damageTarget.runtime.random() < value) {
-            damageTarget.recoverHp(damageTarget.props.hp * 0.1);
+            damageTarget.recoverHp(damage * 2);
          }
       },
    },

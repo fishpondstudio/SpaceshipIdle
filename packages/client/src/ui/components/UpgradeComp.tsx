@@ -2,6 +2,7 @@ import { Image, Slider, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { AbilityRangeLabel } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import { BuildingFlag, type IBoosterDefinition } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
    canSpend,
@@ -31,25 +32,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
    }
    const def = Config.Buildings[data.type];
    if (hasFlag(def.buildingFlag, BuildingFlag.Booster)) {
-      const boostDef = def as IBoosterDefinition;
-      return (
-         <div className="mx10">
-            <div className="row">
-               <div className="f1">{t(L.BoostEffect)}</div>
-               <div>{boostDef.desc()}</div>
-            </div>
-            <div className="row">
-               <div className="f1">{t(L.BoostRange)}</div>
-               <Tooltip
-                  p={5}
-                  disabled={!AbilityRangeImage[boostDef.range]}
-                  label={<Image radius="sm" w={200} src={AbilityRangeImage[boostDef.range]} />}
-               >
-                  <div className="text-space">{AbilityRangeLabel[boostDef.range]()}</div>
-               </Tooltip>
-            </div>
-         </div>
-      );
+      return <BoosterComp building={data.type} />;
    }
    const tiles = new Set(gs.tiles.keys());
    tiles.delete(tile);
@@ -206,3 +189,39 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
       </>
    );
 }
+
+function _BoosterComp({ building }: { building: Building }): React.ReactNode {
+   const def = Config.Buildings[building];
+   if (!hasFlag(def.buildingFlag, BuildingFlag.Booster)) {
+      return null;
+   }
+   const booster = def as IBoosterDefinition;
+   return (
+      <div className="mx10">
+         <div className="row">
+            <div className="f1">{t(L.BoostEffect)}</div>
+            <div>{booster.desc()}</div>
+         </div>
+         <div className="row">
+            <div className="f1">{t(L.BoostRange)}</div>
+            <Tooltip
+               p={5}
+               disabled={!AbilityRangeImage[booster.range]}
+               label={<Image radius="sm" w={200} src={AbilityRangeImage[booster.range]} />}
+            >
+               <div className="text-space">{AbilityRangeLabel[booster.range]()}</div>
+            </Tooltip>
+         </div>
+         <div className="row">
+            <div className="f1">{t(L.BoosterLifeTime)}</div>
+            <Tooltip label={t(L.BoosterLifeTimeDesc, booster.lifeTime)}>
+               <div>{booster.lifeTime}</div>
+            </Tooltip>
+         </div>
+      </div>
+   );
+}
+
+const BoosterComp = memo(_BoosterComp, (oldProps, newProps) => {
+   return oldProps.building === newProps.building;
+});

@@ -27,7 +27,7 @@ function _SpeedSwitcher({ speed }: { speed: number }): React.ReactNode {
             position: "absolute",
             width: speedWidth,
             bottom: 10,
-            left: `calc(50vw - ${sceneWidth / 2}px)`,
+            left: `calc(50vw - ${speedWidth / 2}px)`,
             border: "1px solid var(--mantine-color-default-border)",
          }}
          onChange={(value) => {

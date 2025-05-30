@@ -1,0 +1,66 @@
+.ship-info {
+   padding: 1px;
+   position: absolute;
+   top: 10px;
+   left: 10px;
+   text-align: center;
+   font-size: var(--mantine-font-size-sm);
+   color: white;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   line-height: 1;
+   .xs {
+      font-size: var(--mantine-font-size-xs);
+   }
+   .block {
+      align-self: stretch;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0 5px;
+   }
+   .progress {
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      transition: width 0.2s ease-in-out;
+      background-color: var(--mantine-color-blue-filled);
+      height: 3px;
+   }
+}
+
+.resource-panel {
+   max-height: 30vh;
+   overflow-y: auto;
+   overflow-x: hidden;
+   text-shadow: 1px 1px 0 #000;
+   position: absolute;
+   top: 55px;
+   left: 10px;
+   font-size: var(--mantine-font-size-sm);
+   /* mask-image: linear-gradient(rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.25) 100%);
+     mask-mode: alpha; */
+   .row > div:nth-child(1) {
+      width: 100px;
+   }
+   .row > div:nth-child(2) {
+      width: 60px;
+   }
+   .row > div:nth-child(3) {
+      text-align: right;
+      width: 50px;
+   }
+}
+
+.timer-panel {
+   position: absolute;
+   top: 10px;
+   text-align: center;
+   text-shadow: 1px 1px 0 #000;
+   line-height: 1.2;
+   .timer {
+      font-family: "SpaceshipIdleMono", monospace;
+      font-size: 36px;
+   }
+}

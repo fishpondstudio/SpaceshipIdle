@@ -2,8 +2,8 @@
 @import "./modal.css";
 @import "./button.css";
 @import "./chat-panel.css";
-@import "./ship-info.css";
 @import "./quantum-progress.css";
+@import "./panels.css";
 @import "./utils.css";
 
 @font-face {

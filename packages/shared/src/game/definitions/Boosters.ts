@@ -12,6 +12,7 @@ export const PM1Booster: IBoosterDefinition = {
    input: {},
    output: {},
    unlock: { RC100: 100_000 },
+   lifeTime: 60,
    tick: (self, rs, rt) => {
       boostTarget(rs.tile, self.range, rt).forEach((target) => {
          if (target === rs.tile) return;
@@ -30,6 +31,7 @@ export const HP1Booster: IBoosterDefinition = {
    input: {},
    output: {},
    unlock: { AC130: 100_000 },
+   lifeTime: 60,
    tick: (self, rs, rt) => {
       boostTarget(rs.tile, self.range, rt).forEach((target) => {
          if (target === rs.tile) return;
@@ -48,6 +50,7 @@ export const DMG1Booster: IBoosterDefinition = {
    input: {},
    output: {},
    unlock: { MS2: 100_000 },
+   lifeTime: 60,
    tick: (self, rs, rt) => {
       boostTarget(rs.tile, self.range, rt).forEach((target) => {
          if (target === rs.tile) return;
@@ -66,6 +69,7 @@ export const EVA1Booster: IBoosterDefinition = {
    input: {},
    output: {},
    unlock: { LA1: 100_000 },
+   lifeTime: 60,
    tick: (self, rs, rt) => {
       boostTarget(rs.tile, self.range, rt).forEach((target) => {
          if (target === rs.tile) return;

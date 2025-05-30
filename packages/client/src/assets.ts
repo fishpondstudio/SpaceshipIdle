@@ -1,6 +1,6 @@
-import Monospace from "./assets/fonts/DepartureMono-Regular.ttf";
 import SpaceshipIdleBold from "./assets/fonts/Farro-Bold.ttf";
 import SpaceshipIdle from "./assets/fonts/Farro-Medium.ttf";
+import Monospace from "./assets/fonts/MartianMono-Medium.ttf";
 
 export const Fonts = {
    SpaceshipIdle: "SpaceshipIdle",

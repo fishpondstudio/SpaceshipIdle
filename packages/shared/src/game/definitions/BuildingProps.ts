@@ -47,6 +47,7 @@ export interface IBoosterDefinition extends IBuildingDefinition {
    desc: () => string;
    tick: (self: IBoosterDefinition, rs: RuntimeTile, rt: Runtime) => void;
    range: BoostRange;
+   lifeTime: number;
 }
 
 export interface IDefenseProp {
