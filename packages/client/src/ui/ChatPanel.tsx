@@ -4,6 +4,7 @@ import { type Language, Languages, LanguagesImage } from "@spaceship-idle/shared
 import { ChatFlag, type IChat } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
 import { classNames, hasFlag, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { TypedEvent } from "@spaceship-idle/shared/src/utils/TypedEvent";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import Mod from "../assets/images/Mod.png";
 import { handleCommand } from "../game/HandleCommand";
@@ -11,8 +12,7 @@ import { getUser, OnChatMessage, useConnected } from "../rpc/HandleMessage";
 import { RPCClient } from "../rpc/RPCClient";
 import { openUrl } from "../rpc/SteamClient";
 import { G } from "../utils/Global";
-import { refreshOnTypedEvent } from "../utils/Hook";
-import { playError } from "./Sound";
+import { refreshOnTypedEvent, useTypedEvent } from "../utils/Hook";
 import { TextureComp } from "./components/TextureComp";
 
 export function ChatPanel(): React.ReactNode {
@@ -24,15 +24,15 @@ export function ChatPanel(): React.ReactNode {
             <div className="chat-input">
                <div className="mi">signal_disconnected</div>
                <div className="f1">{t(L.CurrentlyOffline)}</div>
-               <div
-                  className="mi pointer"
-                  onClick={() => {
-                     window.location.reload();
-                  }}
-               >
-                  refresh
-               </div>
             </div>
+         </div>
+      );
+   }
+
+   if (G.save.options.chatLanguages.size === 0) {
+      return (
+         <div className="chat-panel off">
+            <LanguageMenu icon={<div className="mi">maps_ugc</div>} />
          </div>
       );
    }
@@ -43,8 +43,9 @@ export function ChatPanel(): React.ReactNode {
 }
 
 const MAX_MESSAGES = 200;
+const SetChatInput = new TypedEvent<(oldChat: string) => string>();
 
-export function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }): React.ReactNode {
+function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }): React.ReactNode {
    const scrollArea = useRef<HTMLDivElement>(null);
    const isMouseOver = useRef(false);
    const handle = refreshOnTypedEvent(OnChatMessage);
@@ -108,15 +109,22 @@ export function _ChatPanelSingle({ left, channel }: { left: number; channel: Lan
             {messages.current.map((message, index) => (
                <div className="message" key={index}>
                   <div className="name">
-                     <div>{message.name}</div>
+                     <div
+                        className="pointer"
+                        onClick={() =>
+                           SetChatInput.emit((oldChat) => {
+                              return oldChat.includes(`@${message.name}`) ? oldChat : `@${message.name} ${oldChat}`;
+                           })
+                        }
+                     >
+                        {message.name}
+                     </div>
                      <TextureComp name={`Flag/${message.country}`} width={20} />
                      {hasFlag(message.flag, ChatFlag.Moderator) ? <img src={Mod} style={{ height: 15 }} /> : null}
                      <div className="f1" />
                      <div>{new Date(message.time).toLocaleTimeString()}</div>
                   </div>
-                  <div className="body">
-                     <ChatMessage message={message.message} onImageLoaded={onImageLoaded} />
-                  </div>
+                  <ChatMessage message={message.message} onImageLoaded={onImageLoaded} />
                </div>
             ))}
          </div>
@@ -132,9 +140,20 @@ const ChatPanelSingle = memo(_ChatPanelSingle, (prev, next) => {
 function _ChatInput({ channel }: { channel: Language }): React.ReactNode {
    const [message, setMessage] = useState("");
    const isCommand = message.startsWith("/");
+   useTypedEvent(SetChatInput, (func) => {
+      setMessage(func);
+   });
    return (
       <div className={classNames("chat-input", isCommand ? "command" : null)}>
-         <LanguageMenu channel={channel} isCommand={isCommand} />
+         <LanguageMenu
+            icon={
+               isCommand ? (
+                  <div className="mi">terminal</div>
+               ) : (
+                  <TextureComp name={`Flag/${LanguagesImage[channel]}`} height={24} />
+               )
+            }
+         />
          <input
             type="text"
             className={classNames("f1", isCommand ? "command" : null)}
@@ -168,17 +187,11 @@ const ChatInput = memo(_ChatInput, (prev, next) => {
    return prev.channel === next.channel;
 });
 
-function _LanguageMenu({ channel, isCommand }: { channel: Language; isCommand: boolean }): React.ReactNode {
+function _LanguageMenu({ icon }: { icon: React.ReactNode }): React.ReactNode {
    refreshOnTypedEvent(GameOptionUpdated);
    return (
       <Menu position="bottom-start">
-         <Menu.Target>
-            {isCommand ? (
-               <div className="mi">terminal</div>
-            ) : (
-               <TextureComp name={`Flag/${LanguagesImage[channel]}`} height={24} />
-            )}
-         </Menu.Target>
+         <Menu.Target>{icon}</Menu.Target>
          <Menu.Dropdown>
             {mapOf(Languages, (language, value) => {
                return (
@@ -186,19 +199,11 @@ function _LanguageMenu({ channel, isCommand }: { channel: Language; isCommand: b
                      key={language}
                      onClick={() => {
                         const lang = G.save.options.chatLanguages;
-
                         if (lang.has(language)) {
                            lang.delete(language);
                         } else {
                            lang.add(language);
                         }
-
-                        if (lang.size === 0) {
-                           playError();
-                           lang.add(language);
-                           return;
-                        }
-
                         GameOptionUpdated.emit();
                      }}
                      leftSection={
@@ -219,21 +224,8 @@ function _LanguageMenu({ channel, isCommand }: { channel: Language; isCommand: b
 }
 
 const LanguageMenu = memo(_LanguageMenu, (prev, next) => {
-   return prev.channel === next.channel && prev.isCommand === next.isCommand;
+   return prev.icon === next.icon;
 });
-
-export function CommandOutput({ command, result }: { command: string; result: string }): React.ReactNode {
-   return (
-      <div className="text-mono">
-         <div className="row">
-            <div className="mi">terminal</div>
-            <div className="f1">{command}</div>
-         </div>
-         <div className="divider my5" />
-         <div>{result}</div>
-      </div>
-   );
-}
 
 function _ChatMessage({ message, onImageLoaded }: { message: string; onImageLoaded: () => void }): React.ReactNode {
    const isDomainWhitelisted =
@@ -243,10 +235,15 @@ function _ChatMessage({ message, onImageLoaded }: { message: string; onImageLoad
       message.startsWith("https://gcdnb.pbrd.co/") ||
       message.startsWith("https://i.postimg.cc/");
    const isExtensionWhitelisted = message.endsWith(".jpg") || message.endsWith(".png") || message.endsWith(".jpeg");
+   const mentionsMe = message.includes(`@${getUser()?.handle}`);
    if (isDomainWhitelisted && isExtensionWhitelisted) {
-      return <img className="chat-image" src={message} onClick={() => openUrl(message)} onLoad={onImageLoaded} />;
+      return (
+         <div className="body">
+            <img className="chat-image" src={message} onClick={() => openUrl(message)} onLoad={onImageLoaded} />
+         </div>
+      );
    }
-   return message;
+   return <div className={classNames("body", mentionsMe ? "mentions-me" : null)}>{message}</div>;
 }
 
 const ChatMessage = memo(_ChatMessage, (prev, next) => {
@@ -257,6 +254,7 @@ function isLastMessageByMe(messages: IChat[]): boolean {
    if (messages.length === 0) {
       return false;
    }
+
    const lastMessage = messages[messages.length - 1];
    return lastMessage.name === getUser()?.handle;
 }

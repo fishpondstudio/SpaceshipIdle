@@ -1,6 +1,5 @@
 import { notifications } from "@mantine/notifications";
 import { RPCClient } from "../rpc/RPCClient";
-import { CommandOutput } from "../ui/ChatPanel";
 import { playBling, playError } from "../ui/Sound";
 
 export function handleCommand(command: string): void {
@@ -23,4 +22,17 @@ export function handleCommand(command: string): void {
             position: "top-center",
          });
       });
+}
+
+function CommandOutput({ command, result }: { command: string; result: string }): React.ReactNode {
+   return (
+      <div className="text-mono">
+         <div className="row">
+            <div className="mi">terminal</div>
+            <div className="f1">{command}</div>
+         </div>
+         <div className="divider my5" />
+         <div>{result}</div>
+      </div>
+   );
 }
