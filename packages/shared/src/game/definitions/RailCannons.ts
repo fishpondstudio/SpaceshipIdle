@@ -91,7 +91,7 @@ export const RC100G: IWeaponDefinition = {
       range: AbilityRange.Single,
       effect: "RecoverHpOnTakingDamage10",
       value: (building, level) => {
-         return clamp(0.05 + (level - 1) * 0.005, 0, 0.5);
+         return clamp(level * 0.001, 0, 0.1);
       },
       duration: (building, level) => 1,
    },

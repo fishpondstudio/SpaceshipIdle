@@ -14,9 +14,10 @@ import { OfflineTimeModal } from "../ui/OfflineTimeModal";
 import { PrestigeModal } from "../ui/PrestigeModal";
 import { QuantumProgressModal } from "../ui/QuantumProgressModal";
 import { SecondChanceBattleResultModal } from "../ui/SecondChanceBattleResultModal";
+import { ViewShipModal } from "../ui/ViewShipModal";
 import { idbClear } from "../utils/BrowserStorage";
 import { G } from "../utils/Global";
-import { showModal } from "../utils/ToggleModal";
+import { hideModal, showModal } from "../utils/ToggleModal";
 import { loadGameStateFromFile, loadSaveGameFromFile, saveGame } from "./LoadSave";
 
 export function addDebugFunctions(): void {
@@ -138,6 +139,17 @@ export function addDebugFunctions(): void {
          size: "lg",
          title: t(L.WelcomeToSpaceshipIdle),
          dismiss: false,
+      });
+   };
+   // @ts-expect-error
+   globalThis.hideModal = hideModal;
+   // @ts-expect-error
+   globalThis.viewShip = (id: string) => {
+      showModal({
+         title: t(L.ViewShip),
+         children: <ViewShipModal id={id} />,
+         size: "md",
+         dismiss: true,
       });
    };
 }

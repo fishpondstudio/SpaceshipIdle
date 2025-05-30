@@ -1,5 +1,4 @@
 import { Menu } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { type Language, Languages, LanguagesImage } from "@spaceship-idle/shared/src/game/Languages";
 import { ChatFlag, type IChat } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
@@ -7,12 +6,13 @@ import { classNames, hasFlag, mapOf } from "@spaceship-idle/shared/src/utils/Hel
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import Mod from "../assets/images/Mod.png";
+import { handleCommand } from "../game/HandleCommand";
 import { getUser, OnChatMessage, useConnected } from "../rpc/HandleMessage";
 import { RPCClient } from "../rpc/RPCClient";
 import { openUrl } from "../rpc/SteamClient";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
-import { playBling, playError } from "./Sound";
+import { playError } from "./Sound";
 import { TextureComp } from "./components/TextureComp";
 
 export function ChatPanel(): React.ReactNode {
@@ -153,26 +153,7 @@ function _ChatInput({ channel }: { channel: Language }): React.ReactNode {
                   }
                   setMessage("");
                   if (message.startsWith("/")) {
-                     const command = message.substring(1);
-                     RPCClient.sendCommand(command)
-                        .then((message) => {
-                           playBling();
-                           notifications.show({
-                              message: <CommandOutput command={command} result={message} />,
-                              color: "blue",
-                              autoClose: false,
-                              position: "top-center",
-                           });
-                        })
-                        .catch((e) => {
-                           playError();
-                           notifications.show({
-                              message: <CommandOutput command={command} result={String(e)} />,
-                              color: "red",
-                              autoClose: false,
-                              position: "top-center",
-                           });
-                        });
+                     handleCommand(message.substring(1));
                      return;
                   }
                   RPCClient.sendChat(message, channel, G.save.options.country);
@@ -241,7 +222,7 @@ const LanguageMenu = memo(_LanguageMenu, (prev, next) => {
    return prev.channel === next.channel && prev.isCommand === next.isCommand;
 });
 
-function CommandOutput({ command, result }: { command: string; result: string }): React.ReactNode {
+export function CommandOutput({ command, result }: { command: string; result: string }): React.ReactNode {
    return (
       <div className="text-mono">
          <div className="row">

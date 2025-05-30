@@ -70,9 +70,11 @@ export function tickProjectiles(
             OnProjectileHit.emit({ position: pos, tile: tile, critical: projectile.critical });
          }
          const damage = damageTarget.takeDamage(projectile.damage * factor, projectile.damageType);
-         const damageSource = runtime.get(projectile.fromTile);
-         damageTarget.onTakingDamage(damage, projectile.damageType, damageSource);
-         damageSource?.onDealingDamage(damage, projectile.damageType, damageTarget);
+         if (damage > 0) {
+            const damageSource = runtime.get(projectile.fromTile);
+            damageTarget.onTakingDamage(damage, projectile.damageType, damageSource);
+            damageSource?.onDealingDamage(damage, projectile.damageType, damageTarget);
+         }
          if (damageTarget.isDead) {
             runtime.onBuildingDestroyed(tile, damageTarget.props.hp);
             runtime.delete(tile);
@@ -238,7 +240,7 @@ export function evasionChance(value: number): number {
    return 1 - 1 / (1 + value);
 }
 
-export function calcShipScore(ship: GameState, reference: GameState): number {
+export function calcShipScore(ship: GameState, reference: GameState): [number, Runtime] {
    const me = structuredClone(ship);
    me.resources.clear();
    const enemy = structuredClone(reference);
@@ -247,11 +249,14 @@ export function calcShipScore(ship: GameState, reference: GameState): number {
    const rt = new Runtime({ current: me, options: new GameOption() }, enemy);
    rt.battleType = BattleType.Simulated;
    const speed = { speed: 1 };
-   while (rt.battleStatus === BattleStatus.InProgress) {
+   while (rt.battleStatus === BattleStatus.InProgress && rt.productionTick <= 10 * 50) {
       rt.tick(BattleTickInterval, speed);
    }
+   if (rt.productionTick >= 10 * 50) {
+      console.log(ship.id, ship.name, reference.id, reference.name);
+   }
    const [left, right] = rt.totalDealtDamage();
-   return left / right;
+   return [left / right, rt];
 }
 
 export function getShipScoreRank(score: number): string {

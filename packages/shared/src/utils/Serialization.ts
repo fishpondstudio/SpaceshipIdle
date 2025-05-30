@@ -85,7 +85,7 @@ function replacer(key: string, value: unknown): unknown {
          value: Array.from(value.values()),
       };
    }
-   if (value instanceof BigInt) {
+   if (typeof value === "bigint") {
       return {
          $type: "BigInt",
          value: String(value),

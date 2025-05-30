@@ -8,6 +8,7 @@ import { getTechForBuilding } from "./logic/TechLogic";
 import type { ElementSymbol } from "./PeriodicTable";
 
 export const Config = {
+   initialized: false,
    Buildings,
    Resources,
    Tech: new TechDefinitions(),
@@ -24,7 +25,7 @@ export const Config = {
    ]),
    ResourceTier: new Map<Resource, number>([["Power", 1]]),
    BuildingTier: new Map<Building, number>(),
-} as const;
+};
 
 function getBuildingThatProduces(res: Resource): [Building, IBuildingDefinition] {
    let b: Building;
@@ -81,45 +82,53 @@ export function priceMultiplier(inputSize: number): number {
    return 1.25 + 0.25 * inputSize;
 }
 
-forEach(Config.Resources, (res) => {
-   calculatePrice(res);
-});
-
-forEach(Config.Buildings, (b) => {
-   const def = Config.Buildings[b];
-   if (def.element) {
-      if (Config.Element.has(def.element)) {
-         throw new Error(`Element ${def.element} is already defined for building ${b}`);
-      }
-      Config.Element.set(def.element, b);
+function initConfig(): void {
+   if (Config.initialized) {
+      return;
    }
-});
-
-forEach(Config.Tech, (tech, def) => {
-   def.unlockBuildings?.forEach((b) => {
-      const building = Config.Buildings[b];
-      const buildings = new Set<Building>();
-      forEach(building.input, (res, amount) => {
-         if (res === "Power") return;
-         const [building, _] = getBuildingThatProduces(res);
-         buildings.add(building);
-      });
-      buildings.forEach((b) => {
-         if (!def.multiplier?.[b]) {
-            console.error(`Tech ${tech} should add multiplier for building ${b}`);
-         }
-      });
-      Config.BuildingTier.set(b, def.ring);
-      // forEach(def.multiplier, (b, multiplier) => {
-      //    if (!buildings.has(b)) {
-      //       console.error(`Tech ${tech} should remove multiplier for building ${b}`);
-      //    }
-      // });
+   forEach(Config.Resources, (res) => {
+      calculatePrice(res);
    });
-});
 
-console.log("Price", Config.Price);
-console.log("Normalized Price", Config.NormalizedPrice);
-console.log("Resource Tier", Config.ResourceTier);
-console.log("Building Tier", Config.BuildingTier);
-console.log(`# of techs: ${sizeOf(Config.Tech)}`);
+   forEach(Config.Buildings, (b) => {
+      const def = Config.Buildings[b];
+      if (def.element) {
+         if (Config.Element.has(def.element)) {
+            throw new Error(`Element ${def.element} is already defined for building ${b}`);
+         }
+         Config.Element.set(def.element, b);
+      }
+   });
+
+   forEach(Config.Tech, (tech, def) => {
+      def.unlockBuildings?.forEach((b) => {
+         const building = Config.Buildings[b];
+         const buildings = new Set<Building>();
+         forEach(building.input, (res, amount) => {
+            if (res === "Power") return;
+            const [building, _] = getBuildingThatProduces(res);
+            buildings.add(building);
+         });
+         buildings.forEach((b) => {
+            if (!def.multiplier?.[b]) {
+               console.error(`Tech ${tech} should add multiplier for building ${b}`);
+            }
+         });
+         Config.BuildingTier.set(b, def.ring);
+         // forEach(def.multiplier, (b, multiplier) => {
+         //    if (!buildings.has(b)) {
+         //       console.error(`Tech ${tech} should remove multiplier for building ${b}`);
+         //    }
+         // });
+      });
+   });
+
+   console.log("Price", Config.Price);
+   console.log("Normalized Price", Config.NormalizedPrice);
+   console.log("Resource Tier", Config.ResourceTier);
+   console.log("Building Tier", Config.BuildingTier);
+   console.log(`# of techs: ${sizeOf(Config.Tech)}`);
+   Config.initialized = true;
+}
+
+initConfig();

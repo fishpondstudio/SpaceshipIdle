@@ -103,12 +103,10 @@ export class RuntimeTile {
    public takeDamage(damage: number, damageType: DamageType): number {
       const stat = isEnemy(this.tile) ? this.runtime.rightStat : this.runtime.leftStat;
 
-      if (
-         this.runtime.battleType !== BattleType.Simulated &&
-         this.props.evasion > 0 &&
-         this.runtime.random() < evasionChance(this.props.evasion)
-      ) {
-         OnEvasion.emit({ tile: this.tile });
+      if (this.props.evasion > 0 && this.runtime.random() < evasionChance(this.props.evasion)) {
+         if (this.runtime.battleType !== BattleType.Simulated) {
+            OnEvasion.emit({ tile: this.tile });
+         }
          return 0;
       }
 
