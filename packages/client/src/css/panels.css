@@ -1,3 +1,13 @@
+.panel {
+   border: 1px solid var(--mantine-color-dark-4);
+   border-radius: var(--mantine-radius-default);
+   padding: 10px;
+
+   &.bg-dark {
+      background-color: var(--mantine-color-dark-7);
+   }
+}
+
 .ship-info {
    padding: 1px;
    position: absolute;

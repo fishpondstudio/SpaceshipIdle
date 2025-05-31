@@ -28,7 +28,12 @@ Object.keys(en).forEach((key) => {
       delete en[key];
    }
 });
-en = Object.fromEntries(Object.entries(en).sort(([a], [b]) => a.localeCompare(b)));
+
+const keepFormat = process.argv.includes("--keep-format");
+if (!keepFormat) {
+   en = Object.fromEntries(Object.entries(en).sort(([a], [b]) => a.localeCompare(b)));
+}
+
 writeFileSync(EN_FILE_PATH, `export const EN = ${JSON.stringify(en)};`);
 
 console.log("🟡 Adjust Other Translation Based On English");

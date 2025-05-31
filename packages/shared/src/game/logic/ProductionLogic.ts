@@ -6,6 +6,7 @@ import type { Inventory } from "../GameOption";
 import type { GameState } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { BuildingFlag, DamageType, type IBoosterDefinition, WeaponKey } from "../definitions/BuildingProps";
+import { BattleStartAmmoCycles } from "../definitions/Constant";
 import { getCooldownMultiplier, getNormalizedValue } from "./BattleLogic";
 import { BattleType } from "./BattleType";
 import type { Runtime } from "./Runtime";
@@ -79,7 +80,7 @@ export function tickProduction(
          const amount = _amount * data.level * data.capacity;
          mapSafeAdd(stat.theoreticalConsumed, res, amount);
          if (rt.productionTick === 0) {
-            mapSafeAdd(gs.resources, res, amount * 5);
+            mapSafeAdd(gs.resources, res, amount * BattleStartAmmoCycles);
          }
          if ((gs.resources.get(res) ?? 0) < amount) {
             rs.insufficient.add(res);

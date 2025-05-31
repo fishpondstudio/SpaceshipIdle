@@ -7,6 +7,7 @@ export const QuantumToElement = 10;
 export const BattleQuantum = 10;
 export const TrialQuantum = 5;
 export const DefaultElementChoices = 3;
+export const BattleStartAmmoCycles = 5;
 export const BalanceVersion = 1;
 export const DefaultCooldown = 2;
 export const MaxBattleTick = 10 * 60;
