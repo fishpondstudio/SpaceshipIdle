@@ -17,6 +17,7 @@ import { hasFlag, mapSafeAdd, round } from "@spaceship-idle/shared/src/utils/Hel
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
 import { G } from "../../utils/Global";
+import { useShortcut } from "../../utils/Shortcut";
 import type { ITileWithGameState } from "../ITileWithGameState";
 import { AbilityRangeImage } from "./AbilityComp";
 import { ResourceListComp } from "./ResourceListComp";
@@ -37,6 +38,14 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
    const tiles = new Set(gs.tiles.keys());
    tiles.delete(tile);
    const canRecycle = isShipConnected(tiles);
+
+   useShortcut("Upgrade1", () => {
+      if (trySpend(getTotalBuildingValue(data.type, data.level, data.level + 1), G.save.current)) {
+         data.level++;
+         GameStateUpdated.emit();
+      }
+   });
+
    return (
       <>
          <div className="title">

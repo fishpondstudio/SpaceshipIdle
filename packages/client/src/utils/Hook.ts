@@ -1,17 +1,13 @@
 import type { TypedEvent } from "@spaceship-idle/shared/src/utils/TypedEvent";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer } from "react";
 
 export function makeObservableHook<T, K>(event: TypedEvent<T>, getter: (param: K) => T) {
    return function observe(param: K): T {
-      const [_, setter] = useState(0);
-      function handleEvent(data: T): void {
-         setter((old) => old + 1);
-      }
-      // biome-ignore lint/correctness/useExhaustiveDependencies(handleEvent):
+      const [_, update] = useReducer(reducer, 0);
       useEffect(() => {
-         event.on(handleEvent);
+         event.on(update);
          return () => {
-            event.off(handleEvent);
+            event.off(update);
          };
       }, [event]);
       return getter(param);
@@ -31,14 +27,10 @@ const reducer = (value: number) => (value + 1) % 1000000;
 
 export function refreshOnTypedEvent<T>(event: TypedEvent<T>): number {
    const [handle, update] = useReducer(reducer, 0);
-   function listener() {
-      update();
-   }
-   // biome-ignore lint/correctness/useExhaustiveDependencies(listener):
    useEffect(() => {
-      event.on(listener);
+      event.on(update);
       return () => {
-         event.off(listener);
+         event.off(update);
       };
    }, [event]);
    return handle;

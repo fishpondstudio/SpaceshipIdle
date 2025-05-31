@@ -1,3 +1,4 @@
+import type { IShortcutConfig, Shortcut } from "../../../client/src/utils/Shortcut";
 import type { CountryCode } from "../utils/CountryCode";
 import type { ValueOf } from "../utils/Helper";
 import { TypedEvent } from "../utils/TypedEvent";
@@ -32,6 +33,18 @@ export class GameOption {
    elements = new Map<ElementSymbol, Inventory>();
    elementChoices: ElementChoice[] = [];
    volume = 1;
+   shortcuts = new Map<Shortcut, IShortcutConfig>([
+      [
+         "Upgrade1",
+         {
+            key: "1",
+            alt: false,
+            ctrl: false,
+            shift: false,
+            meta: false,
+         },
+      ],
+   ]);
 }
 
 export const GameOptionUpdated = new TypedEvent<void>();
