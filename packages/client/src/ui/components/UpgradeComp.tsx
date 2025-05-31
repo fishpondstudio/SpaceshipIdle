@@ -1,7 +1,7 @@
 import { Image, Slider, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { AbilityRangeLabel } from "@spaceship-idle/shared/src/game/definitions/Ability";
-import { BuildingFlag, type IBoosterDefinition } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import { type IBoosterDefinition } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
@@ -9,11 +9,12 @@ import {
    getBuildingValue,
    getNextLevel,
    getTotalBuildingValue,
+   isBooster,
    trySpend,
    upgradeMax,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { isShipConnected } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
-import { hasFlag, mapSafeAdd, round } from "@spaceship-idle/shared/src/utils/Helper";
+import { mapSafeAdd, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo, useCallback } from "react";
 import { G } from "../../utils/Global";
@@ -32,8 +33,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
    if (!data) {
       return null;
    }
-   const def = Config.Buildings[data.type];
-   if (hasFlag(def.buildingFlag, BuildingFlag.Booster)) {
+   if (isBooster(data.type)) {
       return <BoosterComp building={data.type} />;
    }
    const tiles = new Set(gs.tiles.keys());
@@ -245,7 +245,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
 
 function _BoosterComp({ building }: { building: Building }): React.ReactNode {
    const def = Config.Buildings[building];
-   if (!hasFlag(def.buildingFlag, BuildingFlag.Booster)) {
+   if (!isBooster(building)) {
       return null;
    }
    const booster = def as IBoosterDefinition;

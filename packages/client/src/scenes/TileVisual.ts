@@ -21,6 +21,7 @@ import { G } from "../utils/Global";
 import { runFunc, sequence, to } from "../utils/actions/Actions";
 import { Easing } from "../utils/actions/Easing";
 import { ShipScene } from "./ShipScene";
+import { isBooster } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 
 export const TileVisualFlag = {
    None: 0,
@@ -116,7 +117,7 @@ export class TileVisual extends Container {
    }
 
    private get levelLabel(): string {
-      if (hasFlag(this.flag, BuildingFlag.Booster)) {
+      if (isBooster(this.data.type)) {
          return "";
       }
       return String(this.data.level);

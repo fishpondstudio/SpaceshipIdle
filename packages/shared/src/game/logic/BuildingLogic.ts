@@ -31,7 +31,7 @@ export function getBuildingValue(
 ): Map<Resource, number> {
    result ??= new Map<Resource, number>();
    const def = Config.Buildings[building];
-   if (hasFlag(def.buildingFlag, BuildingFlag.Booster)) {
+   if (isBooster(building)) {
       return result;
    }
    forEach(def.output, (res, value) => {
@@ -112,7 +112,7 @@ export function getUnlockedBuildings(gs: GameState): Building[] {
 
 export function getBuildingDesc(building: Building): string {
    const def = Config.Buildings[building];
-   if (hasFlag(def.buildingFlag, BuildingFlag.Booster)) {
+   if (isBooster(building)) {
       const booster = def as IBoosterDefinition;
       const cost = mapOf(booster.unlock, (res, value) => {
          return `${formatNumber(value)} ${Config.Resources[res].name()}`;
@@ -132,7 +132,7 @@ export function getBuildingDesc(building: Building): string {
 
 export function damageToHp(damage: number, building: Building): number {
    const def = Config.Buildings[building];
-   if (hasFlag(def.buildingFlag, BuildingFlag.Booster)) {
+   if (isBooster(building)) {
       return ((Config.BuildingTier.get(building) ?? 3) - 2) * 1000;
    }
    if (WeaponKey in def) {
@@ -153,9 +153,13 @@ export function hasConstructed(building: Building, gs: GameState): boolean {
 export function getBoosterCount(gs: GameState): number {
    let result = 0;
    for (const [_, data] of gs.tiles) {
-      if (hasFlag(Config.Buildings[data.type].buildingFlag, BuildingFlag.Booster)) {
+      if (isBooster(data.type)) {
          result++;
       }
    }
    return result;
+}
+
+export function isBooster(building: Building): boolean {
+   return hasFlag(Config.Buildings[building].buildingFlag, BuildingFlag.Booster);
 }

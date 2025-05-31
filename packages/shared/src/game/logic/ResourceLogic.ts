@@ -1,10 +1,9 @@
-import { clamp, hasFlag, inverse } from "../../utils/Helper";
+import { clamp, inverse } from "../../utils/Helper";
 import { Config } from "../Config";
 import type { GameState } from "../GameState";
-import { BuildingFlag } from "../definitions/BuildingProps";
 import { BattleQuantum, TrialQuantum } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
-import { getTotalBuildingValue } from "./BuildingLogic";
+import { getTotalBuildingValue, isBooster } from "./BuildingLogic";
 import type { RuntimeStat } from "./RuntimeStat";
 
 export function resourceValueOf(resources: Map<Resource, number>): number {
@@ -97,7 +96,7 @@ export function qToSV(quantum: number): number {
 export function getUsedQuantum(gs: GameState): number {
    let result = 0;
    for (const [_, data] of gs.tiles) {
-      if (hasFlag(Config.Buildings[data.type].buildingFlag, BuildingFlag.Booster)) {
+      if (isBooster(data.type)) {
          continue;
       }
       ++result;

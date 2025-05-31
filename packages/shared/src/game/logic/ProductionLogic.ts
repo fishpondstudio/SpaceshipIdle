@@ -1,14 +1,15 @@
-import { type Tile, type ValueOf, forEach, hasFlag, mapSafeAdd, safeAdd } from "../../utils/Helper";
+import { type Tile, type ValueOf, forEach, mapSafeAdd, safeAdd } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import type { Inventory } from "../GameOption";
 import type { GameState } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
-import { BuildingFlag, DamageType, type IBoosterDefinition, WeaponKey } from "../definitions/BuildingProps";
+import { DamageType, type IBoosterDefinition, WeaponKey } from "../definitions/BuildingProps";
 import { BattleStartAmmoCycles } from "../definitions/Constant";
 import { getCooldownMultiplier, getNormalizedValue } from "./BattleLogic";
 import { BattleType } from "./BattleType";
+import { isBooster } from "./BuildingLogic";
 import type { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
 import type { RuntimeTile } from "./RuntimeTile";
@@ -119,7 +120,7 @@ export function tickProduction(
          }
       });
 
-      if (hasFlag(def.buildingFlag, BuildingFlag.Booster)) {
+      if (isBooster(data.type)) {
          const booster = def as IBoosterDefinition;
          booster.tick(booster, rs, rt);
       }

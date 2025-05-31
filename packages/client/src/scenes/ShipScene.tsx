@@ -12,13 +12,13 @@ import {
    tileToPosCenter,
 } from "@spaceship-idle/shared/src/game/Grid";
 import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
-import { BuildingFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { OnDamaged, OnEvasion, OnProjectileHit } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
    canSpend,
    getBuildingValue,
    getTotalBuildingValue,
+   isBooster,
    trySpend,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { RequestFloater } from "@spaceship-idle/shared/src/game/logic/ProductionLogic";
@@ -37,7 +37,6 @@ import {
    type Tile,
    createTile,
    drawDashedLine,
-   hasFlag,
    lookAt,
    mapSafeAdd,
    rand,
@@ -443,7 +442,7 @@ export class ShipScene extends Scene {
                      });
                      return;
                   }
-                  if (hasFlag(Config.Buildings[oldTileData.type].buildingFlag, BuildingFlag.Booster)) {
+                  if (isBooster(oldTileData.type)) {
                      playError();
                      notifications.show({
                         message: t(L.ModuleIsUnique),
@@ -516,7 +515,7 @@ export class ShipScene extends Scene {
          const data = G.save.current.tiles.get(clickedTile);
          // Right click delete
          if (data) {
-            if (hasFlag(Config.Buildings[data.type].buildingFlag, BuildingFlag.Booster)) {
+            if (isBooster(data.type)) {
                playError();
                notifications.show({
                   message: t(L.ModuleCannotBeRecycled),

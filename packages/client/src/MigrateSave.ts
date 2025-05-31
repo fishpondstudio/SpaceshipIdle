@@ -1,6 +1,7 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DefaultShortcuts, GameOption } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameState, type SaveGame } from "@spaceship-idle/shared/src/game/GameState";
+import { isBooster } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { isNullOrUndefined } from "@spaceship-idle/shared/src/utils/Helper";
 
 export function migrateSave(save: SaveGame): void {
@@ -13,6 +14,9 @@ export function migrateSave(save: SaveGame): void {
       }
       if (isNullOrUndefined(data.capacity)) {
          data.capacity = 1;
+      }
+      if (isBooster(data.type)) {
+         data.level = 1;
       }
    });
    save.current.resources.forEach((value, key) => {

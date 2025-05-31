@@ -1,7 +1,7 @@
 import { Tooltip } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { getTotalBuildingValue, trySpend } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
+import { getTotalBuildingValue, isBooster, trySpend } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { mapSafeAdd, round, type Tile } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useCallback, type ReactNode } from "react";
@@ -22,7 +22,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
       let total = 0;
       for (const tile of tiles) {
          const data = G.save.current.tiles.get(tile);
-         if (data) {
+         if (data && !isBooster(data.type)) {
             if (trySpend(getTotalBuildingValue(data.type, data.level, data.level + 1), G.save.current)) {
                ++data.level;
                ++success;
@@ -48,7 +48,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
       let total = 0;
       for (const tile of tiles) {
          const data = G.save.current.tiles.get(tile);
-         if (data) {
+         if (data && !isBooster(data.type)) {
             if (data.level > 1) {
                getTotalBuildingValue(data.type, data.level, data.level - 1).forEach((amount, res) => {
                   mapSafeAdd(G.save.current.resources, res, amount);

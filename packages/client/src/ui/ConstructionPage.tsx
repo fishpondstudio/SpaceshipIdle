@@ -2,7 +2,7 @@ import { Badge, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
-import { BuildingFlag, type IBoosterDefinition } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import { type IBoosterDefinition } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { CodeLabel, type CodeNumber } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
 import {
@@ -12,12 +12,13 @@ import {
    getUnlockedBuildings,
    hasConstructed,
    hasEnoughResources,
+   isBooster,
    tryDeductResources,
    trySpend,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { isTileConnected, isWithinShipExtent } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
-import { entriesOf, formatNumber, hasFlag, type Tile, toMap } from "@spaceship-idle/shared/src/utils/Helper";
+import { entriesOf, formatNumber, type Tile, toMap } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { type ReactNode, useState } from "react";
@@ -68,7 +69,7 @@ export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
             .sort((a, b) => Config.Buildings[a].name().localeCompare(Config.Buildings[b].name()))
             .filter((b) => {
                const def = Config.Buildings[b];
-               if (hasFlag(def.buildingFlag, BuildingFlag.Booster) && G.runtime.leftStat.constructed.has(b)) {
+               if (isBooster(b) && G.runtime.leftStat.constructed.has(b)) {
                   return false;
                }
                if (selected.size === 0) {
@@ -78,7 +79,7 @@ export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
             })
             .map((b) => {
                const def = Config.Buildings[b];
-               if (hasFlag(def.buildingFlag, BuildingFlag.Booster)) {
+               if (isBooster(b)) {
                   return <BoostComp key={b} building={b} gs={gs} tile={tile} />;
                }
                return <BuildingComp key={b} building={b} gs={gs} tile={tile} />;

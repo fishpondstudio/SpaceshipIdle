@@ -11,6 +11,7 @@ import type { Building } from "../definitions/Buildings";
 import { BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType } from "./BattleType";
+import { isBooster } from "./BuildingLogic";
 import { Projectile } from "./Projectile";
 import { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
@@ -194,7 +195,7 @@ export function tickTiles(
 export function getNormalizedValue(data: { type: Building; level: number }): number {
    const def = Config.Buildings[data.type];
    let value = 0;
-   if (hasFlag(def.buildingFlag, BuildingFlag.Booster)) {
+   if (isBooster(data.type)) {
       const booster = def as IBoosterDefinition;
       forEach(booster.unlock, (k, v) => {
          value += v * (Config.NormalizedPrice.get(k) ?? 0);
