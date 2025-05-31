@@ -1,10 +1,10 @@
-import type { IShortcutConfig, Shortcut } from "../../../client/src/utils/Shortcut";
 import type { CountryCode } from "../utils/CountryCode";
 import type { ValueOf } from "../utils/Helper";
 import { TypedEvent } from "../utils/TypedEvent";
 import type { ElementChoice } from "./GameState";
 import type { Languages } from "./Languages";
 import type { ElementSymbol } from "./PeriodicTable";
+import type { IShortcutConfig, Shortcut } from "./Shortcut";
 import type { Building } from "./definitions/Buildings";
 
 export const GameOptionFlag = {
@@ -24,6 +24,23 @@ export interface Inventory {
    level: number;
 }
 
+const DefaultShortcuts: Record<Shortcut, IShortcutConfig> = {
+   Upgrade1: {
+      key: "q",
+      ctrl: false,
+      alt: false,
+      shift: false,
+      meta: false,
+   },
+   Downgrade1: {
+      key: "w",
+      ctrl: false,
+      alt: false,
+      shift: false,
+      meta: false,
+   },
+} as const;
+
 export class GameOption {
    country: keyof typeof CountryCode = "EARTH";
    chatLanguages: Set<keyof typeof Languages> = new Set(["en"]);
@@ -33,18 +50,7 @@ export class GameOption {
    elements = new Map<ElementSymbol, Inventory>();
    elementChoices: ElementChoice[] = [];
    volume = 1;
-   shortcuts = new Map<Shortcut, IShortcutConfig>([
-      [
-         "Upgrade1",
-         {
-            key: "1",
-            alt: false,
-            ctrl: false,
-            shift: false,
-            meta: false,
-         },
-      ],
-   ]);
+   shortcuts = DefaultShortcuts;
 }
 
 export const GameOptionUpdated = new TypedEvent<void>();

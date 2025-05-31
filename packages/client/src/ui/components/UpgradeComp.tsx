@@ -17,7 +17,7 @@ import { hasFlag, mapSafeAdd, round } from "@spaceship-idle/shared/src/utils/Hel
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
 import { G } from "../../utils/Global";
-import { useShortcut } from "../../utils/Shortcut";
+import { useShortcut } from "../../utils/ShortcutHook";
 import type { ITileWithGameState } from "../ITileWithGameState";
 import { AbilityRangeImage } from "./AbilityComp";
 import { ResourceListComp } from "./ResourceListComp";
@@ -44,6 +44,16 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          data.level++;
          GameStateUpdated.emit();
       }
+   });
+   useShortcut("Downgrade1", () => {
+      if (data.level <= 1) {
+         return;
+      }
+      getTotalBuildingValue(data.type, data.level, data.level - 1).forEach((amount, res) => {
+         mapSafeAdd(gs.resources, res, amount);
+      });
+      data.level--;
+      GameStateUpdated.emit();
    });
 
    return (
@@ -103,6 +113,9 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                         className="btn f1"
                         disabled={target <= 0}
                         onClick={() => {
+                           if (target <= 0) {
+                              return;
+                           }
                            getTotalBuildingValue(data.type, data.level, target).forEach((amount, res) => {
                               mapSafeAdd(gs.resources, res, amount);
                            });

@@ -5,7 +5,9 @@ import { isNullOrUndefined } from "@spaceship-idle/shared/src/utils/Helper";
 
 export function migrateSave(save: SaveGame): void {
    save.current = Object.assign(new GameState(), save.current);
-   save.options = Object.assign(new GameOption(), save.options);
+   const opt = new GameOption();
+   save.options.shortcuts = Object.assign(opt.shortcuts, save.options.shortcuts);
+   save.options = Object.assign(opt, save.options);
    save.current.tiles.forEach((data, tile) => {
       if (!Config.Buildings[data.type]) {
          save.current.tiles.delete(tile);

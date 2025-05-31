@@ -1,9 +1,12 @@
-import { Slider, Switch, Tooltip } from "@mantine/core";
+import { Input, noop, SegmentedControl, Slider, Switch, Tooltip } from "@mantine/core";
+import { useForceUpdate } from "@mantine/hooks";
 import { DiscordUrl, SteamUrl, TranslationUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { clearFlag, hasFlag, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
+import { getShortcutKey, isShortcutEqual, makeShortcut, Shortcut } from "@spaceship-idle/shared/src/game/Shortcut";
+import { clearFlag, forEach, hasFlag, mapOf, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { useState } from "react";
 import { resetGame, saveGameStateToFile } from "../game/LoadSave";
 import { getVersion } from "../game/Version";
 import { openUrl } from "../rpc/SteamClient";
@@ -12,9 +15,38 @@ import { refreshOnTypedEvent } from "../utils/Hook";
 import { ChangeLanguageComp } from "./ChangeLanguageComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 
+interface TabContent {
+   content: React.ReactNode;
+   name: () => string;
+}
+
+const Tabs = {
+   General: { name: () => t(L.TabGeneral), content: <GeneralTab /> },
+   Shortcut: { name: () => t(L.TabShortcut), content: <ShortcutTab /> },
+} as const satisfies Record<string, TabContent>;
+
+type Tab = keyof typeof Tabs;
+
 export function GameSettingsModal(): React.ReactNode {
    refreshOnTypedEvent(GameOptionUpdated);
    refreshOnTypedEvent(GameStateUpdated);
+   const [tab, setTab] = useState<Tab>("General");
+   return (
+      <>
+         <SegmentedControl
+            className="mb10"
+            fullWidth
+            style={{ border: "1px solid var(--mantine-color-default-border)" }}
+            data={mapOf(Tabs as Record<string, TabContent>, (k, v) => ({ label: v.name(), value: k }))}
+            onChange={(value) => setTab(value as Tab)}
+            value={tab}
+         />
+         {Tabs[tab].content}
+      </>
+   );
+}
+
+function GeneralTab(): React.ReactNode {
    return (
       <>
          <ChangeLanguageComp />
@@ -125,6 +157,57 @@ export function GameSettingsModal(): React.ReactNode {
          <div className="divider my10 mx-10" />
          <div className="text-center text-sm text-dimmed">
             <RenderHTML html={t(L.VersionNumber, getVersion())} />
+         </div>
+      </>
+   );
+}
+
+function ShortcutTab(): React.ReactNode {
+   const forceUpdate = useForceUpdate();
+   return (
+      <>
+         <div className="pane">
+            {mapOf(G.save.options.shortcuts, (shortcut, config) => (
+               <div className="row my10" key={shortcut}>
+                  <div className="f1">{Shortcut[shortcut]()}</div>
+                  <Input
+                     classNames={{ wrapper: "f1", input: "text-right" }}
+                     value={getShortcutKey(config)}
+                     onChange={noop}
+                     onKeyDown={(e) => {
+                        e.preventDefault();
+                        if (
+                           (e.ctrlKey && e.key === "Control") ||
+                           (e.shiftKey && e.key === "Shift") ||
+                           (e.altKey && e.key === "Alt") ||
+                           (e.metaKey && e.key === "Meta")
+                        ) {
+                           return;
+                        }
+                        const config = makeShortcut(e);
+                        forEach(G.save.options.shortcuts, (k, cfg) => {
+                           if (isShortcutEqual(cfg, config)) {
+                              G.save.options.shortcuts[k] = {
+                                 ctrl: false,
+                                 shift: false,
+                                 alt: false,
+                                 meta: false,
+                                 key: "",
+                              };
+                           }
+                        });
+                        G.save.options.shortcuts[shortcut] = config;
+                        (e.target as HTMLInputElement).value = getShortcutKey(config);
+                        GameOptionUpdated.emit();
+                        forceUpdate();
+                     }}
+                  />
+               </div>
+            ))}
+            <div className="text-dimmed panel p5 text-sm row g5 bg-dark">
+               <div className="mi lg fstart">mouse</div>
+               <RenderHTML className="render-html" html={t(L.TutorialAdvancedGameControlContent)} />
+            </div>
          </div>
       </>
    );
