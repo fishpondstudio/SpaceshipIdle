@@ -3,6 +3,7 @@ import bling from "../assets/sounds/bling.mp3";
 import click from "../assets/sounds/click.mp3";
 import error from "../assets/sounds/error.mp3";
 import upgrade from "../assets/sounds/upgrade.mp3";
+
 import { G } from "../utils/Global";
 
 export function loadSounds(): void {

@@ -574,4 +574,11 @@ export const EN = {
    TabShortcut: "Shortcut",
    ShortcutUpgrade1: "+1 Level (Single/Batch)",
    ShortcutDowngrade1: "-1 Level (Single/Batch)",
+   ShortcutRecycle: "Recycle (Single)",
+   ShortcutMatchCapacityToAmmoProduction: "Match Capacity to Ammo Production (Single/Batch)",
+   ShortcutPriority0: "Set Priority 0 (Single/Batch)",
+   ShortcutPriority10: "Set Priority 10 (Single/Batch)",
+   ShortcutCapacity0: "Set Capacity 0 (Single/Batch)",
+   ShortcutCapacity10: "Set Capacity 10 (Single/Batch)",
+   ShortcutUpgradeMax: "+Max Level (Single)",
 };

@@ -24,7 +24,7 @@ export interface Inventory {
    level: number;
 }
 
-const DefaultShortcuts: Record<Shortcut, IShortcutConfig> = {
+export const DefaultShortcuts: Record<Shortcut, IShortcutConfig> = {
    Upgrade1: {
       key: "q",
       ctrl: false,
@@ -34,6 +34,55 @@ const DefaultShortcuts: Record<Shortcut, IShortcutConfig> = {
    },
    Downgrade1: {
       key: "w",
+      ctrl: false,
+      alt: false,
+      shift: false,
+      meta: false,
+   },
+   UpgradeMax: {
+      key: "e",
+      ctrl: false,
+      alt: false,
+      shift: false,
+      meta: false,
+   },
+   Recycle: {
+      key: "r",
+      ctrl: false,
+      alt: false,
+      shift: false,
+      meta: false,
+   },
+   Priority0: {
+      key: "a",
+      ctrl: false,
+      alt: false,
+      shift: false,
+      meta: false,
+   },
+   Priority10: {
+      key: "s",
+      ctrl: false,
+      alt: false,
+      shift: false,
+      meta: false,
+   },
+   Capacity0: {
+      key: "d",
+      ctrl: false,
+      alt: false,
+      shift: false,
+      meta: false,
+   },
+   Capacity100: {
+      key: "f",
+      ctrl: false,
+      alt: false,
+      shift: false,
+      meta: false,
+   },
+   MatchCapacityToAmmoProduction: {
+      key: "g",
       ctrl: false,
       alt: false,
       shift: false,

@@ -15,10 +15,11 @@ import {
 import { isShipConnected } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { hasFlag, mapSafeAdd, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { G } from "../../utils/Global";
 import { useShortcut } from "../../utils/ShortcutHook";
 import type { ITileWithGameState } from "../ITileWithGameState";
+import { playClick, playError } from "../Sound";
 import { AbilityRangeImage } from "./AbilityComp";
 import { ResourceListComp } from "./ResourceListComp";
 
@@ -38,6 +39,18 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
    const tiles = new Set(gs.tiles.keys());
    tiles.delete(tile);
    const canRecycle = isShipConnected(tiles);
+   const recycle = useCallback(() => {
+      if (canRecycle) {
+         playClick();
+         G.runtime.delete(tile);
+         getTotalBuildingValue(data.type, data.level, 0).forEach((amount, res) => {
+            mapSafeAdd(gs.resources, res, amount);
+         });
+         GameStateUpdated.emit();
+      } else {
+         playError();
+      }
+   }, [data, tile, gs, canRecycle]);
 
    useShortcut("Upgrade1", () => {
       if (trySpend(getTotalBuildingValue(data.type, data.level, data.level + 1), G.save.current)) {
@@ -45,6 +58,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          GameStateUpdated.emit();
       }
    });
+
    useShortcut("Downgrade1", () => {
       if (data.level <= 1) {
          return;
@@ -53,6 +67,42 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          mapSafeAdd(gs.resources, res, amount);
       });
       data.level--;
+      GameStateUpdated.emit();
+   });
+
+   useShortcut("Recycle", recycle);
+
+   const upgradeMaxCached = useCallback(() => {
+      upgradeMax(data, G.save.current);
+      GameStateUpdated.emit();
+   }, [data]);
+
+   useShortcut("UpgradeMax", upgradeMaxCached);
+
+   const matchCapacityCached = useCallback(() => {
+      G.runtime.get(tile)?.matchCapacity();
+      GameStateUpdated.emit();
+   }, [tile]);
+
+   useShortcut("MatchCapacityToAmmoProduction", matchCapacityCached);
+
+   useShortcut("Priority0", () => {
+      data.priority = 0;
+      GameStateUpdated.emit();
+   });
+
+   useShortcut("Priority10", () => {
+      data.priority = 10;
+      GameStateUpdated.emit();
+   });
+
+   useShortcut("Capacity0", () => {
+      data.capacity = 0;
+      GameStateUpdated.emit();
+   });
+
+   useShortcut("Capacity100", () => {
+      data.capacity = 1;
       GameStateUpdated.emit();
    });
 
@@ -88,10 +138,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             <button
                className="btn f1"
                disabled={!canSpend(getBuildingValue(data.type, data.level + 1), G.save.current)}
-               onClick={() => {
-                  upgradeMax(data, G.save.current);
-                  GameStateUpdated.emit();
-               }}
+               onClick={upgradeMaxCached}
             >
                {t(L.UpgradeMax)}
             </button>
@@ -140,17 +187,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   )
                }
             >
-               <button
-                  className="btn f1 cc mi"
-                  disabled={!canRecycle}
-                  onClick={() => {
-                     G.runtime.delete(tile);
-                     getTotalBuildingValue(data.type, data.level, 0).forEach((amount, res) => {
-                        mapSafeAdd(gs.resources, res, amount);
-                     });
-                     GameStateUpdated.emit();
-                  }}
-               >
+               <button className="btn f1 cc mi" disabled={!canRecycle} onClick={recycle}>
                   recycling
                </button>
             </Tooltip>
@@ -179,13 +216,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             <div className="subtitle my10">
                {t(L.Capacity)}
                <Tooltip label={t(L.MatchCapacityTooltip)}>
-                  <div
-                     className="mi text-space pointer"
-                     onClick={() => {
-                        G.runtime.get(tile)?.matchCapacity();
-                        GameStateUpdated.emit();
-                     }}
-                  >
+                  <div className="mi text-space pointer" onClick={matchCapacityCached}>
                      wand_stars
                   </div>
                </Tooltip>
