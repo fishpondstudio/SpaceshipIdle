@@ -327,7 +327,8 @@ export const ZH_CN = {
    PrestigeAnyway: "仍然重置",
    Priority: "优先级",
    Production: "生产",
-   ProductionBuildingXPHTML: "该建筑在没有经验倍率的情况下不产生经验。有经验倍率时（例如来自永久元素），<b>经验 = 生产值（生产倍率前）x 经验倍率</b>",
+   ProductionBuildingXPHTML:
+      "该建筑在没有经验倍率的情况下不产生经验。有经验倍率时（例如来自永久元素），<b>经验 = 生产值（生产倍率前）x 经验倍率</b>",
    ProductionMultiplier: "生产倍率",
    ProductionMultiplierBoost: "生产倍率提升",
    ProductionMultiplierBoostDesc: "+%% 生产倍率",
@@ -487,41 +488,57 @@ export const ZH_CN = {
    TierX: "%%阶",
    TimeWarp: "时间扭曲",
    TimeWarpTooltip: "扭曲速度 / 可用时间扭曲",
-   TutorialAdvancedGameControlContent: "<b>选择 + 中键点击</b>空模块进行复制。<b>选择 + 右键点击</b>其他模块进行移动/交换。<b>选择 + 右键点击</b>当前模块进行回收。",
+   TutorialAdvancedGameControlContent:
+      "<b>选择 + 中键点击</b>空模块进行复制。<b>选择 + 右键点击</b>其他模块进行移动/交换。<b>选择 + 右键点击</b>当前模块进行回收。",
    TutorialAmmo: "弹药",
-   TutorialAmmoContentHTML: "进入战斗时，每个模块只能<b>携带 %% 个周期的弹药</b> - 确保您的飞船有足够的弹药生产！使用游戏内统计数据来帮助平衡您的生产。",
+   TutorialAmmoContentHTML:
+      "进入战斗时，每个模块只能<b>携带 %% 个周期的弹药</b> - 确保您的飞船有足够的弹药生产！使用游戏内统计数据来帮助平衡您的生产。",
    TutorialAutoBattle: "（自动）战斗",
-   TutorialAutoBattleContent: "战斗是自动进行的。为确保公平，您的飞船将与<b>相同量子等级</b>的飞船进行匹配。如果您的飞船表现良好，它将进入匹配池。",
+   TutorialAutoBattleContent:
+      "战斗是自动进行的。为确保公平，您的飞船将与<b>相同量子等级</b>的飞船进行匹配。如果您的飞船表现良好，它将进入匹配池。",
    TutorialBasicConcept: "基本概念",
-   TutorialBuild1BoosterDescHTML: "每种类型的助推器模块只能建造一次。它们提供显著的增益效果，不消耗量子，也不计入飞船经验。建造它们消耗资源而非经验。",
+   TutorialBuild1BoosterDescHTML:
+      "每种类型的助推器模块只能建造一次。它们提供显著的增益效果，不消耗量子，也不计入飞船经验。建造它们消耗资源而非经验。",
    TutorialBuild6ModulesDescHTML: "要建造模块，请点击空地块并从侧面板中选择要建造的模块。",
    TutorialBuildXBoosters: "建造 %% 个助推器",
    TutorialBuildXModules: "建造 %% 个模块",
    TutorialChat: "获取帮助",
-   TutorialChatContent: "如果您遇到困难，游戏内聊天随时可以提供帮助，请礼貌提问。另外，请选择您的玩家昵称，以便大家认识您！",
+   TutorialChatContent:
+      "如果您遇到困难，游戏内聊天随时可以提供帮助，请礼貌提问。另外，请选择您的玩家昵称，以便大家认识您！",
    TutorialCommunity: "游戏社区",
-   TutorialDiscover1ElementDescHTML: "当您达到<b>15量子</b>时，您将发现第一个元素。您可以从三个选项中选择一个。每个元素都会提升<b>生产倍率</b>。重置后，它们会变成永久元素碎片。",
+   TutorialDiscover1ElementDescHTML:
+      "当您达到<b>15量子</b>时，您将发现第一个元素。您可以从三个选项中选择一个。每个元素都会提升<b>生产倍率</b>。重置后，它们会变成永久元素碎片。",
    TutorialDiscoverXElement: "发现 %% 个元素",
    TutorialElement: "元素",
-   TutorialElementContent: "随着量子等级的提升，您会发现元素。您可以从三个选项中选择一个，它们会提升<b>生产倍率</b>。重置后，本轮获得的所有元素都会变成永久元素碎片。永久元素可提升<b>经验倍率</b>。",
+   TutorialElementContent:
+      "随着量子等级的提升，您会发现元素。您可以从三个选项中选择一个，它们会提升<b>生产倍率</b>。重置后，本轮获得的所有元素都会变成永久元素碎片。永久元素可提升<b>经验倍率</b>。",
    TutorialGameControl: "游戏控制",
-   TutorialGameControlContent: "<b>点击</b>选择模块。<b>拖动</b>移动视角。<b>滚动滚轮</b>缩放。点击<b>空模块</b>进行建造。<b>Ctrl + 点击</b>多选。",
-   TutorialIntro: "在<b>飞船挂机</b>中，您可以设计自己的模块化飞船，探索广阔的科技树，解锁独特武器，并赢得史诗般的太空（自动）战斗！",
-   TutorialPower: "能量由<b>发电机</b>模块产生。您的飞船起始时带有一个太阳能板模块，它可以在不消耗资源的情况下产生能量。稍后，您将解锁更强大但消耗资源的的发电机。",
+   TutorialGameControlContent:
+      "<b>点击</b>选择模块。<b>拖动</b>移动视角。<b>滚动滚轮</b>缩放。点击<b>空模块</b>进行建造。<b>Ctrl + 点击</b>多选。",
+   TutorialIntro:
+      "在<b>飞船挂机</b>中，您可以设计自己的模块化飞船，探索广阔的科技树，解锁独特武器，并赢得史诗般的太空（自动）战斗！",
+   TutorialPower:
+      "能量由<b>发电机</b>模块产生。您的飞船起始时带有一个太阳能板模块，它可以在不消耗资源的情况下产生能量。稍后，您将解锁更强大但消耗资源的的发电机。",
    TutorialProgress: "教程",
-   TutorialQualifierBattle: "当您的量子达到一定等级时，您必须<b>赢得一场资格战</b>才能解锁更多量子。您的合格量子决定了您可以投入飞船的<b>最大经验值</b>。",
+   TutorialQualifierBattle:
+      "当您的量子达到一定等级时，您必须<b>赢得一场资格战</b>才能解锁更多量子。您的合格量子决定了您可以投入飞船的<b>最大经验值</b>。",
    TutorialQuantum: "量子与战斗",
    TutorialQuantumContent: "当您生产的总经验达到一定水平时，您将解锁新的量子。量子可用于<b>解锁科技或建造新模块</b>。",
-   TutorialReach260SpaceshipXPDescHTML: "<b>合格量子</b>决定了您可以投入飞船的经验数量。为了准备您的第一场资格战，您应该投入尽可能多的经验。",
+   TutorialReach260SpaceshipXPDescHTML:
+      "<b>合格量子</b>决定了您可以投入飞船的经验数量。为了准备您的第一场资格战，您应该投入尽可能多的经验。",
    TutorialReachXSpaceshipXP: "达到 %% 飞船经验",
-   TutorialResearch8TechDescHTML: "要研究科技，请点击“研究”选项卡并选择您想研究的科技。请记住，每项科技<b>花费一个量子</b>进行研究，且无法撤销。",
+   TutorialResearch8TechDescHTML:
+      "要研究科技，请点击“研究”选项卡并选择您想研究的科技。请记住，每项科技<b>花费一个量子</b>进行研究，且无法撤销。",
    TutorialResearchXTech: "研究 %% 项科技",
-   TutorialUse25QuantumDescHTML: "量子是根据您获得的经验产生的，包括<b>投入到飞船中的经验</b>和<b>仓库中剩余的经验</b>。您可以使用量子来解锁科技或建造新模块。回收模块时，量子将被返还。",
+   TutorialUse25QuantumDescHTML:
+      "量子是根据您获得的经验产生的，包括<b>投入到飞船中的经验</b>和<b>仓库中剩余的经验</b>。您可以使用量子来解锁科技或建造新模块。回收模块时，量子将被返还。",
    TutorialUseXQuantum: "使用 %% 量子",
    TutorialWeapon: "武器",
-   TutorialWeaponContent: "武器通过研究科技树解锁。武器消耗资源并<b>生产弹药</b> - 它们在开火时也会<b>消耗弹药</b>。武器具有不同的属性和技能，可以升级。",
+   TutorialWeaponContent:
+      "武器通过研究科技树解锁。武器消耗资源并<b>生产弹药</b> - 它们在开火时也会<b>消耗弹药</b>。武器具有不同的属性和技能，可以升级。",
    TutorialWinSpaceshipBattle: "赢得 %% 场飞船战斗",
-   TutorialWinSpaceshipBattleDescHTML: "赢得资格战将解锁更高的量子上限。这可以通过在量子30级赢得<b>资格战</b>或在量子35级赢得<b>第二次机会</b>战来实现。",
+   TutorialWinSpaceshipBattleDescHTML:
+      "赢得资格战将解锁更高的量子上限。这可以通过在量子30级赢得<b>资格战</b>或在量子35级赢得<b>第二次机会</b>战来实现。",
    TutorialXP: "武器模块<b>开火</b>时会产生经验。更高级和更高等级的武器会产生更多经验。建造和升级飞船模块会消耗经验。",
    UnlockBuildings: "解锁建筑",
    UnlockUpgrades: "解锁升级",
@@ -543,4 +560,16 @@ export const ZH_CN = {
    XP: "经验",
    XPCollector: "经验收集器",
    XPMultiplier: "经验倍率",
+   TabGeneral: "常规",
+   TabShortcut: "快捷键",
+   ShortcutUpgrade1: "+1 级（单个/批量）",
+   ShortcutDowngrade1: "-1 级（单个/批量）",
+   ShortcutRecycle: "回收（单个）",
+   ShortcutMatchCapacityToAmmoProduction: "匹配容量到弹药生产（单个/批量）",
+   ShortcutPriority0: "设置优先级 0（单个/批量）",
+   ShortcutPriority10: "设置优先级 10（单个/批量）",
+   ShortcutCapacity0: "设置容量 0（单个/批量）",
+   ShortcutCapacity10: "设置容量 10（单个/批量）",
+   ShortcutUpgradeMax: "+最大级（单个）",
+   AdvancedGameControlContent: "(1) 右键点击回收<br>(2) 右键点击移动<br>(3) 右键点击交换<br>(4) 中键点击复制",
 };

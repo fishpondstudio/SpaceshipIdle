@@ -7,6 +7,7 @@ import { getShortcutKey, isShortcutEqual, makeShortcut, Shortcut } from "@spaces
 import { clearFlag, forEach, hasFlag, mapOf, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useState } from "react";
+import MouseControl from "../assets/images/MouseControl.png";
 import { resetGame, saveGameStateToFile } from "../game/LoadSave";
 import { getVersion } from "../game/Version";
 import { openUrl } from "../rpc/SteamClient";
@@ -168,49 +169,51 @@ function ShortcutTab(): React.ReactNode {
    const forceUpdate = useForceUpdate();
    return (
       <>
-         <div className="pane">
-            {mapOf(G.save.options.shortcuts, (shortcut, config) => (
-               <div className="row my10" key={shortcut}>
-                  <div className="f1">{Shortcut[shortcut]()}</div>
-                  <Input
-                     classNames={{ wrapper: "f1", input: "text-right" }}
-                     value={getShortcutKey(config)}
-                     onChange={noop}
-                     onKeyDown={(e) => {
-                        e.preventDefault();
-                        if (
-                           (e.ctrlKey && e.key === "Control") ||
-                           (e.shiftKey && e.key === "Shift") ||
-                           (e.altKey && e.key === "Alt") ||
-                           (e.metaKey && e.key === "Meta")
-                        ) {
-                           return;
-                        }
-                        const config = makeShortcut(e);
-                        forEach(G.save.options.shortcuts, (k, cfg) => {
-                           if (isShortcutEqual(cfg, config)) {
-                              G.save.options.shortcuts[k] = {
-                                 ctrl: false,
-                                 shift: false,
-                                 alt: false,
-                                 meta: false,
-                                 key: "",
-                              };
-                           }
-                        });
-                        G.save.options.shortcuts[shortcut] = config;
-                        (e.target as HTMLInputElement).value = getShortcutKey(config);
-                        GameOptionUpdated.emit();
-                        forceUpdate();
-                     }}
-                  />
-               </div>
-            ))}
-            <div className="text-dimmed panel p5 text-sm row g5 bg-dark">
-               <div className="mi lg fstart">mouse</div>
+         <div className="text-dimmed panel p5 text-sm row">
+            <img className="br5" src={MouseControl} style={{ width: 180 }} />
+            <div>
                <RenderHTML className="render-html" html={t(L.TutorialAdvancedGameControlContent)} />
+               <div className="h10" />
+               <RenderHTML className="render-html" html={t(L.AdvancedGameControlContent)} />
             </div>
          </div>
+         {mapOf(G.save.options.shortcuts, (shortcut, config) => (
+            <div className="row my10" key={shortcut}>
+               <div className="f1">{Shortcut[shortcut]()}</div>
+               <Input
+                  classNames={{ wrapper: "f1", input: "text-right" }}
+                  value={getShortcutKey(config)}
+                  onChange={noop}
+                  onKeyDown={(e) => {
+                     e.preventDefault();
+                     if (
+                        (e.ctrlKey && e.key === "Control") ||
+                        (e.shiftKey && e.key === "Shift") ||
+                        (e.altKey && e.key === "Alt") ||
+                        (e.metaKey && e.key === "Meta")
+                     ) {
+                        return;
+                     }
+                     const config = makeShortcut(e);
+                     forEach(G.save.options.shortcuts, (k, cfg) => {
+                        if (isShortcutEqual(cfg, config)) {
+                           G.save.options.shortcuts[k] = {
+                              ctrl: false,
+                              shift: false,
+                              alt: false,
+                              meta: false,
+                              key: "",
+                           };
+                        }
+                     });
+                     G.save.options.shortcuts[shortcut] = config;
+                     (e.target as HTMLInputElement).value = getShortcutKey(config);
+                     GameOptionUpdated.emit();
+                     forceUpdate();
+                  }}
+               />
+            </div>
+         ))}
       </>
    );
 }

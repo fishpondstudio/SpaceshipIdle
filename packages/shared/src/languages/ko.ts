@@ -226,7 +226,8 @@ export const KO = {
    Explosive: "폭발",
    ExportSpaceship: "우주선 내보내기",
    ExtraElementShards: "추가 원소 파편",
-   ExtraElementShardsTooltipHTML: "<b>원소 파편</b>은 <b>영구 원소</b>를 업그레이드하는 데 사용할 수 있으며, <b>XP 승수</b>를 강화합니다",
+   ExtraElementShardsTooltipHTML:
+      "<b>원소 파편</b>은 <b>영구 원소</b>를 업그레이드하는 데 사용할 수 있으며, <b>XP 승수</b>를 강화합니다",
    FindOpponent: "상대 찾기",
    FireCooldown: "발사 쿨다운",
    GameSettings: "게임 설정",
@@ -272,7 +273,8 @@ export const KO = {
    LA1EAmmo: "LA1E 탄약",
    LanguageChangeWarning: "일부 게임 내 텍스트는 새 언어로 표시하기 위해 게임 재시작이 필요합니다",
    LaserProjectile: "레이저 발사체",
-   LaserProjectileDesc: "레이저 발사체는 여러 모듈을 관통하며, 각 후속 모듈에 감소된 피해를 줍니다. N번째 모듈에 주는 피해는 원래 피해를 N으로 나눈 값과 같습니다",
+   LaserProjectileDesc:
+      "레이저 발사체는 여러 모듈을 관통하며, 각 후속 모듈에 감소된 피해를 줍니다. N번째 모듈에 주는 피해는 원래 피해를 N으로 나눈 값과 같습니다",
    Level: "레벨",
    LevelX: "레벨 %%",
    LifeSteal: "피해 회복",
@@ -327,7 +329,8 @@ export const KO = {
    PrestigeAnyway: "그래도 프레스티지",
    Priority: "우선순위",
    Production: "생산",
-   ProductionBuildingXPHTML: "이 건물은 XP 승수 없이는 XP를 생산하지 않습니다. XP 승수가 있을 때 (예: 영구 원소에서), <b>XP = 생산 가치 (생산 승수 적용 전) x XP 승수</b>",
+   ProductionBuildingXPHTML:
+      "이 건물은 XP 승수 없이는 XP를 생산하지 않습니다. XP 승수가 있을 때 (예: 영구 원소에서), <b>XP = 생산 가치 (생산 승수 적용 전) x XP 승수</b>",
    ProductionMultiplier: "생산 승수",
    ProductionMultiplierBoost: "생산 승수 강화",
    ProductionMultiplierBoostDesc: "+%% 생산 승수",
@@ -487,42 +490,60 @@ export const KO = {
    TierX: "티어 %%",
    TimeWarp: "시간 왜곡",
    TimeWarpTooltip: "왜곡 속도 / 사용 가능한 시간 왜곡",
-   TutorialAdvancedGameControlContent: "빈 모듈을 <b>선택 + 중간 클릭</b>하여 복사합니다. 다른 모듈을 <b>선택 + 우클릭</b>하여 이동/교체합니다. 현재 모듈을 <b>선택 + 우클릭</b>하여 재활용합니다.",
+   TutorialAdvancedGameControlContent:
+      "빈 모듈을 <b>선택 + 중간 클릭</b>하여 복사합니다. 다른 모듈을 <b>선택 + 우클릭</b>하여 이동/교체합니다. 현재 모듈을 <b>선택 + 우클릭</b>하여 재활용합니다.",
    TutorialAmmo: "탄약",
-   TutorialAmmoContentHTML: "전투에 진입할 때, 각 모듈은 <b>%% 사이클의 탄약</b>만 보유합니다 - 우주선에 충분한 탄약 생산이 있는지 확인하세요! 게임 내 통계를 활용하여 생산 균형을 조정하세요.",
+   TutorialAmmoContentHTML:
+      "전투에 진입할 때, 각 모듈은 <b>%% 사이클의 탄약</b>만 보유합니다 - 우주선에 충분한 탄약 생산이 있는지 확인하세요! 게임 내 통계를 활용하여 생산 균형을 조정하세요.",
    TutorialAutoBattle: "(자동)전투",
-   TutorialAutoBattleContent: "전투는 자동으로 진행됩니다. 공정성을 위해 우주선은 <b>같은 양자 레벨</b>의 우주선과 매칭됩니다. 우주선이 잘 수행하면 매칭 풀에 들어갑니다",
+   TutorialAutoBattleContent:
+      "전투는 자동으로 진행됩니다. 공정성을 위해 우주선은 <b>같은 양자 레벨</b>의 우주선과 매칭됩니다. 우주선이 잘 수행하면 매칭 풀에 들어갑니다",
    TutorialBasicConcept: "기본 개념",
-   TutorialBuild1BoosterDescHTML: "각 유형의 부스터 모듈은 한 번만 건설할 수 있습니다. 그들은 상당한 강화 효과를 제공하며, 양자를 소비하지 않고 우주선 XP에 기여하지 않습니다. 그들은 XP가 아닌 자원을 사용하여 건설됩니다",
+   TutorialBuild1BoosterDescHTML:
+      "각 유형의 부스터 모듈은 한 번만 건설할 수 있습니다. 그들은 상당한 강화 효과를 제공하며, 양자를 소비하지 않고 우주선 XP에 기여하지 않습니다. 그들은 XP가 아닌 자원을 사용하여 건설됩니다",
    TutorialBuild6ModulesDescHTML: "모듈을 건설하려면 빈 타일을 클릭하고 사이드 패널에서 원하는 모듈을 선택하세요",
    TutorialBuildXBoosters: "%% 부스터 건설",
    TutorialBuildXModules: "%% 모듈 건설",
    TutorialChat: "도움 받기",
-   TutorialChatContent: "길을 잃었다면, 게임 내 채팅이 항상 도움을 준비하고 있습니다. 친절하게 물어보세요. 또한 사람들이 당신을 인식할 수 있도록 플레이어 핸들을 선택하세요!",
+   TutorialChatContent:
+      "길을 잃었다면, 게임 내 채팅이 항상 도움을 준비하고 있습니다. 친절하게 물어보세요. 또한 사람들이 당신을 인식할 수 있도록 플레이어 핸들을 선택하세요!",
    TutorialCommunity: "게임 내 커뮤니티",
-   TutorialDiscover1ElementDescHTML: "<b>15 양자</b>에 도달하면 첫 번째 원소를 발견하게 됩니다. 세 가지 선택 중 하나를 고를 수 있습니다. 각 원소는 <b>생산 승수</b>를 강화합니다. 프레스티지 후에는 영구 원소 파편이 됩니다",
+   TutorialDiscover1ElementDescHTML:
+      "<b>15 양자</b>에 도달하면 첫 번째 원소를 발견하게 됩니다. 세 가지 선택 중 하나를 고를 수 있습니다. 각 원소는 <b>생산 승수</b>를 강화합니다. 프레스티지 후에는 영구 원소 파편이 됩니다",
    TutorialDiscoverXElement: "%% 원소 발견",
    TutorialElement: "원소",
-   TutorialElementContent: "양자를 얻을 때마다 원소를 발견하게 됩니다. 세 가지 선택 중 하나를 고를 수 있으며, <b>생산 승수</b>를 강화합니다. 프레스티지할 때, 이번 실행의 모든 원소는 영구 원소 파편이 됩니다. 영구 원소는 <b>XP 승수</b>를 강화합니다",
+   TutorialElementContent:
+      "양자를 얻을 때마다 원소를 발견하게 됩니다. 세 가지 선택 중 하나를 고를 수 있으며, <b>생산 승수</b>를 강화합니다. 프레스티지할 때, 이번 실행의 모든 원소는 영구 원소 파편이 됩니다. 영구 원소는 <b>XP 승수</b>를 강화합니다",
    TutorialGameControl: "게임 조작",
-   TutorialGameControlContent: "<b>클릭</b>하여 모듈을 선택합니다. <b>드래그</b>하여 이동합니다. <b>스크롤</b>하여 확대/축소합니다. <b>빈 모듈</b>을 클릭하여 건설합니다. <b>Ctrl + 클릭</b>하여 다중 선택합니다",
-   TutorialIntro: "<b>Spaceship Idle</b>에서 당신만의 모듈식 우주선을 설계하고, 방대한 기술 트리를 탐험하며, 독특한 무기를 해제하고, 장엄한 우주 (자동)전투에서 승리하세요!",
-   TutorialPower: "전력은 <b>발전기</b> 모듈에서 생성됩니다. 당신의 우주선은 자원을 소비하지 않고 전력을 생성하는 태양광 패널 모듈로 시작합니다. 나중에 자원을 소비하는 더 강력한 발전기를 해제하게 됩니다",
+   TutorialGameControlContent:
+      "<b>클릭</b>하여 모듈을 선택합니다. <b>드래그</b>하여 이동합니다. <b>스크롤</b>하여 확대/축소합니다. <b>빈 모듈</b>을 클릭하여 건설합니다. <b>Ctrl + 클릭</b>하여 다중 선택합니다",
+   TutorialIntro:
+      "<b>Spaceship Idle</b>에서 당신만의 모듈식 우주선을 설계하고, 방대한 기술 트리를 탐험하며, 독특한 무기를 해제하고, 장엄한 우주 (자동)전투에서 승리하세요!",
+   TutorialPower:
+      "전력은 <b>발전기</b> 모듈에서 생성됩니다. 당신의 우주선은 자원을 소비하지 않고 전력을 생성하는 태양광 패널 모듈로 시작합니다. 나중에 자원을 소비하는 더 강력한 발전기를 해제하게 됩니다",
    TutorialProgress: "튜토리얼",
-   TutorialQualifierBattle: "양자가 특정 레벨에 도달하면 더 많은 양자를 해제하기 위해 <b>인증 전투에서 승리</b>해야 합니다. 인증된 양자는 우주선에 투자할 수 있는 <b>최대 XP</b>를 결정합니다",
+   TutorialQualifierBattle:
+      "양자가 특정 레벨에 도달하면 더 많은 양자를 해제하기 위해 <b>인증 전투에서 승리</b>해야 합니다. 인증된 양자는 우주선에 투자할 수 있는 <b>최대 XP</b>를 결정합니다",
    TutorialQuantum: "양자와 전투",
-   TutorialQuantumContent: "총 생산된 XP가 특정 레벨에 도달하면 새로운 양자가 해제됩니다. 양자는 <b>기술을 해제하거나 새로운 모듈을 건설</b>하는 데 사용할 수 있습니다",
-   TutorialReach260SpaceshipXPDescHTML: "<b>인증된 양자</b>는 우주선에 투자할 수 있는 XP의 양을 결정합니다. 첫 번째 인증 전투를 준비하기 위해 가능한 한 많은 XP를 투자해야 합니다",
+   TutorialQuantumContent:
+      "총 생산된 XP가 특정 레벨에 도달하면 새로운 양자가 해제됩니다. 양자는 <b>기술을 해제하거나 새로운 모듈을 건설</b>하는 데 사용할 수 있습니다",
+   TutorialReach260SpaceshipXPDescHTML:
+      "<b>인증된 양자</b>는 우주선에 투자할 수 있는 XP의 양을 결정합니다. 첫 번째 인증 전투를 준비하기 위해 가능한 한 많은 XP를 투자해야 합니다",
    TutorialReachXSpaceshipXP: "%% 우주선 XP 달성",
-   TutorialResearch8TechDescHTML: "기술을 연구하려면 연구 탭을 클릭하고 연구하고 싶은 기술을 선택하세요. 각 기술은 <b>양자 1개</b>를 소비하며 취소할 수 없다는 점을 기억하세요",
+   TutorialResearch8TechDescHTML:
+      "기술을 연구하려면 연구 탭을 클릭하고 연구하고 싶은 기술을 선택하세요. 각 기술은 <b>양자 1개</b>를 소비하며 취소할 수 없다는 점을 기억하세요",
    TutorialResearchXTech: "%% 기술 연구",
-   TutorialUse25QuantumDescHTML: "양자는 얻은 XP를 기반으로 생성되며, 여기에는 <b>우주선에 투자된 XP</b>와 남은 <b>저장소의 XP</b>가 포함됩니다. 양자는 기술을 해제하거나 새로운 모듈을 건설하는 데 사용할 수 있습니다. 모듈을 재활용하면 양자가 환불됩니다",
+   TutorialUse25QuantumDescHTML:
+      "양자는 얻은 XP를 기반으로 생성되며, 여기에는 <b>우주선에 투자된 XP</b>와 남은 <b>저장소의 XP</b>가 포함됩니다. 양자는 기술을 해제하거나 새로운 모듈을 건설하는 데 사용할 수 있습니다. 모듈을 재활용하면 양자가 환불됩니다",
    TutorialUseXQuantum: "%% 양자 사용",
    TutorialWeapon: "무기",
-   TutorialWeaponContent: "무기는 기술 트리를 연구하여 해제됩니다. 무기는 자원을 소비하고 <b>탄약을 생산</b>하며, 발사할 때 <b>탄약을 소비</b>합니다. 무기는 다양한 스탯과 능력을 가지며, 업그레이드할 수 있습니다",
+   TutorialWeaponContent:
+      "무기는 기술 트리를 연구하여 해제됩니다. 무기는 자원을 소비하고 <b>탄약을 생산</b>하며, 발사할 때 <b>탄약을 소비</b>합니다. 무기는 다양한 스탯과 능력을 가지며, 업그레이드할 수 있습니다",
    TutorialWinSpaceshipBattle: "%% 우주선 전투 승리",
-   TutorialWinSpaceshipBattleDescHTML: "인증 전투에서 승리하면 더 높은 양자 한계가 해제됩니다. 이는 양자 30에서 <b>인증 전투</b>에서 승리하거나 양자 35에서 <b>두 번째 기회</b> 전투에서 승리하여 달성할 수 있습니다",
-   TutorialXP: "무기 모듈이 <b>발사</b>할 때 XP가 생성됩니다. 더 발전되고 높은 레벨의 무기는 더 많은 XP를 생성합니다. 우주선 모듈을 건설하고 업그레이드하는 데 XP가 소비됩니다",
+   TutorialWinSpaceshipBattleDescHTML:
+      "인증 전투에서 승리하면 더 높은 양자 한계가 해제됩니다. 이는 양자 30에서 <b>인증 전투</b>에서 승리하거나 양자 35에서 <b>두 번째 기회</b> 전투에서 승리하여 달성할 수 있습니다",
+   TutorialXP:
+      "무기 모듈이 <b>발사</b>할 때 XP가 생성됩니다. 더 발전되고 높은 레벨의 무기는 더 많은 XP를 생성합니다. 우주선 모듈을 건설하고 업그레이드하는 데 XP가 소비됩니다",
    UnlockBuildings: "건물 해제",
    UnlockUpgrades: "업그레이드 해제",
    Upgrade: "업그레이드",
@@ -543,4 +564,17 @@ export const KO = {
    XP: "XP",
    XPCollector: "XP 수집기",
    XPMultiplier: "XP 승수",
+   TabGeneral: "일반",
+   TabShortcut: "단축키",
+   ShortcutUpgrade1: "+1 레벨 (단일/배치)",
+   ShortcutDowngrade1: "-1 레벨 (단일/배치)",
+   ShortcutRecycle: "재활용 (단일)",
+   ShortcutMatchCapacityToAmmoProduction: "탄약 생산에 용량 맞추기 (단일/배치)",
+   ShortcutPriority0: "우선순위 0 설정 (단일/배치)",
+   ShortcutPriority10: "우선순위 10 설정 (단일/배치)",
+   ShortcutCapacity0: "용량 0 설정 (단일/배치)",
+   ShortcutCapacity10: "용량 10 설정 (단일/배치)",
+   ShortcutUpgradeMax: "+최대 레벨 (단일)",
+   AdvancedGameControlContent:
+      "(1) 재활용하려면 오른쪽 클릭<br>(2) 이동하려면 오른쪽 클릭<br>(3) 교환하려면 오른쪽 클릭<br>(4) 복사하려면 가운데 클릭",
 };
