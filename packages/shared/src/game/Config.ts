@@ -1,14 +1,19 @@
 import { forEach, keysOf, reduceOf, sizeOf } from "../utils/Helper";
 import type { IBuildingDefinition } from "./definitions/BuildingProps";
 import { Buildings, type Building } from "./definitions/Buildings";
+import { MaxBattleTick } from "./definitions/Constant";
 import type { Resource } from "./definitions/Resource";
 import { Resources } from "./definitions/Resource";
 import { TechDefinitions } from "./definitions/TechDefinitions";
 import { getTechForBuilding } from "./logic/TechLogic";
 import type { ElementSymbol } from "./PeriodicTable";
 
+console.assert(sizeOf(Buildings) < MaxBattleTick);
+const BuildingId = Object.fromEntries(Object.entries(Buildings).map(([b, _], i) => [b, i])) as Record<Building, number>;
+
 export const Config = {
    Buildings,
+   BuildingId,
    Resources,
    Tech: new TechDefinitions(),
    Element: new Map<ElementSymbol, Building>(),

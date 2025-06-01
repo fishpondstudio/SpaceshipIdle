@@ -12,6 +12,7 @@ export const BalanceVersion = 1;
 export const DefaultCooldown = 2;
 export const MaxBattleTick = 10 * 60;
 export const SuddenDeathTick = 5 * 60;
+export const MaxBuildingCount = 1000;
 export const DiscordUrl = "https://discord.com/invite/Z3kFpawyts";
 export const SteamUrl = "https://store.steampowered.com/app/3454630";
 export const TranslationUrl = "https://github.com/fishpondstudio/SpaceshipIdle/tree/main/packages/shared/src/languages";

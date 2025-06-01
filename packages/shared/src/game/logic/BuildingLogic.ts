@@ -3,6 +3,7 @@ import { Config } from "../Config";
 import { AbilityRangeLabel } from "../definitions/Ability";
 import { BuildingFlag, type IBoosterDefinition, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
+import { MaxBuildingCount } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
 import type { GameState } from "../GameState";
 import type { ITileData } from "../ITileData";
@@ -24,6 +25,11 @@ export function fib(n: number): number {
    return a;
 }
 
+export function hashBuildingAndLevel(building: Building, level: number): number {
+   return level * MaxBuildingCount + Config.BuildingId[building];
+}
+
+const buildingValueCache = new Map<number, number>();
 export function getBuildingValue(
    building: Building,
    level: number,
@@ -34,17 +40,19 @@ export function getBuildingValue(
    if (isBooster(building)) {
       return result;
    }
-   forEach(def.output, (res, value) => {
-      mapSafeAdd(result, res, value * fib(level));
-   });
+   const hash = hashBuildingAndLevel(building, level);
+   const cached = buildingValueCache.get(hash);
+   if (cached !== undefined) {
+      mapSafeAdd(result, "XP", cached);
+      return result;
+   }
    let xp = 0;
-   result.forEach((value, res) => {
-      let price = Config.Price.get(res) ?? 0;
-      price = price <= 0 ? 1 : price;
-      xp += value * price;
+   forEach(def.output, (res, value) => {
+      const price = Config.Price.get(res) ?? 1;
+      xp += price * value * fib(level);
    });
-   result.clear();
-   result.set("XP", xp);
+   mapSafeAdd(result, "XP", xp);
+   buildingValueCache.set(hash, xp);
    return result;
 }
 

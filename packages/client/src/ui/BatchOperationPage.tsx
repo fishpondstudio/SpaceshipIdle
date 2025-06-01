@@ -1,7 +1,13 @@
 import { Tooltip } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { getTotalBuildingValue, isBooster, trySpend } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
+import {
+   getBuildingValue,
+   getTotalBuildingValue,
+   isBooster,
+   tryDeductResources,
+   trySpend,
+} from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { mapSafeAdd, round, type Tile } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useCallback, type ReactNode } from "react";
@@ -151,8 +157,14 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                         for (const tile of tiles) {
                            const data = G.save.current.tiles.get(tile);
                            if (data) {
+                              // Here, we can use `trySpend` but we don't. `trySpend` will check max Spaceship
+                              // value, which is very expensive. In this case, we know we will never hit max
+                              // so skipping that check! Otherwise our while loop is too slow.
                               if (
-                                 trySpend(getTotalBuildingValue(data.type, data.level, data.level + 1), G.save.current)
+                                 tryDeductResources(
+                                    getBuildingValue(data.type, data.level + 1),
+                                    G.save.current.resources,
+                                 )
                               ) {
                                  ++data.level;
                                  shouldContinue = true;
