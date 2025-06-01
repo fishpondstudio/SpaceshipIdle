@@ -1,7 +1,7 @@
 import { Image, Slider, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { AbilityRangeLabel } from "@spaceship-idle/shared/src/game/definitions/Ability";
-import { type IBoosterDefinition } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import type { IBoosterDefinition } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {

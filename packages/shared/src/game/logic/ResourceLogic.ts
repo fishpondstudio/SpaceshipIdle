@@ -49,12 +49,10 @@ function populateQuantumLookup() {
    if (qToSVLookup.size > 0) {
       return;
    }
-   console.time("populateQuantumLookup");
    for (let q = 10_000; q >= 1; q--) {
       const sv = qToSV(q);
       qToSVLookup.set(q, sv);
    }
-   console.timeEnd("populateQuantumLookup");
 }
 
 const shipValue = new Map<Resource, number>();

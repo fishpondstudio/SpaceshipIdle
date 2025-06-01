@@ -119,11 +119,13 @@ function initConfig(): void {
       });
    });
 
-   console.log("Price", Config.Price);
-   console.log("Normalized Price", Config.NormalizedPrice);
-   console.log("Resource Tier", Config.ResourceTier);
-   console.log("Building Tier", Config.BuildingTier);
-   console.log(`# of techs: ${sizeOf(Config.Tech)}`);
+   if (typeof window !== "undefined") {
+      console.log("Price", Config.Price);
+      console.log("Normalized Price", Config.NormalizedPrice);
+      console.log("Resource Tier", Config.ResourceTier);
+      console.log("Building Tier", Config.BuildingTier);
+      console.log(`# of techs: ${sizeOf(Config.Tech)}`);
+   }
 }
 
 initConfig();
