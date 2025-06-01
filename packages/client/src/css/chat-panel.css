@@ -13,7 +13,8 @@
    }
 }
 
-.chat-panel:hover {
+.chat-panel:hover,
+.chat-panel.active {
    opacity: 1;
 }
 

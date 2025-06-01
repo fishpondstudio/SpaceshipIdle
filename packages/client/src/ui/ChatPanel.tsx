@@ -50,6 +50,7 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
    const isMouseOver = useRef(false);
    const handle = refreshOnTypedEvent(OnChatMessage);
    const messages = useRef<IChat[]>([]);
+   const [isFocused, setIsFocused] = useState(false);
 
    useEffect(() => {
       RPCClient.getChatByChannel(channel).then((messages) => {
@@ -95,7 +96,7 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
    }, []);
 
    return (
-      <div className="chat-panel" style={{ left }}>
+      <div className={classNames("chat-panel", isFocused ? "active" : null)} style={{ left }}>
          <div
             className="chat-message-list"
             onMouseEnter={() => {
@@ -128,7 +129,7 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
                </div>
             ))}
          </div>
-         <ChatInput channel={channel} />
+         <ChatInput channel={channel} onFocusChanged={setIsFocused} />
       </div>
    );
 }
@@ -137,7 +138,10 @@ const ChatPanelSingle = memo(_ChatPanelSingle, (prev, next) => {
    return prev.channel === next.channel && prev.left === next.left;
 });
 
-function _ChatInput({ channel }: { channel: Language }): React.ReactNode {
+function _ChatInput({
+   channel,
+   onFocusChanged,
+}: { channel: Language; onFocusChanged: (focus: boolean) => void }): React.ReactNode {
    const [message, setMessage] = useState("");
    const isCommand = message.startsWith("/");
    useTypedEvent(SetChatInput, (func) => {
@@ -160,6 +164,12 @@ function _ChatInput({ channel }: { channel: Language }): React.ReactNode {
             value={message}
             onChange={(e) => {
                setMessage(e.target.value);
+            }}
+            onFocus={() => {
+               onFocusChanged(true);
+            }}
+            onBlur={() => {
+               onFocusChanged(false);
             }}
             onKeyDown={(e) => {
                if (e.key === "Enter") {
@@ -184,7 +194,7 @@ function _ChatInput({ channel }: { channel: Language }): React.ReactNode {
 }
 
 const ChatInput = memo(_ChatInput, (prev, next) => {
-   return prev.channel === next.channel;
+   return prev.channel === next.channel && prev.onFocusChanged === next.onFocusChanged;
 });
 
 function _LanguageMenu({ icon }: { icon: React.ReactNode }): React.ReactNode {
