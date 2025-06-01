@@ -19,7 +19,20 @@ export function tickElement(gs: GameState): void {
    while (gs.discoveredElements < expectedElements) {
       gs.discoveredElements++;
       const candidates = getUnlockedElements(gs);
-      const choices = shuffle(candidates).slice(0, DefaultElementChoices);
+      candidates.sort((a, b) => {
+         const buildingA = Config.Element.get(a);
+         const buildingB = Config.Element.get(b);
+         if (!buildingA || !buildingB) {
+            return 0;
+         }
+         const tierA = Config.BuildingTier.get(buildingA);
+         const tierB = Config.BuildingTier.get(buildingB);
+         if (!tierA || !tierB) {
+            return 0;
+         }
+         return tierB - tierA;
+      });
+      const choices = shuffle(candidates.slice(0, DefaultElementChoices * 2)).slice(0, DefaultElementChoices);
       if (choices.length >= DefaultElementChoices) {
          gs.elementChoices.push({
             choices: choices,

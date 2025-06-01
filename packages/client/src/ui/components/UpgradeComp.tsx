@@ -24,10 +24,6 @@ import { playClick, playError } from "../Sound";
 import { AbilityRangeImage } from "./AbilityComp";
 import { ResourceListComp } from "./ResourceListComp";
 
-const Slider_ = memo(Slider, (oldProps, newProps) => {
-   return oldProps.value === newProps.value;
-});
-
 export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
    const data = gs.tiles.get(tile);
    if (!data) {
@@ -194,7 +190,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          </div>
          <div className="mx10">
             <div className="subtitle my10">{t(L.Priority)}</div>
-            <Slider_
+            <Slider
                flex={1}
                min={0}
                max={10}
@@ -221,7 +217,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   </div>
                </Tooltip>
             </div>
-            <Slider_
+            <Slider
                flex={1}
                min={0}
                max={100}

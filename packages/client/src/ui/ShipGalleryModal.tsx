@@ -1,3 +1,4 @@
+import { useForceUpdate } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { getShipScoreRank } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
@@ -15,7 +16,7 @@ import { playError } from "./Sound";
 import { ViewShipModal } from "./ViewShipModal";
 
 export function ShipGalleryModal(): React.ReactNode {
-   const [counter, setCounter] = useState(0);
+   const forceUpdate = useForceUpdate();
    const [result, setResult] = useState<{ total: number; ships: IShip[] } | null>(null);
    const [quantum, setQuantum] = useState(30);
    useEffect(() => {
@@ -96,8 +97,14 @@ export function ShipGalleryModal(): React.ReactNode {
                   className="btn red f1"
                   onClick={async () => {
                      try {
-                        await RPCClient.saveShip(G.save.current, 1);
-                        setCounter(counter + 1);
+                        const id = await RPCClient.saveShip(G.save.current, 1);
+                        showModal({
+                           title: t(L.ViewShip),
+                           children: <ViewShipModal id={id} />,
+                           size: "md",
+                           dismiss: true,
+                        });
+                        forceUpdate();
                      } catch (e) {
                         playError();
                         notifications.show({ position: "top-center", color: "red", message: String(e) });

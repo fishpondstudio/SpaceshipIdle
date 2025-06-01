@@ -5,7 +5,7 @@ import type { IChat, IShip } from "./ServerMessageTypes";
 
 export interface IServer {
    changePlayerHandle: (name: string) => Promise<void>;
-   saveShip: (ship: GameState, score: number) => Promise<void>;
+   saveShip: (ship: GameState, score: number) => Promise<string>;
    listShips: (limit: number, offset: number) => Promise<{ total: number; ships: IShip[] }>;
    viewShip: (id: string) => Promise<IShip>;
    deleteShip: (id: string) => Promise<void>;
