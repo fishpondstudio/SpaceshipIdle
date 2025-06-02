@@ -5,7 +5,7 @@ import type { Building } from "../definitions/Buildings";
 import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
 import type { ITileData } from "../ITileData";
-import { calcSpaceshipValue, getMaxSpaceshipValue, getQuantumLimit, getUsedQuantum } from "./ResourceLogic";
+import { calcSpaceshipValue, getMatchmakingQuantum, getMaxSpaceshipValue, getUsedQuantum } from "./ResourceLogic";
 import { Side } from "./Side";
 
 export function calculateAABB(tiles: Tiles): AABB {
@@ -121,9 +121,9 @@ export function isWithinShipExtent(tile: Tile, gs: GameState): boolean {
 }
 
 export function validateShip(gs: GameState): boolean {
-   const quantumLimit = getQuantumLimit(gs);
+   const mmQuantum = getMatchmakingQuantum(gs);
    const usedQuantum = getUsedQuantum(gs);
-   if (usedQuantum > quantumLimit) {
+   if (mmQuantum !== usedQuantum) {
       return false;
    }
 

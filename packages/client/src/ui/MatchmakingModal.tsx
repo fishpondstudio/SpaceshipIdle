@@ -4,7 +4,6 @@ import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
    calcSpaceshipValue,
    getMatchmakingQuantum,
-   getQuantumLimit,
    getUsedQuantum,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
@@ -45,7 +44,7 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
             <Switch
                checked={isPracticeBattle}
                onChange={(e) => {
-                  if (getUsedQuantum(enemy) < getQuantumLimit(G.save.current)) {
+                  if (getUsedQuantum(enemy) < getMatchmakingQuantum(G.save.current)) {
                      setIsPracticeBattle(true);
                      return;
                   }
