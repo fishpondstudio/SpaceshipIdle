@@ -44,7 +44,7 @@ export function PrepareForBattleModal(): React.ReactNode {
                try {
                   playClick();
                   showLoading();
-                  const ship = await RPCClient.findShip(getMatchmakingQuantum(G.save.current), [0.75, 1.1]);
+                  const ship = await RPCClient.findShip(getMatchmakingQuantum(G.save.current), [0.5, 2]);
                   await resolveIn(1, null);
                   hideLoading();
                   showModal({
