@@ -872,3 +872,21 @@ export function mergeSort<T>(array: T[], compare: (a: T, b: T) => number): T[] {
 
    return array;
 }
+
+export function insertSorted<T>(array: T[], item: T, compare: (a: T, b: T) => number): T[] {
+   let left = 0;
+   let right = array.length;
+
+   while (left < right) {
+      const mid = Math.floor((left + right) / 2);
+      const comparison = compare(item, array[mid]);
+      if (comparison < 0) {
+         right = mid;
+      } else {
+         left = mid + 1;
+      }
+   }
+
+   array.splice(left, 0, item);
+   return array;
+}
