@@ -25,7 +25,7 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
       <>
          <div className="panel bg-dark">
             <div className="row text-space">
-               <div>SS {ship.json.name}</div>
+               <div>{t(L.SpaceshipPrefix, ship.json.name)}</div>
                <div className="f1" />
                <Tooltip label={t(L.ShipRatingTooltip)}>
                   <div>{getShipScoreRank(ship.score)}</div>
