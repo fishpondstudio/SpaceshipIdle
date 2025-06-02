@@ -60,6 +60,7 @@ export const UserFlags = {
    Mod: 1 << 1,
    Banned: 1 << 2,
    Muted: 1 << 3,
+   NoRename: 1 << 4,
 } as const;
 
 export type UserFlags = ValueOf<typeof UserFlags>;

@@ -24,6 +24,9 @@ export function ChatPanel(): React.ReactNode {
             <div className="chat-input">
                <div className="mi">signal_disconnected</div>
                <div className="f1">{t(L.CurrentlyOffline)}</div>
+               <div className="mi pointer" onClick={() => window.location.reload()}>
+                  refresh
+               </div>
             </div>
          </div>
       );

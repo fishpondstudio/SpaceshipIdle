@@ -11,7 +11,7 @@ import { showModal } from "../utils/ToggleModal";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { MatchMakingModal } from "./MatchmakingModal";
 import { PrestigeModal } from "./PrestigeModal";
-import { playClick, playError } from "./Sound";
+import { playBling, playClick, playError } from "./Sound";
 
 export function PrepareForBattleModal(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
@@ -46,6 +46,7 @@ export function PrepareForBattleModal(): React.ReactNode {
                   showLoading();
                   const ship = await RPCClient.findShip(getMatchmakingQuantum(G.save.current), [0.5, 2]);
                   await resolveIn(1, null);
+                  playBling();
                   hideLoading();
                   showModal({
                      children: <MatchMakingModal enemy={ship.json} />,

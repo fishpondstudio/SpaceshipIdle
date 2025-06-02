@@ -93,6 +93,7 @@ export function ChangePlayerHandleComp(): React.ReactNode {
                         position: "top-center",
                         withBorder: true,
                      });
+                     setName(user.handle);
                   }
                }}
             >

@@ -1,6 +1,7 @@
 import { notifications } from "@mantine/notifications";
 import { RPCClient } from "../rpc/RPCClient";
 import { playBling, playError } from "../ui/Sound";
+import { RenderHTML } from "../ui/components/RenderHTMLComp";
 
 export function handleCommand(command: string): void {
    RPCClient.sendCommand(command)
@@ -32,7 +33,7 @@ function CommandOutput({ command, result }: { command: string; result: string })
             <div className="f1">{command}</div>
          </div>
          <div className="divider my5" />
-         <div>{result}</div>
+         <RenderHTML html={result.split("\n").join("<br>")} />
       </div>
    );
 }
