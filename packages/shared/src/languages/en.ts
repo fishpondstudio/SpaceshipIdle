@@ -555,4 +555,5 @@ export const EN = {
    ShortcutCapacity10: "Set Capacity 10 (Single/Batch)",
    ShortcutUpgradeMax: "+Max Level (Single)",
    AdvancedGameControlContent: "(1) Right click to recycle<br>(2) Right click to move<br>(3) Right click to swap<br>(4) Middle click to copy",
+   QualifierBattleRequirement: "Your spaceship should have %% quantum for the qualifier battle",
 };

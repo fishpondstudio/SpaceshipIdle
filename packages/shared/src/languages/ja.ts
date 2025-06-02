@@ -203,8 +203,7 @@ export const JA = {
    ElementTerbium: "テルビウム",
    ElementThallium: "タリウム",
    ElementThisRun: "今回のランでの元素",
-   ElementThisRunTooltipHTML:
-      "今回のランでの元素は<b>生産倍率</b>を強化し、プレステージ後に<b>元素シャード</b>になります",
+   ElementThisRunTooltipHTML: "今回のランでの元素は<b>生産倍率</b>を強化し、プレステージ後に<b>元素シャード</b>になります",
    ElementThorium: "トリウム",
    ElementThulium: "ツリウム",
    ElementTin: "スズ",
@@ -227,8 +226,7 @@ export const JA = {
    Explosive: "爆発",
    ExportSpaceship: "宇宙船をエクスポート",
    ExtraElementShards: "追加元素シャード",
-   ExtraElementShardsTooltipHTML:
-      "<b>元素シャード</b>は<b>永続元素</b>のアップグレードに使用でき、<b>XP倍率</b>を強化します",
+   ExtraElementShardsTooltipHTML: "<b>元素シャード</b>は<b>永続元素</b>のアップグレードに使用でき、<b>XP倍率</b>を強化します",
    FindOpponent: "対戦相手を探す",
    FireCooldown: "発射クールダウン",
    GameSettings: "ゲーム設定",
@@ -274,8 +272,7 @@ export const JA = {
    LA1EAmmo: "LA1E 弾薬",
    LanguageChangeWarning: "一部のゲーム内テキストは新しい言語で表示するためにゲームの再起動が必要です",
    LaserProjectile: "レーザー弾",
-   LaserProjectileDesc:
-      "レーザー弾は複数のモジュールを貫通し、後続のモジュールごとにダメージが減少します。N番目のモジュールに与えるダメージは元のダメージをNで割った値に等しくなります",
+   LaserProjectileDesc: "レーザー弾は複数のモジュールを貫通し、後続のモジュールごとにダメージが減少します。N番目のモジュールに与えるダメージは元のダメージをNで割った値に等しくなります",
    Level: "レベル",
    LevelX: "レベル %%",
    LifeSteal: "ダメージ吸収",
@@ -330,8 +327,7 @@ export const JA = {
    PrestigeAnyway: "それでもプレステージ",
    Priority: "優先度",
    Production: "生産",
-   ProductionBuildingXPHTML:
-      "この建物はXP倍率がないとXPを生産しません。XP倍率（例：永続元素から）がある場合、<b>XP = 生産値（生産倍率前）x XP倍率</b>",
+   ProductionBuildingXPHTML: "この建物はXP倍率がないとXPを生産しません。XP倍率（例：永続元素から）がある場合、<b>XP = 生産値（生産倍率前）x XP倍率</b>",
    ProductionMultiplier: "生産倍率",
    ProductionMultiplierBoost: "生産倍率強化",
    ProductionMultiplierBoostDesc: "生産倍率+%%",
@@ -491,61 +487,42 @@ export const JA = {
    TierX: "ティア %%",
    TimeWarp: "タイムワープ",
    TimeWarpTooltip: "ワープ速度 / 利用可能タイムワープ",
-   TutorialAdvancedGameControlContent:
-      "空のモジュールを<b>選択 + 中クリック</b>でコピー。別のモジュールを<b>選択 + 右クリック</b>で移動/交換。現在のモジュールを<b>選択 + 右クリック</b>でリサイクル。",
+   TutorialAdvancedGameControlContent: "空のモジュールを<b>選択 + 中クリック</b>でコピー。別のモジュールを<b>選択 + 右クリック</b>で移動/交換。現在のモジュールを<b>選択 + 右クリック</b>でリサイクル。",
    TutorialAmmo: "弾薬",
-   TutorialAmmoContentHTML:
-      "戦闘に入ると、各モジュールは<b>%%サイクルの弾薬</b>しか持てません - 宇宙船に十分な弾薬生産があることを確認してください！ゲーム内統計を活用して生産バランスを調整しましょう。",
+   TutorialAmmoContentHTML: "戦闘に入ると、各モジュールは<b>%%サイクルの弾薬</b>しか持てません - 宇宙船に十分な弾薬生産があることを確認してください！ゲーム内統計を活用して生産バランスを調整しましょう。",
    TutorialAutoBattle: "（自動）戦闘",
-   TutorialAutoBattleContent:
-      "戦闘は自動で行われます。公平性を確保するため、宇宙船は<b>同じ量子レベル</b>の宇宙船とマッチングされます。宇宙船が良い成績を収めると、マッチメイキングプールに入ります。",
+   TutorialAutoBattleContent: "戦闘は自動で行われます。公平性を確保するため、宇宙船は<b>同じ量子レベル</b>の宇宙船とマッチングされます。宇宙船が良い成績を収めると、マッチメイキングプールに入ります。",
    TutorialBasicConcept: "基本概念",
-   TutorialBuild1BoosterDescHTML:
-      "各タイプのブースターモジュールは1つしか建造できません。それらは重要な強化効果を提供し、量子を消費せず、宇宙船XPに貢献しません。XPではなくリソースを消費して建造します。",
-   TutorialBuild6ModulesDescHTML:
-      "モジュールを建造するには、空のタイルをクリックし、サイドパネルから建造したいモジュールを選択します。",
+   TutorialBuild1BoosterDescHTML: "各タイプのブースターモジュールは1つしか建造できません。それらは重要な強化効果を提供し、量子を消費せず、宇宙船XPに貢献しません。XPではなくリソースを消費して建造します。",
+   TutorialBuild6ModulesDescHTML: "モジュールを建造するには、空のタイルをクリックし、サイドパネルから建造したいモジュールを選択します。",
    TutorialBuildXBoosters: "%%個のブースターを建造",
    TutorialBuildXModules: "%%個のモジュールを建造",
    TutorialChat: "ヘルプを求める",
-   TutorialChatContent:
-      "迷った場合は、ゲーム内チャットがいつでも助けてくれます。丁寧に質問してください。また、プレイヤーハンドルを設定して、他のプレイヤーに認識してもらいましょう！",
+   TutorialChatContent: "迷った場合は、ゲーム内チャットがいつでも助けてくれます。丁寧に質問してください。また、プレイヤーハンドルを設定して、他のプレイヤーに認識してもらいましょう！",
    TutorialCommunity: "ゲーム内コミュニティ",
-   TutorialDiscover1ElementDescHTML:
-      "<b>15量子</b>に達すると最初の元素を発見できます。3つの選択肢から1つを選べます。各元素は<b>生産倍率</b>を強化します。プレステージすると永続元素シャードになります。",
+   TutorialDiscover1ElementDescHTML: "<b>15量子</b>に達すると最初の元素を発見できます。3つの選択肢から1つを選べます。各元素は<b>生産倍率</b>を強化します。プレステージすると永続元素シャードになります。",
    TutorialDiscoverXElement: "%%個の元素を発見",
    TutorialElement: "元素",
-   TutorialElementContent:
-      "量子を獲得すると元素を発見できます。3つの選択肢から1つを選べ、<b>生産倍率</b>を強化します。プレステージすると、今回のランでのすべての元素が永続元素シャードになります。永続元素は<b>XP倍率</b>を強化します。",
+   TutorialElementContent: "量子を獲得すると元素を発見できます。3つの選択肢から1つを選べ、<b>生産倍率</b>を強化します。プレステージすると、今回のランでのすべての元素が永続元素シャードになります。永続元素は<b>XP倍率</b>を強化します。",
    TutorialGameControl: "ゲーム操作",
-   TutorialGameControlContent:
-      "<b>クリック</b>でモジュールを選択。<b>ドラッグ</b>で移動。<b>スクロール</b>でズームイン/アウト。空のモジュールを<b>クリック</b>して建造。<b>Ctrl + クリック</b>で複数選択。",
-   TutorialIntro:
-      "<b>Spaceship Idle</b>では、独自のモジュラー宇宙船を設計し、広大なテクノロジーツリーを探索し、ユニークな武器をアンロックし、壮大な宇宙（自動）戦闘で勝利しましょう！",
-   TutorialPower:
-      "パワーは<b>発電機</b>モジュールによって生成されます。宇宙船は最初にソーラーパネルモジュールを持ち、リソースを消費せずにパワーを生成します。後で、より強力なリソース消費型の発電機をアンロックできます。",
+   TutorialGameControlContent: "<b>クリック</b>でモジュールを選択。<b>ドラッグ</b>で移動。<b>スクロール</b>でズームイン/アウト。空のモジュールを<b>クリック</b>して建造。<b>Ctrl + クリック</b>で複数選択。",
+   TutorialIntro: "<b>Spaceship Idle</b>では、独自のモジュラー宇宙船を設計し、広大なテクノロジーツリーを探索し、ユニークな武器をアンロックし、壮大な宇宙（自動）戦闘で勝利しましょう！",
+   TutorialPower: "パワーは<b>発電機</b>モジュールによって生成されます。宇宙船は最初にソーラーパネルモジュールを持ち、リソースを消費せずにパワーを生成します。後で、より強力なリソース消費型の発電機をアンロックできます。",
    TutorialProgress: "チュートリアル",
-   TutorialQualifierBattle:
-      "量子が特定のレベルに達すると、より多くの量子をアンロックするために<b>認定戦に勝利</b>する必要があります。認定量子は宇宙船に投資できる<b>最大XP</b>を決定します。",
+   TutorialQualifierBattle: "量子が特定のレベルに達すると、より多くの量子をアンロックするために<b>認定戦に勝利</b>する必要があります。認定量子は宇宙船に投資できる<b>最大XP</b>を決定します。",
    TutorialQuantum: "量子と戦闘",
-   TutorialQuantumContent:
-      "総生産XPが特定のレベルに達すると、新しい量子がアンロックされます。量子は<b>テクノロジーのアンロックまたは新しいモジュールの建造</b>に使用できます。",
-   TutorialReach260SpaceshipXPDescHTML:
-      "<b>認定量子</b>は宇宙船に投資できるXPの量を決定します。最初の認定戦に備えるため、できるだけ多くのXPを投資すべきです。",
+   TutorialQuantumContent: "総生産XPが特定のレベルに達すると、新しい量子がアンロックされます。量子は<b>テクノロジーのアンロックまたは新しいモジュールの建造</b>に使用できます。",
+   TutorialReach260SpaceshipXPDescHTML: "<b>認定量子</b>は宇宙船に投資できるXPの量を決定します。最初の認定戦に備えるため、できるだけ多くのXPを投資すべきです。",
    TutorialReachXSpaceshipXP: "宇宙船XP %%に到達",
-   TutorialResearch8TechDescHTML:
-      "テクノロジーを研究するには、研究タブをクリックし、研究したいテクノロジーを選択します。各テクノロジーは<b>1量子</b>を消費して研究し、取り消せないことに注意してください。",
+   TutorialResearch8TechDescHTML: "テクノロジーを研究するには、研究タブをクリックし、研究したいテクノロジーを選択します。各テクノロジーは<b>1量子</b>を消費して研究し、取り消せないことに注意してください。",
    TutorialResearchXTech: "%%個のテクノロジーを研究",
-   TutorialUse25QuantumDescHTML:
-      "量子は獲得したXPに基づいて生成され、これには<b>宇宙船に投資されたXP</b>と残りの<b>ストレージ内のXP</b>が含まれます。量子はテクノロジーのアンロックまたは新しいモジュールの建造に使用できます。モジュールをリサイクルすると、量子は返還されます。",
+   TutorialUse25QuantumDescHTML: "量子は獲得したXPに基づいて生成され、これには<b>宇宙船に投資されたXP</b>と残りの<b>ストレージ内のXP</b>が含まれます。量子はテクノロジーのアンロックまたは新しいモジュールの建造に使用できます。モジュールをリサイクルすると、量子は返還されます。",
    TutorialUseXQuantum: "%%量子を使用",
    TutorialWeapon: "武器",
-   TutorialWeaponContent:
-      "武器はテクノロジーツリーの研究でアンロックされます。武器はリソースを消費し、<b>弾薬を生産</b>します - 発射時には<b>弾薬を消費</b>します。武器には異なるステータスとアビリティがあり、アップグレードできます。",
+   TutorialWeaponContent: "武器はテクノロジーツリーの研究でアンロックされます。武器はリソースを消費し、<b>弾薬を生産</b>します - 発射時には<b>弾薬を消費</b>します。武器には異なるステータスとアビリティがあり、アップグレードできます。",
    TutorialWinSpaceshipBattle: "%%回の宇宙船戦闘に勝利",
-   TutorialWinSpaceshipBattleDescHTML:
-      "認定戦に勝利すると、より高い量子制限が解除されます。これは量子30での<b>認定戦</b>または量子35での<b>セカンドチャンス</b>戦闘のいずれかで達成できます。",
-   TutorialXP:
-      "武器モジュールが<b>発射</b>するとXPが生成されます。より高度で高レベルの武器はより多くのXPを生成します。宇宙船モジュールの建造とアップグレードにはXPが必要です。",
+   TutorialWinSpaceshipBattleDescHTML: "認定戦に勝利すると、より高い量子制限が解除されます。これは量子30での<b>認定戦</b>または量子35での<b>セカンドチャンス</b>戦闘のいずれかで達成できます。",
+   TutorialXP: "武器モジュールが<b>発射</b>するとXPが生成されます。より高度で高レベルの武器はより多くのXPを生成します。宇宙船モジュールの建造とアップグレードにはXPが必要です。",
    UnlockBuildings: "建物をアンロック",
    UnlockUpgrades: "アップグレードをアンロック",
    Upgrade: "アップグレード",
@@ -577,6 +554,6 @@ export const JA = {
    ShortcutCapacity0: "容量0に設定 (単体/バッチ)",
    ShortcutCapacity10: "容量10に設定 (単体/バッチ)",
    ShortcutUpgradeMax: "+最大レベル (単体)",
-   AdvancedGameControlContent:
-      "(1) 右クリックでリサイクル<br>(2) 右クリックで移動<br>(3) 右クリックで交換<br>(4) 中クリックでコピー",
+   AdvancedGameControlContent: "(1) 右クリックでリサイクル<br>(2) 右クリックで移動<br>(3) 右クリックで交換<br>(4) 中クリックでコピー",
+   QualifierBattleRequirement: "Your spaceship should have %% quantum for the qualifier battle",
 };

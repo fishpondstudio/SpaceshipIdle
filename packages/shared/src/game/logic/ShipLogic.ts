@@ -5,7 +5,13 @@ import type { Building } from "../definitions/Buildings";
 import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
 import type { ITileData } from "../ITileData";
-import { calcSpaceshipValue, getMatchmakingQuantum, getMaxSpaceshipValue, getUsedQuantum } from "./ResourceLogic";
+import {
+   calcSpaceshipValue,
+   getMatchmakingQuantum,
+   getMaxSpaceshipValue,
+   getQuantumLimit,
+   getUsedQuantum,
+} from "./ResourceLogic";
 import { Side } from "./Side";
 
 export function calculateAABB(tiles: Tiles): AABB {
@@ -156,5 +162,15 @@ export function validateShip(gs: GameState): boolean {
       }
    }
 
+   return true;
+}
+
+export function isQualifierBattle(me: GameState, enemy: GameState): boolean {
+   if (getUsedQuantum(me) < getQuantumLimit(me)) {
+      return false;
+   }
+   if (getUsedQuantum(enemy) !== getMatchmakingQuantum(me)) {
+      return false;
+   }
    return true;
 }

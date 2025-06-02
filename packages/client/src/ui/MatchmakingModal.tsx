@@ -3,10 +3,11 @@ import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/gam
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
    calcSpaceshipValue,
-   getMatchmakingQuantum,
+   getQuantumLimit,
    getUsedQuantum,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
+import { isQualifierBattle } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -20,9 +21,7 @@ import { hideLoading, showLoading } from "./components/LoadingComp";
 import { hideSidebar } from "./Sidebar";
 
 export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNode {
-   const [isPracticeBattle, setIsPracticeBattle] = useState(
-      getUsedQuantum(enemy) < getMatchmakingQuantum(G.save.current),
-   );
+   const [isPracticeBattle, setIsPracticeBattle] = useState(!isQualifierBattle(G.save.current, enemy));
    return (
       <div style={{ padding: 5 }}>
          <div className="row">
@@ -32,26 +31,31 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
             </div>
             <ShipInfoComp gs={enemy} side={Side.Right} />
          </div>
-         <Space h="md" />
-         <div
-            className="row p10"
-            style={{
-               border: "1px solid var(--mantine-color-default-border)",
-               borderRadius: "var(--mantine-radius-sm)",
-            }}
+         <div className="h10" />
+         <Tooltip
+            disabled={isQualifierBattle(G.save.current, enemy)}
+            label={t(L.QualifierBattleRequirement, getQuantumLimit(G.save.current))}
          >
-            <div className="f1">{t(L.PracticeBattle)}</div>
-            <Switch
-               checked={isPracticeBattle}
-               onChange={(e) => {
-                  if (getUsedQuantum(enemy) < getMatchmakingQuantum(G.save.current)) {
-                     setIsPracticeBattle(true);
-                     return;
-                  }
-                  setIsPracticeBattle(e.target.checked);
+            <div
+               className="row p10"
+               style={{
+                  border: "1px solid var(--mantine-color-default-border)",
+                  borderRadius: "var(--mantine-radius-sm)",
                }}
-            />
-         </div>
+            >
+               <div className="f1">{t(L.PracticeBattle)}</div>
+               <Switch
+                  checked={isPracticeBattle}
+                  onChange={(e) => {
+                     if (!isQualifierBattle(G.save.current, enemy)) {
+                        setIsPracticeBattle(true);
+                        return;
+                     }
+                     setIsPracticeBattle(e.target.checked);
+                  }}
+               />
+            </div>
+         </Tooltip>
          <div className="h10" />
          <div className="row">
             <button
