@@ -29,10 +29,7 @@ Object.keys(en).forEach((key) => {
    }
 });
 
-const format = process.argv.includes("--format");
-if (format) {
-   en = Object.fromEntries(Object.entries(en).sort(([a], [b]) => a.localeCompare(b)));
-}
+en = Object.fromEntries(Object.entries(en).sort(([a], [b]) => a.localeCompare(b)));
 
 writeFileSync(EN_FILE_PATH, `export const EN = ${JSON.stringify(en)};`);
 
@@ -61,6 +58,7 @@ readdirSync(LANG_PATH).forEach((fileName) => {
    // biome-ignore lint/security/noGlobalEval: <explanation>
    const language = eval(`(${file})`);
    const result = {};
+   const untranslated = {};
    Object.keys(en).forEach((k) => {
       if (k.startsWith("$")) {
          result[k] = language[k];
@@ -74,8 +72,9 @@ readdirSync(LANG_PATH).forEach((fileName) => {
          result[k] = language[k];
          return;
       }
-      result[k] = en[k];
+      untranslated[k] = en[k];
    });
+   Object.assign(result, untranslated);
    writeFileSync(filePath, `export const ${variableName} = ${JSON.stringify(result)};`);
 });
 
