@@ -3,7 +3,7 @@ import { GameStateFlags } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { OnBattleStatusChanged } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { setFlag } from "@spaceship-idle/shared/src/utils/Helper";
+import { clearFlag, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { saveGame } from "./game/LoadSave";
 import { onSteamClose } from "./rpc/SteamClient";
 import { BattleResultVictoryModal } from "./ui/BattleResultVictoryModal";
@@ -42,6 +42,7 @@ export function subscribeToEvents(): void {
                   modal = <BattleResultVictoryModal />;
                   G.save.current.battleCount++;
                   G.save.current.trialCount = 0;
+                  clearFlag(G.save.current.flags, GameStateFlags.QualifierBattlePrompted);
                }
                break;
             }

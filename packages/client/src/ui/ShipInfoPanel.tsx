@@ -32,6 +32,7 @@ import { showModal } from "../utils/ToggleModal";
 import { HamburgerMenuComp } from "./components/HamburgerMenuComp";
 import { ResourceAmount } from "./components/ResourceAmountComp";
 import { PrepareForBattleModal } from "./PrepareForBattleModal";
+import { PrepareForBattleMode } from "./PrepareForBattleMode";
 import { QuantumProgressModal } from "./QuantumProgressModal";
 import { playBling } from "./Sound";
 import { WarpSpeedMenuComp } from "./WarpSpeedMenuComp";
@@ -346,7 +347,7 @@ function _BattleComp({ highlight, quantum }: { highlight: boolean; quantum: numb
             className="pointer"
             onClick={() => {
                showModal({
-                  children: <PrepareForBattleModal />,
+                  children: <PrepareForBattleModal mode={PrepareForBattleMode.Prompt} />,
                   size: "sm",
                   dismiss: true,
                });

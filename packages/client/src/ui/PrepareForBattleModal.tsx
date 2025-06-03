@@ -16,11 +16,12 @@ import { refreshOnTypedEvent } from "../utils/Hook";
 import { hideModal, showModal } from "../utils/ToggleModal";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { MatchMakingModal } from "./MatchmakingModal";
+import { PrepareForBattleMode } from "./PrepareForBattleMode";
 import { PrestigeModal } from "./PrestigeModal";
 import { PrestigeReason } from "./PrestigeReason";
 import { playBling, playClick, playError } from "./Sound";
 
-export function PrepareForBattleModal(): React.ReactNode {
+export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const theme = useMantineTheme();
    const quantum = getMatchmakingQuantum(G.save.current);
@@ -45,7 +46,9 @@ export function PrepareForBattleModal(): React.ReactNode {
             </div>
             <div style={{ fontSize: 24 }}>{t(L.QuantumXLeague, quantum)}</div>
          </div>
-         <div className="panel text-red text-sm mb10">{t(L.ReachedQuantumLimit, quantumLimit)}</div>
+         {mode === PrepareForBattleMode.Prompt ? (
+            <div className="text-red text-sm mb10">{t(L.ReachedQuantumLimit, quantumLimit)}</div>
+         ) : null}
          <div className="panel mb10 p0">
             <div className="row g5 mt10">
                <div className="f1" style={{ height: 2, background: "var(--mantine-color-green-4)" }}></div>
@@ -78,7 +81,7 @@ export function PrepareForBattleModal(): React.ReactNode {
                <div className="f1" />
             </div>
             <div className="divider mt5" />
-            <div className="row p10">
+            <div className="row px10 py5 text-sm">
                <div>{t(L.Quantum)}</div>
                <div className="f1"></div>
                <div>
@@ -86,7 +89,7 @@ export function PrepareForBattleModal(): React.ReactNode {
                </div>
             </div>
             <div className="divider" />
-            <div className="row p10">
+            <div className="row px10 py5 text-sm">
                <div>{t(L.SpaceshipXP)}</div>
                <div className="f1"></div>
                <div>
@@ -119,18 +122,24 @@ export function PrepareForBattleModal(): React.ReactNode {
             {t(L.FindOpponent)}
          </button>
          <div className="h10" />
-         <button
-            className="btn w100 p5 row text-lg"
-            onClick={() => {
-               showModal({
-                  children: <PrestigeModal reason={PrestigeReason.None} showClose={true} />,
-                  size: "sm",
-                  dismiss: true,
-               });
-            }}
-         >
-            {t(L.Prestige)}
-         </button>
+         {mode === PrepareForBattleMode.Prompt ? (
+            <button className="btn w100 p5 row text-lg" onClick={hideModal}>
+               {t(L.Close)}
+            </button>
+         ) : (
+            <button
+               className="btn w100 p5 row text-lg"
+               onClick={() => {
+                  showModal({
+                     children: <PrestigeModal reason={PrestigeReason.None} showClose={true} />,
+                     size: "sm",
+                     dismiss: true,
+                  });
+               }}
+            >
+               {t(L.Prestige)}
+            </button>
+         )}
       </div>
    );
 }

@@ -1,9 +1,18 @@
 import { ClientTickInterval } from "@spaceship-idle/shared/src/game/definitions/Constant";
-import { MINUTE } from "@spaceship-idle/shared/src/utils/Helper";
+import { GameStateFlags } from "@spaceship-idle/shared/src/game/GameState";
+import {
+   calcSpaceshipValue,
+   getQuantumLimit,
+   getUsedQuantum,
+   quantumToSpaceshipValue,
+} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { hasFlag, MINUTE, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { ChooseElementModal } from "./ui/ChooseElementModal";
 import { isLoading } from "./ui/components/LoadingComp";
 import { OfflineTimeModal } from "./ui/OfflineTimeModal";
+import { PrepareForBattleModal } from "./ui/PrepareForBattleModal";
+import { PrepareForBattleMode } from "./ui/PrepareForBattleMode";
 import { tickActions } from "./utils/actions/Actions";
 import { G } from "./utils/Global";
 import { hasModalOpen } from "./utils/ModalManager";
@@ -38,5 +47,23 @@ function update(): void {
          children: <OfflineTimeModal offlineTime={offlineTime} />,
          size: "sm",
       });
+      return;
+   }
+
+   const quantumLimit = getQuantumLimit(G.save.current);
+   if (
+      !hasModalOpen() &&
+      !isLoading() &&
+      !hasFlag(G.save.current.flags, GameStateFlags.QualifierBattlePrompted) &&
+      getUsedQuantum(G.save.current) >= quantumLimit &&
+      calcSpaceshipValue(G.save.current) >= 0.9 * quantumToSpaceshipValue(quantumLimit)
+   ) {
+      G.save.current.flags = setFlag(G.save.current.flags, GameStateFlags.QualifierBattlePrompted);
+      showModal({
+         children: <PrepareForBattleModal mode={PrepareForBattleMode.Prompt} />,
+         size: "sm",
+         dismiss: true,
+      });
+      return;
    }
 }
