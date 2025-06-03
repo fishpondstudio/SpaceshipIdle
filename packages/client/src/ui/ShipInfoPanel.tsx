@@ -347,7 +347,6 @@ function _BattleComp({ highlight, quantum }: { highlight: boolean; quantum: numb
             onClick={() => {
                showModal({
                   children: <PrepareForBattleModal />,
-                  title: t(L.QuantumQualifier, quantum),
                   size: "sm",
                   dismiss: true,
                });

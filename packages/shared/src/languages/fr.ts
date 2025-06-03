@@ -339,11 +339,8 @@ export const FR = {
    QualifierBattleShort: "Qualification",
    Quantum: "Quantum",
    QuantumLimit: "Limite de Quantum",
-   QuantumMatchmakingDesc: "Si votre vaisseau performe bien au combat, il entrera dans le pool de matchmaking",
    QuantumProgress: "Progression du Quantum",
    QuantumProgressTooltip: "Progression vers le Prochain Quantum",
-   QuantumQualifier: "Qualification Quantum-%%",
-   QuantumQualifierDesc: "Gagnez un combat contre un vaisseau du même quantum pour vous qualifier pour un quantum plus élevé",
    QuantumTooltip: "Quantum Utilisé / Quantum Max",
    RawActualDPS: "DPS Réel / DPS Brut",
    RC: "Canon à Rail",
@@ -558,4 +555,5 @@ export const FR = {
    ShortcutUpgradeMax: "+Niveau Max (Individuel)",
    AdvancedGameControlContent: "(1) Clic droit pour recycler<br>(2) Clic droit pour déplacer<br>(3) Clic droit pour échanger<br>(4) Clic du milieu pour copier",
    QualifierBattleRequirement: "Your spaceship should have %% quantum for the qualifier battle",
+   QuantumXLeague: "Quantum %% League",
 };

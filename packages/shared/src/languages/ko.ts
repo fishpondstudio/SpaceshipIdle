@@ -339,11 +339,8 @@ export const KO = {
    QualifierBattleShort: "인증",
    Quantum: "양자",
    QuantumLimit: "양자 한계",
-   QuantumMatchmakingDesc: "전투에서 우주선이 잘 수행하면 매칭 풀에 들어갑니다",
    QuantumProgress: "양자 진행도",
    QuantumProgressTooltip: "다음 양자까지의 진행도",
-   QuantumQualifier: "양자-%% 인증",
-   QuantumQualifierDesc: "같은 양자를 가진 우주선과의 전투에서 승리하여 더 높은 양자를 인증받으세요",
    QuantumTooltip: "사용된 양자 / 최대 양자",
    RawActualDPS: "실제 DPS / 원시 DPS",
    RC: "레일 캐논",
@@ -556,4 +553,5 @@ export const KO = {
    ShortcutUpgradeMax: "+최대 레벨 (단일)",
    AdvancedGameControlContent: "(1) 재활용하려면 오른쪽 클릭<br>(2) 이동하려면 오른쪽 클릭<br>(3) 교환하려면 오른쪽 클릭<br>(4) 복사하려면 가운데 클릭",
    QualifierBattleRequirement: "Your spaceship should have %% quantum for the qualifier battle",
+   QuantumXLeague: "Quantum %% League",
 };

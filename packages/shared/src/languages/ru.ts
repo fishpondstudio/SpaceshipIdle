@@ -339,11 +339,8 @@ export const RU = {
    QualifierBattleShort: "Квалификация",
    Quantum: "Квант",
    QuantumLimit: "Лимит квантов",
-   QuantumMatchmakingDesc: "Если ваш корабль хорошо покажет себя в бою, он попадёт в пул подбора игроков.",
    QuantumProgress: "Прогресс кванта",
    QuantumProgressTooltip: "Прогресс до следующего кванта",
-   QuantumQualifier: "Квант-%% Квалификация",
-   QuantumQualifierDesc: "Победите в бою против корабля с таким же квантом, чтобы получить доступ к более высокому кванту.",
    QuantumTooltip: "Использовано квантов / Макс. квантов",
    RawActualDPS: "Фактический УВС / Базовый УВС",
    RC: "Рельсотрон",
@@ -556,4 +553,5 @@ export const RU = {
    ShortcutUpgradeMax: "+Макс. уровень (Одиночный)",
    AdvancedGameControlContent: "(1) Правый клик для утилизации<br>(2) Правый клик для перемещения<br>(3) Правый клик для обмена<br>(4) Средний клик для копирования",
    QualifierBattleRequirement: "Your spaceship should have %% quantum for the qualifier battle",
+   QuantumXLeague: "Quantum %% League",
 };

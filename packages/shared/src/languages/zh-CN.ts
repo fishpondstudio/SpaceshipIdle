@@ -339,11 +339,8 @@ export const ZH_CN = {
    QualifierBattleShort: "资格战",
    Quantum: "量子",
    QuantumLimit: "量子上限",
-   QuantumMatchmakingDesc: "如果您的飞船在战斗中表现良好，它将进入匹配池。",
    QuantumProgress: "量子进度",
    QuantumProgressTooltip: "下一量子进度",
-   QuantumQualifier: "量子-%% 资格赛",
-   QuantumQualifierDesc: "战胜同量级的飞船以获得更高量级的资格。",
    QuantumTooltip: "已用量子 / 量子上限",
    RawActualDPS: "实际DPS / 理论DPS",
    RC: "轨道炮",
@@ -556,4 +553,5 @@ export const ZH_CN = {
    ShortcutUpgradeMax: "+最大级（单个）",
    AdvancedGameControlContent: "(1) 右键点击回收<br>(2) 右键点击移动<br>(3) 右键点击交换<br>(4) 中键点击复制",
    QualifierBattleRequirement: "Your spaceship should have %% quantum for the qualifier battle",
+   QuantumXLeague: "Quantum %% League",
 };

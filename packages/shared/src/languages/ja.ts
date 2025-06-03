@@ -339,11 +339,8 @@ export const JA = {
    QualifierBattleShort: "認定",
    Quantum: "量子",
    QuantumLimit: "量子制限",
-   QuantumMatchmakingDesc: "宇宙船が戦闘で良い成績を収めると、マッチメイキングプールに入ります。",
    QuantumProgress: "量子進捗",
    QuantumProgressTooltip: "次の量子への進捗",
-   QuantumQualifier: "量子-%% 認定者",
-   QuantumQualifierDesc: "同じ量子の宇宙船との戦闘に勝利して、より高い量子の認定を受けます。",
    QuantumTooltip: "使用量子 / 最大量子",
    RawActualDPS: "実際のDPS / 理論DPS",
    RC: "レールキャノン",
@@ -556,4 +553,5 @@ export const JA = {
    ShortcutUpgradeMax: "+最大レベル (単体)",
    AdvancedGameControlContent: "(1) 右クリックでリサイクル<br>(2) 右クリックで移動<br>(3) 右クリックで交換<br>(4) 中クリックでコピー",
    QualifierBattleRequirement: "Your spaceship should have %% quantum for the qualifier battle",
+   QuantumXLeague: "Quantum %% League",
 };

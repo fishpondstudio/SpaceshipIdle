@@ -339,11 +339,8 @@ export const DE = {
    QualifierBattleShort: "Qualifikation",
    Quantum: "Quantum",
    QuantumLimit: "Quantum-Limit",
-   QuantumMatchmakingDesc: "Wenn Ihr Raumschiff im Kampf gut abschneidet, wird es in den Matchmaking-Pool aufgenommen.",
    QuantumProgress: "Quantum-Fortschritt",
    QuantumProgressTooltip: "Fortschritt zum nächsten Quantum",
-   QuantumQualifier: "Quantum-%% Qualifikation",
-   QuantumQualifierDesc: "Gewinnen Sie einen Kampf gegen ein Raumschiff mit dem gleichen Quantum, um sich für ein höheres Quantum zu qualifizieren.",
    QuantumTooltip: "Verwendetes Quantum / Maximales Quantum",
    RawActualDPS: "Tatsächlicher DPS / Roher DPS",
    RC: "Schienenkanone",
@@ -558,4 +555,5 @@ export const DE = {
    ShortcutUpgradeMax: "+Max Stufe (Einzeln)",
    AdvancedGameControlContent: "(1) Rechtsklick zum Recyceln<br>(2) Rechtsklick zum Bewegen<br>(3) Rechtsklick zum Tauschen<br>(4) Mittelklick zum Kopieren",
    QualifierBattleRequirement: "Your spaceship should have %% quantum for the qualifier battle",
+   QuantumXLeague: "Quantum %% League",
 };

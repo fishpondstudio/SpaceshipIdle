@@ -29,8 +29,8 @@ Object.keys(en).forEach((key) => {
    }
 });
 
-const keepFormat = process.argv.includes("--keep-format");
-if (!keepFormat) {
+const format = process.argv.includes("--format");
+if (format) {
    en = Object.fromEntries(Object.entries(en).sort(([a], [b]) => a.localeCompare(b)));
 }
 

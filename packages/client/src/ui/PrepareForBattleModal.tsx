@@ -1,13 +1,19 @@
+import { getGradient, Tooltip, useMantineTheme } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { getMatchmakingQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
+import {
+   calcSpaceshipValue,
+   getMatchmakingQuantum,
+   getQuantumLimit,
+   getUsedQuantum,
+   quantumToSpaceshipValue,
+} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { formatNumber, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { loadGameStateFromFile } from "../game/LoadSave";
 import { RPCClient } from "../rpc/RPCClient";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
-import { showModal } from "../utils/ToggleModal";
+import { hideModal, showModal } from "../utils/ToggleModal";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { MatchMakingModal } from "./MatchmakingModal";
 import { PrestigeModal } from "./PrestigeModal";
@@ -16,28 +22,77 @@ import { playBling, playClick, playError } from "./Sound";
 
 export function PrepareForBattleModal(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
+   const theme = useMantineTheme();
+   const quantum = getMatchmakingQuantum(G.save.current);
+   const quantumLimit = getQuantumLimit(G.save.current);
+   const usedQuantum = getUsedQuantum(G.save.current);
    return (
       <div style={{ padding: 5 }}>
-         <div className="text-dimmed text-sm">{t(L.QuantumQualifierDesc)}</div>
-         <div className="h10" />
-         <div className="text-dimmed text-sm">{t(L.QuantumMatchmakingDesc)}</div>
          <div
-            className="mi pointer mb10 mt5"
-            onClick={async () => {
-               playClick();
-               const enemy = await loadGameStateFromFile();
-               showLoading();
-               setTimeout(() => {
-                  hideLoading();
-                  showModal({
-                     children: <MatchMakingModal enemy={enemy} />,
-                     size: "lg",
-                     dismiss: true,
-                  });
-               }, 1000);
+            className="p10 mb10 col cc"
+            style={{
+               position: "relative",
+               color: "#fff",
+               borderRadius: "5px",
+               background: getGradient({ deg: 180, from: "space.5", to: "space.9" }, theme),
             }}
          >
-            folder_open
+            <div className="mi pointer" style={{ position: "absolute", top: 10, right: 10 }} onClick={hideModal}>
+               close
+            </div>
+            <div className="mi" style={{ fontSize: 128 }}>
+               trophy
+            </div>
+            <div style={{ fontSize: 24 }}>{t(L.QuantumXLeague, quantum)}</div>
+         </div>
+         <div className="panel text-red text-sm mb10">{t(L.ReachedQuantumLimit, quantumLimit)}</div>
+         <div className="panel mb10 p0">
+            <div className="row g5 mt10">
+               <div className="f1" style={{ height: 2, background: "var(--mantine-color-green-4)" }}></div>
+               <div className="mi" style={{ color: "var(--mantine-color-green-4)" }}>
+                  check_circle
+               </div>
+               <div className="f1" style={{ height: 2, background: "var(--mantine-color-green-4)" }}></div>
+               <div className="mi breathing" style={{ color: "var(--mantine-color-orange-4)" }}>
+                  swords
+               </div>
+               <div className="f1" style={{ height: 2, background: "var(--mantine-color-dark-4)" }}></div>
+               <div className="mi" style={{ color: "var(--mantine-color-dark-4)" }}>
+                  radio_button_unchecked
+               </div>
+               <div className="f1" style={{ height: 2, background: "var(--mantine-color-dark-4)" }}></div>
+            </div>
+            <div className="row g5 text-center text-sm">
+               <div className="f1" />
+               <Tooltip label={t(L.MaxSpaceshipXP, formatNumber(quantumToSpaceshipValue(quantum - 10)))}>
+                  <div style={{ color: "var(--mantine-color-green-4)" }}>Q{quantum - 10}</div>
+               </Tooltip>
+               <div className="f1" />
+               <Tooltip label={t(L.MaxSpaceshipXP, formatNumber(quantumToSpaceshipValue(quantum)))}>
+                  <div style={{ color: "var(--mantine-color-orange-4)" }}>Q{quantum}</div>
+               </Tooltip>
+               <div className="f1" />
+               <Tooltip label={t(L.MaxSpaceshipXP, formatNumber(quantumToSpaceshipValue(quantum + 10)))}>
+                  <div style={{ color: "var(--mantine-color-dark-4)" }}>Q{quantum + 10}</div>
+               </Tooltip>
+               <div className="f1" />
+            </div>
+            <div className="divider mt5" />
+            <div className="row p10">
+               <div>{t(L.Quantum)}</div>
+               <div className="f1"></div>
+               <div>
+                  {usedQuantum}/{quantumLimit}
+               </div>
+            </div>
+            <div className="divider" />
+            <div className="row p10">
+               <div>{t(L.SpaceshipXP)}</div>
+               <div className="f1"></div>
+               <div>
+                  {formatNumber(calcSpaceshipValue(G.save.current))}/{formatNumber(quantumToSpaceshipValue(quantum))}
+               </div>
+            </div>
          </div>
          <button
             className="btn filled w100 py5 px10 text-lg"
@@ -74,7 +129,7 @@ export function PrepareForBattleModal(): React.ReactNode {
                });
             }}
          >
-            {t(L.PrestigeAnyway)}
+            {t(L.Prestige)}
          </button>
       </div>
    );

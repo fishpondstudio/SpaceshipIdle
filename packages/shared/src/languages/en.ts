@@ -344,11 +344,8 @@ export const EN = {
    QualifierBattleShort: "Qualifier",
    Quantum: "Quantum",
    QuantumLimit: "Quantum Limit",
-   QuantumMatchmakingDesc: "If your spaceship performs well in the battle, it will enter the matchmaking pool.",
    QuantumProgress: "Quantum Progress",
    QuantumProgressTooltip: "Progress Towards Next Quantum",
-   QuantumQualifier: "Quantum-%% Qualifier",
-   QuantumQualifierDesc: "Win a battle against a spaceship with the same quantum to qualify for higher quantum.",
    QuantumTooltip: "Used Quantum / Max Quantum",
    RawActualDPS: "Actual DPS / Raw DPS",
    RC: "Rail Cannon",
@@ -586,4 +583,6 @@ export const EN = {
    QualifierBattleRequirement: "Your spaceship should have %% quantum for the qualifier battle",
    PrestigeReasonInvalidShip:
       "Your ship was built with an incompatible version of the game. You need to prestige to continue with a new ship",
+   QuantumXLeague: "Quantum %% League",
+   MaxSpaceshipXP: "Max Spaceship XP: %%",
 };
