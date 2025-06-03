@@ -1,6 +1,7 @@
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import { getCooldownMultiplier, getNormalizedValue } from "../logic/BattleLogic";
+import { getCooldownMultiplier } from "../logic/BattleLogic";
+import { getNormalizedValue } from "../logic/BuildingLogic";
 import { AbilityRange, AbilityTiming } from "./Ability";
 import { BaseDefenseProps, BaseWeaponProps, BuildingFlag, type IWeaponDefinition } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";

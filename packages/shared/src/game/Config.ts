@@ -129,6 +129,7 @@ function initConfig(): void {
       console.log("Normalized Price", Config.NormalizedPrice);
       console.log("Resource Tier", Config.ResourceTier);
       console.log("Building Tier", Config.BuildingTier);
+      console.log("Building Id", Config.BuildingId);
       console.log(`# of techs: ${sizeOf(Config.Tech)}`);
    }
 }

@@ -1,8 +1,8 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageTypeLabel, WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
-import { getCooldownMultiplier, getNormalizedValue } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
-import { damageToHp } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
+import { getCooldownMultiplier } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { damageToHp, getNormalizedValue } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { AbilityComp } from "./AbilityComp";

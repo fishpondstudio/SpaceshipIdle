@@ -1,8 +1,8 @@
 import { clamp } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import { getCooldownMultiplier, getNormalizedValue } from "../logic/BattleLogic";
-import { damageToHp } from "../logic/BuildingLogic";
+import { getCooldownMultiplier } from "../logic/BattleLogic";
+import { damageToHp, getNormalizedValue } from "../logic/BuildingLogic";
 import { AbilityRange, AbilityTiming } from "./Ability";
 import { BaseDefenseProps, BaseWeaponProps, BuildingFlag, DamageType, type IWeaponDefinition } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";

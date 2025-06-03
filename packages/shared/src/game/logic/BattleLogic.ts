@@ -6,12 +6,11 @@ import { GameOption } from "../GameOption";
 import type { GameState } from "../GameState";
 import { GridSize, posToTile } from "../Grid";
 import { abilityTarget, AbilityTiming } from "../definitions/Ability";
-import { BuildingFlag, type IBoosterDefinition, WeaponFlag, WeaponKey } from "../definitions/BuildingProps";
+import { BuildingFlag, WeaponFlag, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType } from "./BattleType";
-import { isBooster } from "./BuildingLogic";
 import { Projectile } from "./Projectile";
 import { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
@@ -190,30 +189,6 @@ export function tickTiles(
          }
       }
    });
-}
-
-export function getNormalizedValue(data: { type: Building; level: number }): number {
-   const def = Config.Buildings[data.type];
-   let value = 0;
-   if (isBooster(data.type)) {
-      const booster = def as IBoosterDefinition;
-      forEach(booster.unlock, (k, v) => {
-         value += v * (Config.NormalizedPrice.get(k) ?? 0);
-      });
-      return value;
-   }
-   forEach(def.output, (k, v) => {
-      value += v * (Config.NormalizedPrice.get(k) ?? 0);
-   });
-   if (value <= 0) {
-      forEach(def.input, (k, v) => {
-         value += v * (Config.NormalizedPrice.get(k) ?? 0);
-      });
-   }
-   if (value <= 0) {
-      value = 1;
-   }
-   return value * data.level;
 }
 
 export function getCooldownMultiplier(data: { type: Building }): number {

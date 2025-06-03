@@ -1,5 +1,5 @@
-import { forEach, formatNumber, hasFlag, mapOf, mapSafeAdd } from "../../utils/Helper";
-import { Config } from "../Config";
+import { forEach, formatNumber, hasFlag, mapOf, mapSafeAdd, sizeOf } from "../../utils/Helper";
+import { Config, priceMultiplier } from "../Config";
 import { AbilityRangeLabel } from "../definitions/Ability";
 import { BuildingFlag, type IBoosterDefinition, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
@@ -46,14 +46,52 @@ export function getBuildingValue(
       mapSafeAdd(result, "XP", cached);
       return result;
    }
+
    let xp = 0;
    forEach(def.output, (res, value) => {
-      const price = Config.Price.get(res) ?? 1;
-      xp += price * value * fib(level);
+      xp += (Config.Price.get(res) ?? 0) * value * fib(level);
    });
+
+   if (xp <= 0) {
+      const inputSize = sizeOf(def.input);
+      forEach(def.input, (res, value) => {
+         xp += (Config.Price.get(res) ?? 0) * value * fib(level) * priceMultiplier(inputSize);
+      });
+   }
+
+   if (xp <= 0) {
+      console.error(`getBuildingValue: building ${building} has no value`);
+      xp = fib(level);
+   }
+
    mapSafeAdd(result, "XP", xp);
    buildingValueCache.set(hash, xp);
    return result;
+}
+
+export function getNormalizedValue(data: { type: Building; level: number }): number {
+   const def = Config.Buildings[data.type];
+   let value = 0;
+   if (isBooster(data.type)) {
+      const booster = def as IBoosterDefinition;
+      forEach(booster.unlock, (k, v) => {
+         value += v * (Config.NormalizedPrice.get(k) ?? 0);
+      });
+      return value;
+   }
+   forEach(def.output, (k, v) => {
+      value += v * (Config.NormalizedPrice.get(k) ?? 0);
+   });
+   if (value <= 0) {
+      forEach(def.input, (k, v) => {
+         value += v * (Config.NormalizedPrice.get(k) ?? 0);
+      });
+   }
+   if (value <= 0) {
+      console.error(`getNormalizedValue: building ${data.type} has no value`);
+      value = 1;
+   }
+   return value * data.level;
 }
 
 export function getTotalBuildingValue(

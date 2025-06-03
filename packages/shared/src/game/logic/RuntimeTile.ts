@@ -26,10 +26,9 @@ import {
    damageAfterShield,
    evasionChance,
    getCooldownMultiplier,
-   getNormalizedValue,
 } from "./BattleLogic";
 import { BattleType } from "./BattleType";
-import { damageToHp } from "./BuildingLogic";
+import { damageToHp, getNormalizedValue } from "./BuildingLogic";
 import type { IMultiplier } from "./IMultiplier";
 import type { Runtime } from "./Runtime";
 import { isEnemy } from "./ShipLogic";
