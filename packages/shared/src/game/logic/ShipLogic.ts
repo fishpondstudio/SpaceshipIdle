@@ -153,9 +153,15 @@ function _validateShip(gs: GameState): boolean {
 
    const buildings = new Set<Building>();
    gs.unlockedTech.forEach((tech) => {
-      Config.Tech[tech].unlockBuildings?.forEach((b) => {
+      const def = Config.Tech[tech];
+      def.unlockBuildings?.forEach((b) => {
          buildings.add(b);
       });
+      for (const r of def.requires) {
+         if (!gs.unlockedTech.has(r)) {
+            return false;
+         }
+      }
    });
 
    for (const [tile, data] of gs.tiles) {

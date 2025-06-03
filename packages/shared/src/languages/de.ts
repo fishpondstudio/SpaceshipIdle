@@ -285,6 +285,7 @@ export const DE = {
    LifeStealDesc: "Gewinnt %% des verursachten Schadens als HP zurück",
    MatchCapacityTooltip: "Kapazität an Munitionsverbrauch anpassen",
    MaxSpaceshipValue: "Maximales Raumschiff-XP",
+   MaxSpaceshipXP: "Maximale Raumschiff-XP: %%",
    Mechanical: "Mechanisch",
    Misc: "Sonstiges",
    ModuleCannotBeRecycled: "Dieses Modul kann nach dem Bau nicht recycelt werden",
@@ -332,6 +333,8 @@ export const DE = {
    Prerequisites: "Voraussetzungen",
    Prestige: "Prestige",
    PrestigeAnyway: "Trotzdem Prestige",
+   PrestigeReasonInvalidShip:
+      "Ihr Schiff wurde mit einer inkompatiblen Version des Spiels gebaut. Sie müssen prestigen, um mit einem neuen Schiff fortzufahren",
    Priority: "Priorität",
    Production: "Produktion",
    ProductionBuildingXPHTML:
@@ -584,7 +587,10 @@ export const DE = {
    XP: "XP",
    XPCollector: "XP-Sammler",
    XPMultiplier: "XP-Multiplikator",
-   MaxSpaceshipXP: "Maximale Raumschiff-XP: %%",
-   PrestigeReasonInvalidShip:
-      "Ihr Schiff wurde mit einer inkompatiblen Version des Spiels gebaut. Sie müssen prestigen, um mit einem neuen Schiff fortzufahren",
+   TutorialProductionCapacity: "Produktionskapazität ändern",
+   TutorialProductionCapacityDescHTML:
+      "Ein Waffenmodul produziert Munition, die beim Abfeuern verbraucht wird. Normalerweise produziert es mehr als nötig. Durch Verringern der <b>Produktionskapazität</b>, besonders für Ihre höchstwertigen Waffen, können Sie ein optimierteres Raumschiff bauen. Sie können die Funktion <b>Kapazität an Munitionsverbrauch anpassen</b> (Zauberstab) verwenden, um schnell die Produktionskapazität eines Moduls an seinen Munitionsverbrauch anzupassen.",
+   TutorialProductionPriority: "Produktionspriorität ändern",
+   TutorialProductionPriorityDescHTML:
+      "Ein Modul mit höherer Priorität (<b>10</b>) produziert vor anderen Modulen. Normalerweise ist es eine gute Idee, Ihre <b>Stromgeneratoren und ihre vorgelagerten Module</b> auf die höchste Priorität zu setzen, um einen Stromausfall zu vermeiden.",
 };

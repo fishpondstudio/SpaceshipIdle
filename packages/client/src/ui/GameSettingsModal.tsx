@@ -17,13 +17,13 @@ import { ChangeLanguageComp } from "./ChangeLanguageComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 
 interface TabContent {
-   content: React.ReactNode;
+   content: () => React.ReactNode;
    name: () => string;
 }
 
 const Tabs = {
-   General: { name: () => t(L.TabGeneral), content: <GeneralTab /> },
-   Shortcut: { name: () => t(L.TabShortcut), content: <ShortcutTab /> },
+   General: { name: () => t(L.TabGeneral), content: () => <GeneralTab /> },
+   Shortcut: { name: () => t(L.TabShortcut), content: () => <ShortcutTab /> },
 } as const satisfies Record<string, TabContent>;
 
 type Tab = keyof typeof Tabs;
@@ -44,7 +44,7 @@ export function GameSettingsModal(): React.ReactNode {
             />
          </div>
          <div className="divider my10 mx-10" />
-         {Tabs[tab].content}
+         {Tabs[tab].content()}
       </>
    );
 }

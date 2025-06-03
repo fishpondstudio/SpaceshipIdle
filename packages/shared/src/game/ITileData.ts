@@ -1,4 +1,5 @@
 import type { Building } from "./definitions/Buildings";
+import { DefaultPriority } from "./definitions/Constant";
 
 export interface ITileData {
    level: number;
@@ -8,5 +9,5 @@ export interface ITileData {
 }
 
 export function makeTile(type: Building, level: number): ITileData {
-   return { type, level, priority: 5, capacity: 1 };
+   return { type, level, priority: DefaultPriority, capacity: 1 };
 }

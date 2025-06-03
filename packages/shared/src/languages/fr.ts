@@ -285,6 +285,7 @@ export const FR = {
    LifeStealDesc: "Récupère %% des dégâts infligés en PV",
    MatchCapacityTooltip: "Ajuster la Capacité à la Consommation de Munitions",
    MaxSpaceshipValue: "XP Max du Vaisseau",
+   MaxSpaceshipXP: "XP Max du Vaisseau Spatial : %%",
    Mechanical: "Mécanique",
    Misc: "Divers",
    ModuleCannotBeRecycled: "Ce module ne peut pas être recyclé une fois construit",
@@ -332,6 +333,8 @@ export const FR = {
    Prerequisites: "Prérequis",
    Prestige: "Prestige",
    PrestigeAnyway: "Prestige Quand Même",
+   PrestigeReasonInvalidShip:
+      "Votre vaisseau a été construit avec une version incompatible du jeu. Vous devez faire un prestige pour continuer avec un nouveau vaisseau",
    Priority: "Priorité",
    Production: "Production",
    ProductionBuildingXPHTML:
@@ -585,7 +588,10 @@ export const FR = {
    XP: "XP",
    XPCollector: "Collecteur d'XP",
    XPMultiplier: "Multiplicateur d'XP",
-   MaxSpaceshipXP: "XP Max du Vaisseau Spatial : %%",
-   PrestigeReasonInvalidShip:
-      "Votre vaisseau a été construit avec une version incompatible du jeu. Vous devez faire un prestige pour continuer avec un nouveau vaisseau",
+   TutorialProductionCapacity: "Changer la Capacité de Production",
+   TutorialProductionCapacityDescHTML:
+      "Un module d'arme produit des munitions qui sont consommées lors du tir. Généralement, il en produit plus que nécessaire. Réduire la <b>capacité de production</b>, surtout pour vos armes de plus haut niveau, vous permet de construire un vaisseau spatial plus optimisé. Vous pouvez utiliser la fonction <b>Ajuster la Capacité à la Consommation de Munitions</b> (baguette magique) pour définir rapidement la capacité de production d'un module afin qu'elle corresponde à sa consommation de munitions.",
+   TutorialProductionPriority: "Changer la Priorité de Production",
+   TutorialProductionPriorityDescHTML:
+      "Un module avec une priorité plus élevée (<b>10</b>) produira avant les autres modules. Généralement, il est conseillé de définir vos <b>générateurs d'énergie et leurs modules en amont</b> à la priorité la plus élevée pour éviter une panne de courant.",
 };

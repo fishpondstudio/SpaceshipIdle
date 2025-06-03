@@ -1,3 +1,4 @@
+import { DefaultPriority } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { getBoosterCount } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import {
@@ -35,6 +36,30 @@ export const Tutorial: ITutorial[] = [
       desc: () => t(L.TutorialDiscover1ElementDescHTML),
       progress: (gs) => {
          return [mReduceOf(gs.elements, (prev, k, v) => prev + v, 0), 1];
+      },
+   },
+   {
+      name: () => t(L.TutorialProductionPriority),
+      desc: () => t(L.TutorialProductionPriorityDescHTML),
+      progress: (gs) => {
+         for (const [tile, data] of gs.tiles) {
+            if (data.priority !== DefaultPriority) {
+               return [1, 1];
+            }
+         }
+         return [0, 1];
+      },
+   },
+   {
+      name: () => t(L.TutorialProductionCapacity),
+      desc: () => t(L.TutorialProductionCapacityDescHTML),
+      progress: (gs) => {
+         for (const [tile, data] of gs.tiles) {
+            if (data.capacity < 1) {
+               return [1, 1];
+            }
+         }
+         return [0, 1];
       },
    },
    {

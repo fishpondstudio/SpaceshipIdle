@@ -284,6 +284,7 @@ export const ES = {
    LifeStealDesc: "Recupera %% del daño causado como PV",
    MatchCapacityTooltip: "Igualar Capacidad al Consumo de Munición",
    MaxSpaceshipValue: "XP Máxima de Nave",
+   MaxSpaceshipXP: "XP Máxima de Nave Espacial: %%",
    Mechanical: "Mecánico",
    Misc: "Misceláneo",
    ModuleCannotBeRecycled: "Este módulo no puede ser reciclado una vez construido",
@@ -331,6 +332,8 @@ export const ES = {
    Prerequisites: "Prerrequisitos",
    Prestige: "Prestigio",
    PrestigeAnyway: "Prestigio de Todos Modos",
+   PrestigeReasonInvalidShip:
+      "Tu nave fue construida con una versión incompatible del juego. Necesitas hacer prestigio para continuar con una nueva nave",
    Priority: "Prioridad",
    Production: "Producción",
    ProductionBuildingXPHTML:
@@ -584,7 +587,10 @@ export const ES = {
    XP: "XP",
    XPCollector: "Recolector de XP",
    XPMultiplier: "Multiplicador de XP",
-   MaxSpaceshipXP: "XP Máxima de Nave Espacial: %%",
-   PrestigeReasonInvalidShip:
-      "Tu nave fue construida con una versión incompatible del juego. Necesitas hacer prestigio para continuar con una nueva nave",
+   TutorialProductionCapacity: "Cambiar Capacidad de Producción",
+   TutorialProductionCapacityDescHTML:
+      "Un módulo de arma produce munición que se consume al disparar. Normalmente produce más de lo necesario. Reducir la <b>capacidad de producción</b>, especialmente para tus armas de mayor nivel, te permite construir una nave espacial más optimizada. Puedes usar la función <b>Ajustar Capacidad al Consumo de Munición</b> (varita mágica) para establecer rápidamente la capacidad de producción de un módulo para que coincida con su consumo de munición.",
+   TutorialProductionPriority: "Cambiar Prioridad de Producción",
+   TutorialProductionPriorityDescHTML:
+      "Un módulo con mayor prioridad (<b>10</b>) producirá antes que otros módulos. Normalmente es una buena idea establecer tus <b>generadores de energía y sus módulos aguas arriba</b> a la máxima prioridad para evitar un apagón.",
 };

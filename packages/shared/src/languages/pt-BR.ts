@@ -284,6 +284,7 @@ export const PT_BR = {
    LifeStealDesc: "Recupera %% do dano causado como HP",
    MatchCapacityTooltip: "Igualar Capacidade ao Consumo de Munição",
    MaxSpaceshipValue: "XP Máximo da Nave",
+   MaxSpaceshipXP: "XP Máximo da Nave Espacial: %%",
    Mechanical: "Mecânico",
    Misc: "Diversos",
    ModuleCannotBeRecycled: "Este módulo não pode ser reciclado após ser construído",
@@ -331,6 +332,8 @@ export const PT_BR = {
    Prerequisites: "Pré-requisitos",
    Prestige: "Prestígio",
    PrestigeAnyway: "Prestigiar Mesmo Assim",
+   PrestigeReasonInvalidShip:
+      "Sua nave foi construída com uma versão incompatível do jogo. Você precisa prestigiar para continuar com uma nova nave",
    Priority: "Prioridade",
    Production: "Produção",
    ProductionBuildingXPHTML:
@@ -583,7 +586,10 @@ export const PT_BR = {
    XP: "XP",
    XPCollector: "Coletor de XP",
    XPMultiplier: "Multiplicador de XP",
-   MaxSpaceshipXP: "XP Máximo da Nave Espacial: %%",
-   PrestigeReasonInvalidShip:
-      "Sua nave foi construída com uma versão incompatível do jogo. Você precisa prestigiar para continuar com uma nova nave",
+   TutorialProductionCapacity: "Alterar Capacidade de Produção",
+   TutorialProductionCapacityDescHTML:
+      "Um módulo de arma produz munição que é consumida ao disparar. Geralmente produz mais do que o necessário. Reduzir a <b>capacidade de produção</b>, especialmente para suas armas de nível mais alto, permite construir uma nave espacial mais otimizada. Você pode usar a função <b>Ajustar Capacidade ao Consumo de Munição</b> (varinha mágica) para definir rapidamente a capacidade de produção de um módulo para corresponder ao seu consumo de munição.",
+   TutorialProductionPriority: "Alterar Prioridade de Produção",
+   TutorialProductionPriorityDescHTML:
+      "Um módulo com prioridade mais alta (<b>10</b>) produzirá antes dos outros módulos. Geralmente é uma boa ideia definir seus <b>geradores de energia e seus módulos a montante</b> com a prioridade mais alta para evitar um apagão.",
 };

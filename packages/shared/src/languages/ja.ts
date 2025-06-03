@@ -284,6 +284,7 @@ export const JA = {
    LifeStealDesc: "与えたダメージの%%をHPとして吸収",
    MatchCapacityTooltip: "容量を弾薬消費量に合わせる",
    MaxSpaceshipValue: "最大宇宙船XP",
+   MaxSpaceshipXP: "最大宇宙船XP: %%",
    Mechanical: "機械",
    Misc: "その他",
    ModuleCannotBeRecycled: "このモジュールは一度建造するとリサイクルできません",
@@ -330,6 +331,8 @@ export const JA = {
    Prerequisites: "前提条件",
    Prestige: "プレステージ",
    PrestigeAnyway: "それでもプレステージ",
+   PrestigeReasonInvalidShip:
+      "あなたの宇宙船はゲームの互換性のないバージョンで構築されました。新しい宇宙船で続行するにはプレステージが必要です",
    Priority: "優先度",
    Production: "生産",
    ProductionBuildingXPHTML:
@@ -578,7 +581,10 @@ export const JA = {
    XP: "XP",
    XPCollector: "XP収集機",
    XPMultiplier: "XP倍率",
-   MaxSpaceshipXP: "最大宇宙船XP: %%",
-   PrestigeReasonInvalidShip:
-      "あなたの宇宙船はゲームの互換性のないバージョンで構築されました。新しい宇宙船で続行するにはプレステージが必要です",
+   TutorialProductionCapacity: "生産容量を変更",
+   TutorialProductionCapacityDescHTML:
+      "武器モジュールは発射時に消費される弾薬を生産します。通常、必要以上に生産します。<b>生産容量</b>を下げることで、特に最高ティアの武器の場合、より最適化された宇宙船を建造できます。<b>弾薬消費量に合わせる</b>機能（魔法の杖）を使用して、モジュールの生産容量を弾薬消費量に合わせて素早く設定できます。",
+   TutorialProductionPriority: "生産優先度を変更",
+   TutorialProductionPriorityDescHTML:
+      "優先度が高いモジュール（<b>10</b>）は他のモジュールより先に生産します。通常、停電を避けるために<b>発電機とその上流モジュール</b>を最高優先度に設定することをお勧めします。",
 };

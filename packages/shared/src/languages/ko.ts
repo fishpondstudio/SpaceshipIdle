@@ -283,6 +283,7 @@ export const KO = {
    LifeStealDesc: "입힌 피해의 %%를 HP로 회복",
    MatchCapacityTooltip: "용량을 탄약 소비량과 일치시킴",
    MaxSpaceshipValue: "최대 우주선 XP",
+   MaxSpaceshipXP: "최대 우주선 XP: %%",
    Mechanical: "기계",
    Misc: "기타",
    ModuleCannotBeRecycled: "이 모듈은 한 번 건설하면 재활용할 수 없습니다",
@@ -329,6 +330,8 @@ export const KO = {
    Prerequisites: "필요 조건",
    Prestige: "프레스티지",
    PrestigeAnyway: "그래도 프레스티지",
+   PrestigeReasonInvalidShip:
+      "당신의 우주선은 게임의 호환되지 않는 버전으로 제작되었습니다. 새로운 우주선으로 계속하려면 프레스티지를 해야 합니다",
    Priority: "우선순위",
    Production: "생산",
    ProductionBuildingXPHTML:
@@ -576,7 +579,10 @@ export const KO = {
    XP: "XP",
    XPCollector: "XP 수집기",
    XPMultiplier: "XP 승수",
-   MaxSpaceshipXP: "최대 우주선 XP: %%",
-   PrestigeReasonInvalidShip:
-      "당신의 우주선은 게임의 호환되지 않는 버전으로 제작되었습니다. 새로운 우주선으로 계속하려면 프레스티지를 해야 합니다",
+   TutorialProductionCapacity: "생산 용량 변경",
+   TutorialProductionCapacityDescHTML:
+      "무기 모듈은 발사할 때 소비되는 탄약을 생산합니다. 보통 필요한 것보다 더 많이 생산합니다. <b>생산 용량</b>을 낮추면, 특히 최고 티어 무기의 경우, 더 최적화된 우주선을 건설할 수 있습니다. <b>탄약 소비량에 맞추기</b> 기능(마법 지팡이)을 사용하여 모듈의 생산 용량을 탄약 소비량에 맞게 빠르게 설정할 수 있습니다.",
+   TutorialProductionPriority: "생산 우선순위 변경",
+   TutorialProductionPriorityDescHTML:
+      "우선순위가 높은 모듈(<b>10</b>)은 다른 모듈보다 먼저 생산합니다. 일반적으로 정전을 방지하기 위해 <b>발전기와 그 상류 모듈</b>을 최고 우선순위로 설정하는 것이 좋습니다.",
 };

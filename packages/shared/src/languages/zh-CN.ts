@@ -280,6 +280,7 @@ export const ZH_CN = {
    LifeStealDesc: "将造成伤害的%%转化为生命值",
    MatchCapacityTooltip: "使容量匹配弹药消耗",
    MaxSpaceshipValue: "飞船经验上限",
+   MaxSpaceshipXP: "最大飞船经验: %%",
    Mechanical: "机械",
    Misc: "杂项",
    ModuleCannotBeRecycled: "此模块一旦建造便无法回收",
@@ -326,6 +327,7 @@ export const ZH_CN = {
    Prerequisites: "前置条件",
    Prestige: "重置",
    PrestigeAnyway: "仍然重置",
+   PrestigeReasonInvalidShip: "您的飞船是用不兼容的游戏版本建造的。您需要重置以继续使用新飞船",
    Priority: "优先级",
    Production: "生产",
    ProductionBuildingXPHTML:
@@ -571,6 +573,10 @@ export const ZH_CN = {
    XP: "经验",
    XPCollector: "经验收集器",
    XPMultiplier: "经验倍率",
-   MaxSpaceshipXP: "最大飞船经验: %%",
-   PrestigeReasonInvalidShip: "您的飞船是用不兼容的游戏版本建造的。您需要重置以继续使用新飞船",
+   TutorialProductionCapacity: "更改生产容量",
+   TutorialProductionCapacityDescHTML:
+      "武器模块生产弹药，开火时会消耗弹药。通常它会生产超过所需的量。降低<b>生产容量</b>，特别是对于最高等级的武器，可以让您建造更优化的飞船。您可以使用<b>匹配容量到弹药消耗</b>功能（魔法棒）来快速将模块的生产容量设置为其弹药消耗量。",
+   TutorialProductionPriority: "更改生产优先级",
+   TutorialProductionPriorityDescHTML:
+      "优先级更高（<b>10</b>）的模块会先于其他模块生产。通常建议将<b>发电机及其上游模块</b>设置为最高优先级，以避免停电。",
 };

@@ -10,6 +10,7 @@ export const DefaultElementChoices = 3;
 export const BattleStartAmmoCycles = 5;
 export const BalanceVersion = 1;
 export const DefaultCooldown = 2;
+export const DefaultPriority = 5;
 export const MaxBattleTick = 10 * 60;
 export const SuddenDeathTick = 5 * 60;
 export const MaxBuildingCount = 1000;
