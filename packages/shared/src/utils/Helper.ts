@@ -146,14 +146,14 @@ export function firstKeyOf<T extends {}>(obj: T | undefined) {
    return null;
 }
 // eslint-disable-next-line @typescript-eslint/ban-types
-export function mFirstKeyOf<K, V>(obj: Map<K, V> | undefined): K | null {
+export function mapFirstKeyOf<K, V>(obj: Map<K, V> | undefined): K | undefined {
    if (!obj) {
-      return null;
+      return undefined;
    }
    for (const key of obj) {
       return key[0];
    }
-   return null;
+   return undefined;
 }
 
 export function firstValueOf<T extends {}>(obj: T | undefined) {
