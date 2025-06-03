@@ -347,7 +347,7 @@ function _BattleComp({ highlight, quantum }: { highlight: boolean; quantum: numb
             className="pointer"
             onClick={() => {
                showModal({
-                  children: <PrepareForBattleModal mode={PrepareForBattleMode.Prompt} />,
+                  children: <PrepareForBattleModal mode={PrepareForBattleMode.Normal} />,
                   size: "sm",
                   dismiss: true,
                });
