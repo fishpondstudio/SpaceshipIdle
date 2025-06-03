@@ -1,16 +1,19 @@
+import { RingBuffer } from "@spaceship-idle/shared/src/utils/RingBuffer";
 import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
-import { Container, Geometry, type IDestroyOptions, Mesh, Shader, Sprite, type Texture } from "pixi.js";
+import { BitmapText, Container, Geometry, type IDestroyOptions, Mesh, Shader, Sprite, type Texture } from "pixi.js";
 import { Fonts } from "../assets";
 import { getVersion } from "../game/Version";
 import { runFunc, sequence, to } from "../utils/actions/Actions";
 import { Easing } from "../utils/actions/Easing";
 import { G } from "../utils/Global";
-import { UnicodeText } from "../utils/UnicodeText";
 import vert from "./shader.vert?raw";
 import frag from "./starfield.frag?raw";
 
 export class Starfield extends Container {
    private quad: Mesh<Shader>;
+   private fps: RingBuffer<number>;
+   private watermark: BitmapText;
+   private version: string;
 
    constructor() {
       super();
@@ -30,15 +33,13 @@ export class Starfield extends Container {
       });
       G.pixi.renderer.on("resize", this.onResize, this);
 
-      const version = this.addChild(
-         new UnicodeText(getVersion(), {
-            fontName: Fonts.SpaceshipIdle,
-            fontSize: 20,
-            tint: 0xffffff,
-         }),
+      this.version = getVersion();
+      this.watermark = G.scene.overlay.addChild(
+         new BitmapText("", { fontName: Fonts.SpaceshipIdle, fontSize: 12, tint: 0x999999, align: "right" }),
       );
-      version.anchor.set(1, 1);
-      version.position.set(app.renderer.width, app.renderer.height);
+      this.watermark.anchor.set(1, 1);
+      this.watermark.position.set(G.pixi.screen.width - 10, G.pixi.screen.height - 10);
+      this.fps = new RingBuffer<number>(120);
    }
 
    playParticle(texture: Texture | undefined, from: IHaveXY, target: IHaveXY, count: number): void {
@@ -78,4 +79,13 @@ export class Starfield extends Container {
    override destroy(options?: IDestroyOptions | boolean): void {
       super.destroy(options);
    }
+
+   public update(): void {
+      this.fps.push(G.pixi.ticker.FPS);
+      this.watermark.text = `FPS: ${Math.round(this.fps.reduce(sum, 0) / this.fps.size)}    VERSION: ${this.version}    ${navigator.onLine ? "ONLINE" : "OFFLINE"}`;
+   }
+}
+
+function sum(result: number, value: number): number {
+   return result + value;
 }

@@ -9,6 +9,7 @@ import { DefeatedHeaderComp } from "./components/BattleResultHeader";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { PrestigeModal } from "./PrestigeModal";
+import { PrestigeReason } from "./PrestigeReason";
 
 export function SecondChanceBattleResultModal(): React.ReactNode {
    return (
@@ -49,7 +50,7 @@ export function SecondChanceBattleResultModal(): React.ReactNode {
             className="btn w100 p5 row text-lg"
             onClick={() => {
                showModal({
-                  children: <PrestigeModal defeated={false} showClose={true} />,
+                  children: <PrestigeModal reason={PrestigeReason.None} showClose={true} />,
                   size: "sm",
                });
             }}

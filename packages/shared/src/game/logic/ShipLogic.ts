@@ -126,13 +126,25 @@ export function isWithinShipExtent(tile: Tile, gs: GameState): boolean {
    return x >= center.x - ext && x < center.x + ext && y >= center.y - ext && y < center.y + ext;
 }
 
-export function validateShip(gs: GameState): boolean {
+export function validateForClient(gs: GameState): boolean {
+   const quantumLimit = getQuantumLimit(gs);
+   const usedQuantum = getUsedQuantum(gs);
+   if (usedQuantum > quantumLimit) {
+      return false;
+   }
+   return _validateShip(gs);
+}
+
+export function validateForMatchmaking(gs: GameState): boolean {
    const mmQuantum = getMatchmakingQuantum(gs);
    const usedQuantum = getUsedQuantum(gs);
    if (mmQuantum !== usedQuantum) {
       return false;
    }
+   return _validateShip(gs);
+}
 
+function _validateShip(gs: GameState): boolean {
    const sv = calcSpaceshipValue(gs);
    const maxSV = getMaxSpaceshipValue(gs);
    if (sv > maxSV) {

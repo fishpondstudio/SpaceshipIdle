@@ -9,13 +9,20 @@ import { hideModal } from "../utils/ToggleModal";
 import { DefeatedHeaderComp, PrestigeHeaderComp } from "./components/BattleResultHeader";
 import { showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
+import { PrestigeReason } from "./PrestigeReason";
 
-export function PrestigeModal({ defeated, showClose }: { defeated: boolean; showClose: boolean }): React.ReactNode {
+export function PrestigeModal({ reason, showClose }: { reason: PrestigeReason; showClose: boolean }): React.ReactNode {
    const fromThisRun = mReduceOf(G.save.current.elements, (prev, k, v) => prev + v, 0);
    const extraShards = shardsFromShipValue(G.save.current);
    return (
       <div style={{ padding: 5 }}>
-         {defeated ? <DefeatedHeaderComp /> : <PrestigeHeaderComp />}
+         {reason === PrestigeReason.Defeated ? <DefeatedHeaderComp /> : <PrestigeHeaderComp />}
+         {reason === PrestigeReason.Incompatible ? (
+            <div className="row panel red mb10 text-sm">
+               <div className="mi lg fstart">sync_problem</div>
+               <div>{t(L.PrestigeReasonInvalidShip)}</div>
+            </div>
+         ) : null}
          <div className="panel">
             <div className="row">
                <div>{t(L.ElementThisRun)}</div>

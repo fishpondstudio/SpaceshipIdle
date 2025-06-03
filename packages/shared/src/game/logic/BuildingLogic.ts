@@ -60,7 +60,6 @@ export function getBuildingValue(
    }
 
    if (xp <= 0) {
-      console.error(`getBuildingValue: building ${building} has no value`);
       xp = fib(level);
    }
 
@@ -88,7 +87,6 @@ export function getNormalizedValue(data: { type: Building; level: number }): num
       });
    }
    if (value <= 0) {
-      console.error(`getNormalizedValue: building ${data.type} has no value`);
       value = 1;
    }
    return value * data.level;

@@ -1,11 +1,12 @@
 import { hasModalOpen } from "../utils/ModalManager";
 import { showModal } from "../utils/ToggleModal";
 import { PrestigeModal } from "./PrestigeModal";
+import type { PrestigeReason } from "./PrestigeReason";
 
-export function showForcePrestigeModal() {
+export function showPrestigeModal(reason: PrestigeReason) {
    if (!hasModalOpen()) {
       showModal({
-         children: <PrestigeModal defeated={false} showClose={false} />,
+         children: <PrestigeModal reason={reason} showClose={false} />,
          size: "sm",
       });
    }

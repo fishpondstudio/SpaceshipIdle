@@ -9,6 +9,7 @@ import { onSteamClose } from "./rpc/SteamClient";
 import { BattleResultVictoryModal } from "./ui/BattleResultVictoryModal";
 import { PracticeBattleResultModal } from "./ui/PracticeBattleResultModal";
 import { PrestigeModal } from "./ui/PrestigeModal";
+import { PrestigeReason } from "./ui/PrestigeReason";
 import { SecondChanceBattleResultModal } from "./ui/SecondChanceBattleResultModal";
 import { G } from "./utils/Global";
 import { SteamClient } from "./utils/Steam";
@@ -34,7 +35,7 @@ export function subscribeToEvents(): void {
                      modal = <SecondChanceBattleResultModal />;
                      G.save.current.trialCount = 1;
                   } else {
-                     modal = <PrestigeModal defeated={true} showClose={false} />;
+                     modal = <PrestigeModal reason={PrestigeReason.Defeated} showClose={false} />;
                      G.save.current.flags = setFlag(G.save.current.flags, GameStateFlags.Prestige);
                   }
                } else {

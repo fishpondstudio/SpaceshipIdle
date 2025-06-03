@@ -6,6 +6,11 @@
    &.bg-dark {
       background-color: var(--mantine-color-dark-7);
    }
+
+   &.red {
+      color: var(--mantine-color-red-text);
+      border-color: var(--mantine-color-red-border);
+   }
 }
 
 .ship-info {

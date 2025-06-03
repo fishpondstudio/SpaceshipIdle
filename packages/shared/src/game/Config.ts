@@ -1,10 +1,11 @@
-import { forEach, keysOf, reduceOf, sizeOf } from "../utils/Helper";
-import type { IBuildingDefinition } from "./definitions/BuildingProps";
+import { forEach, hasFlag, keysOf, reduceOf, sizeOf } from "../utils/Helper";
+import { BuildingFlag, type IBuildingDefinition } from "./definitions/BuildingProps";
 import { Buildings, type Building } from "./definitions/Buildings";
 import { MaxBattleTick } from "./definitions/Constant";
 import type { Resource } from "./definitions/Resource";
 import { Resources } from "./definitions/Resource";
 import { TechDefinitions } from "./definitions/TechDefinitions";
+import { getBuildingValue } from "./logic/BuildingLogic";
 import { getTechForBuilding } from "./logic/TechLogic";
 import type { ElementSymbol } from "./PeriodicTable";
 
@@ -122,6 +123,13 @@ function initConfig(): void {
          //    }
          // });
       });
+   });
+
+   forEach(Config.Buildings, (building, def) => {
+      const cost = getBuildingValue(building, 1);
+      if (!hasFlag(def.buildingFlag, BuildingFlag.Booster) && (cost.get("XP") ?? 0) <= 0) {
+         console.error(`Building ${building} has no value`);
+      }
    });
 
    if (typeof window !== "undefined") {

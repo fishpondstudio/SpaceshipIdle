@@ -11,6 +11,7 @@ import { showModal } from "../utils/ToggleModal";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { MatchMakingModal } from "./MatchmakingModal";
 import { PrestigeModal } from "./PrestigeModal";
+import { PrestigeReason } from "./PrestigeReason";
 import { playBling, playClick, playError } from "./Sound";
 
 export function PrepareForBattleModal(): React.ReactNode {
@@ -67,7 +68,7 @@ export function PrepareForBattleModal(): React.ReactNode {
             className="btn w100 p5 row text-lg"
             onClick={() => {
                showModal({
-                  children: <PrestigeModal defeated={false} showClose={true} />,
+                  children: <PrestigeModal reason={PrestigeReason.None} showClose={true} />,
                   size: "sm",
                   dismiss: true,
                });

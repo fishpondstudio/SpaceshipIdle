@@ -17,14 +17,15 @@ import { ChooseElementModal } from "../ui/ChooseElementModal";
 import { NewPlayerModal } from "../ui/NewPlayerModal";
 import { OfflineTimeModal } from "../ui/OfflineTimeModal";
 import { PrestigeModal } from "../ui/PrestigeModal";
+import { PrestigeReason } from "../ui/PrestigeReason";
 import { QuantumProgressModal } from "../ui/QuantumProgressModal";
 import { SecondChanceBattleResultModal } from "../ui/SecondChanceBattleResultModal";
+import { hideSidebar } from "../ui/Sidebar";
 import { ViewShipModal } from "../ui/ViewShipModal";
 import { idbClear } from "../utils/BrowserStorage";
 import { G } from "../utils/Global";
 import { hideModal, showModal } from "../utils/ToggleModal";
 import { loadGameStateFromFile, loadSaveGameFromFile, saveGame } from "./LoadSave";
-import { hideSidebar } from "../ui/Sidebar";
 
 export function addDebugFunctions(): void {
    if (!import.meta.env.DEV) return;
@@ -41,6 +42,11 @@ export function addDebugFunctions(): void {
    // @ts-expect-error
    globalThis.reset = async () => {
       await idbClear();
+      window.location.reload();
+   };
+   // @ts-expect-error
+   globalThis.save = async () => {
+      await saveGame(G.save);
       window.location.reload();
    };
    // @ts-expect-error
@@ -90,14 +96,14 @@ export function addDebugFunctions(): void {
    globalThis.prestige = async () => {
       G.runtime.battleStatus = BattleStatus.RightWin;
       showModal({
-         children: <PrestigeModal defeated={false} showClose={true} />,
+         children: <PrestigeModal reason={PrestigeReason.Incompatible} showClose={true} />,
          size: "sm",
       });
    };
    // @ts-expect-error
    globalThis.defeated = async () => {
       showModal({
-         children: <PrestigeModal defeated={true} showClose={true} />,
+         children: <PrestigeModal reason={PrestigeReason.Defeated} showClose={true} />,
          size: "sm",
       });
    };
