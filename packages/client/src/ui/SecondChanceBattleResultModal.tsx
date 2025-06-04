@@ -50,7 +50,7 @@ export function SecondChanceBattleResultModal(): React.ReactNode {
             className="btn w100 p5 row text-lg"
             onClick={() => {
                showModal({
-                  children: <PrestigeModal reason={PrestigeReason.None} showClose={true} />,
+                  children: <PrestigeModal reason={PrestigeReason.None} />,
                   size: "sm",
                });
             }}

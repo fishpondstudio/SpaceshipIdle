@@ -1,5 +1,6 @@
 import { Progress } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { ElementPermanentColor } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import {
    canUpgradeElement,
@@ -30,7 +31,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
    return (
       <div className="row p10 gap20">
          <div style={{ alignSelf: "flex-start" }}>
-            <ElementImageComp symbol={element.symbol} w="200" />
+            <ElementImageComp symbol={element.symbol} w="200" color={ElementPermanentColor} />
          </div>
          <div className="f1">
             <div className="row">

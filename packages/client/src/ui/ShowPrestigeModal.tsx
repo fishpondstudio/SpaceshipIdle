@@ -6,7 +6,7 @@ import type { PrestigeReason } from "./PrestigeReason";
 export function showPrestigeModal(reason: PrestigeReason) {
    if (!hasModalOpen()) {
       showModal({
-         children: <PrestigeModal reason={reason} showClose={false} />,
+         children: <PrestigeModal reason={reason} />,
          size: "sm",
       });
    }

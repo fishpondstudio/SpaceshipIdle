@@ -58,10 +58,7 @@ export function addDebugFunctions(): void {
    };
    // @ts-expect-error
    globalThis.chooseElement = () => {
-      showModal({
-         children: <ChooseElementModal permanent={false} choice={G.save.current.elementChoices[0]} />,
-         size: "xl",
-      });
+      G.save.current.discoveredElements--;
    };
    // @ts-expect-error
    globalThis.choosePermanentElement = () => {
@@ -96,14 +93,14 @@ export function addDebugFunctions(): void {
    globalThis.prestige = async () => {
       G.runtime.battleStatus = BattleStatus.RightWin;
       showModal({
-         children: <PrestigeModal reason={PrestigeReason.Incompatible} showClose={true} />,
+         children: <PrestigeModal reason={PrestigeReason.Incompatible} />,
          size: "sm",
       });
    };
    // @ts-expect-error
    globalThis.defeated = async () => {
       showModal({
-         children: <PrestigeModal reason={PrestigeReason.Defeated} showClose={true} />,
+         children: <PrestigeModal reason={PrestigeReason.Defeated} />,
          size: "sm",
       });
    };

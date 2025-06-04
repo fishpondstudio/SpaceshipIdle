@@ -81,7 +81,7 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                <div className="f1" />
             </div>
             <div className="divider mt5" />
-            <div className="row px10 py5 text-sm">
+            <div className="row p10">
                <div>{t(L.Quantum)}</div>
                <div className="f1"></div>
                <div>
@@ -89,7 +89,7 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                </div>
             </div>
             <div className="divider" />
-            <div className="row px10 py5 text-sm">
+            <div className="row p10">
                <div>{t(L.SpaceshipXP)}</div>
                <div className="f1"></div>
                <div>
@@ -131,7 +131,7 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                className="btn w100 p5 row text-lg"
                onClick={() => {
                   showModal({
-                     children: <PrestigeModal reason={PrestigeReason.None} showClose={true} />,
+                     children: <PrestigeModal reason={PrestigeReason.None} />,
                      size: "sm",
                      dismiss: true,
                   });

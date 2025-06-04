@@ -1,6 +1,6 @@
 import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { BattleQuantum, TrialQuantum } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { BattleQuantum, ElementThisRunColor, TrialQuantum } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
    getCurrentQuantum,
@@ -46,7 +46,7 @@ export function QuantumProgressModal(): React.ReactNode {
          <div>{t(L.ElementThisRun)}</div>
          {mMapOf(G.save.current.elements, (symbol, amount) => (
             <div className="row my10" key={symbol}>
-               <ElementImageComp symbol={symbol} w="50" />
+               <ElementImageComp symbol={symbol} w="50" color={ElementThisRunColor} />
                <div className="f1">
                   <div className="text-lg">
                      <span className="text-dimmed">{amount}x</span> {symbol}

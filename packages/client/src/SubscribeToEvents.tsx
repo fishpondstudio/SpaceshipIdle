@@ -35,7 +35,7 @@ export function subscribeToEvents(): void {
                      modal = <SecondChanceBattleResultModal />;
                      G.save.current.trialCount = 1;
                   } else {
-                     modal = <PrestigeModal reason={PrestigeReason.Defeated} showClose={false} />;
+                     modal = <PrestigeModal reason={PrestigeReason.Defeated} />;
                      G.save.current.flags = setFlag(G.save.current.flags, GameStateFlags.Prestige);
                   }
                } else {

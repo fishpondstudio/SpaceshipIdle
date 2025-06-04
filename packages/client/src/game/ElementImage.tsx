@@ -7,17 +7,18 @@ import { G } from "../utils/Global";
 
 const elementImages = new Map<string, Blob>();
 
-export function getElementImage(app: Application, symbol: ElementSymbol): Promise<Blob> {
-   const cached = elementImages.get(symbol);
+export function getElementImage(app: Application, symbol: ElementSymbol, color: number): Promise<Blob> {
+   const key = `${symbol}:${color}`;
+   const cached = elementImages.get(key);
    if (cached) {
       return Promise.resolve(cached);
    }
    return new Promise((resolve, reject) => {
-      const card = new ElementCard(symbol, 0xffffff, 1);
+      const card = new ElementCard(symbol, color, 1);
       const canvas = app.renderer.extract.canvas(card);
       canvas.toBlob?.((blob) => {
          if (blob) {
-            elementImages.set(symbol, blob);
+            elementImages.set(key, blob);
             resolve(blob);
          } else {
             reject(new Error(`Failed to generate image for ${symbol}`));
@@ -26,14 +27,18 @@ export function getElementImage(app: Application, symbol: ElementSymbol): Promis
    });
 }
 
-export function ElementImageComp({ symbol, ...props }: ImageProps & { symbol: ElementSymbol }): React.ReactNode {
+export function ElementImageComp({
+   symbol,
+   color,
+   ...props
+}: ImageProps & { symbol: ElementSymbol; color: number }): React.ReactNode {
    const image = useRef<HTMLImageElement>(null);
    useEffect(() => {
-      getElementImage(G.pixi, symbol).then((blob) => {
+      getElementImage(G.pixi, symbol, color).then((blob) => {
          if (image.current && blob) {
             image.current.src = URL.createObjectURL(blob);
          }
       });
-   }, [symbol]);
+   }, [symbol, color]);
    return <Image ref={image} {...props} />;
 }

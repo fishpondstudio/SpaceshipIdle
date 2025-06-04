@@ -2,7 +2,7 @@ import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameState, GameStateFlags } from "@spaceship-idle/shared/src/game/GameState";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { validateForClient } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
-import { hasFlag } from "@spaceship-idle/shared/src/utils/Helper";
+import { hasFlag, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { CRTFilter } from "pixi-filters";
 import { clientUpdate } from "./ClientUpdate";
 import { ShipScene } from "./scenes/ShipScene";
@@ -18,6 +18,10 @@ export function startGameLoop(): void {
       G.scene.root.filters = [filter];
    }
 
+   if (!import.meta.env.DEV && !validateForClient(G.save.current)) {
+      G.save.current.flags = setFlag(G.save.current.flags, GameStateFlags.Incompatible);
+   }
+
    let i = 0;
    G.runtime = new Runtime(G.save, new GameState());
    G.runtime.createEnemy(++i);
@@ -29,7 +33,7 @@ export function startGameLoop(): void {
          showPrestigeModal(PrestigeReason.Defeated);
          return;
       }
-      if (!validateForClient(G.save.current)) {
+      if (hasFlag(G.save.current.flags, GameStateFlags.Incompatible)) {
          showPrestigeModal(PrestigeReason.Incompatible);
          return;
       }

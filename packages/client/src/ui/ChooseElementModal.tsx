@@ -1,6 +1,7 @@
 import { getDefaultZIndex, Progress, Transition, type PaperProps } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { ElementPermanentColor, ElementThisRunColor } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated, type ElementChoice } from "@spaceship-idle/shared/src/game/GameState";
 import { getElementUpgradeCost } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
@@ -30,7 +31,9 @@ export function ChooseElementModal({
    }, [sound]);
    return (
       <>
-         <div className="text-center text-xl">{t(L.AnElementHasBeenDiscovered)}</div>
+         <div className="text-center text-xl">
+            {permanent ? t(L.ChoosePermanentElementShards) : t(L.AnElementHasBeenDiscovered)}
+         </div>
          <div className="h10" />
          <div className="row">
             {choice.choices.map((symbol, idx) => (
@@ -134,9 +137,13 @@ function ElementOption({
                   onClick();
                }}
             >
-               <ElementImageComp symbol={symbol} />
+               <ElementImageComp symbol={symbol} color={permanent ? ElementPermanentColor : ElementThisRunColor} />
                <div className="h10" />
-               <div className="text-center">{t(L.ElementBoostThisRun, 1, Config.Buildings[b].name())}</div>
+               <div className="text-center">
+                  {permanent
+                     ? t(L.PlusXPMultiplier, 1, Config.Buildings[b].name())
+                     : t(L.ElementBoostThisRun, 1, Config.Buildings[b].name())}
+               </div>
                <div className="h10" />
                <div className="divider mx-15 mb5" />
                {permanent ? null : (
