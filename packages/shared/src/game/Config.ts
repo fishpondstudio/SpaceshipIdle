@@ -6,7 +6,6 @@ import type { Resource } from "./definitions/Resource";
 import { Resources } from "./definitions/Resource";
 import { TechDefinitions } from "./definitions/TechDefinitions";
 import { getBuildingValue } from "./logic/BuildingLogic";
-import { quantumToSpaceshipValue } from "./logic/ResourceLogic";
 import { getTechForBuilding } from "./logic/TechLogic";
 import type { ElementSymbol } from "./PeriodicTable";
 
@@ -138,13 +137,6 @@ function initConfig(): void {
       console.log("Normalized Price", Config.NormalizedPrice);
       console.log("Resource Tier", Config.ResourceTier);
       console.log("Building Tier", Config.BuildingTier);
-      console.log("Building Id", Config.BuildingId);
-      console.log(`# of techs: ${sizeOf(Config.Tech)}`);
-      const qsv: [number, number][] = [];
-      for (let i = 30; i <= 500; i += 10) {
-         qsv.push([i, quantumToSpaceshipValue(i)]);
-      }
-      console.table(qsv);
    }
 }
 

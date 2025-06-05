@@ -142,6 +142,12 @@ export function addDebugFunctions(): void {
       G.save.current.elements.clear();
    };
    // @ts-expect-error
+   globalThis.setLevel = (level: number) => {
+      G.save.current.tiles.forEach((t) => {
+         t.level = level;
+      });
+   };
+   // @ts-expect-error
    globalThis.newPlayer = async () => {
       showModal({
          children: <NewPlayerModal />,

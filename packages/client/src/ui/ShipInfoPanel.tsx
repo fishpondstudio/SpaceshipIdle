@@ -58,7 +58,7 @@ export function ShipInfoPanel(): React.ReactNode {
    );
    const xpDelta = resourceDiffOf("XP", hasFlag(options.flag, GameOptionFlag.TheoreticalValue), G.runtime.leftStat);
    const [progress, denom] = getNextQuantumProgress(state);
-   const quantumDelta = xpDelta / denom;
+   const quantumDelta = progress <= 0 ? 0 : xpDelta / denom;
    const sv = calcSpaceshipValue(state);
    G.runtime.rightStat.averageRawDamage(10, rawDamages);
    G.runtime.rightStat.averageActualDamage(10, actualDamages);
