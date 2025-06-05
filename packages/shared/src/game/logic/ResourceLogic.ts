@@ -83,12 +83,12 @@ export function quantumToSpaceshipValue(quantum: number): number {
 }
 
 export function svToQ(sv: number): number {
-   const t = Math.pow(Math.log(sv), 1 / 2) * 0.75;
-   return Math.pow(sv / 100, 1 / t);
+   return inverse(qToSV, sv, 0, 1e30);
 }
 
 export function qToSV(quantum: number): number {
-   return inverse(svToQ, quantum, 0, 1e30);
+   const t = Math.log(quantum + 10);
+   return Math.pow(quantum, t) * 10;
 }
 
 export function getUsedQuantum(gs: GameState): number {
