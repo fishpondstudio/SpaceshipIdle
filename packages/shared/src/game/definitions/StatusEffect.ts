@@ -1,4 +1,4 @@
-import { clamp, formatNumber, formatPercent, type ValueOf } from "../../utils/Helper";
+import { clamp, formatNumber, formatPercent, hasFlag, type ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import type { IRuntimeEffect, RuntimeTile } from "../logic/RuntimeTile";
@@ -256,6 +256,22 @@ export const StatusEffects = {
       type: StatusEffectType.Electrical,
       onTick: (se, rs) => {
          rs.props.damagePerProjectile *= 1 + se.value;
+      },
+   },
+   DispelBuffEffect: {
+      name: () => t(L.DispelBuffEffect),
+      desc: (value) => t(L.DispelBuffEffectDesc),
+      flag: StatusEffectFlag.Negative,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         for (const [tile, re] of rs.statusEffects) {
+            if (
+               re.statusEffect !== se.statusEffect &&
+               hasFlag(StatusEffects[re.statusEffect].flag, StatusEffectFlag.Positive)
+            ) {
+               rs.statusEffects.delete(tile);
+            }
+         }
       },
    },
 } as const satisfies Record<string, IStatusEffect>;

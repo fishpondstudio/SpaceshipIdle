@@ -86,6 +86,9 @@ export const Resources = {
    AC76x2: {
       name: () => t(L.AC76x2Ammo),
    },
+   AC76D: {
+      name: () => t(L.AC76DAmmo),
+   },
    RC50: {
       name: () => t(L.RC50Ammo),
    },

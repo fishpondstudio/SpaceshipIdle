@@ -1,4 +1,4 @@
-import { AC130, AC130E, AC130S, AC30, AC30F, AC30S, AC30x3, AC76, AC76R, AC76x2 } from "./Autocannons";
+import { AC130, AC130E, AC130S, AC30, AC30F, AC30S, AC30x3, AC76, AC76D, AC76R, AC76x2 } from "./Autocannons";
 import { DMG1Booster, EVA1Booster, HP1Booster, PM1Booster } from "./Boosters";
 import type { IBuildingDefinition } from "./BuildingProps";
 import { LA1, LA1E } from "./LaserArrays";
@@ -29,6 +29,7 @@ export const Buildings = {
    AC76,
    AC76x2,
    AC76R,
+   AC76D,
    AC130,
    AC130E,
    AC130S,

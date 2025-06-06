@@ -121,6 +121,25 @@ export const AC76R: IWeaponDefinition = {
       duration: (building, level) => 1,
    },
 };
+export const AC76D: IWeaponDefinition = {
+   ...BaseDefenseProps,
+   ...BaseWeaponProps,
+   name: () => t(L.AC76D),
+   code: CodeNumber.AC,
+   buildingFlag: BuildingFlag.CanTarget,
+   input: { Power: 2, AC76x2: 2, AC30S: 2 },
+   output: { AC76D: 1 },
+   element: "Kr",
+   damagePct: 0.8,
+   fireCooldown: 2,
+   ability: {
+      timing: AbilityTiming.OnHit,
+      range: AbilityRange.RearTrio,
+      effect: "DispelBuffEffect",
+      value: (building, level) => 0,
+      duration: (building, level) => 0,
+   },
+};
 export const AC130: IWeaponDefinition = {
    ...BaseDefenseProps,
    ...BaseWeaponProps,

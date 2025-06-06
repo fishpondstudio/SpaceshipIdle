@@ -7,7 +7,7 @@ import { Resources } from "./definitions/Resource";
 import { TechDefinitions } from "./definitions/TechDefinitions";
 import { getBuildingValue } from "./logic/BuildingLogic";
 import { getTechForBuilding } from "./logic/TechLogic";
-import type { ElementSymbol } from "./PeriodicTable";
+import { PeriodicTable, type ElementSymbol } from "./PeriodicTable";
 
 console.assert(sizeOf(Buildings) < MaxBattleTick);
 const BuildingId = Object.fromEntries(Object.entries(Buildings).map(([b, _], i) => [b, i])) as Record<Building, number>;
@@ -96,7 +96,15 @@ function initConfig(): void {
       const def = Config.Buildings[b];
       if (def.element) {
          if (Config.Element.has(def.element)) {
-            throw new Error(`Element ${def.element} is already defined for building ${b}`);
+            const unusedElements = new Set(keysOf(PeriodicTable));
+            forEach(Config.Buildings, (b, def) => {
+               if (def.element) {
+                  unusedElements.delete(def.element);
+               }
+            });
+            throw new Error(
+               `Element ${def.element} is already defined for building ${b}. Unused elements: ${Array.from(unusedElements).join(", ")}`,
+            );
          }
          Config.Element.set(def.element, b);
       }

@@ -597,4 +597,9 @@ export const EN = {
    ActualRawDamageByType: "Actual / Raw Damage By Type",
    ActualDamageByModuleType: "Actual Damage By Module Type",
    ActualRawDamageTooltip: "Actual damage is the raw damage after armor, shield and deflection reduction",
+   AC76D: "AC76D Serval",
+   AC76DAmmo: "AC76D Ammo",
+   TechBuffDispel: "Buff Dispel",
+   DispelBuffEffect: "Dispel Buff",
+   DispelBuffEffectDesc: "Remove all positive status effects",
 };

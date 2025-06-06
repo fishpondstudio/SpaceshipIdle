@@ -324,7 +324,10 @@ export class TechDefinitions {
    };
    G5: ITechDefinition = {
       ring: 6,
-      requires: [],
+      name: () => t(L.TechBuffDispel),
+      requires: ["E4", "F4"],
+      unlockBuildings: ["AC76D"],
+      multiplier: { AC30S: 1, AC76x2: 1 },
    };
    G6: ITechDefinition = {
       ring: 6,

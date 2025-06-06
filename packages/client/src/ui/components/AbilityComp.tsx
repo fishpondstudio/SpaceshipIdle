@@ -31,6 +31,7 @@ export function AbilityComp({
       return null;
    }
    const ability = def.ability;
+   const duration = ability.duration(building, level);
    return (
       <>
          {title}
@@ -64,8 +65,8 @@ export function AbilityComp({
             </Tooltip>
          </div>
          <div className="text-space" style={{ textAlign: "right" }}>
-            {StatusEffects[ability.effect].desc(ability.value(building, level))} ({t(L.AbilityDuration)}{" "}
-            {t(L.AbilityDurationSeconds, ability.duration(building, level))})
+            {StatusEffects[ability.effect].desc(ability.value(building, level))}
+            {duration > 0 ? ` (${t(L.AbilityDuration)} ${t(L.AbilityDurationSeconds, duration)})` : ""}
          </div>
       </>
    );
