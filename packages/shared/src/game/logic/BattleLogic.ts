@@ -69,7 +69,7 @@ export function tickProjectiles(
          if (runtime.battleType !== BattleType.Simulated) {
             OnProjectileHit.emit({ position: pos, tile: tile, critical: projectile.critical });
          }
-         const damage = damageTarget.takeDamage(projectile.damage * factor, projectile.damageType);
+         const damage = damageTarget.takeDamage(projectile.damage * factor, projectile.damageType, projectile.building);
          if (damage > 0) {
             const damageSource = runtime.get(projectile.fromTile);
             damageTarget.onTakingDamage(damage, projectile.damageType, damageSource);

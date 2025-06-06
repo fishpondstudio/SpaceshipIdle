@@ -1,4 +1,4 @@
-import { Rounding, type Tile, forEach, round, safeAdd } from "../../utils/Helper";
+import { Rounding, type Tile, forEach, mapSafeAdd, round, safeAdd } from "../../utils/Helper";
 import { Config } from "../Config";
 import { GameStateUpdated } from "../GameState";
 import type { ITileData } from "../ITileData";
@@ -102,7 +102,7 @@ export class RuntimeTile {
       this._copyProps();
    }
 
-   public takeDamage(damage: number, damageType: DamageType): number {
+   public takeDamage(damage: number, damageType: DamageType, source: Building | null): number {
       const stat = isEnemy(this.tile) ? this.runtime.rightStat : this.runtime.leftStat;
 
       if (this.props.evasion > 0 && this.runtime.random() < evasionChance(this.props.evasion)) {
@@ -124,6 +124,9 @@ export class RuntimeTile {
       }
 
       safeAdd(stat.actualDamagePerSec, damageType, damage);
+      if (source) {
+         mapSafeAdd(stat.actualDamageByBuilding, source, damage);
+      }
       this._damageTaken += damage;
       if (this.runtime.battleType !== BattleType.Simulated) {
          OnDamaged.emit({ tile: this.tile, amount: damage });

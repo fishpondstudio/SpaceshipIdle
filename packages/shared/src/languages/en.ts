@@ -592,4 +592,8 @@ export const EN = {
    XPCollector: "XP Collector",
    XPMultiplier: "XP Multiplier",
    ChoosePermanentElementShards: "Choose Permanent Element Shards",
+   ShowBattleReport: "Show Battle Report",
+   HideBattleReport: "Hide Battle Report",
+   RawActualDamageByType: "Raw / Actual Damage By Type",
+   ActualDamageByModuleType: "Actual Damage By Module Type",
 };

@@ -40,6 +40,7 @@ export class RuntimeStat {
       [DamageType.Explosive]: 0,
       [DamageType.Energy]: 0,
    };
+   actualDamageByBuilding = new Map<Building, number>();
 
    public averageRawDamage(n: number, result: Record<DamageType, number> | null = null): Record<DamageType, number> {
       if (result) {

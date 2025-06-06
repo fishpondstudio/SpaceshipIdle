@@ -6,6 +6,7 @@ import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { saveGame } from "../game/LoadSave";
 import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
+import { BattleReportComp } from "./BattleReportComp";
 import { DefeatedHeaderComp, PrestigeHeaderComp } from "./components/BattleResultHeader";
 import { showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
@@ -42,6 +43,12 @@ export function PrestigeModal({ reason }: { reason: PrestigeReason }): React.Rea
                <div className="text-green">+{extraShards}</div>
             </div>
          </div>
+         {reason === PrestigeReason.Defeated ? (
+            <>
+               <div className="h5" />
+               <BattleReportComp />
+            </>
+         ) : null}
          <div className="h10" />
          <button
             className="btn w100 filled p5 g5 row text-lg"

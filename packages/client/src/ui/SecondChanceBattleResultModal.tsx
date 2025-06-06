@@ -5,6 +5,7 @@ import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
 import { hideModal, showModal } from "../utils/ToggleModal";
+import { BattleReportComp } from "./BattleReportComp";
 import { DefeatedHeaderComp } from "./components/BattleResultHeader";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
@@ -15,16 +16,18 @@ export function SecondChanceBattleResultModal(): React.ReactNode {
    return (
       <div style={{ padding: 5 }}>
          <DefeatedHeaderComp />
-         <div className="text-dimmed text-sm">
+         <div className="text-sm">
             <RenderHTML html={t(L.SecondChanceDescHTML)} />
          </div>
          <div className="h10" />
          <div className="panel">
             <div className="row">
-               <div className="f1">{t(L.QuantumLimit)}</div>
+               <div className="f1">{t(L.Quantum)}</div>
                <div className="text-green">+{TrialQuantum}</div>
             </div>
          </div>
+         <div className="h5" />
+         <BattleReportComp />
          <div className="h10" />
          <button
             className="btn w100 filled p5 text-lg"

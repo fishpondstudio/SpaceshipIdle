@@ -51,7 +51,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Chemical,
       onTick: (se, rs) => {
-         rs.takeDamage(se.value, DamageType.Explosive);
+         rs.takeDamage(se.value, DamageType.Explosive, se.sourceType);
       },
    },
    TickEnergyDamage: {
@@ -60,7 +60,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Chemical,
       onTick: (se, rs) => {
-         rs.takeDamage(se.value, DamageType.Energy);
+         rs.takeDamage(se.value, DamageType.Energy, se.sourceType);
       },
    },
    TickKineticDamage: {
@@ -69,7 +69,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Mechanical,
       onTick: (se, rs) => {
-         rs.takeDamage(se.value, DamageType.Kinetic);
+         rs.takeDamage(se.value, DamageType.Kinetic, se.sourceType);
       },
    },
    RecoverHp: {
@@ -206,7 +206,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Positive,
       type: StatusEffectType.Electrical,
       onTakingDamage: (value, damage, damageType, damageSource, damageTarget) => {
-         damageSource?.takeDamage(damage * value, damageType);
+         damageSource?.takeDamage(damage * value, damageType, damageTarget.data.type);
       },
    },
    RecoverHpOnTakingDamage2x: {

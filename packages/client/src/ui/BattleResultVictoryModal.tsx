@@ -6,6 +6,7 @@ import { formatNumber, mapSafeAdd } from "@spaceship-idle/shared/src/utils/Helpe
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
 import { hideModal, showModal } from "../utils/ToggleModal";
+import { BattleReportComp } from "./BattleReportComp";
 import { VictoryHeaderComp } from "./components/BattleResultHeader";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { PrestigeModal } from "./PrestigeModal";
@@ -34,6 +35,8 @@ export function BattleResultVictoryModal(): React.ReactNode {
                </>
             ) : null}
          </div>
+         <div className="h5" />
+         <BattleReportComp />
          <div className="h10" />
          <button
             className="btn w100 filled p5 g5 row text-lg"

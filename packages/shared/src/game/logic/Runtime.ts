@@ -265,9 +265,9 @@ export class Runtime {
          if (this.productionTick >= rs.props.lifeTime) {
             this.destroy(rs.tile);
          } else if (damage > 0) {
-            rs.takeDamage(damage, DamageType.Kinetic);
-            rs.takeDamage(damage, DamageType.Explosive);
-            rs.takeDamage(damage, DamageType.Energy);
+            rs.takeDamage(damage, DamageType.Kinetic, null);
+            rs.takeDamage(damage, DamageType.Explosive, null);
+            rs.takeDamage(damage, DamageType.Energy, null);
          }
       });
    }
