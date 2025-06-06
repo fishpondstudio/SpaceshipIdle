@@ -15,18 +15,9 @@ import { G } from "./utils/Global";
 import { SteamClient } from "./utils/Steam";
 import { showModal } from "./utils/ToggleModal";
 
-let wave = 1;
-
 export function subscribeToEvents(): void {
    OnBattleStatusChanged.on(({ status, prevStatus }) => {
       if (prevStatus === BattleStatus.InProgress && status !== BattleStatus.InProgress) {
-         if (G.runtime.battleType === BattleType.Peace) {
-            if (G.runtime.right.tiles.size === 0) {
-               G.runtime.createEnemy(++wave);
-            }
-            return;
-         }
-
          let modal: React.ReactNode = null;
          switch (G.runtime.battleType) {
             case BattleType.Qualifier: {

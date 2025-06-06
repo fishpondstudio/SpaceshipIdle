@@ -1,3 +1,5 @@
+import { range } from "../../utils/Helper";
+
 export const BattleTickInterval = 0.05;
 export const ProductionTickInterval = 1;
 export const ClientTickInterval = 5;
@@ -8,6 +10,7 @@ export const BattleQuantum = 10;
 export const TrialQuantum = 5;
 export const DefaultElementChoices = 3;
 export const BattleStartAmmoCycles = 5;
+export const LaserArrayDamagePct = 1 / range(1, 10).reduce((a, b) => a + 1 / b, 0);
 export const BalanceVersion = 1;
 export const DefaultCooldown = 2;
 export const DefaultPriority = 5;

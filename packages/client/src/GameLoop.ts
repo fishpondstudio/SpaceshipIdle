@@ -22,9 +22,9 @@ export function startGameLoop(): void {
       G.save.current.flags = setFlag(G.save.current.flags, GameStateFlags.Incompatible);
    }
 
-   let i = 0;
+   const i = 0;
    G.runtime = new Runtime(G.save, new GameState());
-   G.runtime.createEnemy(++i);
+   G.runtime.createEnemy();
 
    G.pixi.ticker.add(() => {
       const unscaled = G.pixi.ticker.deltaMS / 1000;

@@ -6,7 +6,7 @@ import {
    getCurrentQuantum,
    getQuantumLimit,
    getUsedQuantum,
-   quantumToSpaceshipValue,
+   quantumToXP,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { clamp, formatNumber, mMapOf, range } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -106,10 +106,10 @@ function QuantumBlock({
          </div>
          <div className="row g0">
             <Tooltip label={t(L.MaxSpaceshipValue)}>
-               <div className="f1">{formatNumber(quantumToSpaceshipValue(start))}</div>
+               <div className="f1">{formatNumber(quantumToXP(start))}</div>
             </Tooltip>
             <Tooltip label={t(L.MaxSpaceshipValue)}>
-               <div className="f1">{formatNumber(quantumToSpaceshipValue(start + TrialQuantum))}</div>
+               <div className="f1">{formatNumber(quantumToXP(start + TrialQuantum))}</div>
             </Tooltip>
          </div>
       </div>

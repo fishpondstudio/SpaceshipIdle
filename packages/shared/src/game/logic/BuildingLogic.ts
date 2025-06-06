@@ -7,7 +7,7 @@ import { MaxBuildingCount } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
 import type { GameState } from "../GameState";
 import type { ITileData } from "../ITileData";
-import { calcSpaceshipValue, getMaxSpaceshipValue, resourceValueOf } from "./ResourceLogic";
+import { calcSpaceshipXP, getMaxSpaceshipXP, resourceValueOf } from "./ResourceLogic";
 
 export function getNextLevel(currentLevel: number, x: number): number {
    return (Math.floor(currentLevel / x) + 1) * x;
@@ -110,7 +110,7 @@ export function getTotalBuildingValue(
 export function upgradeMax(tile: ITileData, gs: GameState): void {
    const def = Config.Buildings[tile.type];
    let resources = getBuildingValue(tile.type, tile.level + 1);
-   while (resourceValueOf(resources) < getMaxSpaceshipValue(gs) && trySpend(resources, gs)) {
+   while (resourceValueOf(resources) < getMaxSpaceshipXP(gs) && trySpend(resources, gs)) {
       tile.level++;
       resources = getBuildingValue(tile.type, tile.level + 1);
    }
@@ -119,7 +119,7 @@ export function upgradeMax(tile: ITileData, gs: GameState): void {
 export function canSpend(resources: Map<Resource, number>, gs: GameState): boolean {
    return (
       hasEnoughResources(resources, gs.resources) &&
-      calcSpaceshipValue(gs) + resourceValueOf(resources) < getMaxSpaceshipValue(gs)
+      calcSpaceshipXP(gs) + resourceValueOf(resources) < getMaxSpaceshipXP(gs)
    );
 }
 

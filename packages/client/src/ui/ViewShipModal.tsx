@@ -1,7 +1,7 @@
 import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { getShipScoreRank } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
-import { calcSpaceshipValue, getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { calcSpaceshipXP, getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { formatNumber, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
@@ -37,7 +37,7 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
             </div>
             <div className="row">
                <div className="f1">{t(L.SpaceshipXP)}</div>
-               <div>{formatNumber(calcSpaceshipValue(ship.json))}</div>
+               <div>{formatNumber(calcSpaceshipXP(ship.json))}</div>
             </div>
             <div className="divider mx-10 my10" />
             <div className="f1">{t(L.Research)}</div>

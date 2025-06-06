@@ -12,6 +12,7 @@ import {
    WeaponFlag,
 } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
+import { LaserArrayDamagePct } from "./Constant";
 
 export const LA1: IWeaponDefinition = {
    ...BaseDefenseProps,
@@ -21,7 +22,7 @@ export const LA1: IWeaponDefinition = {
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 4, U: 2, MS1H: 2 },
    output: { LA1: 1 },
-   damagePct: 0.5,
+   damagePct: LaserArrayDamagePct,
    weaponFlag: WeaponFlag.LaserDamage,
    damageType: DamageType.Energy,
    element: "V",
@@ -45,7 +46,7 @@ export const LA1E: IWeaponDefinition = {
       value: (building, level) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
          const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
-         return (damage * (1 - def.damagePct)) / 3;
+         return (damage * (1 - def.damagePct) * LaserArrayDamagePct) / 2;
       },
       duration: (building, level) => 2,
    },

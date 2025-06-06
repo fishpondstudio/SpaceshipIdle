@@ -1,11 +1,7 @@
 import { Grid, Space, Switch, Text, Tooltip } from "@mantine/core";
 import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import {
-   calcSpaceshipValue,
-   getQuantumLimit,
-   getUsedQuantum,
-} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { calcSpaceshipXP, getQuantumLimit, getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { isQualifierBattle } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
@@ -134,7 +130,7 @@ function ShipInfoComp({ gs, side }: { gs: GameState; side: Side }): React.ReactN
                <div className="text-sm text-dimmed">{t(L.Quantum)}</div>
             </Grid.Col>
             <Grid.Col span={6}>
-               <div style={{ fontSize: 32 }}>{formatNumber(calcSpaceshipValue(gs))}</div>
+               <div style={{ fontSize: 32 }}>{formatNumber(calcSpaceshipXP(gs))}</div>
                <div className="text-sm text-dimmed">{t(L.SpaceshipXP)}</div>
             </Grid.Col>
             <Grid.Col span={6}>

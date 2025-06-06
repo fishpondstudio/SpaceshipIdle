@@ -1,10 +1,10 @@
 import { ClientTickInterval } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateFlags } from "@spaceship-idle/shared/src/game/GameState";
 import {
-   calcSpaceshipValue,
+   calcSpaceshipXP,
    getQuantumLimit,
    getUsedQuantum,
-   quantumToSpaceshipValue,
+   quantumToXP,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { hasFlag, MINUTE, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -56,7 +56,7 @@ function update(): void {
       !isLoading() &&
       !hasFlag(G.save.current.flags, GameStateFlags.QualifierBattlePrompted) &&
       getUsedQuantum(G.save.current) >= quantumLimit &&
-      calcSpaceshipValue(G.save.current) >= 0.9 * quantumToSpaceshipValue(quantumLimit)
+      calcSpaceshipXP(G.save.current) >= 0.9 * quantumToXP(quantumLimit)
    ) {
       G.save.current.flags = setFlag(G.save.current.flags, GameStateFlags.QualifierBattlePrompted);
       showModal({

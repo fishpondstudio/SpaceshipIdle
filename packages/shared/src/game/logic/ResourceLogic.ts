@@ -23,8 +23,8 @@ export function resourceDiffOf(res: Resource, theoretical: boolean, stat: Runtim
 
 export const StartQuantum = 10;
 
-export function getMaxSpaceshipValue(gs: GameState): number {
-   return quantumToSpaceshipValue(getQuantumLimit(gs));
+export function getMaxSpaceshipXP(gs: GameState): number {
+   return quantumToXP(getQuantumLimit(gs));
 }
 
 export function getQuantumLimit(gs: GameState): number {
@@ -36,11 +36,11 @@ export function getMatchmakingQuantum(gs: GameState): number {
 }
 
 function getTotalXP(gs: GameState): number {
-   return calcSpaceshipValue(gs) + (gs.resources.get("XP") ?? 0);
+   return calcSpaceshipXP(gs) + (gs.resources.get("XP") ?? 0);
 }
 
 export function getCurrentQuantum(gs: GameState): number {
-   return Math.min(spaceshipValueToQuantum(getTotalXP(gs)), getQuantumLimit(gs));
+   return Math.min(xpToQuantum(getTotalXP(gs)), getQuantumLimit(gs));
 }
 
 const qToSVLookup = new Map<number, number>();
@@ -56,7 +56,7 @@ function populateQuantumLookup() {
 }
 
 const shipValue = new Map<Resource, number>();
-export function calcSpaceshipValue(gs: GameState): number {
+export function calcSpaceshipXP(gs: GameState): number {
    shipValue.clear();
    for (const [tile, data] of gs.tiles) {
       getTotalBuildingValue(data.type, 0, data.level, shipValue);
@@ -64,7 +64,7 @@ export function calcSpaceshipValue(gs: GameState): number {
    return resourceValueOf(shipValue);
 }
 
-export function spaceshipValueToQuantum(spaceshipValue: number): number {
+export function xpToQuantum(spaceshipValue: number): number {
    populateQuantumLookup();
    for (const [q, sv] of qToSVLookup) {
       if (spaceshipValue >= sv) {
@@ -74,7 +74,7 @@ export function spaceshipValueToQuantum(spaceshipValue: number): number {
    return StartQuantum;
 }
 
-export function quantumToSpaceshipValue(quantum: number): number {
+export function quantumToXP(quantum: number): number {
    populateQuantumLookup();
    if (quantum <= StartQuantum) {
       return 0;
@@ -108,8 +108,8 @@ export function getAvailableQuantum(gs: GameState): number {
 
 export function getNextQuantumProgress(gs: GameState): [number, number] {
    const sv = getTotalXP(gs);
-   const q = spaceshipValueToQuantum(sv);
-   const denominator = quantumToSpaceshipValue(q + 1) - quantumToSpaceshipValue(q);
-   const progress = q >= getQuantumLimit(gs) ? 0 : (sv - quantumToSpaceshipValue(q)) / denominator;
+   const q = xpToQuantum(sv);
+   const denominator = quantumToXP(q + 1) - quantumToXP(q);
+   const progress = q >= getQuantumLimit(gs) ? 0 : (sv - quantumToXP(q)) / denominator;
    return [progress, denominator];
 }

@@ -139,7 +139,7 @@ export const StatusEffects = {
    },
    IncreaseEvasion: {
       name: () => t(L.IncreaseEvasion),
-      desc: (value) => t(L.IncreaseEvasionDesc, formatPercent(value)),
+      desc: (value) => t(L.IncreaseEvasionDesc, value),
       flag: StatusEffectFlag.Positive,
       type: StatusEffectType.Mechanical,
       onTick: (se, rs) => {

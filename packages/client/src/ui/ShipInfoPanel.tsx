@@ -3,9 +3,9 @@ import { DamageType } from "@spaceship-idle/shared/src/game/definitions/Building
 import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import {
-   calcSpaceshipValue,
+   calcSpaceshipXP,
    getCurrentQuantum,
-   getMaxSpaceshipValue,
+   getMaxSpaceshipXP,
    getNextQuantumProgress,
    getQuantumLimit,
    getUsedQuantum,
@@ -59,10 +59,10 @@ export function ShipInfoPanel(): React.ReactNode {
    const xpDelta = resourceDiffOf("XP", hasFlag(options.flag, GameOptionFlag.TheoreticalValue), G.runtime.leftStat);
    const [progress, denom] = getNextQuantumProgress(state);
    const quantumDelta = progress <= 0 ? 0 : xpDelta / denom;
-   const sv = calcSpaceshipValue(state);
+   const sv = calcSpaceshipXP(state);
    G.runtime.rightStat.averageRawDamage(10, rawDamages);
    G.runtime.rightStat.averageActualDamage(10, actualDamages);
-   const maxSV = getMaxSpaceshipValue(state);
+   const maxSV = getMaxSpaceshipXP(state);
    const quantumLimit = getQuantumLimit(state);
    return (
       <div className="sf-frame ship-info">

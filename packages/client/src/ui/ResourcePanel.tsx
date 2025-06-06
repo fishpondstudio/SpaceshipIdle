@@ -18,7 +18,7 @@ export function ResourcePanel(): React.ReactNode {
                hasFlag(options.flag, GameOptionFlag.TheoreticalValue),
                G.runtime.leftStat,
             );
-            if (res === "Power" || res === "XP") return null;
+            if (res === "Power" || res === "XP" || res === "Warp") return null;
             return (
                <div key={res} className="row g10">
                   <div>{name}</div>

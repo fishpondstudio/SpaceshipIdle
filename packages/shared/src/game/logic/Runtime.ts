@@ -11,6 +11,7 @@ import { BattleType } from "./BattleType";
 import { tickElement } from "./ElementLogic";
 import { tickProduction } from "./ProductionLogic";
 import type { Projectile } from "./Projectile";
+import { getMatchmakingQuantum } from "./ResourceLogic";
 import { RuntimeStat } from "./RuntimeStat";
 import { RuntimeTile } from "./RuntimeTile";
 import { flipHorizontal, isEnemy, shipAABB } from "./ShipLogic";
@@ -26,6 +27,7 @@ export const OnBattleStatusChanged = new TypedEvent<IBattleStatusChanged>();
 export class Runtime {
    id = 0;
    productionTick = 0;
+   wave = 0;
    battleTimer = BattleTickInterval;
    productionTimer = ProductionTickInterval;
    gameStateUpdateTimer = ProductionTickInterval;
@@ -41,8 +43,8 @@ export class Runtime {
    scheduled: { action: () => void; second: number }[] = [];
    random = Math.random;
 
-   originalLeft: GameState;
-   originalRight: GameState;
+   // originalLeft: GameState;
+   // originalRight: GameState;
    battleType: BattleType = BattleType.Peace;
    battleStatus = BattleStatus.InProgress;
 
@@ -51,9 +53,6 @@ export class Runtime {
    public readonly leftOptions: GameOption;
 
    constructor(left: SaveGame, right: GameState) {
-      this.originalLeft = structuredClone(left.current);
-      this.originalRight = structuredClone(right);
-
       this.left = left.current;
       // We clone the right because we will mutate it!
       this.right = structuredClone(right);
@@ -76,7 +75,8 @@ export class Runtime {
       return undefined;
    }
 
-   public createEnemy(level: number): void {
+   public createEnemy(): void {
+      const level = Math.floor(getMatchmakingQuantum(this.left) / 10) + this.wave;
       if (this.right.tiles.size > 0) {
          console.error("createEnemy called when there are still enemy tiles left");
          return;
@@ -91,7 +91,6 @@ export class Runtime {
          }
       }
       this.right.tiles = flipHorizontal(this.right.tiles);
-      this.originalRight = structuredClone(this.right);
       this.rightStat = new RuntimeStat();
    }
 
@@ -181,6 +180,14 @@ export class Runtime {
          }
          return true;
       });
+
+      if (this.battleType === BattleType.Peace) {
+         if (this.right.tiles.size === 0) {
+            ++this.wave;
+            this.createEnemy();
+         }
+         return;
+      }
 
       const prevStatus = this.battleStatus;
       const newStatus = this.checkBattleStatus();

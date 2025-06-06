@@ -2,11 +2,11 @@ import { getGradient, Tooltip, useMantineTheme } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
-   calcSpaceshipValue,
+   calcSpaceshipXP,
    getMatchmakingQuantum,
    getQuantumLimit,
    getUsedQuantum,
-   quantumToSpaceshipValue,
+   quantumToXP,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { formatNumber, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -67,15 +67,15 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
             </div>
             <div className="row g5 text-center text-sm">
                <div className="f1" />
-               <Tooltip label={t(L.MaxSpaceshipXP, formatNumber(quantumToSpaceshipValue(quantum - 10)))}>
+               <Tooltip label={t(L.MaxSpaceshipXP, formatNumber(quantumToXP(quantum - 10)))}>
                   <div style={{ color: "var(--mantine-color-green-4)" }}>Q{quantum - 10}</div>
                </Tooltip>
                <div className="f1" />
-               <Tooltip label={t(L.MaxSpaceshipXP, formatNumber(quantumToSpaceshipValue(quantum)))}>
+               <Tooltip label={t(L.MaxSpaceshipXP, formatNumber(quantumToXP(quantum)))}>
                   <div style={{ color: "var(--mantine-color-orange-4)" }}>Q{quantum}</div>
                </Tooltip>
                <div className="f1" />
-               <Tooltip label={t(L.MaxSpaceshipXP, formatNumber(quantumToSpaceshipValue(quantum + 10)))}>
+               <Tooltip label={t(L.MaxSpaceshipXP, formatNumber(quantumToXP(quantum + 10)))}>
                   <div style={{ color: "var(--mantine-color-dark-4)" }}>Q{quantum + 10}</div>
                </Tooltip>
                <div className="f1" />
@@ -93,7 +93,7 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                <div>{t(L.SpaceshipXP)}</div>
                <div className="f1"></div>
                <div>
-                  {formatNumber(calcSpaceshipValue(G.save.current))}/{formatNumber(quantumToSpaceshipValue(quantum))}
+                  {formatNumber(calcSpaceshipXP(G.save.current))}/{formatNumber(quantumToXP(quantum))}
                </div>
             </div>
          </div>

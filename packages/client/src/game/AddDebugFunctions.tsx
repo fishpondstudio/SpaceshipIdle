@@ -1,5 +1,5 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { GameOption } from "@spaceship-idle/shared/src/game/GameOption";
+import { GameOption, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
@@ -16,6 +16,7 @@ import { BattleResultVictoryModal } from "../ui/BattleResultVictoryModal";
 import { ChooseElementModal } from "../ui/ChooseElementModal";
 import { NewPlayerModal } from "../ui/NewPlayerModal";
 import { OfflineTimeModal } from "../ui/OfflineTimeModal";
+import { PracticeBattleResultModal } from "../ui/PracticeBattleResultModal";
 import { PrestigeModal } from "../ui/PrestigeModal";
 import { PrestigeReason } from "../ui/PrestigeReason";
 import { QuantumProgressModal } from "../ui/QuantumProgressModal";
@@ -38,6 +39,7 @@ export function addDebugFunctions(): void {
       forEach(Config.Buildings, (b, def) => {
          G.save.options.buildingColors.set(b, randomColor());
       });
+      GameOptionUpdated.emit();
    };
    // @ts-expect-error
    globalThis.reset = async () => {
@@ -119,6 +121,13 @@ export function addDebugFunctions(): void {
       });
    };
    // @ts-expect-error
+   globalThis.practice = async () => {
+      showModal({
+         children: <PracticeBattleResultModal />,
+         size: "sm",
+      });
+   };
+   // @ts-expect-error
    globalThis.offline = async () => {
       showModal({
          title: t(L.OfflineTime),
@@ -168,7 +177,7 @@ export function addDebugFunctions(): void {
       });
    };
    // @ts-expect-error
-   globalThis.practice = async (left: string, right: string) => {
+   globalThis.battle = async (left: string, right: string) => {
       G.runtime = new Runtime(
          { current: (await RPCClient.viewShip(left)).json, options: new GameOption() },
          (await RPCClient.viewShip(right)).json,

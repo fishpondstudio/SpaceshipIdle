@@ -1,18 +1,13 @@
 import { useForceUpdate } from "@mantine/hooks";
-import { notifications } from "@mantine/notifications";
 import { getShipScoreRank } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import type { IShip } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
 import { classNames } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useEffect, useState } from "react";
-import { loadGameStateFromFile, saveGame, saveGameStateToFile } from "../game/LoadSave";
 import { ShipImageComp } from "../game/ShipImageComp";
 import { RPCClient } from "../rpc/RPCClient";
-import { G } from "../utils/Global";
 import { showModal } from "../utils/ToggleModal";
-import { DevOrAdminOnly } from "./components/DevOnly";
-import { playError } from "./Sound";
 import { ViewShipModal } from "./ViewShipModal";
 
 export function ShipGalleryModal(): React.ReactNode {
@@ -68,53 +63,6 @@ export function ShipGalleryModal(): React.ReactNode {
                </div>
             ))}
          </div>
-         <DevOrAdminOnly>
-            <div className="row text-sm mt10">
-               <button
-                  className="btn red f1"
-                  onClick={async () => {
-                     try {
-                        G.save.current = await loadGameStateFromFile();
-                        await saveGame(G.save);
-                        window.location.reload();
-                     } catch (e) {
-                        playError();
-                        notifications.show({ position: "top-center", color: "red", message: String(e) });
-                     }
-                  }}
-               >
-                  Load
-               </button>
-               <button
-                  className="btn red f1"
-                  onClick={() => {
-                     saveGameStateToFile(G.save.current);
-                  }}
-               >
-                  Export
-               </button>
-               <button
-                  className="btn red f1"
-                  onClick={async () => {
-                     try {
-                        const id = await RPCClient.saveShip(G.save.current, 1);
-                        showModal({
-                           title: t(L.ViewShip),
-                           children: <ViewShipModal id={id} />,
-                           size: "md",
-                           dismiss: true,
-                        });
-                        forceUpdate();
-                     } catch (e) {
-                        playError();
-                        notifications.show({ position: "top-center", color: "red", message: String(e) });
-                     }
-                  }}
-               >
-                  Save
-               </button>
-            </div>
-         </DevOrAdminOnly>
       </>
    );
 }

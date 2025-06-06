@@ -6,9 +6,9 @@ import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
 import type { ITileData } from "../ITileData";
 import {
-   calcSpaceshipValue,
+   calcSpaceshipXP,
    getMatchmakingQuantum,
-   getMaxSpaceshipValue,
+   getMaxSpaceshipXP,
    getQuantumLimit,
    getUsedQuantum,
 } from "./ResourceLogic";
@@ -145,8 +145,8 @@ export function validateForMatchmaking(gs: GameState): boolean {
 }
 
 function _validateShip(gs: GameState): boolean {
-   const sv = calcSpaceshipValue(gs);
-   const maxSV = getMaxSpaceshipValue(gs);
+   const sv = calcSpaceshipXP(gs);
+   const maxSV = getMaxSpaceshipXP(gs);
    if (sv > maxSV) {
       return false;
    }

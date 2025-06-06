@@ -1,5 +1,6 @@
 import { Input, noop, SegmentedControl, Slider, Switch, Tooltip } from "@mantine/core";
 import { useForceUpdate } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 import { DiscordUrl, SteamUrl, TranslationUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
@@ -8,13 +9,18 @@ import { clearFlag, forEach, hasFlag, mapOf, setFlag } from "@spaceship-idle/sha
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useState } from "react";
 import MouseControl from "../assets/images/MouseControl.png";
-import { resetGame, saveGameStateToFile } from "../game/LoadSave";
+import { loadGameStateFromFile, resetGame, saveGame, saveGameStateToFile } from "../game/LoadSave";
 import { getVersion } from "../game/Version";
+import { RPCClient } from "../rpc/RPCClient";
 import { openUrl } from "../rpc/SteamClient";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
+import { showModal } from "../utils/ToggleModal";
 import { ChangeLanguageComp } from "./ChangeLanguageComp";
+import { DevOrAdminOnly } from "./components/DevOnly";
 import { RenderHTML } from "./components/RenderHTMLComp";
+import { playError } from "./Sound";
+import { ViewShipModal } from "./ViewShipModal";
 
 interface TabContent {
    content: () => React.ReactNode;
@@ -157,6 +163,55 @@ function GeneralTab(): React.ReactNode {
                {t(L.ExportSpaceship)}
             </button>
          </div>
+         <DevOrAdminOnly>
+            <>
+               <div className="divider my10 mx-10" />
+               <div className="row text-sm">
+                  <button
+                     className="btn f1"
+                     onClick={async () => {
+                        try {
+                           G.save.current = await loadGameStateFromFile();
+                           await saveGame(G.save);
+                           window.location.reload();
+                        } catch (e) {
+                           playError();
+                           notifications.show({ position: "top-center", color: "red", message: String(e) });
+                        }
+                     }}
+                  >
+                     Load
+                  </button>
+                  <button
+                     className="btn f1"
+                     onClick={() => {
+                        saveGameStateToFile(G.save.current);
+                     }}
+                  >
+                     Export
+                  </button>
+                  <button
+                     className="btn f1"
+                     onClick={async () => {
+                        try {
+                           const id = await RPCClient.saveShip(G.save.current, 1);
+                           showModal({
+                              title: t(L.ViewShip),
+                              children: <ViewShipModal id={id} />,
+                              size: "md",
+                              dismiss: true,
+                           });
+                        } catch (e) {
+                           playError();
+                           notifications.show({ position: "top-center", color: "red", message: String(e) });
+                        }
+                     }}
+                  >
+                     Save
+                  </button>
+               </div>
+            </>
+         </DevOrAdminOnly>
          <div className="divider my10 mx-10" />
          <div className="text-center text-sm text-dimmed">
             <RenderHTML html={t(L.VersionNumber, getVersion())} />

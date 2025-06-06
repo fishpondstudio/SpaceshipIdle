@@ -35,7 +35,7 @@ export function SecondChanceBattleResultModal(): React.ReactNode {
                G.speed = 1;
                G.runtime = new Runtime(G.save, new GameState());
                G.runtime.battleType = BattleType.Peace;
-               G.runtime.createEnemy(1);
+               G.runtime.createEnemy();
                GameStateUpdated.emit();
 
                setTimeout(() => {

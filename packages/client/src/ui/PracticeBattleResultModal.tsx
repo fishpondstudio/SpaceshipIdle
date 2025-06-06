@@ -13,7 +13,7 @@ export function PracticeBattleResultModal(): React.ReactNode {
    return (
       <div style={{ padding: 5 }}>
          {G.runtime.battleStatus === BattleStatus.RightWin ? <DefeatedHeaderComp /> : <VictoryHeaderComp />}
-         <RenderHTML html={t(L.PracticeBattleDescHTML)} />
+         <RenderHTML className="text-sm" html={t(L.PracticeBattleDescHTML)} />
          <div className="h10" />
          <button
             className="btn w100 filled p5 text-lg"
@@ -24,7 +24,7 @@ export function PracticeBattleResultModal(): React.ReactNode {
                G.speed = 1;
                G.runtime = new Runtime(G.save, new GameState());
                G.runtime.battleType = BattleType.Peace;
-               G.runtime.createEnemy(1);
+               G.runtime.createEnemy();
                GameStateUpdated.emit();
 
                setTimeout(() => {
