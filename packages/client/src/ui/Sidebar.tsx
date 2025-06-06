@@ -23,9 +23,7 @@ export function Sidebar(): React.ReactNode {
       setSidebar(e);
       setMounted(true);
    });
-   useTypedEvent(ToggleSidebar, (e) => {
-      setMounted(e);
-   });
+   useTypedEvent(ToggleSidebar, setMounted);
    return (
       <Transition
          mounted={mounted}

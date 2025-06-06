@@ -31,7 +31,7 @@ export function TilePage({ selectedTiles }: { selectedTiles: Set<Tile> }): React
             return <BuildingPage tile={tile} gs={G.runtime.right} readonly={true} />;
          }
          if (isEnemy(tile)) {
-            return <HideSidebar />;
+            return <HideSidebar key={tile} />;
          }
          return <ConstructionPage tile={tile} gs={G.save.current} />;
       }
@@ -41,8 +41,6 @@ export function TilePage({ selectedTiles }: { selectedTiles: Set<Tile> }): React
 }
 
 function HideSidebar(): React.ReactNode {
-   useEffect(() => {
-      hideSidebar();
-   }, []);
+   useEffect(hideSidebar, []);
    return <SidebarComp title={null} />;
 }

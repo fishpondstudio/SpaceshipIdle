@@ -68,6 +68,24 @@
    }
 }
 
+.battle-panel {
+   text-shadow: 1px 1px 0 #000;
+   position: absolute;
+   top: 70px;
+   font-size: var(--mantine-font-size-sm);
+
+   .row > div:nth-child(1) {
+      width: 100px;
+   }
+   .row > div:nth-child(2) {
+      width: 60px;
+   }
+   .row > div:nth-child(3) {
+      text-align: right;
+      width: 50px;
+   }
+}
+
 .timer-panel {
    position: absolute;
    top: 10px;

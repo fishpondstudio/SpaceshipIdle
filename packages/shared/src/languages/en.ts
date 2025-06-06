@@ -594,6 +594,7 @@ export const EN = {
    ChoosePermanentElementShards: "Choose Permanent Element Shards",
    ShowBattleReport: "Show Battle Report",
    HideBattleReport: "Hide Battle Report",
-   RawActualDamageByType: "Raw / Actual Damage By Type",
+   ActualRawDamageByType: "Actual / Raw Damage By Type",
    ActualDamageByModuleType: "Actual Damage By Module Type",
+   ActualRawDamageTooltip: "Actual damage is the raw damage after armor, shield and deflection reduction",
 };

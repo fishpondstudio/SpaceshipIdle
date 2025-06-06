@@ -1,9 +1,10 @@
 import { type DefaultMantineColor, Progress, Tooltip } from "@mantine/core";
-import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { DamageType, DamageTypeLabel } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import type { RuntimeStat } from "@spaceship-idle/shared/src/game/logic/RuntimeStat";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
-import { classNames, formatHMS, formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
+import { classNames, formatHMS, formatNumber, formatPercent, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
 
@@ -37,7 +38,8 @@ export function TimerPanel(): React.ReactNode {
 export function BattlePanel({ side }: { side: Side }): React.ReactNode {
    if (!G.runtime) return null;
    if (G.runtime.battleType === BattleType.Peace) return null;
-   const stat = side === Side.Right ? G.runtime.rightStat : G.runtime.leftStat;
+   // Damage dealt is the opposite of damage taken
+   const stat = side === Side.Right ? G.runtime.leftStat : G.runtime.rightStat;
    const style = side === Side.Left ? { left: 10 } : { right: 10 };
    const color = side === Side.Left ? "green" : "red";
    return (
@@ -91,51 +93,35 @@ function DamageComponent({
    color,
 }: { stat: RuntimeStat; style?: React.CSSProperties; color?: string }): React.ReactNode {
    return (
-      <div
-         className="text-sm"
-         style={{
-            textShadow: "1px 1px 0 #000",
-            position: "absolute",
-            top: 70,
-            ...style,
-         }}
-      >
-         <div className="row">
-            <div style={{ width: 100 }}>{t(L.Kinetic)}</div>
-            <div style={{ width: 60 }} className="text-right">
-               {formatNumber(stat.actualDamage[DamageType.Kinetic])}
-            </div>
-            <div
-               style={{ width: 50 }}
-               className={classNames("text-right", color === "green" ? "text-green" : "text-red")}
-            >
-               +{formatNumber(stat.actualDamages.get(-1)?.[DamageType.Kinetic] ?? 0)}
-            </div>
-         </div>
-         <div className="row">
-            <div style={{ width: 100 }}>{t(L.Explosive)}</div>
-            <div style={{ width: 60 }} className="text-right">
-               {formatNumber(stat.actualDamage[DamageType.Explosive])}
-            </div>
-            <div
-               style={{ width: 50 }}
-               className={classNames("text-right", color === "green" ? "text-green" : "text-red")}
-            >
-               +{formatNumber(stat.actualDamages.get(-1)?.[DamageType.Explosive] ?? 0)}
-            </div>
-         </div>
-         <div className="row">
-            <div style={{ width: 100 }}>{t(L.Energy)}</div>
-            <div style={{ width: 60 }} className="text-right">
-               {formatNumber(stat.actualDamage[DamageType.Energy])}
-            </div>
-            <div
-               style={{ width: 50 }}
-               className={classNames("text-right", color === "green" ? "text-green" : "text-red")}
-            >
-               +{formatNumber(stat.actualDamages.get(-1)?.[DamageType.Energy] ?? 0)}
-            </div>
-         </div>
+      <div className="battle-panel" style={style}>
+         {mapOf(DamageType, (key, value) => {
+            return (
+               <div key={key} className="row">
+                  <div style={{ width: 100 }}>{DamageTypeLabel[value]()}</div>
+                  <div style={{ width: 60 }} className="text-right">
+                     {formatNumber(stat.actualDamage[value])}
+                  </div>
+                  <div
+                     style={{ width: 50 }}
+                     className={classNames("text-right", color === "green" ? "text-green" : "text-red")}
+                  >
+                     +{formatNumber(stat.actualDamages.get(-1)?.[value] ?? 0)}
+                  </div>
+               </div>
+            );
+         })}
+         <div className="h10" />
+         {Array.from(stat.actualDamageByBuilding.entries())
+            .sort((a, b) => b[1] - a[1])
+            .map(([building, damage]) => {
+               return (
+                  <div key={building} className="row">
+                     <div>{Config.Buildings[building].name()}</div>
+                     <div className="text-right">{formatNumber(damage)}</div>
+                     <div />
+                  </div>
+               );
+            })}
       </div>
    );
 }
