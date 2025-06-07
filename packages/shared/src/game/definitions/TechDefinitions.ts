@@ -331,7 +331,10 @@ export class TechDefinitions {
    };
    G6: ITechDefinition = {
       ring: 6,
-      requires: [],
+      name: () => t(L.TechDefenseCluster),
+      requires: ["F5"],
+      unlockBuildings: ["AC130C"],
+      multiplier: { AC130S: 1, AC130E: 1 },
    };
    G7: ITechDefinition = {
       ring: 6,

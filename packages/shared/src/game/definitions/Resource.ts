@@ -77,6 +77,9 @@ export const Resources = {
    AC130S: {
       name: () => t(L.AC130SAmmo),
    },
+   AC130C: {
+      name: () => t(L.AC130CAmmo),
+   },
    MS2C: {
       name: () => t(L.MS2CAmmo),
    },

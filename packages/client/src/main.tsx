@@ -55,7 +55,12 @@ const theme = createTheme({
    },
 });
 
-createRoot(document.getElementById("root")!).render(
+if (import.meta.env.DEV) {
+   document.body.classList.add("dev");
+}
+
+const root = document.getElementById("root")!;
+createRoot(root).render(
    <MantineProvider defaultColorScheme="dark" theme={theme}>
       <Notifications />
       <Sidebar />

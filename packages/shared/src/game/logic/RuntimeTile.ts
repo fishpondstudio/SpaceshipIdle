@@ -32,6 +32,7 @@ import { damageToHp, getNormalizedValue } from "./BuildingLogic";
 import type { IMultiplier } from "./IMultiplier";
 import type { Runtime } from "./Runtime";
 import { isEnemy } from "./ShipLogic";
+import { Side } from "./Side";
 
 export interface IRuntimeEffect {
    statusEffect: StatusEffect;
@@ -148,6 +149,10 @@ export class RuntimeTile {
 
    public get isDead(): boolean {
       return this._damageTaken >= this.props.hp;
+   }
+
+   public get side(): Side {
+      return isEnemy(this.tile) ? Side.Right : Side.Left;
    }
 
    public get damageTaken(): number {

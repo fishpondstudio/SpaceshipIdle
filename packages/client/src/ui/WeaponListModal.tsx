@@ -42,7 +42,7 @@ export function WeaponListModal(): React.ReactNode {
                   const normVal = getNormalizedValue({ type: building, level: 1 });
                   const dmgPerFire = normVal * getCooldownMultiplier({ type: building });
                   return (
-                     <tr>
+                     <tr key={building}>
                         <td className="condensed">
                            <Tooltip
                               multiline

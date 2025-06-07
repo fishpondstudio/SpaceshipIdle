@@ -2,7 +2,9 @@ import { clamp, formatNumber, formatPercent, hasFlag, type ValueOf } from "../..
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import type { IRuntimeEffect, RuntimeTile } from "../logic/RuntimeTile";
+import { AbilityRange, abilityTarget } from "./Ability";
 import { DamageType } from "./BuildingProps";
+import { CodeNumber } from "./CodeNumber";
 
 export const StatusEffectFlag = {
    None: 0,
@@ -258,9 +260,9 @@ export const StatusEffects = {
          rs.props.damagePerProjectile *= 1 + se.value;
       },
    },
-   DispelBuffEffect: {
-      name: () => t(L.DispelBuffEffect),
-      desc: (value) => t(L.DispelBuffEffectDesc),
+   DispelBuff: {
+      name: () => t(L.DispelBuff),
+      desc: (value) => t(L.DispelBuffDesc),
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Electrical,
       onTick: (se, rs) => {
@@ -272,6 +274,22 @@ export const StatusEffects = {
                rs.statusEffects.delete(tile);
             }
          }
+      },
+   },
+   IncreaseMaxHpAutoCannonCluster: {
+      name: () => t(L.IncreaseMaxHpAutoCannonCluster),
+      desc: (value) => t(L.IncreaseMaxHpAutoCannonClusterDesc, formatPercent(value)),
+      flag: StatusEffectFlag.Positive,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         let count = 0;
+         abilityTarget(rs.side, AbilityRange.Adjacent, rs.tile, rs.runtime.tiles).forEach((tile) => {
+            const building = rs.runtime.tiles.get(tile)?.data.type;
+            if (building && Config.Buildings[building].code === CodeNumber.AC) {
+               ++count;
+            }
+         });
+         rs.props.hp *= 1 + 0.1 * count;
       },
    },
 } as const satisfies Record<string, IStatusEffect>;

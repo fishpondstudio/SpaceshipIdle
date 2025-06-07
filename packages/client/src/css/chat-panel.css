@@ -65,6 +65,8 @@
    gap: 10px;
    padding: 5px 0;
    .message {
+      user-select: text;
+      -webkit-user-select: text;
       .name {
          display: flex;
          align-items: center;

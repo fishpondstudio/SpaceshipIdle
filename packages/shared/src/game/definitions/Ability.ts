@@ -1,6 +1,5 @@
 import { createTile, tileToPoint, type Tile, type ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
-import type { Tiles } from "../GameState";
 import type { Runtime } from "../logic/Runtime";
 import { isEnemy } from "../logic/ShipLogic";
 import { Side } from "../logic/Side";
@@ -69,7 +68,13 @@ export function boostTarget(tile: Tile, range: AbilityRange, rt: Runtime, result
    return result;
 }
 
-export function abilityTarget(side: Side, range: AbilityRange, tile: Tile, tiles: Tiles, result?: Tile[]): Tile[] {
+export function abilityTarget<T>(
+   side: Side,
+   range: AbilityRange,
+   tile: Tile,
+   tiles: Map<Tile, T>,
+   result?: Tile[],
+): Tile[] {
    result ??= [];
    const forward = side === Side.Left ? 1 : -1;
    switch (range) {
