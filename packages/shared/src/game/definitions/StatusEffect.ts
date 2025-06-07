@@ -1,7 +1,7 @@
 import { clamp, formatNumber, formatPercent, hasFlag, type ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import type { IRuntimeEffect, RuntimeTile } from "../logic/RuntimeTile";
+import { TileFlag, type IRuntimeEffect, type RuntimeTile } from "../logic/RuntimeTile";
 import { AbilityRange, abilityTarget } from "./Ability";
 import { DamageType } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
@@ -290,6 +290,15 @@ export const StatusEffects = {
             }
          });
          rs.props.hp *= 1 + 0.1 * count;
+      },
+   },
+   PowerBlackout: {
+      name: () => t(L.PowerBlackout),
+      desc: (value) => t(L.PowerBlackoutDesc, formatPercent(value)),
+      flag: StatusEffectFlag.Negative,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         rs.props.flags = TileFlag.NoPower;
       },
    },
 } as const satisfies Record<string, IStatusEffect>;

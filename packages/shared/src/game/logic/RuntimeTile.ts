@@ -1,4 +1,4 @@
-import { Rounding, type Tile, forEach, mapSafeAdd, round, safeAdd } from "../../utils/Helper";
+import { Rounding, type Tile, type ValueOf, forEach, mapSafeAdd, round, safeAdd } from "../../utils/Helper";
 import { Config } from "../Config";
 import { GameStateUpdated } from "../GameState";
 import type { ITileData } from "../ITileData";
@@ -34,6 +34,13 @@ import type { Runtime } from "./Runtime";
 import { isEnemy } from "./ShipLogic";
 import { Side } from "./Side";
 
+export const TileFlag = {
+   None: 0,
+   NoPower: 1 << 0,
+} as const;
+
+export type TileFlag = ValueOf<typeof TileFlag>;
+
 export interface IRuntimeEffect {
    statusEffect: StatusEffect;
    sourceType: Building;
@@ -42,7 +49,7 @@ export interface IRuntimeEffect {
 }
 
 export type RuntimeProps = DefenseProp &
-   Omit<WeaponProp, "damagePct"> & { hp: number; damagePerProjectile: number; lifeTime: number };
+   Omit<WeaponProp, "damagePct"> & { hp: number; damagePerProjectile: number; lifeTime: number; flags: TileFlag };
 
 export interface ICriticalDamage {
    chance: number;
@@ -77,6 +84,7 @@ export class RuntimeTile {
       damageType: DamageType.Kinetic,
       weaponFlag: WeaponFlag.None,
       ability: undefined,
+      flags: TileFlag.None,
    };
    public originalProps: RuntimeProps = {
       hp: 0,
@@ -92,6 +100,7 @@ export class RuntimeTile {
       damageType: DamageType.Kinetic,
       weaponFlag: WeaponFlag.None,
       ability: undefined,
+      flags: TileFlag.None,
    };
    //#endregion
 
@@ -245,6 +254,7 @@ export class RuntimeTile {
          this.props.damagePerProjectile = (def.damagePct * dmg) / def.projectiles;
       }
       Object.assign(this.originalProps, this.props);
+      this.props.flags = TileFlag.None;
    }
 }
 

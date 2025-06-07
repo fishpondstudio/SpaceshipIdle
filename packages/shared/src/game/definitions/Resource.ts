@@ -68,6 +68,9 @@ export const Resources = {
    MS1F: {
       name: () => t(L.MS1FAmmo),
    },
+   MS3: {
+      name: () => t(L.MS3Ammo),
+   },
    LA1: {
       name: () => t(L.LA1Ammo),
    },

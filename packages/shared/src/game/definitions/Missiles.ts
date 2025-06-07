@@ -161,3 +161,26 @@ export const MS2S: IWeaponDefinition = {
    },
    element: "Co",
 };
+
+export const MS3: IWeaponDefinition = {
+   ...BaseDefenseProps,
+   ...BaseWeaponProps,
+   name: () => t(L.MS3),
+   code: CodeNumber.MS,
+   buildingFlag: BuildingFlag.CanTarget,
+   input: { Power: 2, MS2R: 1, MS2C: 1 },
+   output: { MS3: 1 },
+   damagePct: 0.5,
+   damageType: DamageType.Explosive,
+   fireCooldown: 4,
+   ability: {
+      timing: AbilityTiming.OnHit,
+      range: AbilityRange.Single,
+      effect: "PowerBlackout",
+      value: (building, level) => {
+         return 0;
+      },
+      duration: (building, level) => 2,
+   },
+   element: "Sr",
+};

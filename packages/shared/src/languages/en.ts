@@ -612,4 +612,9 @@ export const EN = {
    TechDefenseCluster: "Defense Cluster",
    IncreaseMaxHpAutoCannonCluster: "Autocannon Defense Cluster",
    IncreaseMaxHpAutoCannonClusterDesc: "Increase %% max HP for each adjacent autocannon",
+   MS3: "MS3 Jay",
+   MS3Ammo: "MS3 Ammo",
+   PowerBlackout: "Power Blackout",
+   PowerBlackoutDesc: "Cause the target to lose power",
+   TechPowerBlackout: "Power Blackout",
 };

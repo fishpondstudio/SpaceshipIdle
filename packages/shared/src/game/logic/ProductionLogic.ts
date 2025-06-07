@@ -1,4 +1,4 @@
-import { type Tile, type ValueOf, forEach, mapSafeAdd, safeAdd } from "../../utils/Helper";
+import { type Tile, type ValueOf, forEach, hasFlag, mapSafeAdd, safeAdd } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
@@ -12,7 +12,7 @@ import { BattleType } from "./BattleType";
 import { getNormalizedValue, isBooster } from "./BuildingLogic";
 import type { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
-import type { RuntimeTile } from "./RuntimeTile";
+import { type RuntimeTile, TileFlag } from "./RuntimeTile";
 import { getTechName } from "./TechLogic";
 
 export const TickProductionOption = {
@@ -83,10 +83,14 @@ export function tickProduction(
          if (rt.productionTick === 0) {
             mapSafeAdd(gs.resources, res, amount * BattleStartAmmoCycles);
          }
+         if (res === "Power" && hasFlag(rs.props.flags, TileFlag.NoPower)) {
+            rs.insufficient.add(res);
+            return;
+         }
          if ((gs.resources.get(res) ?? 0) < amount) {
             rs.insufficient.add(res);
-            // This is here so that Power stat is more useful. It will not be set again as if we get here,
-            // we will return early!
+            // This is here so that Power stat is more useful. The stat will not be double counted because
+            // if this is true, it means we are lacking Power, and the stat won't be set later.
             if (res === "Power") {
                mapSafeAdd(stat.consumed, res, amount);
             }
