@@ -29,7 +29,9 @@ Object.keys(en).forEach((key) => {
    }
 });
 
-en = Object.fromEntries(Object.entries(en).sort(([a], [b]) => a.localeCompare(b)));
+if (process.argv.includes("--sort")) {
+   en = Object.fromEntries(Object.entries(en).sort(([a], [b]) => a.localeCompare(b)));
+}
 
 writeFileSync(EN_FILE_PATH, `export const EN = ${JSON.stringify(en)};`);
 
