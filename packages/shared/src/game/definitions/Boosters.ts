@@ -62,8 +62,8 @@ export const DMG1Booster: IBoosterDefinition = {
 
 export const EVA1Booster: IBoosterDefinition = {
    ...BoosterDefenseProps,
-   name: () => t(L.EVA1Booster),
-   desc: () => t(L.EVA1BoosterDesc),
+   name: () => t(L.EVS1Booster),
+   desc: () => t(L.EVS1BoosterDesc),
    code: CodeNumber.BT,
    buildingFlag: BuildingFlag.CanRotate | BuildingFlag.Booster,
    input: {},

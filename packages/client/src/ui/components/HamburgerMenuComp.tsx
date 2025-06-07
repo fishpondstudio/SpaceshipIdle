@@ -10,6 +10,7 @@ import { GameSettingsModal } from "../GameSettingsModal";
 import { PatchNotesModal } from "../PatchNotesModal";
 import { PlayerProfileModal } from "../PlayerProfileModal";
 import { ShipGalleryModal } from "../ShipGalleryModal";
+import { WeaponListModal } from "../WeaponListModal";
 
 export function _HamburgerMenuComp({ flag }: { flag: GameOptionFlag }): React.ReactNode {
    refreshOnTypedEvent(OnLanguageChanged);
@@ -84,6 +85,19 @@ export function _HamburgerMenuComp({ flag }: { flag: GameOptionFlag }): React.Re
                }}
             >
                {t(L.ShipRanking)}
+            </Menu.Item>
+            <Menu.Item
+               leftSection={<div className="mi">menu_book</div>}
+               onClick={() => {
+                  showModal({
+                     children: <WeaponListModal />,
+                     title: t(L.WeaponList),
+                     size: "xl",
+                     dismiss: true,
+                  });
+               }}
+            >
+               {t(L.WeaponList)}
             </Menu.Item>
             <Menu.Item
                leftSection={<div className="mi">settings</div>}

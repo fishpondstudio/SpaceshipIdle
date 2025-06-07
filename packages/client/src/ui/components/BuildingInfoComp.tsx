@@ -3,7 +3,7 @@ import { DamageTypeLabel, WeaponKey } from "@spaceship-idle/shared/src/game/defi
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { getCooldownMultiplier } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { damageToHp, getNormalizedValue } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
+import { formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { AbilityComp } from "./AbilityComp";
 
@@ -35,8 +35,8 @@ export function BuildingInfoComp({ building }: { building: Building }): React.Re
          </div>
          <div className="row g5">
             <div className="f1">{t(L.Evasion)}</div>
-            <div>{formatPercent(def.evasion[0])}</div>
-            <div className="text-green">+{formatPercent(def.evasion[1])}</div>
+            <div>{formatNumber(def.evasion[0])}</div>
+            <div className="text-green">+{formatNumber(def.evasion[1])}</div>
          </div>
          {WeaponKey in def ? (
             <>

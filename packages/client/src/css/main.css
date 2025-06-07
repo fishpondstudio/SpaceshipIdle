@@ -145,3 +145,33 @@ body {
       font-family: "SpaceshipIdle", sans-serif;
    }
 }
+
+.data-table {
+   width: 100%;
+   border-collapse: collapse;
+   border-spacing: 0;
+   border: none;
+   width: 100%;
+   font-size: var(--mantine-font-size-sm);
+   line-height: 1.25;
+
+   th {
+      font-weight: bold;
+      text-transform: uppercase;
+      color: var(--mantine-color-space-text);
+   }
+
+   td {
+      border-top: 1px solid var(--mantine-color-dark-4);
+   }
+
+   td,
+   th {
+      padding: 2px 5px;
+
+      &.condensed {
+         padding: 0;
+         width: 0;
+      }
+   }
+}

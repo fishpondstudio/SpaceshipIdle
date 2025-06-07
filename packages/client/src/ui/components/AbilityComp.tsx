@@ -66,7 +66,7 @@ export function AbilityComp({
          </div>
          <div className="text-space" style={{ textAlign: "right" }}>
             {StatusEffects[ability.effect].desc(ability.value(building, level))}
-            {duration > 0 ? ` (${t(L.AbilityDuration)} ${t(L.AbilityDurationSeconds, duration)})` : ""}
+            {t(L.AbilityDuration)} ${t(L.AbilityDurationSeconds, duration)}
          </div>
       </>
    );
