@@ -3,6 +3,7 @@ import { DMG1Booster, EVA1Booster, HP1Booster, PM1Booster } from "./Boosters";
 import type { IBuildingDefinition } from "./BuildingProps";
 import { LA1, LA1E } from "./LaserArrays";
 import { MS1, MS1F, MS1H, MS2, MS2C, MS2R, MS2S, MS3 } from "./Missiles";
+import { PC1 } from "./PlasmaCannons";
 import {
    AntimatterFab,
    AntimatterReactor,
@@ -19,7 +20,7 @@ import {
    UReactor,
    XPCollector,
 } from "./ProductionBuildings";
-import { RC100, RC100G, RC100P, RC50, RC50E } from "./RailCannons";
+import { RC100, RC100G, RC100P, RC50, RC50E, RC50P } from "./RailCannons";
 
 export const Buildings = {
    AC30,
@@ -34,6 +35,13 @@ export const Buildings = {
    AC130E,
    AC130S,
    AC130C,
+   RC50,
+   RC50E,
+   RC50P,
+   RC100,
+   RC100G,
+   RC100P,
+   PC1,
    MS1,
    MS1H,
    MS1F,
@@ -42,11 +50,6 @@ export const Buildings = {
    MS2C,
    MS2S,
    MS3,
-   RC50,
-   RC50E,
-   RC100,
-   RC100G,
-   RC100P,
    LA1,
    LA1E,
    D2Fab,

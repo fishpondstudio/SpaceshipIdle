@@ -12,7 +12,7 @@ import { BattleType } from "./BattleType";
 import { getNormalizedValue, isBooster } from "./BuildingLogic";
 import type { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
-import { type RuntimeTile, TileFlag } from "./RuntimeTile";
+import { RuntimeFlag, type RuntimeTile } from "./RuntimeTile";
 import { getTechName } from "./TechLogic";
 
 export const TickProductionOption = {
@@ -83,7 +83,7 @@ export function tickProduction(
          if (rt.productionTick === 0) {
             mapSafeAdd(gs.resources, res, amount * BattleStartAmmoCycles);
          }
-         if (res === "Power" && hasFlag(rs.props.flags, TileFlag.NoPower)) {
+         if (res === "Power" && hasFlag(rs.props.runtimeFlag, RuntimeFlag.NoPower)) {
             rs.insufficient.add(res);
             return;
          }
@@ -96,7 +96,10 @@ export function tickProduction(
             }
          }
       });
+
       if (rs.insufficient.size > 0) return;
+      if (hasFlag(rs.props.runtimeFlag, RuntimeFlag.NoProduction)) return;
+
       forEach(def.input, (res, _amount) => {
          const amount = _amount * data.level * data.capacity;
          mapSafeAdd(gs.resources, res, -amount);
@@ -115,12 +118,14 @@ export function tickProduction(
       forEach(def.output, (res, _amount) => {
          const amount = _amount * data.level * data.capacity * rs.productionMultiplier.value;
          mapSafeAdd(stat.theoreticalProduced, res, amount);
-         if (rs.insufficient.size <= 0) {
-            mapSafeAdd(gs.resources, res, amount);
-            mapSafeAdd(stat.produced, res, amount);
-            if (rt.battleType !== BattleType.Simulated) {
-               RequestFloater.emit({ tile, amount });
-            }
+
+         if (hasFlag(rs.props.runtimeFlag, RuntimeFlag.NoProduction)) return;
+         if (rs.insufficient.size > 0) return;
+
+         mapSafeAdd(gs.resources, res, amount);
+         mapSafeAdd(stat.produced, res, amount);
+         if (rt.battleType !== BattleType.Simulated) {
+            RequestFloater.emit({ tile, amount });
          }
       });
 
@@ -132,7 +137,7 @@ export function tickProduction(
       const xp = getNonWeaponBuildingXP(rs);
       if (xp > 0) {
          mapSafeAdd(stat.theoreticalProduced, "XP", xp);
-         if (rs.insufficient.size <= 0) {
+         if (rs.insufficient.size <= 0 && !hasFlag(rs.props.runtimeFlag, RuntimeFlag.NoProduction)) {
             mapSafeAdd(gs.resources, "XP", xp);
             mapSafeAdd(stat.produced, "XP", xp);
          }

@@ -77,6 +77,28 @@ export const RC50E: IWeaponDefinition = {
    element: "Zn",
 };
 
+export const RC50P: IWeaponDefinition = {
+   ...BaseDefenseProps,
+   ...BaseWeaponProps,
+   name: () => t(L.RC50P),
+   code: CodeNumber.RC,
+   buildingFlag: BuildingFlag.CanTarget,
+   input: { Power: 2, RC50E: 2 },
+   output: { RC50P: 1 },
+   damagePct: 0.9,
+   fireCooldown: 1,
+   ability: {
+      timing: AbilityTiming.OnFire,
+      range: AbilityRange.Single,
+      effect: "IgnoreEvasion",
+      value: (building, level) => {
+         return 0;
+      },
+      duration: (building, level) => 1,
+   },
+   element: "Zr",
+};
+
 export const RC100G: IWeaponDefinition = {
    ...BaseDefenseProps,
    ...BaseWeaponProps,

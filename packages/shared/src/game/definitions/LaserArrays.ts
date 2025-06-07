@@ -9,7 +9,7 @@ import {
    BaseWeaponProps,
    BuildingFlag,
    DamageType,
-   WeaponFlag,
+   ProjectileFlag,
 } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 import { LaserArrayDamagePct } from "./Constant";
@@ -23,7 +23,7 @@ export const LA1: IWeaponDefinition = {
    input: { Power: 4, U: 2, MS1H: 2 },
    output: { LA1: 1 },
    damagePct: LaserArrayDamagePct,
-   weaponFlag: WeaponFlag.LaserDamage,
+   projectileFlag: ProjectileFlag.LaserDamage,
    damageType: DamageType.Energy,
    element: "V",
 };
@@ -36,7 +36,7 @@ export const LA1E: IWeaponDefinition = {
    input: { Power: 4, LA1: 2 },
    output: { LA1E: 1 },
    damagePct: 0.1,
-   weaponFlag: WeaponFlag.LaserDamage,
+   projectileFlag: ProjectileFlag.LaserDamage,
    damageType: DamageType.Energy,
    element: "As",
    ability: {

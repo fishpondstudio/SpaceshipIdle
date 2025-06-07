@@ -341,11 +341,17 @@ export class TechDefinitions {
    };
    G7: ITechDefinition = {
       ring: 6,
-      requires: [],
+      name: () => t(L.TechPlasmaCannon),
+      requires: ["F6"],
+      unlockBuildings: ["PC1"],
+      multiplier: { AC130E: 1, RC50E: 1 },
    };
    G8: ITechDefinition = {
       ring: 6,
-      requires: [],
+      requires: ["F7"],
+      name: () => t(L.TechPrecisionStrike),
+      unlockBuildings: ["RC50P"],
+      multiplier: { RC50E: 1 },
    };
    G9: ITechDefinition = {
       ring: 6,

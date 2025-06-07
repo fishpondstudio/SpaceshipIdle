@@ -6,7 +6,7 @@ import { GameOption } from "../GameOption";
 import type { GameState } from "../GameState";
 import { GridSize, posToTile } from "../Grid";
 import { abilityTarget, AbilityTiming } from "../definitions/Ability";
-import { BuildingFlag, WeaponFlag, WeaponKey } from "../definitions/BuildingProps";
+import { BuildingFlag, ProjectileFlag, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
 import { BattleStatus } from "./BattleStatus";
@@ -14,6 +14,7 @@ import { BattleType } from "./BattleType";
 import { Projectile } from "./Projectile";
 import { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
+import { RuntimeFlag } from "./RuntimeTile";
 import { calculateAABB } from "./ShipLogic";
 import { Side } from "./Side";
 
@@ -44,13 +45,19 @@ export function tickProjectiles(
       }
       const target = targets.tiles.get(tile);
       if (target && !projectile.hit.has(tile)) {
-         if (hasFlag(projectile.weaponFlag, WeaponFlag.LaserDamage)) {
+         if (hasFlag(projectile.flag, ProjectileFlag.LaserDamage)) {
             projectile.hit.add(tile);
          } else {
             projectiles.delete(id);
          }
+
          const damageTarget = runtime.get(tile);
          if (!damageTarget) return;
+
+         if (hasFlag(damageTarget.props.runtimeFlag, RuntimeFlag.BlockLaser)) {
+            projectiles.delete(id);
+         }
+
          const factor = projectile.hit.size > 0 ? 1 / projectile.hit.size : 1;
          const ability = projectile.ability;
          if (ability?.timing === AbilityTiming.OnHit) {
@@ -69,7 +76,12 @@ export function tickProjectiles(
          if (runtime.battleType !== BattleType.Simulated) {
             OnProjectileHit.emit({ position: pos, tile: tile, critical: projectile.critical });
          }
-         const damage = damageTarget.takeDamage(projectile.damage * factor, projectile.damageType, projectile.building);
+         const damage = damageTarget.takeDamage(
+            projectile.damage * factor,
+            projectile.damageType,
+            projectile.flag,
+            projectile.building,
+         );
          if (damage > 0) {
             const damageSource = runtime.get(projectile.fromTile);
             damageTarget.onTakingDamage(damage, projectile.damageType, damageSource);
@@ -104,6 +116,9 @@ export function tickTiles(
          return null;
       }
       if (rs.insufficient.has("Power")) {
+         return;
+      }
+      if (hasFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire)) {
          return;
       }
       rs.cooldown += BattleTickInterval;
@@ -151,7 +166,7 @@ export function tickTiles(
             mapSafeAdd(stat.produced, "XP", xp);
          });
          rs.target = target;
-         const ability = def.ability;
+         const ability = rs.props.ability;
          if (ability?.timing === AbilityTiming.OnFire) {
             abilityTarget(side, ability.range, tile, from.tiles).forEach((target) => {
                const statusEffectTarget = rt.get(target);
@@ -179,7 +194,7 @@ export function tickTiles(
                      data.level,
                      rs.props.damageType,
                      rs.props.projectileSpeed,
-                     rs.props.weaponFlag,
+                     rs.props.projectileFlag,
                      critical,
                      rs.props.ability,
                      (rt.random() - 0.5) * GridSize * 0,

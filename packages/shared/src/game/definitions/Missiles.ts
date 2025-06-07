@@ -161,7 +161,6 @@ export const MS2S: IWeaponDefinition = {
    },
    element: "Co",
 };
-
 export const MS3: IWeaponDefinition = {
    ...BaseDefenseProps,
    ...BaseWeaponProps,
@@ -170,13 +169,13 @@ export const MS3: IWeaponDefinition = {
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 2, MS2R: 1, MS2C: 1 },
    output: { MS3: 1 },
-   damagePct: 0.5,
+   damagePct: 0.9,
    damageType: DamageType.Explosive,
    fireCooldown: 4,
    ability: {
       timing: AbilityTiming.OnHit,
-      range: AbilityRange.Single,
-      effect: "PowerBlackout",
+      range: AbilityRange.RearTrio,
+      effect: "ProductionDisruption",
       value: (building, level) => {
          return 0;
       },

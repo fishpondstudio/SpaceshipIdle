@@ -1,9 +1,9 @@
-import { clamp, formatNumber, formatPercent, hasFlag, type ValueOf } from "../../utils/Helper";
+import { clamp, formatNumber, formatPercent, hasFlag, setFlag, type ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import { TileFlag, type IRuntimeEffect, type RuntimeTile } from "../logic/RuntimeTile";
+import { RuntimeFlag, type IRuntimeEffect, type RuntimeTile } from "../logic/RuntimeTile";
 import { AbilityRange, abilityTarget } from "./Ability";
-import { DamageType } from "./BuildingProps";
+import { DamageType, ProjectileFlag } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 
 export const StatusEffectFlag = {
@@ -53,7 +53,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Chemical,
       onTick: (se, rs) => {
-         rs.takeDamage(se.value, DamageType.Explosive, se.sourceType);
+         rs.takeDamage(se.value, DamageType.Explosive, ProjectileFlag.None, se.sourceType);
       },
    },
    TickEnergyDamage: {
@@ -62,7 +62,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Chemical,
       onTick: (se, rs) => {
-         rs.takeDamage(se.value, DamageType.Energy, se.sourceType);
+         rs.takeDamage(se.value, DamageType.Energy, ProjectileFlag.None, se.sourceType);
       },
    },
    TickKineticDamage: {
@@ -71,7 +71,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Mechanical,
       onTick: (se, rs) => {
-         rs.takeDamage(se.value, DamageType.Kinetic, se.sourceType);
+         rs.takeDamage(se.value, DamageType.Kinetic, ProjectileFlag.None, se.sourceType);
       },
    },
    RecoverHp: {
@@ -208,7 +208,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Positive,
       type: StatusEffectType.Electrical,
       onTakingDamage: (value, damage, damageType, damageSource, damageTarget) => {
-         damageSource?.takeDamage(damage * value, damageType, damageTarget.data.type);
+         damageSource?.takeDamage(damage * value, damageType, ProjectileFlag.None, damageTarget.data.type);
       },
    },
    RecoverHpOnTakingDamage2x: {
@@ -294,11 +294,47 @@ export const StatusEffects = {
    },
    PowerBlackout: {
       name: () => t(L.PowerBlackout),
-      desc: (value) => t(L.PowerBlackoutDesc, formatPercent(value)),
+      desc: (value) => t(L.PowerBlackoutDesc),
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Electrical,
       onTick: (se, rs) => {
-         rs.props.flags = TileFlag.NoPower;
+         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoPower);
+      },
+   },
+   ProductionDisruption: {
+      name: () => t(L.ProductionDisruption),
+      desc: (value) => t(L.ProductionDisruptionDesc),
+      flag: StatusEffectFlag.Negative,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoProduction);
+      },
+   },
+   Disarm: {
+      name: () => t(L.Disarm),
+      desc: (value) => t(L.DisarmDesc),
+      flag: StatusEffectFlag.Negative,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire);
+      },
+   },
+   LaserBlocker: {
+      name: () => t(L.LaserBlocker),
+      desc: (value) => t(L.LaserBlockerDesc),
+      flag: StatusEffectFlag.Positive,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.BlockLaser);
+      },
+   },
+   IgnoreEvasion: {
+      name: () => t(L.IgnoreEvasion),
+      desc: (value) => t(L.IgnoreEvasionDesc),
+      flag: StatusEffectFlag.Positive,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         rs.props.runtimeFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
       },
    },
 } as const satisfies Record<string, IStatusEffect>;
