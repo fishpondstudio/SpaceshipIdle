@@ -2,7 +2,7 @@ import { AC130, AC130C, AC130E, AC130S, AC30, AC30F, AC30S, AC30x3, AC76, AC76D,
 import { DMG1Booster, EVA1Booster, HP1Booster, PM1Booster } from "./Boosters";
 import type { IBuildingDefinition } from "./BuildingProps";
 import { LA1, LA1E } from "./LaserArrays";
-import { MS1, MS1F, MS1H, MS2, MS2C, MS2R, MS2S, MS3 } from "./Missiles";
+import { MS1, MS1F, MS1H, MS2, MS2C, MS2D, MS2R, MS2S, MS3 } from "./Missiles";
 import { PC1 } from "./PlasmaCannons";
 import {
    AntimatterFab,
@@ -49,6 +49,7 @@ export const Buildings = {
    MS2R,
    MS2C,
    MS2S,
+   MS2D,
    MS3,
    LA1,
    LA1E,

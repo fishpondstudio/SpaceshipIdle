@@ -125,6 +125,9 @@ export const Resources = {
    Warp: {
       name: () => t(L.TimeWarp),
    },
+   MS2D: {
+      name: () => t(L.MS2DAmmo),
+   },
 } as const satisfies Record<string, IResourceDefinition>;
 
 export type Resource = keyof typeof Resources;

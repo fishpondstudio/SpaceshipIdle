@@ -4,6 +4,7 @@ import { Buildings, type Building } from "./definitions/Buildings";
 import { MaxBattleTick } from "./definitions/Constant";
 import type { Resource } from "./definitions/Resource";
 import { Resources } from "./definitions/Resource";
+import { StatusEffects, type StatusEffect } from "./definitions/StatusEffect";
 import { TechDefinitions } from "./definitions/TechDefinitions";
 import { getBuildingValue } from "./logic/BuildingLogic";
 import { getTechForBuilding } from "./logic/TechLogic";
@@ -140,11 +141,19 @@ function initConfig(): void {
       }
    });
 
+   const statusEffects = new Set<StatusEffect>(keysOf(StatusEffects));
+   forEach(Config.Buildings, (building, def) => {
+      if ("ability" in def && def.ability) {
+         statusEffects.delete(def.ability.effect);
+      }
+   });
+
    if (typeof window !== "undefined") {
       console.log("Price", Config.Price);
       console.log("Normalized Price", Config.NormalizedPrice);
       console.log("Resource Tier", Config.ResourceTier);
       console.log("Building Tier", Config.BuildingTier);
+      console.log("Unused Status Effects", statusEffects);
    }
 }
 

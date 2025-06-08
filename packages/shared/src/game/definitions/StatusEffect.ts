@@ -276,6 +276,22 @@ export const StatusEffects = {
          }
       },
    },
+   DispelDebuff: {
+      name: () => t(L.DispelDebuff),
+      desc: (value) => t(L.DispelDebuffDesc),
+      flag: StatusEffectFlag.Positive,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         for (const [tile, re] of rs.statusEffects) {
+            if (
+               re.statusEffect !== se.statusEffect &&
+               hasFlag(StatusEffects[re.statusEffect].flag, StatusEffectFlag.Negative)
+            ) {
+               rs.statusEffects.delete(tile);
+            }
+         }
+      },
+   },
    IncreaseMaxHpAutoCannonCluster: {
       name: () => t(L.IncreaseMaxHpAutoCannonCluster),
       desc: (value) => t(L.IncreaseMaxHpAutoCannonClusterDesc, formatPercent(value)),

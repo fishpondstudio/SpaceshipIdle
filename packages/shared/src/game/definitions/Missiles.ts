@@ -183,3 +183,24 @@ export const MS3: IWeaponDefinition = {
    },
    element: "Sr",
 };
+
+export const MS2D: IWeaponDefinition = {
+   ...BaseDefenseProps,
+   ...BaseWeaponProps,
+   name: () => t(L.MS2D),
+   code: CodeNumber.MS,
+   buildingFlag: BuildingFlag.CanTarget,
+   input: { Power: 2, MS2R: 2 },
+   output: { MS2D: 1 },
+   damagePct: 0.75,
+   damageType: DamageType.Explosive,
+   fireCooldown: 4,
+   ability: {
+      timing: AbilityTiming.OnFire,
+      range: AbilityRange.Adjacent,
+      effect: "DispelDebuff",
+      value: (building, level) => 0,
+      duration: (building, level) => 0,
+   },
+   element: "Nb",
+};

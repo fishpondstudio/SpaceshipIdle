@@ -316,14 +316,17 @@ export class TechDefinitions {
    };
    G3: ITechDefinition = {
       ring: 6,
-      name: () => t(L.TechPowerBlackout),
+      name: () => t(L.TechProductionDisruption),
       requires: ["F2", "F3"],
       unlockBuildings: ["MS3"],
       multiplier: { MS2R: 1, MS2C: 1 },
    };
    G4: ITechDefinition = {
       ring: 6,
-      requires: [],
+      requires: ["F3"],
+      name: () => t(L.TechDebuffDispel),
+      unlockBuildings: ["MS2D"],
+      multiplier: { MS2R: 1 },
    };
    G5: ITechDefinition = {
       ring: 6,

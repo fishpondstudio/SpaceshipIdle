@@ -227,7 +227,6 @@ export class RuntimeTile {
       duration: number,
    ): void {
       this.statusEffects.set(source, { statusEffect: effect, sourceType, value: value, timeLeft: duration });
-      this._tabulate();
       statusEffectOf(effect).onAdded?.(value, this);
    }
 
@@ -236,11 +235,11 @@ export class RuntimeTile {
       for (const [tile, se] of this.statusEffects) {
          if (se.timeLeft <= 0) {
             this.statusEffects.delete(tile);
-            this._tabulate();
          }
          statusEffectOf(se.statusEffect).onTick?.(se, this);
          se.timeLeft -= StatusEffectTickInterval;
       }
+      this._tabulate();
    }
 
    public onDestroyed(): void {
