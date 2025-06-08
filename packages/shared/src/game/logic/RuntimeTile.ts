@@ -1,4 +1,5 @@
 import { Rounding, type Tile, type ValueOf, forEach, hasFlag, mapSafeAdd, round, safeAdd } from "../../utils/Helper";
+import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
 import { GameStateUpdated } from "../GameState";
 import type { ITileData } from "../ITileData";
@@ -17,7 +18,7 @@ import {
 import type { Building } from "../definitions/Buildings";
 import { DefaultCooldown, StatusEffectTickInterval } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
-import { type StatusEffect, statusEffectOf } from "../definitions/StatusEffect";
+import { type StatusEffect, StatusEffectFlag, StatusEffects, statusEffectOf } from "../definitions/StatusEffect";
 import {
    OnDamaged,
    OnEvasion,
@@ -64,11 +65,15 @@ export interface ICriticalDamage {
    multiplier: number;
 }
 
+export const OnStatusEffectsChanged = new TypedEvent<{ tile: Tile; buff: number; debuff: number }>();
+
 export class RuntimeTile {
    public target: Tile | null = null;
    public readonly insufficient: Set<Resource> = new Set();
    public cooldown = Number.POSITIVE_INFINITY;
    public readonly statusEffects = new Map<Tile, IRuntimeEffect>();
+   public buff = 0;
+   public debuff = 0;
 
    public readonly productionMultiplier = new Multiplier();
    public readonly xpMultiplier = new Multiplier();
@@ -196,6 +201,24 @@ export class RuntimeTile {
       }
    }
 
+   private _tabulate(): void {
+      const oldBuff = this.buff;
+      const oldDebuff = this.debuff;
+      this.buff = 0;
+      this.debuff = 0;
+      for (const [_, se] of this.statusEffects) {
+         if (hasFlag(StatusEffects[se.statusEffect].flag, StatusEffectFlag.Positive)) {
+            ++this.buff;
+         }
+         if (hasFlag(StatusEffects[se.statusEffect].flag, StatusEffectFlag.Negative)) {
+            ++this.debuff;
+         }
+      }
+      if (this.runtime.battleType !== BattleType.Simulated && (oldBuff !== this.buff || oldDebuff !== this.debuff)) {
+         OnStatusEffectsChanged.emit({ tile: this.tile, buff: this.buff, debuff: this.debuff });
+      }
+   }
+
    public addStatusEffect(
       effect: StatusEffect,
       source: Tile,
@@ -204,6 +227,7 @@ export class RuntimeTile {
       duration: number,
    ): void {
       this.statusEffects.set(source, { statusEffect: effect, sourceType, value: value, timeLeft: duration });
+      this._tabulate();
       statusEffectOf(effect).onAdded?.(value, this);
    }
 
@@ -212,6 +236,7 @@ export class RuntimeTile {
       for (const [tile, se] of this.statusEffects) {
          if (se.timeLeft <= 0) {
             this.statusEffects.delete(tile);
+            this._tabulate();
          }
          statusEffectOf(se.statusEffect).onTick?.(se, this);
          se.timeLeft -= StatusEffectTickInterval;

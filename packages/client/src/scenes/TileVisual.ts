@@ -4,6 +4,7 @@ import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { GridSize } from "@spaceship-idle/shared/src/game/Grid";
 import type { ITileData } from "@spaceship-idle/shared/src/game/ITileData";
 import { BuildingFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import { isBooster } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { type Tile, type ValueOf, clamp, formatNumber, hasFlag, lookAt } from "@spaceship-idle/shared/src/utils/Helper";
 import type { Disposable } from "@spaceship-idle/shared/src/utils/TypedEvent";
 import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
@@ -21,7 +22,6 @@ import { G } from "../utils/Global";
 import { runFunc, sequence, to } from "../utils/actions/Actions";
 import { Easing } from "../utils/actions/Easing";
 import { ShipScene } from "./ShipScene";
-import { isBooster } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 
 export const TileVisualFlag = {
    None: 0,
@@ -44,6 +44,8 @@ export class TileVisual extends Container {
    private _isProducing = false;
    private _healthBarBg: Sprite;
    private _background: Sprite;
+   private _buff: BitmapText;
+   private _debuff: BitmapText;
 
    constructor(
       private _tile: Tile,
@@ -80,6 +82,28 @@ export class TileVisual extends Container {
       this._healthBar = this._healthBarBg.addChild(new NineSlicePlane(G.textures.get("Misc/HealthBar")!, 4, 0, 4, 0));
       this._healthBar.width = 80;
       this._healthBar.tint = 0x2ecc71;
+
+      this._buff = this.addChild(
+         new BitmapText("", {
+            fontName: Fonts.SpaceshipIdle,
+            fontSize: 16,
+            tint: 0x7bed9f,
+         }),
+      );
+      this._buff.anchor.set(0, 1);
+      this._buff.position.set(-40, -18);
+      this._buff.visible = false;
+
+      this._debuff = this.addChild(
+         new BitmapText("", {
+            fontName: Fonts.SpaceshipIdle,
+            fontSize: 16,
+            tint: 0xff7675,
+         }),
+      );
+      this._debuff.anchor.set(1, 1);
+      this._debuff.position.set(40, -18);
+      this._debuff.visible = false;
 
       this._bottomRightText = this.addChild(
          new BitmapText(this.levelLabel, {
@@ -163,11 +187,39 @@ export class TileVisual extends Container {
       const rs = G.runtime.get(this._tile);
       if (rs) {
          this._healthBar.width = 80 * (1 - rs.damageTaken / rs.props.hp);
+         if (rs.buff > 0) {
+            this._buff.visible = true;
+            this._buff.text = formatNumber(rs.buff);
+         } else {
+            this._buff.visible = false;
+         }
+         if (rs.debuff > 0) {
+            this._debuff.visible = true;
+            this._debuff.text = formatNumber(rs.debuff);
+         } else {
+            this._debuff.visible = false;
+         }
       }
+
       this._floaterTimer += dt;
       if (this._floaterTimer >= G.speed) {
          this._floaterTimer = 0;
          this.flushFloater();
+      }
+   }
+
+   public updateStatusEffect(buff: number, debuff: number): void {
+      if (buff > 0) {
+         this._buff.visible = true;
+         this._buff.text = formatNumber(buff);
+      } else {
+         this._buff.visible = false;
+      }
+      if (debuff > 0) {
+         this._debuff.visible = true;
+         this._debuff.text = formatNumber(debuff);
+      } else {
+         this._debuff.visible = false;
       }
    }
 
