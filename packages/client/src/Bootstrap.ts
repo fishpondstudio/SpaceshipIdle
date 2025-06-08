@@ -107,6 +107,9 @@ export async function bootstrap(): Promise<void> {
 }
 
 function initErrorTracking(): void {
+   if (import.meta.env.DEV) {
+      return;
+   }
    Sentry.init({
       dsn: SentryDSN,
       sendDefaultPii: true,

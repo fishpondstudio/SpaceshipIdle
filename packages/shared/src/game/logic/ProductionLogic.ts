@@ -79,7 +79,9 @@ export function tickProduction(
       rs.insufficient.clear();
       forEach(def.input, (res, _amount) => {
          const amount = _amount * data.level * data.capacity;
-         mapSafeAdd(stat.theoreticalConsumed, res, amount);
+         if (res !== "Power") {
+            mapSafeAdd(stat.theoreticalConsumed, res, amount);
+         }
          if (rt.productionTick === 0) {
             mapSafeAdd(gs.resources, res, amount * BattleStartAmmoCycles);
          }
@@ -89,18 +91,27 @@ export function tickProduction(
          }
          if ((gs.resources.get(res) ?? 0) < amount) {
             rs.insufficient.add(res);
-            // This is here so that Power stat is more useful. The stat will not be double counted because
-            // if this is true, it means we are lacking Power, and the stat won't be set later.
-            if (res === "Power") {
-               mapSafeAdd(stat.consumed, res, amount);
-            }
          }
       });
+
+      // Here we consume Power regardless of other input resources. Because weapon firing
+      // also requires Power.
+      if (def.input.Power) {
+         const amount = def.input.Power * data.level;
+         if (!rs.insufficient.has("Power")) {
+            mapSafeAdd(gs.resources, "Power", -amount);
+         }
+         // We deduct Power from stat even if there isn't enough. This makes the Power stat more useful!
+         mapSafeAdd(stat.consumed, "Power", amount);
+         mapSafeAdd(stat.theoreticalConsumed, "Power", amount);
+      }
 
       if (rs.insufficient.size > 0) return;
       if (hasFlag(rs.props.runtimeFlag, RuntimeFlag.NoProduction)) return;
 
       forEach(def.input, (res, _amount) => {
+         // Power is handled above!
+         if (res === "Power") return;
          const amount = _amount * data.level * data.capacity;
          mapSafeAdd(gs.resources, res, -amount);
          mapSafeAdd(stat.consumed, res, amount);
