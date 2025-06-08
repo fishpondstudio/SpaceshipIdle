@@ -41,6 +41,9 @@ importers:
       '@pixi/sound':
         specifier: ^5.2.3
         version: 5.2.3(@pixi/assets@7.4.3(@pixi/core@7.4.3))(@pixi/core@7.4.3)
+      '@sentry/browser':
+        specifier: ^9.27.0
+        version: 9.27.0
       '@spaceship-idle/electron':
         specifier: workspace:*
         version: link:../electron
@@ -1912,6 +1915,30 @@ packages:
     resolution: {integrity: sha512-ECyOuDeH3C1I8jH2MK1RtBJW+YPMvSfT0a5NN0nHfQYnDSJ6tUiZH3gzwVP5/Kfh/+Tt7tpWVF9LXNTnhTJ3kA==}
     cpu: [x64]
     os: [win32]
+
+  '@sentry-internal/browser-utils@9.27.0':
+    resolution: {integrity: sha512-SJa7f6Ct1BzP8rWEomnshSGN1CmT+axNKvT+StrbFPD6AyHnYfFLJpKgc2iToIJHB/pmeuOI9dUwqtzVx+5nSw==}
+    engines: {node: '>=18'}
+
+  '@sentry-internal/feedback@9.27.0':
+    resolution: {integrity: sha512-e7L8eG0y63RulN352lmafoCCfQGg4jLVT8YLx6096eWu/YKLkgmVpgi8livsT5WREnH+HB+iFSrejOwK7cRkhw==}
+    engines: {node: '>=18'}
+
+  '@sentry-internal/replay-canvas@9.27.0':
+    resolution: {integrity: sha512-44rVSt3LCH6qePYRQrl4WUBwnkOk9dzinmnKmuwRksEdDOkVq5KBRhi/IDr7omwSpX8C+KrX5alfKhOx1cP0gQ==}
+    engines: {node: '>=18'}
+
+  '@sentry-internal/replay@9.27.0':
+    resolution: {integrity: sha512-n2kO1wOfCG7GxkMAqbYYkpgTqJM5tuVLdp0JuNCqTOLTXWvw6svWGaYKlYpKUgsK9X/GDzJYSXZmfe+Dbg+FJQ==}
+    engines: {node: '>=18'}
+
+  '@sentry/browser@9.27.0':
+    resolution: {integrity: sha512-geR3lhRJOmUQqi1WgovLSYcD/f66zYnctdnDEa7j1BW2XIB1nlTJn0mpYyAHghXKkUN/pBpp1Z+Jk0XlVwFYVg==}
+    engines: {node: '>=18'}
+
+  '@sentry/core@9.27.0':
+    resolution: {integrity: sha512-Zb2SSAdWXQjTem+sVWrrAq9L6YYfxyoTwtapaE6C6qZBR5C8Uak0wcYww8StaCFH7dDA/PSW+VxOwjNXocrQHQ==}
+    engines: {node: '>=18'}
 
   '@sindresorhus/is@0.14.0':
     resolution: {integrity: sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==}
@@ -6815,6 +6842,34 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.40.1':
     optional: true
+
+  '@sentry-internal/browser-utils@9.27.0':
+    dependencies:
+      '@sentry/core': 9.27.0
+
+  '@sentry-internal/feedback@9.27.0':
+    dependencies:
+      '@sentry/core': 9.27.0
+
+  '@sentry-internal/replay-canvas@9.27.0':
+    dependencies:
+      '@sentry-internal/replay': 9.27.0
+      '@sentry/core': 9.27.0
+
+  '@sentry-internal/replay@9.27.0':
+    dependencies:
+      '@sentry-internal/browser-utils': 9.27.0
+      '@sentry/core': 9.27.0
+
+  '@sentry/browser@9.27.0':
+    dependencies:
+      '@sentry-internal/browser-utils': 9.27.0
+      '@sentry-internal/feedback': 9.27.0
+      '@sentry-internal/replay': 9.27.0
+      '@sentry-internal/replay-canvas': 9.27.0
+      '@sentry/core': 9.27.0
+
+  '@sentry/core@9.27.0': {}
 
   '@sindresorhus/is@0.14.0': {}
 
