@@ -22,3 +22,5 @@ export const ElementPermanentColor = 0xffeaa7;
 export const DiscordUrl = "https://discord.com/invite/Z3kFpawyts";
 export const SteamUrl = "https://store.steampowered.com/app/3454630";
 export const TranslationUrl = "https://github.com/fishpondstudio/SpaceshipIdle/tree/main/packages/shared/src/languages";
+export const PatchNotesUrl = "https://store.steampowered.com/news/app/3454630";
+export const SentryDSN = "https://54985c336c0b4c5495d31328bca6e101@bugreport.fishpondstudio.com/4";

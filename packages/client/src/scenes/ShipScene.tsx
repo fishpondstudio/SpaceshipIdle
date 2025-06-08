@@ -25,6 +25,7 @@ import { RequestFloater } from "@spaceship-idle/shared/src/game/logic/Production
 import type { Projectile } from "@spaceship-idle/shared/src/game/logic/Projectile";
 import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
+import { OnStatusEffectsChanged } from "@spaceship-idle/shared/src/game/logic/RuntimeTile";
 import {
    isEnemy,
    isShipConnected,
@@ -235,6 +236,10 @@ export class ShipScene extends Scene {
                ).start();
             }
          }
+      });
+
+      OnStatusEffectsChanged.on(({ tile, buff, debuff }) => {
+         this._tileVisuals.get(tile)?.updateStatusEffect(buff, debuff);
       });
    }
 

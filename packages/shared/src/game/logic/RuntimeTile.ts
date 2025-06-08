@@ -1,4 +1,5 @@
-import { Rounding, type Tile, forEach, mapSafeAdd, round, safeAdd } from "../../utils/Helper";
+import { Rounding, type Tile, type ValueOf, forEach, hasFlag, mapSafeAdd, round, safeAdd } from "../../utils/Helper";
+import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
 import { GameStateUpdated } from "../GameState";
 import type { ITileData } from "../ITileData";
@@ -9,15 +10,15 @@ import {
    type IDefenseProp,
    type IWeaponDefinition,
    type IWeaponProp,
+   ProjectileFlag,
    type Property,
-   WeaponFlag,
    WeaponKey,
    type WeaponProp,
 } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { DefaultCooldown, StatusEffectTickInterval } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
-import { type StatusEffect, statusEffectOf } from "../definitions/StatusEffect";
+import { type StatusEffect, StatusEffectFlag, StatusEffects, statusEffectOf } from "../definitions/StatusEffect";
 import {
    OnDamaged,
    OnEvasion,
@@ -32,6 +33,17 @@ import { damageToHp, getNormalizedValue } from "./BuildingLogic";
 import type { IMultiplier } from "./IMultiplier";
 import type { Runtime } from "./Runtime";
 import { isEnemy } from "./ShipLogic";
+import { Side } from "./Side";
+
+export const RuntimeFlag = {
+   None: 0,
+   NoPower: 1 << 0,
+   NoProduction: 1 << 1,
+   NoFire: 1 << 2,
+   BlockLaser: 1 << 3,
+} as const;
+
+export type RuntimeFlag = ValueOf<typeof RuntimeFlag>;
 
 export interface IRuntimeEffect {
    statusEffect: StatusEffect;
@@ -41,18 +53,27 @@ export interface IRuntimeEffect {
 }
 
 export type RuntimeProps = DefenseProp &
-   Omit<WeaponProp, "damagePct"> & { hp: number; damagePerProjectile: number; lifeTime: number };
+   Omit<WeaponProp, "damagePct"> & {
+      hp: number;
+      damagePerProjectile: number;
+      lifeTime: number;
+      runtimeFlag: RuntimeFlag;
+   };
 
 export interface ICriticalDamage {
    chance: number;
    multiplier: number;
 }
 
+export const OnStatusEffectsChanged = new TypedEvent<{ tile: Tile; buff: number; debuff: number }>();
+
 export class RuntimeTile {
    public target: Tile | null = null;
    public readonly insufficient: Set<Resource> = new Set();
    public cooldown = Number.POSITIVE_INFINITY;
    public readonly statusEffects = new Map<Tile, IRuntimeEffect>();
+   public buff = 0;
+   public debuff = 0;
 
    public readonly productionMultiplier = new Multiplier();
    public readonly xpMultiplier = new Multiplier();
@@ -74,8 +95,9 @@ export class RuntimeTile {
       projectiles: 0,
       projectileSpeed: 0,
       damageType: DamageType.Kinetic,
-      weaponFlag: WeaponFlag.None,
+      projectileFlag: ProjectileFlag.None,
       ability: undefined,
+      runtimeFlag: RuntimeFlag.None,
    };
    public originalProps: RuntimeProps = {
       hp: 0,
@@ -89,8 +111,9 @@ export class RuntimeTile {
       projectiles: 0,
       projectileSpeed: 0,
       damageType: DamageType.Kinetic,
-      weaponFlag: WeaponFlag.None,
+      projectileFlag: ProjectileFlag.None,
       ability: undefined,
+      runtimeFlag: RuntimeFlag.None,
    };
    //#endregion
 
@@ -102,10 +125,19 @@ export class RuntimeTile {
       this._copyProps();
    }
 
-   public takeDamage(damage: number, damageType: DamageType, source: Building | null): number {
+   public takeDamage(
+      damage: number,
+      damageType: DamageType,
+      projectileFlag: ProjectileFlag,
+      source: Building | null,
+   ): number {
       const stat = isEnemy(this.tile) ? this.runtime.rightStat : this.runtime.leftStat;
 
-      if (this.props.evasion > 0 && this.runtime.random() < evasionChance(this.props.evasion)) {
+      if (
+         !hasFlag(projectileFlag, ProjectileFlag.NoEvasion) &&
+         this.props.evasion > 0 &&
+         this.runtime.random() < evasionChance(this.props.evasion)
+      ) {
          if (this.runtime.battleType !== BattleType.Simulated) {
             OnEvasion.emit({ tile: this.tile });
          }
@@ -150,6 +182,10 @@ export class RuntimeTile {
       return this._damageTaken >= this.props.hp;
    }
 
+   public get side(): Side {
+      return isEnemy(this.tile) ? Side.Right : Side.Left;
+   }
+
    public get damageTaken(): number {
       return this._damageTaken;
    }
@@ -165,6 +201,24 @@ export class RuntimeTile {
       }
    }
 
+   private _tabulate(): void {
+      const oldBuff = this.buff;
+      const oldDebuff = this.debuff;
+      this.buff = 0;
+      this.debuff = 0;
+      for (const [_, se] of this.statusEffects) {
+         if (hasFlag(StatusEffects[se.statusEffect].flag, StatusEffectFlag.Positive)) {
+            ++this.buff;
+         }
+         if (hasFlag(StatusEffects[se.statusEffect].flag, StatusEffectFlag.Negative)) {
+            ++this.debuff;
+         }
+      }
+      if (this.runtime.battleType !== BattleType.Simulated && (oldBuff !== this.buff || oldDebuff !== this.debuff)) {
+         OnStatusEffectsChanged.emit({ tile: this.tile, buff: this.buff, debuff: this.debuff });
+      }
+   }
+
    public addStatusEffect(
       effect: StatusEffect,
       source: Tile,
@@ -173,6 +227,7 @@ export class RuntimeTile {
       duration: number,
    ): void {
       this.statusEffects.set(source, { statusEffect: effect, sourceType, value: value, timeLeft: duration });
+      this._tabulate();
       statusEffectOf(effect).onAdded?.(value, this);
    }
 
@@ -181,6 +236,7 @@ export class RuntimeTile {
       for (const [tile, se] of this.statusEffects) {
          if (se.timeLeft <= 0) {
             this.statusEffects.delete(tile);
+            this._tabulate();
          }
          statusEffectOf(se.statusEffect).onTick?.(se, this);
          se.timeLeft -= StatusEffectTickInterval;
@@ -240,6 +296,7 @@ export class RuntimeTile {
          this.props.damagePerProjectile = (def.damagePct * dmg) / def.projectiles;
       }
       Object.assign(this.originalProps, this.props);
+      this.props.runtimeFlag = RuntimeFlag.None;
    }
 }
 

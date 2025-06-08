@@ -1,6 +1,6 @@
 import { Badge, Divider, Space, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { DamageTypeLabel, WeaponFlag, WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import { DamageTypeLabel, ProjectileFlag, WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { getCooldownMultiplier } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { formatNumber, hasFlag, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -49,7 +49,7 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   <div>{formatNumber(rs.props.projectiles)}</div>
                </div>
             ) : null}
-            {hasFlag(rs.props.weaponFlag, WeaponFlag.LaserDamage) ? (
+            {hasFlag(rs.props.projectileFlag, ProjectileFlag.LaserDamage) ? (
                <div className="row my10">
                   <div className="f1">{t(L.LaserProjectile)}</div>
                   <Tooltip label={t(L.LaserProjectileDesc)} multiline maw="30vw">

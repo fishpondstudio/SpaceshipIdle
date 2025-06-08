@@ -3,7 +3,7 @@ import { TypedEvent } from "../../utils/TypedEvent";
 import type { GameOption } from "../GameOption";
 import { type GameState, GameStateUpdated, type SaveGame, type Tiles } from "../GameState";
 import { makeTile } from "../ITileData";
-import { DamageType } from "../definitions/BuildingProps";
+import { DamageType, ProjectileFlag } from "../definitions/BuildingProps";
 import { BattleTickInterval, ProductionTickInterval, SuddenDeathTick } from "../definitions/Constant";
 import { tickProjectiles, tickTiles } from "./BattleLogic";
 import { BattleStatus } from "./BattleStatus";
@@ -265,9 +265,9 @@ export class Runtime {
          if (this.productionTick >= rs.props.lifeTime) {
             this.destroy(rs.tile);
          } else if (damage > 0) {
-            rs.takeDamage(damage, DamageType.Kinetic, null);
-            rs.takeDamage(damage, DamageType.Explosive, null);
-            rs.takeDamage(damage, DamageType.Energy, null);
+            rs.takeDamage(damage, DamageType.Kinetic, ProjectileFlag.None, null);
+            rs.takeDamage(damage, DamageType.Explosive, ProjectileFlag.None, null);
+            rs.takeDamage(damage, DamageType.Energy, ProjectileFlag.None, null);
          }
       });
    }

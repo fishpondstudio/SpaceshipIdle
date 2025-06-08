@@ -1,8 +1,9 @@
 import version from "../version.json";
-import { PatchNotes } from "./PatchNotes";
+
+const ver = "0.2";
 
 export function getVersion(): string {
-   return `${PatchNotes[0].version}.${version.build}`;
+   return `${ver}.${version.build}`;
 }
 
 export function getBuildNumber(): number {

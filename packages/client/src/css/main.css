@@ -49,6 +49,10 @@ body {
    right: 0;
    margin: 0;
    padding: 0;
+   &.dev {
+      user-select: text;
+      -webkit-user-select: text;
+   }
 }
 
 ::-webkit-scrollbar {

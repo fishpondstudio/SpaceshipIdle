@@ -68,6 +68,9 @@ export const Resources = {
    MS1F: {
       name: () => t(L.MS1FAmmo),
    },
+   MS3: {
+      name: () => t(L.MS3Ammo),
+   },
    LA1: {
       name: () => t(L.LA1Ammo),
    },
@@ -76,6 +79,9 @@ export const Resources = {
    },
    AC130S: {
       name: () => t(L.AC130SAmmo),
+   },
+   AC130C: {
+      name: () => t(L.AC130CAmmo),
    },
    MS2C: {
       name: () => t(L.MS2CAmmo),
@@ -98,11 +104,17 @@ export const Resources = {
    RC50E: {
       name: () => t(L.RC50EAmmo),
    },
+   RC50P: {
+      name: () => t(L.RC50PAmmo),
+   },
    RC100G: {
       name: () => t(L.RC100GAmmo),
    },
    RC100P: {
       name: () => t(L.RC100PAmmo),
+   },
+   PC1: {
+      name: () => t(L.PC1Ammo),
    },
    LA1E: {
       name: () => t(L.LA1EAmmo),

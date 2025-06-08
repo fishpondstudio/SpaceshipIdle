@@ -135,7 +135,7 @@ export const AC76D: IWeaponDefinition = {
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.RearTrio,
-      effect: "DispelBuffEffect",
+      effect: "DispelBuff",
       value: (building, level) => 0,
       duration: (building, level) => 0,
    },
@@ -191,4 +191,24 @@ export const AC130S: IWeaponDefinition = {
       duration: (self, level) => 2,
    },
    element: "Mn",
+};
+export const AC130C: IWeaponDefinition = {
+   ...BaseDefenseProps,
+   ...BaseWeaponProps,
+   name: () => t(L.AC130C),
+   code: CodeNumber.AC,
+   buildingFlag: BuildingFlag.CanTarget,
+   input: { Power: 1, AC130S: 1, AC130E: 1 },
+   output: { AC130C: 1 },
+   damagePct: 0.9,
+   ability: {
+      timing: AbilityTiming.OnFire,
+      range: AbilityRange.Single,
+      effect: "IncreaseMaxHpAutoCannonCluster",
+      value: (self, level) => {
+         return 0.1;
+      },
+      duration: (self, level) => 2,
+   },
+   element: "Rb",
 };

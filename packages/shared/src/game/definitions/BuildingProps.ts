@@ -59,12 +59,13 @@ export interface IDefenseProp {
 
 export type DefenseProp = Record<keyof IDefenseProp, number>;
 
-export const WeaponFlag = {
+export const ProjectileFlag = {
    None: 0,
    LaserDamage: 1 << 0,
+   NoEvasion: 1 << 1,
 };
 
-export type WeaponFlag = ValueOf<typeof WeaponFlag>;
+export type ProjectileFlag = ValueOf<typeof ProjectileFlag>;
 
 export const DamageTypeLabel: Record<DamageType, () => string> = {
    [DamageType.Kinetic]: () => t(L.Kinetic),
@@ -84,7 +85,7 @@ export interface IWeaponProp {
    projectiles: number;
    projectileSpeed: number;
    damageType: DamageType;
-   weaponFlag: WeaponFlag;
+   projectileFlag: ProjectileFlag;
    ability?: Ability;
 }
 
@@ -116,5 +117,5 @@ export const BaseWeaponProps: IWeaponProp = {
    projectiles: 1,
    projectileSpeed: 300,
    damageType: DamageType.Kinetic,
-   weaponFlag: WeaponFlag.None,
+   projectileFlag: ProjectileFlag.None,
 } as const;

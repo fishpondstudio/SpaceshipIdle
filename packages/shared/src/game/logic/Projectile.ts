@@ -2,7 +2,7 @@ import type { Tile } from "../../utils/Helper";
 import { type IHaveXY, Vector2 } from "../../utils/Vector2";
 import { tileToPosCenter } from "../Grid";
 import type { Ability } from "../definitions/Ability";
-import type { DamageType, WeaponFlag } from "../definitions/BuildingProps";
+import type { DamageType, ProjectileFlag } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 
 export class Projectile {
@@ -22,7 +22,7 @@ export class Projectile {
       public readonly level: number,
       public readonly damageType: DamageType,
       public readonly projectileSpeed: number,
-      public readonly weaponFlag: WeaponFlag,
+      public readonly flag: ProjectileFlag,
       public readonly critical: boolean,
       public readonly ability: Ability | undefined,
       private mag: number,

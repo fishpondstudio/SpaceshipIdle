@@ -65,8 +65,8 @@ export function AbilityComp({
             </Tooltip>
          </div>
          <div className="text-space" style={{ textAlign: "right" }}>
-            {StatusEffects[ability.effect].desc(ability.value(building, level))}
-            {t(L.AbilityDuration)} ${t(L.AbilityDurationSeconds, duration)}
+            {StatusEffects[ability.effect].desc(ability.value(building, level))} ({t(L.AbilityDuration)}{" "}
+            {t(L.AbilityDurationSeconds, duration)})
          </div>
       </>
    );

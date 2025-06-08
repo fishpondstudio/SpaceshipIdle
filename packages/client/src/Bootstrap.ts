@@ -1,4 +1,6 @@
 import { notifications } from "@mantine/notifications";
+import * as Sentry from "@sentry/browser";
+import { SentryDSN } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateFlags, initGameState, SaveGame } from "@spaceship-idle/shared/src/game/GameState";
 import { forEach, rejectIn, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { Assets, BitmapFont, type Spritesheet, type TextStyleFontWeight, type Texture } from "pixi.js";
@@ -7,6 +9,7 @@ import { checkBuildingTextures } from "./CheckBuildingTextures";
 import { addDebugFunctions } from "./game/AddDebugFunctions";
 import { loadGame, saveGame } from "./game/LoadSave";
 import { showBootstrapModal } from "./game/ShowBootstrapModal";
+import { getVersion } from "./game/Version";
 import { startGameLoop } from "./GameLoop";
 import { loadGameScene } from "./LoadGameScene";
 import { migrateSave } from "./MigrateSave";
@@ -21,6 +24,7 @@ import { SceneManager } from "./utils/SceneManager";
 import { isSteam } from "./utils/Steam";
 
 export async function bootstrap(): Promise<void> {
+   initErrorTracking();
    console.time("Load Assets");
    FontFaces.forEach((f) => document.fonts.add(f));
    await Promise.all([Assets.init({ manifest: "./manifest.json" }), ...FontFaces.map((f) => f.load())]);
@@ -100,4 +104,12 @@ export async function bootstrap(): Promise<void> {
    showBootstrapModal(G.save, isNewPlayer);
    hideLoading();
    setInterval(() => saveGame(G.save), isSteam() ? 60_000 : 10_000);
+}
+
+function initErrorTracking(): void {
+   Sentry.init({
+      dsn: SentryDSN,
+      sendDefaultPii: true,
+      release: getVersion(),
+   });
 }

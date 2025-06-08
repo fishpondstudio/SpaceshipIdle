@@ -316,7 +316,10 @@ export class TechDefinitions {
    };
    G3: ITechDefinition = {
       ring: 6,
-      requires: [],
+      name: () => t(L.TechPowerBlackout),
+      requires: ["F2", "F3"],
+      unlockBuildings: ["MS3"],
+      multiplier: { MS2R: 1, MS2C: 1 },
    };
    G4: ITechDefinition = {
       ring: 6,
@@ -331,15 +334,24 @@ export class TechDefinitions {
    };
    G6: ITechDefinition = {
       ring: 6,
-      requires: [],
+      name: () => t(L.TechDefenseCluster),
+      requires: ["F5"],
+      unlockBuildings: ["AC130C"],
+      multiplier: { AC130S: 1, AC130E: 1 },
    };
    G7: ITechDefinition = {
       ring: 6,
-      requires: [],
+      name: () => t(L.TechPlasmaCannon),
+      requires: ["F6"],
+      unlockBuildings: ["PC1"],
+      multiplier: { AC130E: 1, RC50E: 1 },
    };
    G8: ITechDefinition = {
       ring: 6,
-      requires: [],
+      requires: ["F7"],
+      name: () => t(L.TechPrecisionStrike),
+      unlockBuildings: ["RC50P"],
+      multiplier: { RC50E: 1 },
    };
    G9: ITechDefinition = {
       ring: 6,

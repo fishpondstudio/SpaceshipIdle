@@ -14,6 +14,7 @@ export class Starfield extends Container {
    private fps: RingBuffer<number>;
    private watermark: BitmapText;
    private version: string;
+   private shader: Shader;
 
    constructor() {
       super();
@@ -22,24 +23,20 @@ export class Starfield extends Container {
          .addAttribute("aVertexPosition", [-100, -100, 100, -100, 100, 100, -100, 100], 2)
          .addAttribute("aUvs", [0, 0, 1, 0, 1, 1, 0, 1], 2)
          .addIndex([0, 1, 2, 0, 2, 3]);
-      const shader = Shader.from(vert, frag, {
+      this.shader = Shader.from(vert, frag, {
          iTime: Math.random() * 1_000_000,
          iResolution: [app.renderer.width, app.renderer.height, 1],
       });
-      this.quad = this.addChild(new Mesh(quadGeometry, shader));
-      this.onResize();
-      G.pixi.ticker.add(() => {
-         shader.uniforms.iTime += G.pixi.ticker.elapsedMS / 1000;
-      });
-      G.pixi.renderer.on("resize", this.onResize, this);
-
+      this.quad = this.addChild(new Mesh(quadGeometry, this.shader));
       this.version = getVersion();
       this.watermark = G.scene.overlay.addChild(
          new BitmapText("", { fontName: Fonts.SpaceshipIdle, fontSize: 12, tint: 0x999999, align: "right" }),
       );
       this.watermark.anchor.set(1, 1);
-      this.watermark.position.set(G.pixi.screen.width - 10, G.pixi.screen.height - 10);
       this.fps = new RingBuffer<number>(120);
+
+      this.onResize();
+      G.pixi.renderer.on("resize", this.onResize, this);
    }
 
    playParticle(texture: Texture | undefined, from: IHaveXY, target: IHaveXY, count: number): void {
@@ -74,6 +71,7 @@ export class Starfield extends Container {
       this.quad.height = app.renderer.height;
       this.quad.x = app.renderer.width / 2;
       this.quad.y = app.renderer.height / 2;
+      this.watermark.position.set(app.screen.width - 10, app.screen.height - 10);
    }
 
    override destroy(options?: IDestroyOptions | boolean): void {
@@ -83,6 +81,7 @@ export class Starfield extends Container {
    public update(): void {
       this.fps.push(G.pixi.ticker.FPS);
       this.watermark.text = `FPS: ${Math.round(this.fps.reduce(sum, 0) / this.fps.size)}    VERSION: ${this.version}    ${navigator.onLine ? "ONLINE" : "OFFLINE"}`;
+      this.shader.uniforms.iTime += G.pixi.ticker.elapsedMS / 1000;
    }
 }
 

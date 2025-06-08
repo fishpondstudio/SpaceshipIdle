@@ -3,14 +3,15 @@ import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/ga
 import { clearFlag, hasFlag, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
+import { openUrl } from "../../rpc/SteamClient";
 import { G, OnLanguageChanged } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import { showModal } from "../../utils/ToggleModal";
 import { GameSettingsModal } from "../GameSettingsModal";
-import { PatchNotesModal } from "../PatchNotesModal";
 import { PlayerProfileModal } from "../PlayerProfileModal";
 import { ShipGalleryModal } from "../ShipGalleryModal";
 import { WeaponListModal } from "../WeaponListModal";
+import { PatchNotesUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 
 export function _HamburgerMenuComp({ flag }: { flag: GameOptionFlag }): React.ReactNode {
    refreshOnTypedEvent(OnLanguageChanged);
@@ -115,12 +116,7 @@ export function _HamburgerMenuComp({ flag }: { flag: GameOptionFlag }): React.Re
             <Menu.Item
                leftSection={<div className="mi">article</div>}
                onClick={() => {
-                  showModal({
-                     children: <PatchNotesModal />,
-                     title: t(L.PatchNotes),
-                     size: "md",
-                     dismiss: true,
-                  });
+                  openUrl(PatchNotesUrl);
                }}
             >
                {t(L.PatchNotes)}

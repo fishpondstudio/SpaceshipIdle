@@ -1,8 +1,10 @@
-import { clamp, formatNumber, formatPercent, hasFlag, type ValueOf } from "../../utils/Helper";
+import { clamp, formatNumber, formatPercent, hasFlag, setFlag, type ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import type { IRuntimeEffect, RuntimeTile } from "../logic/RuntimeTile";
-import { DamageType } from "./BuildingProps";
+import { RuntimeFlag, type IRuntimeEffect, type RuntimeTile } from "../logic/RuntimeTile";
+import { AbilityRange, abilityTarget } from "./Ability";
+import { DamageType, ProjectileFlag } from "./BuildingProps";
+import { CodeNumber } from "./CodeNumber";
 
 export const StatusEffectFlag = {
    None: 0,
@@ -51,7 +53,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Chemical,
       onTick: (se, rs) => {
-         rs.takeDamage(se.value, DamageType.Explosive, se.sourceType);
+         rs.takeDamage(se.value, DamageType.Explosive, ProjectileFlag.None, se.sourceType);
       },
    },
    TickEnergyDamage: {
@@ -60,7 +62,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Chemical,
       onTick: (se, rs) => {
-         rs.takeDamage(se.value, DamageType.Energy, se.sourceType);
+         rs.takeDamage(se.value, DamageType.Energy, ProjectileFlag.None, se.sourceType);
       },
    },
    TickKineticDamage: {
@@ -69,7 +71,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Mechanical,
       onTick: (se, rs) => {
-         rs.takeDamage(se.value, DamageType.Kinetic, se.sourceType);
+         rs.takeDamage(se.value, DamageType.Kinetic, ProjectileFlag.None, se.sourceType);
       },
    },
    RecoverHp: {
@@ -206,7 +208,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Positive,
       type: StatusEffectType.Electrical,
       onTakingDamage: (value, damage, damageType, damageSource, damageTarget) => {
-         damageSource?.takeDamage(damage * value, damageType, damageTarget.data.type);
+         damageSource?.takeDamage(damage * value, damageType, ProjectileFlag.None, damageTarget.data.type);
       },
    },
    RecoverHpOnTakingDamage2x: {
@@ -258,9 +260,9 @@ export const StatusEffects = {
          rs.props.damagePerProjectile *= 1 + se.value;
       },
    },
-   DispelBuffEffect: {
-      name: () => t(L.DispelBuffEffect),
-      desc: (value) => t(L.DispelBuffEffectDesc),
+   DispelBuff: {
+      name: () => t(L.DispelBuff),
+      desc: (value) => t(L.DispelBuffDesc),
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Electrical,
       onTick: (se, rs) => {
@@ -272,6 +274,67 @@ export const StatusEffects = {
                rs.statusEffects.delete(tile);
             }
          }
+      },
+   },
+   IncreaseMaxHpAutoCannonCluster: {
+      name: () => t(L.IncreaseMaxHpAutoCannonCluster),
+      desc: (value) => t(L.IncreaseMaxHpAutoCannonClusterDesc, formatPercent(value)),
+      flag: StatusEffectFlag.Positive,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         let count = 0;
+         abilityTarget(rs.side, AbilityRange.Adjacent, rs.tile, rs.runtime.tiles).forEach((tile) => {
+            const building = rs.runtime.tiles.get(tile)?.data.type;
+            if (building && Config.Buildings[building].code === CodeNumber.AC) {
+               ++count;
+            }
+         });
+         rs.props.hp *= 1 + 0.1 * count;
+      },
+   },
+   PowerBlackout: {
+      name: () => t(L.PowerBlackout),
+      desc: (value) => t(L.PowerBlackoutDesc),
+      flag: StatusEffectFlag.Negative,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoPower);
+      },
+   },
+   ProductionDisruption: {
+      name: () => t(L.ProductionDisruption),
+      desc: (value) => t(L.ProductionDisruptionDesc),
+      flag: StatusEffectFlag.Negative,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoProduction);
+      },
+   },
+   Disarm: {
+      name: () => t(L.Disarm),
+      desc: (value) => t(L.DisarmDesc),
+      flag: StatusEffectFlag.Negative,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire);
+      },
+   },
+   LaserBlocker: {
+      name: () => t(L.LaserBlocker),
+      desc: (value) => t(L.LaserBlockerDesc),
+      flag: StatusEffectFlag.Positive,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.BlockLaser);
+      },
+   },
+   IgnoreEvasion: {
+      name: () => t(L.IgnoreEvasion),
+      desc: (value) => t(L.IgnoreEvasionDesc),
+      flag: StatusEffectFlag.Positive,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         rs.props.runtimeFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
       },
    },
 } as const satisfies Record<string, IStatusEffect>;

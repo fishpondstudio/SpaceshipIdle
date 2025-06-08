@@ -16,6 +16,7 @@
       "@pixi/devtools": "^2.0.1",
       "@pixi/graphics-smooth": "^1.1.1",
       "@pixi/sound": "^5.2.3",
+      "@sentry/browser": "^9.27.0",
       "@spaceship-idle/electron": "workspace:*",
       "@spaceship-idle/shared": "workspace:*",
       "lz-string": "^1.5.0",
