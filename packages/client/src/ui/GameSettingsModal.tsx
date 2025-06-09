@@ -194,7 +194,8 @@ function GeneralTab(): React.ReactNode {
                      className="btn f1"
                      onClick={async () => {
                         try {
-                           const id = await RPCClient.saveShip(G.save.current, 1);
+                           const ship = await loadGameStateFromFile();
+                           const id = await RPCClient.setBaseline(ship);
                            showModal({
                               title: t(L.ViewShip),
                               children: <ViewShipModal id={id} />,
@@ -207,7 +208,7 @@ function GeneralTab(): React.ReactNode {
                         }
                      }}
                   >
-                     Save
+                     Set Baseline
                   </button>
                </div>
             </>

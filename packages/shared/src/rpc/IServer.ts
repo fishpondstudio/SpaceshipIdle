@@ -9,7 +9,7 @@ export interface IServer {
    listShips: (limit: number, offset: number) => Promise<{ total: number; ships: IShip[] }>;
    viewShip: (id: string) => Promise<IShip>;
    deleteShip: (id: string) => Promise<void>;
-   setBaseline: (id: string) => Promise<void>;
+   setBaseline: (ship: GameState) => Promise<string>;
    findShip: (quantum: number, range: [number, number]) => Promise<IShip>;
    rankShips: (quantum: number, count: number) => Promise<IShip[]>;
    sendChat: (message: string, channel: Language, country: keyof typeof CountryCode) => Promise<void>;

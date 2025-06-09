@@ -114,20 +114,6 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
                   >
                      Delete
                   </button>
-                  <button
-                     className="btn text-sm red"
-                     onClick={async () => {
-                        await RPCClient.setBaseline(id);
-                        showModal({
-                           children: <ShipGalleryModal />,
-                           title: t(L.ShipRanking),
-                           size: "xl",
-                           dismiss: true,
-                        });
-                     }}
-                  >
-                     Set Baseline
-                  </button>
                </>
             </DevOrAdminOnly>
          </div>
