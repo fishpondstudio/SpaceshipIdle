@@ -360,7 +360,6 @@ export const ES = {
    Priority: "Prioridad",
    Production: "Producción",
    ProductionBuildingXPHTML: "Este edificio no produce XP sin multiplicador de XP. Con multiplicador de XP (ej. de Elemento Permanente), <b>XP = Valor de Producción (antes del Multiplicador de Producción) x Multiplicador de XP</b>",
-   ProductionDisruptionDesc: "Causa que el objetivo detenga la producción",
    ProductionMultiplier: "Multiplicador de Producción",
    ProductionMultiplierBoost: "Impulso de Multiplicador de Producción",
    ProductionMultiplierBoostDesc: "+%% Multiplicador de Producción",
@@ -607,4 +606,6 @@ export const ES = {
    MS2DAmmo: "MS2D Ammo",
    TechDebuffDispel: "Debuff Dispel",
    TechProductionDisruption: "Production Disruption",
+   ProductionDisruptionDesc: "Causa que el objetivo detenga la producción",
+   ProductionDisruption: "Production Disruption",
 };

@@ -360,7 +360,6 @@ export const JA = {
    Priority: "優先度",
    Production: "生産",
    ProductionBuildingXPHTML: "この建物はXP倍率がないとXPを生産しません。XP倍率（例：永続元素から）がある場合、<b>XP = 生産値（生産倍率前）x XP倍率</b>",
-   ProductionDisruptionDesc: "ターゲットの生産を停止させる",
    ProductionMultiplier: "生産倍率",
    ProductionMultiplierBoost: "生産倍率強化",
    ProductionMultiplierBoostDesc: "生産倍率+%%",
@@ -606,4 +605,6 @@ export const JA = {
    MS2DAmmo: "MS2D Ammo",
    TechDebuffDispel: "Debuff Dispel",
    TechProductionDisruption: "Production Disruption",
+   ProductionDisruptionDesc: "ターゲットの生産を停止させる",
+   ProductionDisruption: "Production Disruption",
 };

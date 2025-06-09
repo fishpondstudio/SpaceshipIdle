@@ -360,7 +360,6 @@ export const RU = {
    Priority: "Приоритет",
    Production: "Производство",
    ProductionBuildingXPHTML: "Это здание не производит опыт без множителя опыта. С множителем опыта (например, от Постоянного элемента), <b>Опыт = Стоимость производства (до множителя производства) x Множитель опыта</b>",
-   ProductionDisruptionDesc: "Заставить цель остановить производство",
    ProductionMultiplier: "Множитель производства",
    ProductionMultiplierBoost: "Усиление множителя производства",
    ProductionMultiplierBoostDesc: "+%% множитель производства",
@@ -606,4 +605,6 @@ export const RU = {
    MS2DAmmo: "MS2D Ammo",
    TechDebuffDispel: "Debuff Dispel",
    TechProductionDisruption: "Production Disruption",
+   ProductionDisruptionDesc: "Заставить цель остановить производство",
+   ProductionDisruption: "Production Disruption",
 };

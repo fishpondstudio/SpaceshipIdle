@@ -360,7 +360,6 @@ export const KO = {
    Priority: "우선순위",
    Production: "생산",
    ProductionBuildingXPHTML: "이 건물은 XP 승수 없이는 XP를 생산하지 않습니다. XP 승수가 있을 때 (예: 영구 원소에서), <b>XP = 생산 가치 (생산 승수 적용 전) x XP 승수</b>",
-   ProductionDisruptionDesc: "대상이 생산을 중단하게 만듭니다",
    ProductionMultiplier: "생산 승수",
    ProductionMultiplierBoost: "생산 승수 강화",
    ProductionMultiplierBoostDesc: "+%% 생산 승수",
@@ -606,4 +605,6 @@ export const KO = {
    MS2DAmmo: "MS2D Ammo",
    TechDebuffDispel: "Debuff Dispel",
    TechProductionDisruption: "Production Disruption",
+   ProductionDisruptionDesc: "대상이 생산을 중단하게 만듭니다",
+   ProductionDisruption: "Production Disruption",
 };

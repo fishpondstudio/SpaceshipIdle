@@ -360,7 +360,6 @@ export const ZH_CN = {
    Priority: "优先级",
    Production: "生产",
    ProductionBuildingXPHTML: "该建筑在没有经验倍率的情况下不产生经验。有经验倍率时（例如来自永久元素），<b>经验 = 生产值（生产倍率前）x 经验倍率</b>",
-   ProductionDisruptionDesc: "使目标停止生产",
    ProductionMultiplier: "生产倍率",
    ProductionMultiplierBoost: "生产倍率提升",
    ProductionMultiplierBoostDesc: "+%% 生产倍率",
@@ -605,4 +604,6 @@ export const ZH_CN = {
    MS2DAmmo: "MS2D Ammo",
    TechDebuffDispel: "Debuff Dispel",
    TechProductionDisruption: "Production Disruption",
+   ProductionDisruptionDesc: "使目标停止生产",
+   ProductionDisruption: "Production Disruption",
 };
