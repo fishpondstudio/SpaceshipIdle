@@ -38,14 +38,24 @@ export function TimerPanel(): React.ReactNode {
 export function BattlePanel({ side }: { side: Side }): React.ReactNode {
    if (!G.runtime) return null;
    if (G.runtime.battleType === BattleType.Peace) return null;
-   // Damage dealt is the opposite of damage taken
-   const stat = side === Side.Right ? G.runtime.leftStat : G.runtime.rightStat;
-   const style = side === Side.Left ? { left: 10 } : { right: 10 };
-   const color = side === Side.Left ? "green" : "red";
+
+   if (side === Side.Left) {
+      const hpStat = G.runtime.leftStat;
+      const style = { left: 10 };
+      return (
+         <>
+            <HPComponent hp={hpStat.currentHP} totalHP={hpStat.maxHP} style={style} color="green" />
+            <DamageComponent stat={G.runtime.rightStat} style={style} color="green" />
+         </>
+      );
+   }
+
+   const hpStat = G.runtime.rightStat;
+   const style = { right: 10 };
    return (
       <>
-         <HPComponent hp={stat.currentHP} totalHP={stat.maxHP} style={style} color={color} />
-         <DamageComponent stat={stat} style={style} color={color} />
+         <HPComponent hp={hpStat.currentHP} totalHP={hpStat.maxHP} style={style} color="red" />
+         <DamageComponent stat={G.runtime.leftStat} style={style} color="red" />
       </>
    );
 }
