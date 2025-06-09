@@ -64,6 +64,10 @@ export function makeShortcut(e: {
 export const Shortcut = {
    Upgrade1: () => t(L.ShortcutUpgrade1),
    Downgrade1: () => t(L.ShortcutDowngrade1),
+   Upgrade5: () => t(L.ShortcutUpgrade5),
+   Downgrade5: () => t(L.ShortcutDowngrade5),
+   Upgrade10: () => t(L.ShortcutUpgrade10),
+   Downgrade10: () => t(L.ShortcutDowngrade10),
    UpgradeMax: () => t(L.ShortcutUpgradeMax),
    Recycle: () => t(L.ShortcutRecycle),
    Priority0: () => t(L.ShortcutPriority0),

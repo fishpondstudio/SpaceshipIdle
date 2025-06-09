@@ -5,7 +5,7 @@ import { BuildingFlag, type IBoosterDefinition, WeaponKey } from "../definitions
 import type { Building } from "../definitions/Buildings";
 import { MaxBuildingCount } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
-import type { GameState } from "../GameState";
+import type { GameState, Tiles } from "../GameState";
 import type { ITileData } from "../ITileData";
 import { calcSpaceshipXP, getMaxSpaceshipXP, resourceValueOf } from "./ResourceLogic";
 
@@ -206,4 +206,36 @@ export function getBoosterCount(gs: GameState): number {
 
 export function isBooster(building: Building): boolean {
    return hasFlag(Config.Buildings[building].buildingFlag, BuildingFlag.Booster);
+}
+
+export function getBuildingTypes(tiles: Tiles): Set<Building> {
+   const result = new Set<Building>();
+   for (const [_, data] of tiles) {
+      result.add(data.type);
+   }
+   return result;
+}
+
+export function getTopEndBuildings(buildings: Set<Building>): Set<Building> {
+   const allInputs = new Set<Resource>();
+   const result = new Set<Building>();
+   for (const building of buildings) {
+      const def = Config.Buildings[building];
+      forEach(def.input, (k, v) => {
+         allInputs.add(k);
+      });
+   }
+   for (const building of buildings) {
+      const def = Config.Buildings[building];
+      let outputRequired = 0;
+      forEach(def.output, (k, v) => {
+         if (allInputs.has(k)) {
+            ++outputRequired;
+         }
+      });
+      if (outputRequired === 0) {
+         result.add(building);
+      }
+   }
+   return result;
 }

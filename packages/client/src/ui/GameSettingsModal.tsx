@@ -29,7 +29,7 @@ interface TabContent {
 
 const Tabs = {
    General: { name: () => t(L.TabGeneral), content: () => <GeneralTab /> },
-   Shortcut: { name: () => t(L.TabShortcut), content: () => <ShortcutTab /> },
+   Shortcut: { name: () => t(L.TabControl), content: () => <ShortcutTab /> },
 } as const satisfies Record<string, TabContent>;
 
 type Tab = keyof typeof Tabs;

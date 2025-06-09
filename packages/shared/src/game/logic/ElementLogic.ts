@@ -26,7 +26,12 @@ export function tickElement(gs: GameState): void {
          }
          return tierB - tierA;
       });
-      const choices = shuffle(candidates.slice(0, DefaultElementChoices * 2)).slice(0, DefaultElementChoices);
+      let choices: ElementSymbol[];
+      if (!import.meta.env.DEV) {
+         choices = shuffle(candidates.slice(0, DefaultElementChoices * 2)).slice(0, DefaultElementChoices);
+      } else {
+         choices = shuffle(candidates).slice(0, DefaultElementChoices);
+      }
       if (choices.length >= DefaultElementChoices) {
          gs.elementChoices.push({
             choices: choices,

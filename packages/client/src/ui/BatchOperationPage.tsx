@@ -2,7 +2,9 @@ import { Tooltip } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
+   getBuildingTypes,
    getBuildingValue,
+   getTopEndBuildings,
    getTotalBuildingValue,
    isBooster,
    tryDeductResources,
@@ -11,8 +13,10 @@ import {
 import { mapSafeAdd, round, type Tile } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useCallback, type ReactNode } from "react";
+import { ShipScene } from "../scenes/ShipScene";
 import { G } from "../utils/Global";
 import { useShortcut } from "../utils/ShortcutHook";
+import { RenderHTML } from "./components/RenderHTMLComp";
 import { SidebarComp } from "./components/SidebarComp";
 
 export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile> }): ReactNode {
@@ -211,6 +215,27 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
             <Tooltip label={t(L.MatchCapacityTooltip)}>
                <button className="btn" onClick={matchCapacityCached}>
                   <div className="mi">wand_stars</div>
+               </button>
+            </Tooltip>
+         </div>
+         <div className="divider my10" />
+         <div className="mx10">
+            <Tooltip multiline maw="30vw" label={<RenderHTML html={t(L.SelectTopEndBuildingsTooltipHTML)} />}>
+               <button
+                  className="btn w100"
+                  onClick={() => {
+                     const buildings = getTopEndBuildings(getBuildingTypes(G.save.current.tiles));
+                     const tiles = new Set<Tile>();
+                     for (const [tile, data] of G.save.current.tiles) {
+                        if (buildings.has(data.type)) {
+                           tiles.add(tile);
+                        }
+                     }
+                     console.log(tiles);
+                     G.scene.getCurrent(ShipScene)?.selectTiles(tiles);
+                  }}
+               >
+                  {t(L.SelectTopEndBuildings)}
                </button>
             </Tooltip>
          </div>

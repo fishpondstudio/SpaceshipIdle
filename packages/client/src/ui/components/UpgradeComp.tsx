@@ -52,17 +52,67 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
       if (trySpend(getTotalBuildingValue(data.type, data.level, data.level + 1), G.save.current)) {
          data.level++;
          GameStateUpdated.emit();
+      } else {
+         playError();
+      }
+   });
+
+   useShortcut("Upgrade5", () => {
+      const target = getNextLevel(data.level, 5);
+      if (trySpend(getTotalBuildingValue(data.type, data.level, target), G.save.current)) {
+         data.level = target;
+         GameStateUpdated.emit();
+      } else {
+         playError();
+      }
+   });
+
+   useShortcut("Upgrade10", () => {
+      const target = getNextLevel(data.level, 10);
+      if (trySpend(getTotalBuildingValue(data.type, data.level, target), G.save.current)) {
+         data.level = target;
+         GameStateUpdated.emit();
+      } else {
+         playError();
       }
    });
 
    useShortcut("Downgrade1", () => {
-      if (data.level <= 1) {
+      const target = data.level - 1;
+      if (target <= 0) {
+         playError();
          return;
       }
-      getTotalBuildingValue(data.type, data.level, data.level - 1).forEach((amount, res) => {
+      getTotalBuildingValue(data.type, data.level, target).forEach((amount, res) => {
          mapSafeAdd(gs.resources, res, amount);
       });
-      data.level--;
+      data.level = target;
+      GameStateUpdated.emit();
+   });
+
+   useShortcut("Downgrade5", () => {
+      const target = getNextLevel(data.level, -5);
+      if (target <= 0) {
+         playError();
+         return;
+      }
+      getTotalBuildingValue(data.type, data.level, target).forEach((amount, res) => {
+         mapSafeAdd(gs.resources, res, amount);
+      });
+      data.level = target;
+      GameStateUpdated.emit();
+   });
+
+   useShortcut("Downgrade10", () => {
+      const target = getNextLevel(data.level, -10);
+      if (target <= 0) {
+         playError();
+         return;
+      }
+      getTotalBuildingValue(data.type, data.level, target).forEach((amount, res) => {
+         mapSafeAdd(gs.resources, res, amount);
+      });
+      data.level = target;
       GameStateUpdated.emit();
    });
 
