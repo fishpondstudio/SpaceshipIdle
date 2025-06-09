@@ -155,6 +155,10 @@ export class TileVisual extends Container {
       return this._sprite.tint;
    }
 
+   public toggleHighlight(highlight: boolean): void {
+      this._background.alpha = highlight ? 0.5 : 0.25;
+   }
+
    private onGameStateUpdated(): void {
       this._bottomRightText.text = this.levelLabel;
       const insufficient = G.runtime.get(this._tile)?.insufficient;

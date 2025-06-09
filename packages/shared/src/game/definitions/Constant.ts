@@ -20,7 +20,8 @@ export const MaxBuildingCount = 1000;
 export const ElementThisRunColor = 0x94a9cd;
 export const ElementPermanentColor = 0xffeaa7;
 export const DiscordUrl = "https://discord.com/invite/Z3kFpawyts";
-export const SteamUrl = "https://store.steampowered.com/app/3454630";
+export const SteamUrl = "https://store.steampowered.com/app/3454630?utm_source=InGame";
 export const TranslationUrl = "https://github.com/fishpondstudio/SpaceshipIdle/tree/main/packages/shared/src/languages";
-export const PatchNotesUrl = "https://store.steampowered.com/news/app/3454630";
+export const PatchNotesUrl =
+   "https://store.steampowered.com/news/app/3454630?utm_source=InGame&utm_campaign=PatchNotes";
 export const SentryDSN = "https://54985c336c0b4c5495d31328bca6e101@bugreport.fishpondstudio.com/4";

@@ -12,6 +12,7 @@ import {
    tileToPosCenter,
 } from "@spaceship-idle/shared/src/game/Grid";
 import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
+import { abilityTarget, boostTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import { OnDamaged, OnEvasion, OnProjectileHit } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
@@ -603,6 +604,9 @@ export class ShipScene extends Scene {
    }
 
    private updateSelection(): void {
+      this._tileVisuals.forEach((visual) => {
+         visual.toggleHighlight(false);
+      });
       this._selectedTiles.forEach((tile) => {
          if (!this._selectors.has(tile)) {
             const selector = ShipScene.Selector.allocate();
@@ -610,6 +614,21 @@ export class ShipScene extends Scene {
             selector.alpha = 0;
             sequence(to(selector, { alpha: 1 }, 0.25, Easing.OutQuad)).start();
             this._selectors.set(tile, selector);
+         }
+         const tileData = G.save.current.tiles.get(tile);
+         if (tileData && !isEnemy(tile)) {
+            const def = Config.Buildings[tileData.type];
+            if ("ability" in def && def.ability) {
+               console.log(def.ability);
+               abilityTarget(Side.Left, def.ability.range, tile, G.save.current.tiles).forEach((highlight) => {
+                  this._tileVisuals.get(highlight)?.toggleHighlight(true);
+               });
+            }
+            if ("range" in def && def.range) {
+               boostTarget(tile, def.range, G.runtime).forEach((highlight) => {
+                  this._tileVisuals.get(highlight)?.toggleHighlight(true);
+               });
+            }
          }
       });
 
