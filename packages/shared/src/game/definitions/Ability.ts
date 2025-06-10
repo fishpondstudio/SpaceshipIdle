@@ -1,7 +1,5 @@
 import { createTile, tileToPoint, type Tile, type ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
-import type { Runtime } from "../logic/Runtime";
-import { isEnemy } from "../logic/ShipLogic";
 import { Side } from "../logic/Side";
 import type { Building } from "./Buildings";
 import type { StatusEffect } from "./StatusEffect";
@@ -59,13 +57,6 @@ export interface Ability {
    effect: StatusEffect;
    value: (self: Building, level: number) => number;
    duration: (self: Building, level: number) => number;
-}
-
-export function boostTarget(tile: Tile, range: AbilityRange, rt: Runtime, result?: Tile[]): Tile[] {
-   result ??= [];
-   const side = isEnemy(tile) ? Side.Right : Side.Left;
-   abilityTarget(side, range, tile, side === Side.Right ? rt.right.tiles : rt.left.tiles, result);
-   return result;
 }
 
 export function abilityTarget<T>(

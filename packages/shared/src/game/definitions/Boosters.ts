@@ -1,6 +1,6 @@
 import { L, t } from "../../utils/i18n";
-import { boostTarget } from "./Ability";
-import { BoosterDefenseProps, BoostRange, BuildingFlag, type IBoosterDefinition } from "./BuildingProps";
+import { AbilityRange } from "./Ability";
+import { BoosterDefenseProps, BuildingFlag, type IBoosterDefinition } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 
 export const PM1Booster: IBoosterDefinition = {
@@ -13,13 +13,8 @@ export const PM1Booster: IBoosterDefinition = {
    output: {},
    unlock: { RC100: 100_000 },
    lifeTime: 60,
-   tick: (self, rs, rt) => {
-      boostTarget(rs.tile, self.range, rt).forEach((target) => {
-         if (target === rs.tile) return;
-         rt.get(target)?.addStatusEffect("ProductionMultiplierBoost", rs.tile, rs.data.type, 1, 0);
-      });
-   },
-   range: BoostRange.Adjacent,
+   effect: "ProductionMultiplierBoost",
+   range: AbilityRange.Adjacent,
 };
 
 export const HP1Booster: IBoosterDefinition = {
@@ -32,13 +27,8 @@ export const HP1Booster: IBoosterDefinition = {
    output: {},
    unlock: { AC130: 100_000 },
    lifeTime: 60,
-   tick: (self, rs, rt) => {
-      boostTarget(rs.tile, self.range, rt).forEach((target) => {
-         if (target === rs.tile) return;
-         rt.get(target)?.addStatusEffect("IncreaseMaxHpPct", rs.tile, rs.data.type, 1, 0);
-      });
-   },
-   range: BoostRange.Adjacent,
+   effect: "IncreaseMaxHpPct",
+   range: AbilityRange.Adjacent,
 };
 
 export const DMG1Booster: IBoosterDefinition = {
@@ -51,13 +41,8 @@ export const DMG1Booster: IBoosterDefinition = {
    output: {},
    unlock: { MS2: 100_000 },
    lifeTime: 60,
-   tick: (self, rs, rt) => {
-      boostTarget(rs.tile, self.range, rt).forEach((target) => {
-         if (target === rs.tile) return;
-         rt.get(target)?.addStatusEffect("IncreaseDamagePct", rs.tile, rs.data.type, 1, 0);
-      });
-   },
-   range: BoostRange.Adjacent,
+   effect: "IncreaseDamagePct",
+   range: AbilityRange.Adjacent,
 };
 
 export const EVA1Booster: IBoosterDefinition = {
@@ -70,11 +55,6 @@ export const EVA1Booster: IBoosterDefinition = {
    output: {},
    unlock: { LA1: 100_000 },
    lifeTime: 60,
-   tick: (self, rs, rt) => {
-      boostTarget(rs.tile, self.range, rt).forEach((target) => {
-         if (target === rs.tile) return;
-         rt.get(target)?.addStatusEffect("IncreaseEvasion", rs.tile, rs.data.type, 1, 0);
-      });
-   },
-   range: BoostRange.Adjacent,
+   effect: "IncreaseEvasion",
+   range: AbilityRange.Adjacent,
 };

@@ -5,6 +5,7 @@ import { Config } from "../Config";
 import type { Inventory } from "../GameOption";
 import type { GameState } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
+import { abilityTarget } from "../definitions/Ability";
 import { DamageType, type IBoosterDefinition, WeaponKey } from "../definitions/BuildingProps";
 import { BattleStartAmmoCycles } from "../definitions/Constant";
 import { getCooldownMultiplier } from "./BattleLogic";
@@ -13,6 +14,7 @@ import { getNormalizedValue, isBooster } from "./BuildingLogic";
 import type { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag, type RuntimeTile } from "./RuntimeTile";
+import { getSide } from "./ShipLogic";
 import { getTechName } from "./TechLogic";
 
 export const TickProductionOption = {
@@ -142,7 +144,10 @@ export function tickProduction(
 
       if (isBooster(data.type)) {
          const booster = def as IBoosterDefinition;
-         booster.tick(booster, rs, rt);
+         abilityTarget(getSide(rs.tile), booster.range, rs.tile, rt.tiles).forEach((target) => {
+            if (target === rs.tile) return;
+            rt.get(target)?.addStatusEffect(booster.effect, rs.tile, rs.data.type, 1, 0);
+         });
       }
 
       const xp = getNonWeaponBuildingXP(rs);

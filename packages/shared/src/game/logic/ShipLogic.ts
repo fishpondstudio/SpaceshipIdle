@@ -119,6 +119,10 @@ export function isEnemy(tile: Tile): boolean {
    return x >= MaxX / 2;
 }
 
+export function getSide(tile: Tile): Side {
+   return isEnemy(tile) ? Side.Right : Side.Left;
+}
+
 export function isWithinShipExtent(tile: Tile, gs: GameState): boolean {
    const ext = shipExtent(gs);
    const { x, y } = tileToPoint(tile);

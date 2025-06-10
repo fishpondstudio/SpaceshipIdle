@@ -51,3 +51,25 @@ export const LA1E: IWeaponDefinition = {
       duration: (building, level) => 2,
    },
 };
+export const LA1S: IWeaponDefinition = {
+   ...BaseDefenseProps,
+   ...BaseWeaponProps,
+   name: () => t(L.LA1S),
+   code: CodeNumber.LA,
+   buildingFlag: BuildingFlag.CanTarget,
+   input: { Power: 2, LA1E: 1 },
+   output: { LA1S: 1 },
+   damagePct: 0.9,
+   projectileFlag: ProjectileFlag.LaserDamage,
+   damageType: DamageType.Energy,
+   element: "Mo",
+   ability: {
+      timing: AbilityTiming.OnHit,
+      range: AbilityRange.Single,
+      effect: "ReduceArmorAndDeflection",
+      value: (self, level) => {
+         return level / 2;
+      },
+      duration: (self, level) => 2,
+   },
+};

@@ -1,12 +1,11 @@
 import type { ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
-import type { Runtime } from "../logic/Runtime";
-import type { RuntimeTile } from "../logic/RuntimeTile";
 import type { ElementSymbol } from "../PeriodicTable";
-import { type Ability, AbilityRange } from "./Ability";
+import type { Ability, AbilityRange } from "./Ability";
 import type { CodeNumber } from "./CodeNumber";
 import { DefaultCooldown } from "./Constant";
 import type { Resource } from "./Resource";
+import type { StatusEffect } from "./StatusEffect";
 
 export type DamageType = ValueOf<typeof DamageType>;
 export const DamageType = {
@@ -22,15 +21,6 @@ export const BuildingFlag = {
    Booster: 1 << 2,
 } as const;
 
-export const BoostRange = {
-   Adjacent: AbilityRange.Adjacent,
-   Range1: AbilityRange.Range1,
-   Range2: AbilityRange.Range2,
-   Range3: AbilityRange.Range3,
-} as const;
-
-export type BoostRange = ValueOf<typeof BoostRange>;
-
 export type BuildingFlag = ValueOf<typeof BuildingFlag>;
 
 export interface IBuildingDefinition extends IDefenseProp {
@@ -45,8 +35,8 @@ export interface IBuildingDefinition extends IDefenseProp {
 export interface IBoosterDefinition extends IBuildingDefinition {
    unlock: Partial<Record<Resource, number>>;
    desc: () => string;
-   tick: (self: IBoosterDefinition, rs: RuntimeTile, rt: Runtime) => void;
-   range: BoostRange;
+   range: AbilityRange;
+   effect: StatusEffect;
    lifeTime: number;
 }
 

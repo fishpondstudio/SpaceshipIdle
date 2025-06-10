@@ -379,7 +379,10 @@ export class TechDefinitions {
    };
    G13: ITechDefinition = {
       ring: 6,
-      requires: [],
+      requires: ["F12"],
+      name: () => t(L.TechDefenseInfiltrate),
+      unlockBuildings: ["LA1S"],
+      multiplier: { LA1E: 1 },
    };
    G14: ITechDefinition = {
       ring: 6,

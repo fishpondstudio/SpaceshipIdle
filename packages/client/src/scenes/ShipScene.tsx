@@ -12,7 +12,7 @@ import {
    tileToPosCenter,
 } from "@spaceship-idle/shared/src/game/Grid";
 import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
-import { AbilityTiming, abilityTarget, boostTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
+import { AbilityTiming, abilityTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import { OnDamaged, OnEvasion, OnProjectileHit } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
@@ -28,6 +28,7 @@ import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/Resou
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { OnStatusEffectsChanged } from "@spaceship-idle/shared/src/game/logic/RuntimeTile";
 import {
+   getSide,
    isEnemy,
    isShipConnected,
    isWithinShipExtent,
@@ -633,7 +634,7 @@ export class ShipScene extends Scene {
                   });
                }
                if ("range" in def && def.range) {
-                  boostTarget(tile, def.range, G.runtime).forEach((highlight) => {
+                  abilityTarget(getSide(tile), def.range, tile, G.save.current.tiles).forEach((highlight) => {
                      this._highlightedTiles.add(highlight);
                   });
                }
