@@ -1,19 +1,16 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { GameOption, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
+import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
-import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { rollElementShards } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
-import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { randomColor } from "@spaceship-idle/shared/src/thirdparty/RandomColor";
 import { forEach } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { jsonEncode } from "@spaceship-idle/shared/src/utils/Serialization";
-import { RPCClient } from "../rpc/RPCClient";
-import { ShipScene } from "../scenes/ShipScene";
 import { BattleResultVictoryModal } from "../ui/BattleResultVictoryModal";
 import { ChooseElementModal } from "../ui/ChooseElementModal";
+import { MatchMakingModal } from "../ui/MatchmakingModal";
 import { NewPlayerModal } from "../ui/NewPlayerModal";
 import { OfflineTimeModal } from "../ui/OfflineTimeModal";
 import { PracticeBattleResultModal } from "../ui/PracticeBattleResultModal";
@@ -21,7 +18,6 @@ import { PrestigeModal } from "../ui/PrestigeModal";
 import { PrestigeReason } from "../ui/PrestigeReason";
 import { QuantumProgressModal } from "../ui/QuantumProgressModal";
 import { SecondChanceBattleResultModal } from "../ui/SecondChanceBattleResultModal";
-import { hideSidebar } from "../ui/Sidebar";
 import { ViewShipModal } from "../ui/ViewShipModal";
 import { idbClear } from "../utils/BrowserStorage";
 import { G } from "../utils/Global";
@@ -180,12 +176,11 @@ export function addDebugFunctions(): void {
    };
    // @ts-expect-error
    globalThis.battle = async (left: string, right: string) => {
-      G.runtime = new Runtime(
-         { current: (await RPCClient.viewShip(left)).json, options: new GameOption() },
-         (await RPCClient.viewShip(right)).json,
-      );
-      G.runtime.battleType = BattleType.Practice;
-      G.scene.loadScene(ShipScene);
-      hideSidebar();
+      const gs = await loadGameStateFromFile();
+      showModal({
+         children: <MatchMakingModal enemy={gs} />,
+         size: "lg",
+         dismiss: true,
+      });
    };
 }

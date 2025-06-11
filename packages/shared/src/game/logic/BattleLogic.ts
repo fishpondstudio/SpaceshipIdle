@@ -255,14 +255,13 @@ export function calcShipScore(ship: GameState): [number, Runtime] {
    const me = structuredClone(ship);
    me.resources.clear();
    const rt = new Runtime({ current: me, options: new GameOption() }, new GameState());
-   rt.wave = 100;
+   rt.wave = Number.POSITIVE_INFINITY;
    rt.createEnemy();
    rt.battleType = BattleType.Simulated;
    const speed = { speed: 1 };
    for (let i = 0; i < (CalcShipScoreTicks + BattleStartAmmoCycles * 10) / BattleTickInterval; i++) {
       rt.tick(BattleTickInterval, speed);
    }
-   const quantum = getMatchmakingQuantum(ship);
    const dps = reduceOf(rt.rightStat.averageRawDamage(CalcShipScoreTicks), (prev, k, v) => prev + v, 0);
 
    rt.tiles.forEach((rs) => {
@@ -278,8 +277,9 @@ export function calcShipScore(ship: GameState): [number, Runtime] {
       reduceOf(rt.leftStat.actualDamage, (prev, k, v) => prev + v, 0) /
       reduceOf(rt.leftStat.rawDamage, (prev, k, v) => prev + v, 0);
 
+   const quantum = getMatchmakingQuantum(ship);
    const effectiveHP = rt.leftStat.maxHP / actualToRaw;
-   return [(effectiveHP * dps) / quantum, rt];
+   return [(effectiveHP * dps) / quantum / 100_000, rt];
 }
 
 // const data: number[][] = Array(100);

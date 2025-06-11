@@ -821,3 +821,22 @@ export function removeFrom<T>(array: T[], item: T): boolean {
 export function classNames(...classes: (string | null | undefined)[]): string {
    return classes.filter(Boolean).join(" ");
 }
+
+export function retry<T>(promise: () => Promise<T>, delayMs = 100, times = 3): Promise<T> {
+   return new Promise((resolve, reject) => {
+      const attempt = (remainingAttempts: number, currentDelay: number) => {
+         promise()
+            .then(resolve)
+            .catch((error) => {
+               if (remainingAttempts === 0) {
+                  reject(error);
+               } else {
+                  setTimeout(() => {
+                     attempt(remainingAttempts - 1, currentDelay * 2);
+                  }, currentDelay);
+               }
+            });
+      };
+      attempt(times, delayMs);
+   });
+}
