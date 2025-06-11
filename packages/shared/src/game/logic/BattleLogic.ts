@@ -1,21 +1,22 @@
-import { forEach, hasFlag, mapSafeAdd, type Tile, tileToPoint } from "../../utils/Helper";
+import { forEach, hasFlag, mapSafeAdd, reduceOf, type Tile, tileToPoint } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
 import { GameOption } from "../GameOption";
-import type { GameState } from "../GameState";
+import { GameState } from "../GameState";
 import { GridSize, posToTile } from "../Grid";
 import { abilityTarget, AbilityTiming } from "../definitions/Ability";
-import { BuildingFlag, ProjectileFlag, WeaponKey } from "../definitions/BuildingProps";
+import { BuildingFlag, DamageType, ProjectileFlag, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
-import { BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
+import { BattleStartAmmoCycles, BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType } from "./BattleType";
 import { Projectile } from "./Projectile";
+import { getMatchmakingQuantum } from "./ResourceLogic";
 import { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag } from "./RuntimeTile";
-import { calculateAABB } from "./ShipLogic";
+import { calculateAABB, isEnemy } from "./ShipLogic";
 import { Side } from "./Side";
 
 interface IProjectileHit {
@@ -230,7 +231,7 @@ export function evasionChance(value: number): number {
    return 1 - 1 / (1 + value);
 }
 
-export function calcShipScore(ship: GameState, reference: GameState): [number, Runtime] {
+export function simulateBattle(ship: GameState, reference: GameState): Runtime {
    const me = structuredClone(ship);
    me.resources.clear();
    const enemy = structuredClone(reference);
@@ -245,27 +246,40 @@ export function calcShipScore(ship: GameState, reference: GameState): [number, R
    if (rt.productionTick >= MaxBattleTick) {
       console.log(`${ship.name} (${ship.id}) vs ${reference.name} (${reference.id}): ${rt.productionTick}s`);
    }
-   const [left, right] = rt.totalDealtDamage();
-   return [left / right, rt];
+   return rt;
 }
 
-export function getShipScoreRank(score: number): string {
-   if (score >= 1.75) {
-      return "S";
+const CalcShipScoreTicks = 50;
+
+export function calcShipScore(ship: GameState): [number, Runtime] {
+   const me = structuredClone(ship);
+   me.resources.clear();
+   const rt = new Runtime({ current: me, options: new GameOption() }, new GameState());
+   rt.wave = 100;
+   rt.createEnemy();
+   rt.battleType = BattleType.Simulated;
+   const speed = { speed: 1 };
+   for (let i = 0; i < (CalcShipScoreTicks + BattleStartAmmoCycles * 10) / BattleTickInterval; i++) {
+      rt.tick(BattleTickInterval, speed);
    }
-   if (score >= 1.25) {
-      return "A";
-   }
-   if (score >= 1) {
-      return "B";
-   }
-   if (score >= 0.75) {
-      return "C";
-   }
-   if (score >= 0.5) {
-      return "D";
-   }
-   return "F";
+   const quantum = getMatchmakingQuantum(ship);
+   const dps = reduceOf(rt.rightStat.averageRawDamage(CalcShipScoreTicks), (prev, k, v) => prev + v, 0);
+
+   rt.tiles.forEach((rs) => {
+      if (!isEnemy(rs.tile)) {
+         rs.takeDamage(1, DamageType.Kinetic, ProjectileFlag.None, null);
+         rs.takeDamage(1, DamageType.Explosive, ProjectileFlag.None, null);
+         rs.takeDamage(1, DamageType.Energy, ProjectileFlag.None, null);
+      }
+   });
+   rt.tick(BattleTickInterval, speed);
+
+   const actualToRaw =
+      reduceOf(rt.leftStat.actualDamage, (prev, k, v) => prev + v, 0) /
+      reduceOf(rt.leftStat.rawDamage, (prev, k, v) => prev + v, 0);
+
+   const effectiveHP = rt.leftStat.maxHP / actualToRaw;
+   return [(effectiveHP * dps) / quantum, rt];
 }
 
 // const data: number[][] = Array(100);

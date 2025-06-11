@@ -4,7 +4,7 @@ import { jsonDecode } from "../../utils/Serialization";
 import type { Resource } from "../definitions/Resource";
 import { GameState, SaveGame } from "../GameState";
 import type { ITileData } from "../ITileData";
-import { calcShipScore } from "./BattleLogic";
+import { simulateBattle } from "./BattleLogic";
 import { getBuildingValue, getNextLevel, getTotalBuildingValue, upgradeMax } from "./BuildingLogic";
 import { tickProduction } from "./ProductionLogic";
 import { Runtime } from "./Runtime";
@@ -62,7 +62,7 @@ test("getNextLevel", () => {
    expect(getNextLevel(15, -10)).toBe(10);
 });
 
-test("calculateScore", () => {
+test("simulateBattle", () => {
    const ship = jsonDecode<GameState>(TestShip);
-   calcShipScore(ship, ship);
+   simulateBattle(ship, ship);
 });

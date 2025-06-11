@@ -4,6 +4,7 @@ import { notifications } from "@mantine/notifications";
 import { DiscordUrl, SteamUrl, TranslationUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { getShortcutKey, isShortcutEqual, makeShortcut, Shortcut } from "@spaceship-idle/shared/src/game/Shortcut";
 import { clearFlag, forEach, hasFlag, mapOf, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -195,7 +196,8 @@ function GeneralTab(): React.ReactNode {
                      onClick={async () => {
                         try {
                            const ship = await loadGameStateFromFile();
-                           const id = await RPCClient.setBaseline(ship);
+                           const [score] = calcShipScore(ship);
+                           const id = await RPCClient.saveShip(ship, score);
                            showModal({
                               title: t(L.ViewShip),
                               children: <ViewShipModal id={id} />,

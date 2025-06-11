@@ -1,5 +1,4 @@
 import { useForceUpdate } from "@mantine/hooks";
-import { getShipScoreRank } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import type { IShip } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
 import { classNames } from "@spaceship-idle/shared/src/utils/Helper";
@@ -56,9 +55,7 @@ export function ShipGalleryModal(): React.ReactNode {
                      <div className="text-space">{idx + 1}</div>
                      <div>{t(L.SpaceshipPrefix, ship.json.name)}</div>
                      <div className="f1" />
-                     <div>
-                        {ship.quantum} ({getShipScoreRank(ship.score)})
-                     </div>
+                     <div>{ship.quantum}</div>
                   </div>
                </div>
             ))}

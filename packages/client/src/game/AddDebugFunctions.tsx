@@ -87,9 +87,11 @@ export function addDebugFunctions(): void {
       window.location.reload();
    };
    // @ts-expect-error
-   globalThis.battle = async () => {
-      const enemy = await loadGameStateFromFile();
-      console.log(calcShipScore(G.save.current, enemy));
+   globalThis.calcScore = () => {
+      console.time("calcScore");
+      const [score, rt] = calcShipScore(G.save.current);
+      console.log(score, rt);
+      console.timeEnd("calcScore");
    };
    // @ts-expect-error
    globalThis.prestige = async () => {

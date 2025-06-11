@@ -1,6 +1,4 @@
-import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { getShipScoreRank } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { calcSpaceshipXP, getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
@@ -27,9 +25,6 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
             <div className="row text-space">
                <div>{t(L.SpaceshipPrefix, ship.json.name)}</div>
                <div className="f1" />
-               <Tooltip label={t(L.ShipRatingTooltip)}>
-                  <div>{getShipScoreRank(ship.score)}</div>
-               </Tooltip>
             </div>
             <div className="row">
                <div className="f1">{t(L.Quantum)}</div>

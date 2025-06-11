@@ -103,7 +103,7 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                try {
                   playClick();
                   showLoading();
-                  const ship = await RPCClient.findShip(getMatchmakingQuantum(G.save.current), [0.5, 2]);
+                  const ship = await RPCClient.findShip(getMatchmakingQuantum(G.save.current));
                   await resolveIn(1, null);
                   playBling();
                   hideLoading();

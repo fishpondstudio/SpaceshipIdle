@@ -7,12 +7,12 @@ export async function AddShipToMatchmakingPool(gs: GameState): Promise<void> {
    if (getMatchmakingQuantum(gs) !== getUsedQuantum(gs)) {
       return;
    }
+   const [score] = calcShipScore(gs);
+   if (score <= 0) {
+      return;
+   }
    try {
-      const ship = await RPCClient.findShip(getMatchmakingQuantum(gs), [1, 1]);
-      const [score] = calcShipScore(gs, ship.json);
-      if (score >= 0.5) {
-         await RPCClient.saveShip(gs, score);
-      }
+      await RPCClient.saveShip(gs, score);
    } catch (e) {
       console.error(e);
    }
