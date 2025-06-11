@@ -89,18 +89,21 @@ export const BaseDefenseProps: IDefenseProp = {
    deflection: [0, 1],
    evasion: [0, 0],
 } as const;
+
 export const ProductionDefenseProps: IDefenseProp = {
    ...BaseDefenseProps,
    armor: [10, 1],
    shield: [10, 1],
    deflection: [10, 1],
 } as const;
+
 export const BoosterDefenseProps: IDefenseProp = {
    ...BaseDefenseProps,
    armor: [20, 0],
    shield: [20, 0],
    deflection: [20, 0],
 } as const;
+
 export const BaseWeaponProps: IWeaponProp = {
    damagePct: 1,
    fireCooldown: DefaultCooldown,

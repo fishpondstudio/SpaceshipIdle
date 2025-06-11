@@ -48,73 +48,40 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
       }
    }, [data, tile, gs, canRecycle]);
 
-   useShortcut("Upgrade1", () => {
-      if (trySpend(getTotalBuildingValue(data.type, data.level, data.level + 1), G.save.current)) {
-         data.level++;
-         GameStateUpdated.emit();
-      } else {
-         playError();
-      }
-   });
+   const upgrade = useCallback(
+      (target: number) => {
+         if (trySpend(getTotalBuildingValue(data.type, data.level, target), G.save.current)) {
+            data.level = target;
+            GameStateUpdated.emit();
+         } else {
+            playError();
+         }
+      },
+      [data],
+   );
 
-   useShortcut("Upgrade5", () => {
-      const target = getNextLevel(data.level, 5);
-      if (trySpend(getTotalBuildingValue(data.type, data.level, target), G.save.current)) {
+   const downgrade = useCallback(
+      (target: number) => {
+         if (target <= 0) {
+            playError();
+            return;
+         }
+         getTotalBuildingValue(data.type, data.level, target).forEach((amount, res) => {
+            mapSafeAdd(gs.resources, res, amount);
+         });
          data.level = target;
          GameStateUpdated.emit();
-      } else {
-         playError();
-      }
-   });
+      },
+      [data, gs.resources],
+   );
 
-   useShortcut("Upgrade10", () => {
-      const target = getNextLevel(data.level, 10);
-      if (trySpend(getTotalBuildingValue(data.type, data.level, target), G.save.current)) {
-         data.level = target;
-         GameStateUpdated.emit();
-      } else {
-         playError();
-      }
-   });
+   useShortcut("Upgrade1", upgrade.bind(null, data.level + 1));
+   useShortcut("Upgrade5", upgrade.bind(null, getNextLevel(data.level, 5)));
+   useShortcut("Upgrade10", upgrade.bind(null, getNextLevel(data.level, 10)));
 
-   useShortcut("Downgrade1", () => {
-      const target = data.level - 1;
-      if (target <= 0) {
-         playError();
-         return;
-      }
-      getTotalBuildingValue(data.type, data.level, target).forEach((amount, res) => {
-         mapSafeAdd(gs.resources, res, amount);
-      });
-      data.level = target;
-      GameStateUpdated.emit();
-   });
-
-   useShortcut("Downgrade5", () => {
-      const target = getNextLevel(data.level, -5);
-      if (target <= 0) {
-         playError();
-         return;
-      }
-      getTotalBuildingValue(data.type, data.level, target).forEach((amount, res) => {
-         mapSafeAdd(gs.resources, res, amount);
-      });
-      data.level = target;
-      GameStateUpdated.emit();
-   });
-
-   useShortcut("Downgrade10", () => {
-      const target = getNextLevel(data.level, -10);
-      if (target <= 0) {
-         playError();
-         return;
-      }
-      getTotalBuildingValue(data.type, data.level, target).forEach((amount, res) => {
-         mapSafeAdd(gs.resources, res, amount);
-      });
-      data.level = target;
-      GameStateUpdated.emit();
-   });
+   useShortcut("Downgrade1", downgrade.bind(null, data.level - 1));
+   useShortcut("Downgrade5", downgrade.bind(null, getNextLevel(data.level, -5)));
+   useShortcut("Downgrade10", downgrade.bind(null, getNextLevel(data.level, -10)));
 
    useShortcut("Recycle", recycle);
 
@@ -132,25 +99,27 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
 
    useShortcut("MatchCapacityToAmmoProduction", matchCapacityCached);
 
-   useShortcut("Priority0", () => {
-      data.priority = 0;
-      GameStateUpdated.emit();
-   });
+   const setPriority = useCallback(
+      (value: number) => {
+         data.priority = value;
+         GameStateUpdated.emit();
+      },
+      [data],
+   );
 
-   useShortcut("Priority10", () => {
-      data.priority = 10;
-      GameStateUpdated.emit();
-   });
+   useShortcut("Priority0", setPriority.bind(null, 0));
+   useShortcut("Priority10", setPriority.bind(null, 10));
 
-   useShortcut("Capacity0", () => {
-      data.capacity = 0;
-      GameStateUpdated.emit();
-   });
+   const setCapacity = useCallback(
+      (value: number) => {
+         data.capacity = round(value / 100, 2);
+         GameStateUpdated.emit();
+      },
+      [data],
+   );
 
-   useShortcut("Capacity100", () => {
-      data.capacity = 1;
-      GameStateUpdated.emit();
-   });
+   useShortcut("Capacity0", setCapacity.bind(null, 0));
+   useShortcut("Capacity100", setCapacity.bind(null, 1));
 
    return (
       <>
@@ -169,12 +138,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                      <button
                         className="btn f1"
                         disabled={!canSpend(getTotalBuildingValue(data.type, data.level, target), G.save.current)}
-                        onClick={() => {
-                           if (trySpend(getTotalBuildingValue(data.type, data.level, target), G.save.current)) {
-                              data.level = target;
-                              GameStateUpdated.emit();
-                           }
-                        }}
+                        onClick={upgrade.bind(null, target)}
                      >
                         +{target - data.level}
                      </button>
@@ -202,20 +166,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                         />
                      }
                   >
-                     <button
-                        className="btn f1"
-                        disabled={target <= 0}
-                        onClick={() => {
-                           if (target <= 0) {
-                              return;
-                           }
-                           getTotalBuildingValue(data.type, data.level, target).forEach((amount, res) => {
-                              mapSafeAdd(gs.resources, res, amount);
-                           });
-                           data.level = target;
-                           GameStateUpdated.emit();
-                        }}
-                     >
+                     <button className="btn f1" disabled={target <= 0} onClick={downgrade.bind(null, target)}>
                         {target - data.level}
                      </button>
                   </Tooltip>
@@ -250,10 +201,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   { value: 5, label: "5" },
                   { value: 10, label: "10" },
                ]}
-               onChange={(value) => {
-                  data.priority = value;
-                  GameStateUpdated.emit();
-               }}
+               onChange={setPriority}
                value={data.priority}
             />
          </div>
@@ -277,10 +225,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   { value: 50, label: "50%" },
                   { value: 100, label: "100%" },
                ]}
-               onChange={(value) => {
-                  data.capacity = round(value / 100, 2);
-                  GameStateUpdated.emit();
-               }}
+               onChange={setCapacity}
                value={Math.round(data.capacity * 100)}
             />
             <div className="h20" />

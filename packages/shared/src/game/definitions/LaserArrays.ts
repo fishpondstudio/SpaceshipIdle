@@ -4,18 +4,25 @@ import { getCooldownMultiplier } from "../logic/BattleLogic";
 import { getNormalizedValue } from "../logic/BuildingLogic";
 import { AbilityRange, AbilityTiming } from "./Ability";
 import {
-   type IWeaponDefinition,
-   BaseDefenseProps,
    BaseWeaponProps,
    BuildingFlag,
    DamageType,
+   type IDefenseProp,
+   type IWeaponDefinition,
    ProjectileFlag,
 } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 import { LaserArrayDamagePct } from "./Constant";
 
+export const LaserArrayDefenseProps: IDefenseProp = {
+   armor: [0, 0.5],
+   shield: [0, 0.5],
+   deflection: [0, 1],
+   evasion: [0, 0],
+} as const;
+
 export const LA1: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...LaserArrayDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.LA1),
    code: CodeNumber.LA,
@@ -28,7 +35,7 @@ export const LA1: IWeaponDefinition = {
    element: "V",
 };
 export const LA1E: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...LaserArrayDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.LA1E),
    code: CodeNumber.LA,
@@ -52,7 +59,7 @@ export const LA1E: IWeaponDefinition = {
    },
 };
 export const LA1S: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...LaserArrayDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.LA1S),
    code: CodeNumber.LA,

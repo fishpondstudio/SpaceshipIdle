@@ -1,6 +1,7 @@
 import { getGradient, Tooltip, useMantineTheme } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import {
    calcSpaceshipXP,
    getMatchmakingQuantum,
@@ -103,7 +104,8 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                try {
                   playClick();
                   showLoading();
-                  const ship = await RPCClient.findShip(getMatchmakingQuantum(G.save.current));
+                  const [score] = calcShipScore(G.save.current);
+                  const ship = await RPCClient.findShipV2(getMatchmakingQuantum(G.save.current), score);
                   await resolveIn(1, null);
                   playBling();
                   hideLoading();

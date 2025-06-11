@@ -4,11 +4,18 @@ import { Config } from "../Config";
 import { getCooldownMultiplier } from "../logic/BattleLogic";
 import { damageToHp, getNormalizedValue } from "../logic/BuildingLogic";
 import { AbilityRange, AbilityTiming } from "./Ability";
-import { BaseDefenseProps, BaseWeaponProps, BuildingFlag, DamageType, type IWeaponDefinition } from "./BuildingProps";
+import { BaseWeaponProps, BuildingFlag, DamageType, type IDefenseProp, type IWeaponDefinition } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 
+export const MissileDefenseProps: IDefenseProp = {
+   armor: [0, 0.5],
+   shield: [0, 1],
+   deflection: [0, 0.5],
+   evasion: [0, 0],
+} as const;
+
 export const MS1: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...MissileDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.MS1),
    code: CodeNumber.MS,
@@ -32,7 +39,7 @@ export const MS1: IWeaponDefinition = {
    element: "Na",
 };
 export const MS1H: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...MissileDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.MS1H),
    code: CodeNumber.MS,
@@ -56,7 +63,7 @@ export const MS1H: IWeaponDefinition = {
    element: "S",
 };
 export const MS2: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...MissileDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.MS2),
    code: CodeNumber.MS,
@@ -76,7 +83,7 @@ export const MS2: IWeaponDefinition = {
    element: "Ar",
 };
 export const MS2R: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...MissileDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.MS2R),
    code: CodeNumber.MS,
@@ -96,7 +103,7 @@ export const MS2R: IWeaponDefinition = {
    element: "K",
 };
 export const MS2C: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...MissileDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.MS2C),
    code: CodeNumber.MS,
@@ -116,7 +123,7 @@ export const MS2C: IWeaponDefinition = {
    element: "Fe",
 };
 export const MS1F: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...MissileDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.MS1F),
    code: CodeNumber.MS,
@@ -140,7 +147,7 @@ export const MS1F: IWeaponDefinition = {
    element: "Ca",
 };
 export const MS2S: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...MissileDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.MS2S),
    code: CodeNumber.MS,
@@ -162,7 +169,7 @@ export const MS2S: IWeaponDefinition = {
    element: "Co",
 };
 export const MS3: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...MissileDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.MS3),
    code: CodeNumber.MS,
@@ -185,7 +192,7 @@ export const MS3: IWeaponDefinition = {
 };
 
 export const MS2D: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...MissileDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.MS2D),
    code: CodeNumber.MS,

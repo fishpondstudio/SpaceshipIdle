@@ -650,4 +650,6 @@ export const EN = {
    RC100F: "RC100F Redfox",
    RC100FAmmo: "RC100F Ammo",
    TechFailsafeRegen: "Failsafe Regen",
+   FailsafeRegen: "Failsafe Regen",
+   FailsafeRegenDesc: "Recover 5% of max HP per second when current HP is below 10%",
 };

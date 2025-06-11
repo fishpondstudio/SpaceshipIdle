@@ -353,6 +353,17 @@ export const StatusEffects = {
          rs.props.runtimeFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
       },
    },
+   FailsafeRegen: {
+      name: () => t(L.FailsafeRegen),
+      desc: (value) => t(L.FailsafeRegenDesc),
+      flag: StatusEffectFlag.Positive,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         if (rs.damageTaken >= rs.props.hp * 0.9) {
+            rs.recoverHp(rs.props.hp * 0.05);
+         }
+      },
+   },
 } as const satisfies Record<string, IStatusEffect>;
 
 export function statusEffectOf(key: StatusEffect): IStatusEffect {

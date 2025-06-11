@@ -4,11 +4,24 @@ import { Config } from "../Config";
 import { getCooldownMultiplier } from "../logic/BattleLogic";
 import { getNormalizedValue } from "../logic/BuildingLogic";
 import { AbilityRange, AbilityTiming } from "./Ability";
-import { type IWeaponDefinition, BaseDefenseProps, BaseWeaponProps, BuildingFlag } from "./BuildingProps";
+import {
+   BaseDefenseProps,
+   BaseWeaponProps,
+   BuildingFlag,
+   type IDefenseProp,
+   type IWeaponDefinition,
+} from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 
+export const RailCannonDefenseProps: IDefenseProp = {
+   armor: [0, 1],
+   shield: [0, 0.5],
+   deflection: [0, 0.5],
+   evasion: [0, 0],
+} as const;
+
 export const RC50: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...RailCannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.RC50),
    code: CodeNumber.RC,
@@ -32,7 +45,7 @@ export const RC50: IWeaponDefinition = {
 };
 
 export const RC100: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...RailCannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.RC100),
    code: CodeNumber.RC,
@@ -56,7 +69,7 @@ export const RC100: IWeaponDefinition = {
 };
 
 export const RC50E: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...RailCannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.RC50E),
    code: CodeNumber.RC,
@@ -78,7 +91,7 @@ export const RC50E: IWeaponDefinition = {
 };
 
 export const RC50P: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...RailCannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.RC50P),
    code: CodeNumber.RC,
@@ -100,7 +113,7 @@ export const RC50P: IWeaponDefinition = {
 };
 
 export const RC100G: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...RailCannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.RC100G),
    code: CodeNumber.RC,
@@ -122,7 +135,7 @@ export const RC100G: IWeaponDefinition = {
 };
 
 export const RC100P: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...RailCannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.RC100P),
    code: CodeNumber.RC,
@@ -156,10 +169,8 @@ export const RC100F: IWeaponDefinition = {
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
-      effect: "RecoverHpOnDealingDamage10",
-      value: (building, level) => {
-         return clamp(0.05 + (level - 1) * 0.005, 0, 0.5);
-      },
+      effect: "FailsafeRegen",
+      value: (building, level) => 0,
       duration: (building, level) => 1,
    },
    element: "Tc",

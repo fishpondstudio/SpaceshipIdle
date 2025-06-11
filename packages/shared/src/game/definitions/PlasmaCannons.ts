@@ -1,10 +1,17 @@
 import { L, t } from "../../utils/i18n";
 import { AbilityRange, AbilityTiming } from "./Ability";
-import { type IWeaponDefinition, BaseDefenseProps, BaseWeaponProps, BuildingFlag } from "./BuildingProps";
+import { BaseWeaponProps, BuildingFlag, type IDefenseProp, type IWeaponDefinition } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 
+export const PlasmaCannonDefenseProps: IDefenseProp = {
+   armor: [0, 1],
+   shield: [0, 0.5],
+   deflection: [0, 0.5],
+   evasion: [0, 0],
+} as const;
+
 export const PC1: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...PlasmaCannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.PC1),
    code: CodeNumber.PC,

@@ -3,11 +3,18 @@ import { Config } from "../Config";
 import { getCooldownMultiplier } from "../logic/BattleLogic";
 import { getNormalizedValue } from "../logic/BuildingLogic";
 import { AbilityRange, AbilityTiming } from "./Ability";
-import { BaseDefenseProps, BaseWeaponProps, BuildingFlag, type IWeaponDefinition } from "./BuildingProps";
+import { BaseWeaponProps, BuildingFlag, type IDefenseProp, type IWeaponDefinition } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 
+export const AutocannonDefenseProps: IDefenseProp = {
+   armor: [0, 1],
+   shield: [0, 0.5],
+   deflection: [0, 0.5],
+   evasion: [0, 0],
+} as const;
+
 export const AC30: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...AutocannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.AC30),
    code: CodeNumber.AC,
@@ -17,7 +24,7 @@ export const AC30: IWeaponDefinition = {
    element: "Li",
 };
 export const AC30F: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...AutocannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.AC30F),
    code: CodeNumber.AC,
@@ -37,7 +44,7 @@ export const AC30F: IWeaponDefinition = {
    },
 };
 export const AC30S: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...AutocannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.AC30S),
    code: CodeNumber.AC,
@@ -57,7 +64,7 @@ export const AC30S: IWeaponDefinition = {
    },
 };
 export const AC30x3: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...AutocannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.AC30x3),
    code: CodeNumber.AC,
@@ -68,7 +75,7 @@ export const AC30x3: IWeaponDefinition = {
    element: "Be",
 };
 export const AC76: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...AutocannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.AC76),
    code: CodeNumber.AC,
@@ -78,7 +85,7 @@ export const AC76: IWeaponDefinition = {
    element: "B",
 };
 export const AC76x2: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...AutocannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.AC76x2),
    code: CodeNumber.AC,
@@ -99,7 +106,7 @@ export const AC76x2: IWeaponDefinition = {
    },
 };
 export const AC76R: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...AutocannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.AC76R),
    code: CodeNumber.AC,
@@ -122,7 +129,7 @@ export const AC76R: IWeaponDefinition = {
    },
 };
 export const AC76D: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...AutocannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.AC76D),
    code: CodeNumber.AC,
@@ -141,7 +148,7 @@ export const AC76D: IWeaponDefinition = {
    },
 };
 export const AC130: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...AutocannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.AC130),
    code: CodeNumber.AC,
@@ -151,7 +158,7 @@ export const AC130: IWeaponDefinition = {
    element: "C",
 };
 export const AC130E: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...AutocannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.AC130E),
    code: CodeNumber.AC,
@@ -173,7 +180,7 @@ export const AC130E: IWeaponDefinition = {
    element: "P",
 };
 export const AC130S: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...AutocannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.AC130S),
    code: CodeNumber.AC,
@@ -193,7 +200,7 @@ export const AC130S: IWeaponDefinition = {
    element: "Mn",
 };
 export const AC130C: IWeaponDefinition = {
-   ...BaseDefenseProps,
+   ...AutocannonDefenseProps,
    ...BaseWeaponProps,
    name: () => t(L.AC130C),
    code: CodeNumber.AC,
