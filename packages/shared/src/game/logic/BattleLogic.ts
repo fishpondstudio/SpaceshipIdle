@@ -157,6 +157,7 @@ export function tickTiles(
          });
       }
       if (target) {
+         rs.target = target;
          forEach(def.output, (res, _amount) => {
             const amount = getCooldownMultiplier(data) * _amount * data.level;
             mapSafeAdd(from.resources, res, -amount);
@@ -166,7 +167,6 @@ export function tickTiles(
             mapSafeAdd(from.resources, "XP", xp);
             mapSafeAdd(stat.produced, "XP", xp);
          });
-         rs.target = target;
          const ability = rs.props.ability;
          if (ability?.timing === AbilityTiming.OnFire) {
             abilityTarget(side, ability.range, tile, from.tiles).forEach((target) => {

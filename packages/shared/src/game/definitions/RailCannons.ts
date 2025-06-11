@@ -142,3 +142,25 @@ export const RC100P: IWeaponDefinition = {
    },
    element: "Ge",
 };
+
+export const RC100F: IWeaponDefinition = {
+   ...BaseDefenseProps,
+   ...BaseWeaponProps,
+   name: () => t(L.RC100F),
+   code: CodeNumber.RC,
+   buildingFlag: BuildingFlag.CanTarget,
+   input: { Power: 2, RC100P: 1, RC100G: 1 },
+   output: { RC100F: 1 },
+   damagePct: 0.5,
+   fireCooldown: 1,
+   ability: {
+      timing: AbilityTiming.OnFire,
+      range: AbilityRange.Single,
+      effect: "RecoverHpOnDealingDamage10",
+      value: (building, level) => {
+         return clamp(0.05 + (level - 1) * 0.005, 0, 0.5);
+      },
+      duration: (building, level) => 1,
+   },
+   element: "Tc",
+};

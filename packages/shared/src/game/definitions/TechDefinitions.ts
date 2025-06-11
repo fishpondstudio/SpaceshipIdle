@@ -362,7 +362,10 @@ export class TechDefinitions {
    };
    G10: ITechDefinition = {
       ring: 6,
-      requires: [],
+      name: () => t(L.TechFailsafeRegen),
+      requires: ["F8", "F9"],
+      unlockBuildings: ["RC100F"],
+      multiplier: { RC100G: 1, RC100P: 1 },
    };
    G11: ITechDefinition = {
       name: () => t(L.TechCruiser),
