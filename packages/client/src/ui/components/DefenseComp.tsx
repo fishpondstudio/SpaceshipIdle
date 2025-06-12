@@ -42,60 +42,62 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             <Tooltip label={formatPercent((rs.props.hp - rs.damageTaken) / rs.props.hp)}>
                <Progress_ value={(100 * (rs.props.hp - rs.damageTaken)) / rs.props.hp} mb="xs" />
             </Tooltip>
-            <div className="row my10">
-               <div className="f1">{t(L.Armor)}</div>
-               <Tooltip
-                  label={
-                     <>
-                        <div>{t(L.PropertyTooltip, def.armor[0], def.armor[1])}</div>
-                        <div>{t(L.ArmorTooltip, formatPercent(1 - damageAfterArmor(rs.props.armor)))}</div>
-                     </>
-                  }
-               >
+            <Tooltip
+               label={
+                  <>
+                     <div>{t(L.PropertyTooltip, def.armor[0], def.armor[1])}</div>
+                     <div>{t(L.ArmorTooltip, formatPercent(1 - damageAfterArmor(rs.props.armor)))}</div>
+                  </>
+               }
+            >
+               <div className="row my10">
+                  <div className="f1">{t(L.Armor)}</div>
+
                   <div>{formatNumber(rs.props.armor)}</div>
-               </Tooltip>
-            </div>
-            <div className="row my10">
-               <div className="f1">{t(L.Shield)}</div>
-               <Tooltip
-                  label={
-                     <>
-                        <div>{t(L.PropertyTooltip, def.shield[0], def.shield[1])}</div>
-                        <div>{t(L.ShieldTooltip, formatPercent(1 - damageAfterShield(rs.props.shield)))}</div>
-                     </>
-                  }
-               >
+               </div>
+            </Tooltip>
+            <Tooltip
+               label={
+                  <>
+                     <div>{t(L.PropertyTooltip, def.shield[0], def.shield[1])}</div>
+                     <div>{t(L.ShieldTooltip, formatPercent(1 - damageAfterShield(rs.props.shield)))}</div>
+                  </>
+               }
+            >
+               <div className="row my10">
+                  <div className="f1">{t(L.Shield)}</div>
+
                   <div>{formatNumber(rs.props.shield)}</div>
-               </Tooltip>
-            </div>
-            <div className="row my10">
-               <div className="f1">{t(L.Deflection)}</div>
-               <Tooltip
-                  label={
-                     <>
-                        <div>{t(L.PropertyTooltip, def.deflection[0], def.deflection[1])}</div>
-                        <div>
-                           {t(L.DeflectionTooltip, formatPercent(1 - damageAfterDeflection(rs.props.deflection)))}
-                        </div>
-                     </>
-                  }
-               >
+               </div>
+            </Tooltip>
+            <Tooltip
+               label={
+                  <>
+                     <div>{t(L.PropertyTooltip, def.deflection[0], def.deflection[1])}</div>
+                     <div>{t(L.DeflectionTooltip, formatPercent(1 - damageAfterDeflection(rs.props.deflection)))}</div>
+                  </>
+               }
+            >
+               <div className="row my10">
+                  <div className="f1">{t(L.Deflection)}</div>
+
                   <div>{formatNumber(rs.props.deflection)}</div>
-               </Tooltip>
-            </div>
-            <div className="row my10">
-               <div className="f1">{t(L.Evasion)}</div>
-               <Tooltip
-                  label={
-                     <>
-                        <div>{t(L.PropertyTooltip, def.evasion[0], def.evasion[1])}</div>
-                        <div>{t(L.EvasionTooltip, formatPercent(evasionChance(rs.props.evasion)))}</div>
-                     </>
-                  }
-               >
+               </div>
+            </Tooltip>
+            <Tooltip
+               label={
+                  <>
+                     <div>{t(L.PropertyTooltip, def.evasion[0], def.evasion[1])}</div>
+                     <div>{t(L.EvasionTooltip, formatPercent(evasionChance(rs.props.evasion)))}</div>
+                  </>
+               }
+            >
+               <div className="row my10">
+                  <div className="f1">{t(L.Evasion)}</div>
+
                   <div>{rs.props.evasion}</div>
-               </Tooltip>
-            </div>
+               </div>
+            </Tooltip>
          </div>
       </>
    );
