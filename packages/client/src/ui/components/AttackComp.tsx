@@ -9,6 +9,7 @@ import type { ITileWithGameState } from "../ITileWithGameState";
 import { AbilityComp } from "./AbilityComp";
 import { RenderHTML } from "./RenderHTMLComp";
 import { ResourceAmount } from "./ResourceAmountComp";
+import { StatComp } from "./StatComp";
 import { TitleComp } from "./TitleComp";
 
 export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
@@ -33,20 +34,28 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             <div className="row my10">
                <div className="f1">{t(L.Damage)}</div>
                <Badge variant="outline">{DamageTypeLabel[def.damageType]()}</Badge>
-               <div>{formatNumber(rs.props.damagePerProjectile)}</div>
+               <div>
+                  <StatComp current={rs.props.damagePerProjectile} original={rs.originalProps.damagePerProjectile} />
+               </div>
             </div>
             <div className="row my10">
                <div className="f1">{t(L.FireCooldown)}</div>
-               <div>{formatNumber(rs.props.fireCooldown)}</div>
+               <div>
+                  <StatComp current={rs.props.fireCooldown} original={rs.originalProps.fireCooldown} flip />
+               </div>
             </div>
             <div className="row my10">
                <div className="f1">{t(L.ProjectileSpeed)}</div>
-               <div>{formatNumber(rs.props.projectileSpeed)}</div>
+               <div>
+                  <StatComp current={rs.props.projectileSpeed} original={rs.originalProps.projectileSpeed} />
+               </div>
             </div>
             {rs.props.projectiles > 1 ? (
                <div className="row my10">
                   <div className="f1">{t(L.ProjectileCount)}</div>
-                  <div>{formatNumber(rs.props.projectiles)}</div>
+                  <div>
+                     <StatComp current={rs.props.projectiles} original={rs.originalProps.projectiles} />
+                  </div>
                </div>
             ) : null}
             {hasFlag(rs.props.projectileFlag, ProjectileFlag.LaserDamage) ? (

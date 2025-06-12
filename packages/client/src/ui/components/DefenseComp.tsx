@@ -6,11 +6,12 @@ import {
    damageAfterShield,
    evasionChance,
 } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
-import { formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
+import { formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
 import { G } from "../../utils/Global";
 import type { ITileWithGameState } from "../ITileWithGameState";
+import { StatComp } from "./StatComp";
 import { TitleComp } from "./TitleComp";
 
 const Progress_ = memo(Progress, (oldProps, newProps) => {
@@ -36,7 +37,7 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             <div className="row my10">
                <div className="f1">{t(L.HP)}</div>
                <div>
-                  {formatNumber(rs.props.hp - rs.damageTaken)} / {formatNumber(rs.props.hp)}
+                  <StatComp current={rs.props.hp} original={rs.originalProps.hp} />
                </div>
             </div>
             <Tooltip label={formatPercent((rs.props.hp - rs.damageTaken) / rs.props.hp)}>
@@ -52,8 +53,9 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             >
                <div className="row my10">
                   <div className="f1">{t(L.Armor)}</div>
-
-                  <div>{formatNumber(rs.props.armor)}</div>
+                  <div>
+                     <StatComp current={rs.props.armor} original={rs.originalProps.armor} />
+                  </div>
                </div>
             </Tooltip>
             <Tooltip
@@ -66,8 +68,9 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             >
                <div className="row my10">
                   <div className="f1">{t(L.Shield)}</div>
-
-                  <div>{formatNumber(rs.props.shield)}</div>
+                  <div>
+                     <StatComp current={rs.props.shield} original={rs.originalProps.shield} />
+                  </div>
                </div>
             </Tooltip>
             <Tooltip
@@ -80,8 +83,9 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             >
                <div className="row my10">
                   <div className="f1">{t(L.Deflection)}</div>
-
-                  <div>{formatNumber(rs.props.deflection)}</div>
+                  <div>
+                     <StatComp current={rs.props.deflection} original={rs.originalProps.deflection} />
+                  </div>
                </div>
             </Tooltip>
             <Tooltip
@@ -94,8 +98,9 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             >
                <div className="row my10">
                   <div className="f1">{t(L.Evasion)}</div>
-
-                  <div>{rs.props.evasion}</div>
+                  <div>
+                     <StatComp current={rs.props.evasion} original={rs.originalProps.evasion} />
+                  </div>
                </div>
             </Tooltip>
          </div>

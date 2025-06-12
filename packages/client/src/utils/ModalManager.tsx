@@ -1,4 +1,4 @@
-import { CloseButton, Overlay, Transition } from "@mantine/core";
+import { CloseButton, Overlay, ScrollArea, Transition } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { classNames } from "@spaceship-idle/shared/src/utils/Helper";
 import { useState } from "react";
@@ -58,9 +58,9 @@ export function ModalManager(): React.ReactNode {
                         <div className="divider" />
                      </>
                   ) : null}
-                  <div className="modal-content" style={{ overflow: "hidden auto" }}>
+                  <ScrollArea scrollbars="y" type="hover" className="modal-content">
                      {currentModalProps?.children}
-                  </div>
+                  </ScrollArea>
                </div>
             </Overlay>
          )}

@@ -1,4 +1,4 @@
-import { CloseButton } from "@mantine/core";
+import { CloseButton, ScrollArea } from "@mantine/core";
 import { hideSidebar } from "../Sidebar";
 
 export function SidebarComp({
@@ -19,9 +19,9 @@ export function SidebarComp({
             <CloseButton onClick={() => hideSidebar()} />
          </div>
          <div className="divider" />
-         <div className="f1" style={{ overflow: "hidden auto" }}>
+         <ScrollArea type="hover" scrollbars="y" className="f1">
             {children}
-         </div>
+         </ScrollArea>
       </div>
    );
 }
