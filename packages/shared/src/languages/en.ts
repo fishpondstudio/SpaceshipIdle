@@ -652,4 +652,9 @@ export const EN = {
    TechFailsafeRegen: "Failsafe Regen",
    FailsafeRegen: "Failsafe Regen",
    FailsafeRegenDesc: "Recover 5% of max HP per second when current HP is below 10%",
+   RC100L: "RC100L Bushdog",
+   RC100LAmmo: "RC100L Ammo",
+   LastStandRegen: "Last Stand Regen",
+   LastStandRegenDesc: "Recover %% HP to adjacent modules when this module is destroyed",
+   TechLastStandRegen: "Last Stand Regen",
 };

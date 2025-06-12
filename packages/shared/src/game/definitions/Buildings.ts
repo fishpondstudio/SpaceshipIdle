@@ -20,7 +20,7 @@ import {
    UReactor,
    XPCollector,
 } from "./ProductionBuildings";
-import { RC100, RC100F, RC100G, RC100P, RC50, RC50E, RC50P } from "./RailCannons";
+import { RC100, RC100F, RC100G, RC100L, RC100P, RC50, RC50E, RC50P } from "./RailCannons";
 
 export const Buildings = {
    AC30,
@@ -42,6 +42,7 @@ export const Buildings = {
    RC100G,
    RC100P,
    RC100F,
+   RC100L,
    PC1,
    MS1,
    MS1H,

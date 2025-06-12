@@ -116,6 +116,9 @@ export const Resources = {
    RC100F: {
       name: () => t(L.RC100FAmmo),
    },
+   RC100L: {
+      name: () => t(L.RC100LAmmo),
+   },
    PC1: {
       name: () => t(L.PC1Ammo),
    },

@@ -2,7 +2,7 @@ import { clamp } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { getCooldownMultiplier } from "../logic/BattleLogic";
-import { damageToHp, getNormalizedValue } from "../logic/BuildingLogic";
+import { getNormalizedValue, normalizedValueToHp } from "../logic/BuildingLogic";
 import { AbilityRange, AbilityTiming } from "./Ability";
 import { BaseWeaponProps, BuildingFlag, DamageType, type IDefenseProp, type IWeaponDefinition } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
@@ -140,7 +140,7 @@ export const MS1F: IWeaponDefinition = {
       value: (building, level) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
          const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
-         return (damageToHp(damage, building) * (1 - def.damagePct)) / 3;
+         return (normalizedValueToHp(damage, building) * (1 - def.damagePct)) / 3;
       },
       duration: (building, level) => 5,
    },

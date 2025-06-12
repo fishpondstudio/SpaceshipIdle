@@ -364,6 +364,20 @@ export const StatusEffects = {
          }
       },
    },
+   LastStandRegen: {
+      name: () => t(L.LastStandRegen),
+      desc: (value) => t(L.LastStandRegenDesc, formatNumber(value)),
+      flag: StatusEffectFlag.Positive,
+      type: StatusEffectType.Electrical,
+      onDestroyed: (value, rs) => {
+         const parent = rs.parent;
+         if (!parent) return;
+         abilityTarget(rs.side, AbilityRange.Adjacent, rs.tile, parent.tiles).forEach((tile) => {
+            if (tile === rs.tile) return;
+            rs.runtime.get(tile)?.recoverHp(value);
+         });
+      },
+   },
 } as const satisfies Record<string, IStatusEffect>;
 
 export function statusEffectOf(key: StatusEffect): IStatusEffect {

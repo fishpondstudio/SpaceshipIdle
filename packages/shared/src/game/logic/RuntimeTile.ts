@@ -1,7 +1,7 @@
 import { Rounding, type Tile, type ValueOf, forEach, hasFlag, mapSafeAdd, round, safeAdd } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
-import { GameStateUpdated } from "../GameState";
+import { type GameState, GameStateUpdated } from "../GameState";
 import type { ITileData } from "../ITileData";
 import {
    DamageType,
@@ -29,7 +29,7 @@ import {
    getCooldownMultiplier,
 } from "./BattleLogic";
 import { BattleType } from "./BattleType";
-import { damageToHp, getNormalizedValue } from "./BuildingLogic";
+import { getNormalizedValue, normalizedValueToHp } from "./BuildingLogic";
 import type { IMultiplier } from "./IMultiplier";
 import type { Runtime } from "./Runtime";
 import { isEnemy } from "./ShipLogic";
@@ -186,6 +186,16 @@ export class RuntimeTile {
       return isEnemy(this.tile) ? Side.Right : Side.Left;
    }
 
+   public get parent(): GameState | null {
+      if (this.runtime.left.tiles.has(this.tile)) {
+         return this.runtime.left;
+      }
+      if (this.runtime.right.tiles.has(this.tile)) {
+         return this.runtime.right;
+      }
+      return null;
+   }
+
    public get damageTaken(): number {
       return this._damageTaken;
    }
@@ -286,7 +296,7 @@ export class RuntimeTile {
          }
       });
       const normVal = getNormalizedValue(this.data);
-      this.props.hp = damageToHp(normVal, this.data.type);
+      this.props.hp = normalizedValueToHp(normVal, this.data.type);
       if ("lifeTime" in def) {
          this.props.lifeTime = def.lifeTime;
       }

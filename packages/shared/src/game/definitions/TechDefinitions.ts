@@ -358,7 +358,10 @@ export class TechDefinitions {
    };
    G9: ITechDefinition = {
       ring: 6,
-      requires: [],
+      requires: ["F7", "F8"],
+      name: () => t(L.TechLastStandRegen),
+      unlockBuildings: ["RC100L"],
+      multiplier: { RC100G: 1, RC50E: 1 },
    };
    G10: ITechDefinition = {
       ring: 6,

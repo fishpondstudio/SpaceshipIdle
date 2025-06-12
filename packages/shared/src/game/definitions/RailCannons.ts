@@ -2,7 +2,7 @@ import { clamp } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { getCooldownMultiplier } from "../logic/BattleLogic";
-import { getNormalizedValue } from "../logic/BuildingLogic";
+import { getNormalizedValue, normalizedValueToHp } from "../logic/BuildingLogic";
 import { AbilityRange, AbilityTiming } from "./Ability";
 import {
    BaseDefenseProps,
@@ -174,4 +174,27 @@ export const RC100F: IWeaponDefinition = {
       duration: (building, level) => 1,
    },
    element: "Tc",
+};
+
+export const RC100L: IWeaponDefinition = {
+   ...BaseDefenseProps,
+   ...BaseWeaponProps,
+   name: () => t(L.RC100L),
+   code: CodeNumber.RC,
+   buildingFlag: BuildingFlag.CanTarget,
+   input: { Power: 2, RC50E: 1, RC100G: 1 },
+   output: { RC100L: 1 },
+   damagePct: 0.75,
+   fireCooldown: 1,
+   ability: {
+      timing: AbilityTiming.OnFire,
+      range: AbilityRange.Single,
+      effect: "LastStandRegen",
+      value: (building, level) => {
+         const hp = normalizedValueToHp(getNormalizedValue({ type: building, level }), building);
+         return hp * 0.5;
+      },
+      duration: (building, level) => 1,
+   },
+   element: "Ru",
 };

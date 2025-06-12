@@ -8,7 +8,7 @@ import {
 } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { StatusEffects } from "@spaceship-idle/shared/src/game/definitions/StatusEffect";
 import { getCooldownMultiplier } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
-import { damageToHp, getNormalizedValue } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
+import { getNormalizedValue, normalizedValueToHp } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { getTechForBuilding, getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { formatNumber, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -60,7 +60,7 @@ export function WeaponListModal(): React.ReactNode {
                            <div>{def.name()}</div>
                            <div className="text-xs text-space">{getTechName(getTechForBuilding(building))}</div>
                         </td>
-                        <td className="text-right">{formatNumber(damageToHp(normVal, building))}</td>
+                        <td className="text-right">{formatNumber(normalizedValueToHp(normVal, building))}</td>
                         <td className="text-right">
                            <div>{formatNumber(def.armor[0])}</div>
                            <div className="text-right text-green">+{formatNumber(def.armor[1])}</div>

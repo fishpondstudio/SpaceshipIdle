@@ -120,6 +120,16 @@ export class Runtime {
       this.delete(tile);
    }
 
+   public getGameState(tile: Tile): GameState | null {
+      if (this.left.tiles.has(tile)) {
+         return this.left;
+      }
+      if (this.right.tiles.has(tile)) {
+         return this.right;
+      }
+      return null;
+   }
+
    public schedule(action: () => void, second: number): void {
       if (second === 0) {
          action();

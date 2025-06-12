@@ -174,15 +174,15 @@ export function getBuildingDesc(building: Building): string {
    return `${left} -> ${right}`;
 }
 
-export function damageToHp(damage: number, building: Building): number {
+export function normalizedValueToHp(normalizedValue: number, building: Building): number {
    const def = Config.Buildings[building];
    if (isBooster(building)) {
       return ((Config.BuildingTier.get(building) ?? 3) - 2) * 1000;
    }
    if (WeaponKey in def) {
-      return damage * 10;
+      return normalizedValue * 10;
    }
-   return damage * 50;
+   return normalizedValue * 50;
 }
 
 export function hasConstructed(building: Building, gs: GameState): boolean {
