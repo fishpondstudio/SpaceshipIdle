@@ -19,7 +19,7 @@ import { hideSidebar } from "./Sidebar";
 export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNode {
    const [isPracticeBattle, setIsPracticeBattle] = useState(!isQualifierBattle(G.save.current, enemy));
    return (
-      <div style={{ padding: 5 }}>
+      <div className="m15">
          <div className="row">
             <ShipInfoComp gs={G.save.current} side={Side.Left} />
             <div className="mi mx10" style={{ fontSize: 72 }}>

@@ -1,7 +1,6 @@
 .quantum-progress {
    font-size: var(--mantine-font-size-sm);
-   overflow-x: auto;
-   overflow-y: hidden;
+
    & > div {
       display: flex;
       flex-direction: row;

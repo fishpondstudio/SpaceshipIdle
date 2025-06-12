@@ -5,7 +5,7 @@ import { TutorialCommunityModal } from "./TutorialCommunityModal";
 
 export function TutorialQuantumModal(): React.ReactNode {
    return (
-      <>
+      <div className="m10">
          <div className="row">
             <div className="fstart">
                <div className="mi" style={{ fontSize: 50 }}>
@@ -66,6 +66,6 @@ export function TutorialQuantumModal(): React.ReactNode {
          >
             {t(L.Next)}
          </button>
-      </>
+      </div>
    );
 }

@@ -41,17 +41,15 @@ export function GameSettingsModal(): React.ReactNode {
    const [tab, setTab] = useState<Tab>("General");
    return (
       <>
-         <div className="m-5">
-            <SegmentedControl
-               className="p5 w100"
-               style={{ background: "transparent" }}
-               data={mapOf(Tabs as Record<string, TabContent>, (k, v) => ({ label: v.name(), value: k }))}
-               onChange={(value) => setTab(value as Tab)}
-               value={tab}
-            />
-         </div>
-         <div className="divider my10 mx-10" />
-         {Tabs[tab].content()}
+         <SegmentedControl
+            className="p5 w100"
+            style={{ background: "transparent" }}
+            data={mapOf(Tabs as Record<string, TabContent>, (k, v) => ({ label: v.name(), value: k }))}
+            onChange={(value) => setTab(value as Tab)}
+            value={tab}
+         />
+         <div className="divider" />
+         <div className="m10">{Tabs[tab].content()}</div>
       </>
    );
 }

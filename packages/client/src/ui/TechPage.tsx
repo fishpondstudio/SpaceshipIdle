@@ -115,7 +115,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                               <TextureComp name={`Building/${b}`} width={50} />
                               <div className="f1">
                                  <div>{Config.Buildings[b].name()}</div>
-                                 <div className="text-dimmed text-xs">{getBuildingDesc(b)}</div>
+                                 <div className="text-dimmed text-xs text-condensed">{getBuildingDesc(b)}</div>
                               </div>
                            </div>
                         </Tooltip>

@@ -9,7 +9,7 @@ import { TutorialBasicConceptModal } from "./TutorialBasicConceptModal";
 export function NewPlayerModal(): React.ReactNode {
    refreshOnTypedEvent(OnLanguageChanged);
    return (
-      <>
+      <div className="m10">
          <img src={logo} className="w100 br5" />
          <div className="divider mb10 mx-10" />
          <ChangeLanguageComp />
@@ -26,6 +26,6 @@ export function NewPlayerModal(): React.ReactNode {
          >
             {t(L.Next)}
          </button>
-      </>
+      </div>
    );
 }

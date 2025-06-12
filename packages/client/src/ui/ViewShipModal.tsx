@@ -20,7 +20,7 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
       return null;
    }
    return (
-      <>
+      <div className="m10">
          <div className="panel bg-dark">
             <div className="row text-space">
                <div>{t(L.SpaceshipPrefix, ship.json.name)}</div>
@@ -114,6 +114,6 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
          </div>
          <div className="h10" />
          <ShipImageComp ship={ship.json} side={Side.Left} />
-      </>
+      </div>
    );
 }

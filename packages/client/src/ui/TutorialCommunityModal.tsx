@@ -6,7 +6,7 @@ import { RenderHTML } from "./components/RenderHTMLComp";
 
 export function TutorialCommunityModal(): React.ReactNode {
    return (
-      <>
+      <div className="m10">
          <div className="row">
             <div className="fstart">
                <div className="mi" style={{ fontSize: 50 }}>
@@ -55,6 +55,6 @@ export function TutorialCommunityModal(): React.ReactNode {
          <button className="btn filled text-lg w100 py5 row" onClick={hideModal}>
             {t(L.StartPlaying)}
          </button>
-      </>
+      </div>
    );
 }

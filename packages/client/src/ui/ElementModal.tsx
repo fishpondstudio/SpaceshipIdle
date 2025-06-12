@@ -29,7 +29,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
       return null;
    }
    return (
-      <div className="row p10 gap20">
+      <div className="row m15 gap20">
          <div style={{ alignSelf: "flex-start" }}>
             <ElementImageComp symbol={element.symbol} w="200" color={ElementPermanentColor} />
          </div>

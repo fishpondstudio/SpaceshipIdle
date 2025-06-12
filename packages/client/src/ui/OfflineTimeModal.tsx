@@ -7,7 +7,7 @@ import { playBling } from "./Sound";
 export function OfflineTimeModal({ offlineTime }: { offlineTime: number }): React.ReactNode {
    const warp = Math.floor(offlineTime / SECOND);
    return (
-      <>
+      <div className="m10">
          <div className="text-center text-sm text-dimmed">{t(L.OfflineTime)}</div>
          <div className="text-center" style={{ fontSize: 48 }}>
             {formatHMS(offlineTime)}
@@ -40,6 +40,6 @@ export function OfflineTimeModal({ offlineTime }: { offlineTime: number }): Reac
                {t(L.TimeWarp)} +{formatNumber(warp)}
             </button>
          </div>
-      </>
+      </div>
    );
 }

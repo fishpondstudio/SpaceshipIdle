@@ -23,7 +23,6 @@ export const AbilityRangeImage: Partial<Record<AbilityRange, string>> = {
 export function AbilityComp({
    level,
    building,
-   space,
    title,
 }: { level: number; building: Building; title?: React.ReactNode; space?: React.ReactNode }): React.ReactNode {
    const def = Config.Buildings[building];
@@ -39,7 +38,6 @@ export function AbilityComp({
             <div className="f1">{t(L.AbilityTiming)}</div>
             <div>{AbilityTimingLabel[ability.timing]()}</div>
          </div>
-         {space}
          <div className="row g5">
             <div className="f1">{t(L.AbilityTarget)}</div>
             <div>{AbilityTargetLabel[ability.timing]()}</div>
@@ -56,7 +54,6 @@ export function AbilityComp({
                </Tooltip>
             </div>
          ) : null}
-         {space}
          <div className="row g5">
             <div className="f1">{t(L.AbilityEffect)}</div>
             <div>{StatusEffects[ability.effect].name()}</div>

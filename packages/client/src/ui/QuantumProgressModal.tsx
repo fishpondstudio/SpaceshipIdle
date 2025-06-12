@@ -1,4 +1,4 @@
-import { Tooltip } from "@mantine/core";
+import { ScrollArea, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { BattleQuantum, ElementThisRunColor, TrialQuantum } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
@@ -21,13 +21,19 @@ export function QuantumProgressModal(): React.ReactNode {
    const current = getCurrentQuantum(G.save.current);
    const used = getUsedQuantum(G.save.current);
    return (
-      <>
+      <div className="m10">
          <div className="panel p5 text-center text-xs mb10 row" style={{ padding: "5px 10px" }}>
             <div className="f1 text-left text-space">{t(L.QuantumLimit)}</div>
             <div className="f1 text-center text-blue">{t(L.ReachedQuantum)}</div>
             <div className="f1 text-right text-green">{t(L.UsedQuantum)}</div>
          </div>
-         <div className="quantum-progress">
+         <ScrollArea
+            type="auto"
+            scrollbars="x"
+            offsetScrollbars="x"
+            style={{ width: "580px" }}
+            classNames={{ content: "quantum-progress" }}
+         >
             <div>
                {range(0, 5).map((i) => {
                   return (
@@ -41,7 +47,7 @@ export function QuantumProgressModal(): React.ReactNode {
                   );
                })}
             </div>
-         </div>
+         </ScrollArea>
          <div className="divider mx-10 mb10" />
          <div>{t(L.ElementThisRun)}</div>
          {mMapOf(G.save.current.elements, (symbol, amount) => (
@@ -57,7 +63,7 @@ export function QuantumProgressModal(): React.ReactNode {
                </div>
             </div>
          ))}
-      </>
+      </div>
    );
 }
 

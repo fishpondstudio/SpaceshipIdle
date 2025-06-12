@@ -119,7 +119,7 @@ function BoostComp({ building, tile, gs }: { building: Building; tile: Tile; gs:
                   <div className="text-xs text-space">{label}</div>
                   <div className="f1"></div>
                </div>
-               <div className="text-xs">{getBuildingDesc(building)}</div>
+               <div className="text-xs text-dimmed text-condensed">{getBuildingDesc(building)}</div>
             </div>
          </div>
       </Tooltip>
@@ -168,7 +168,7 @@ function BuildingComp({ building, tile, gs }: { building: Building; tile: Tile; 
                   <div className="text-xs text-space">{label}</div>
                   <div className="f1"></div>
                </div>
-               <div className="text-xs">{getBuildingDesc(building)}</div>
+               <div className="text-xs text-dimmed text-condensed">{getBuildingDesc(building)}</div>
             </div>
             {constructed ? (
                <Badge color="gray" variant="default">

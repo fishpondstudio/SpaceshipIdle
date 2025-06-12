@@ -4,14 +4,14 @@ import { classNames, clearFlag, formatNumber } from "@spaceship-idle/shared/src/
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { Tutorial } from "../game/Tutorial";
 import { G } from "../utils/Global";
+import { hideModal } from "../utils/ToggleModal";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { playClick } from "./Sound";
-import { hideModal } from "../utils/ToggleModal";
 
 export function TutorialProgressModal(): React.ReactNode {
    let unfinished = false;
    return (
-      <>
+      <div className="m10">
          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {Tutorial.map((step, i) => {
                const [progress, total] = step.progress(G.save.current);
@@ -61,6 +61,6 @@ export function TutorialProgressModal(): React.ReactNode {
                {t(L.HideTutorial)}
             </button>
          </div>
-      </>
+      </div>
    );
 }

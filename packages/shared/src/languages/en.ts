@@ -657,4 +657,9 @@ export const EN = {
    LastStandRegen: "Last Stand Regen",
    LastStandRegenDesc: "Recover %% HP to adjacent modules when this module is destroyed",
    TechLastStandRegen: "Last Stand Regen",
+   ReduceMaxHp: "Reduce Max HP",
+   ReduceMaxHpDesc: "Reduce %% max HP",
+   LA2: "LA2 Minnow",
+   LA2Ammo: "LA2 Ammo",
+   TechLaserCorruptor: "Laser Corruptor",
 };

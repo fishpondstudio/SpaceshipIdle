@@ -47,15 +47,14 @@
 
 .resource-panel {
    max-height: 30vh;
-   overflow-y: auto;
-   overflow-x: hidden;
    text-shadow: 1px 1px 0 #000;
    position: absolute;
    top: 55px;
    left: 10px;
    font-size: var(--mantine-font-size-sm);
-   /* mask-image: linear-gradient(rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.25) 100%);
-     mask-mode: alpha; */
+   line-height: 1.25;
+   mask-image: linear-gradient(rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0.5) 100%);
+   mask-mode: alpha;
    .row > div:nth-child(1) {
       width: 100px;
    }
@@ -73,7 +72,7 @@
    position: absolute;
    top: 70px;
    font-size: var(--mantine-font-size-sm);
-
+   line-height: 1.25;
    .row > div:nth-child(1) {
       width: 100px;
    }

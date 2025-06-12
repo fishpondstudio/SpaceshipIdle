@@ -1,4 +1,3 @@
-import { useForceUpdate } from "@mantine/hooks";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import type { IShip } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
 import { classNames } from "@spaceship-idle/shared/src/utils/Helper";
@@ -10,7 +9,6 @@ import { showModal } from "../utils/ToggleModal";
 import { ViewShipModal } from "./ViewShipModal";
 
 export function ShipGalleryModal(): React.ReactNode {
-   const forceUpdate = useForceUpdate();
    const [result, setResult] = useState<{ total: number; ships: IShip[] } | null>(null);
    const [quantum, setQuantum] = useState(30);
    useEffect(() => {
@@ -19,7 +17,7 @@ export function ShipGalleryModal(): React.ReactNode {
       });
    }, [quantum]);
    return (
-      <>
+      <div className="m10">
          <div className="row mb10 fstart wrap">
             {[30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150].map((q) => {
                return (
@@ -60,6 +58,6 @@ export function ShipGalleryModal(): React.ReactNode {
                </div>
             ))}
          </div>
-      </>
+      </div>
    );
 }

@@ -34,7 +34,7 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          <TitleComp>{t(L.Defense)}</TitleComp>
          <div className="divider my10" />
          <div className="mx10">
-            <div className="row my10">
+            <div className="row">
                <div className="f1">{t(L.HP)}</div>
                <div>
                   <StatComp current={rs.props.hp} original={rs.originalProps.hp} />
@@ -51,7 +51,7 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   </>
                }
             >
-               <div className="row my10">
+               <div className="row">
                   <div className="f1">{t(L.Armor)}</div>
                   <div>
                      <StatComp current={rs.props.armor} original={rs.originalProps.armor} />
@@ -66,7 +66,7 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   </>
                }
             >
-               <div className="row my10">
+               <div className="row">
                   <div className="f1">{t(L.Shield)}</div>
                   <div>
                      <StatComp current={rs.props.shield} original={rs.originalProps.shield} />
@@ -81,7 +81,7 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   </>
                }
             >
-               <div className="row my10">
+               <div className="row">
                   <div className="f1">{t(L.Deflection)}</div>
                   <div>
                      <StatComp current={rs.props.deflection} original={rs.originalProps.deflection} />
@@ -96,7 +96,7 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   </>
                }
             >
-               <div className="row my10">
+               <div className="row">
                   <div className="f1">{t(L.Evasion)}</div>
                   <div>
                      <StatComp current={rs.props.evasion} original={rs.originalProps.evasion} />

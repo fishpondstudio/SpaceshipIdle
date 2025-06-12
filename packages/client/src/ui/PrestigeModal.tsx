@@ -16,7 +16,7 @@ export function PrestigeModal({ reason }: { reason: PrestigeReason }): React.Rea
    const fromThisRun = mReduceOf(G.save.current.elements, (prev, k, v) => prev + v, 0);
    const extraShards = shardsFromShipValue(G.save.current);
    return (
-      <div style={{ padding: 5 }}>
+      <div className="m10">
          {reason === PrestigeReason.Defeated ? <DefeatedHeaderComp /> : <PrestigeHeaderComp />}
          {reason === PrestigeReason.Incompatible ? (
             <div className="row panel red mb10 text-sm">

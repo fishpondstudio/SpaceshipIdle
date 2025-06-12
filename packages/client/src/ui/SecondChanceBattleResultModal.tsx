@@ -14,7 +14,7 @@ import { PrestigeReason } from "./PrestigeReason";
 
 export function SecondChanceBattleResultModal(): React.ReactNode {
    return (
-      <div style={{ padding: 5 }}>
+      <div className="m10">
          <DefeatedHeaderComp />
          <div className="text-sm">
             <RenderHTML html={t(L.SecondChanceDescHTML)} />

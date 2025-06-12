@@ -29,7 +29,7 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
    const quantumLimit = getQuantumLimit(G.save.current);
    const usedQuantum = getUsedQuantum(G.save.current);
    return (
-      <div style={{ padding: 5 }}>
+      <div className="m10">
          <div
             className="p10 mb10 col cc"
             style={{
@@ -39,7 +39,7 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                background: getGradient({ deg: 180, from: "space.5", to: "space.9" }, theme),
             }}
          >
-            <div className="mi pointer" style={{ position: "absolute", top: 10, right: 10 }} onClick={hideModal}>
+            <div className="mi pointer" style={{ position: "absolute", top: 5, right: 5 }} onClick={hideModal}>
                close
             </div>
             <div className="mi" style={{ fontSize: 128 }}>

@@ -58,9 +58,9 @@ export function ModalManager(): React.ReactNode {
                         <div className="divider" />
                      </>
                   ) : null}
-                  <ScrollArea scrollbars="y" type="hover" className="modal-content">
+                  <ScrollArea.Autosize scrollbars="y" type="hover" className="modal-content">
                      {currentModalProps?.children}
-                  </ScrollArea>
+                  </ScrollArea.Autosize>
                </div>
             </Overlay>
          )}

@@ -1,3 +1,4 @@
+import { ScrollArea } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { resourceDiffOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -10,7 +11,7 @@ export function ResourcePanel(): React.ReactNode {
    const options = G.save.options;
    if (!hasFlag(options.flag, GameOptionFlag.ShowResources)) return null;
    return (
-      <div className="resource-panel">
+      <ScrollArea.Autosize scrollbars="y" offsetScrollbars="y" className="resource-panel">
          {mMapOf(state.resources, (res, amount) => {
             const name = Config.Resources[res].name();
             const diff = resourceDiffOf(
@@ -32,6 +33,6 @@ export function ResourcePanel(): React.ReactNode {
                </div>
             );
          })}
-      </div>
+      </ScrollArea.Autosize>
    );
 }

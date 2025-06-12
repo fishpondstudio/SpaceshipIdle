@@ -392,7 +392,10 @@ export class TechDefinitions {
    };
    G14: ITechDefinition = {
       ring: 6,
-      requires: [],
+      requires: ["F12"],
+      name: () => t(L.TechLaserCorruptor),
+      unlockBuildings: ["LA2"],
+      multiplier: { LA1E: 1 },
    };
 
    ////////// R7 //////////

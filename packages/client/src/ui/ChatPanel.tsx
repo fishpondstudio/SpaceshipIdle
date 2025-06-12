@@ -1,4 +1,4 @@
-import { Menu } from "@mantine/core";
+import { Menu, ScrollArea } from "@mantine/core";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { type Language, Languages, LanguagesImage } from "@spaceship-idle/shared/src/game/Languages";
 import { ChatFlag, type IChat } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
@@ -45,7 +45,7 @@ export function ChatPanel(): React.ReactNode {
    ));
 }
 
-const MAX_MESSAGES = 200;
+const MAX_MESSAGES = 100;
 const SetChatInput = new TypedEvent<(oldChat: string) => string>();
 
 function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }): React.ReactNode {
@@ -100,38 +100,40 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
 
    return (
       <div className={classNames("chat-panel", isFocused ? "active" : null)} style={{ left }}>
-         <div
-            className="chat-message-list"
+         <ScrollArea
             onMouseEnter={() => {
                isMouseOver.current = true;
             }}
             onMouseLeave={() => {
                isMouseOver.current = false;
             }}
-            ref={scrollArea}
+            viewportRef={scrollArea}
+            classNames={{ viewport: "chat-message-viewport", content: "chat-message-content" }}
          >
-            {messages.current.map((message, index) => (
-               <div className="message" key={index}>
-                  <div className="name">
-                     <div
-                        className="pointer"
-                        onClick={() =>
-                           SetChatInput.emit((oldChat) => {
-                              return oldChat.includes(`@${message.name}`) ? oldChat : `@${message.name} ${oldChat}`;
-                           })
-                        }
-                     >
-                        {message.name}
+            {messages.current.map((message, index) => {
+               return (
+                  <div className="message" key={index}>
+                     <div className="name">
+                        <div
+                           className="pointer"
+                           onClick={() =>
+                              SetChatInput.emit((oldChat) => {
+                                 return oldChat.includes(`@${message.name}`) ? oldChat : `@${message.name} ${oldChat}`;
+                              })
+                           }
+                        >
+                           {message.name}
+                        </div>
+                        <TextureComp name={`Flag/${message.country}`} width={20} />
+                        {hasFlag(message.flag, ChatFlag.Moderator) ? <img src={Mod} style={{ height: 15 }} /> : null}
+                        <div className="f1" />
+                        <div>{new Date(message.time).toLocaleTimeString()}</div>
                      </div>
-                     <TextureComp name={`Flag/${message.country}`} width={20} />
-                     {hasFlag(message.flag, ChatFlag.Moderator) ? <img src={Mod} style={{ height: 15 }} /> : null}
-                     <div className="f1" />
-                     <div>{new Date(message.time).toLocaleTimeString()}</div>
+                     <ChatMessage message={message.message} onImageLoaded={onImageLoaded} />
                   </div>
-                  <ChatMessage message={message.message} onImageLoaded={onImageLoaded} />
-               </div>
-            ))}
-         </div>
+               );
+            })}
+         </ScrollArea>
          <ChatInput channel={channel} onFocusChanged={setIsFocused} />
       </div>
    );

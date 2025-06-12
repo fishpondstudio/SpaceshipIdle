@@ -80,3 +80,27 @@ export const LA1S: IWeaponDefinition = {
       duration: (self, level) => 2,
    },
 };
+export const LA2: IWeaponDefinition = {
+   ...LaserArrayDefenseProps,
+   ...BaseWeaponProps,
+   name: () => t(L.LA2),
+   code: CodeNumber.LA,
+   buildingFlag: BuildingFlag.CanTarget,
+   input: { Power: 2, LA1E: 2 },
+   output: { LA2: 1 },
+   damagePct: 0.5,
+   projectileFlag: ProjectileFlag.LaserDamage,
+   damageType: DamageType.Energy,
+   element: "Rh",
+   ability: {
+      timing: AbilityTiming.OnHit,
+      range: AbilityRange.Single,
+      effect: "ReduceMaxHp",
+      value: (building, level) => {
+         const def = Config.Buildings[building] as IWeaponDefinition;
+         const normVal = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
+         return (normVal * 2.5 * (1 - def.damagePct) * LaserArrayDamagePct) / 2;
+      },
+      duration: (building, level) => 2,
+   },
+};

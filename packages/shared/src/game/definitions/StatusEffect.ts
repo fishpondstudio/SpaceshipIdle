@@ -378,6 +378,15 @@ export const StatusEffects = {
          });
       },
    },
+   ReduceMaxHp: {
+      name: () => t(L.ReduceMaxHp),
+      desc: (value) => t(L.ReduceMaxHpDesc, formatNumber(value)),
+      flag: StatusEffectFlag.Negative,
+      type: StatusEffectType.Mechanical,
+      onTick: (se, rs) => {
+         rs.props.hp -= se.value;
+      },
+   },
 } as const satisfies Record<string, IStatusEffect>;
 
 export function statusEffectOf(key: StatusEffect): IStatusEffect {

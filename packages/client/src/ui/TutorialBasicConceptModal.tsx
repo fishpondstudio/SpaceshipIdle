@@ -6,7 +6,7 @@ import { TutorialQuantumModal } from "./TutorialQuantumModal";
 
 export function TutorialBasicConceptModal(): React.ReactNode {
    return (
-      <>
+      <div className="m10">
          <div>
             <RenderHTML className="render-html" html={t(L.TutorialIntro)} />
          </div>
@@ -55,6 +55,6 @@ export function TutorialBasicConceptModal(): React.ReactNode {
          >
             {t(L.Next)}
          </button>
-      </>
+      </div>
    );
 }

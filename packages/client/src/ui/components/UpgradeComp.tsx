@@ -119,7 +119,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
    );
 
    useShortcut("Capacity0", setCapacity.bind(null, 0));
-   useShortcut("Capacity100", setCapacity.bind(null, 1));
+   useShortcut("Capacity100", setCapacity.bind(null, 100));
 
    return (
       <>

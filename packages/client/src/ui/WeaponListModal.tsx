@@ -17,7 +17,7 @@ import { TextureComp } from "./components/TextureComp";
 
 export function WeaponListModal(): React.ReactNode {
    return (
-      <div className="panel p0">
+      <div className="panel p0 m10">
          <table className="data-table">
             <thead>
                <tr>

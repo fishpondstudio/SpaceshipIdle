@@ -4,11 +4,12 @@
    min-height: 10px;
    background-color: transparent;
 
-   .mantine-ScrollArea-scrollbar {
+   .mantine-ScrollArea-scrollbar:where([data-orientation="vertical"]) {
       padding-bottom: 12px;
    }
+
    .mantine-ScrollArea-thumb {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.2);
    }
 }
 

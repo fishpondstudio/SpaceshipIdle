@@ -128,6 +128,9 @@ export const Resources = {
    LA1S: {
       name: () => t(L.LA1SAmmo),
    },
+   LA2: {
+      name: () => t(L.LA2Ammo),
+   },
    Antimatter: {
       name: () => t(L.Antimatter),
    },

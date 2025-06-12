@@ -18,7 +18,7 @@ export function BattleResultVictoryModal(): React.ReactNode {
    const isSecondChance = G.runtime.left.trialCount > 0;
    const xp = isSecondChance ? 0 : quantumToXP(oldQuantum + 1) - quantumToXP(oldQuantum);
    return (
-      <div style={{ padding: 5 }}>
+      <div className="m10">
          <VictoryHeaderComp />
          <div className="panel">
             <div className="row">

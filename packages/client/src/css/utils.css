@@ -54,6 +54,14 @@
    margin: 10px;
 }
 
+.m15 {
+   margin: 15px;
+}
+
+.m20 {
+   margin: 20px;
+}
+
 .m-10 {
    margin: -10px;
 }
@@ -231,6 +239,10 @@
 
 .text-red {
    color: var(--mantine-color-red-5);
+}
+
+.text-condensed {
+   line-height: 1.25;
 }
 
 .text-blue {

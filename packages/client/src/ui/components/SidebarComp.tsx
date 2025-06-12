@@ -19,7 +19,7 @@ export function SidebarComp({
             <CloseButton onClick={() => hideSidebar()} />
          </div>
          <div className="divider" />
-         <ScrollArea type="hover" scrollbars="y" className="f1">
+         <ScrollArea scrollbars="y" className="f1">
             {children}
          </ScrollArea>
       </div>

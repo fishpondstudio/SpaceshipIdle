@@ -30,7 +30,7 @@ export function ChooseElementModal({
       }
    }, [sound]);
    return (
-      <>
+      <div className="m10">
          <div className="text-center text-xl">
             {permanent ? t(L.ChoosePermanentElementShards) : t(L.AnElementHasBeenDiscovered)}
          </div>
@@ -65,7 +65,7 @@ export function ChooseElementModal({
                />
             ))}
          </div>
-      </>
+      </div>
    );
 }
 

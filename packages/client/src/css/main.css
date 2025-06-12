@@ -55,17 +55,6 @@ body {
    }
 }
 
-::-webkit-scrollbar {
-   width: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-   background-color: rgba(116, 143, 191, 0.25);
-   border: 2px solid transparent;
-   background-clip: padding-box;
-   transition: background-color 0.32s ease-in-out;
-}
-
 .breathing {
    animation: 1s ease infinite alternate breathing;
 }
@@ -177,5 +166,14 @@ body {
          padding: 0;
          width: 0;
       }
+   }
+}
+
+.mantine-ScrollArea-scrollbar {
+   --scrollarea-scrollbar-size: 8px;
+   background-color: transparent;
+
+   &:hover {
+      background-color: transparent;
    }
 }
