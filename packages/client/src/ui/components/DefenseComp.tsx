@@ -8,15 +8,10 @@ import {
 } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { memo } from "react";
 import { G } from "../../utils/Global";
 import type { ITileWithGameState } from "../ITileWithGameState";
 import { StatComp } from "./StatComp";
 import { TitleComp } from "./TitleComp";
-
-const Progress_ = memo(Progress, (oldProps, newProps) => {
-   return oldProps.value === newProps.value;
-});
 
 export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
    const data = gs.tiles.get(tile);
@@ -34,15 +29,17 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          <TitleComp>{t(L.Defense)}</TitleComp>
          <div className="divider my10" />
          <div className="mx10">
-            <div className="row">
+            <div className="h5" />
+            <Tooltip label={formatPercent((rs.props.hp - rs.damageTaken) / rs.props.hp)}>
+               <Progress size="lg" color="green" value={(100 * (rs.props.hp - rs.damageTaken)) / rs.props.hp} />
+            </Tooltip>
+            <div className="row mt5">
                <div className="f1">{t(L.HP)}</div>
                <div>
                   <StatComp current={rs.props.hp} original={rs.originalProps.hp} />
                </div>
             </div>
-            <Tooltip label={formatPercent((rs.props.hp - rs.damageTaken) / rs.props.hp)}>
-               <Progress_ value={(100 * (rs.props.hp - rs.damageTaken)) / rs.props.hp} mb="xs" />
-            </Tooltip>
+            <div className="divider dashed mx-10 my10" />
             <Tooltip
                label={
                   <>

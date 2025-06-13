@@ -5,6 +5,7 @@ import { ChatFlag, type IChat } from "@spaceship-idle/shared/src/rpc/ServerMessa
 import { classNames, hasFlag, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { TypedEvent } from "@spaceship-idle/shared/src/utils/TypedEvent";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import Mod from "../assets/images/Mod.png";
 import { handleCommand } from "../game/HandleCommand";
@@ -55,6 +56,13 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
    const messages = useRef<IChat[]>([]);
    const [isFocused, setIsFocused] = useState(false);
 
+   const rowVirtualizer = useVirtualizer({
+      count: messages.current.length,
+      getScrollElement: () => scrollArea.current,
+      estimateSize: () => 100,
+      overscan: 4,
+   });
+
    useEffect(() => {
       RPCClient.getChatByChannel(channel).then((messages) => {
          OnChatMessage.emit(messages);
@@ -76,28 +84,22 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
 
    // biome-ignore lint/correctness/useExhaustiveDependencies:
    useEffect(() => {
-      if (!scrollArea.current) {
-         return;
-      }
       if (!isLastMessageByMe(messages.current) && isMouseOver.current) {
          return;
       }
-      scrollArea.current.scrollTo({
-         top: scrollArea.current.scrollHeight,
-         behavior: "smooth",
+      G.pixi.ticker.addOnce(() => {
+         rowVirtualizer.scrollToIndex(messages.current.length - 1, { align: "end" });
       });
    }, [handle]);
 
+   // biome-ignore lint/correctness/useExhaustiveDependencies:
    const onImageLoaded = useCallback(() => {
-      if (!scrollArea.current) {
-         return;
-      }
-      scrollArea.current.scrollTo({
-         top: scrollArea.current.scrollHeight,
-         behavior: "smooth",
+      G.pixi.ticker.addOnce(() => {
+         rowVirtualizer.scrollToIndex(messages.current.length - 1, { align: "end" });
       });
    }, []);
 
+   const items = rowVirtualizer.getVirtualItems();
    return (
       <div className={classNames("chat-panel", isFocused ? "active" : null)} style={{ left }}>
          <ScrollArea
@@ -108,31 +110,50 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
                isMouseOver.current = false;
             }}
             viewportRef={scrollArea}
-            classNames={{ viewport: "chat-message-viewport", content: "chat-message-content" }}
+            classNames={{ viewport: "chat-message-viewport" }}
+            styles={{ content: { height: rowVirtualizer.getTotalSize(), width: "100%", position: "relative" } }}
          >
-            {messages.current.map((message, index) => {
-               return (
-                  <div className="message" key={index}>
-                     <div className="name">
-                        <div
-                           className="pointer"
-                           onClick={() =>
-                              SetChatInput.emit((oldChat) => {
-                                 return oldChat.includes(`@${message.name}`) ? oldChat : `@${message.name} ${oldChat}`;
-                              })
-                           }
-                        >
-                           {message.name}
+            <div
+               style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  transform: `translateY(${items[0]?.start ?? 0}px)`,
+               }}
+            >
+               {items.map((item) => {
+                  const message = messages.current[item.index];
+                  return (
+                     <div
+                        className="message"
+                        key={item.key}
+                        data-index={item.index}
+                        ref={rowVirtualizer.measureElement}
+                     >
+                        <div className="name">
+                           <div
+                              className="pointer"
+                              onClick={() =>
+                                 SetChatInput.emit((oldChat) => {
+                                    return oldChat.includes(`@${message.name}`)
+                                       ? oldChat
+                                       : `@${message.name} ${oldChat}`;
+                                 })
+                              }
+                           >
+                              {message.name}
+                           </div>
+                           <TextureComp name={`Flag/${message.country}`} width={20} />
+                           {hasFlag(message.flag, ChatFlag.Moderator) ? <img src={Mod} style={{ height: 15 }} /> : null}
+                           <div className="f1" />
+                           <div>{new Date(message.time).toLocaleTimeString()}</div>
                         </div>
-                        <TextureComp name={`Flag/${message.country}`} width={20} />
-                        {hasFlag(message.flag, ChatFlag.Moderator) ? <img src={Mod} style={{ height: 15 }} /> : null}
-                        <div className="f1" />
-                        <div>{new Date(message.time).toLocaleTimeString()}</div>
+                        <ChatMessage message={message.message} onImageLoaded={onImageLoaded} />
                      </div>
-                     <ChatMessage message={message.message} onImageLoaded={onImageLoaded} />
-                  </div>
-               );
-            })}
+                  );
+               })}
+            </div>
          </ScrollArea>
          <ChatInput channel={channel} onFocusChanged={setIsFocused} />
       </div>

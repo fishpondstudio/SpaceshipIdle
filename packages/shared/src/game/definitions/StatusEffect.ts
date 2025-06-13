@@ -184,13 +184,17 @@ export const StatusEffects = {
          rs.props.hp += se.value;
       },
    },
-   ReduceDamagePerProjectile: {
-      name: () => t(L.ReduceDamagePerProjectile),
-      desc: (value) => t(L.ReduceDamagePerProjectileDesc, formatNumber(value)),
+   ReduceDamage: {
+      name: () => t(L.ReduceDamage),
+      desc: (value) => t(L.ReduceDamageDesc, formatNumber(value)),
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Mechanical,
       onTick: (se, rs) => {
-         rs.props.damagePerProjectile = clamp(rs.props.damagePerProjectile - se.value, 0, Number.POSITIVE_INFINITY);
+         rs.props.damagePerProjectile = clamp(
+            rs.props.damagePerProjectile - se.value / rs.props.projectiles,
+            0,
+            Number.POSITIVE_INFINITY,
+         );
       },
    },
    IncreaseFireCooldown: {

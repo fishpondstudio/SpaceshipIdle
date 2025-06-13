@@ -4,7 +4,7 @@ import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
 import { GameOption } from "../GameOption";
 import { GameState } from "../GameState";
-import { GridSize, posToTile } from "../Grid";
+import { posToTile } from "../Grid";
 import { abilityTarget, AbilityTiming } from "../definitions/Ability";
 import { BuildingFlag, DamageType, ProjectileFlag, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
@@ -198,7 +198,7 @@ export function tickTiles(
                      rs.props.projectileFlag,
                      critical,
                      rs.props.ability,
-                     (rt.random() - 0.5) * GridSize * 0,
+                     rs.projectileMag,
                   ),
                );
             }, 0.1 * i);

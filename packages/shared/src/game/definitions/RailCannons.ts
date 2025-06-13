@@ -57,7 +57,7 @@ export const RC100: IWeaponDefinition = {
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
-      effect: "ReduceDamagePerProjectile",
+      effect: "ReduceDamage",
       value: (building, level) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
          const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });

@@ -89,6 +89,9 @@ export const Resources = {
    MS2S: {
       name: () => t(L.MS2SAmmo),
    },
+   FD1: {
+      name: () => t(L.FD1Ammo),
+   },
    AC76x2: {
       name: () => t(L.AC76x2Ammo),
    },
@@ -130,6 +133,9 @@ export const Resources = {
    },
    LA2: {
       name: () => t(L.LA2Ammo),
+   },
+   LA2D: {
+      name: () => t(L.LA2DAmmo),
    },
    Antimatter: {
       name: () => t(L.Antimatter),

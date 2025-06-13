@@ -85,15 +85,18 @@ body {
 }
 
 .divider {
-   background: var(--mantine-color-dark-4);
+   border-top: 1px solid var(--mantine-color-dark-4);
    align-self: stretch;
-   height: 1px;
    flex: 0 0 1px;
 }
 
 .divider.vertical {
    height: auto;
    width: 1px;
+}
+
+.divider.dashed {
+   border-top-style: dashed;
 }
 
 .tooltip {

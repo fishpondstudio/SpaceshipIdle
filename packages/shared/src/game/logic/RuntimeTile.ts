@@ -2,6 +2,7 @@ import { Rounding, type Tile, type ValueOf, forEach, hasFlag, mapSafeAdd, round,
 import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
 import { type GameState, GameStateUpdated } from "../GameState";
+import { GridSize } from "../Grid";
 import type { ITileData } from "../ITileData";
 import {
    DamageType,
@@ -202,6 +203,13 @@ export class RuntimeTile {
 
    public get def(): IWeaponDefinition | IBuildingDefinition {
       return Config.Buildings[this.data.type];
+   }
+
+   public get projectileMag(): number {
+      if (hasFlag(this.props.projectileFlag, ProjectileFlag.DroneDamage)) {
+         return GridSize * 0.5;
+      }
+      return 0;
    }
 
    public matchCapacity(): void {

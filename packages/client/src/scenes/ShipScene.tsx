@@ -13,6 +13,7 @@ import {
 } from "@spaceship-idle/shared/src/game/Grid";
 import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
 import { AbilityTiming, abilityTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
+import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { OnDamaged, OnEvasion, OnProjectileHit } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
@@ -40,6 +41,7 @@ import {
    type Tile,
    createTile,
    drawDashedLine,
+   hasFlag,
    lookAt,
    mapSafeAdd,
    rand,
@@ -313,8 +315,8 @@ export class ShipScene extends Scene {
          }
       });
 
-      this.drawProjectiles(rt.leftProjectiles, timeSinceLastTick);
-      this.drawProjectiles(rt.rightProjectiles, timeSinceLastTick);
+      this.drawProjectiles(rt.leftProjectiles, dt, timeSinceLastTick);
+      this.drawProjectiles(rt.rightProjectiles, dt, timeSinceLastTick);
 
       this._projectileVisuals.forEach((visual, id) => {
          if (!rt.leftProjectiles.has(id) && !rt.rightProjectiles.has(id)) {
@@ -371,7 +373,7 @@ export class ShipScene extends Scene {
       });
    }
 
-   private drawProjectiles(projectiles: Map<number, Projectile>, timeSinceLastTick: number): void {
+   private drawProjectiles(projectiles: Map<number, Projectile>, dt: number, timeSinceLastTick: number): void {
       projectiles.forEach((projectile, id) => {
          let visual = this._projectileVisuals.get(id);
          if (!visual) {
@@ -389,9 +391,13 @@ export class ShipScene extends Scene {
          }
          const pos = projectile.position(projectile.time + timeSinceLastTick);
          visual.position.set(pos.x, pos.y);
-         visual.rotation = Math.atan2(projectile.dir.y, projectile.dir.x) + Math.PI / 2;
-         // lookAt(visual, tileToPosCenter(projectile.to));
+         visual.anchor.set(0.5, 0.5);
          visual.alpha = 0.5;
+         if (hasFlag(projectile.flag, ProjectileFlag.DroneDamage)) {
+            visual.rotation += dt * Math.PI * 4;
+         } else {
+            visual.rotation = Math.atan2(projectile.dir.y, projectile.dir.x) + Math.PI / 2;
+         }
       });
    }
 

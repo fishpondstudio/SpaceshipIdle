@@ -42,7 +42,7 @@ export const LA1E: IWeaponDefinition = {
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 4, LA1: 2 },
    output: { LA1E: 1 },
-   damagePct: 0.1,
+   damagePct: 0.1 * LaserArrayDamagePct,
    projectileFlag: ProjectileFlag.LaserDamage,
    damageType: DamageType.Energy,
    element: "As",
@@ -66,7 +66,7 @@ export const LA1S: IWeaponDefinition = {
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 2, LA1E: 1 },
    output: { LA1S: 1 },
-   damagePct: 0.9,
+   damagePct: LaserArrayDamagePct,
    projectileFlag: ProjectileFlag.LaserDamage,
    damageType: DamageType.Energy,
    element: "Mo",
@@ -88,7 +88,7 @@ export const LA2: IWeaponDefinition = {
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 2, LA1E: 2 },
    output: { LA2: 1 },
-   damagePct: 0.5,
+   damagePct: 0.5 * LaserArrayDamagePct,
    projectileFlag: ProjectileFlag.LaserDamage,
    damageType: DamageType.Energy,
    element: "Rh",
@@ -100,6 +100,30 @@ export const LA2: IWeaponDefinition = {
          const def = Config.Buildings[building] as IWeaponDefinition;
          const normVal = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
          return (normVal * 2.5 * (1 - def.damagePct) * LaserArrayDamagePct) / 2;
+      },
+      duration: (building, level) => 2,
+   },
+};
+export const LA2D: IWeaponDefinition = {
+   ...LaserArrayDefenseProps,
+   ...BaseWeaponProps,
+   name: () => t(L.LA2D),
+   code: CodeNumber.LA,
+   buildingFlag: BuildingFlag.CanTarget,
+   input: { Power: 2, LA2: 1, MS2S: 1 },
+   output: { LA2D: 1 },
+   damagePct: 0.5 * LaserArrayDamagePct,
+   projectileFlag: ProjectileFlag.LaserDamage,
+   damageType: DamageType.Energy,
+   element: "Pd",
+   ability: {
+      timing: AbilityTiming.OnHit,
+      range: AbilityRange.Single,
+      effect: "ReduceDamage",
+      value: (building, level) => {
+         const def = Config.Buildings[building] as IWeaponDefinition;
+         const normVal = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
+         return normVal * (1 - def.damagePct) * LaserArrayDamagePct;
       },
       duration: (building, level) => 2,
    },

@@ -308,11 +308,17 @@ export class TechDefinitions {
    ////////// R6 //////////
    G1: ITechDefinition = {
       ring: 6,
-      requires: [],
+      name: () => t(L.TechLaserDisruptor),
+      requires: ["G14", "F1"],
+      unlockBuildings: ["LA2D"],
+      multiplier: { LA2: 1, MS2S: 1 },
    };
    G2: ITechDefinition = {
       ring: 6,
-      requires: [],
+      requires: ["F2"],
+      name: () => t(L.TechFPVDrone),
+      unlockBuildings: ["FD1"],
+      multiplier: { MS2C: 1 },
    };
    G3: ITechDefinition = {
       ring: 6,

@@ -51,17 +51,10 @@
    max-height: 50vh;
    text-shadow: 1px 1px 0 #000;
    font-size: var(--mantine-font-size-sm);
-   mask-image: linear-gradient(rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 100%);
+   mask-image: linear-gradient(rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 100%);
    mask-mode: alpha;
-   padding: 5px 0;
-
-   .chat-message-content {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-   }
-
    .message {
+      padding: 5px 0;
       user-select: text;
       -webkit-user-select: text;
       word-break: break-word;

@@ -53,7 +53,7 @@
    left: 10px;
    font-size: var(--mantine-font-size-sm);
    line-height: 1.25;
-   mask-image: linear-gradient(rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0.5) 100%);
+   mask-image: linear-gradient(rgba(255, 255, 255, 1) 75%, rgba(255, 255, 255, 0.75) 100%);
    mask-mode: alpha;
    .row > div:nth-child(1) {
       width: 100px;

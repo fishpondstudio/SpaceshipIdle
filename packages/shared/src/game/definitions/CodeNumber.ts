@@ -8,6 +8,7 @@ export const CodeNumber = {
    RC: "RC",
    PC: "PC",
    LA: "LA",
+   FD: "FD",
    PG: "PG",
    BT: "BT",
 } as const;
@@ -22,6 +23,7 @@ export const CodeLabel: Record<CodeNumber, () => string> = {
    [CodeNumber.PC]: () => t(L.PC),
    [CodeNumber.PG]: () => t(L.PG),
    [CodeNumber.LA]: () => t(L.LA),
+   [CodeNumber.FD]: () => t(L.FD),
    [CodeNumber.BT]: () => t(L.BT),
 };
 
