@@ -1,6 +1,6 @@
 import version from "../version.json";
 
-const ver = "0.2";
+const ver = "0.3";
 
 export function getVersion(): string {
    return `${ver}.${version.build}`;
