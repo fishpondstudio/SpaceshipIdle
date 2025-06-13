@@ -6,7 +6,7 @@ import {
    damageAfterShield,
    evasionChance,
 } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
-import { formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
+import { formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
 import type { ITileWithGameState } from "../ITileWithGameState";
@@ -30,12 +30,14 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          <div className="divider my10" />
          <div className="mx10">
             <div className="h5" />
-            <Tooltip label={formatPercent((rs.props.hp - rs.damageTaken) / rs.props.hp)}>
-               <Progress size="lg" color="green" value={(100 * (rs.props.hp - rs.damageTaken)) / rs.props.hp} />
+            <Tooltip label={formatPercent(rs.hpPct)}>
+               <Progress size="lg" color="green" value={100 * rs.hpPct} />
             </Tooltip>
             <div className="row mt5">
                <div className="f1">{t(L.HP)}</div>
                <div>
+                  {formatNumber(rs.currentHp)}
+                  {" / "}
                   <StatComp current={rs.props.hp} original={rs.originalProps.hp} />
                </div>
             </div>

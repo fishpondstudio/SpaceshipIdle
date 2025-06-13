@@ -201,13 +201,21 @@ export class RuntimeTile {
       return this._damageTaken;
    }
 
+   public get currentHp(): number {
+      return this.props.hp - this._damageTaken;
+   }
+
+   public get hpPct(): number {
+      return this.currentHp / this.props.hp;
+   }
+
    public get def(): IWeaponDefinition | IBuildingDefinition {
       return Config.Buildings[this.data.type];
    }
 
    public get projectileMag(): number {
       if (hasFlag(this.props.projectileFlag, ProjectileFlag.DroneDamage)) {
-         return GridSize * 0.5;
+         return GridSize;
       }
       return 0;
    }

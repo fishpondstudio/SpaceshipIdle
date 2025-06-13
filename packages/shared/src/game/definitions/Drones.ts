@@ -1,7 +1,7 @@
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { getCooldownMultiplier } from "../logic/BattleLogic";
-import { getNormalizedValue, normalizedValueToHp } from "../logic/BuildingLogic";
+import { getNormalizedValue } from "../logic/BuildingLogic";
 import { AbilityRange, AbilityTiming } from "./Ability";
 import {
    type IDefenseProp,
@@ -31,15 +31,16 @@ export const FD1: IWeaponDefinition = {
    damagePct: 0.75,
    damageType: DamageType.Explosive,
    projectileFlag: ProjectileFlag.DroneDamage,
+   projectileSpeed: 150,
    fireCooldown: 6,
    ability: {
-      timing: AbilityTiming.OnFire,
-      range: AbilityRange.Adjacent,
-      effect: "IncreaseMaxHp",
+      timing: AbilityTiming.OnHit,
+      range: AbilityRange.Single,
+      effect: "TickExplosiveDamage",
       value: (building, level) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
          const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
-         return (normalizedValueToHp(damage, building) * (1 - def.damagePct)) / 3;
+         return (damage * (1 - def.damagePct)) / 5;
       },
       duration: (building, level) => 5,
    },

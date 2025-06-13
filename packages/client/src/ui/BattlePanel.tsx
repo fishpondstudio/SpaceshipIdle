@@ -44,7 +44,7 @@ export function BattlePanel({ side }: { side: Side }): React.ReactNode {
       const style = { left: 10 };
       return (
          <>
-            <HPComponent hp={hpStat.currentHP} totalHP={hpStat.maxHP} style={style} color="green" />
+            <HPComponent hp={hpStat.currentHp} totalHp={hpStat.maxHp} style={style} color="green" />
             <DamageComponent stat={G.runtime.rightStat} style={style} color="green" />
          </>
       );
@@ -54,7 +54,7 @@ export function BattlePanel({ side }: { side: Side }): React.ReactNode {
    const style = { right: 10 };
    return (
       <>
-         <HPComponent hp={hpStat.currentHP} totalHP={hpStat.maxHP} style={style} color="red" />
+         <HPComponent hp={hpStat.currentHp} totalHp={hpStat.maxHp} style={style} color="red" />
          <DamageComponent stat={G.runtime.leftStat} style={style} color="red" />
       </>
    );
@@ -62,10 +62,10 @@ export function BattlePanel({ side }: { side: Side }): React.ReactNode {
 
 function HPComponent({
    hp,
-   totalHP,
+   totalHp,
    style,
    color,
-}: { hp: number; totalHP: number; style?: React.CSSProperties; color?: DefaultMantineColor }): React.ReactNode {
+}: { hp: number; totalHp: number; style?: React.CSSProperties; color?: DefaultMantineColor }): React.ReactNode {
    return (
       <div
          className="sf-frame"
@@ -84,13 +84,13 @@ function HPComponent({
          }}
       >
          <div className="h5"></div>
-         <Progress color={color} value={(100 * hp) / totalHP} />
+         <Progress color={color} value={(100 * hp) / totalHp} />
          <div className="h5"></div>
          <div className="row g5">
             <div className="f1">{t(L.HP)}</div>
-            <div className="f1 text-center">{formatPercent(hp / totalHP, 0)}</div>
+            <div className="f1 text-center">{formatPercent(hp / totalHp, 0)}</div>
             <div className="f1 text-right">
-               {formatNumber(hp)}/{formatNumber(totalHP)}
+               {formatNumber(hp)}/{formatNumber(totalHp)}
             </div>
          </div>
       </div>

@@ -61,7 +61,15 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             {hasFlag(rs.props.projectileFlag, ProjectileFlag.LaserDamage) ? (
                <div className="row">
                   <div className="f1">{t(L.LaserProjectile)}</div>
-                  <Tooltip label={t(L.LaserProjectileDesc)} multiline maw="30vw">
+                  <Tooltip label={<RenderHTML html={t(L.LaserProjectileDesc)} />} multiline maw="30vw">
+                     <div className="mi">info</div>
+                  </Tooltip>
+               </div>
+            ) : null}
+            {hasFlag(rs.props.projectileFlag, ProjectileFlag.DroneDamage) ? (
+               <div className="row">
+                  <div className="f1">{t(L.DroneProjectile)}</div>
+                  <Tooltip label={<RenderHTML html={t(L.DroneProjectileDesc)} />} multiline maw="30vw">
                      <div className="mi">info</div>
                   </Tooltip>
                </div>

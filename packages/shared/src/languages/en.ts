@@ -669,4 +669,7 @@ export const EN = {
    FD1: "FD1 Eoraptor",
    FD1Ammo: "FD1 Ammo",
    TechFPVDrone: "FPV Drone",
+   DroneProjectile: "Drone Projectile",
+   DroneProjectileDesc:
+      "Drone projectiles target the module with the <b>lowest HP percentage</b> (or a random module if all have the same HP percentage). Before reaching the target, they <b>travel through</b> enemy modules (without dealing damage). If the target is destroyed mid-flight, the projectile continues on and damages the next module on its path",
 };

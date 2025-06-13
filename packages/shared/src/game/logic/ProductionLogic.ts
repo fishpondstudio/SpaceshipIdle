@@ -180,14 +180,14 @@ export function tickProduction(
    stat.rawDamagePerSec = { [DamageType.Kinetic]: 0, [DamageType.Explosive]: 0, [DamageType.Energy]: 0 };
    stat.actualDamagePerSec = { [DamageType.Kinetic]: 0, [DamageType.Explosive]: 0, [DamageType.Energy]: 0 };
 
-   const [hp, maxHP] = rt.tabulateHP(gs.tiles);
-   if (hp >= stat.currentHP) {
+   const [hp, maxHp] = rt.tabulateHp(gs.tiles);
+   if (hp >= stat.currentHp) {
       stat.undamagedSec++;
    } else {
       stat.undamagedSec = 0;
    }
-   stat.currentHP = hp;
-   stat.maxHP = maxHP + stat.destroyedHP;
+   stat.currentHp = hp;
+   stat.maxHp = maxHp + stat.destroyedHp;
 }
 
 export const RequestFloater = new TypedEvent<{ tile: Tile; amount: number }>();

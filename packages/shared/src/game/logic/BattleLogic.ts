@@ -15,7 +15,7 @@ import { Projectile } from "./Projectile";
 import { getMatchmakingQuantum } from "./ResourceLogic";
 import { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
-import { RuntimeFlag } from "./RuntimeTile";
+import { RuntimeFlag, type RuntimeTile } from "./RuntimeTile";
 import { calculateAABB, isEnemy } from "./ShipLogic";
 import { Side } from "./Side";
 
@@ -44,7 +44,14 @@ export function tickProjectiles(
          projectiles.delete(id);
          return;
       }
-      const target = targets.tiles.get(tile);
+      let target = targets.tiles.get(tile);
+      if (
+         hasFlag(projectile.flag, ProjectileFlag.DroneDamage) &&
+         targets.tiles.has(projectile.toTile) &&
+         tile !== projectile.toTile
+      ) {
+         target = undefined;
+      }
       if (target && !projectile.hit.has(tile)) {
          if (hasFlag(projectile.flag, ProjectileFlag.LaserDamage)) {
             projectile.hit.add(tile);
@@ -104,6 +111,25 @@ export function tickTiles(
    stat: RuntimeStat,
    rt: Runtime,
 ): void {
+   let lowestHp: RuntimeTile;
+   let lowestHpPct: RuntimeTile;
+
+   to.tiles.forEach((data, tile) => {
+      const rs = rt.get(tile);
+      if (!rs) {
+         return;
+      }
+      if (rs.isDead) {
+         return;
+      }
+      if (!lowestHp || rs.currentHp < lowestHp.currentHp) {
+         lowestHp = rs;
+      }
+      if (!lowestHpPct || rs.hpPct < lowestHpPct.hpPct) {
+         lowestHpPct = rs;
+      }
+   });
+
    from.tiles.forEach((data, tile) => {
       const def = Config.Buildings[data.type];
       if (!hasFlag(def.buildingFlag, BuildingFlag.CanTarget)) {
@@ -143,7 +169,9 @@ export function tickTiles(
          rs.target = null;
          target = null;
       }
-      if (!target) {
+      if (hasFlag(def.projectileFlag, ProjectileFlag.DroneDamage)) {
+         target = lowestHpPct.tile;
+      } else if (!target) {
          let distSqr = Number.POSITIVE_INFINITY;
          to.tiles.forEach((_, targetTile) => {
             const targetPoint = tileToPoint(targetTile);
@@ -278,8 +306,8 @@ export function calcShipScore(ship: GameState): [number, Runtime] {
       reduceOf(rt.leftStat.rawDamage, (prev, k, v) => prev + v, 0);
 
    const quantum = getMatchmakingQuantum(ship);
-   const effectiveHP = rt.leftStat.maxHP / actualToRaw;
-   return [(effectiveHP * dps) / quantum / 100_000, rt];
+   const effectiveHp = rt.leftStat.maxHp / actualToRaw;
+   return [(effectiveHp * dps) / quantum / 100_000, rt];
 }
 
 // const data: number[][] = Array(100);

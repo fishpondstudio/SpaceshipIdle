@@ -15,9 +15,9 @@ export class RuntimeStat {
    rawDamages: RingBuffer<Record<DamageType, number>> = new RingBuffer(100);
    actualDamages: RingBuffer<Record<DamageType, number>> = new RingBuffer(100);
 
-   currentHP = 0;
-   maxHP = 0;
-   destroyedHP = 0;
+   currentHp = 0;
+   maxHp = 0;
+   destroyedHp = 0;
    undamagedSec = 0;
 
    rawDamage: Record<DamageType, number> = {

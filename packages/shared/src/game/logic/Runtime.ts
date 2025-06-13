@@ -113,9 +113,9 @@ export class Runtime {
       if (!rs) return;
       rs.onDestroyed();
       if (isEnemy(tile)) {
-         this.rightStat.destroyedHP += rs.props.hp;
+         this.rightStat.destroyedHp += rs.props.hp;
       } else {
-         this.leftStat.destroyedHP += rs.props.hp;
+         this.leftStat.destroyedHp += rs.props.hp;
       }
       this.delete(tile);
    }
@@ -207,17 +207,17 @@ export class Runtime {
       }
    }
 
-   public tabulateHP(tiles: Tiles): [number, number] {
+   public tabulateHp(tiles: Tiles): [number, number] {
       let hp = 0;
-      let totalHP = 0;
+      let totalHp = 0;
       tiles.forEach((data, tile) => {
          const rs = this.get(tile);
          if (rs) {
             hp += rs.props.hp - rs.damageTaken;
-            totalHP += rs.props.hp;
+            totalHp += rs.props.hp;
          }
       });
-      return [hp, totalHP];
+      return [hp, totalHp];
    }
 
    public totalDealtDamage(): [number, number] {
@@ -236,7 +236,7 @@ export class Runtime {
          }
       });
       // Damaged dealt is the opposite of damage taken, so we swap left and right
-      return [right + this.rightStat.destroyedHP, left + this.leftStat.destroyedHP];
+      return [right + this.rightStat.destroyedHp, left + this.leftStat.destroyedHp];
    }
 
    private _tickStatusEffect(): void {
