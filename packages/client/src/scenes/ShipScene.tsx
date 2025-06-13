@@ -607,7 +607,9 @@ export class ShipScene extends Scene {
          this._selectedTiles.delete(clickedTile);
       } else {
          this._selectedTiles.add(clickedTile);
-         console.log(clickedTile, data);
+         if (import.meta.env.DEV) {
+            console.log(clickedTile, data);
+         }
       }
       this.updateSelection();
    }

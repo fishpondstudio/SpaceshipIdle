@@ -111,8 +111,8 @@ export function tickTiles(
    stat: RuntimeStat,
    rt: Runtime,
 ): void {
-   let lowestHp: RuntimeTile;
-   let lowestHpPct: RuntimeTile;
+   let lowestHp: RuntimeTile | undefined;
+   let lowestHpPct: RuntimeTile | undefined;
 
    to.tiles.forEach((data, tile) => {
       const rs = rt.get(tile);
@@ -166,11 +166,11 @@ export function tickTiles(
       let target = rs.target;
       // `target` is no longer valid, will need to re-target
       if (target && !to.tiles.has(target)) {
-         rs.target = null;
-         target = null;
+         rs.target = undefined;
+         target = undefined;
       }
       if (hasFlag(def.projectileFlag, ProjectileFlag.DroneDamage)) {
-         target = lowestHpPct.tile;
+         target = lowestHpPct?.tile;
       } else if (!target) {
          let distSqr = Number.POSITIVE_INFINITY;
          to.tiles.forEach((_, targetTile) => {

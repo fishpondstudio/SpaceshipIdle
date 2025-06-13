@@ -83,7 +83,7 @@ export class Runtime {
       }
       const aabb = shipAABB(1, Side.Left);
       this.tiles.forEach((tile) => {
-         tile.target = null;
+         tile.target = undefined;
       });
       for (let y = aabb.min.y; y <= aabb.max.y; ++y) {
          for (let x = aabb.min.x; x <= aabb.max.x; ++x) {

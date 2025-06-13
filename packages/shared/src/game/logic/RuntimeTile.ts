@@ -69,7 +69,7 @@ export interface ICriticalDamage {
 export const OnStatusEffectsChanged = new TypedEvent<{ tile: Tile; buff: number; debuff: number }>();
 
 export class RuntimeTile {
-   public target: Tile | null = null;
+   public target: Tile | undefined;
    public readonly insufficient: Set<Resource> = new Set();
    public cooldown = Number.POSITIVE_INFINITY;
    public readonly statusEffects = new Map<Tile, IRuntimeEffect>();

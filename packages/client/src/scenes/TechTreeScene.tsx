@@ -231,7 +231,6 @@ export class TechTreeScene extends Scene {
       const tech = this.getTechByPosition(pos);
       if (tech) {
          playClick();
-         console.log(tech, Config.Tech[tech]);
          this.drawSelected(tech);
       }
    }
