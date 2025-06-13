@@ -32,7 +32,7 @@ export const FD1: IWeaponDefinition = {
    damageType: DamageType.Explosive,
    projectileFlag: ProjectileFlag.DroneDamage,
    projectileSpeed: 150,
-   fireCooldown: 6,
+   fireCooldown: 5,
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
