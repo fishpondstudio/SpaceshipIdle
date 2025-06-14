@@ -1,6 +1,10 @@
 import { type Shortcut, isShortcutEqual, makeShortcut } from "@spaceship-idle/shared/src/game/Shortcut";
+import { TypedEvent } from "@spaceship-idle/shared/src/utils/TypedEvent";
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { G } from "./Global";
+
+const OnKeyDown = new TypedEvent<KeyboardEvent>();
+window.addEventListener("keydown", OnKeyDown.emit);
 
 export const useShortcut = (shortcut: Shortcut, callback: (event: KeyboardEvent) => void) => {
    const callbackRef = useRef(callback);
@@ -29,10 +33,8 @@ export const useShortcut = (shortcut: Shortcut, callback: (event: KeyboardEvent)
    );
 
    useEffect(() => {
-      window.addEventListener("keydown", handleKeyDown);
-
-      return () => {
-         window.removeEventListener("keydown", handleKeyDown);
-      };
+      OnKeyDown.clear();
+      const handle = OnKeyDown.on(handleKeyDown);
+      return () => handle.dispose();
    }, [handleKeyDown]);
 };
