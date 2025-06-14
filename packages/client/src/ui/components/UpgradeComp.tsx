@@ -75,29 +75,29 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
       [data, gs.resources],
    );
 
-   useShortcut("Upgrade1", upgrade.bind(null, data.level + 1));
-   useShortcut("Upgrade5", upgrade.bind(null, getNextLevel(data.level, 5)));
-   useShortcut("Upgrade10", upgrade.bind(null, getNextLevel(data.level, 10)));
+   useShortcut("Upgrade1", upgrade.bind(null, data.level + 1), [upgrade]);
+   useShortcut("Upgrade5", upgrade.bind(null, getNextLevel(data.level, 5)), [upgrade]);
+   useShortcut("Upgrade10", upgrade.bind(null, getNextLevel(data.level, 10)), [upgrade]);
 
-   useShortcut("Downgrade1", downgrade.bind(null, data.level - 1));
-   useShortcut("Downgrade5", downgrade.bind(null, getNextLevel(data.level, -5)));
-   useShortcut("Downgrade10", downgrade.bind(null, getNextLevel(data.level, -10)));
+   useShortcut("Downgrade1", downgrade.bind(null, data.level - 1), [downgrade]);
+   useShortcut("Downgrade5", downgrade.bind(null, getNextLevel(data.level, -5)), [downgrade]);
+   useShortcut("Downgrade10", downgrade.bind(null, getNextLevel(data.level, -10)), [downgrade]);
 
-   useShortcut("Recycle", recycle);
+   useShortcut("Recycle", recycle, [recycle]);
 
    const upgradeMaxCached = useCallback(() => {
       upgradeMax(data, G.save.current);
       GameStateUpdated.emit();
    }, [data]);
 
-   useShortcut("UpgradeMax", upgradeMaxCached);
+   useShortcut("UpgradeMax", upgradeMaxCached, [upgradeMaxCached]);
 
    const matchCapacityCached = useCallback(() => {
       G.runtime.get(tile)?.matchCapacity();
       GameStateUpdated.emit();
    }, [tile]);
 
-   useShortcut("MatchCapacityToAmmoProduction", matchCapacityCached);
+   useShortcut("MatchCapacityToAmmoProduction", matchCapacityCached, [matchCapacityCached]);
 
    const setPriority = useCallback(
       (value: number) => {
@@ -107,8 +107,8 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
       [data],
    );
 
-   useShortcut("Priority0", setPriority.bind(null, 0));
-   useShortcut("Priority10", setPriority.bind(null, 10));
+   useShortcut("Priority0", setPriority.bind(null, 0), [setPriority]);
+   useShortcut("Priority10", setPriority.bind(null, 10), [setPriority]);
 
    const setCapacity = useCallback(
       (value: number) => {
@@ -118,8 +118,8 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
       [data],
    );
 
-   useShortcut("Capacity0", setCapacity.bind(null, 0));
-   useShortcut("Capacity100", setCapacity.bind(null, 100));
+   useShortcut("Capacity0", setCapacity.bind(null, 0), [setCapacity]);
+   useShortcut("Capacity100", setCapacity.bind(null, 100), [setCapacity]);
 
    return (
       <>

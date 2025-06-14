@@ -78,7 +78,7 @@ export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNod
          {!(WeaponKey in def) && rs.xpMultiplier.value > 1 ? (
             <>
                <div className="subtitle">
-                  {t(L.XPMultiplier)} x${rs.xpMultiplier.value - 1}
+                  {t(L.XPMultiplier)} x{rs.xpMultiplier.value - 1}
                </div>
                {rs.xpMultiplier.detail.map((m) => {
                   return (

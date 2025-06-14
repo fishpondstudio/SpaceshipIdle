@@ -1,40 +1,35 @@
-import { type Shortcut, isShortcutEqual, makeShortcut } from "@spaceship-idle/shared/src/game/Shortcut";
-import { TypedEvent } from "@spaceship-idle/shared/src/utils/TypedEvent";
-import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { isShortcutEqual, makeShortcut, type Shortcut } from "@spaceship-idle/shared/src/game/Shortcut";
+import { forEach } from "@spaceship-idle/shared/src/utils/Helper";
+import { type DependencyList, useEffect } from "react";
 import { G } from "./Global";
 
-const OnKeyDown = new TypedEvent<KeyboardEvent>();
-window.addEventListener("keydown", OnKeyDown.emit);
+window.addEventListener("keydown", (e) => {
+   const isTextInput =
+      e.target instanceof HTMLTextAreaElement ||
+      (e.target instanceof HTMLInputElement && (!e.target.type || e.target.type === "text")) ||
+      (e.target as HTMLElement).isContentEditable;
+   if (isTextInput) {
+      return;
+   }
+   const shortcut = makeShortcut(e);
 
-export const useShortcut = (shortcut: Shortcut, callback: (event: KeyboardEvent) => void) => {
-   const callbackRef = useRef(callback);
-   useLayoutEffect(() => {
-      callbackRef.current = callback;
+   forEach(G.save.options.shortcuts, (key, config) => {
+      if (isShortcutEqual(config, shortcut)) {
+         const callback = shortcuts.get(key);
+         if (callback) {
+            callback(e);
+         }
+      }
    });
+});
 
-   const handleKeyDown = useCallback(
-      (event: KeyboardEvent) => {
-         const isTextInput =
-            event.target instanceof HTMLTextAreaElement ||
-            (event.target instanceof HTMLInputElement && (!event.target.type || event.target.type === "text")) ||
-            (event.target as HTMLElement).isContentEditable;
-         if (isTextInput) {
-            return;
-         }
-         const config = G.save.options.shortcuts[shortcut];
-         if (!config) {
-            return;
-         }
-         if (isShortcutEqual(config, makeShortcut(event))) {
-            callbackRef.current(event);
-         }
-      },
-      [shortcut],
-   );
+export const shortcuts = new Map<Shortcut, (event: KeyboardEvent) => void>();
 
+export const useShortcut = (shortcut: Shortcut, callback: (event: KeyboardEvent) => void, deps: DependencyList) => {
    useEffect(() => {
-      OnKeyDown.clear();
-      const handle = OnKeyDown.on(handleKeyDown);
-      return () => handle.dispose();
-   }, [handleKeyDown]);
+      shortcuts.set(shortcut, callback);
+      return () => {
+         shortcuts.delete(shortcut);
+      };
+   }, [shortcut, callback, ...deps]);
 };

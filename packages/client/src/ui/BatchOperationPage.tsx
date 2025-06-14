@@ -51,7 +51,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
       GameStateUpdated.emit();
    }, [tiles]);
 
-   useShortcut("Upgrade1", upgrade);
+   useShortcut("Upgrade1", upgrade, [upgrade]);
 
    const downgrade = useCallback(() => {
       let success = 0;
@@ -80,7 +80,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
       GameStateUpdated.emit();
    }, [tiles]);
 
-   useShortcut("Downgrade1", downgrade);
+   useShortcut("Downgrade1", downgrade, [downgrade]);
 
    const matchCapacityCached = useCallback(() => {
       for (const tile of tiles) {
@@ -89,7 +89,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
       GameStateUpdated.emit();
    }, [tiles]);
 
-   useShortcut("MatchCapacityToAmmoProduction", matchCapacityCached);
+   useShortcut("MatchCapacityToAmmoProduction", matchCapacityCached, [matchCapacityCached]);
 
    const setPriority = useCallback(
       (p: number) => {
@@ -117,11 +117,11 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
       [tiles],
    );
 
-   useShortcut("Priority0", setPriority.bind(null, 0));
-   useShortcut("Priority10", setPriority.bind(null, 10));
+   useShortcut("Priority0", setPriority.bind(null, 0), [setPriority]);
+   useShortcut("Priority10", setPriority.bind(null, 10), [setPriority]);
 
-   useShortcut("Capacity0", setCapacity.bind(null, 0));
-   useShortcut("Capacity100", setCapacity.bind(null, 100));
+   useShortcut("Capacity0", setCapacity.bind(null, 0), [setCapacity]);
+   useShortcut("Capacity100", setCapacity.bind(null, 100), [setCapacity]);
 
    return (
       <SidebarComp title={t(L.SelectedXModules, tiles.size)}>
