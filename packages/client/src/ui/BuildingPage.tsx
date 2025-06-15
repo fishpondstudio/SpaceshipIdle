@@ -3,6 +3,7 @@ import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { CodeLabel } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import type React from "react";
 import { memo, useCallback } from "react";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
@@ -46,13 +47,13 @@ export function BuildingPage({ tile, gs, readonly }: ITileWithGameState & { read
          {!readonly ? (
             <>
                <UpgradeComp tile={tile} gs={gs} />
-               <ProductionComp tile={tile} gs={gs} />
             </>
          ) : (
             <>
                <TitleComp>{t(L.LevelX, data.level)}</TitleComp>
             </>
          )}
+         <ProductionComp tile={tile} gs={gs} />
          <DefenseComp tile={tile} gs={gs} />
          <AttackComp tile={tile} gs={gs} />
          <StatusEffectComp tile={tile} gs={gs} />

@@ -228,7 +228,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                onChange={setCapacity}
                value={Math.round(data.capacity * 100)}
             />
-            <div className="h20" />
+            <div className="h25" />
          </div>
       </>
    );

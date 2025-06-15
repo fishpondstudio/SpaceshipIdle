@@ -126,6 +126,14 @@
    margin-top: 15px;
 }
 
+.ml10 {
+   margin-left: 10px;
+}
+
+.mr5 {
+   margin-right: 5px;
+}
+
 .mb10 {
    margin-bottom: 10px;
 }
@@ -191,6 +199,14 @@
 
 .h20 {
    height: 20px;
+}
+
+.h25 {
+   height: 25px;
+}
+
+.h30 {
+   height: 30px;
 }
 
 .w5 {

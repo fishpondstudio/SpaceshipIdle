@@ -1,4 +1,4 @@
-import { autoPlacement, computePosition, offset } from "@floating-ui/core";
+import { computePosition, flip, offset, shift } from "@floating-ui/core";
 import { notifications } from "@mantine/notifications";
 import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
@@ -62,7 +62,8 @@ import {
    TilingSprite,
 } from "pixi.js";
 import { Fonts } from "../assets";
-import { SetFloatingPanel } from "../ui/FloatingPanelHelper";
+import { BuildingPopover } from "../ui/BuildingPopover";
+import { SetPopover } from "../ui/PopoverHelper";
 import { setSidebar } from "../ui/Sidebar";
 import { playClick, playError } from "../ui/Sound";
 import { TilePage } from "../ui/TilePage";
@@ -611,7 +612,12 @@ export class ShipScene extends Scene {
          this._selectedTiles.add(clickedTile);
       }
 
-      if (this._selectedTiles.size === 1 && this._selectedTiles.has(clickedTile)) {
+      if (
+         this._selectedTiles.size === 1 &&
+         this._selectedTiles.has(clickedTile) &&
+         G.runtime.has(clickedTile) &&
+         G.runtime.battleType !== BattleType.Peace
+      ) {
          console.log(clickedTile, data);
          const posTopLeft = tileToPos(clickedTile);
          const posBottomRight = { x: posTopLeft.x + GridSize, y: posTopLeft.y + GridSize };
@@ -627,22 +633,34 @@ export class ShipScene extends Scene {
          computePosition(referenceEl, floatingEl, {
             platform: {
                getElementRects: (data) => data,
-               getClippingRect: () => ({ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight }),
+               getClippingRect: () => ({
+                  x: 50,
+                  y: 50,
+                  width: window.innerWidth - 100,
+                  height: window.innerHeight - 100,
+               }),
                getDimensions: (element) => element,
             },
-            middleware: [offset(10), autoPlacement()],
+            middleware: [offset(10), flip(), shift()],
+            placement: "right-start",
          }).then((data) => {
-            console.log(data);
-            SetFloatingPanel.emit({
-               rect: AABB.fromRect({
-                  x: data.x,
-                  y: data.y,
-                  width: floatingEl.width,
-                  height: floatingEl.height,
-               }),
-               content: <div>Hello</div>,
-            });
+            const gs = G.runtime.getGameState(clickedTile);
+            if (gs) {
+               SetPopover.emit({
+                  rect: AABB.fromRect({
+                     x: data.x,
+                     y: data.y,
+                     width: floatingEl.width,
+                     height: floatingEl.height,
+                  }),
+                  content: <BuildingPopover tile={clickedTile} gs={gs} />,
+               });
+            } else {
+               SetPopover.emit(undefined);
+            }
          });
+      } else {
+         SetPopover.emit(undefined);
       }
 
       this.updateSelection();
