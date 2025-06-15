@@ -10,11 +10,7 @@ import { RenderHTML } from "./RenderHTMLComp";
 import { ResourceAmount } from "./ResourceAmountComp";
 import { TitleComp } from "./TitleComp";
 
-export function ProductionComp({
-   tile,
-   gs,
-   hideFirstDivider,
-}: ITileWithGameState & { hideFirstDivider?: boolean }): React.ReactNode {
+export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNode {
    const data = gs.tiles.get(tile);
    if (!data) {
       return null;
@@ -32,22 +28,21 @@ export function ProductionComp({
    }
    return (
       <>
-         {!hideFirstDivider ? <div className="divider my10" /> : <div className="h10" />}
+         <div className="divider my10" />
          <TitleComp>{t(L.Production)}</TitleComp>
          <div className="divider my10" />
          <div className="mx10">
             <div className="row text-sm">
-               <div className="f1">
+               <div className="f1 col g5 text-lh1">
                   {mapOf(def.input, (res, amount) => {
                      return (
                         <div
-                           className={classNames("row", rs.insufficient.has(res) ? "text-yellow" : null)}
-                           style={{ justifyContent: "flex-start" }}
+                           className={classNames("row g5 fstart", rs.insufficient.has(res) ? "text-yellow" : null)}
                            key={res}
                         >
                            <ResourceAmount res={res} amount={amount * data.level * data.capacity} />{" "}
                            {Config.Resources[res].name()}
-                           {rs.insufficient.has(res) ? <div className="mi sm">error</div> : null}
+                           {rs.insufficient.has(res) ? <div className="mi sm inline">error</div> : null}
                         </div>
                      );
                   })}
