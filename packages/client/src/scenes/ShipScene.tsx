@@ -1,3 +1,4 @@
+import { autoPlacement, computePosition, offset } from "@floating-ui/core";
 import { notifications } from "@mantine/notifications";
 import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
@@ -48,7 +49,7 @@ import {
    tileToPoint,
 } from "@spaceship-idle/shared/src/utils/Helper";
 import { ObjectPool } from "@spaceship-idle/shared/src/utils/ObjectPool";
-import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
+import { AABB, type IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import {
    type ColorSource,
@@ -61,6 +62,7 @@ import {
    TilingSprite,
 } from "pixi.js";
 import { Fonts } from "../assets";
+import { SetFloatingPanel } from "../ui/FloatingPanelHelper";
 import { setSidebar } from "../ui/Sidebar";
 import { playClick, playError } from "../ui/Sound";
 import { TilePage } from "../ui/TilePage";
@@ -607,10 +609,42 @@ export class ShipScene extends Scene {
          this._selectedTiles.delete(clickedTile);
       } else {
          this._selectedTiles.add(clickedTile);
-         if (import.meta.env.DEV) {
-            console.log(clickedTile, data);
-         }
       }
+
+      if (this._selectedTiles.size === 1 && this._selectedTiles.has(clickedTile)) {
+         console.log(clickedTile, data);
+         const posTopLeft = tileToPos(clickedTile);
+         const posBottomRight = { x: posTopLeft.x + GridSize, y: posTopLeft.y + GridSize };
+         const posTopLeftScreen = this.viewport.worldToScreen(posTopLeft);
+         const posBottomRightScreen = this.viewport.worldToScreen(posBottomRight);
+         const referenceEl = {
+            x: posTopLeftScreen.x,
+            y: posTopLeftScreen.y,
+            width: posBottomRightScreen.x - posTopLeftScreen.x,
+            height: posBottomRightScreen.y - posTopLeftScreen.y,
+         };
+         const floatingEl = { x: 0, y: 0, width: 300, height: 400 };
+         computePosition(referenceEl, floatingEl, {
+            platform: {
+               getElementRects: (data) => data,
+               getClippingRect: () => ({ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight }),
+               getDimensions: (element) => element,
+            },
+            middleware: [offset(10), autoPlacement()],
+         }).then((data) => {
+            console.log(data);
+            SetFloatingPanel.emit({
+               rect: AABB.fromRect({
+                  x: data.x,
+                  y: data.y,
+                  width: floatingEl.width,
+                  height: floatingEl.height,
+               }),
+               content: <div>Hello</div>,
+            });
+         });
+      }
+
       this.updateSelection();
    }
 

@@ -196,6 +196,10 @@ export class AABB {
       public max: IHaveXY,
    ) {}
 
+   public static fromRect(rect: { x: number; y: number; width: number; height: number }): AABB {
+      return new AABB({ x: rect.x, y: rect.y }, { x: rect.x + rect.width, y: rect.y + rect.height });
+   }
+
    public contains(point: IHaveXY): boolean {
       return point.x >= this.min.x && point.x <= this.max.x && point.y >= this.min.y && point.y <= this.max.y;
    }

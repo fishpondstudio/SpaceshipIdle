@@ -14,6 +14,7 @@ import { Sidebar } from "./ui/Sidebar.tsx";
 import { TopPanel } from "./ui/TopPanel.tsx";
 import { G } from "./utils/Global.tsx";
 import { ModalManager } from "./utils/ModalManager.tsx";
+import { FloatingPanel } from "./ui/FloatingPanel.tsx";
 
 const spaceColors = [
    "#f0f4fa",
@@ -64,6 +65,7 @@ createRoot(root).render(
    <MantineProvider defaultColorScheme="dark" theme={theme}>
       <Notifications />
       <Sidebar />
+      <FloatingPanel />
       <TopPanel />
       <BottomPanel />
       <ChatPanel />
