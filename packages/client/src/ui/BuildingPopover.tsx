@@ -4,6 +4,7 @@ import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { useEffect } from "react";
+import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { AttackComp } from "./components/AttackComp";
 import { DefenseComp } from "./components/DefenseComp";
@@ -11,6 +12,7 @@ import { ProductionComp } from "./components/ProductionComp";
 import { StatusEffectComp } from "./components/StatusEffectComp";
 import type { ITileWithGameState } from "./ITileWithGameState";
 import { SetPopover } from "./PopoverHelper";
+import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 
 export function BuildingPopover({ tile, gs }: ITileWithGameState): React.ReactNode {
    const data = gs.tiles.get(tile);
@@ -18,7 +20,7 @@ export function BuildingPopover({ tile, gs }: ITileWithGameState): React.ReactNo
 
    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
    useEffect(() => {
-      if (!gs.tiles.has(tile)) {
+      if (G.runtime.battleType === BattleType.Peace || !gs.tiles.has(tile)) {
          SetPopover.emit(undefined);
       }
    }, [handle]);

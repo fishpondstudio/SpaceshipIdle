@@ -2,7 +2,7 @@ import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { getNonWeaponBuildingXP } from "@spaceship-idle/shared/src/game/logic/ProductionLogic";
-import { formatNumber, isEmpty, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { classNames, formatNumber, isEmpty, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
 import type { ITileWithGameState } from "../ITileWithGameState";
@@ -40,10 +40,14 @@ export function ProductionComp({
                <div className="f1">
                   {mapOf(def.input, (res, amount) => {
                      return (
-                        <div className="row" style={{ justifyContent: "flex-start" }} key={res}>
+                        <div
+                           className={classNames("row", rs.insufficient.has(res) ? "text-yellow" : null)}
+                           style={{ justifyContent: "flex-start" }}
+                           key={res}
+                        >
                            <ResourceAmount res={res} amount={amount * data.level * data.capacity} />{" "}
                            {Config.Resources[res].name()}
-                           {rs.insufficient.has(res) ? <div className="mi sm text-yellow">error</div> : null}
+                           {rs.insufficient.has(res) ? <div className="mi sm">error</div> : null}
                         </div>
                      );
                   })}
