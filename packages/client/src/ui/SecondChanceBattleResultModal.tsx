@@ -4,13 +4,11 @@ import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
-import { hideModal, showModal } from "../utils/ToggleModal";
+import { hideModal } from "../utils/ToggleModal";
 import { BattleReportComp } from "./BattleReportComp";
 import { DefeatedHeaderComp } from "./components/BattleResultHeader";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
-import { PrestigeModal } from "./PrestigeModal";
-import { PrestigeReason } from "./PrestigeReason";
 
 export function SecondChanceBattleResultModal(): React.ReactNode {
    return (
@@ -47,18 +45,6 @@ export function SecondChanceBattleResultModal(): React.ReactNode {
             }}
          >
             <div>{t(L.Continue)}</div>
-         </button>
-         <div className="h10" />
-         <button
-            className="btn w100 p5 row text-lg"
-            onClick={() => {
-               showModal({
-                  children: <PrestigeModal reason={PrestigeReason.None} />,
-                  size: "sm",
-               });
-            }}
-         >
-            {t(L.PrestigeAnyway)}
          </button>
       </div>
    );

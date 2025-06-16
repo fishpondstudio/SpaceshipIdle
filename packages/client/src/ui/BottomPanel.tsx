@@ -1,6 +1,8 @@
 import { Progress, SegmentedControl, Tooltip } from "@mantine/core";
-import { GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { GameState, GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
+import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, hasFlag, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
@@ -14,20 +16,52 @@ import { OnSceneSwitched } from "../utils/SceneManager";
 import { Scenes } from "../utils/Scenes";
 import { showModal } from "../utils/ToggleModal";
 import { ChooseElementModal } from "./ChooseElementModal";
+import { hideLoading, showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { hideSidebar } from "./Sidebar";
 import { playClick } from "./Sound";
 import { TutorialProgressModal } from "./TutorialProgressModal";
 
-const speedWidth = 360;
-function _SpeedSwitcher({ speed }: { speed: number }): React.ReactNode {
+function SpeedSwitcher({ speed }: { speed: number }): React.ReactNode {
+   if (G.runtime.battleStatus !== BattleStatus.InProgress) {
+      return (
+         <button
+            className="btn text-lg filled"
+            style={{
+               padding: "5px 10px",
+               position: "absolute",
+               bottom: 10,
+               left: "50%",
+               transform: "translateX(-50%)",
+               border: "1px solid var(--mantine-color-default-border)",
+            }}
+            onClick={() => {
+               showLoading();
+
+               G.speed = 1;
+               G.runtime = new Runtime(G.save, new GameState());
+               G.runtime.battleType = BattleType.Peace;
+               G.runtime.createEnemy();
+
+               GameStateUpdated.emit();
+               setTimeout(() => {
+                  hideLoading();
+                  GameStateUpdated.emit();
+               }, 1000);
+            }}
+         >
+            {t(L.ReturnToSpaceship)}
+         </button>
+      );
+   }
    return (
       <SegmentedControl
          style={{
             position: "absolute",
-            width: speedWidth,
             bottom: 10,
-            left: `calc(50vw - ${speedWidth / 2}px)`,
+            width: 300,
+            left: "50%",
+            transform: "translateX(-50%)",
             border: "1px solid var(--mantine-color-default-border)",
          }}
          onChange={(value) => {
@@ -116,7 +150,7 @@ function Tutorial(): React.ReactNode {
 
 const ProgressMemo = memo(Progress, (prev, next) => prev.value === next.value);
 
-function _SceneSwitcher(): React.ReactNode {
+function SceneSwitcher(): React.ReactNode {
    refreshOnTypedEvent(OnSceneSwitched);
    return (
       <>
@@ -160,9 +194,6 @@ function _SceneSwitcher(): React.ReactNode {
       </>
    );
 }
-
-const SceneSwitcher = memo(_SceneSwitcher);
-const SpeedSwitcher = memo(_SpeedSwitcher, (prev, next) => prev.speed === next.speed);
 
 export function BottomPanel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);

@@ -82,19 +82,20 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                <div className="f1" />
             </div>
             <div className="divider mt5" />
-            <div className="row p10">
-               <div>{t(L.Quantum)}</div>
-               <div className="f1"></div>
-               <div>
-                  {usedQuantum}/{quantumLimit}
+            <div className="m10">
+               <div className="row">
+                  <div>{t(L.Quantum)}</div>
+                  <div className="f1"></div>
+                  <div>
+                     {usedQuantum}/{quantumLimit}
+                  </div>
                </div>
-            </div>
-            <div className="divider" />
-            <div className="row p10">
-               <div>{t(L.SpaceshipXP)}</div>
-               <div className="f1"></div>
-               <div>
-                  {formatNumber(calcSpaceshipXP(G.save.current))}/{formatNumber(quantumToXP(quantum))}
+               <div className="row">
+                  <div>{t(L.SpaceshipXP)}</div>
+                  <div className="f1"></div>
+                  <div>
+                     {formatNumber(calcSpaceshipXP(G.save.current))}/{formatNumber(quantumToXP(quantum))}
+                  </div>
                </div>
             </div>
          </div>

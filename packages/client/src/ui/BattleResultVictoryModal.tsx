@@ -5,12 +5,10 @@ import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, mapSafeAdd } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
-import { hideModal, showModal } from "../utils/ToggleModal";
+import { hideModal } from "../utils/ToggleModal";
 import { BattleReportComp } from "./BattleReportComp";
 import { VictoryHeaderComp } from "./components/BattleResultHeader";
 import { hideLoading, showLoading } from "./components/LoadingComp";
-import { PrestigeModal } from "./PrestigeModal";
-import { PrestigeReason } from "./PrestigeReason";
 
 export function BattleResultVictoryModal(): React.ReactNode {
    const oldQuantum = getQuantumLimit(G.runtime.left);
@@ -26,13 +24,10 @@ export function BattleResultVictoryModal(): React.ReactNode {
                <div className="text-green">+{newQuantum - oldQuantum}</div>
             </div>
             {xp > 0 ? (
-               <>
-                  <div className="h5" />
-                  <div className="row">
-                     <div className="f1">{t(L.XP)}</div>
-                     <div className="text-green">+{formatNumber(xp)}</div>
-                  </div>
-               </>
+               <div className="row">
+                  <div className="f1">{t(L.XP)}</div>
+                  <div className="text-green">+{formatNumber(xp)}</div>
+               </div>
             ) : null}
          </div>
          <div className="h5" />
@@ -58,19 +53,6 @@ export function BattleResultVictoryModal(): React.ReactNode {
             }}
          >
             {t(L.Continue)}
-         </button>
-         <div className="h10" />
-         <button
-            className="btn w100 p5 row text-lg"
-            onClick={() => {
-               showModal({
-                  children: <PrestigeModal reason={PrestigeReason.None} />,
-                  size: "sm",
-                  dismiss: true,
-               });
-            }}
-         >
-            {t(L.PrestigeAnyway)}
          </button>
       </div>
    );

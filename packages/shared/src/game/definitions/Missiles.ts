@@ -72,7 +72,7 @@ export const MS2: IWeaponDefinition = {
    output: { MS2: 1 },
    damagePct: 0.9,
    damageType: DamageType.Explosive,
-   fireCooldown: 4,
+   fireCooldown: 4.5,
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
@@ -92,7 +92,7 @@ export const MS2R: IWeaponDefinition = {
    output: { MS2R: 1 },
    damagePct: 0.9,
    damageType: DamageType.Explosive,
-   fireCooldown: 4,
+   fireCooldown: 4.5,
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
@@ -112,7 +112,7 @@ export const MS2C: IWeaponDefinition = {
    output: { MS2C: 1 },
    damagePct: 0.8,
    damageType: DamageType.Explosive,
-   fireCooldown: 4,
+   fireCooldown: 4.5,
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
@@ -132,7 +132,7 @@ export const MS1F: IWeaponDefinition = {
    output: { MS1F: 1 },
    damagePct: 0.75,
    damageType: DamageType.Explosive,
-   fireCooldown: 4,
+   fireCooldown: 5,
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Adjacent,
@@ -156,7 +156,7 @@ export const MS2S: IWeaponDefinition = {
    output: { MS2S: 1 },
    damagePct: 0.75,
    damageType: DamageType.Explosive,
-   fireCooldown: 4,
+   fireCooldown: 4.5,
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
@@ -178,7 +178,7 @@ export const MS3: IWeaponDefinition = {
    output: { MS3: 1 },
    damagePct: 0.9,
    damageType: DamageType.Explosive,
-   fireCooldown: 4,
+   fireCooldown: 4.5,
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.RearTrio,
@@ -201,7 +201,7 @@ export const MS2D: IWeaponDefinition = {
    output: { MS2D: 1 },
    damagePct: 0.75,
    damageType: DamageType.Explosive,
-   fireCooldown: 4,
+   fireCooldown: 4.5,
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Adjacent,

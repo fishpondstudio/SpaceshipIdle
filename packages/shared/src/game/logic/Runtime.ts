@@ -4,7 +4,7 @@ import type { GameOption } from "../GameOption";
 import { type GameState, GameStateUpdated, type SaveGame, type Tiles } from "../GameState";
 import { makeTile } from "../ITileData";
 import { DamageType, ProjectileFlag } from "../definitions/BuildingProps";
-import { BattleTickInterval, ProductionTickInterval, SuddenDeathTick } from "../definitions/Constant";
+import { BattleTickInterval, MaxSuddenDeathTick, ProductionTickInterval } from "../definitions/Constant";
 import { tickProjectiles, tickTiles } from "./BattleLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType } from "./BattleType";
@@ -42,6 +42,8 @@ export class Runtime {
 
    scheduled: { action: () => void; second: number }[] = [];
    random = Math.random;
+
+   suddenDeathTick = MaxSuddenDeathTick;
 
    // originalLeft: GameState;
    // originalRight: GameState;
@@ -203,6 +205,7 @@ export class Runtime {
       const newStatus = this.checkBattleStatus();
       this.battleStatus = newStatus;
       if (this.battleType !== BattleType.Simulated && prevStatus !== newStatus) {
+         GameStateUpdated.emit();
          OnBattleStatusChanged.emit({ status: newStatus, prevStatus });
       }
    }
@@ -263,7 +266,7 @@ export class Runtime {
    }
 
    public suddenDeathDamage(): number {
-      return clamp(this.productionTick - SuddenDeathTick, 0, Number.POSITIVE_INFINITY);
+      return clamp(this.productionTick - this.suddenDeathTick, 0, Number.POSITIVE_INFINITY);
    }
 
    private _checkLifeTime(): void {
@@ -295,11 +298,8 @@ export class Runtime {
       if (this.battleType === BattleType.Peace) {
          return BattleStatus.InProgress;
       }
-      if (this.leftStat.undamagedSec >= 10) {
-         return BattleStatus.LeftWin;
-      }
-      if (this.rightStat.undamagedSec >= 10) {
-         return BattleStatus.RightWin;
+      if (this.leftStat.undamagedSec >= 10 && this.rightStat.undamagedSec >= 10) {
+         this.suddenDeathTick = Math.min(this.suddenDeathTick, this.productionTick);
       }
       return BattleStatus.InProgress;
    }
