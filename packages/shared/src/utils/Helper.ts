@@ -1,3 +1,5 @@
+import type { IHaveXY } from "./Vector2";
+
 export type PartialTabulate<T extends string> = Partial<Tabulate<T>>;
 export type Tabulate<T extends string> = Record<T, number>;
 export type PartialSet<T extends string> = Partial<Record<T, true>>;
@@ -375,7 +377,13 @@ export function lerp(a: number, b: number, amount: number): number {
 }
 
 export function lookAt(displayObject: { x: number; y: number; rotation: number }, point: IPointData): void {
-   displayObject.rotation = Math.atan2(point.y - displayObject.y, point.x - displayObject.x) + Math.PI / 2;
+   displayObject.rotation =
+      (Math.atan2(point.y - displayObject.y, point.x - displayObject.x) + Math.PI / 2 + 2 * Math.PI) % (2 * Math.PI);
+}
+
+export function getForward(rotation: number): IHaveXY {
+   const r = rotation - Math.PI / 2;
+   return { x: Math.cos(r), y: Math.sin(r) };
 }
 
 export function layoutCenter(itemSize: number, margin: number, totalCount: number, current: number): number {

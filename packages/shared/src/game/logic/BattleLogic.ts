@@ -8,7 +8,13 @@ import { posToTile } from "../Grid";
 import { abilityTarget, AbilityTiming } from "../definitions/Ability";
 import { BuildingFlag, DamageType, ProjectileFlag, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
-import { BattleStartAmmoCycles, BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
+import {
+   BattleStartAmmoCycles,
+   BattleTickInterval,
+   DefaultCooldown,
+   MaxBattleTick,
+   RotateDuration,
+} from "../definitions/Constant";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType } from "./BattleType";
 import { Projectile } from "./Projectile";
@@ -25,6 +31,7 @@ interface IProjectileHit {
    critical: boolean;
 }
 
+export const OnWeaponFire = new TypedEvent<{ from: Tile; to: Tile }>();
 export const OnProjectileHit = new TypedEvent<IProjectileHit>();
 export const OnDamaged = new TypedEvent<{ tile: Tile; amount: number }>();
 export const OnEvasion = new TypedEvent<{ tile: Tile }>();
@@ -40,7 +47,10 @@ export function tickProjectiles(
       const pos = projectile.position();
       const tile = posToTile(pos);
       const point = tileToPoint(tile);
-      if ((side === Side.Right && point.x > aabb.max.x) || (side === Side.Left && point.x < aabb.min.x)) {
+      if (
+         (side === Side.Right && targets.tiles.size > 0 && point.x > aabb.max.x) ||
+         (side === Side.Left && targets.tiles.size > 0 && point.x < aabb.min.x)
+      ) {
          projectiles.delete(id);
          return;
       }
@@ -161,7 +171,6 @@ export function tickTiles(
       if (rs.insufficient.size > 0) {
          return;
       }
-      rs.cooldown = 0;
       const point = tileToPoint(tile);
       let target = rs.target;
       // `target` is no longer valid, will need to re-target
@@ -185,6 +194,7 @@ export function tickTiles(
          });
       }
       if (target) {
+         rs.cooldown = 0;
          rs.target = target;
          forEach(def.output, (res, _amount) => {
             const amount = getCooldownMultiplier(data) * _amount * data.level;
@@ -209,27 +219,31 @@ export function tickTiles(
                );
             });
          }
+         OnWeaponFire.emit({ from: tile, to: target });
          for (let i = 0; i < def.projectiles; i++) {
-            rt.schedule(() => {
-               if (!target) return;
-               const [damage, critical] = rs.rollDamage();
-               projectiles.set(
-                  rt.id++,
-                  new Projectile(
-                     tile,
-                     target,
-                     damage,
-                     data.type,
-                     data.level,
-                     rs.props.damageType,
-                     rs.props.projectileSpeed,
-                     rs.props.projectileFlag,
-                     critical,
-                     rs.props.ability,
-                     rs.projectileMag,
-                  ),
-               );
-            }, 0.1 * i);
+            rt.schedule(
+               () => {
+                  if (!target) return;
+                  const [damage, critical] = rs.rollDamage();
+                  projectiles.set(
+                     rt.id++,
+                     new Projectile(
+                        tile,
+                        target,
+                        damage,
+                        data.type,
+                        data.level,
+                        rs.props.damageType,
+                        rs.props.projectileSpeed,
+                        rs.props.projectileFlag,
+                        critical,
+                        rs.props.ability,
+                        rs.projectileMag,
+                     ),
+                  );
+               },
+               0.1 * i + RotateDuration,
+            );
          }
       }
    });

@@ -15,7 +15,7 @@ import {
 import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
 import { AbilityTiming, abilityTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
-import { OnDamaged, OnEvasion, OnProjectileHit } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { OnDamaged, OnEvasion, OnProjectileHit, OnWeaponFire } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
    canSpend,
@@ -246,6 +246,10 @@ export class ShipScene extends Scene {
          }
       });
 
+      OnWeaponFire.on(({ from, to }) => {
+         this._tileVisuals.get(from)?.fire(to);
+      });
+
       OnStatusEffectsChanged.on(({ tile, buff, debuff }) => {
          this._tileVisuals.get(tile)?.updateStatusEffect(buff, debuff);
       });
@@ -305,8 +309,8 @@ export class ShipScene extends Scene {
          }
       }
 
-      this.renderTiles(rt.left.tiles, rt, dt);
-      this.renderTiles(rt.right.tiles, rt, dt);
+      this.renderTiles(rt.left.tiles, rt, dt, timeSinceLastTick);
+      this.renderTiles(rt.right.tiles, rt, dt, timeSinceLastTick);
 
       this._tileVisuals.forEach((visual, tile) => {
          if (!rt.left.tiles.has(tile) && !rt.right.tiles.has(tile)) {
@@ -348,7 +352,7 @@ export class ShipScene extends Scene {
       });
    }
 
-   private renderTiles(tiles: Tiles, rt: Runtime, dt: number): void {
+   private renderTiles(tiles: Tiles, rt: Runtime, dt: number, timeSinceLastTick: number): void {
       tiles.forEach((data, tile) => {
          const pos = tileToPos(tile);
          let visual = this._tileVisuals.get(tile);
@@ -370,8 +374,8 @@ export class ShipScene extends Scene {
          visual.toggleHighlight(this._highlightedTiles.has(tile));
 
          const rs = rt.get(tile);
-         if (rs?.target) {
-            visual.lookAt(tileToPosCenter(rs.target));
+         if (rs && rs.props.fireCooldown > 0) {
+            visual.progress = (rs.cooldown + timeSinceLastTick) / rs.props.fireCooldown;
          }
       });
    }

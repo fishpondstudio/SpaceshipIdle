@@ -1,17 +1,30 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { GridSize } from "@spaceship-idle/shared/src/game/Grid";
+import { GridSize, tileToPosCenter } from "@spaceship-idle/shared/src/game/Grid";
 import type { ITileData } from "@spaceship-idle/shared/src/game/ITileData";
 import { BuildingFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import {
+   FireBackDuration,
+   FireForwardDuration,
+   RotateDuration,
+} from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { isBooster } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { type Tile, type ValueOf, clamp, formatNumber, hasFlag, lookAt } from "@spaceship-idle/shared/src/utils/Helper";
+import {
+   type Tile,
+   type ValueOf,
+   clamp,
+   formatNumber,
+   getForward,
+   hasFlag,
+   lookAt,
+} from "@spaceship-idle/shared/src/utils/Helper";
 import type { Disposable } from "@spaceship-idle/shared/src/utils/TypedEvent";
-import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
 import {
    BitmapText,
    type ColorSource,
    Container,
+   Graphics,
    type IDestroyOptions,
    NineSlicePlane,
    Sprite,
@@ -47,6 +60,9 @@ export class TileVisual extends Container {
    private _buff: BitmapText;
    private _debuff: BitmapText;
 
+   private _progressMask: Graphics | undefined;
+   private _progressBg: Sprite | undefined;
+
    constructor(
       private _tile: Tile,
       public data: ITileData,
@@ -69,7 +85,7 @@ export class TileVisual extends Container {
       this._sprite.tint = G.save.options.buildingColors.get(data.type) ?? 0xffffff;
 
       if (!hasFlag(this.flag, BuildingFlag.CanRotate)) {
-         this._sprite.rotation += hasFlag(flag, TileVisualFlag.FlipHorizontal) ? -Math.PI / 2 : Math.PI / 2;
+         this._sprite.rotation += hasFlag(flag, TileVisualFlag.FlipHorizontal) ? Math.PI * 1.5 : Math.PI * 0.5;
       }
 
       this._healthBarBg = this.addChild(new Sprite(G.textures.get("Misc/HealthBar")));
@@ -123,6 +139,15 @@ export class TileVisual extends Container {
 
       this._disposables.push(GameOptionUpdated.on(this.onGameOptionUpdated.bind(this)));
       this._disposables.push(GameStateUpdated.on(this.onGameStateUpdated.bind(this)));
+
+      if ("fireCooldown" in Config.Buildings[data.type]) {
+         this._progressBg = this.addChild(new Sprite(G.textures.get("Misc/FrameFilled")));
+         this._progressBg.anchor.set(0.5);
+         this._progressBg.tint = 0x000000;
+         this._progressBg.alpha = 0.4;
+         this._progressMask = this.addChild(new Graphics());
+         this._progressBg.mask = this._progressMask;
+      }
 
       if (hasFlag(flag, TileVisualFlag.Static)) {
          this._healthBarBg.visible = false;
@@ -179,6 +204,7 @@ export class TileVisual extends Container {
    }
 
    public update(dt: number) {
+      this.progress += dt;
       if (this._isProducing) {
          if (hasFlag(this.flag, BuildingFlag.CanRotate)) {
             this._sprite.angle += dt * 50;
@@ -276,13 +302,57 @@ export class TileVisual extends Container {
       return Config.Buildings[this.data.type].buildingFlag;
    }
 
-   lookAt(target: IHaveXY) {
-      if (!hasFlag(this.flag, BuildingFlag.CanTarget)) {
-         return;
-      }
+   fire(target: Tile): void {
+      const targetPos = tileToPosCenter(target);
       this._transform.x = this.x;
       this._transform.y = this.y;
-      lookAt(this._transform, target);
-      this._sprite.rotation = this._transform.rotation;
+      lookAt(this._transform, targetPos);
+
+      sequence(
+         to(
+            this._sprite,
+            {
+               rotation: this._transform.rotation,
+            },
+            RotateDuration,
+            Easing.InOutQuad,
+         ),
+         to(
+            this._sprite,
+            {
+               x: this._sprite.x - getForward(this._sprite.rotation).x * 5,
+               y: this._sprite.y - getForward(this._sprite.rotation).y * 5,
+            },
+            FireBackDuration,
+            Easing.OutQuad,
+         ),
+         to(this._sprite, { x: this._sprite.x, y: this._sprite.y }, FireForwardDuration, Easing.InOutQuad),
+      ).start();
+   }
+
+   public set progress(value: number) {
+      if (!this._progressMask) return;
+
+      const toAngle = Math.PI * 2 * clamp(value, 0, 1) - Math.PI / 2;
+      const fromAngle = 0 - Math.PI / 2;
+      const radius = 40 * 1.5;
+      const x1 = Math.cos(fromAngle) * radius;
+      const y1 = Math.sin(fromAngle) * radius;
+      const x2 = Math.cos(toAngle) * radius;
+      const y2 = Math.sin(toAngle) * radius;
+      this._progressMask.clear();
+      this._progressMask.beginFill(0xffffff);
+      this._progressMask.moveTo(0, 0);
+      this._progressMask.lineTo(x1, y1);
+      this._progressMask.lineTo(-radius, y1);
+      if (x2 > 0) {
+         this._progressMask.lineTo(-radius, radius);
+         this._progressMask.lineTo(radius, radius);
+      }
+      this._progressMask.lineTo(x2 < 0 ? -radius : radius, y1);
+      this._progressMask.lineTo(x2 < 0 ? -radius : radius, y2);
+      this._progressMask.lineTo(x2, y2);
+      this._progressMask.lineTo(0, 0);
+      this._progressMask.endFill();
    }
 }
