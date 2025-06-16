@@ -1,4 +1,4 @@
-import { clamp, inverse } from "../../utils/Helper";
+import { clamp, forEach, inverse } from "../../utils/Helper";
 import { Config } from "../Config";
 import type { GameState } from "../GameState";
 import { BattleQuantum, TrialQuantum } from "../definitions/Constant";
@@ -112,4 +112,18 @@ export function getNextQuantumProgress(gs: GameState): [number, number] {
    const denominator = quantumToXP(q + 1) - quantumToXP(q);
    const progress = q >= getQuantumLimit(gs) ? 0 : (sv - quantumToXP(q)) / denominator;
    return [progress, denominator];
+}
+
+export function getResourceUsed(gs: GameState): Set<Resource> {
+   const result = new Set<Resource>();
+   for (const [_, data] of gs.tiles) {
+      const def = Config.Buildings[data.type];
+      forEach(def.input, (res, amount) => {
+         result.add(res);
+      });
+      forEach(def.output, (res, amount) => {
+         result.add(res);
+      });
+   }
+   return result;
 }

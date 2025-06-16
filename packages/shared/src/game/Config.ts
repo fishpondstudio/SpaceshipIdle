@@ -31,6 +31,7 @@ export const Config = {
    ]),
    ResourceTier: new Map<Resource, number>([["Power", 1]]),
    BuildingTier: new Map<Building, number>(),
+   ResourceToBuilding: new Map<Resource, Building>(),
 };
 
 function getBuildingThatProduces(res: Resource): [Building, IBuildingDefinition] {
@@ -50,6 +51,7 @@ function calculatePrice(res: Resource): [number, number] {
       return [Config.Price.get(res)!, Config.NormalizedPrice.get(res)!];
    }
    const [building, def] = getBuildingThatProduces(res);
+   Config.ResourceToBuilding.set(res, building);
    const input = new Set(keysOf(def.input));
    input.delete("Power");
    if (input.size === 0) {
