@@ -374,8 +374,10 @@ export class ShipScene extends Scene {
          visual.toggleHighlight(this._highlightedTiles.has(tile));
 
          const rs = rt.get(tile);
-         if (rs && rs.props.fireCooldown > 0) {
+         if (rs && rs.props.fireCooldown > 0 && rt.battleType !== BattleType.Peace) {
             visual.progress = (rs.cooldown + timeSinceLastTick) / rs.props.fireCooldown;
+         } else {
+            visual.progress = 0;
          }
       });
    }

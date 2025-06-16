@@ -8,17 +8,10 @@ import { posToTile } from "../Grid";
 import { abilityTarget, AbilityTiming } from "../definitions/Ability";
 import { BuildingFlag, DamageType, ProjectileFlag, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
-import {
-   BattleStartAmmoCycles,
-   BattleTickInterval,
-   DefaultCooldown,
-   MaxBattleTick,
-   RotateDuration,
-} from "../definitions/Constant";
+import { BattleStartAmmoCycles, BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType } from "./BattleType";
 import { Projectile } from "./Projectile";
-import { getMatchmakingQuantum } from "./ResourceLogic";
 import { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag, type RuntimeTile } from "./RuntimeTile";
@@ -221,29 +214,26 @@ export function tickTiles(
          }
          OnWeaponFire.emit({ from: tile, to: target });
          for (let i = 0; i < def.projectiles; i++) {
-            rt.schedule(
-               () => {
-                  if (!target) return;
-                  const [damage, critical] = rs.rollDamage();
-                  projectiles.set(
-                     rt.id++,
-                     new Projectile(
-                        tile,
-                        target,
-                        damage,
-                        data.type,
-                        data.level,
-                        rs.props.damageType,
-                        rs.props.projectileSpeed,
-                        rs.props.projectileFlag,
-                        critical,
-                        rs.props.ability,
-                        rs.projectileMag,
-                     ),
-                  );
-               },
-               0.1 * i + RotateDuration,
-            );
+            rt.schedule(() => {
+               if (!target) return;
+               const [damage, critical] = rs.rollDamage();
+               projectiles.set(
+                  rt.id++,
+                  new Projectile(
+                     tile,
+                     target,
+                     damage,
+                     data.type,
+                     data.level,
+                     rs.props.damageType,
+                     rs.props.projectileSpeed,
+                     rs.props.projectileFlag,
+                     critical,
+                     rs.props.ability,
+                     rs.projectileMag,
+                  ),
+               );
+            }, 0.1 * i);
          }
       }
    });
@@ -319,9 +309,8 @@ export function calcShipScore(ship: GameState): [number, Runtime] {
       reduceOf(rt.leftStat.actualDamage, (prev, k, v) => prev + v, 0) /
       reduceOf(rt.leftStat.rawDamage, (prev, k, v) => prev + v, 0);
 
-   const quantum = getMatchmakingQuantum(ship);
    const effectiveHp = rt.leftStat.maxHp / actualToRaw;
-   return [(effectiveHp * dps) / quantum / 100_000, rt];
+   return [(effectiveHp * dps) / 1_000_000, rt];
 }
 
 // const data: number[][] = Array(100);

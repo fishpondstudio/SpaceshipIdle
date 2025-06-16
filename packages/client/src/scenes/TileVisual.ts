@@ -4,21 +4,8 @@ import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { GridSize, tileToPosCenter } from "@spaceship-idle/shared/src/game/Grid";
 import type { ITileData } from "@spaceship-idle/shared/src/game/ITileData";
 import { BuildingFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
-import {
-   FireBackDuration,
-   FireForwardDuration,
-   RotateDuration,
-} from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { isBooster } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import {
-   type Tile,
-   type ValueOf,
-   clamp,
-   formatNumber,
-   getForward,
-   hasFlag,
-   lookAt,
-} from "@spaceship-idle/shared/src/utils/Helper";
+import { type Tile, type ValueOf, clamp, formatNumber, hasFlag, lookAt } from "@spaceship-idle/shared/src/utils/Helper";
 import type { Disposable } from "@spaceship-idle/shared/src/utils/TypedEvent";
 import {
    BitmapText,
@@ -32,6 +19,7 @@ import {
 } from "pixi.js";
 import { Fonts } from "../assets";
 import { G } from "../utils/Global";
+import type { Action } from "../utils/actions/Action";
 import { runFunc, sequence, to } from "../utils/actions/Actions";
 import { Easing } from "../utils/actions/Easing";
 import { ShipScene } from "./ShipScene";
@@ -60,8 +48,9 @@ export class TileVisual extends Container {
    private _buff: BitmapText;
    private _debuff: BitmapText;
 
-   private _progressMask: Graphics | undefined;
-   private _progressBg: Sprite | undefined;
+   private _progressMask: Graphics;
+   private _progressBg: Sprite;
+   private _fireAction: Action | undefined;
 
    constructor(
       private _tile: Tile,
@@ -140,14 +129,12 @@ export class TileVisual extends Container {
       this._disposables.push(GameOptionUpdated.on(this.onGameOptionUpdated.bind(this)));
       this._disposables.push(GameStateUpdated.on(this.onGameStateUpdated.bind(this)));
 
-      if ("fireCooldown" in Config.Buildings[data.type]) {
-         this._progressBg = this.addChild(new Sprite(G.textures.get("Misc/FrameFilled")));
-         this._progressBg.anchor.set(0.5);
-         this._progressBg.tint = 0x000000;
-         this._progressBg.alpha = 0.4;
-         this._progressMask = this.addChild(new Graphics());
-         this._progressBg.mask = this._progressMask;
-      }
+      this._progressBg = this.addChild(new Sprite(G.textures.get("Misc/FrameFilled")));
+      this._progressBg.anchor.set(0.5);
+      this._progressBg.tint = 0x000000;
+      this._progressBg.alpha = 0.4;
+      this._progressMask = this.addChild(new Graphics());
+      this._progressBg.mask = this._progressMask;
 
       if (hasFlag(flag, TileVisualFlag.Static)) {
          this._healthBarBg.visible = false;
@@ -307,35 +294,57 @@ export class TileVisual extends Container {
       this._transform.x = this.x;
       this._transform.y = this.y;
       lookAt(this._transform, targetPos);
+      this._sprite.rotation = this._transform.rotation;
 
-      sequence(
-         to(
-            this._sprite,
-            {
-               rotation: this._transform.rotation,
-            },
-            RotateDuration,
-            Easing.InOutQuad,
-         ),
-         to(
-            this._sprite,
-            {
-               x: this._sprite.x - getForward(this._sprite.rotation).x * 5,
-               y: this._sprite.y - getForward(this._sprite.rotation).y * 5,
-            },
-            FireBackDuration,
-            Easing.OutQuad,
-         ),
-         to(this._sprite, { x: this._sprite.x, y: this._sprite.y }, FireForwardDuration, Easing.InOutQuad),
-      ).start();
+      // if (!this._fireAction) {
+      //    this._fireAction = sequence(
+      //       to(
+      //          this._sprite,
+      //          {
+      //             x: -getForward(this._sprite.rotation).x * 5,
+      //             y: -getForward(this._sprite.rotation).y * 5,
+      //          },
+      //          FireBackDuration,
+      //          Easing.OutQuad,
+      //       ),
+      //       to(this._sprite, { x: 0, y: 0 }, FireForwardDuration, Easing.InOutQuad),
+      //    );
+      // } else {
+      //    this._fireAction.reset();
+      // }
+      // this._sprite.position.set(0, 0);
+      // this._fireAction.start();
    }
 
    public set progress(value: number) {
-      if (!this._progressMask) return;
+      this.radialProgress(value);
+   }
 
+   private linearProgress(value: number) {
+      if (value <= 0) {
+         this._progressMask.visible = false;
+         return;
+      }
+      this._progressMask.visible = true;
+      this._progressMask.clear();
+      this._progressMask.beginFill(0xffffff);
+      const y = -value * 90 + 45;
+      this._progressMask.moveTo(-45, y);
+      this._progressMask.lineTo(45, y);
+      this._progressMask.lineTo(45, -45);
+      this._progressMask.lineTo(-45, -45);
+      this._progressMask.endFill();
+   }
+
+   private radialProgress(value: number) {
+      if (value <= 0) {
+         this._progressMask.visible = false;
+         return;
+      }
+      this._progressMask.visible = true;
       const toAngle = Math.PI * 2 * clamp(value, 0, 1) - Math.PI / 2;
       const fromAngle = 0 - Math.PI / 2;
-      const radius = 40 * 1.5;
+      const radius = 45 * 1.5;
       const x1 = Math.cos(fromAngle) * radius;
       const y1 = Math.sin(fromAngle) * radius;
       const x2 = Math.cos(toAngle) * radius;

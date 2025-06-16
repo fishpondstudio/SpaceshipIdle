@@ -4,9 +4,9 @@ import { BaseWeaponProps, BuildingFlag, type IDefenseProp, type IWeaponDefinitio
 import { CodeNumber } from "./CodeNumber";
 
 export const PlasmaCannonDefenseProps: IDefenseProp = {
-   armor: [0, 1],
+   armor: [0, 0.5],
    shield: [0, 0.5],
-   deflection: [0, 0.5],
+   deflection: [0, 1],
    evasion: [0, 0],
 } as const;
 

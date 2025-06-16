@@ -16,8 +16,8 @@ import { LaserArrayDamagePct } from "./Constant";
 
 export const LaserArrayDefenseProps: IDefenseProp = {
    armor: [0, 0.5],
-   shield: [0, 0.5],
-   deflection: [0, 1],
+   shield: [0, 1],
+   deflection: [0, 0.5],
    evasion: [0, 0],
 } as const;
 

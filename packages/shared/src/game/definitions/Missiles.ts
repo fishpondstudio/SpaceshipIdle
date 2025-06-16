@@ -8,8 +8,8 @@ import { BaseWeaponProps, BuildingFlag, DamageType, type IDefenseProp, type IWea
 import { CodeNumber } from "./CodeNumber";
 
 export const MissileDefenseProps: IDefenseProp = {
-   armor: [0, 0.5],
-   shield: [0, 1],
+   armor: [0, 1],
+   shield: [0, 0.5],
    deflection: [0, 0.5],
    evasion: [0, 0],
 } as const;
