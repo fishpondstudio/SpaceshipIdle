@@ -9,7 +9,6 @@ import { abilityTarget } from "../definitions/Ability";
 import { DamageType, type IBoosterDefinition, WeaponKey } from "../definitions/BuildingProps";
 import { BattleStartAmmoCycles } from "../definitions/Constant";
 import { getCooldownMultiplier } from "./BattleLogic";
-import { BattleType } from "./BattleType";
 import { getNormalizedValue, isBooster } from "./BuildingLogic";
 import type { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
@@ -137,9 +136,7 @@ export function tickProduction(
 
          mapSafeAdd(gs.resources, res, amount);
          mapSafeAdd(stat.produced, res, amount);
-         if (rt.battleType !== BattleType.Simulated) {
-            RequestFloater.emit({ tile, amount });
-         }
+         rt.emit(RequestFloater, { tile, amount });
       });
 
       if (isBooster(data.type)) {
@@ -181,11 +178,6 @@ export function tickProduction(
    stat.actualDamagePerSec = { [DamageType.Kinetic]: 0, [DamageType.Explosive]: 0, [DamageType.Energy]: 0 };
 
    const [hp, maxHp] = rt.tabulateHp(gs.tiles);
-   if (hp >= stat.currentHp) {
-      stat.undamagedSec++;
-   } else {
-      stat.undamagedSec = 0;
-   }
    stat.currentHp = hp;
    stat.maxHp = maxHp + stat.destroyedHp;
 }

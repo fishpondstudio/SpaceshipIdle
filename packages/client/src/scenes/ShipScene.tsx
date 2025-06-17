@@ -2,6 +2,7 @@ import { computePosition, flip, offset, shift } from "@floating-ui/core";
 import { notifications } from "@mantine/notifications";
 import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated, type Tiles } from "@spaceship-idle/shared/src/game/GameState";
 import {
    GridSize,
@@ -374,7 +375,11 @@ export class ShipScene extends Scene {
          visual.toggleHighlight(this._highlightedTiles.has(tile));
 
          const rs = rt.get(tile);
-         if (rs && rs.props.fireCooldown > 0 && rt.battleType !== BattleType.Peace) {
+         const showCooldownIndicator =
+            rt.battleType !== BattleType.Peace ||
+            hasFlag(G.save.options.flag, GameOptionFlag.CooldownIndicatorOutsideBattle);
+
+         if (rs && rs.props.fireCooldown > 0 && showCooldownIndicator) {
             visual.progress = (rs.cooldown + timeSinceLastTick) / rs.props.fireCooldown;
          } else {
             visual.progress = 0;

@@ -29,7 +29,6 @@ import {
    evasionChance,
    getCooldownMultiplier,
 } from "./BattleLogic";
-import { BattleType } from "./BattleType";
 import { getNormalizedValue, normalizedValueToHp } from "./BuildingLogic";
 import type { IMultiplier } from "./IMultiplier";
 import type { Runtime } from "./Runtime";
@@ -139,9 +138,7 @@ export class RuntimeTile {
          this.props.evasion > 0 &&
          this.runtime.random() < evasionChance(this.props.evasion)
       ) {
-         if (this.runtime.battleType !== BattleType.Simulated) {
-            OnEvasion.emit({ tile: this.tile });
-         }
+         this.runtime.emit(OnEvasion, { tile: this.tile });
          return 0;
       }
 
@@ -161,9 +158,7 @@ export class RuntimeTile {
          mapSafeAdd(stat.actualDamageByBuilding, source, damage);
       }
       this._damageTaken += damage;
-      if (this.runtime.battleType !== BattleType.Simulated) {
-         OnDamaged.emit({ tile: this.tile, amount: damage });
-      }
+      this.runtime.emit(OnDamaged, { tile: this.tile, amount: damage });
       return damage;
    }
 
@@ -174,9 +169,7 @@ export class RuntimeTile {
          amount = this._damageTaken;
          this._damageTaken = 0;
       }
-      if (this.runtime.battleType !== BattleType.Simulated) {
-         OnDamaged.emit({ tile: this.tile, amount: -amount });
-      }
+      this.runtime.emit(OnDamaged, { tile: this.tile, amount: -amount });
    }
 
    public get isDead(): boolean {
@@ -223,7 +216,7 @@ export class RuntimeTile {
    public matchCapacity(): void {
       if (WeaponKey in this.def) {
          this.data.capacity = round(1 / (DefaultCooldown * this.productionMultiplier.value), 2, Rounding.Ceil);
-         GameStateUpdated.emit();
+         this.runtime.emit(GameStateUpdated, undefined);
       }
    }
 
@@ -240,8 +233,8 @@ export class RuntimeTile {
             ++this.debuff;
          }
       }
-      if (this.runtime.battleType !== BattleType.Simulated && (oldBuff !== this.buff || oldDebuff !== this.debuff)) {
-         OnStatusEffectsChanged.emit({ tile: this.tile, buff: this.buff, debuff: this.debuff });
+      if (oldBuff !== this.buff || oldDebuff !== this.debuff) {
+         this.runtime.emit(OnStatusEffectsChanged, { tile: this.tile, buff: this.buff, debuff: this.debuff });
       }
    }
 

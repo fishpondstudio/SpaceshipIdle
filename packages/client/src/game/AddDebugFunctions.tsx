@@ -175,7 +175,7 @@ export function addDebugFunctions(): void {
       });
    };
    // @ts-expect-error
-   globalThis.battle = async (left: string, right: string) => {
+   globalThis.battle = async () => {
       const gs = await loadGameStateFromFile();
       showModal({
          children: <MatchMakingModal enemy={gs} />,

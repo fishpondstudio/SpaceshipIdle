@@ -1,4 +1,4 @@
-import { createTile, divide, mapSafeAdd, type Tile } from "../../utils/Helper";
+import { clamp, createTile, hasFlag, mapSafeAdd, type Tile } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { GameOption } from "../GameOption";
 import { type GameState, GameStateUpdated, type SaveGame, type Tiles } from "../GameState";
@@ -8,12 +8,11 @@ import {
    BattleTickInterval,
    MaxSuddenDeathTick,
    ProductionTickInterval,
-   SuddenDeathDamagePct,
    SuddenDeathUndamagedSec,
 } from "../definitions/Constant";
 import { tickProjectiles, tickTiles } from "./BattleLogic";
 import { BattleStatus } from "./BattleStatus";
-import { BattleType } from "./BattleType";
+import { BattleFlag, BattleType } from "./BattleType";
 import { tickElement } from "./ElementLogic";
 import { tickProduction } from "./ProductionLogic";
 import type { Projectile } from "./Projectile";
@@ -49,10 +48,7 @@ export class Runtime {
    scheduled: { action: () => void; second: number }[] = [];
    random = Math.random;
 
-   suddenDeathTick = MaxSuddenDeathTick;
-
-   // originalLeft: GameState;
-   // originalRight: GameState;
+   battleFlag: BattleFlag = BattleFlag.None;
    battleType: BattleType = BattleType.Peace;
    battleStatus = BattleStatus.InProgress;
 
@@ -146,11 +142,16 @@ export class Runtime {
       }
    }
 
+   public emit<T>(event: TypedEvent<T>, arg: T): void {
+      if (hasFlag(this.battleFlag, BattleFlag.Silent)) return;
+      event.emit(arg);
+   }
+
    public tick(dt: number, g: { speed: number }): void {
       if (this.gameStateDirty && this.gameStateUpdateTimer >= ProductionTickInterval) {
          this.gameStateDirty = false;
          this.gameStateUpdateTimer = 0;
-         GameStateUpdated.emit();
+         this.emit(GameStateUpdated, undefined);
       }
       while (this.productionTimer >= ProductionTickInterval) {
          this.productionTimer -= ProductionTickInterval;
@@ -210,9 +211,9 @@ export class Runtime {
       const prevStatus = this.battleStatus;
       const newStatus = this.checkBattleStatus();
       this.battleStatus = newStatus;
-      if (this.battleType !== BattleType.Simulated && prevStatus !== newStatus) {
-         GameStateUpdated.emit();
-         OnBattleStatusChanged.emit({ status: newStatus, prevStatus });
+      if (prevStatus !== newStatus) {
+         this.emit(GameStateUpdated, undefined);
+         this.emit(OnBattleStatusChanged, { status: newStatus, prevStatus });
       }
    }
 
@@ -271,10 +272,6 @@ export class Runtime {
       ++this.productionTick;
    }
 
-   public isSuddenDeath(): boolean {
-      return this.productionTick > this.suddenDeathTick;
-   }
-
    private _checkLifeTime(): void {
       if (this.battleType === BattleType.Peace) {
          return;
@@ -284,21 +281,42 @@ export class Runtime {
             this.destroy(rs.tile);
          }
       });
-      if (this.isSuddenDeath()) {
-         const damageLeft = divide(SuddenDeathDamagePct * this.leftStat.maxHp, this.left.tiles.size);
-         this.left.tiles.forEach((data, tile) => {
-            this.get(tile)?.takeDamage(damageLeft, DamageType.Kinetic, ProjectileFlag.None, null);
-            this.get(tile)?.takeDamage(damageLeft, DamageType.Explosive, ProjectileFlag.None, null);
-            this.get(tile)?.takeDamage(damageLeft, DamageType.Energy, ProjectileFlag.None, null);
-         });
 
-         const damageRight = divide(SuddenDeathDamagePct * this.rightStat.maxHp, this.right.tiles.size);
-         this.right.tiles.forEach((data, tile) => {
-            this.get(tile)?.takeDamage(damageRight, DamageType.Kinetic, ProjectileFlag.None, null);
-            this.get(tile)?.takeDamage(damageRight, DamageType.Explosive, ProjectileFlag.None, null);
-            this.get(tile)?.takeDamage(damageRight, DamageType.Energy, ProjectileFlag.None, null);
+      const leftDamage = this.suddenDeathDamage(Side.Left);
+      if (leftDamage > 0) {
+         this.left.tiles.forEach((data, tile) => {
+            this.get(tile)?.takeDamage(leftDamage, DamageType.Kinetic, ProjectileFlag.None, null);
+            this.get(tile)?.takeDamage(leftDamage, DamageType.Explosive, ProjectileFlag.None, null);
+            this.get(tile)?.takeDamage(leftDamage, DamageType.Energy, ProjectileFlag.None, null);
          });
       }
+
+      const rightDamage = this.suddenDeathDamage(Side.Right);
+      if (rightDamage > 0) {
+         this.right.tiles.forEach((data, tile) => {
+            this.get(tile)?.takeDamage(rightDamage, DamageType.Kinetic, ProjectileFlag.None, null);
+            this.get(tile)?.takeDamage(rightDamage, DamageType.Explosive, ProjectileFlag.None, null);
+            this.get(tile)?.takeDamage(rightDamage, DamageType.Energy, ProjectileFlag.None, null);
+         });
+      }
+   }
+
+   public suddenDeathDamage(side: Side): number {
+      if (side === Side.Left) {
+         const damage = Math.max(
+            Math.floor(this.leftStat.zeroProjectileSec - SuddenDeathUndamagedSec),
+            this.productionTick - MaxSuddenDeathTick,
+         );
+         return clamp(damage, 0, Number.POSITIVE_INFINITY) ** 2;
+      }
+      if (side === Side.Right) {
+         const damage = Math.max(
+            Math.floor(this.rightStat.zeroProjectileSec - SuddenDeathUndamagedSec),
+            this.productionTick - MaxSuddenDeathTick,
+         );
+         return clamp(damage, 0, Number.POSITIVE_INFINITY) ** 2;
+      }
+      return 0;
    }
 
    private checkBattleStatus(): BattleStatus {
@@ -313,12 +331,6 @@ export class Runtime {
       }
       if (this.battleType === BattleType.Peace) {
          return BattleStatus.InProgress;
-      }
-      if (
-         this.leftStat.undamagedSec >= SuddenDeathUndamagedSec ||
-         this.rightStat.undamagedSec >= SuddenDeathUndamagedSec
-      ) {
-         this.suddenDeathTick = Math.min(this.suddenDeathTick, this.productionTick);
       }
       return BattleStatus.InProgress;
    }

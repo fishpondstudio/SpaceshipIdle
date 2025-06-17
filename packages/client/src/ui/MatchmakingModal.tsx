@@ -66,6 +66,7 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
                className="btn filled w100 py5"
                onClick={() => {
                   showLoading();
+                  console.log("Battle with ship: ", enemy.id);
                   const me = structuredClone(G.save.current);
                   me.resources.clear();
                   enemy.resources.clear();

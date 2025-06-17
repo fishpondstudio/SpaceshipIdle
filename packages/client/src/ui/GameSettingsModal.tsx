@@ -64,9 +64,91 @@ function GeneralTab(): React.ReactNode {
          </div>
          <div className="divider my10 mx-10" />
          <div className="row">
+            {t(L.ShowResources)}
+            <div className="f1" />
+            <Switch
+               checked={hasFlag(G.save.options.flag, GameOptionFlag.ShowResources)}
+               onChange={(e) => {
+                  G.save.options.flag = e.target.checked
+                     ? setFlag(G.save.options.flag, GameOptionFlag.ShowResources)
+                     : clearFlag(G.save.options.flag, GameOptionFlag.ShowResources);
+                  GameOptionUpdated.emit();
+               }}
+            />
+         </div>
+         <div className="h10" />
+         <div className="row">
+            {t(L.HideInactiveResources)}
+            <Tooltip label={t(L.HideInactiveResourcesTooltip)}>
+               <div className="mi sm text-space">info</div>
+            </Tooltip>
+            <div className="f1" />
+            <Switch
+               checked={hasFlag(G.save.options.flag, GameOptionFlag.HideInactiveResources)}
+               onChange={(e) => {
+                  G.save.options.flag = e.target.checked
+                     ? setFlag(G.save.options.flag, GameOptionFlag.HideInactiveResources)
+                     : clearFlag(G.save.options.flag, GameOptionFlag.HideInactiveResources);
+                  GameOptionUpdated.emit();
+               }}
+            />
+         </div>
+         <div className="h10" />
+         <div className="row">
+            {t(L.TheoreticalValue)}
+            <Tooltip label={t(L.TheoreticalValueTooltip)}>
+               <div className="mi sm text-space">info</div>
+            </Tooltip>
+            <div className="f1" />
+            <Switch
+               checked={hasFlag(G.save.options.flag, GameOptionFlag.TheoreticalValue)}
+               onChange={(e) => {
+                  G.save.options.flag = e.target.checked
+                     ? setFlag(G.save.options.flag, GameOptionFlag.TheoreticalValue)
+                     : clearFlag(G.save.options.flag, GameOptionFlag.TheoreticalValue);
+                  GameOptionUpdated.emit();
+               }}
+            />
+         </div>
+         <div className="h10" />
+         <div className="row">
+            {t(L.CooldownIndicatorOutsideBattle)}
+            <Tooltip label={t(L.CooldownIndicatorOutsideBattleTooltip)}>
+               <div className="mi sm text-space">info</div>
+            </Tooltip>
+            <div className="f1" />
+            <Switch
+               checked={hasFlag(G.save.options.flag, GameOptionFlag.CooldownIndicatorOutsideBattle)}
+               onChange={(e) => {
+                  G.save.options.flag = e.target.checked
+                     ? setFlag(G.save.options.flag, GameOptionFlag.CooldownIndicatorOutsideBattle)
+                     : clearFlag(G.save.options.flag, GameOptionFlag.CooldownIndicatorOutsideBattle);
+                  GameOptionUpdated.emit();
+               }}
+            />
+         </div>{" "}
+         <div className="h10" />
+         <div className="row">
+            {t(L.LinearCooldownIndicator)}
+            <Tooltip label={t(L.LinearCooldownIndicatorTooltip)}>
+               <div className="mi sm text-space">info</div>
+            </Tooltip>
+            <div className="f1" />
+            <Switch
+               checked={hasFlag(G.save.options.flag, GameOptionFlag.LinearCooldownIndicator)}
+               onChange={(e) => {
+                  G.save.options.flag = e.target.checked
+                     ? setFlag(G.save.options.flag, GameOptionFlag.LinearCooldownIndicator)
+                     : clearFlag(G.save.options.flag, GameOptionFlag.LinearCooldownIndicator);
+                  GameOptionUpdated.emit();
+               }}
+            />
+         </div>
+         <div className="divider my10 mx-10" />
+         <div className="row">
             {t(L.RetroFilter)}
             <Tooltip label={t(L.RequireGameRestart)}>
-               <div className="mi text-space">info</div>
+               <div className="mi sm text-space">info</div>
             </Tooltip>
             <div className="f1" />
             <Switch
@@ -110,7 +192,7 @@ function GeneralTab(): React.ReactNode {
          <div className="h10" />
          <div className="row">
             {t(L.HideSteamIcon)}
-            <div className="mi text-space pointer" onClick={() => openUrl(SteamUrl)}>
+            <div className="mi sm text-space pointer" onClick={() => openUrl(SteamUrl)}>
                open_in_new
             </div>
             <div className="f1" />
@@ -127,7 +209,7 @@ function GeneralTab(): React.ReactNode {
          <div className="h10" />
          <div className="row">
             {t(L.HideDiscordIcon)}
-            <div className="mi text-space pointer" onClick={() => openUrl(DiscordUrl)}>
+            <div className="mi sm text-space pointer" onClick={() => openUrl(DiscordUrl)}>
                open_in_new
             </div>
             <div className="f1" />

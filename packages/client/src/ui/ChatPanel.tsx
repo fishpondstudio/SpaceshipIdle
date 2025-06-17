@@ -229,7 +229,7 @@ function _LanguageMenu({ icon }: { icon: React.ReactNode }): React.ReactNode {
       <Menu position="bottom-start">
          <Menu.Target>{icon}</Menu.Target>
          <Menu.Dropdown>
-            {mapOf(Languages, (language, value) => {
+            {mapOf(Languages as Record<Language, Record<string, string>>, (language, value) => {
                return (
                   <Menu.Item
                      key={language}

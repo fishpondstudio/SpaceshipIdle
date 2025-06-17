@@ -1,13 +1,8 @@
-import { type DefaultMantineColor, Progress, Tooltip } from "@mantine/core";
+import { Progress, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageType, DamageTypeLabel } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
-import {
-   MaxSuddenDeathTick,
-   SuddenDeathDamagePct,
-   SuddenDeathUndamagedSec,
-} from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { MaxSuddenDeathTick, SuddenDeathUndamagedSec } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import type { RuntimeStat } from "@spaceship-idle/shared/src/game/logic/RuntimeStat";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { classNames, formatHMS, formatNumber, formatPercent, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -19,38 +14,23 @@ const timerPanelWidth = 300;
 export function TimerPanel(): React.ReactNode {
    if (!G.runtime) return null;
    if (G.runtime.battleType === BattleType.Peace) return null;
-   const isSuddenDeath = G.runtime.isSuddenDeath();
    return (
       <div
-         className={classNames("timer-panel", isSuddenDeath ? "text-red breathing" : null)}
+         className={classNames(
+            "timer-panel",
+            G.runtime.suddenDeathDamage(Side.Left) > 0 || G.runtime.suddenDeathDamage(Side.Right) > 0
+               ? "text-red breathing"
+               : null,
+         )}
          style={{
             width: timerPanelWidth,
             left: `calc(50vw - ${timerPanelWidth / 2}px)`,
          }}
       >
          <div className="timer">{formatHMS(G.runtime.productionTick * 1000)}</div>
-         <Tooltip
-            disabled={!isSuddenDeath}
-            label={
-               <RenderHTML
-                  html={t(
-                     L.SuddenDeathTooltipV2,
-                     SuddenDeathUndamagedSec,
-                     MaxSuddenDeathTick,
-                     formatPercent(SuddenDeathDamagePct),
-                  )}
-               />
-            }
-            multiline
-            maw="30vw"
-         >
-            <div className="row g5">
-               <div className="text-sm">
-                  {G.runtime.battleType === BattleType.Qualifier ? t(L.QualifierBattleShort) : t(L.PracticeBattleShort)}
-               </div>
-               {isSuddenDeath ? <div className="mi sm">skull</div> : null}
-            </div>
-         </Tooltip>
+         <div className="text-sm">
+            {G.runtime.battleType === BattleType.Qualifier ? t(L.QualifierBattleShort) : t(L.PracticeBattleShort)}
+         </div>
       </div>
    );
 }
@@ -59,33 +39,16 @@ export function BattlePanel({ side }: { side: Side }): React.ReactNode {
    if (!G.runtime) return null;
    if (G.runtime.battleType === BattleType.Peace) return null;
 
-   if (side === Side.Left) {
-      const hpStat = G.runtime.leftStat;
-      const style = { left: 10 };
-      return (
-         <>
-            <HPComponent hp={hpStat.currentHp} totalHp={hpStat.maxHp} style={style} color="green" />
-            <DamageComponent stat={G.runtime.rightStat} style={style} color="green" />
-         </>
-      );
-   }
-
-   const hpStat = G.runtime.rightStat;
-   const style = { right: 10 };
    return (
       <>
-         <HPComponent hp={hpStat.currentHp} totalHp={hpStat.maxHp} style={style} color="red" />
-         <DamageComponent stat={G.runtime.leftStat} style={style} color="red" />
+         <HPComponent side={side} />
+         <DamageComponent side={side} />
       </>
    );
 }
 
-function HPComponent({
-   hp,
-   totalHp,
-   style,
-   color,
-}: { hp: number; totalHp: number; style?: React.CSSProperties; color?: DefaultMantineColor }): React.ReactNode {
+function HPComponent({ side }: { side: Side }): React.ReactNode {
+   const hpStat = side === Side.Left ? G.runtime.leftStat : G.runtime.rightStat;
    return (
       <div
          className="sf-frame"
@@ -100,48 +63,64 @@ function HPComponent({
             padding: "0 10px",
             maxWidth: "40vw",
             fontSize: "var(--mantine-font-size-sm)",
-            ...style,
+            ...(side === Side.Left ? { left: 10 } : { right: 10 }),
          }}
       >
          <div className="h5"></div>
-         <Progress color={color} value={(100 * hp) / totalHp} />
+         <Progress color={side === Side.Left ? "green" : "red"} value={(100 * hpStat.currentHp) / hpStat.maxHp} />
          <div className="h5"></div>
          <div className="row g5">
             <div className="f1">{t(L.HP)}</div>
-            <div className="f1 text-center">{formatPercent(hp / totalHp, 0)}</div>
+            <div className="f1 text-center">{formatPercent(hpStat.currentHp / hpStat.maxHp, 0)}</div>
             <div className="f1 text-right">
-               {formatNumber(hp)}/{formatNumber(totalHp)}
+               {formatNumber(hpStat.currentHp)}/{formatNumber(hpStat.maxHp)}
             </div>
          </div>
       </div>
    );
 }
 
-function DamageComponent({
-   stat,
-   style,
-   color,
-}: { stat: RuntimeStat; style?: React.CSSProperties; color?: string }): React.ReactNode {
+function DamageComponent({ side }: { side: Side }): React.ReactNode {
+   // Damage stat is on the opposite side!
+   const damageStat = side === Side.Left ? G.runtime.rightStat : G.runtime.leftStat;
+   const suddenDeathDamage = G.runtime.suddenDeathDamage(side);
    return (
-      <div className="battle-panel" style={style}>
+      <div className="battle-panel" style={side === Side.Left ? { left: 10 } : { right: 10 }}>
+         {suddenDeathDamage > 0 ? (
+            <Tooltip
+               label={
+                  <RenderHTML
+                     html={t(
+                        L.SuddenDeathTooltipV2,
+                        SuddenDeathUndamagedSec,
+                        MaxSuddenDeathTick,
+                        formatNumber(suddenDeathDamage),
+                     )}
+                  />
+               }
+               multiline
+               maw="30vw"
+            >
+               <div className="row text-red mb10">
+                  <div>Sudden Death</div>
+                  <div className="text-right">{formatNumber(suddenDeathDamage)}</div>
+                  <div className="mi sm text-right">skull</div>
+               </div>
+            </Tooltip>
+         ) : null}
          {mapOf(DamageType, (key, value) => {
             return (
                <div key={key} className="row">
-                  <div style={{ width: 100 }}>{DamageTypeLabel[value]()}</div>
-                  <div style={{ width: 60 }} className="text-right">
-                     {formatNumber(stat.actualDamage[value])}
-                  </div>
-                  <div
-                     style={{ width: 50 }}
-                     className={classNames("text-right", color === "green" ? "text-green" : "text-red")}
-                  >
-                     +{formatNumber(stat.actualDamages.get(-1)?.[value] ?? 0)}
+                  <div>{DamageTypeLabel[value]()}</div>
+                  <div className="text-right">{formatNumber(damageStat.actualDamage[value])}</div>
+                  <div className={classNames("text-right", side === Side.Left ? "text-green" : "text-red")}>
+                     +{formatNumber(damageStat.actualDamages.get(-1)?.[value] ?? 0)}
                   </div>
                </div>
             );
          })}
          <div className="h10" />
-         {Array.from(stat.actualDamageByBuilding.entries())
+         {Array.from(damageStat.actualDamageByBuilding.entries())
             .sort((a, b) => b[1] - a[1])
             .map(([building, damage]) => {
                return (

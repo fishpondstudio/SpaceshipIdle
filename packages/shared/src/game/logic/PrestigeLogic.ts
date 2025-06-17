@@ -10,7 +10,9 @@ export function prestige(save: SaveGame): void {
       addElementShard(save.options, element, amount);
    }
    rollElementShards(save, shardsFromShipValue(save.current));
+   const old = save.current;
    save.current = new GameState();
+   save.current.resources.set("Warp", old.resources.get("Warp") ?? 0);
    initGameState(save.current);
 }
 

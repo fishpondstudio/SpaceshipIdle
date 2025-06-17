@@ -1,4 +1,4 @@
-# CivIdle Translations
+# Spaceship Idle Translations
 
 Base language is English and can be found in the list below
 

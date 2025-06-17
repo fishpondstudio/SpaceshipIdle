@@ -16,7 +16,6 @@ export const DefaultCooldown = 2;
 export const DefaultPriority = 5;
 export const MaxBattleTick = 10 * 60;
 export const MaxSuddenDeathTick = 5 * 60;
-export const SuddenDeathDamagePct = 0.01;
 export const SuddenDeathUndamagedSec = 10;
 export const MaxBuildingCount = 1000;
 export const ElementThisRunColor = 0x94a9cd;
@@ -29,3 +28,4 @@ export const TranslationUrl = "https://github.com/fishpondstudio/SpaceshipIdle/t
 export const PatchNotesUrl =
    "https://store.steampowered.com/news/app/3454630?utm_source=InGame&utm_campaign=PatchNotes";
 export const SentryDSN = "https://54985c336c0b4c5495d31328bca6e101@bugreport.fishpondstudio.com/4";
+export const Version = "0.4";

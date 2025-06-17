@@ -1,5 +1,5 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
+import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { GridSize, tileToPosCenter } from "@spaceship-idle/shared/src/game/Grid";
 import type { ITileData } from "@spaceship-idle/shared/src/game/ITileData";
@@ -317,14 +317,18 @@ export class TileVisual extends Container {
    }
 
    public set progress(value: number) {
-      this.radialProgress(value);
-   }
-
-   private linearProgress(value: number) {
       if (value <= 0) {
          this._progressMask.visible = false;
          return;
       }
+      if (hasFlag(G.save.options.flag, GameOptionFlag.LinearCooldownIndicator)) {
+         this.linearProgress(value);
+      } else {
+         this.radialProgress(value);
+      }
+   }
+
+   private linearProgress(value: number) {
       this._progressMask.visible = true;
       this._progressMask.clear();
       this._progressMask.beginFill(0xffffff);
@@ -337,10 +341,6 @@ export class TileVisual extends Container {
    }
 
    private radialProgress(value: number) {
-      if (value <= 0) {
-         this._progressMask.visible = false;
-         return;
-      }
       this._progressMask.visible = true;
       const toAngle = Math.PI * 2 * clamp(value, 0, 1) - Math.PI / 2;
       const fromAngle = 0 - Math.PI / 2;

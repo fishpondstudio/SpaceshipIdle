@@ -1,4 +1,4 @@
-import { forEach, hasFlag, mapSafeAdd, reduceOf, type Tile, tileToPoint } from "../../utils/Helper";
+import { forEach, hasFlag, mapSafeAdd, reduceOf, setFlag, type Tile, tileToPoint } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -10,7 +10,7 @@ import { BuildingFlag, DamageType, ProjectileFlag, WeaponKey } from "../definiti
 import type { Building } from "../definitions/Buildings";
 import { BattleStartAmmoCycles, BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
 import { BattleStatus } from "./BattleStatus";
-import { BattleType } from "./BattleType";
+import { BattleFlag, BattleType } from "./BattleType";
 import { Projectile } from "./Projectile";
 import { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
@@ -84,9 +84,7 @@ export function tickProjectiles(
                );
             });
          }
-         if (runtime.battleType !== BattleType.Simulated) {
-            OnProjectileHit.emit({ position: pos, tile: tile, critical: projectile.critical });
-         }
+         runtime.emit(OnProjectileHit, { position: pos, tile: tile, critical: projectile.critical });
          const damage = damageTarget.takeDamage(
             projectile.damage * factor,
             projectile.damageType,
@@ -212,7 +210,7 @@ export function tickTiles(
                );
             });
          }
-         OnWeaponFire.emit({ from: tile, to: target });
+         rt.emit(OnWeaponFire, { from: tile, to: target });
          for (let i = 0; i < def.projectiles; i++) {
             rt.schedule(() => {
                if (!target) return;
@@ -237,6 +235,12 @@ export function tickTiles(
          }
       }
    });
+
+   if (projectiles.size === 0) {
+      stat.zeroProjectileSec += BattleTickInterval;
+   } else {
+      stat.zeroProjectileSec = 0;
+   }
 }
 
 export function getCooldownMultiplier(data: { type: Building }): number {
@@ -270,7 +274,8 @@ export function simulateBattle(ship: GameState, reference: GameState): Runtime {
    enemy.resources.clear();
 
    const rt = new Runtime({ current: me, options: new GameOption() }, enemy);
-   rt.battleType = BattleType.Simulated;
+   rt.battleType = BattleType.Qualifier;
+   rt.battleFlag = setFlag(rt.battleFlag, BattleFlag.Silent);
    const speed = { speed: 1 };
    while (rt.battleStatus === BattleStatus.InProgress && rt.productionTick <= MaxBattleTick) {
       rt.tick(BattleTickInterval, speed);

@@ -1,9 +1,8 @@
+import { Version } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import version from "../version.json";
 
-const ver = "0.3";
-
 export function getVersion(): string {
-   return `${ver}.${version.build}`;
+   return `${Version}.${version.build}`;
 }
 
 export function getBuildNumber(): number {

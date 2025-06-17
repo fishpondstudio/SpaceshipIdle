@@ -2,7 +2,7 @@ import { ScrollArea } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import type { Resource } from "@spaceship-idle/shared/src/game/definitions/Resource";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
-import { resourceDiffOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getResourceUsed, resourceDiffOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { classNames, formatNumber, hasFlag, mMapOf, mathSign } from "@spaceship-idle/shared/src/utils/Helper";
 import { G } from "../utils/Global";
 import { ResourceAmount } from "./components/ResourceAmountComp";
@@ -11,6 +11,7 @@ export function ResourcePanel(): React.ReactNode {
    const state = G.runtime.left;
    const options = G.save.options;
    if (!hasFlag(options.flag, GameOptionFlag.ShowResources)) return null;
+   const usedResources = hasFlag(options.flag, GameOptionFlag.HideInactiveResources) ? getResourceUsed(state) : null;
    return (
       <ScrollArea.Autosize scrollbars="y" offsetScrollbars="y" className="resource-panel">
          {mMapOf(state.resources, (res, amount) => {
@@ -21,6 +22,7 @@ export function ResourcePanel(): React.ReactNode {
                G.runtime.leftStat,
             );
             if (res === "Power" || res === "XP" || res === "Warp") return null;
+            if (usedResources && !usedResources.has(res)) return null;
             return (
                <div key={res} className="row g10" style={{ color: `#${getResourceColor(res).toString(16)}` }}>
                   <div>{name}</div>

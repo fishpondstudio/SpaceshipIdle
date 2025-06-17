@@ -18,7 +18,7 @@ export class RuntimeStat {
    currentHp = 0;
    maxHp = 0;
    destroyedHp = 0;
-   undamagedSec = 0;
+   zeroProjectileSec = 0;
 
    rawDamage: Record<DamageType, number> = {
       [DamageType.Kinetic]: 0,

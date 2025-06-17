@@ -1,17 +1,16 @@
-import { Menu, Tooltip } from "@mantine/core";
-import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
-import { clearFlag, hasFlag, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
+import { Menu } from "@mantine/core";
+import { PatchNotesUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import type { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
 import { openUrl } from "../../rpc/SteamClient";
-import { G, OnLanguageChanged } from "../../utils/Global";
+import { OnLanguageChanged } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import { showModal } from "../../utils/ToggleModal";
 import { GameSettingsModal } from "../GameSettingsModal";
 import { PlayerProfileModal } from "../PlayerProfileModal";
 import { ShipGalleryModal } from "../ShipGalleryModal";
 import { WeaponListModal } from "../WeaponListModal";
-import { PatchNotesUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 
 export function _HamburgerMenuComp({ flag }: { flag: GameOptionFlag }): React.ReactNode {
    refreshOnTypedEvent(OnLanguageChanged);
@@ -25,42 +24,6 @@ export function _HamburgerMenuComp({ flag }: { flag: GameOptionFlag }): React.Re
             </div>
          </Menu.Target>
          <Menu.Dropdown className="sf-frame">
-            <Menu.Item
-               leftSection={
-                  hasFlag(flag, GameOptionFlag.ShowResources) ? (
-                     <div className="mi">check_box</div>
-                  ) : (
-                     <div className="mi">check_box_outline_blank</div>
-                  )
-               }
-               onClick={() => {
-                  G.save.options.flag = hasFlag(flag, GameOptionFlag.ShowResources)
-                     ? clearFlag(flag, GameOptionFlag.ShowResources)
-                     : setFlag(flag, GameOptionFlag.ShowResources);
-                  GameOptionUpdated.emit();
-               }}
-            >
-               {t(L.ShowResources)}
-            </Menu.Item>
-            <Tooltip label={t(L.TheoreticalValueTooltip)}>
-               <Menu.Item
-                  leftSection={
-                     hasFlag(flag, GameOptionFlag.TheoreticalValue) ? (
-                        <div className="mi">check_box</div>
-                     ) : (
-                        <div className="mi">check_box_outline_blank</div>
-                     )
-                  }
-                  onClick={() => {
-                     G.save.options.flag = hasFlag(flag, GameOptionFlag.TheoreticalValue)
-                        ? clearFlag(flag, GameOptionFlag.TheoreticalValue)
-                        : setFlag(flag, GameOptionFlag.TheoreticalValue);
-                     GameOptionUpdated.emit();
-                  }}
-               >
-                  {t(L.TheoreticalValue)}
-               </Menu.Item>
-            </Tooltip>
             <Menu.Item
                leftSection={<div className="mi">person</div>}
                onClick={() => {

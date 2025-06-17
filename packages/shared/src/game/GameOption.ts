@@ -15,6 +15,9 @@ export const GameOptionFlag = {
    TutorialDone: 1 << 3,
    HideSteamIcon: 1 << 4,
    HideDiscordIcon: 1 << 5,
+   CooldownIndicatorOutsideBattle: 1 << 6,
+   LinearCooldownIndicator: 1 << 7,
+   HideInactiveResources: 1 << 8,
 };
 
 export type GameOptionFlag = ValueOf<typeof GameOptionFlag>;
