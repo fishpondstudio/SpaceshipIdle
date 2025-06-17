@@ -1,34 +1,54 @@
 import { type DefaultMantineColor, Progress, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageType, DamageTypeLabel } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import {
+   MaxSuddenDeathTick,
+   SuddenDeathDamagePct,
+   SuddenDeathUndamagedSec,
+} from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import type { RuntimeStat } from "@spaceship-idle/shared/src/game/logic/RuntimeStat";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { classNames, formatHMS, formatNumber, formatPercent, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
+import { RenderHTML } from "./components/RenderHTMLComp";
 
 const timerPanelWidth = 300;
 
 export function TimerPanel(): React.ReactNode {
    if (!G.runtime) return null;
    if (G.runtime.battleType === BattleType.Peace) return null;
-   const suddenDeathDamage = G.runtime.suddenDeathDamage();
+   const isSuddenDeath = G.runtime.isSuddenDeath();
    return (
       <div
-         className={classNames("timer-panel", suddenDeathDamage > 0 ? "text-red breathing" : null)}
+         className={classNames("timer-panel", isSuddenDeath ? "text-red breathing" : null)}
          style={{
             width: timerPanelWidth,
             left: `calc(50vw - ${timerPanelWidth / 2}px)`,
          }}
       >
          <div className="timer">{formatHMS(G.runtime.productionTick * 1000)}</div>
-         <Tooltip disabled={suddenDeathDamage <= 0} label={t(L.SuddenDeathTooltip, suddenDeathDamage)}>
+         <Tooltip
+            disabled={!isSuddenDeath}
+            label={
+               <RenderHTML
+                  html={t(
+                     L.SuddenDeathTooltipV2,
+                     SuddenDeathUndamagedSec,
+                     MaxSuddenDeathTick,
+                     formatPercent(SuddenDeathDamagePct),
+                  )}
+               />
+            }
+            multiline
+            maw="30vw"
+         >
             <div className="row g5">
                <div className="text-sm">
                   {G.runtime.battleType === BattleType.Qualifier ? t(L.QualifierBattleShort) : t(L.PracticeBattleShort)}
                </div>
-               {suddenDeathDamage > 0 ? <div className="mi sm">skull</div> : null}
+               {isSuddenDeath ? <div className="mi sm">skull</div> : null}
             </div>
          </Tooltip>
       </div>

@@ -476,7 +476,6 @@ export const EN = {
    StandardStateSolid: "Solid",
    StartPlaying: "Start Playing",
    StatusEffect: "Status Effect",
-   SuddenDeathTooltip: "Sudden Death: all modules take %% Kinetic, Explosive and Energy damage per second",
    TabGeneral: "General",
    Tech: "Tech",
    TechAntimatter: "Antimatter",
@@ -672,4 +671,6 @@ export const EN = {
    DroneProjectileDesc:
       "Drone projectiles target the module with the <b>lowest HP percentage</b> (or a random module if all have the same HP percentage). Before reaching the target, they <b>travel through</b> enemy modules (without dealing damage). If the target is destroyed mid-flight, the projectile continues on and damages the next module on its path",
    ReturnToSpaceship: "Return To Spaceship",
+   SuddenDeathTooltipV2:
+      "Sudden Death is triggered when either spaceship fails to deal any damage for %% seconds, or when the battle has reached %% seconds. During Sudden Death, all modules take Kinetic, Explosive and Energy damage equal to <b>%% of max ship HP</b> evenly divided among modules",
 };

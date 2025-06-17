@@ -289,7 +289,7 @@ export function calcShipScore(ship: GameState): [number, Runtime] {
    const rt = new Runtime({ current: me, options: new GameOption() }, new GameState());
    rt.wave = Number.POSITIVE_INFINITY;
    rt.createEnemy();
-   rt.battleType = BattleType.Simulated;
+   rt.battleType = BattleType.Peace;
    const speed = { speed: 1 };
    for (let i = 0; i < (CalcShipScoreTicks + BattleStartAmmoCycles * 10) / BattleTickInterval; i++) {
       rt.tick(BattleTickInterval, speed);

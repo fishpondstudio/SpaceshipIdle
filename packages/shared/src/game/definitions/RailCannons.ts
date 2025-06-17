@@ -29,7 +29,7 @@ export const RC50: IWeaponDefinition = {
    input: { Power: 2, AC30F: 1, Circuit: 1 },
    output: { RC50: 1 },
    damagePct: 0.75,
-   fireCooldown: 1,
+   fireCooldown: 1.5,
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
@@ -53,7 +53,7 @@ export const RC100: IWeaponDefinition = {
    input: { Power: 2, RC50: 2 },
    output: { RC100: 1 },
    damagePct: 0.75,
-   fireCooldown: 1,
+   fireCooldown: 1.5,
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
@@ -77,7 +77,7 @@ export const RC50E: IWeaponDefinition = {
    input: { Power: 2, RC50: 2 },
    output: { RC50E: 1 },
    damagePct: 0.75,
-   fireCooldown: 1,
+   fireCooldown: 1.5,
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Front,
@@ -99,7 +99,7 @@ export const RC50P: IWeaponDefinition = {
    input: { Power: 2, RC50E: 2 },
    output: { RC50P: 1 },
    damagePct: 0.9,
-   fireCooldown: 1,
+   fireCooldown: 1.5,
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
@@ -121,7 +121,7 @@ export const RC100G: IWeaponDefinition = {
    input: { Power: 2, RC100: 2 },
    output: { RC100G: 1 },
    damagePct: 0.75,
-   fireCooldown: 1,
+   fireCooldown: 1.5,
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
@@ -143,7 +143,7 @@ export const RC100P: IWeaponDefinition = {
    input: { Power: 2, RC100: 2 },
    output: { RC100P: 1 },
    damagePct: 0.75,
-   fireCooldown: 1,
+   fireCooldown: 1.5,
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
@@ -165,7 +165,7 @@ export const RC100F: IWeaponDefinition = {
    input: { Power: 2, RC100P: 1, RC100G: 1 },
    output: { RC100F: 1 },
    damagePct: 0.5,
-   fireCooldown: 1,
+   fireCooldown: 1.5,
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
@@ -185,7 +185,7 @@ export const RC100L: IWeaponDefinition = {
    input: { Power: 2, RC50E: 1, RC100G: 1 },
    output: { RC100L: 1 },
    damagePct: 0.75,
-   fireCooldown: 1,
+   fireCooldown: 1.5,
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
