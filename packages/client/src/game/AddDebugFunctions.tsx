@@ -1,12 +1,13 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
-import { GameState } from "@spaceship-idle/shared/src/game/GameState";
+import { GameState, hashGameState } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
+import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { rollElementShards } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
-import { getMatchmakingQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { randomColor } from "@spaceship-idle/shared/src/thirdparty/RandomColor";
-import { enumOf, forEach } from "@spaceship-idle/shared/src/utils/Helper";
+import { enumOf, equal, forEach, INT32_MAX, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { jsonEncode } from "@spaceship-idle/shared/src/utils/Serialization";
 import { RPCClient } from "../rpc/RPCClient";
@@ -187,17 +188,53 @@ export function addDebugFunctions(): void {
    };
    // @ts-expect-error
    globalThis.matchmake = async () => {
-      const now = performance.now();
+      const me = await RPCClient.findShipV3(0n, [0, INT32_MAX], [0, INT32_MAX]);
+      G.save.current = me.json;
+      G.runtime = new Runtime(G.save, new GameState());
+      G.runtime.battleType = BattleType.Peace;
+      G.runtime.createEnemy();
+
       const [score, hp, dps] = calcShipScore(G.save.current);
-      const ship = await RPCClient.findShipV2(getMatchmakingQuantum(G.save.current), score);
+      const ship = await RPCClient.findShipV3(hashGameState(G.save.current), [0, me.quantum], [score / 1.1, score]);
       const [enemyScore, enemyHp, enemyDps] = calcShipScore(ship.json);
+      const now = performance.now();
       const rt = simulateBattle(G.save.current, ship.json);
+      if (!equal(enemyScore, ship.score)) {
+         console.error(`Score mismatch: Client: ${enemyScore} vs Server: ${ship.score}`);
+      }
+
+      let scoreMatch = "❌";
+      let hpMatch = "❌";
+      let dpsMatch = "❌";
+      if (rt.battleStatus === BattleStatus.LeftWin) {
+         if (score > enemyScore) {
+            scoreMatch = "✅";
+         }
+         if (hp > enemyHp) {
+            hpMatch = "✅";
+         }
+         if (dps > enemyDps) {
+            dpsMatch = "✅";
+         }
+      }
+      if (rt.battleStatus === BattleStatus.RightWin) {
+         if (score < enemyScore) {
+            scoreMatch = "✅";
+         }
+         if (hp < enemyHp) {
+            hpMatch = "✅";
+         }
+         if (dps < enemyDps) {
+            dpsMatch = "✅";
+         }
+      }
+
       console.log(
-         `*Battle with ship: ${ship.shipId}\n`,
-         `Result = ${enumOf(BattleStatus, rt.battleStatus)} (${Math.round(performance.now() - now)}ms)\n`,
-         `Score: ${score} vs ${enemyScore}\n`,
-         `HP: ${hp} vs ${enemyHp}\n`,
-         `DPS: ${dps} vs ${enemyDps}\n`,
+         `*Opponent: ${ship.shipId}\n`,
+         `${rt.battleStatus === BattleStatus.LeftWin ? "👈" : "👉"} Result: ${enumOf(BattleStatus, rt.battleStatus)} (${Math.round(performance.now() - now)}ms)\n`,
+         `${scoreMatch} Score: ${round(score, 2)} vs ${round(enemyScore, 2)}\n`,
+         `${hpMatch} HP: ${round(hp, 2)} vs ${round(enemyHp, 2)}\n`,
+         `${dpsMatch} DPS: ${round(dps, 2)} vs ${round(enemyDps, 2)}\n`,
       );
       showModal({
          children: <MatchMakingModal enemy={ship.json} />,

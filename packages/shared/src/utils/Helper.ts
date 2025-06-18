@@ -31,6 +31,9 @@ export const HOUR = 60 * MINUTE;
 export const DAY = 24 * HOUR;
 export const WEEK = 7 * DAY;
 
+export const INT32_MAX = 2147483647;
+export const INT32_MIN = -2147483648;
+
 export function escapeHtml(unsafe: string): string {
    return unsafe
       .replace(/&/g, "&amp;")

@@ -11,6 +11,7 @@ export interface IServer {
    deleteShip: (id: string) => Promise<void>;
    findShip: (quantum: number) => Promise<IShip>;
    findShipV2: (quantum: number, score: number) => Promise<IShip>;
+   findShipV3: (hash: bigint, quantum: [number, number], score: [number, number]) => Promise<IShip>;
    rankShips: (quantum: number, count: number) => Promise<IShip[]>;
    sendChat: (message: string, channel: Language, country: keyof typeof CountryCode) => Promise<void>;
    sendCommand: (command: string) => Promise<string>;
