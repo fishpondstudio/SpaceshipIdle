@@ -94,7 +94,15 @@ function BoostComp({ building, tile, gs }: { building: Building; tile: Tile; gs:
    const cost = toMap(def.unlock);
    const canBuild = hasEnoughResources(cost, gs.resources);
    return (
-      <Tooltip label={<ResourceListComp res={cost} />} key={building}>
+      <Tooltip
+         label={
+            <>
+               {canBuild ? null : <div className="text-red">{t(L.NotEnoughResources)}</div>}
+               <ResourceListComp res={cost} />
+            </>
+         }
+         key={building}
+      >
          <div
             className="row p10 m10"
             onClick={() => {

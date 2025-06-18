@@ -848,3 +848,12 @@ export function retry<T>(promise: () => Promise<T>, delayMs = 100, times = 3): P
       attempt(times, delayMs);
    });
 }
+
+export function enumOf<T extends {}>(obj: T, value: ValueOf<T>): keyof T | undefined {
+   for (const key in obj) {
+      if (obj[key as keyof T] === value) {
+         return key;
+      }
+   }
+   return undefined;
+}

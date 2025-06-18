@@ -97,10 +97,12 @@ export function ShipInfoPanel(): React.ReactNode {
    );
 }
 
+const Width = 90;
+
 function _PowerComp({ power, delta }: { power: number; delta: number }): React.ReactNode {
    return (
       <Tooltip label={t(L.Power)}>
-         <div className="block" style={{ width: 85 }}>
+         <div className="block" style={{ width: Width }}>
             <div className="mi">bolt</div>
             <div className="f1 text-right">
                <ResourceAmount res="Power" amount={power} />
@@ -124,7 +126,7 @@ const PowerComp = memo(_PowerComp, (prev, next) => prev.power === next.power && 
 function _XPComp({ xp, delta }: { xp: number; delta: number }): React.ReactNode {
    return (
       <Tooltip label={t(L.XP)}>
-         <div className="block" style={{ width: 85 }}>
+         <div className="block" style={{ width: Width }}>
             <div className="mi">view_in_ar</div>
             <div className="f1 text-right">
                <div>
@@ -150,8 +152,8 @@ const XPComp = memo(_XPComp, (prev, next) => prev.xp === next.xp && prev.delta =
 function _SpaceshipValueComp({ sv, maxSV, quantum }: { sv: number; maxSV: number; quantum: number }): React.ReactNode {
    return (
       <Tooltip label={t(L.SpaceshipXPTooltip, formatNumber(quantum))}>
-         <div className="block" style={{ width: 85, position: "relative" }}>
-            <div className="progress" style={{ width: clamp(sv / maxSV, 0, 1) * 85 }}></div>
+         <div className="block" style={{ width: Width, position: "relative" }}>
+            <div className="progress" style={{ width: clamp(sv / maxSV, 0, 1) * Width }}></div>
             <div className="mi">paid</div>
             <div className="f1 text-right">
                <div>{formatNumber(sv)}</div>

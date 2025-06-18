@@ -2,7 +2,7 @@ import { DefaultPriority } from "@spaceship-idle/shared/src/game/definitions/Con
 import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { getBoosterCount } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { calcSpaceshipXP, getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { formatNumber, mReduceOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { clamp, formatNumber, mReduceOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
 
@@ -18,6 +18,17 @@ export const Tutorial: ITutorial[] = [
       desc: () => t(L.TutorialBuild6ModulesDescHTML),
       progress: (gs) => {
          return [gs.tiles.size, 6];
+      },
+   },
+   {
+      name: () => t(L.TutorialUpgradeXLevels, 30),
+      desc: () => t(L.TutorialUpgradeXLevelsDescHTML),
+      progress: (gs) => {
+         let result = 0;
+         for (const [tile, data] of gs.tiles) {
+            result += clamp(data.level - 1, 0, Number.POSITIVE_INFINITY);
+         }
+         return [result, 30];
       },
    },
    {

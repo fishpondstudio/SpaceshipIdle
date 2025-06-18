@@ -1,7 +1,8 @@
 import { clamp, createTile, hasFlag, mapSafeAdd, type Tile } from "../../utils/Helper";
+import { srand } from "../../utils/Random";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { GameOption } from "../GameOption";
-import { type GameState, GameStateUpdated, type SaveGame, type Tiles } from "../GameState";
+import { type GameState, GameStateUpdated, hashGameStatePair, type SaveGame, type Tiles } from "../GameState";
 import { makeTile } from "../ITileData";
 import { DamageType, ProjectileFlag } from "../definitions/BuildingProps";
 import {
@@ -46,7 +47,7 @@ export class Runtime {
    rightStat = new RuntimeStat();
 
    scheduled: { action: () => void; second: number }[] = [];
-   random = Math.random;
+   random: () => number;
 
    battleFlag: BattleFlag = BattleFlag.None;
    battleType: BattleType = BattleType.Peace;
@@ -63,6 +64,9 @@ export class Runtime {
       this.right.tiles = flipHorizontal(this.right.tiles);
 
       this.leftOptions = left.options;
+
+      const hash = hashGameStatePair(this.left, this.right);
+      this.random = srand(hash.toString());
    }
 
    public get(tile: Tile): RuntimeTile | undefined {

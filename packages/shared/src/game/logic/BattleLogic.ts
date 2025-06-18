@@ -288,7 +288,7 @@ export function simulateBattle(ship: GameState, reference: GameState): Runtime {
 
 const CalcShipScoreTicks = 50;
 
-export function calcShipScore(ship: GameState): [number, Runtime] {
+export function calcShipScore(ship: GameState): [number, number, number, Runtime] {
    const me = structuredClone(ship);
    me.resources.clear();
    const rt = new Runtime({ current: me, options: new GameOption() }, new GameState());
@@ -314,8 +314,8 @@ export function calcShipScore(ship: GameState): [number, Runtime] {
       reduceOf(rt.leftStat.actualDamage, (prev, k, v) => prev + v, 0) /
       reduceOf(rt.leftStat.rawDamage, (prev, k, v) => prev + v, 0);
 
-   const effectiveHp = rt.leftStat.maxHp / actualToRaw;
-   return [(effectiveHp * dps) / 1_000_000, rt];
+   const hp = rt.leftStat.maxHp / actualToRaw;
+   return [(hp * dps) / 1_000_000, hp / 100, dps / 10, rt];
 }
 
 // const data: number[][] = Array(100);

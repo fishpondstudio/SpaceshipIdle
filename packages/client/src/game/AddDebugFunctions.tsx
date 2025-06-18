@@ -1,13 +1,15 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameState } from "@spaceship-idle/shared/src/game/GameState";
-import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { rollElementShards } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
+import { getMatchmakingQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { randomColor } from "@spaceship-idle/shared/src/thirdparty/RandomColor";
-import { forEach } from "@spaceship-idle/shared/src/utils/Helper";
+import { enumOf, forEach } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { jsonEncode } from "@spaceship-idle/shared/src/utils/Serialization";
+import { RPCClient } from "../rpc/RPCClient";
 import { BattleResultVictoryModal } from "../ui/BattleResultVictoryModal";
 import { ChooseElementModal } from "../ui/ChooseElementModal";
 import { MatchMakingModal } from "../ui/MatchmakingModal";
@@ -85,8 +87,8 @@ export function addDebugFunctions(): void {
    // @ts-expect-error
    globalThis.calcScore = () => {
       console.time("calcScore");
-      const [score, rt] = calcShipScore(G.save.current);
-      console.log(score, rt);
+      const [score, hp, dps, rt] = calcShipScore(G.save.current);
+      console.log(`Score = ${score}, HP = ${hp}, DPS = ${dps}, rt = ${rt}`);
       console.timeEnd("calcScore");
    };
    // @ts-expect-error
@@ -179,6 +181,26 @@ export function addDebugFunctions(): void {
       const gs = await loadGameStateFromFile();
       showModal({
          children: <MatchMakingModal enemy={gs} />,
+         size: "lg",
+         dismiss: true,
+      });
+   };
+   // @ts-expect-error
+   globalThis.matchmake = async () => {
+      const now = performance.now();
+      const [score, hp, dps] = calcShipScore(G.save.current);
+      const ship = await RPCClient.findShipV2(getMatchmakingQuantum(G.save.current), score);
+      const [enemyScore, enemyHp, enemyDps] = calcShipScore(ship.json);
+      const rt = simulateBattle(G.save.current, ship.json);
+      console.log(
+         `*Battle with ship: ${ship.shipId}\n`,
+         `Result = ${enumOf(BattleStatus, rt.battleStatus)} (${Math.round(performance.now() - now)}ms)\n`,
+         `Score: ${score} vs ${enemyScore}\n`,
+         `HP: ${hp} vs ${enemyHp}\n`,
+         `DPS: ${dps} vs ${enemyDps}\n`,
+      );
+      showModal({
+         children: <MatchMakingModal enemy={ship.json} />,
          size: "lg",
          dismiss: true,
       });
