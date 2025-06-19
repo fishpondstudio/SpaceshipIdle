@@ -188,19 +188,31 @@ export function addDebugFunctions(): void {
    };
    // @ts-expect-error
    globalThis.matchmake = async () => {
-      const me = await RPCClient.findShipV3(0n, [0, INT32_MAX], [0, INT32_MAX]);
+      const me = await RPCClient.findShipV3(0n, [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX]);
       G.save.current = me.json;
       G.runtime = new Runtime(G.save, new GameState());
       G.runtime.battleType = BattleType.Peace;
       G.runtime.createEnemy();
 
       const [score, hp, dps] = calcShipScore(G.save.current);
-      const ship = await RPCClient.findShipV3(hashGameState(G.save.current), [0, me.quantum], [score / 1.1, score]);
+      const ship = await RPCClient.findShipV3(
+         hashGameState(G.save.current),
+         [0, me.quantum],
+         [score / 1.1, score * 1.1],
+         [0, 1.25 * hp],
+         [0, 1.25 * dps],
+      );
       const [enemyScore, enemyHp, enemyDps] = calcShipScore(ship.json);
       const now = performance.now();
       const rt = simulateBattle(G.save.current, ship.json);
       if (!equal(enemyScore, ship.score)) {
          console.error(`Score mismatch: Client: ${enemyScore} vs Server: ${ship.score}`);
+      }
+      if (!equal(enemyHp, ship.hp)) {
+         console.error(`HP mismatch: Client: ${enemyHp} vs Server: ${ship.hp}`);
+      }
+      if (!equal(enemyDps, ship.dps)) {
+         console.error(`DPS mismatch: Client: ${enemyDps} vs Server: ${ship.dps}`);
       }
 
       let scoreMatch = "❌";

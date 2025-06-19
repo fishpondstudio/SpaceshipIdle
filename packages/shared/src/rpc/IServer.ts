@@ -6,12 +6,13 @@ import type { IChat, IShip } from "./ServerMessageTypes";
 export interface IServer {
    changePlayerHandle: (name: string) => Promise<void>;
    saveShip: (ship: GameState, score: number) => Promise<string>;
+   saveShipV2: (ship: GameState) => Promise<string>;
    listShips: (limit: number, offset: number) => Promise<{ total: number; ships: IShip[] }>;
    viewShip: (id: string) => Promise<IShip>;
    deleteShip: (id: string) => Promise<void>;
    findShip: (quantum: number) => Promise<IShip>;
    findShipV2: (quantum: number, score: number) => Promise<IShip>;
-   findShipV3: (hash: bigint, quantum: [number, number], score: [number, number]) => Promise<IShip>;
+   findShipV3: (hash: bigint, quantum: [number, number], score: [number, number], hp: [number, number], dps: [number, number]) => Promise<IShip>;
    rankShips: (quantum: number, count: number) => Promise<IShip[]>;
    sendChat: (message: string, channel: Language, country: keyof typeof CountryCode) => Promise<void>;
    sendCommand: (command: string) => Promise<string>;
