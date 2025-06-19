@@ -199,8 +199,8 @@ export function addDebugFunctions(): void {
          hashGameState(G.save.current),
          [0, me.quantum],
          [score / 1.1, score * 1.1],
-         [0, 1.25 * hp],
-         [0, 1.25 * dps],
+         [0, 1.1 * hp],
+         [0, 1.1 * dps],
       );
       const [enemyScore, enemyHp, enemyDps] = calcShipScore(ship.json);
       const now = performance.now();
@@ -249,7 +249,7 @@ export function addDebugFunctions(): void {
          `${dpsMatch} DPS: ${round(dps, 2)} vs ${round(enemyDps, 2)}\n`,
       );
       showModal({
-         children: <MatchMakingModal enemy={ship.json} />,
+         children: <MatchMakingModal key={Math.random()} enemy={ship.json} />,
          size: "lg",
          dismiss: true,
       });

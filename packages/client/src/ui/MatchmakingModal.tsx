@@ -6,8 +6,9 @@ import { calcSpaceshipXP, getQuantumLimit, getUsedQuantum } from "@spaceship-idl
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { isQualifierBattle } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
-import { classNames, formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
+import { formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import type React from "react";
 import { useMemo, useState } from "react";
 import { AddShipToMatchmakingPool } from "../game/AddShipToMatchmakingPool";
 import { ShipImageComp } from "../game/ShipImageComp";
@@ -15,6 +16,7 @@ import { ShipScene } from "../scenes/ShipScene";
 import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
 import { hideLoading, showLoading } from "./components/LoadingComp";
+import { MatchmakingShipComp } from "./MatchmakingShipComp";
 import { hideSidebar } from "./Sidebar";
 
 export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNode {
@@ -22,7 +24,7 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
    const [score, hp, dps] = useMemo(() => calcShipScore(G.save.current), []);
    const [enemyScore, enemyHp, enemyDps] = useMemo(() => calcShipScore(enemy), [enemy]);
    return (
-      <div className="m15">
+      <div className="m10">
          <div className="row">
             <div className="f1">
                <ShipHeaderComp gs={G.save.current} side={Side.Left} />
@@ -32,70 +34,9 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
             </div>
          </div>
          <div className="h10" />
-         <div className="row">
-            <div className="f1">
-               <Progress size="lg" value={(100 * hp) / Math.max(hp, enemyHp)} />
-            </div>
-            <div className="mi mx10" style={{ fontSize: 32 }}>
-               security
-            </div>
-            <div className="f1">
-               <Progress size="lg" value={(100 * enemyHp) / Math.max(hp, enemyHp)} />
-            </div>
-         </div>
-         <div className="row" style={{ marginTop: -5 }}>
-            <div className="f1">
-               <div>{formatNumber(hp)}</div>
-            </div>
-            <div className="f1 text-right">
-               <div>{formatNumber(enemyHp)}</div>
-            </div>
-         </div>
-         <div className="row">
-            <div className="f1">
-               <Progress size="lg" value={(100 * dps) / Math.max(dps, enemyDps)} />
-            </div>
-            <div className="mi mx10" style={{ fontSize: 32 }}>
-               swords
-            </div>
-            <div className="f1">
-               <Progress size="lg" value={(100 * enemyDps) / Math.max(dps, enemyDps)} />
-            </div>
-         </div>
-         <div className="row" style={{ marginTop: -5 }}>
-            <div className="f1">
-               <div>{formatNumber(dps)}</div>
-            </div>
-            <div className="f1 text-right">
-               <div>{formatNumber(enemyDps)}</div>
-            </div>
-         </div>
-         <div className="row">
-            <div className="f1">
-               <Progress size="lg" value={(100 * score) / Math.max(score, enemyScore)} />
-            </div>
-            <div className="mi mx10" style={{ fontSize: 32 }}>
-               swap_driving_apps_wheel
-            </div>
-            <div className="f1">
-               <Progress size="lg" value={(100 * enemyScore) / Math.max(score, enemyScore)} />
-            </div>
-         </div>
-         <div className="row" style={{ marginTop: -5 }}>
-            <div className="f1">
-               <div>{formatNumber(score)}</div>
-            </div>
-            <div className="f1 text-right">
-               <div>{formatNumber(enemyScore)}</div>
-            </div>
-         </div>
-         <div className="row">
-            <ShipInfoComp gs={G.save.current} side={Side.Left} />
-            <div className="mi mx10 text-space" style={{ fontSize: 48 }}>
-               swords
-            </div>
-            <ShipInfoComp gs={enemy} side={Side.Right} />
-         </div>
+         <ShipStatComp left={hp} right={enemyHp} icon="security" tooltip={t(L.MatchmakingDefense)} />
+         <ShipStatComp left={dps} right={enemyDps} icon="swords" tooltip={t(L.MatchmakingAttack)} />
+         <ShipStatComp left={score} right={enemyScore} icon="cards_star" tooltip={t(L.MatchmakingScore)} />
          <div className="h10" />
          <Tooltip
             disabled={isQualifierBattle(G.save.current, enemy)}
@@ -164,22 +105,80 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
    );
 }
 
+function ShipStatComp({
+   left,
+   right,
+   icon,
+   tooltip,
+}: { left: number; right: number; icon: string; tooltip: React.ReactNode }): React.ReactNode {
+   const max = Math.max(left, right);
+   const min = Math.min(left, right);
+   return (
+      <>
+         <div className="row">
+            <div className="f1">
+               <Progress color="green" size="lg" value={(100 * left) / max} />
+            </div>
+            <Tooltip label={tooltip}>
+               <div className="row g0" style={{ fontSize: 28, width: 50 }}>
+                  <div style={{ visibility: left >= right ? "visible" : "hidden" }} className="mi text-green">
+                     arrow_left
+                  </div>
+                  <div className="mi">{icon}</div>
+                  <div style={{ visibility: left <= right ? "visible" : "hidden" }} className="mi text-red">
+                     arrow_right
+                  </div>
+               </div>
+            </Tooltip>
+            <div className="f1">
+               <Progress color="red" size="lg" value={(100 * right) / max} />
+            </div>
+         </div>
+         <div className="row" style={{ marginTop: -5 }}>
+            <div className="row f1">
+               <div className="f1">{formatNumber(left)}</div>
+               <div className="text-green text-sm">
+                  {left - min > 0 ? `+${formatNumber(left - min)} (${formatPercent((left - min) / max)})` : ""}
+               </div>
+            </div>
+            <div style={{ width: 50 }} />
+            <div className="row f1">
+               <div className="f1 text-red text-sm">
+                  {right - min > 0 ? `+${formatNumber(right - min)} (${formatPercent((right - min) / max)})` : ""}
+               </div>
+               <div>{formatNumber(right)}</div>
+            </div>
+         </div>
+      </>
+   );
+}
+
 function ShipHeaderComp({ gs, side }: { gs: GameState; side: Side }): React.ReactNode {
    return (
       <>
-         <Tooltip label={t(L.SpaceshipPrefix, gs.name)}>
-            <div className={classNames("text-xl", side === Side.Left ? "text-left" : "text-right")}>
-               {t(L.SpaceshipPrefix, gs.name)}
-            </div>
+         <Tooltip w={300} color="gray" label={<MatchmakingShipComp ship={gs} />}>
+            {side === Side.Left ? (
+               <div className="text-xl row">
+                  {t(L.SpaceshipPrefix, gs.name)}
+                  <div className="mi text-space">info</div>
+                  <div className="f1" />
+               </div>
+            ) : (
+               <div className="text-xl row">
+                  <div className="f1" />
+                  <div className="mi text-space">info</div>
+                  {t(L.SpaceshipPrefix, gs.name)}
+               </div>
+            )}
          </Tooltip>
-         <div className="h10" />
+         <div className="h5" />
          <ShipImageComp
             ship={gs}
             fit="contain"
             side={side}
             style={{
                padding: 5,
-               height: 280,
+               aspectRatio: "4/3",
                border: "1px solid var(--mantine-color-default-border)",
                borderRadius: "var(--mantine-radius-sm)",
             }}

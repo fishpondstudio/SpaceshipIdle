@@ -681,4 +681,8 @@ export const EN = {
    TutorialUpgradeXLevels: "Upgrade %% Level(s)",
    TutorialUpgradeXLevelsDescHTML:
       "Modules cost XP to upgrade. Select a module and click <b>+1</b> to upgrade. You can also downgrade or recycle a module - <b>all your invested XP will be refunded</b>",
+   MatchmakingAttack: "Attack",
+   MatchmakingDefense: "Defense",
+   MatchmakingScore: "Rating",
+   Boosters: "Boosters",
 };
