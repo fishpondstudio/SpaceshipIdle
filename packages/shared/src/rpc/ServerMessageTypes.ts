@@ -44,6 +44,8 @@ export interface IShip {
    userId: string;
    quantum: number;
    score: number;
+   hp: number;
+   dps: number;
    version: number;
    json: GameState;
 }
