@@ -15,7 +15,7 @@ import { Projectile } from "./Projectile";
 import { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag, type RuntimeTile } from "./RuntimeTile";
-import { calculateAABB, isEnemy } from "./ShipLogic";
+import { calculateAABB } from "./ShipLogic";
 import { Side } from "./Side";
 
 interface IProjectileHit {
@@ -302,19 +302,23 @@ export function calcShipScore(ship: GameState): [number, number, number, Runtime
    }
    const dps = reduceOf(rt.rightStat.averageRawDamage(CalcShipScoreTicks), (prev, k, v) => prev + v, 0);
 
-   rt.tiles.forEach((rs) => {
-      if (!isEnemy(rs.tile)) {
-         rs.takeDamage(1, DamageType.Kinetic, ProjectileFlag.None, null);
-         rs.takeDamage(1, DamageType.Explosive, ProjectileFlag.None, null);
-         rs.takeDamage(1, DamageType.Energy, ProjectileFlag.None, null);
+   let i = 1;
+   while (rt.left.tiles.size > 0) {
+      rt.tick(BattleTickInterval, speed);
+      if (rt.gameStateDirty) {
+         rt.left.tiles.forEach((data, tile) => {
+            const rs = rt.get(tile);
+            if (rs) {
+               rs.takeDamage(i, DamageType.Kinetic, ProjectileFlag.None, null);
+               rs.takeDamage(i, DamageType.Explosive, ProjectileFlag.None, null);
+               rs.takeDamage(i, DamageType.Energy, ProjectileFlag.None, null);
+            }
+         });
+         ++i;
       }
-   });
-   rt.tick(BattleTickInterval, speed);
+   }
 
-   const actualToRaw =
-      reduceOf(rt.leftStat.actualDamage, (prev, k, v) => prev + v, 0) /
-      reduceOf(rt.leftStat.rawDamage, (prev, k, v) => prev + v, 0);
-
+   const actualToRaw = rt.leftStat.maxHp / reduceOf(rt.leftStat.rawDamage, (prev, k, v) => prev + v, 0);
    const hp = rt.leftStat.maxHp / actualToRaw;
    return [(hp * dps) / 1_000_000, hp / 100, dps / 10, rt];
 }
