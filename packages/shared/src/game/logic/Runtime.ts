@@ -83,7 +83,7 @@ export class Runtime {
       return undefined;
    }
 
-   public createEnemy(): void {
+   public createXPTarget(): void {
       const level = Math.floor(getMatchmakingQuantum(this.left) / 10) + this.wave;
       if (this.right.tiles.size > 0) {
          console.error("createEnemy called when there are still enemy tiles left");
@@ -207,7 +207,7 @@ export class Runtime {
       if (this.battleType === BattleType.Peace) {
          if (this.right.tiles.size === 0) {
             ++this.wave;
-            this.createEnemy();
+            this.createXPTarget();
          }
          return;
       }

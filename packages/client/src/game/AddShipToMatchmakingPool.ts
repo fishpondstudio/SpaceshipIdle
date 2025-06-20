@@ -12,7 +12,7 @@ export async function AddShipToMatchmakingPool(gs: GameState): Promise<void> {
       return;
    }
    try {
-      await RPCClient.saveShip(gs, score);
+      await RPCClient.saveShipV2(gs);
    } catch (e) {
       console.error(e);
    }

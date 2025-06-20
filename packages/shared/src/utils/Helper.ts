@@ -256,6 +256,22 @@ export function mapOf<K extends string | number | symbol, V, T>(
    return result;
 }
 
+export function flatMapOf<K extends string | number | symbol, V, T>(
+   obj: Partial<Record<K, V>> | undefined | null,
+   func: (key: K, value: V) => T[],
+): T[] {
+   const result: T[] = [];
+   if (!obj) {
+      return result;
+   }
+   forEach(obj, (k, v) => {
+      func(k, v).forEach((v) => {
+         result.push(v);
+      });
+   });
+   return result;
+}
+
 export function mMapOf<K, V, T>(
    obj: Map<K, V> | undefined | null,
    func: (key: K, value: V) => T,

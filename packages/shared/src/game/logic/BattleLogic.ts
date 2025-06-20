@@ -6,7 +6,7 @@ import { GameOption } from "../GameOption";
 import { GameState } from "../GameState";
 import { posToTile } from "../Grid";
 import { abilityTarget, AbilityTiming } from "../definitions/Ability";
-import { BuildingFlag, DamageType, ProjectileFlag, WeaponKey } from "../definitions/BuildingProps";
+import { BuildingFlag, ProjectileFlag, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { BattleStartAmmoCycles, BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
 import { BattleStatus } from "./BattleStatus";
@@ -293,7 +293,7 @@ export function calcShipScore(ship: GameState): [number, number, number, Runtime
    me.resources.clear();
    const rt = new Runtime({ current: me, options: new GameOption() }, new GameState());
    rt.wave = Number.POSITIVE_INFINITY;
-   rt.createEnemy();
+   rt.createXPTarget();
    rt.battleType = BattleType.Peace;
    rt.battleFlag = setFlag(rt.battleFlag, BattleFlag.Silent);
    const speed = { speed: 1 };
@@ -302,24 +302,38 @@ export function calcShipScore(ship: GameState): [number, number, number, Runtime
    }
    const dps = reduceOf(rt.rightStat.averageRawDamage(CalcShipScoreTicks), (prev, k, v) => prev + v, 0);
 
-   let i = 1;
-   while (rt.left.tiles.size > 0) {
-      rt.tick(BattleTickInterval, speed);
-      if (rt.gameStateDirty) {
-         rt.left.tiles.forEach((data, tile) => {
-            const rs = rt.get(tile);
-            if (rs) {
-               rs.takeDamage(i, DamageType.Kinetic, ProjectileFlag.None, null);
-               rs.takeDamage(i, DamageType.Explosive, ProjectileFlag.None, null);
-               rs.takeDamage(i, DamageType.Energy, ProjectileFlag.None, null);
-            }
-         });
-         ++i;
-      }
-   }
+   // 68.9%
+   // rt.left.tiles.forEach((data, tile) => {
+   //    const rs = rt.get(tile);
+   //    if (rs) {
+   //       rs.takeDamage(1, DamageType.Kinetic, ProjectileFlag.None, null);
+   //       rs.takeDamage(1, DamageType.Explosive, ProjectileFlag.None, null);
+   //       rs.takeDamage(1, DamageType.Energy, ProjectileFlag.None, null);
+   //    }
+   // });
+   // rt.tick(BattleTickInterval, speed);
+   // const actualToRaw =
+   //    reduceOf(rt.leftStat.actualDamage, (prev, k, v) => prev + v, 0) /
+   //    reduceOf(rt.leftStat.rawDamage, (prev, k, v) => prev + v, 0);
 
-   const actualToRaw = rt.leftStat.maxHp / reduceOf(rt.leftStat.rawDamage, (prev, k, v) => prev + v, 0);
-   const hp = rt.leftStat.maxHp / actualToRaw;
+   // 69.54%
+   // let i = 1;
+   // while (rt.left.tiles.size > 0) {
+   //    rt.tick(BattleTickInterval, speed);
+   //    rt.left.tiles.forEach((data, tile) => {
+   //       const rs = rt.get(tile);
+   //       if (rs) {
+   //          rs.takeDamage(i * BattleTickInterval, DamageType.Kinetic, ProjectileFlag.None, null);
+   //          rs.takeDamage(i * BattleTickInterval, DamageType.Explosive, ProjectileFlag.None, null);
+   //          rs.takeDamage(i * BattleTickInterval, DamageType.Energy, ProjectileFlag.None, null);
+   //       }
+   //    });
+   //    ++i;
+   // }
+   // const hp = reduceOf(rt.leftStat.rawDamage, (prev, k, v) => prev + v, 0);
+
+   // 69.35%
+   const hp = rt.leftStat.maxHp;
    return [(hp * dps) / 1_000_000, hp / 100, dps / 10, rt];
 }
 

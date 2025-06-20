@@ -192,7 +192,7 @@ export function addDebugFunctions(): void {
       G.save.current = me.json;
       G.runtime = new Runtime(G.save, new GameState());
       G.runtime.battleType = BattleType.Peace;
-      G.runtime.createEnemy();
+      G.runtime.createXPTarget();
 
       const [score, hp, dps] = calcShipScore(G.save.current);
       const ship = await RPCClient.findShipV3(

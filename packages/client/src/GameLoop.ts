@@ -24,7 +24,7 @@ export function startGameLoop(): void {
 
    const i = 0;
    G.runtime = new Runtime(G.save, new GameState());
-   G.runtime.createEnemy();
+   G.runtime.createXPTarget();
 
    G.pixi.ticker.add(() => {
       const unscaled = G.pixi.ticker.deltaMS / 1000;

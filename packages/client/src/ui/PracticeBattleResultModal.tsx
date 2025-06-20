@@ -27,7 +27,7 @@ export function PracticeBattleResultModal(): React.ReactNode {
                G.speed = 1;
                G.runtime = new Runtime(G.save, new GameState());
                G.runtime.battleType = BattleType.Peace;
-               G.runtime.createEnemy();
+               G.runtime.createXPTarget();
                GameStateUpdated.emit();
 
                setTimeout(() => {
