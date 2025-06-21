@@ -191,8 +191,5 @@ export function isQualifierBattle(me: GameState, enemy: GameState): boolean {
    if (getUsedQuantum(me) < getQuantumLimit(me)) {
       return false;
    }
-   if (getUsedQuantum(enemy) !== getMatchmakingQuantum(me)) {
-      return false;
-   }
    return true;
 }
