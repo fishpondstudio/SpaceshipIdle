@@ -79,6 +79,8 @@ const app = new Application({
    autoDensity: true,
    resolution: window.devicePixelRatio,
    sharedTicker: true,
+   background: 0x000000,
+   backgroundAlpha: 1,
 });
 app.ticker.maxFPS = 60;
 

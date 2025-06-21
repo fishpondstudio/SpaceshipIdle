@@ -1,11 +1,10 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
-import { GameState, hashGameState } from "@spaceship-idle/shared/src/game/GameState";
+import { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
-import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { rollElementShards } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
-import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
+import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { randomColor } from "@spaceship-idle/shared/src/thirdparty/RandomColor";
 import { enumOf, equal, forEach, INT32_MAX, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -26,6 +25,7 @@ import { idbClear } from "../utils/BrowserStorage";
 import { G } from "../utils/Global";
 import { hideModal, showModal } from "../utils/ToggleModal";
 import { loadGameStateFromFile, loadSaveGameFromFile, saveGame } from "./LoadSave";
+import { findShip } from "./Matchmaking";
 
 export function addDebugFunctions(): void {
    if (!import.meta.env.DEV) return;
@@ -186,33 +186,22 @@ export function addDebugFunctions(): void {
          dismiss: true,
       });
    };
-   // @ts-expect-error
-   globalThis.matchmake = async () => {
-      const me = await RPCClient.findShipV3(0n, [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX]);
-      G.save.current = me.json;
-      G.runtime = new Runtime(G.save, new GameState());
-      G.runtime.battleType = BattleType.Peace;
-      G.runtime.createXPTarget();
 
-      const [score, hp, dps] = calcShipScore(G.save.current);
-      const ship = await RPCClient.findShipV3(
-         hashGameState(G.save.current),
-         [0, me.quantum],
-         [score / 1.1, score * 1.1],
-         [0, 1.1 * hp],
-         [0, 1.1 * dps],
-      );
-      const [enemyScore, enemyHp, enemyDps] = calcShipScore(ship.json);
+   const matchmake = async (): Promise<Runtime> => {
+      const me = await RPCClient.findShipV3(0n, [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX]);
+      const [score, hp, dps] = calcShipScore(me.json);
+      const enemy = await findShip(score * 0.8, hp * 0.8, dps * 0.8);
+      const [enemyScore, enemyHp, enemyDps] = calcShipScore(enemy.json);
       const now = performance.now();
-      const rt = simulateBattle(G.save.current, ship.json);
-      if (!equal(enemyScore, ship.score)) {
-         console.error(`Score mismatch: Client: ${enemyScore} vs Server: ${ship.score}`);
+      const rt = simulateBattle(me.json, enemy.json);
+      if (!equal(enemyScore, enemy.score)) {
+         console.error(`Score mismatch: Client: ${enemyScore} vs Server: ${enemy.score}`);
       }
-      if (!equal(enemyHp, ship.hp)) {
-         console.error(`HP mismatch: Client: ${enemyHp} vs Server: ${ship.hp}`);
+      if (!equal(enemyHp, enemy.hp)) {
+         console.error(`HP mismatch: Client: ${enemyHp} vs Server: ${enemy.hp}`);
       }
-      if (!equal(enemyDps, ship.dps)) {
-         console.error(`DPS mismatch: Client: ${enemyDps} vs Server: ${ship.dps}`);
+      if (!equal(enemyDps, enemy.dps)) {
+         console.error(`DPS mismatch: Client: ${enemyDps} vs Server: ${enemy.dps}`);
       }
 
       let scoreMatch = "❌";
@@ -240,18 +229,36 @@ export function addDebugFunctions(): void {
             dpsMatch = "✅";
          }
       }
-
       console.log(
-         `*Opponent: ${ship.shipId}\n`,
+         `*Opponent: ${enemy.shipId}\n`,
          `${rt.battleStatus === BattleStatus.LeftWin ? "👈" : "👉"} Result: ${enumOf(BattleStatus, rt.battleStatus)} (${Math.round(performance.now() - now)}ms)\n`,
          `${scoreMatch} Score: ${round(score, 2)} vs ${round(enemyScore, 2)}\n`,
          `${hpMatch} HP: ${round(hp, 2)} vs ${round(enemyHp, 2)}\n`,
          `${dpsMatch} DPS: ${round(dps, 2)} vs ${round(enemyDps, 2)}\n`,
       );
-      showModal({
-         children: <MatchMakingModal key={Math.random()} enemy={ship.json} />,
-         size: "lg",
-         dismiss: true,
-      });
+      // showModal({
+      //    children: <MatchMakingModal key={Math.random()} enemy={ship.json} />,
+      //    size: "lg",
+      //    dismiss: true,
+      // });
+      return rt;
+   };
+
+   // @ts-expect-error
+   globalThis.matchmake = matchmake;
+
+   // @ts-expect-error
+   globalThis.testMatchmake = async (count: number) => {
+      let leftWin = 0;
+      let rightWin = 0;
+      for (let i = 0; i < count; i++) {
+         const rt = await matchmake();
+         if (rt.battleStatus === BattleStatus.RightWin) {
+            rightWin++;
+         } else {
+            leftWin++;
+         }
+      }
+      console.log(`Left Win: ${leftWin}, Right Win: ${rightWin}`);
    };
 }

@@ -2,6 +2,7 @@ precision mediump float;
 
 uniform vec3 iResolution;
 uniform float iTime;
+uniform float iStrength;
 
 //CBS
 //Parallax scrolling fractal galaxy.
@@ -117,7 +118,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
    vec3 rnd2 = nrand3(seed2);
    starcolor += vec4(pow(rnd2.y, 40.0));
 
-   fragColor = mix(freqs[3] - .3, 1., v) * vec4(1.5 * freqs[2] * t * t * t, 1.2 * freqs[1] * t * t, freqs[3] * t, 1.0) + c2 + starcolor;
+   vec4 cloud = mix(freqs[3] - .3, 1., v) * vec4(1.5 * freqs[2] * t * t * t, 1.2 * freqs[1] * t * t, freqs[3] * t, 1.0) + c2;
+   fragColor = mix(cloud, vec4(0), 1. - iStrength) + starcolor;
 }
 
 void main(void) {

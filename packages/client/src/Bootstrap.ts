@@ -1,6 +1,7 @@
 import { notifications } from "@mantine/notifications";
 import * as Sentry from "@sentry/browser";
 import { SentryDSN } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateFlags, initGameState, SaveGame } from "@spaceship-idle/shared/src/game/GameState";
 import { forEach, rejectIn, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { Assets, BitmapFont, type Spritesheet, type TextStyleFontWeight, type Texture } from "pixi.js";
@@ -101,6 +102,7 @@ export async function bootstrap(): Promise<void> {
    }
    loadGameScene();
    startGameLoop();
+   GameOptionUpdated.emit();
    showBootstrapModal(G.save, isNewPlayer);
    hideLoading();
    setInterval(() => saveGame(G.save), isSteam() ? 60_000 : 10_000);

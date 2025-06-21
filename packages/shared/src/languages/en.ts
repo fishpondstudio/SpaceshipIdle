@@ -685,4 +685,7 @@ export const EN = {
    MatchmakingDefense: "Defense",
    MatchmakingScore: "Rating",
    Boosters: "Boosters",
+   NebulaStrength: "Nebula Strength",
+   NebulaStrengthTooltip:
+      "Set the strength of the background nebula effect. Lower this will make the nebula less visible",
 };

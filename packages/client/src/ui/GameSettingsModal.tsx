@@ -63,7 +63,7 @@ function GeneralTab(): React.ReactNode {
          </div>
          <div className="divider my10 mx-10" />
          <div className="row">
-            {t(L.ShowResources)}
+            <div>{t(L.ShowResources)}</div>
             <div className="f1" />
             <Switch
                checked={hasFlag(G.save.options.flag, GameOptionFlag.ShowResources)}
@@ -77,7 +77,7 @@ function GeneralTab(): React.ReactNode {
          </div>
          <div className="h10" />
          <div className="row">
-            {t(L.HideInactiveResources)}
+            <div>{t(L.HideInactiveResources)}</div>
             <Tooltip label={t(L.HideInactiveResourcesTooltip)}>
                <div className="mi sm text-space">info</div>
             </Tooltip>
@@ -94,7 +94,7 @@ function GeneralTab(): React.ReactNode {
          </div>
          <div className="h10" />
          <div className="row">
-            {t(L.TheoreticalValue)}
+            <div>{t(L.TheoreticalValue)}</div>
             <Tooltip label={t(L.TheoreticalValueTooltip)}>
                <div className="mi sm text-space">info</div>
             </Tooltip>
@@ -111,7 +111,7 @@ function GeneralTab(): React.ReactNode {
          </div>
          <div className="h10" />
          <div className="row">
-            {t(L.CooldownIndicatorOutsideBattle)}
+            <div>{t(L.CooldownIndicatorOutsideBattle)}</div>
             <Tooltip label={t(L.CooldownIndicatorOutsideBattleTooltip)}>
                <div className="mi sm text-space">info</div>
             </Tooltip>
@@ -128,7 +128,7 @@ function GeneralTab(): React.ReactNode {
          </div>{" "}
          <div className="h10" />
          <div className="row">
-            {t(L.LinearCooldownIndicator)}
+            <div>{t(L.LinearCooldownIndicator)}</div>
             <Tooltip label={t(L.LinearCooldownIndicatorTooltip)}>
                <div className="mi sm text-space">info</div>
             </Tooltip>
@@ -145,7 +145,7 @@ function GeneralTab(): React.ReactNode {
          </div>
          <div className="divider my10 mx-10" />
          <div className="row">
-            {t(L.RetroFilter)}
+            <div>{t(L.RetroFilter)}</div>
             <Tooltip label={t(L.RequireGameRestart)}>
                <div className="mi sm text-space">info</div>
             </Tooltip>
@@ -162,9 +162,29 @@ function GeneralTab(): React.ReactNode {
          </div>
          <div className="h10"></div>
          <div className="row">
-            <div className="f1">{t(L.SoundVolume)}</div>
+            <div>{t(L.NebulaStrength)}</div>
+            <Tooltip label={t(L.NebulaStrengthTooltip)}>
+               <div className="mi sm text-space">info</div>
+            </Tooltip>
+            <div className="f1" />
             <Slider
-               flex={1}
+               w="50%"
+               value={G.save.options.nebulaStrength}
+               onChange={(v) => {
+                  G.save.options.nebulaStrength = v;
+                  GameOptionUpdated.emit();
+               }}
+               min={0}
+               max={1}
+               step={0.1}
+            />
+         </div>
+         <div className="h10"></div>
+         <div className="row">
+            <div>{t(L.SoundVolume)}</div>
+            <div className="f1" />
+            <Slider
+               w="50%"
                value={G.save.options.volume}
                onChange={(v) => {
                   G.save.options.volume = v;
@@ -190,7 +210,7 @@ function GeneralTab(): React.ReactNode {
          </div>
          <div className="h10" />
          <div className="row">
-            {t(L.HideSteamIcon)}
+            <div>{t(L.HideSteamIcon)}</div>
             <div className="mi sm text-space pointer" onClick={() => openUrl(SteamUrl)}>
                open_in_new
             </div>
@@ -207,7 +227,7 @@ function GeneralTab(): React.ReactNode {
          </div>
          <div className="h10" />
          <div className="row">
-            {t(L.HideDiscordIcon)}
+            <div>{t(L.HideDiscordIcon)}</div>
             <div className="mi sm text-space pointer" onClick={() => openUrl(DiscordUrl)}>
                open_in_new
             </div>

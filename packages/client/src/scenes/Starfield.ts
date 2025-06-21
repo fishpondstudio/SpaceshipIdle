@@ -1,3 +1,4 @@
+import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { RingBuffer } from "@spaceship-idle/shared/src/utils/RingBuffer";
 import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
 import { BitmapText, Container, Geometry, type IDestroyOptions, Mesh, Shader, Sprite, type Texture } from "pixi.js";
@@ -26,8 +27,10 @@ export class Starfield extends Container {
       this.shader = Shader.from(vert, frag, {
          iTime: Math.random() * 1_000_000,
          iResolution: [app.renderer.width, app.renderer.height, 1],
+         iStrength: 1,
       });
       this.quad = this.addChild(new Mesh(quadGeometry, this.shader));
+
       this.version = getVersion();
       this.watermark = G.scene.overlay.addChild(
          new BitmapText("", { fontName: Fonts.SpaceshipIdle, fontSize: 12, tint: 0x999999, align: "right" }),
@@ -37,6 +40,11 @@ export class Starfield extends Container {
 
       this.onResize();
       G.pixi.renderer.on("resize", this.onResize, this);
+      GameOptionUpdated.on(this.updateNebulaStrength.bind(this));
+   }
+
+   public updateNebulaStrength(): void {
+      this.shader.uniforms.iStrength = G.save.options.nebulaStrength;
    }
 
    playParticle(texture: Texture | undefined, from: IHaveXY, target: IHaveXY, count: number): void {

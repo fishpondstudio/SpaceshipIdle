@@ -1,7 +1,8 @@
 import { getGradient, Tooltip, useMantineTheme } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import {
    calcSpaceshipXP,
    getMatchmakingQuantum,
@@ -9,9 +10,9 @@ import {
    getUsedQuantum,
    quantumToXP,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { formatNumber, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
+import { enumOf, formatNumber, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { RPCClient } from "../rpc/RPCClient";
+import { findShip } from "../game/Matchmaking";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { hideModal, showModal } from "../utils/ToggleModal";
@@ -105,9 +106,15 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                try {
                   playClick();
                   showLoading();
-                  const [score] = calcShipScore(G.save.current);
-                  const ship = await RPCClient.findShipV2(getMatchmakingQuantum(G.save.current), score);
+                  const [score, hp, dps] = calcShipScore(G.save.current);
+                  const ship = await findShip(score, hp, dps);
                   await resolveIn(1, null);
+
+                  if (import.meta.env.DEV) {
+                     const rt = simulateBattle(G.save.current, ship.json);
+                     console.log(`Battle with ${ship.shipId} result: ${enumOf(BattleStatus, rt.battleStatus)}`);
+                  }
+
                   playBling();
                   hideLoading();
                   showModal({

@@ -129,6 +129,7 @@ export class GameOption {
    flag: GameOptionFlag = GameOptionFlag.ShowResources | GameOptionFlag.RetroFilter;
    elements = new Map<ElementSymbol, Inventory>();
    elementChoices: ElementChoice[] = [];
+   nebulaStrength = 1;
    volume = 1;
    shortcuts = DefaultShortcuts;
 }
