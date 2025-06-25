@@ -1,6 +1,10 @@
 import { ScrollArea, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { BattleQuantum, ElementThisRunColor, TrialQuantum } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import {
+   BattleLossQuantum,
+   BattleWinQuantum,
+   ElementThisRunColor,
+} from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
    getCurrentQuantum,
@@ -16,7 +20,7 @@ import { refreshOnTypedEvent } from "../utils/Hook";
 
 export function QuantumProgressModal(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
-   const start = Math.floor(getQuantumLimit(G.save.current) / BattleQuantum - 1) * BattleQuantum;
+   const start = Math.floor(getQuantumLimit(G.save.current) / BattleWinQuantum - 1) * BattleWinQuantum;
    const limit = getQuantumLimit(G.save.current);
    const current = getCurrentQuantum(G.save.current);
    const used = getUsedQuantum(G.save.current);
@@ -39,7 +43,7 @@ export function QuantumProgressModal(): React.ReactNode {
                   return (
                      <QuantumBlock
                         key={i}
-                        start={start + BattleQuantum * i}
+                        start={start + BattleWinQuantum * i}
                         qualified={limit}
                         current={current}
                         used={used}
@@ -58,7 +62,7 @@ export function QuantumProgressModal(): React.ReactNode {
                      <span className="text-dimmed">{amount}x</span> {symbol}
                   </div>
                   <div className="text-sm text-dimmed">
-                     {t(L.ElementBoostThisRun, amount, Config.Buildings[Config.Element.get(symbol)!].name())}
+                     {t(L.PlusXProductionMultiplierForX, amount, Config.Buildings[Config.Element.get(symbol)!].name())}
                   </div>
                </div>
             </div>
@@ -73,9 +77,9 @@ function QuantumBlock({
    current,
    used,
 }: { start: number; qualified: number; current: number; used: number }): React.ReactNode {
-   const qualifiedPercent = clamp((qualified - start) / BattleQuantum, 0, 1);
-   const currentPercent = clamp((current - start) / BattleQuantum, 0, 1);
-   const usedPercent = clamp((used - start) / BattleQuantum, 0, 1);
+   const qualifiedPercent = clamp((qualified - start) / BattleWinQuantum, 0, 1);
+   const currentPercent = clamp((current - start) / BattleWinQuantum, 0, 1);
+   const usedPercent = clamp((used - start) / BattleWinQuantum, 0, 1);
    return (
       <div className="block">
          <div className="row g0">
@@ -103,19 +107,14 @@ function QuantumBlock({
             <div className="f1">
                Q{start} {start >= qualified ? <span className="text-xs text-dimmed">{t(L.Qualifier)}</span> : null}
             </div>
-            <div className="f1">
-               Q{start + TrialQuantum}{" "}
-               {start + TrialQuantum >= qualified ? (
-                  <span className="text-xs text-dimmed">{t(L.SecondChance)}</span>
-               ) : null}
-            </div>
+            <div className="f1">Q{start + BattleLossQuantum}</div>
          </div>
          <div className="row g0">
             <Tooltip label={t(L.MaxSpaceshipValue)}>
                <div className="f1">{formatNumber(quantumToXP(start))}</div>
             </Tooltip>
             <Tooltip label={t(L.MaxSpaceshipValue)}>
-               <div className="f1">{formatNumber(quantumToXP(start + TrialQuantum))}</div>
+               <div className="f1">{formatNumber(quantumToXP(start + BattleLossQuantum))}</div>
             </Tooltip>
          </div>
       </div>

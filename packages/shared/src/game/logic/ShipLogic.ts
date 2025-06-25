@@ -5,13 +5,7 @@ import type { Building } from "../definitions/Buildings";
 import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
 import type { ITileData } from "../ITileData";
-import {
-   calcSpaceshipXP,
-   getMatchmakingQuantum,
-   getMaxSpaceshipXP,
-   getQuantumLimit,
-   getUsedQuantum,
-} from "./ResourceLogic";
+import { calcSpaceshipXP, getMaxSpaceshipXP, getQuantumLimit, getUsedQuantum } from "./ResourceLogic";
 import { Side } from "./Side";
 
 export function calculateAABB(tiles: Tiles): AABB {
@@ -140,9 +134,9 @@ export function validateForClient(gs: GameState): boolean {
 }
 
 export function validateForMatchmaking(gs: GameState): boolean {
-   const mmQuantum = getMatchmakingQuantum(gs);
+   const quantumLimit = getQuantumLimit(gs);
    const usedQuantum = getUsedQuantum(gs);
-   if (mmQuantum !== usedQuantum) {
+   if (quantumLimit !== usedQuantum) {
       return false;
    }
    return _validateShip(gs);
@@ -192,4 +186,28 @@ export function isQualifierBattle(me: GameState, enemy: GameState): boolean {
       return false;
    }
    return true;
+}
+
+export function migrateShipForServer(ship: GameState): boolean {
+   let migrated = false;
+   if ("battleCount" in ship) {
+      migrated = true;
+      ship.win = ship.battleCount as number;
+      delete ship.battleCount;
+   }
+   if ("trialCount" in ship) {
+      migrated = true;
+      ship.loss = ship.trialCount as number;
+      delete ship.trialCount;
+   }
+   if (!ship.permanentElementChoices) {
+      migrated = true;
+      ship.permanentElementChoices = [];
+   }
+
+   if (!ship.permanentElements) {
+      migrated = true;
+      ship.permanentElements = new Map();
+   }
+   return migrated;
 }

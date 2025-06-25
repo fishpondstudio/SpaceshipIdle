@@ -130,7 +130,7 @@ export const EN = {
    ElementBeryllium: "Beryllium",
    ElementBismuth: "Bismuth",
    ElementBohrium: "Bohrium",
-   ElementBoostThisRun: "+%% Production Multiplier for %%",
+   PlusXProductionMultiplierForX: "+%% Production Multiplier for %%",
    ElementBoron: "Boron",
    ElementBromine: "Bromine",
    ElementCadmium: "Cadmium",
@@ -251,8 +251,7 @@ export const EN = {
    Explosive: "Explosive",
    ExportSpaceship: "Export Spaceship",
    ExtraElementShards: "Extra Element Shards",
-   ExtraElementShardsTooltipHTML:
-      "<b>Element Shards</b> can be used to upgrade <b>Permanent Elements</b>, which boost <b>XP Multiplier</b>",
+
    FailsafeRegen: "Failsafe Regen",
    FailsafeRegenDesc: "Recover 5% of max HP per second when current HP is below 10%",
    FD: "Drone",
@@ -356,7 +355,6 @@ export const EN = {
    MS3: "MS3 Jay",
    MS3Ammo: "MS3 Ammo",
    Next: "Next",
-   NoPermanentElement: "You don't have this permanent element yet",
    NotConnected: "Modules need to be connected to the spaceship (no diagonal connections)",
    NotEnoughQuantum: "Not Enough Quantum",
    NotEnoughResources: "Not Enough Resources",
@@ -375,7 +373,6 @@ export const EN = {
    PlayerHandleRequirement: "Player handle must be unique and contain 5 ~ 16 alphabets and numbers",
    PlayerProfile: "Player Profile",
    PlusOneElement: "+1 Element",
-   PlusXPMultiplier: "+%% XP Multiplier for %%",
    PM1Booster: "PM1 Booster",
    PM1BoosterDesc: "+1 Production Multiplier",
    Power: "Power",
@@ -390,8 +387,6 @@ export const EN = {
       "Your ship was built with an incompatible version of the game. You need to prestige to continue with a new ship",
    Priority: "Priority",
    Production: "Production",
-   ProductionBuildingXPHTML:
-      "This building does not produce XP without XP multiplier. With XP multiplier (e.g. from Permanent Element), <b>XP = Production Value (before Production Multiplier) x XP Multiplier</b>",
    ProductionDisruption: "Production Disruption",
    ProductionDisruptionDesc: "Cause the target to stop production",
    ProductionMultiplier: "Production Multiplier",
@@ -460,7 +455,6 @@ export const EN = {
    ReturnToSpaceship: "Return To Spaceship",
    Rocket: "Rocket",
    RocketFab: "Rocket Fab",
-   SecondChance: "Second Chance",
    SecondChanceDescHTML:
       "Because this is your first qualifier battle, you get a second chance with higher quantum limit",
    SelectedXModules: "%% Modules Selected",
@@ -619,8 +613,6 @@ export const EN = {
       "You will discover your first element when you reach <b>15 quantum</b>. You can pick one out of three choices. Each element boosts <b>production multipliers</b>. They become permanent element shards when you prestige.",
    TutorialDiscoverXElement: "Discover %% Element",
    TutorialElement: "Element",
-   TutorialElementContent:
-      "Elements are discovered as you gain quantum. You can pick one out of three choices and they boost <b>production multipliers</b>. When you prestige, all elements from this run becomes permanent element shards. Permanent elements boosts <b>XP multiplier</b>.",
    TutorialGameControl: "Game Control",
    TutorialGameControlContent:
       "<b>Click</b> to select a module. <b>Drag</b> to move around. <b>Scroll</b> to zoom in and out. Click on an <b>empty module</b> to build. <b>Ctrl + Click</b> to multiselect.",
@@ -670,14 +662,11 @@ export const EN = {
    ViewShip: "View Ship",
    WarpPerSec: "warp/s",
    WarpSpeed: "Warp Speed",
-   WeaponBuildingXPHTML:
-      "This building produces XP when ammo is consumed. <b>XP = Consumed Ammo Value x XP Multiplier</b>",
    WeaponList: "Weapon Wiki",
    WelcomeToSpaceshipIdle: "Welcome to Spaceship Idle",
    WishlistFullGame: "Wishlist the Full Game on Steam!",
    XP: "XP",
    XPCollector: "XP Collector",
-   XPMultiplier: "XP Multiplier",
    TutorialUpgradeXLevels: "Upgrade %% Level(s)",
    TutorialUpgradeXLevelsDescHTML:
       "Modules cost XP to upgrade. Select a module and click <b>+1</b> to upgrade. You can also downgrade or recycle a module - <b>all your invested XP will be refunded</b>",
@@ -688,4 +677,10 @@ export const EN = {
    NebulaStrength: "Nebula Strength",
    NebulaStrengthTooltip:
       "Set the strength of the background nebula effect. Lower this will make the nebula less visible",
+   PermanentElement: "Permanent Element",
+   ElementNotDiscoveredYet: "You haven't discovered this element yet",
+   ExtraElementShardsTooltipHTMLV2: "<b>Element Shards</b> can be used to upgrade <b>Permanent Elements</b>",
+   WeaponBuildingXPHTMLV2: "This building produces XP when ammo is consumed. <b>XP = Consumed Ammo Value</b>",
+   TutorialElementContentV2:
+      "Elements are discovered as you gain quantum. You can pick one out of three choices and they boost <b>production multipliers</b>. When you prestige, all elements from this run becomes permanent element shards.",
 };

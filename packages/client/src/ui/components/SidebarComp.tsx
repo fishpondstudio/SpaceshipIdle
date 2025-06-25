@@ -7,9 +7,10 @@ export function SidebarComp({
 }: React.PropsWithChildren<{ title: React.ReactNode }>): React.ReactElement {
    return (
       <div
-         className="sf-frame m10"
+         className="sf-frame"
          style={{
-            height: "calc(100vh - 20px)",
+            margin: "50px 10px 10px 10px",
+            height: "calc(100vh - 60px - 10px)",
             display: "flex",
             flexDirection: "column",
          }}

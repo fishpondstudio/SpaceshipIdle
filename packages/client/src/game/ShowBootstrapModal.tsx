@@ -15,9 +15,9 @@ export function showBootstrapModal(save: SaveGame, isNewPlayer: boolean): void {
       return;
    }
 
-   if (save.options.elementChoices.length > 0) {
+   if (save.current.permanentElementChoices.length > 0) {
       showModal({
-         children: <ChooseElementModal choice={save.options.elementChoices[0]} permanent={true} />,
+         children: <ChooseElementModal choice={save.current.permanentElementChoices[0]} permanent={true} />,
          size: "xl",
       });
       return;

@@ -42,7 +42,7 @@ test("totalBuildingValue", () => {
 test("upgradeMax", () => {
    const rt = new Runtime(new SaveGame(), new GameState());
    rt.left.resources.set("XP", 1000);
-   tickProduction(rt.left, rt.leftStat, rt, rt.leftOptions.elements);
+   tickProduction(rt.left, rt.leftStat, rt);
 
    const tile: ITileData = { type: "AC76", level: 5, priority: 1, capacity: 1 };
    upgradeMax(tile, rt.left);

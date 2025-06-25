@@ -3,14 +3,11 @@ import { GameStateFlags } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { OnBattleStatusChanged } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { clearFlag, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
+import { clearFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { saveGame } from "./game/LoadSave";
 import { onSteamClose } from "./rpc/SteamClient";
-import { BattleResultVictoryModal } from "./ui/BattleResultVictoryModal";
 import { PracticeBattleResultModal } from "./ui/PracticeBattleResultModal";
-import { PrestigeModal } from "./ui/PrestigeModal";
-import { PrestigeReason } from "./ui/PrestigeReason";
-import { SecondChanceBattleResultModal } from "./ui/SecondChanceBattleResultModal";
+import { QualifierBattleResultModal } from "./ui/QualifierBattleResultModal";
 import { G } from "./utils/Global";
 import { SteamClient } from "./utils/Steam";
 import { showModal } from "./utils/ToggleModal";
@@ -21,20 +18,13 @@ export function subscribeToEvents(): void {
          let modal: React.ReactNode = null;
          switch (G.runtime.battleType) {
             case BattleType.Qualifier: {
+               modal = <QualifierBattleResultModal />;
                if (G.runtime.battleStatus === BattleStatus.RightWin) {
-                  if (G.save.current.trialCount === 0) {
-                     modal = <SecondChanceBattleResultModal />;
-                     G.save.current.trialCount = 1;
-                  } else {
-                     modal = <PrestigeModal reason={PrestigeReason.Defeated} />;
-                     G.save.current.flags = setFlag(G.save.current.flags, GameStateFlags.Prestige);
-                  }
+                  G.save.current.loss++;
                } else {
-                  modal = <BattleResultVictoryModal />;
-                  G.save.current.battleCount++;
-                  G.save.current.trialCount = 0;
-                  clearFlag(G.save.current.flags, GameStateFlags.QualifierBattlePrompted);
+                  G.save.current.win++;
                }
+               clearFlag(G.save.current.flags, GameStateFlags.QualifierBattlePrompted);
                break;
             }
             case BattleType.Practice: {

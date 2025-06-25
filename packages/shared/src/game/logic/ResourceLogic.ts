@@ -1,7 +1,7 @@
 import { clamp, forEach, inverse } from "../../utils/Helper";
 import { Config } from "../Config";
 import type { GameState } from "../GameState";
-import { BattleQuantum, TrialQuantum } from "../definitions/Constant";
+import { BattleLossQuantum, BattleWinQuantum } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
 import { getTotalBuildingValue, isBooster } from "./BuildingLogic";
 import type { RuntimeStat } from "./RuntimeStat";
@@ -28,11 +28,7 @@ export function getMaxSpaceshipXP(gs: GameState): number {
 }
 
 export function getQuantumLimit(gs: GameState): number {
-   return getMatchmakingQuantum(gs) + gs.trialCount * TrialQuantum;
-}
-
-export function getMatchmakingQuantum(gs: GameState): number {
-   return gs.battleCount * BattleQuantum + 30;
+   return 30 + gs.win * BattleWinQuantum + gs.loss * BattleLossQuantum;
 }
 
 function getTotalXP(gs: GameState): number {

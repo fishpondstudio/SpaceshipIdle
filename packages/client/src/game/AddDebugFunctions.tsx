@@ -10,7 +10,6 @@ import { enumOf, equal, forEach, INT32_MAX, round } from "@spaceship-idle/shared
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { jsonEncode } from "@spaceship-idle/shared/src/utils/Serialization";
 import { RPCClient } from "../rpc/RPCClient";
-import { BattleResultVictoryModal } from "../ui/BattleResultVictoryModal";
 import { ChooseElementModal } from "../ui/ChooseElementModal";
 import { MatchMakingModal } from "../ui/MatchmakingModal";
 import { NewPlayerModal } from "../ui/NewPlayerModal";
@@ -18,8 +17,8 @@ import { OfflineTimeModal } from "../ui/OfflineTimeModal";
 import { PracticeBattleResultModal } from "../ui/PracticeBattleResultModal";
 import { PrestigeModal } from "../ui/PrestigeModal";
 import { PrestigeReason } from "../ui/PrestigeReason";
+import { QualifierBattleResultModal } from "../ui/QualifierBattleResultModal";
 import { QuantumProgressModal } from "../ui/QuantumProgressModal";
-import { SecondChanceBattleResultModal } from "../ui/SecondChanceBattleResultModal";
 import { ViewShipModal } from "../ui/ViewShipModal";
 import { idbClear } from "../utils/BrowserStorage";
 import { G } from "../utils/Global";
@@ -63,9 +62,9 @@ export function addDebugFunctions(): void {
    };
    // @ts-expect-error
    globalThis.choosePermanentElement = () => {
-      rollElementShards(G.save, 1);
+      rollElementShards(G.save.current, 1);
       showModal({
-         children: <ChooseElementModal permanent={true} choice={G.save.options.elementChoices[0]} />,
+         children: <ChooseElementModal permanent={true} choice={G.save.current.permanentElementChoices[0]} />,
          size: "xl",
       });
    };
@@ -101,30 +100,16 @@ export function addDebugFunctions(): void {
       });
    };
    // @ts-expect-error
-   globalThis.defeated = async () => {
+   globalThis.practice = async () => {
       showModal({
-         children: <PrestigeModal reason={PrestigeReason.Defeated} />,
+         children: <PracticeBattleResultModal />,
          size: "sm",
       });
    };
    // @ts-expect-error
    globalThis.victory = async () => {
       showModal({
-         children: <BattleResultVictoryModal />,
-         size: "sm",
-      });
-   };
-   // @ts-expect-error
-   globalThis.secondChance = async () => {
-      showModal({
-         children: <SecondChanceBattleResultModal />,
-         size: "sm",
-      });
-   };
-   // @ts-expect-error
-   globalThis.practice = async () => {
-      showModal({
-         children: <PracticeBattleResultModal />,
+         children: <QualifierBattleResultModal />,
          size: "sm",
       });
    };

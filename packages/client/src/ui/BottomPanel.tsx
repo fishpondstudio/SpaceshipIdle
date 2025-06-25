@@ -175,9 +175,11 @@ function SceneSwitcher(): React.ReactNode {
                      break;
                   case Scenes.ElementsScene:
                      G.scene.loadScene(ElementsScene);
-                     if (G.save.options.elementChoices.length > 0) {
+                     if (G.save.current.permanentElementChoices.length > 0) {
                         showModal({
-                           children: <ChooseElementModal choice={G.save.options.elementChoices[0]} permanent={true} />,
+                           children: (
+                              <ChooseElementModal choice={G.save.current.permanentElementChoices[0]} permanent={true} />
+                           ),
                            size: "xl",
                         });
                      }

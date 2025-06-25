@@ -78,6 +78,11 @@
    margin: 5px;
 }
 
+.mx0 {
+   margin-left: 0;
+   margin-right: 0;
+}
+
 .mx10 {
    margin-left: 10px;
    margin-right: 10px;
@@ -187,6 +192,10 @@
 
 .f1 {
    flex: 1;
+}
+
+.f2 {
+   flex: 2;
 }
 
 .h5 {

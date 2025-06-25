@@ -1,12 +1,8 @@
-import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
-import { getNonWeaponBuildingXP } from "@spaceship-idle/shared/src/game/logic/ProductionLogic";
 import { classNames, formatNumber, isEmpty, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
 import type { ITileWithGameState } from "../ITileWithGameState";
-import { RenderHTML } from "./RenderHTMLComp";
 import { ResourceAmount } from "./ResourceAmountComp";
 import { TitleComp } from "./TitleComp";
 
@@ -85,7 +81,8 @@ export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNod
                   })}
                </>
             ) : null}
-            {!(WeaponKey in def) && rs.xpMultiplier.value > 1 ? (
+            {/* TODO: XP multiplier is currently not supported */}
+            {/* {!(WeaponKey in def) && rs.xpMultiplier.value > 1 ? (
                <>
                   <div className="subtitle">
                      {t(L.XPMultiplier)} x{rs.xpMultiplier.value - 1}
@@ -107,7 +104,7 @@ export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNod
                      </Tooltip>
                   </div>
                </>
-            ) : null}
+            ) : null} */}
          </div>
       </>
    );

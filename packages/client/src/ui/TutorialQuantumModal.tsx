@@ -38,7 +38,7 @@ export function TutorialQuantumModal(): React.ReactNode {
             </div>
             <div className="f1">
                <div className="text-lg text-space">{t(L.TutorialElement)}</div>
-               <RenderHTML className="render-html" html={t(L.TutorialElementContent)} />
+               <RenderHTML className="render-html" html={t(L.TutorialElementContentV2)} />
             </div>
          </div>
          <div className="h10" />

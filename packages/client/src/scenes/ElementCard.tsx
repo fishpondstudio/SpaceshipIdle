@@ -43,7 +43,7 @@ export class ElementCard extends Container {
       symbol.position.set(100, 75);
 
       const name = this.addChild(
-         new BitmapText(element.name, {
+         new BitmapText(element.name(), {
             fontName: Fonts.SpaceshipIdle,
             fontSize: 24,
             tint: this._tint,
@@ -104,20 +104,25 @@ export class ElementCard extends Container {
       if (selected) {
          this._frame.texture = G.textures.get("Misc/ElementFrameSelected")!;
          this._frame.tint = 0xfdcb6e;
-         if (G.save.options.elements.has(this._elementSymbol)) {
+         if (this._hide) {
+            playError();
+            notifications.show({
+               message: t(L.ElementNotDiscoveredYet),
+               position: "top-center",
+               color: "red",
+               withBorder: true,
+            });
+         } else {
             playClick();
             showModal({
                children: <ElementModal symbol={this._elementSymbol} />,
                size: "lg",
                dismiss: true,
-            });
-         } else {
-            playError();
-            notifications.show({
-               message: t(L.NoPermanentElement),
-               position: "top-center",
-               color: "red",
-               withBorder: true,
+               title: (
+                  <>
+                     {PeriodicTable[this._elementSymbol].name()} ({PeriodicTable[this._elementSymbol].symbol})
+                  </>
+               ),
             });
          }
       } else {

@@ -87,7 +87,7 @@ export const Tutorial: ITutorial[] = [
       name: () => t(L.TutorialWinSpaceshipBattle, 1),
       desc: () => t(L.TutorialWinSpaceshipBattleDescHTML),
       progress: (gs) => {
-         return [gs.battleCount, 1];
+         return [gs.win, 1];
       },
    },
    {

@@ -1,36 +1,39 @@
 import { shuffle } from "../../utils/Helper";
 import { DefaultElementChoices } from "../definitions/Constant";
-import type { GameOption } from "../GameOption";
 import { GameState, initGameState, type SaveGame } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { getUnlockedElements, shardsFromShipValue } from "./ElementLogic";
 
 export function prestige(save: SaveGame): void {
    for (const [element, amount] of save.current.elements) {
-      addElementShard(save.options, element, amount);
+      addElementShard(save.current, element, amount);
    }
-   rollElementShards(save, shardsFromShipValue(save.current));
+   rollElementShards(save.current, shardsFromShipValue(save.current));
    const old = save.current;
    save.current = new GameState();
+   // Carry over
    save.current.resources.set("Warp", old.resources.get("Warp") ?? 0);
+   save.current.permanentElements = old.permanentElements;
+   save.current.permanentElementChoices = old.permanentElementChoices;
+
    initGameState(save.current);
 }
 
-export function addElementShard(options: GameOption, element: ElementSymbol, amount: number): void {
-   const inventory = options.elements.get(element);
+export function addElementShard(gs: GameState, element: ElementSymbol, amount: number): void {
+   const inventory = gs.permanentElements.get(element);
    if (inventory) {
       inventory.amount += amount;
    } else {
-      options.elements.set(element, { amount, level: 0 });
+      gs.permanentElements.set(element, { amount, level: 0 });
    }
 }
 
-export function rollElementShards(save: SaveGame, amount: number) {
+export function rollElementShards(gs: GameState, amount: number) {
    const candidates: ElementSymbol[] = [];
 
    for (let i = 0; i < amount; i++) {
       if (candidates.length < DefaultElementChoices) {
-         getUnlockedElements(save.current, candidates);
+         getUnlockedElements(gs, candidates);
          shuffle(candidates);
       }
 
@@ -42,7 +45,7 @@ export function rollElementShards(save: SaveGame, amount: number) {
          }
       }
 
-      save.options.elementChoices.push({
+      gs.permanentElementChoices.push({
          choices,
          stackSize: 1,
       });

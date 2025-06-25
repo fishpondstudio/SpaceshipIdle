@@ -36,7 +36,7 @@ export function PrestigeModal({ reason }: { reason: PrestigeReason }): React.Rea
             <div className="h5" />
             <div className="row">
                <div>{t(L.ExtraElementShards)}</div>
-               <Tooltip label={<RenderHTML html={t(L.ExtraElementShardsTooltipHTML)} />}>
+               <Tooltip label={<RenderHTML html={t(L.ExtraElementShardsTooltipHTMLV2)} />}>
                   <div className="mi sm">info</div>
                </Tooltip>
                <div className="f1" />

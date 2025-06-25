@@ -29,10 +29,6 @@ export function startGameLoop(): void {
    G.pixi.ticker.add(() => {
       const unscaled = G.pixi.ticker.deltaMS / 1000;
       const dt = unscaled * G.speed;
-      if (hasFlag(G.save.current.flags, GameStateFlags.Prestige)) {
-         showPrestigeModal(PrestigeReason.Defeated);
-         return;
-      }
       if (hasFlag(G.save.current.flags, GameStateFlags.Incompatible)) {
          showPrestigeModal(PrestigeReason.Incompatible);
          return;

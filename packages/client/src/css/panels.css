@@ -16,8 +16,9 @@
 .ship-info {
    padding: 1px;
    position: absolute;
-   top: 10px;
-   left: 10px;
+   top: 0;
+   left: 50%;
+   transform: translateX(-50%);
    text-align: center;
    font-size: var(--mantine-font-size-sm);
    color: white;

@@ -14,10 +14,9 @@ export type Tiles = Map<Tile, ITileData>;
 
 export const GameStateFlags = {
    None: 0,
-   Prestige: 1 << 0,
+   Incompatible: 1 << 0,
    ShowTutorial: 1 << 1,
    QualifierBattlePrompted: 1 << 2,
-   Incompatible: 1 << 3,
 } as const;
 
 export type GameStateFlags = (typeof GameStateFlags)[keyof typeof GameStateFlags];
@@ -27,14 +26,23 @@ export class GameState {
    tiles: Tiles = new Map();
    resources = new Map<Resource, number>();
    unlockedTech = new Set<Tech>();
-   battleCount = 0;
-   trialCount = 0;
-   elements = new Map<ElementSymbol, number>();
+   // battleCount = 0;
+   // trialCount = 0;
+   win = 0;
+   loss = 0;
    discoveredElements = 0;
+   elements = new Map<ElementSymbol, number>();
    elementChoices: ElementChoice[] = [];
+   permanentElements = new Map<ElementSymbol, Inventory>();
+   permanentElementChoices: ElementChoice[] = [];
    name = "Unnamed";
    flags: GameStateFlags = GameStateFlags.None;
    offlineTime = 0;
+}
+
+export interface Inventory {
+   amount: number;
+   level: number;
 }
 
 const HASH_SEED = BigInt(0xdeadbeef);

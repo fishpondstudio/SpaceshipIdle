@@ -1,4 +1,4 @@
-import { Tooltip } from "@mantine/core";
+import { Progress, Tooltip } from "@mantine/core";
 import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
@@ -36,6 +36,7 @@ import { PrepareForBattleMode } from "./PrepareForBattleMode";
 import { QuantumProgressModal } from "./QuantumProgressModal";
 import { playBling } from "./Sound";
 import { WarpSpeedMenuComp } from "./WarpSpeedMenuComp";
+import { XPIcon } from "./components/SVGIcons";
 
 const rawDamages: Record<DamageType, number> = {
    [DamageType.Kinetic]: 0,
@@ -65,7 +66,7 @@ export function ShipInfoPanel(): React.ReactNode {
    const maxSV = getMaxSpaceshipXP(state);
    const quantumLimit = getQuantumLimit(state);
    return (
-      <div className="sf-frame ship-info">
+      <div className="sf-frame top ship-info">
          <HamburgerMenuComp flag={options.flag} />
          <div className="divider vertical" />
          <PowerComp power={state.resources.get("Power") ?? 0} delta={powerDelta} />
@@ -152,12 +153,14 @@ const XPComp = memo(_XPComp, (prev, next) => prev.xp === next.xp && prev.delta =
 function _SpaceshipValueComp({ sv, maxSV, quantum }: { sv: number; maxSV: number; quantum: number }): React.ReactNode {
    return (
       <Tooltip label={t(L.SpaceshipXPTooltip, formatNumber(quantum))}>
-         <div className="block" style={{ width: Width, position: "relative" }}>
-            <div className="progress" style={{ width: clamp(sv / maxSV, 0, 1) * Width }}></div>
-            <div className="mi">paid</div>
+         <div className="block" style={{ width: 150, position: "relative" }}>
+            <XPIcon />
+            <div className="w5" />
             <div className="f1 text-right">
-               <div>{formatNumber(sv)}</div>
-               <div className="xs">{formatNumber(maxSV)}</div>
+               <Progress color="green" value={clamp((100 * sv) / maxSV, 0, 100)} />
+               <div className="xs mt5">
+                  {formatNumber(sv)}/{formatNumber(maxSV)}
+               </div>
             </div>
          </div>
       </Tooltip>

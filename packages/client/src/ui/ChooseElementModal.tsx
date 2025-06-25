@@ -42,11 +42,11 @@ export function ChooseElementModal({
                   symbol={symbol}
                   permanent={permanent}
                   onClick={() => {
-                     const choices = permanent ? G.save.options.elementChoices : G.save.current.elementChoices;
+                     const choices = permanent ? G.save.current.permanentElementChoices : G.save.current.elementChoices;
                      const success = removeFrom(choices, choice);
                      if (success) {
                         if (permanent) {
-                           addElementShard(G.save.options, symbol, 1);
+                           addElementShard(G.save.current, symbol, 1);
                            GameOptionUpdated.emit();
                         } else {
                            mapSafeAdd(G.save.current.elements, symbol, 1);
@@ -82,8 +82,8 @@ function ElementOption({
    }
    const [opened, { open }] = useDisclosure(false);
    useEffect(() => open(), [open]);
-   const currentLevel = G.save.options.elements.get(symbol)?.level ?? 0;
-   const currentAmount = G.save.options.elements.get(symbol)?.amount ?? 0;
+   const currentLevel = G.save.current.permanentElements.get(symbol)?.level ?? 0;
+   const currentAmount = G.save.current.permanentElements.get(symbol)?.amount ?? 0;
 
    return (
       <Transition mounted={opened} transition="pop" duration={1000} timingFunction="ease" keepMounted>
@@ -139,11 +139,7 @@ function ElementOption({
             >
                <ElementImageComp symbol={symbol} color={permanent ? ElementPermanentColor : ElementThisRunColor} />
                <div className="h10" />
-               <div className="text-center">
-                  {permanent
-                     ? t(L.PlusXPMultiplier, 1, Config.Buildings[b].name())
-                     : t(L.ElementBoostThisRun, 1, Config.Buildings[b].name())}
-               </div>
+               <div className="text-center">{t(L.PlusXProductionMultiplierForX, 1, Config.Buildings[b].name())}</div>
                <div className="h10" />
                <div className="divider mx-15 mb5" />
                {permanent ? null : (

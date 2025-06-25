@@ -1,4 +1,4 @@
-import { Badge, Divider, Tooltip } from "@mantine/core";
+import { Badge, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageTypeLabel, ProjectileFlag, WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { getCooldownMultiplier } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
@@ -86,7 +86,7 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                         <ResourceAmount res={res} amount={amount * data.level} />
                      </div>
                      <div style={{ textAlign: "right" }}>
-                        <Tooltip multiline maw="30vw" label={<RenderHTML html={t(L.WeaponBuildingXPHTML)} />}>
+                        <Tooltip multiline maw="30vw" label={<RenderHTML html={t(L.WeaponBuildingXPHTMLV2)} />}>
                            <div
                               className="text-space"
                               style={{ textAlign: "right", fontSize: "var(--mantine-font-size-sm)" }}
@@ -100,7 +100,8 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   </div>
                );
             })}
-            {rs.xpMultiplier.value > 1 ? (
+            {/* TODO: XP multiplier is currently not supported */}
+            {/* {rs.xpMultiplier.value > 1 ? (
                <>
                   <Divider my="sm" variant="dashed" label={`${t(L.XPMultiplier)} x${rs.xpMultiplier.value}`} />
                   <div className="row text-sm">
@@ -116,7 +117,7 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                      );
                   })}
                </>
-            ) : null}
+            ) : null} */}
             {rs.props.ability ? (
                <div className="text-sm">
                   <AbilityComp

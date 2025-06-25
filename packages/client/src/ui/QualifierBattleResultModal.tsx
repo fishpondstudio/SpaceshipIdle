@@ -1,4 +1,5 @@
 import { GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { getQuantumLimit, quantumToXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
@@ -7,17 +8,17 @@ import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
 import { BattleReportComp } from "./BattleReportComp";
-import { VictoryHeaderComp } from "./components/BattleResultHeader";
+import { DefeatedHeaderComp, VictoryHeaderComp } from "./components/BattleResultHeader";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 
-export function BattleResultVictoryModal(): React.ReactNode {
+export function QualifierBattleResultModal(): React.ReactNode {
    const oldQuantum = getQuantumLimit(G.runtime.left);
    const newQuantum = getQuantumLimit(G.save.current);
-   const isSecondChance = G.runtime.left.trialCount > 0;
-   const xp = isSecondChance ? 0 : quantumToXP(oldQuantum + 1) - quantumToXP(oldQuantum);
+   const win = G.runtime.battleStatus === BattleStatus.LeftWin;
+   const xp = win ? quantumToXP(oldQuantum + 1) - quantumToXP(oldQuantum) : 0;
    return (
       <div className="m10">
-         <VictoryHeaderComp />
+         {win ? <VictoryHeaderComp /> : <DefeatedHeaderComp />}
          <div className="panel">
             <div className="row">
                <div className="f1">{t(L.Quantum)}</div>

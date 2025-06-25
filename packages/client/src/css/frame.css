@@ -4,6 +4,10 @@
    min-height: 10px;
    background-color: transparent;
 
+   &.top {
+      border-image: url("../assets/images/FrameTop.svg") 10 10 10 10 fill / 10px 10px 10px 10px;
+   }
+
    .mantine-ScrollArea-scrollbar:where([data-orientation="vertical"]) {
       padding-bottom: 12px;
    }
@@ -20,4 +24,9 @@
    text-transform: uppercase;
    font-weight: bold;
    color: var(--mantine-color-dark-2);
+
+   &.mx0 {
+      margin-left: 0;
+      margin-right: 0;
+   }
 }

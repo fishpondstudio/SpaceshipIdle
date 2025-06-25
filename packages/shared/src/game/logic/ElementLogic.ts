@@ -1,7 +1,6 @@
 import { shuffle } from "../../utils/Helper";
 import { Config } from "../Config";
 import { DefaultElementChoices, QuantumToElement } from "../definitions/Constant";
-import type { GameOption } from "../GameOption";
 import type { GameState } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { fib, getUnlockedBuildings } from "./BuildingLogic";
@@ -77,20 +76,20 @@ export function getElementUpgradeCost(upgradeTo: number): number {
    return fib(upgradeTo);
 }
 
-export function canUpgradeElement(symbol: ElementSymbol, options: GameOption): boolean {
-   const inventory = options.elements.get(symbol);
+export function canUpgradeElement(symbol: ElementSymbol, gs: GameState): boolean {
+   const inventory = gs.permanentElements.get(symbol);
    if (!inventory) {
       return false;
    }
    return inventory.amount >= getElementUpgradeCost(inventory.level + 1);
 }
 
-export function tryUpgradeElement(symbol: ElementSymbol, options: GameOption): boolean {
-   const inventory = options.elements.get(symbol);
+export function tryUpgradeElement(symbol: ElementSymbol, gs: GameState): boolean {
+   const inventory = gs.permanentElements.get(symbol);
    if (!inventory) {
       return false;
    }
-   if (!canUpgradeElement(symbol, options)) {
+   if (!canUpgradeElement(symbol, gs)) {
       return false;
    }
    inventory.amount -= getElementUpgradeCost(inventory.level + 1);

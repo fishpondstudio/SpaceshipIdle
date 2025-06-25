@@ -48,10 +48,10 @@ export class ElementsScene extends Scene {
       PeriodicTableLayout.forEach((row, y) => {
          row.forEach((element, x) => {
             if (element) {
-               const inventory = G.save.options.elements.get(element);
-               const hide = !inventory;
+               const hide = !G.save.current.permanentElements.has(element) && !G.save.current.elements.has(element);
                const e = this.viewport.addChild(new ElementCard(element, 0xffffff, 0.5, hide));
                e.position.set((x + 2) * 220 + 10, (y + 2) * 220 + 10);
+               const inventory = G.save.current.permanentElements.get(element);
                if (inventory && inventory.amount >= getElementUpgradeCost(inventory.level + 1)) {
                   e.toggleRedCircle(true);
                } else {

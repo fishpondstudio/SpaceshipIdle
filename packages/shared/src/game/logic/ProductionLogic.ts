@@ -2,9 +2,7 @@ import { type Tile, type ValueOf, forEach, hasFlag, mapSafeAdd, safeAdd } from "
 import { TypedEvent } from "../../utils/TypedEvent";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import type { Inventory } from "../GameOption";
 import type { GameState } from "../GameState";
-import type { ElementSymbol } from "../PeriodicTable";
 import { abilityTarget } from "../definitions/Ability";
 import { DamageType, type IBoosterDefinition, WeaponKey } from "../definitions/BuildingProps";
 import { BattleStartAmmoCycles } from "../definitions/Constant";
@@ -22,12 +20,7 @@ export const TickProductionOption = {
 
 export type TickProductionOption = ValueOf<typeof TickProductionOption>;
 
-export function tickProduction(
-   gs: GameState,
-   stat: RuntimeStat,
-   rt: Runtime,
-   elements: Map<ElementSymbol, Inventory> | null,
-): void {
+export function tickProduction(gs: GameState, stat: RuntimeStat, rt: Runtime): void {
    stat.delta.clear();
 
    stat.produced.forEach((v, k) => {
@@ -71,9 +64,9 @@ export function tickProduction(
          if (thisRun > 0) {
             rs.productionMultiplier.add(thisRun, t(L.ElementAmountThisRun, element));
          }
-         const permanent = elements?.get(element)?.level ?? 0;
+         const permanent = gs.permanentElements.get(element)?.level ?? 0;
          if (permanent > 0) {
-            rs.xpMultiplier.add(permanent, t(L.ElementPermanent, element));
+            rs.productionMultiplier.add(permanent, t(L.ElementPermanent, element));
          }
       }
 

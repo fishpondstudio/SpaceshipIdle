@@ -1,9 +1,7 @@
 import type { CountryCode } from "../utils/CountryCode";
 import type { ValueOf } from "../utils/Helper";
 import { TypedEvent } from "../utils/TypedEvent";
-import type { ElementChoice } from "./GameState";
 import type { Languages } from "./Languages";
-import type { ElementSymbol } from "./PeriodicTable";
 import type { IShortcutConfig, Shortcut } from "./Shortcut";
 import type { Building } from "./definitions/Buildings";
 
@@ -21,11 +19,6 @@ export const GameOptionFlag = {
 };
 
 export type GameOptionFlag = ValueOf<typeof GameOptionFlag>;
-
-export interface Inventory {
-   amount: number;
-   level: number;
-}
 
 export const DefaultShortcuts: Record<Shortcut, IShortcutConfig> = {
    Upgrade1: {
@@ -127,8 +120,6 @@ export class GameOption {
    language: keyof typeof Languages = "en";
    buildingColors: Map<Building, number> = new Map();
    flag: GameOptionFlag = GameOptionFlag.ShowResources | GameOptionFlag.RetroFilter;
-   elements = new Map<ElementSymbol, Inventory>();
-   elementChoices: ElementChoice[] = [];
    nebulaStrength = 1;
    volume = 1;
    shortcuts = DefaultShortcuts;
