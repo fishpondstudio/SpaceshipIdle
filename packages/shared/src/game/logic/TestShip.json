@@ -42,6 +42,8 @@
    "trialCount": 0,
    "elements": { "$type": "Map", "value": [["Li", 1], ["Be", 1]] },
    "discoveredElements": 2,
+   "permanentElements": { "$type": "Map", "value": [] },
+   "permanentElementChoices": [],
    "elementChoices": [],
    "name": "FishPond Mk2",
    "flags": 0,
