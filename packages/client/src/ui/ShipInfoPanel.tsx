@@ -31,12 +31,12 @@ import { G } from "../utils/Global";
 import { showModal } from "../utils/ToggleModal";
 import { HamburgerMenuComp } from "./components/HamburgerMenuComp";
 import { ResourceAmount } from "./components/ResourceAmountComp";
+import { XPIcon } from "./components/SVGIcons";
 import { PrepareForBattleModal } from "./PrepareForBattleModal";
 import { PrepareForBattleMode } from "./PrepareForBattleMode";
 import { QuantumProgressModal } from "./QuantumProgressModal";
 import { playBling } from "./Sound";
 import { WarpSpeedMenuComp } from "./WarpSpeedMenuComp";
-import { XPIcon } from "./components/SVGIcons";
 
 const rawDamages: Record<DamageType, number> = {
    [DamageType.Kinetic]: 0,
@@ -75,11 +75,12 @@ export function ShipInfoPanel(): React.ReactNode {
          <div className="divider vertical" />
          <SpaceshipValueComp sv={sv} maxSV={maxSV} quantum={quantumLimit} />
          <div className="divider vertical" />
-         <QuantumComp
+         <BattleComp highlight={getUsedQuantum(G.save.current) >= getQuantumLimit(state)} quantum={quantumLimit} />
+         <div className="divider vertical" />
+         <QuantumProgressComp
             usedQuantum={getUsedQuantum(state)}
             currentQuantum={getCurrentQuantum(state)}
-            progress={progress}
-            delta={quantumDelta}
+            qualifiedQuantum={quantumLimit}
          />
          <div className="divider vertical" />
          <WarpSpeedMenuComp gs={state} />
@@ -90,8 +91,6 @@ export function ShipInfoPanel(): React.ReactNode {
             raw={reduceOf(rawDamages, (prev, curr, value) => prev + value, 0)}
             actual={reduceOf(actualDamages, (prev, curr, value) => prev + value, 0)}
          />
-         <div className="divider vertical" />
-         <BattleComp highlight={getUsedQuantum(G.save.current) >= getQuantumLimit(state)} quantum={quantumLimit} />
          <SteamComp show={!hasFlag(options.flag, GameOptionFlag.HideSteamIcon)} />
          <DiscordComp show={!hasFlag(options.flag, GameOptionFlag.HideDiscordIcon)} />
       </div>
@@ -205,6 +204,65 @@ function playQuantumParticle(): void {
    );
 }
 
+function QuantumProgressComp({
+   usedQuantum,
+   currentQuantum,
+   qualifiedQuantum,
+}: {
+   usedQuantum: number;
+   currentQuantum: number;
+   qualifiedQuantum: number;
+}): React.ReactNode {
+   return (
+      <div
+         className="block pointer"
+         style={{ width: 150, position: "relative" }}
+         onClick={() => {
+            showModal({
+               children: <QuantumProgressModal />,
+               title: t(L.QuantumProgress),
+               dismiss: true,
+               size: "lg",
+            });
+         }}
+      >
+         <div className="mi">orbit</div>
+         <div className="w5" />
+         <div className="f1">
+            <div
+               style={{ background: "var(--mantine-color-dark-4)", height: 8, borderRadius: 4, position: "relative" }}
+            >
+               <div
+                  style={{
+                     background: "var(--mantine-color-space-filled)",
+                     height: 8,
+                     borderRadius: 4,
+                     position: "absolute",
+                     left: 0,
+                     top: 0,
+                     width: `${clamp((100 * currentQuantum) / qualifiedQuantum, 0, 100)}%`,
+                  }}
+               />
+               <div
+                  style={{
+                     background: "var(--mantine-color-green-filled)",
+                     height: 8,
+                     borderRadius: 4,
+                     position: "absolute",
+                     left: 0,
+                     top: 0,
+                     width: `${clamp((100 * usedQuantum) / qualifiedQuantum, 0, 100)}%`,
+                  }}
+               />
+            </div>
+            <div className="xs mt5 text-right">
+               {formatNumber(usedQuantum)}/{formatNumber(currentQuantum)}/{formatNumber(qualifiedQuantum)}
+            </div>
+         </div>
+      </div>
+   );
+}
+
 function _QuantumComp({
    usedQuantum,
    currentQuantum,
@@ -217,51 +275,49 @@ function _QuantumComp({
    delta: number;
 }): React.ReactNode {
    return (
-      <>
-         <div
-            className="block pointer"
-            style={{ width: 130, position: "relative" }}
-            onClick={() => {
-               showModal({
-                  children: <QuantumProgressModal />,
-                  title: t(L.QuantumProgress),
-                  dismiss: true,
-                  size: "lg",
-               });
-            }}
-         >
-            <div className="progress" style={{ width: progress * 130 }}></div>
-            <div className="mi" id="ship-info-quantum">
-               orbit
-            </div>
-            <div className="f1" />
-            <Tooltip label={t(L.QuantumProgressTooltip)}>
-               <div className="text-right">
-                  <div>{formatPercent(progress)}</div>
-                  <div className={classNames("xs", delta >= 0 ? "text-green" : "text-red")}>
-                     {mathSign(delta)}
-                     {formatPercent(Math.abs(delta))}
-                  </div>
-               </div>
-            </Tooltip>
-            <div className="w10" />
-            <Tooltip label={t(L.QuantumTooltip)}>
-               <div className="text-right">
-                  <div
-                     style={{
-                        color:
-                           usedQuantum < currentQuantum
-                              ? "var(--mantine-color-green-text)"
-                              : "var(--mantine-color-red-text)",
-                     }}
-                  >
-                     {formatNumber(usedQuantum)}
-                  </div>
-                  <div className="xs">{formatNumber(currentQuantum)}</div>
-               </div>
-            </Tooltip>
+      <div
+         className="block pointer"
+         style={{ width: 130, position: "relative" }}
+         onClick={() => {
+            showModal({
+               children: <QuantumProgressModal />,
+               title: t(L.QuantumProgress),
+               dismiss: true,
+               size: "lg",
+            });
+         }}
+      >
+         <div className="progress" style={{ width: progress * 130 }}></div>
+         <div className="mi" id="ship-info-quantum">
+            orbit
          </div>
-      </>
+         <div className="f1" />
+         <Tooltip label={t(L.QuantumProgressTooltip)}>
+            <div className="text-right">
+               <div>{formatPercent(progress)}</div>
+               <div className={classNames("xs", delta >= 0 ? "text-green" : "text-red")}>
+                  {mathSign(delta)}
+                  {formatPercent(Math.abs(delta))}
+               </div>
+            </div>
+         </Tooltip>
+         <div className="w10" />
+         <Tooltip label={t(L.QuantumTooltip)}>
+            <div className="text-right">
+               <div
+                  style={{
+                     color:
+                        usedQuantum < currentQuantum
+                           ? "var(--mantine-color-green-text)"
+                           : "var(--mantine-color-red-text)",
+                  }}
+               >
+                  {formatNumber(usedQuantum)}
+               </div>
+               <div className="xs">{formatNumber(currentQuantum)}</div>
+            </div>
+         </Tooltip>
+      </div>
    );
 }
 
