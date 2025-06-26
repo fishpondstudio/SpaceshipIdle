@@ -142,6 +142,11 @@ body {
       color: var(--mantine-color-space-5);
       font-family: "SpaceshipIdle", sans-serif;
    }
+   em {
+      color: var(--mantine-color-red-6);
+      font-style: normal;
+      font-family: "SpaceshipIdle", sans-serif;
+   }
 }
 
 .data-table {

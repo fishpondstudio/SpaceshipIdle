@@ -27,8 +27,8 @@ export function QuantumProgressModal(): React.ReactNode {
    return (
       <div className="m10">
          <div className="panel p5 text-center text-xs mb10 row" style={{ padding: "5px 10px" }}>
-            <div className="f1 text-left text-space">{t(L.QuantumLimit)}</div>
-            <div className="f1 text-center text-blue">{t(L.ReachedQuantum)}</div>
+            <div className="f1 text-left text-space">{t(L.QualifiedQuantum)}</div>
+            <div className="f1 text-center text-blue">{t(L.EarnedQuantum)}</div>
             <div className="f1 text-right text-green">{t(L.UsedQuantum)}</div>
          </div>
          <ScrollArea

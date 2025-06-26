@@ -140,6 +140,7 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                } catch (e) {
                   playError();
                   hideLoading();
+                  console.error(e);
                   notifications.show({ position: "top-center", color: "red", message: String(e) });
                }
             }}

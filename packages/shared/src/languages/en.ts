@@ -401,10 +401,8 @@ export const EN = {
    QualifierBattleRequirement: "Your spaceship should have %% quantum for the qualifier battle",
    QualifierBattleShort: "Qualifier",
    Quantum: "Quantum",
-   QuantumLimit: "Quantum Limit",
    QuantumProgress: "Quantum Progress",
    QuantumProgressTooltip: "Progress Towards Next Quantum",
-   QuantumTooltip: "Used Quantum / Max Quantum",
    QuantumXLeague: "Quantum %% League",
    RawActualDPS: "Actual DPS / Raw DPS",
    RC: "Rail Cannon",
@@ -424,7 +422,6 @@ export const EN = {
    RC50EAmmo: "RC50E Ammo",
    RC50P: "RC50P Dhole",
    RC50PAmmo: "RC50P Ammo",
-   ReachedQuantum: "Reached Quantum",
    ReachedQuantumLimit:
       "You've reached the quantum limit: %%. You can unlock the next quantum limit by winning a quantum qualifier battle",
    RecoverHp: "Repair",
@@ -506,7 +503,6 @@ export const EN = {
    SoundVolume: "Sound Volume",
    SpaceshipPrefix: "SS %%",
    SpaceshipXP: "Spaceship XP",
-   SpaceshipXPTooltip: "Spaceship XP / Quantum-%% XP Limit",
    StandardState: "Standard State",
    StandardStateGas: "Gas",
    StandardStateLiquid: "Liquid",
@@ -683,4 +679,14 @@ export const EN = {
    WeaponBuildingXPHTMLV2: "This building produces XP when ammo is consumed. <b>XP = Consumed Ammo Value</b>",
    TutorialElementContentV2:
       "Elements are discovered as you gain quantum. You can pick one out of three choices and they boost <b>production multipliers</b>. When you prestige, all elements from this run becomes permanent element shards.",
+   SpaceshipXPTooltipV2: "Spaceship XP / Max Spaceship XP for Quantum %%",
+   QualifiedQuantum: "Qualified Quantum",
+   EarnedQuantum: "Earned Quantum",
+   QuantumTooltipHTML:
+      "Used / Earned / Qualified Quantum<br><b>Used</b>: Quantum currently used by your ship (≤ Earned)<br><b>Earned</b>: Quantum earned from total XP (≤ Qualified)<br><b>Qualified</b>: Quantum qualified from battles (Win +10, Loss +5)",
+   XPTooltipHTML:
+      "Total XP Generated: Weapons generate XP when firing. The amount of XP you can invest in your spaceship (build and upgrade weapons) is limited by your <b>Qualified Quantum</b>",
+   ProgressTowardsNextQuantumTooltipHTML: "Progress towards earning the next Quantum (based on total XP generated)",
+   ProgressTowardsNextQuantumTooltipNotEarningHTML:
+      "<em>You've reached Qualified Quantum limit. Complete a qualifier battle to increase the limit</em>",
 };
