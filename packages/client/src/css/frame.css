@@ -6,6 +6,13 @@
 
    &.top {
       border-image: url("../assets/images/FrameTop.svg") 10 10 10 10 fill / 10px 10px 10px 10px;
+      &.highlight {
+         border-image: url("../assets/images/FrameTopHighlight.svg") 10 10 10 10 fill / 10px 10px 10px 10px;
+      }
+   }
+
+   &.highlight {
+      border-image: url("../assets/images/FrameHighlight.svg") 10 10 10 10 fill / 10px 10px 10px 10px;
    }
 
    .mantine-ScrollArea-scrollbar:where([data-orientation="vertical"]) {

@@ -771,18 +771,37 @@ export function drawDashedLine(
    to: { x: number; y: number },
    dashLength = 10,
    gapLength = 5,
+   animate?: { time: number; speed: number },
 ) {
-   const dx = to.x - start.x;
-   const dy = to.y - start.y;
+   let currentX = start.x;
+   let currentY = start.y;
+
+   if (animate) {
+      const dx = to.x - start.x;
+      const dy = to.y - start.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      // Animated marching ants effect
+      const totalLength = dashLength + gapLength;
+      const offset = (animate.time * animate.speed) % totalLength;
+      // Calculate starting position with offset
+      const offsetDistance = offset;
+      const offsetX = (dx / distance) * offsetDistance;
+      const offsetY = (dy / distance) * offsetDistance;
+
+      currentX = start.x + offsetX;
+      currentY = start.y + offsetY;
+   }
+
+   const dx = to.x - currentX;
+   const dy = to.y - currentY;
    const distance = Math.sqrt(dx * dx + dy * dy);
+
    const dashCount = Math.floor(distance / (dashLength + gapLength));
    const dashX = (dx / distance) * dashLength;
    const dashY = (dy / distance) * dashLength;
    const gapX = (dx / distance) * gapLength;
    const gapY = (dy / distance) * gapLength;
-
-   let currentX = start.x;
-   let currentY = start.y;
 
    for (let i = 0; i < dashCount; i++) {
       g.moveTo(currentX, currentY);

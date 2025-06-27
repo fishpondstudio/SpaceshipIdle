@@ -378,10 +378,19 @@ const SteamComp = memo(_SteamComp, (prev, next) => prev.show === next.show);
 
 function _BattleComp({ highlight, quantum }: { highlight: boolean; quantum: number }): React.ReactNode {
    return (
-      <Tooltip disabled={!highlight} label={t(L.ReachedQuantumLimit, formatNumber(quantum))} multiline maw="30vw">
-         <div style={{ position: "relative", width: 52, alignSelf: "stretch" }}>
+      <div style={{ position: "relative", width: 52, alignSelf: "stretch" }}>
+         <Tooltip
+            label={
+               <>
+                  <RenderHTML html={t(L.Battle)} />
+                  {highlight ? <RenderHTML html={t(L.ReachedQuantumLimitV2, formatNumber(quantum))} /> : null}
+               </>
+            }
+            multiline
+            maw="30vw"
+         >
             <div
-               className="sf-frame top pointer"
+               className={classNames("sf-frame top pointer", highlight ? "highlight" : null)}
                style={{ width: 52, height: 47, position: "absolute", top: 0, left: 0 }}
                onClick={() => {
                   showModal({
@@ -391,15 +400,12 @@ function _BattleComp({ highlight, quantum }: { highlight: boolean; quantum: numb
                   });
                }}
             >
-               <div
-                  style={{ fontSize: 30, marginTop: 8 }}
-                  className={classNames("mi", highlight ? "breathing text-red" : null)}
-               >
+               <div style={{ fontSize: 30, marginTop: 8 }} className={classNames("mi", highlight ? "breathing" : null)}>
                   swords
                </div>
             </div>
-         </div>
-      </Tooltip>
+         </Tooltip>
+      </div>
    );
 }
 

@@ -48,7 +48,7 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
             <div style={{ fontSize: 24 }}>{t(L.QuantumXLeague, quantum)}</div>
          </div>
          {mode === PrepareForBattleMode.Prompt ? (
-            <div className="text-red text-sm mb10">{t(L.ReachedQuantumLimit, quantum)}</div>
+            <div className="text-red text-sm mb10">{t(L.ReachedQuantumLimitV2, quantum)}</div>
          ) : null}
          <div className="panel mb10 p0">
             <div className="row g5 mt10">

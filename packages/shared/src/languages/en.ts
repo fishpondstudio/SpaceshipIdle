@@ -422,8 +422,6 @@ export const EN = {
    RC50EAmmo: "RC50E Ammo",
    RC50P: "RC50P Dhole",
    RC50PAmmo: "RC50P Ammo",
-   ReachedQuantumLimit:
-      "You've reached the quantum limit: %%. You can unlock the next quantum limit by winning a quantum qualifier battle",
    RecoverHp: "Repair",
    RecoverHpDesc: "Recover %% HP every second",
    RecoverHpOnDealingDamage10: "Proactive Regen (10%)",
@@ -688,5 +686,8 @@ export const EN = {
       "Total XP Generated: Weapons generate XP when firing. The amount of XP you can invest in your spaceship (build and upgrade weapons) is limited by your <b>Qualified Quantum</b>",
    ProgressTowardsNextQuantumTooltipHTML: "Progress towards earning the next Quantum (based on total XP generated)",
    ProgressTowardsNextQuantumTooltipNotEarningHTML:
-      "<em>You've reached Qualified Quantum limit. Complete a qualifier battle to increase the limit</em>",
+      "<em>You've reached Qualified Quantum limit.</em> Complete a qualifier battle to unlock higher quantum limit",
+   Battle: "Spaceship Battle",
+   ReachedQuantumLimitV2:
+      "<em>You've reached the quantum limit: %%.</em> Complete a qualifier battle to unlock higher quantum limit (Win +10, Loss +5)",
 };

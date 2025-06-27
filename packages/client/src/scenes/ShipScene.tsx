@@ -43,6 +43,7 @@ import {
    type Tile,
    createTile,
    drawDashedLine,
+   forEach,
    hasFlag,
    lookAt,
    mapSafeAdd,
@@ -79,6 +80,7 @@ const CheckConnected = !import.meta.env.DEV;
 
 export class ShipScene extends Scene {
    private _selectors: Map<Tile, Sprite> = new Map();
+   private _targetIndicator: Sprite;
    private _tileVisuals: Map<Tile, TileVisual> = new Map();
    private _projectileVisuals: Map<number, Sprite> = new Map();
    private _tileContainer: Container;
@@ -172,7 +174,6 @@ export class ShipScene extends Scene {
       this._grid = this.viewport.addChild(new Container());
       this._tileContainer = this.viewport.addChild(new Container());
       this._graphics = this.viewport.addChild(new SmoothGraphics());
-
       this._projectileContainer = this.viewport.addChild(
          new ParticleContainer(10000, {
             position: true,
@@ -183,6 +184,11 @@ export class ShipScene extends Scene {
       this.viewport.addChild(new TilingSprite(textures.get("Misc/Frame")!, width, height)).alpha = 0.15;
       this._selectedTiles.add(createTile(MaxX / 2 - shipExtent(G.save.current) - 1, MaxY / 2));
       this.updateSelection();
+      this._targetIndicator = this.viewport.addChild(new Sprite(G.textures.get("Misc/TargetIndicator")));
+      this._targetIndicator.anchor.set(0.5, 0.5);
+      this._targetIndicator.tint = 0xe74c3c;
+      this._targetIndicator.visible = false;
+      this._targetIndicator.name = "TargetIndicator";
 
       RequestFloater.on(({ tile, amount }) => {
          this._tileVisuals.get(tile)?.addFloater(amount);
@@ -334,23 +340,66 @@ export class ShipScene extends Scene {
       });
 
       this._graphics.clear();
-      this._selectedTiles.forEach((tile) => {
-         const rs = rt.get(tile);
-         if (rs?.target && rt.has(rs.target)) {
-            const from = tileToPosCenter(tile);
-            const to = tileToPosCenter(rs.target);
-            this._graphics.lineStyle({
-               width: 4,
-               color: G.save.options.buildingColors.get(rs.data.type) ?? 0xffffff,
-               alignment: 0.5,
-               join: LINE_JOIN.ROUND,
-               cap: LINE_CAP.ROUND,
-               alpha: 0.25,
-               scaleMode: LINE_SCALE_MODE.NONE,
-            });
-            drawDashedLine(this._graphics, from, to, 2, 10);
+      if (this._selectedTiles.size === 1) {
+         for (const tile of this._selectedTiles) {
+            const { x, y } = tileToPosCenter(tile);
+            const rs = rt.get(tile);
+            if (rs?.target && rt.has(rs.target)) {
+               const to = tileToPosCenter(rs.target);
+               this._targetIndicator.position.set(to.x, to.y);
+               this._targetIndicator.visible = true;
+            } else {
+               this._targetIndicator.visible = false;
+            }
+            if (rs?.def) {
+               const input = rs.def.input;
+               forEach(input, (res, amount) => {
+                  if (res === "Power") {
+                     return;
+                  }
+                  rt.getGameState(tile)?.tiles.forEach((data, fromTile) => {
+                     if (Config.Buildings[data.type].output[res]) {
+                        const from = tileToPosCenter(fromTile);
+                        const to = tileToPosCenter(tile);
+                        this._graphics.lineStyle({
+                           width: 4,
+                           color: G.save.options.buildingColors.get(data.type) ?? 0xffffff,
+                           alignment: 0.5,
+                           join: LINE_JOIN.ROUND,
+                           cap: LINE_CAP.ROUND,
+                           alpha: 0.75,
+                           scaleMode: LINE_SCALE_MODE.NONE,
+                        });
+                        drawDashedLine(this._graphics, from, to, 2, 10, { time: G.pixi.ticker.lastTime, speed: 0.025 });
+                     }
+                  });
+               });
+               const output = rs.def.output;
+               forEach(output, (res, amount) => {
+                  if (res === "Power") {
+                     return;
+                  }
+                  rt.getGameState(tile)?.tiles.forEach((data, toTile) => {
+                     if (Config.Buildings[data.type].input[res]) {
+                        const from = tileToPosCenter(tile);
+                        const to = tileToPosCenter(toTile);
+                        this._graphics.lineStyle({
+                           width: 4,
+                           color: G.save.options.buildingColors.get(data.type) ?? 0xffffff,
+                           alignment: 0.5,
+                           join: LINE_JOIN.ROUND,
+                           cap: LINE_CAP.ROUND,
+                           alpha: 0.75,
+                           scaleMode: LINE_SCALE_MODE.NONE,
+                        });
+                        drawDashedLine(this._graphics, from, to, 2, 10, { time: G.pixi.ticker.lastTime, speed: 0.025 });
+                     }
+                  });
+               });
+            }
+            return;
          }
-      });
+      }
    }
 
    private renderTiles(tiles: Tiles, rt: Runtime, dt: number, timeSinceLastTick: number): void {
