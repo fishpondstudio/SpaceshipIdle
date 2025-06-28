@@ -4,6 +4,7 @@ import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
 import type { ITileWithGameState } from "../ITileWithGameState";
 import { ResourceAmount } from "./ResourceAmountComp";
+import { TextureComp } from "./TextureComp";
 import { TitleComp } from "./TitleComp";
 
 export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNode {
@@ -27,46 +28,67 @@ export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNod
          <div className="divider my10" />
          <TitleComp>{t(L.Production)}</TitleComp>
          <div className="divider my10" />
-         <div className="mx10">
-            <div className="row text-sm">
-               <div className="f1 col g5 text-lh1">
-                  {mapOf(def.input, (res, amount) => {
-                     return (
-                        <div
-                           className={classNames("row g5 fstart", rs.insufficient.has(res) ? "text-yellow" : null)}
-                           key={res}
-                        >
-                           <ResourceAmount res={res} amount={amount * data.level * data.capacity} />{" "}
-                           {Config.Resources[res].name()}
-                           {rs.insufficient.has(res) ? <div className="mi sm inline">error</div> : null}
+         <div className="mx10 row text-condensed">
+            <div className="f1">
+               {mapOf(def.input, (res, amount) => {
+                  if (res === "Power") {
+                     return null;
+                  }
+                  return (
+                     <div className="panel f1 text-sm p5 mb5" key={res}>
+                        <div className={classNames("row g5", rs.insufficient.has(res) ? "text-yellow" : null)}>
+                           <div>
+                              <TextureComp name={`Building/${Config.ResourceToBuilding.get(res)}`} width={40} />
+                           </div>
+                           <div className="f1 text-right">
+                              <div>{Config.Resources[res].name()}</div>
+                              <div className="row g5">
+                                 <div className="f1" />
+                                 <ResourceAmount res={res} amount={amount * data.level * data.capacity} />
+                                 {rs.insufficient.has(res) ? <div className="mi sm inline">error</div> : null}
+                              </div>
+                           </div>
                         </div>
-                     );
-                  })}
-               </div>
-               {rs.insufficient.size > 0 ? (
-                  <div className="mi lg text-red">warning</div>
-               ) : (
-                  <div className="mi lg text-green">arrow_circle_right</div>
-               )}
-               <div className="f1">
-                  {mapOf(def.output, (res, amount) => {
-                     return (
-                        <div className="row" style={{ justifyContent: "flex-end" }} key={res}>
-                           <ResourceAmount
-                              res={res}
-                              amount={amount * data.level * data.capacity * rs.productionMultiplier.value}
-                           />{" "}
-                           {Config.Resources[res].name()}
-                        </div>
-                     );
-                  })}
-               </div>
+                     </div>
+                  );
+               })}
             </div>
-            {rs.productionMultiplier.detail.length > 0 ? (
-               <>
-                  <div className="subtitle my10">
-                     {t(L.ProductionMultiplier)} x{formatNumber(rs.productionMultiplier.value)}
-                  </div>
+            {rs.insufficient.size > 0 ? (
+               <div className="mi lg text-red">warning</div>
+            ) : (
+               <div className="mi lg text-green">arrow_circle_right</div>
+            )}
+            <div className="f1">
+               {mapOf(def.output, (res, amount) => {
+                  return (
+                     <div className="panel f1 text-sm p5 mb5" key={res}>
+                        <div className={classNames("row g5", rs.insufficient.has(res) ? "text-yellow" : null)}>
+                           <div>
+                              <TextureComp name={`Building/${Config.ResourceToBuilding.get(res)}`} width={40} />
+                           </div>
+                           <div className="f1 text-right">
+                              <div>{Config.Resources[res].name()}</div>
+                              <div className="row g5">
+                                 <div className="f1" />
+                                 <ResourceAmount res={res} amount={amount * data.level * data.capacity} />
+                                 {rs.insufficient.has(res) ? <div className="mi sm inline">error</div> : null}
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  );
+               })}
+            </div>
+         </div>
+         {rs.productionMultiplier.detail.length > 0 ? (
+            <>
+               <div className="divider my10" />
+               <TitleComp>
+                  <div className="f1">{t(L.ProductionMultiplier)}</div>
+                  <div>x{formatNumber(rs.productionMultiplier.value)}</div>
+               </TitleComp>
+               <div className="divider my10" />
+               <div className="mx10">
                   <div className="row text-sm">
                      <div className="f1">{t(L.BaseMultiplier)}</div>
                      <div>1</div>
@@ -79,10 +101,11 @@ export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNod
                         </div>
                      );
                   })}
-               </>
-            ) : null}
-            {/* TODO: XP multiplier is currently not supported */}
-            {/* {!(WeaponKey in def) && rs.xpMultiplier.value > 1 ? (
+               </div>
+            </>
+         ) : null}
+         {/* TODO: XP multiplier is currently not supported */}
+         {/* {!(WeaponKey in def) && rs.xpMultiplier.value > 1 ? (
                <>
                   <div className="subtitle">
                      {t(L.XPMultiplier)} x{rs.xpMultiplier.value - 1}
@@ -105,7 +128,6 @@ export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNod
                   </div>
                </>
             ) : null} */}
-         </div>
       </>
    );
 }

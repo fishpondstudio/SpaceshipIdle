@@ -158,6 +158,7 @@ function initConfig(): void {
       console.log("Normalized Price", Config.NormalizedPrice);
       console.log("Resource Tier", Config.ResourceTier);
       console.log("Building Tier", Config.BuildingTier);
+      console.log("Resource -> Building", Config.ResourceToBuilding);
       console.log("Unused Status Effects", statusEffects);
    }
 }
