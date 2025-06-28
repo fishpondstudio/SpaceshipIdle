@@ -391,7 +391,7 @@ function _BattleComp({ highlight, quantum }: { highlight: boolean; quantum: numb
          >
             <div
                className={classNames("sf-frame top pointer", highlight ? "highlight" : null)}
-               style={{ width: 52, height: 47, position: "absolute", top: 0, left: 0 }}
+               style={{ width: 52, height: 48, position: "absolute", top: -1, left: 0 }}
                onClick={() => {
                   showModal({
                      children: <PrepareForBattleModal mode={PrepareForBattleMode.Normal} />,
