@@ -1,8 +1,10 @@
+import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { classNames, formatNumber, isEmpty, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
 import type { ITileWithGameState } from "../ITileWithGameState";
+import { RenderHTML } from "./RenderHTMLComp";
 import { ResourceAmount } from "./ResourceAmountComp";
 import { TextureComp } from "./TextureComp";
 import { TitleComp } from "./TitleComp";
@@ -28,52 +30,74 @@ export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNod
          <div className="divider my10" />
          <TitleComp>{t(L.Production)}</TitleComp>
          <div className="divider my10" />
-         <div className="mx10 row text-condensed">
+         {def.input.Power ? (
+            <>
+               <div className="row mx10 g5">
+                  <div className="f1">{t(L.Power)}</div>
+                  {rs.insufficient.has("Power") ? (
+                     <Tooltip label={t(L.InsufficientResourceTooltip, t(L.Power))}>
+                        <div className="mi text-red">warning</div>
+                     </Tooltip>
+                  ) : (
+                     <div className="mi">bolt</div>
+                  )}
+                  <div className={classNames(rs.insufficient.has("Power") ? "text-red" : null)}>
+                     <ResourceAmount res="Power" amount={def.input.Power * data.level * data.capacity} />
+                  </div>
+               </div>
+               <div className="divider dashed my10" />
+            </>
+         ) : null}
+         <div className="col stretch mx10 text-condensed">
             <div className="f1">
                {mapOf(def.input, (res, amount) => {
                   if (res === "Power") {
                      return null;
                   }
                   return (
-                     <div className="panel f1 text-sm p5 mb5" key={res}>
-                        <div className={classNames("row g5", rs.insufficient.has(res) ? "text-yellow" : null)}>
-                           <div>
-                              <TextureComp name={`Building/${Config.ResourceToBuilding.get(res)}`} width={40} />
-                           </div>
-                           <div className="f1 text-right">
-                              <div>{Config.Resources[res].name()}</div>
-                              <div className="row g5">
-                                 <div className="f1" />
-                                 <ResourceAmount res={res} amount={amount * data.level * data.capacity} />
-                                 {rs.insufficient.has(res) ? <div className="mi sm inline">error</div> : null}
+                     <Tooltip
+                        multiline
+                        maw="30vw"
+                        key={res}
+                        disabled={!rs.insufficient.has(res)}
+                        label={<RenderHTML html={t(L.InsufficientResourceTooltip, Config.Resources[res].name())} />}
+                     >
+                        <div className={classNames("panel f1 p5", rs.insufficient.has(res) ? "red" : null)}>
+                           <div className={classNames("row g5", rs.insufficient.has(res) ? "text-red" : null)}>
+                              <div>
+                                 <TextureComp name={`Building/${Config.ResourceToBuilding.get(res)}`} width={30} />
                               </div>
+                              <div>{Config.Resources[res].name()}</div>
+                              <div className="f1" />
+                              <ResourceAmount res={res} amount={amount * data.level * data.capacity} />
+                              {rs.insufficient.has(res) ? <div className="mi sm inline">error</div> : null}
                            </div>
                         </div>
-                     </div>
+                     </Tooltip>
                   );
                })}
             </div>
-            {rs.insufficient.size > 0 ? (
-               <div className="mi lg text-red">warning</div>
-            ) : (
-               <div className="mi lg text-green">arrow_circle_right</div>
-            )}
+            <div className={classNames("mi lg text-center", rs.insufficient.size > 0 ? "text-red" : "text-green")}>
+               keyboard_double_arrow_down
+            </div>
             <div className="f1">
                {mapOf(def.output, (res, amount) => {
                   return (
-                     <div className="panel f1 text-sm p5 mb5" key={res}>
-                        <div className={classNames("row g5", rs.insufficient.has(res) ? "text-yellow" : null)}>
+                     <div className="panel f1 p5" key={res}>
+                        <div className={classNames("row g5", rs.insufficient.has(res) ? "text-red" : null)}>
                            <div>
-                              <TextureComp name={`Building/${Config.ResourceToBuilding.get(res)}`} width={40} />
+                              {res === "Power" ? (
+                                 <div className="mi" style={{ fontSize: 36, margin: 2 }}>
+                                    bolt
+                                 </div>
+                              ) : (
+                                 <TextureComp name={`Building/${Config.ResourceToBuilding.get(res)}`} width={30} />
+                              )}
                            </div>
-                           <div className="f1 text-right">
-                              <div>{Config.Resources[res].name()}</div>
-                              <div className="row g5">
-                                 <div className="f1" />
-                                 <ResourceAmount res={res} amount={amount * data.level * data.capacity} />
-                                 {rs.insufficient.has(res) ? <div className="mi sm inline">error</div> : null}
-                              </div>
-                           </div>
+                           <div>{Config.Resources[res].name()}</div>
+                           <div className="f1" />
+                           <ResourceAmount res={res} amount={amount * data.level * data.capacity} />
+                           {rs.insufficient.has(res) ? <div className="mi sm inline">error</div> : null}
                         </div>
                      </div>
                   );

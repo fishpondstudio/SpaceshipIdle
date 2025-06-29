@@ -11,6 +11,16 @@
       color: var(--mantine-color-red-text);
       border-color: var(--mantine-color-red-border);
    }
+
+   &.green {
+      color: var(--mantine-color-green-text);
+      border-color: var(--mantine-color-green-border);
+   }
+
+   &.yellow {
+      color: var(--mantine-color-yellow-text);
+      border-color: var(--mantine-color-yellow-border);
+   }
 }
 
 .ship-info {

@@ -19,8 +19,14 @@
    }
 }
 
-.row .stretch {
+.row .stretch,
+.col .stretch {
    align-self: stretch;
+}
+
+.row.stretch,
+.col.stretch {
+   align-items: stretch;
 }
 
 .row .fstart {

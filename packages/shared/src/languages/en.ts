@@ -690,4 +690,5 @@ export const EN = {
    Battle: "Spaceship Battle",
    ReachedQuantumLimitV2:
       "<em>You've reached the quantum limit: %%.</em> Complete a qualifier battle to unlock higher quantum limit (Win +10, Loss +5)",
+   InsufficientResourceTooltip: "Insufficient <b>%%</b>. Try increase its production",
 };

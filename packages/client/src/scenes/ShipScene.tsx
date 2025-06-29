@@ -16,6 +16,7 @@ import {
 import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
 import { AbilityTiming, abilityTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { OnDamaged, OnEvasion, OnProjectileHit, OnWeaponFire } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
@@ -291,6 +292,9 @@ export class ShipScene extends Scene {
       }
    }
 
+   private _outputBuilding: Set<Building> = new Set();
+   private _inputBuilding: Set<Building> = new Set();
+
    public render(rt: Runtime, dt: number, timeSinceLastTick: number): void {
       const me = shipExtent(rt.left);
       const enemy = shipExtent(rt.right);
@@ -353,12 +357,14 @@ export class ShipScene extends Scene {
             }
             if (rs?.def) {
                const input = rs.def.input;
+               this._inputBuilding.clear();
                forEach(input, (res, amount) => {
                   if (res === "Power") {
                      return;
                   }
                   rt.getGameState(tile)?.tiles.forEach((data, fromTile) => {
-                     if (Config.Buildings[data.type].output[res]) {
+                     if (Config.Buildings[data.type].output[res] && !this._inputBuilding.has(data.type)) {
+                        this._inputBuilding.add(data.type);
                         const from = tileToPosCenter(fromTile);
                         const to = tileToPosCenter(tile);
                         this._graphics.lineStyle({
@@ -375,12 +381,14 @@ export class ShipScene extends Scene {
                   });
                });
                const output = rs.def.output;
+               this._outputBuilding.clear();
                forEach(output, (res, amount) => {
                   if (res === "Power") {
                      return;
                   }
                   rt.getGameState(tile)?.tiles.forEach((data, toTile) => {
-                     if (Config.Buildings[data.type].input[res]) {
+                     if (Config.Buildings[data.type].input[res] && !this._outputBuilding.has(data.type)) {
+                        this._outputBuilding.add(data.type);
                         const from = tileToPosCenter(tile);
                         const to = tileToPosCenter(toTile);
                         this._graphics.lineStyle({
