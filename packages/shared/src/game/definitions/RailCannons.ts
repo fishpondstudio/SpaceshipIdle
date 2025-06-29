@@ -26,7 +26,7 @@ export const RC50: IWeaponDefinition = {
    name: () => t(L.RC50),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, AC30F: 1, Circuit: 1 },
+   input: { Power: 2, AC30A: 1, Circuit: 1 },
    output: { RC50: 1 },
    damagePct: 0.75,
    fireCooldown: 1.5,
@@ -68,14 +68,14 @@ export const RC100: IWeaponDefinition = {
    element: "Ni",
 };
 
-export const RC50E: IWeaponDefinition = {
+export const RC50A: IWeaponDefinition = {
    ...RailCannonDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.RC50E),
+   name: () => t(L.RC50A),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 2, RC50: 2 },
-   output: { RC50E: 1 },
+   output: { RC50A: 1 },
    damagePct: 0.75,
    fireCooldown: 1.5,
    ability: {
@@ -90,14 +90,14 @@ export const RC50E: IWeaponDefinition = {
    element: "Zn",
 };
 
-export const RC50P: IWeaponDefinition = {
+export const RC50B: IWeaponDefinition = {
    ...RailCannonDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.RC50P),
+   name: () => t(L.RC50B),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, RC50E: 2 },
-   output: { RC50P: 1 },
+   input: { Power: 2, RC50A: 2 },
+   output: { RC50B: 1 },
    damagePct: 0.9,
    fireCooldown: 1.5,
    ability: {
@@ -112,14 +112,14 @@ export const RC50P: IWeaponDefinition = {
    element: "Zr",
 };
 
-export const RC100G: IWeaponDefinition = {
+export const RC100A: IWeaponDefinition = {
    ...RailCannonDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.RC100G),
+   name: () => t(L.RC100A),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 2, RC100: 2 },
-   output: { RC100G: 1 },
+   output: { RC100A: 1 },
    damagePct: 0.75,
    fireCooldown: 1.5,
    ability: {
@@ -134,14 +134,14 @@ export const RC100G: IWeaponDefinition = {
    element: "Ga",
 };
 
-export const RC100P: IWeaponDefinition = {
+export const RC100B: IWeaponDefinition = {
    ...RailCannonDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.RC100P),
+   name: () => t(L.RC100B),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 2, RC100: 2 },
-   output: { RC100P: 1 },
+   output: { RC100B: 1 },
    damagePct: 0.75,
    fireCooldown: 1.5,
    ability: {
@@ -156,14 +156,14 @@ export const RC100P: IWeaponDefinition = {
    element: "Ge",
 };
 
-export const RC100F: IWeaponDefinition = {
+export const RC100C: IWeaponDefinition = {
    ...BaseDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.RC100F),
+   name: () => t(L.RC100C),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, RC100P: 1, RC100G: 1 },
-   output: { RC100F: 1 },
+   input: { Power: 2, RC100A: 1, RC100B: 1 },
+   output: { RC100C: 1 },
    damagePct: 0.5,
    fireCooldown: 1.5,
    ability: {
@@ -176,14 +176,14 @@ export const RC100F: IWeaponDefinition = {
    element: "Tc",
 };
 
-export const RC100L: IWeaponDefinition = {
+export const RC100D: IWeaponDefinition = {
    ...BaseDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.RC100L),
+   name: () => t(L.RC100D),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, RC50E: 1, RC100G: 1 },
-   output: { RC100L: 1 },
+   input: { Power: 2, RC50A: 1, RC100A: 1 },
+   output: { RC100D: 1 },
    damagePct: 0.75,
    fireCooldown: 1.5,
    ability: {

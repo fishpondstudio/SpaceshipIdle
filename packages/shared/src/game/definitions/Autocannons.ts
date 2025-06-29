@@ -23,14 +23,14 @@ export const AC30: IWeaponDefinition = {
    output: { AC30: 1 },
    element: "Li",
 };
-export const AC30F: IWeaponDefinition = {
+export const AC30A: IWeaponDefinition = {
    ...AutocannonDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.AC30F),
+   name: () => t(L.AC30A),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 1, AC30x3: 2 },
-   output: { AC30F: 1 },
+   output: { AC30A: 1 },
    element: "Mg",
    damagePct: 0.8,
    ability: {
@@ -43,14 +43,14 @@ export const AC30F: IWeaponDefinition = {
       duration: (self, level) => 3,
    },
 };
-export const AC30S: IWeaponDefinition = {
+export const AC30B: IWeaponDefinition = {
    ...AutocannonDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.AC30S),
+   name: () => t(L.AC30B),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 1, AC30x3: 2 },
-   output: { AC30S: 1 },
+   output: { AC30B: 1 },
    element: "Cr",
    damagePct: 0.8,
    ability: {
@@ -90,7 +90,7 @@ export const AC76x2: IWeaponDefinition = {
    name: () => t(L.AC76x2),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 1, AC76R: 2 },
+   input: { Power: 1, AC76A: 2 },
    output: { AC76x2: 1 },
    element: "Al",
    projectiles: 2,
@@ -105,14 +105,14 @@ export const AC76x2: IWeaponDefinition = {
       duration: (self, level) => 2,
    },
 };
-export const AC76R: IWeaponDefinition = {
+export const AC76A: IWeaponDefinition = {
    ...AutocannonDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.AC76R),
+   name: () => t(L.AC76A),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 2, AC76: 2, Rocket: 2 },
-   output: { AC76R: 1 },
+   output: { AC76A: 1 },
    element: "Cl",
    damagePct: 0.5,
    fireCooldown: 2.5,
@@ -128,14 +128,14 @@ export const AC76R: IWeaponDefinition = {
       duration: (building, level) => 1,
    },
 };
-export const AC76D: IWeaponDefinition = {
+export const AC76B: IWeaponDefinition = {
    ...AutocannonDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.AC76D),
+   name: () => t(L.AC76B),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, AC76x2: 2, AC30S: 2 },
-   output: { AC76D: 1 },
+   input: { Power: 2, AC76x2: 2, AC30B: 2 },
+   output: { AC76B: 1 },
    element: "Kr",
    damagePct: 0.8,
    fireCooldown: 2,
@@ -157,14 +157,14 @@ export const AC130: IWeaponDefinition = {
    output: { AC130: 1 },
    element: "C",
 };
-export const AC130E: IWeaponDefinition = {
+export const AC130A: IWeaponDefinition = {
    ...AutocannonDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.AC130E),
+   name: () => t(L.AC130A),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 1, AC130: 2 },
-   output: { AC130E: 1 },
+   output: { AC130A: 1 },
    damagePct: 0.75,
    ability: {
       timing: AbilityTiming.OnHit,
@@ -179,14 +179,14 @@ export const AC130E: IWeaponDefinition = {
    },
    element: "P",
 };
-export const AC130S: IWeaponDefinition = {
+export const AC130B: IWeaponDefinition = {
    ...AutocannonDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.AC130S),
+   name: () => t(L.AC130B),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 1, AC130: 2 },
-   output: { AC130S: 1 },
+   output: { AC130B: 1 },
    damagePct: 0.8,
    ability: {
       timing: AbilityTiming.OnHit,
@@ -205,7 +205,7 @@ export const AC130C: IWeaponDefinition = {
    name: () => t(L.AC130C),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 1, AC130S: 1, AC130E: 1 },
+   input: { Power: 1, AC130A: 1, AC130B: 1 },
    output: { AC130C: 1 },
    damagePct: 0.9,
    ability: {

@@ -27,7 +27,7 @@ export const LA1: IWeaponDefinition = {
    name: () => t(L.LA1),
    code: CodeNumber.LA,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 4, U: 2, MS1H: 2 },
+   input: { Power: 4, U: 2, MS1A: 2 },
    output: { LA1: 1 },
    damagePct: LaserArrayDamagePct,
    fireCooldown: 4,
@@ -35,14 +35,14 @@ export const LA1: IWeaponDefinition = {
    damageType: DamageType.Energy,
    element: "V",
 };
-export const LA1E: IWeaponDefinition = {
+export const LA1A: IWeaponDefinition = {
    ...LaserArrayDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.LA1E),
+   name: () => t(L.LA1A),
    code: CodeNumber.LA,
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 4, LA1: 2 },
-   output: { LA1E: 1 },
+   output: { LA1A: 1 },
    damagePct: 0.1 * LaserArrayDamagePct,
    fireCooldown: 4,
    projectileFlag: ProjectileFlag.LaserDamage,
@@ -60,14 +60,14 @@ export const LA1E: IWeaponDefinition = {
       duration: (building, level) => 2,
    },
 };
-export const LA1S: IWeaponDefinition = {
+export const LA1B: IWeaponDefinition = {
    ...LaserArrayDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.LA1S),
+   name: () => t(L.LA1B),
    code: CodeNumber.LA,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, LA1E: 1 },
-   output: { LA1S: 1 },
+   input: { Power: 2, LA1A: 1 },
+   output: { LA1B: 1 },
    damagePct: LaserArrayDamagePct,
    fireCooldown: 4,
    projectileFlag: ProjectileFlag.LaserDamage,
@@ -89,7 +89,7 @@ export const LA2: IWeaponDefinition = {
    name: () => t(L.LA2),
    code: CodeNumber.LA,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, LA1E: 2 },
+   input: { Power: 2, LA1A: 2 },
    output: { LA2: 1 },
    damagePct: 0.5 * LaserArrayDamagePct,
    fireCooldown: 3.5,
@@ -108,14 +108,14 @@ export const LA2: IWeaponDefinition = {
       duration: (building, level) => 2,
    },
 };
-export const LA2D: IWeaponDefinition = {
+export const LA2A: IWeaponDefinition = {
    ...LaserArrayDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.LA2D),
+   name: () => t(L.LA2A),
    code: CodeNumber.LA,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, LA2: 1, MS2S: 1 },
-   output: { LA2D: 1 },
+   input: { Power: 2, LA2: 1, MS2C: 1 },
+   output: { LA2A: 1 },
    damagePct: 0.5 * LaserArrayDamagePct,
    fireCooldown: 3.5,
    projectileFlag: ProjectileFlag.LaserDamage,

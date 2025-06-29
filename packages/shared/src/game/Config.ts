@@ -1,5 +1,5 @@
 import { forEach, hasFlag, keysOf, reduceOf, sizeOf } from "../utils/Helper";
-import { BuildingFlag, type IBuildingDefinition } from "./definitions/BuildingProps";
+import { BuildingFlag, WeaponKey, type IBuildingDefinition } from "./definitions/BuildingProps";
 import { Buildings, type Building } from "./definitions/Buildings";
 import { MaxBattleTick } from "./definitions/Constant";
 import type { Resource } from "./definitions/Resource";
@@ -113,10 +113,29 @@ function initConfig(): void {
       }
    });
 
+   const suppressWarnings = new Set<Building>(["AC76A"]);
+
    forEach(Config.Tech, (tech, def) => {
+      const resources = new Set<Resource>();
+      def.requires.forEach((t) => {
+         Config.Tech[t].unlockBuildings?.forEach((b) => {
+            if (WeaponKey in Config.Buildings[b]) {
+               forEach(Config.Buildings[b].output, (res) => {
+                  resources.add(res);
+               });
+            }
+         });
+      });
       def.unlockBuildings?.forEach((b) => {
          const building = Config.Buildings[b];
          const buildings = new Set<Building>();
+         if (sizeOf(building.input) > 0) {
+            resources.forEach((res) => {
+               if (!suppressWarnings.has(b) && !building.input[res]) {
+                  console.error(`Building ${b} should have input ${res}`);
+               }
+            });
+         }
          forEach(building.input, (res, amount) => {
             if (res === "Power") return;
             const [building, _] = getBuildingThatProduces(res);

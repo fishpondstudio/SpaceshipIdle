@@ -171,7 +171,7 @@ export function getBuildingDesc(building: Building): string {
    if ("input" in def) {
       left = mapOf(def.input, (res, value) => `${value} ${Config.Resources[res].name()}`).join(" + ");
    }
-   return `${left} -> ${right}`;
+   return `${left} => ${right}`;
 }
 
 export function normalizedValueToHp(normalizedValue: number, building: Building): number {

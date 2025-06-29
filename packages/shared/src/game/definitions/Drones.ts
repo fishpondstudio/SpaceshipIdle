@@ -26,7 +26,7 @@ export const FD1: IWeaponDefinition = {
    name: () => t(L.FD1),
    code: CodeNumber.FD,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, MS2C: 2 },
+   input: { Power: 2, MS2B: 2 },
    output: { FD1: 1 },
    damagePct: 0.75,
    damageType: DamageType.Explosive,

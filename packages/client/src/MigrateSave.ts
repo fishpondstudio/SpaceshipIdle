@@ -2,6 +2,7 @@ import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DefaultShortcuts, GameOption } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameState, type SaveGame } from "@spaceship-idle/shared/src/game/GameState";
 import { isBooster } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
+import { migrateBuildingsAndResources } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { isNullOrUndefined } from "@spaceship-idle/shared/src/utils/Helper";
 
 export function migrateSave(save: SaveGame): void {
@@ -25,6 +26,7 @@ export function migrateSave(save: SaveGame): void {
       save.current.loss = save.current.trialCount;
       delete save.current.trialCount;
    }
+   migrateBuildingsAndResources(save.current);
    save.current = Object.assign(new GameState(), save.current);
    save.options = Object.assign(new GameOption(), save.options);
    save.options.shortcuts = Object.assign({}, DefaultShortcuts, save.options.shortcuts);

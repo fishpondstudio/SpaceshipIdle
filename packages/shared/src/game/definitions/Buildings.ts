@@ -1,9 +1,9 @@
-import { AC130, AC130C, AC130E, AC130S, AC30, AC30F, AC30S, AC30x3, AC76, AC76D, AC76R, AC76x2 } from "./Autocannons";
+import { AC130, AC130A, AC130B, AC130C, AC30, AC30A, AC30B, AC30x3, AC76, AC76A, AC76B, AC76x2 } from "./Autocannons";
 import { DMG1Booster, EVA1Booster, HP1Booster, PM1Booster } from "./Boosters";
 import type { IBuildingDefinition } from "./BuildingProps";
 import { FD1 } from "./Drones";
-import { LA1, LA1E, LA1S, LA2, LA2D } from "./LaserArrays";
-import { MS1, MS1F, MS1H, MS2, MS2C, MS2D, MS2R, MS2S, MS3 } from "./Missiles";
+import { LA1, LA1A, LA1B, LA2, LA2A } from "./LaserArrays";
+import { MS1, MS1A, MS1B, MS2, MS2A, MS2B, MS2C, MS2D, MS3 } from "./Missiles";
 import { PC1 } from "./PlasmaCannons";
 import {
    AntimatterFab,
@@ -21,45 +21,45 @@ import {
    UReactor,
    XPCollector,
 } from "./ProductionBuildings";
-import { RC100, RC100F, RC100G, RC100L, RC100P, RC50, RC50E, RC50P } from "./RailCannons";
+import { RC100, RC100A, RC100B, RC100C, RC100D, RC50, RC50A, RC50B } from "./RailCannons";
 
 export const Buildings = {
    AC30,
    AC30x3,
-   AC30F,
-   AC30S,
+   AC30A,
+   AC30B,
    AC76,
    AC76x2,
-   AC76R,
-   AC76D,
+   AC76A,
+   AC76B,
    AC130,
-   AC130E,
-   AC130S,
+   AC130A,
+   AC130B,
    AC130C,
    RC50,
-   RC50E,
-   RC50P,
+   RC50A,
+   RC50B,
    RC100,
-   RC100G,
-   RC100P,
-   RC100F,
-   RC100L,
+   RC100A,
+   RC100B,
+   RC100C,
+   RC100D,
    PC1,
    MS1,
-   MS1H,
-   MS1F,
+   MS1A,
+   MS1B,
    MS2,
-   MS2R,
+   MS2A,
+   MS2B,
    MS2C,
-   MS2S,
    MS2D,
    MS3,
    FD1,
    LA1,
-   LA1E,
-   LA1S,
+   LA1A,
+   LA1B,
    LA2,
-   LA2D,
+   LA2A,
    D2Fab,
    AntimatterFab,
    AntimatterReactor,

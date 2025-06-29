@@ -13,6 +13,7 @@ import { DefenseComp } from "./components/DefenseComp";
 import { ProductionComp } from "./components/ProductionComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { StatusEffectComp } from "./components/StatusEffectComp";
+import { TextureComp } from "./components/TextureComp";
 import { TitleComp } from "./components/TitleComp";
 import { UpgradeComp } from "./components/UpgradeComp";
 
@@ -39,7 +40,10 @@ export function BuildingPage({ tile, gs, readonly }: ITileWithGameState & { read
       <SidebarComp
          title={
             <Tooltip label={codeLabel} disabled={codeLabel.length <= 0} position="left">
-               <div>{def.name()}</div>
+               <div className="row g5">
+                  <TextureComp name={`Building/${data.type}`} height={40} style={{ margin: "-10px 0" }} />
+                  <div className="f1">{def.name()}</div>
+               </div>
             </Tooltip>
          }
       >

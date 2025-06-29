@@ -38,14 +38,14 @@ export const MS1: IWeaponDefinition = {
    },
    element: "Na",
 };
-export const MS1H: IWeaponDefinition = {
+export const MS1A: IWeaponDefinition = {
    ...MissileDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.MS1H),
+   name: () => t(L.MS1A),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 1, MS1: 2 },
-   output: { MS1H: 1 },
+   output: { MS1A: 1 },
    damagePct: 0.5,
    damageType: DamageType.Explosive,
    fireCooldown: 5,
@@ -61,6 +61,31 @@ export const MS1H: IWeaponDefinition = {
       duration: (building, level) => 1,
    },
    element: "S",
+};
+
+export const MS1B: IWeaponDefinition = {
+   ...MissileDefenseProps,
+   ...BaseWeaponProps,
+   name: () => t(L.MS1B),
+   code: CodeNumber.MS,
+   buildingFlag: BuildingFlag.CanTarget,
+   input: { Power: 2, MS1A: 2 },
+   output: { MS1B: 1 },
+   damagePct: 0.75,
+   damageType: DamageType.Explosive,
+   fireCooldown: 5,
+   ability: {
+      timing: AbilityTiming.OnFire,
+      range: AbilityRange.Adjacent,
+      effect: "IncreaseMaxHp",
+      value: (building, level) => {
+         const def = Config.Buildings[building] as IWeaponDefinition;
+         const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
+         return (normalizedValueToHp(damage, building) * (1 - def.damagePct)) / 3;
+      },
+      duration: (building, level) => 5,
+   },
+   element: "Ca",
 };
 export const MS2: IWeaponDefinition = {
    ...MissileDefenseProps,
@@ -82,14 +107,14 @@ export const MS2: IWeaponDefinition = {
    },
    element: "Ar",
 };
-export const MS2R: IWeaponDefinition = {
+export const MS2A: IWeaponDefinition = {
    ...MissileDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.MS2R),
+   name: () => t(L.MS2A),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 1, MS2: 1, AC76R: 1 },
-   output: { MS2R: 1 },
+   input: { Power: 1, MS2: 1, AC76A: 1 },
+   output: { MS2A: 1 },
    damagePct: 0.9,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -102,14 +127,14 @@ export const MS2R: IWeaponDefinition = {
    },
    element: "K",
 };
-export const MS2C: IWeaponDefinition = {
+export const MS2B: IWeaponDefinition = {
    ...MissileDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.MS2C),
+   name: () => t(L.MS2B),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
    input: { Power: 1, MS2: 2 },
-   output: { MS2C: 1 },
+   output: { MS2B: 1 },
    damagePct: 0.8,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -122,38 +147,14 @@ export const MS2C: IWeaponDefinition = {
    },
    element: "Fe",
 };
-export const MS1F: IWeaponDefinition = {
+export const MS2C: IWeaponDefinition = {
    ...MissileDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.MS1F),
+   name: () => t(L.MS2C),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, MS1H: 2 },
-   output: { MS1F: 1 },
-   damagePct: 0.75,
-   damageType: DamageType.Explosive,
-   fireCooldown: 5,
-   ability: {
-      timing: AbilityTiming.OnFire,
-      range: AbilityRange.Adjacent,
-      effect: "IncreaseMaxHp",
-      value: (building, level) => {
-         const def = Config.Buildings[building] as IWeaponDefinition;
-         const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
-         return (normalizedValueToHp(damage, building) * (1 - def.damagePct)) / 3;
-      },
-      duration: (building, level) => 5,
-   },
-   element: "Ca",
-};
-export const MS2S: IWeaponDefinition = {
-   ...MissileDefenseProps,
-   ...BaseWeaponProps,
-   name: () => t(L.MS2S),
-   code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, MS2C: 1, MS1F: 1 },
-   output: { MS2S: 1 },
+   input: { Power: 2, MS2B: 1, MS1B: 1 },
+   output: { MS2C: 1 },
    damagePct: 0.75,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -174,7 +175,7 @@ export const MS3: IWeaponDefinition = {
    name: () => t(L.MS3),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, MS2R: 1, MS2C: 1 },
+   input: { Power: 2, MS2A: 1, MS2B: 1 },
    output: { MS3: 1 },
    damagePct: 0.9,
    damageType: DamageType.Explosive,
@@ -197,7 +198,7 @@ export const MS2D: IWeaponDefinition = {
    name: () => t(L.MS2D),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, MS2R: 2 },
+   input: { Power: 2, MS2A: 2 },
    output: { MS2D: 1 },
    damagePct: 0.75,
    damageType: DamageType.Explosive,

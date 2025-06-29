@@ -97,7 +97,7 @@ export class TechDefinitions {
       name: () => t(L.TechSystemRecovery),
       ring: 3,
       requires: ["D2"],
-      unlockBuildings: ["MS1H"],
+      unlockBuildings: ["MS1A"],
       multiplier: { MS1: 1 },
    };
    D2: ITechDefinition = {
@@ -125,7 +125,7 @@ export class TechDefinitions {
       name: () => t(L.TechFortifiedArtillery),
       ring: 3,
       requires: ["D4", "C4"],
-      unlockBuildings: ["AC30F"],
+      unlockBuildings: ["AC30A"],
       multiplier: { AC30x3: 1, CircuitFab: 1 },
    };
    D6: ITechDefinition = {
@@ -154,8 +154,8 @@ export class TechDefinitions {
       ring: 4,
       requires: ["D1"],
       name: () => t(L.TechReinforcedDefense),
-      unlockBuildings: ["MS1F"],
-      multiplier: { MS1H: 1 },
+      unlockBuildings: ["MS1B"],
+      multiplier: { MS1A: 1 },
    };
    E2: ITechDefinition = {
       ring: 4,
@@ -168,14 +168,14 @@ export class TechDefinitions {
       ring: 4,
       requires: ["D2", "D3"],
       name: () => t(L.TechRocketArtillery),
-      unlockBuildings: ["AC76R"],
+      unlockBuildings: ["AC76A"],
       multiplier: { AC76: 1, RocketFab: 1 },
    };
    E4: ITechDefinition = {
       ring: 4,
       requires: ["D4"],
       name: () => t(L.TechShieldedArtillery),
-      unlockBuildings: ["AC30S"],
+      unlockBuildings: ["AC30B"],
       multiplier: { AC30x3: 1 },
    };
    E5: ITechDefinition = {
@@ -190,7 +190,7 @@ export class TechDefinitions {
       requires: ["D5"],
       name: () => t(L.TechRailCannon),
       unlockBuildings: ["RC50"],
-      multiplier: { AC30F: 1, CircuitFab: 1 },
+      multiplier: { AC30A: 1, CircuitFab: 1 },
    };
    E7: ITechDefinition = {
       ring: 4,
@@ -217,71 +217,71 @@ export class TechDefinitions {
       name: () => t(L.TechLaserArray),
       requires: ["D8", "D1"],
       unlockBuildings: ["LA1", "EVA1Booster"],
-      multiplier: { UCollector: 1, MS1H: 1 },
+      multiplier: { UCollector: 1, MS1A: 1 },
    };
 
    ////////// R5 //////////
    F1: ITechDefinition = {
       ring: 5,
       name: () => t(L.TechEchoShield),
-      unlockBuildings: ["MS2S"],
+      unlockBuildings: ["MS2C"],
       requires: ["E1", "F2"],
-      multiplier: { MS2C: 1, MS1F: 1 },
+      multiplier: { MS2B: 1, MS1B: 1 },
    };
    F2: ITechDefinition = {
       ring: 5,
       requires: ["E2"],
       name: () => t(L.TechDamageControl),
-      unlockBuildings: ["MS2C"],
+      unlockBuildings: ["MS2B"],
       multiplier: { MS2: 1 },
    };
    F3: ITechDefinition = {
       name: () => t(L.TechDamageReclaim),
       ring: 5,
       requires: ["E2", "E3"],
-      unlockBuildings: ["MS2R"],
-      multiplier: { MS2: 1, AC76R: 1 },
+      unlockBuildings: ["MS2A"],
+      multiplier: { MS2: 1, AC76A: 1 },
    };
    F4: ITechDefinition = {
       ring: 5,
       requires: ["E3"],
       name: () => t(L.TechArmorPiercing),
       unlockBuildings: ["AC76x2"],
-      multiplier: { AC76R: 1 },
+      multiplier: { AC76A: 1 },
    };
    F5: ITechDefinition = {
       ring: 5,
       name: () => t(L.TechDefenseBreaker),
       requires: ["E5"],
-      unlockBuildings: ["AC130S"],
+      unlockBuildings: ["AC130B"],
       multiplier: { AC130: 1 },
    };
    F6: ITechDefinition = {
       name: () => t(L.TechHeavyExplosives),
       ring: 5,
       requires: ["E5"],
-      unlockBuildings: ["AC130E"],
+      unlockBuildings: ["AC130A"],
       multiplier: { AC130: 1 },
    };
    F7: ITechDefinition = {
       ring: 5,
       requires: ["E6"],
       name: () => t(L.TechEvasionMatrix),
-      unlockBuildings: ["RC50E"],
+      unlockBuildings: ["RC50A"],
       multiplier: { RC50: 1 },
    };
    F8: ITechDefinition = {
       ring: 5,
       requires: ["E7"],
       name: () => t(L.TechReactiveRegen),
-      unlockBuildings: ["RC100G"],
+      unlockBuildings: ["RC100A"],
       multiplier: { RC100: 1 },
    };
    F9: ITechDefinition = {
       ring: 5,
       requires: ["E7"],
       name: () => t(L.TechProactiveRegen),
-      unlockBuildings: ["RC100P"],
+      unlockBuildings: ["RC100B"],
       multiplier: { RC100: 1 },
    };
    F10: ITechDefinition = {
@@ -301,7 +301,7 @@ export class TechDefinitions {
       ring: 5,
       requires: ["E10"],
       name: () => t(L.TechLaserExplosive),
-      unlockBuildings: ["LA1E"],
+      unlockBuildings: ["LA1A"],
       multiplier: { LA1: 1 },
    };
 
@@ -310,71 +310,71 @@ export class TechDefinitions {
       ring: 6,
       name: () => t(L.TechLaserDisruptor),
       requires: ["G14", "F1"],
-      unlockBuildings: ["LA2D"],
-      multiplier: { LA2: 1, MS2S: 1 },
+      unlockBuildings: ["LA2A"],
+      multiplier: { LA2: 1, MS2C: 1 },
    };
    G2: ITechDefinition = {
       ring: 6,
       requires: ["F2"],
       name: () => t(L.TechFPVDrone),
       unlockBuildings: ["FD1"],
-      multiplier: { MS2C: 1 },
+      multiplier: { MS2B: 1 },
    };
    G3: ITechDefinition = {
       ring: 6,
       name: () => t(L.TechProductionDisruption),
       requires: ["F2", "F3"],
       unlockBuildings: ["MS3"],
-      multiplier: { MS2R: 1, MS2C: 1 },
+      multiplier: { MS2A: 1, MS2B: 1 },
    };
    G4: ITechDefinition = {
       ring: 6,
       requires: ["F3"],
       name: () => t(L.TechDebuffDispel),
       unlockBuildings: ["MS2D"],
-      multiplier: { MS2R: 1 },
+      multiplier: { MS2A: 1 },
    };
    G5: ITechDefinition = {
       ring: 6,
       name: () => t(L.TechBuffDispel),
       requires: ["E4", "F4"],
-      unlockBuildings: ["AC76D"],
-      multiplier: { AC30S: 1, AC76x2: 1 },
+      unlockBuildings: ["AC76B"],
+      multiplier: { AC30B: 1, AC76x2: 1 },
    };
    G6: ITechDefinition = {
       ring: 6,
       name: () => t(L.TechDefenseCluster),
       requires: ["F5"],
       unlockBuildings: ["AC130C"],
-      multiplier: { AC130S: 1, AC130E: 1 },
+      multiplier: { AC130A: 1, AC130B: 1 },
    };
    G7: ITechDefinition = {
       ring: 6,
       name: () => t(L.TechPlasmaCannon),
       requires: ["F6"],
       unlockBuildings: ["PC1"],
-      multiplier: { AC130E: 1, RC50E: 1 },
+      multiplier: { AC130A: 1, RC50A: 1 },
    };
    G8: ITechDefinition = {
       ring: 6,
       requires: ["F7"],
       name: () => t(L.TechPrecisionStrike),
-      unlockBuildings: ["RC50P"],
-      multiplier: { RC50E: 1 },
+      unlockBuildings: ["RC50B"],
+      multiplier: { RC50A: 1 },
    };
    G9: ITechDefinition = {
       ring: 6,
       requires: ["F7", "F8"],
       name: () => t(L.TechLastStandRegen),
-      unlockBuildings: ["RC100L"],
-      multiplier: { RC100G: 1, RC50E: 1 },
+      unlockBuildings: ["RC100D"],
+      multiplier: { RC100A: 1, RC50A: 1 },
    };
    G10: ITechDefinition = {
       ring: 6,
       name: () => t(L.TechFailsafeRegen),
       requires: ["F8", "F9"],
-      unlockBuildings: ["RC100F"],
-      multiplier: { RC100G: 1, RC100P: 1 },
+      unlockBuildings: ["RC100C"],
+      multiplier: { RC100A: 1, RC100B: 1 },
    };
    G11: ITechDefinition = {
       name: () => t(L.TechCruiser),
@@ -393,15 +393,15 @@ export class TechDefinitions {
       ring: 6,
       requires: ["F12"],
       name: () => t(L.TechDefenseInfiltrate),
-      unlockBuildings: ["LA1S"],
-      multiplier: { LA1E: 1 },
+      unlockBuildings: ["LA1B"],
+      multiplier: { LA1A: 1 },
    };
    G14: ITechDefinition = {
       ring: 6,
       requires: ["F12"],
       name: () => t(L.TechLaserCorruptor),
       unlockBuildings: ["LA2"],
-      multiplier: { LA1E: 1 },
+      multiplier: { LA1A: 1 },
    };
 
    ////////// R7 //////////
