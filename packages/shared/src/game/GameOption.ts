@@ -16,6 +16,7 @@ export const GameOptionFlag = {
    CooldownIndicatorOutsideBattle: 1 << 6,
    LinearCooldownIndicator: 1 << 7,
    HideInactiveResources: 1 << 8,
+   ShowAmmoPerSec: 1 << 9,
 };
 
 export type GameOptionFlag = ValueOf<typeof GameOptionFlag>;

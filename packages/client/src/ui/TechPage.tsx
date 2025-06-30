@@ -97,7 +97,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
          ) : null}
          {def.unlockBuildings ? (
             <>
-               <TitleComp>{t(L.UnlockBuildings)}</TitleComp>
+               <TitleComp>{t(L.UnlockModules)}</TitleComp>
                <div className="divider my10" />
                {def.unlockBuildings?.map((b) => {
                   return (

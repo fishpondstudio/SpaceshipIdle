@@ -1,12 +1,9 @@
 import type { Resource } from "@spaceship-idle/shared/src/game/definitions/Resource";
 import { formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
-import { memo } from "react";
 
-function _ResourceAmount({ res, amount }: { res: Resource; amount: number }): React.ReactNode {
+export function ResourceAmount({ res, amount }: { res: Resource; amount: number }): string {
    if (res === "Power") {
       return `${formatNumber(amount, true)}W`;
    }
    return formatNumber(amount);
 }
-
-export const ResourceAmount = memo(_ResourceAmount);

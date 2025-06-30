@@ -30,46 +30,43 @@ export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNod
          <div className="divider my10" />
          <TitleComp>{t(L.Production)}</TitleComp>
          <div className="divider my10" />
-         {def.input.Power ? (
-            <>
-               <div className="row mx10 g5">
-                  <div className="f1">{t(L.Power)}</div>
-                  {rs.insufficient.has("Power") ? (
-                     <Tooltip label={t(L.InsufficientResourceTooltip, t(L.Power))}>
-                        <div className="mi text-red">warning</div>
-                     </Tooltip>
-                  ) : (
-                     <div className="mi">bolt</div>
-                  )}
-                  <div className={classNames(rs.insufficient.has("Power") ? "text-red" : null)}>
-                     <ResourceAmount res="Power" amount={def.input.Power * data.level * data.capacity} />
-                  </div>
-               </div>
-               <div className="divider dashed my10" />
-            </>
-         ) : null}
          <div className="col stretch mx10 text-condensed">
             <div className="f1 col g5 stretch">
                {mapOf(def.input, (res, amount) => {
-                  if (res === "Power") {
-                     return null;
-                  }
                   return (
                      <Tooltip
                         multiline
                         maw="30vw"
                         key={res}
-                        disabled={!rs.insufficient.has(res)}
-                        label={<RenderHTML html={t(L.InsufficientResourceTooltip, Config.Resources[res].name())} />}
+                        label={
+                           rs.insufficient.has(res) ? (
+                              <RenderHTML html={t(L.InsufficientResourceTooltip, Config.Resources[res].name())} />
+                           ) : (
+                              <RenderHTML
+                                 html={t(
+                                    L.ConsumptionTooltip,
+                                    ResourceAmount({ res: res, amount: amount * data.level * data.capacity }),
+                                    Config.Resources[res].name(),
+                                 )}
+                              />
+                           )
+                        }
                      >
                         <div className={classNames("panel f1 p5", rs.insufficient.has(res) ? "red" : null)}>
                            <div className={classNames("row g5", rs.insufficient.has(res) ? "text-red" : null)}>
                               <div>
-                                 <TextureComp name={`Building/${Config.ResourceToBuilding.get(res)}`} width={30} />
+                                 {res === "Power" ? (
+                                    <div className="mi" style={{ fontSize: 26, margin: 2 }}>
+                                       bolt
+                                    </div>
+                                 ) : (
+                                    <TextureComp name={`Building/${Config.ResourceToBuilding.get(res)}`} width={30} />
+                                 )}
                               </div>
                               <div>{Config.Resources[res].name()}</div>
                               <div className="f1" />
-                              <ResourceAmount res={res} amount={amount * data.level * data.capacity} />
+                              -<ResourceAmount res={res} amount={amount * data.level * data.capacity} />
+                              {res === "Power" ? null : t(L.PerSecShort)}
                               {rs.insufficient.has(res) ? <div className="mi sm inline">error</div> : null}
                            </div>
                         </div>
@@ -83,50 +80,60 @@ export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNod
             <div className="f1 col g5 stretch">
                {mapOf(def.output, (res, amount) => {
                   return (
-                     <div className="panel f1 p5" key={res}>
-                        <div className={classNames("row g5", rs.insufficient.has(res) ? "text-red" : null)}>
-                           <div>
-                              {res === "Power" ? (
-                                 <div className="mi" style={{ fontSize: 26, margin: 2 }}>
-                                    bolt
-                                 </div>
-                              ) : (
-                                 <TextureComp name={`Building/${Config.ResourceToBuilding.get(res)}`} width={30} />
+                     <Tooltip
+                        label={
+                           <RenderHTML
+                              html={t(
+                                 L.ProductionTooltip,
+                                 ResourceAmount({ res: res, amount: amount * data.level * data.capacity }),
+                                 Config.Resources[res].name(),
                               )}
+                           />
+                        }
+                        key={res}
+                     >
+                        <div className="panel f1 p5">
+                           <div className={classNames("row g5", rs.insufficient.has(res) ? "text-red" : null)}>
+                              <div>
+                                 {res === "Power" ? (
+                                    <div className="mi" style={{ fontSize: 26, margin: 2 }}>
+                                       bolt
+                                    </div>
+                                 ) : (
+                                    <TextureComp name={`Building/${Config.ResourceToBuilding.get(res)}`} width={30} />
+                                 )}
+                              </div>
+                              <div>{Config.Resources[res].name()}</div>
+                              <div className="f1" />
+                              +<ResourceAmount res={res} amount={amount * data.level * data.capacity} />
+                              {res === "Power" ? null : t(L.PerSecShort)}
+                              {rs.insufficient.has(res) ? <div className="mi sm inline">error</div> : null}
                            </div>
-                           <div>{Config.Resources[res].name()}</div>
-                           <div className="f1" />
-                           <ResourceAmount res={res} amount={amount * data.level * data.capacity} />
-                           {rs.insufficient.has(res) ? <div className="mi sm inline">error</div> : null}
                         </div>
-                     </div>
+                     </Tooltip>
                   );
                })}
             </div>
          </div>
          {rs.productionMultiplier.detail.length > 0 ? (
-            <>
-               <div className="divider my10" />
-               <TitleComp>
-                  <div className="f1">{t(L.ProductionMultiplier)}</div>
-                  <div>x{formatNumber(rs.productionMultiplier.value)}</div>
-               </TitleComp>
-               <div className="divider my10" />
-               <div className="mx10">
-                  <div className="row text-sm">
-                     <div className="f1">{t(L.BaseMultiplier)}</div>
-                     <div>1</div>
-                  </div>
-                  {rs.productionMultiplier.detail.map((m) => {
-                     return (
-                        <div className="row text-sm" key={m.source}>
-                           <div className="f1">{m.source}</div>
-                           <div className="text-green">+{formatNumber(m.value)}</div>
-                        </div>
-                     );
-                  })}
+            <div className="mx10">
+               <div className="h10" />
+               <div className="subtitle">
+                  {t(L.ProductionMultiplier)}x{formatNumber(rs.productionMultiplier.value)}
                </div>
-            </>
+               <div className="row text-sm">
+                  <div className="f1">{t(L.BaseMultiplier)}</div>
+                  <div>1</div>
+               </div>
+               {rs.productionMultiplier.detail.map((m) => {
+                  return (
+                     <div className="row text-sm" key={m.source}>
+                        <div className="f1">{m.source}</div>
+                        <div className="text-green">+{formatNumber(m.value)}</div>
+                     </div>
+                  );
+               })}
+            </div>
          ) : null}
          {/* TODO: XP multiplier is currently not supported */}
          {/* {!(WeaponKey in def) && rs.xpMultiplier.value > 1 ? (

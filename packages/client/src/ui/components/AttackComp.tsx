@@ -1,10 +1,12 @@
 import { Badge, Switch, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageTypeLabel, ProjectileFlag, WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { getCooldownMultiplier } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
-import { formatNumber, hasFlag, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { clearFlag, formatNumber, hasFlag, mapOf, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
+import { refreshOnTypedEvent } from "../../utils/Hook";
 import type { ITileWithGameState } from "../ITileWithGameState";
 import { AbilityComp } from "./AbilityComp";
 import { RenderHTML } from "./RenderHTMLComp";
@@ -14,6 +16,7 @@ import { XPIcon } from "./SVGIcons";
 import { TitleComp } from "./TitleComp";
 
 export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
+   refreshOnTypedEvent(GameOptionUpdated);
    const data = gs.tiles.get(tile);
    if (!data) {
       return null;
@@ -80,14 +83,29 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          <div className="title">
             <div>{t(L.Ammo)}</div>
             <div className="f1" />
-            <div>Per Fire</div>
-            <Switch className="mx10" size="xs" />
-            <div>Per Sec</div>
+            <Tooltip label={<RenderHTML html={t(L.AmmoConsumptionTooltip)} />} multiline maw="30vw">
+               <div className="row">
+                  <div>{t(L.PerFire)}</div>
+                  <Switch
+                     size="xs"
+                     checked={hasFlag(G.save.options.flag, GameOptionFlag.ShowAmmoPerSec)}
+                     onChange={() => {
+                        G.save.options.flag = hasFlag(G.save.options.flag, GameOptionFlag.ShowAmmoPerSec)
+                           ? clearFlag(G.save.options.flag, GameOptionFlag.ShowAmmoPerSec)
+                           : setFlag(G.save.options.flag, GameOptionFlag.ShowAmmoPerSec);
+                        GameOptionUpdated.emit();
+                     }}
+                  />
+                  <div>{t(L.PerSec)}</div>
+               </div>
+            </Tooltip>
          </div>
          <div className="divider my10" />
          <div className="mx10">
             {mapOf(def.output, (res, amount_) => {
-               const amount = amount_ * getCooldownMultiplier(data);
+               const perSec = hasFlag(G.save.options.flag, GameOptionFlag.ShowAmmoPerSec);
+               const divider = perSec ? rs.props.fireCooldown : 1;
+               const amount = (amount_ * getCooldownMultiplier(data)) / divider;
                const xp = (Config.Price.get(res) ?? 0) * amount * data.level;
                return (
                   <div key={res}>
@@ -95,49 +113,52 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                         <div>{Config.Resources[res].name()}</div>
                         {rs.insufficient.has(res) ? <div className="mi text-yellow">error</div> : null}
                         <div className="f1" />
-                        <ResourceAmount res={res} amount={amount * data.level} />
+                        -<ResourceAmount res={res} amount={amount * data.level} />
+                        {perSec ? t(L.PerSecShort) : t(L.PerFireShort)}
                      </div>
                      <div className="row g5">
                         <div>{t(L.XP)}</div>
                         <div className="f1"></div>
                         <XPIcon />
-                        <div>
-                           <StatComp current={xp * rs.xpMultiplier.value} original={xp} />
+                        <div className="row g0">
+                           +<StatComp current={xp * rs.xpMultiplier.value} original={xp} />
+                           {perSec ? t(L.PerSecShort) : t(L.PerFireShort)}
                         </div>
                      </div>
                   </div>
                );
             })}
-            {rs.xpMultiplier.value > 1 ? (
-               <>
-                  <div className="subtitle">
-                     {t(L.XPMultiplier)} x{rs.xpMultiplier.value}
-                  </div>
-                  <div className="row text-sm">
-                     <div className="f1">{t(L.BaseMultiplier)}</div>
-                     <div>1</div>
-                  </div>
-                  {rs.xpMultiplier.detail.map((m) => {
-                     return (
-                        <div className="row text-sm" key={m.source}>
-                           <div className="f1">{m.source}</div>
-                           <div className="text-green">+{formatNumber(m.value)}</div>
-                        </div>
-                     );
-                  })}
-               </>
-            ) : null}
-            {rs.props.ability ? (
-               <div className="text-sm">
-                  <AbilityComp
-                     level={data.level}
-                     building={data.type}
-                     space={<div className="h5" />}
-                     title={<div className="subtitle">{t(L.Ability)}</div>}
-                  />
-               </div>
-            ) : null}
          </div>
+         {rs.xpMultiplier.value > 1 ? (
+            <div className="mx10">
+               <div className="h5" />
+               <div className="subtitle">
+                  {t(L.XPMultiplier)} x{formatNumber(rs.xpMultiplier.value)}
+               </div>
+               <div className="row text-sm">
+                  <div className="f1">{t(L.BaseMultiplier)}</div>
+                  <div>1</div>
+               </div>
+               {rs.xpMultiplier.detail.map((m) => {
+                  return (
+                     <div className="row text-sm" key={m.source}>
+                        <div className="f1">{m.source}</div>
+                        <div className="text-green">+{formatNumber(m.value)}</div>
+                     </div>
+                  );
+               })}
+            </div>
+         ) : null}
+         {rs.props.ability ? (
+            <div className="text-sm mx10">
+               <AbilityComp
+                  level={data.level}
+                  building={data.type}
+                  space={<div className="h5" />}
+                  title={<div className="subtitle">{t(L.Ability)}</div>}
+               />
+            </div>
+         ) : null}
       </>
    );
 }

@@ -603,7 +603,7 @@ export const EN = {
       "Winning a qualifier battle will unlock higher quantum limit. This can be achieved by either winning the <b>qualifier battle</b> at Quantum 30 or the <b>second chance</b> battle at Quantum 35.",
    TutorialXP:
       "XP is generated when weapon modules <b>fire</b>. More advanced and higher level weapons generate more XP. Building and upgrading spaceship modules costs XP.",
-   UnlockBuildings: "Unlock Buildings",
+   UnlockModules: "Unlock Modules",
    UnlockUpgrades: "Unlock Upgrades",
    Upgrade: "Upgrade",
    UpgradeMax: "Max",
@@ -652,6 +652,13 @@ export const EN = {
       "<em>You've reached the quantum limit: %%.</em> Complete a qualifier battle to unlock higher quantum limit (Win +10, Loss +5)",
    InsufficientResourceTooltip: "Insufficient <b>%%</b>. Try increase its production",
    XPMultiplier: "XP Multiplier",
-   PerSec: "%%/s",
-   PerFire: "%%/Fire",
+   PerSecShort: "/s",
+   PerFireShort: "/Fire",
+   PerSec: "Per Sec",
+   PerFire: "Per Fire",
+   ConsumptionTooltip: "This module consumes <b>%%</b> %% per second",
+   ProductionTooltip: "This module produces <b>%%</b> %% per second",
+   AmmoConsumptionTooltip:
+      "Ammo is consumed when this weapon fires. Dividing this value by fire cooldown will show per second equivalent. <b>It only affects the displayed value and does not affect the actual consumption</b>",
+   ResearchX: "Research: %%",
 };
