@@ -210,11 +210,13 @@ export function migrateShipForServer(ship: GameState): boolean {
       migrated = true;
       ship.permanentElements = new Map();
    }
-   migrateBuildingsAndResources(ship);
+   if (migrateBuildingsAndResources(ship)) {
+      migrated = true;
+   }
    return migrated;
 }
 
-export function migrateBuildingsAndResources(gs: GameState): void {
+export function migrateBuildingsAndResources(gs: GameState): boolean {
    let shouldMigrateBuildings = false;
    for (const [tile, data] of gs.tiles) {
       if (!(data.type in Config.Buildings)) {
@@ -227,6 +229,11 @@ export function migrateBuildingsAndResources(gs: GameState): void {
          if (data.type in BuildingMapping) {
             data.type = BuildingMapping[data.type as keyof typeof BuildingMapping] as Building;
          }
+      }
+   }
+   for (const [tile, data] of gs.tiles) {
+      if (!(data.type in Config.Buildings)) {
+         console.error(`Building ${data.type} not found in Config.Buildings`);
       }
    }
    let shouldMigrateResources = false;
@@ -247,6 +254,7 @@ export function migrateBuildingsAndResources(gs: GameState): void {
       }
       gs.resources = newResources;
    }
+   return shouldMigrateBuildings || shouldMigrateResources;
 }
 
 const BuildingMapping = {
@@ -269,5 +277,5 @@ const BuildingMapping = {
    MS2S: "MS2C",
    LA1E: "LA1A",
    LA1S: "LA1B",
-   LS2D: "LS2A",
+   LA2D: "LA2A",
 };

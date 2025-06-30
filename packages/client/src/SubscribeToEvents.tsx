@@ -24,7 +24,7 @@ export function subscribeToEvents(): void {
                } else {
                   G.save.current.win++;
                }
-               clearFlag(G.save.current.flags, GameStateFlags.QualifierBattlePrompted);
+               G.save.current.flags = clearFlag(G.save.current.flags, GameStateFlags.QualifierBattlePrompted);
                break;
             }
             case BattleType.Practice: {

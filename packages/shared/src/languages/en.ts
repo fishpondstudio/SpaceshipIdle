@@ -37,7 +37,8 @@ export const EN = {
    ActualDamageByModuleType: "Actual Damage By Module Type",
    ActualRawDamageByType: "Actual / Raw Damage By Type",
    ActualRawDamageTooltip: "Actual damage is the raw damage after armor, shield and deflection reduction",
-   AdvancedGameControlContent: "(1) Right click to recycle<br>(2) Right click to move<br>(3) Right click to swap<br>(4) Middle click to copy",
+   AdvancedGameControlContent:
+      "(1) Right click to recycle<br>(2) Right click to move<br>(3) Right click to swap<br>(4) Middle click to copy",
    Ammo: "Ammo",
    AnElementHasBeenDiscovered: "An Element Has Been Discovered",
    Antimatter: "Antimatter",
@@ -214,7 +215,8 @@ export const EN = {
    ElementTerbium: "Terbium",
    ElementThallium: "Thallium",
    ElementThisRun: "Element This Run",
-   ElementThisRunTooltipHTML: "Elements from this run boosts <b>Production Multiplier</b> and becomes <b>Element Shards</b> after prestige",
+   ElementThisRunTooltipHTML:
+      "Elements from this run boosts <b>Production Multiplier</b> and becomes <b>Element Shards</b> after prestige",
    ElementThorium: "Thorium",
    ElementThulium: "Thulium",
    ElementTin: "Tin",
@@ -296,7 +298,8 @@ export const EN = {
    LaserBlocker: "Laser Blocker",
    LaserBlockerDesc: "Prevent laser projectiles from piercing through",
    LaserProjectile: "Laser Projectile",
-   LaserProjectileDesc: "Laser projectiles pierce through multiple modules, dealing reduced damage to each subsequent module. The damage dealt to the Nth module is equal to the original damage divided by N",
+   LaserProjectileDesc:
+      "Laser projectiles pierce through multiple modules, dealing reduced damage to each subsequent module. The damage dealt to the Nth module is equal to the original damage divided by N",
    LastStandRegen: "Last Stand Regen",
    LastStandRegenDesc: "Recover %% HP to adjacent modules when this module is destroyed",
    Level: "Level",
@@ -329,7 +332,8 @@ export const EN = {
    NotEnoughResources: "Not Enough Resources",
    NotWithinExtent: "Modules need to be within the ship's extent",
    OfflineTime: "Offline Time",
-   OfflineTimeDesc: "Your offline time has been converted to %% time warp, which can be activated to gain additional XP",
+   OfflineTimeDesc:
+      "Your offline time has been converted to %% time warp, which can be activated to gain additional XP",
    OperationSuccessful: "Operation Successful",
    PatchNotes: "Patch Notes",
    PC: "Plasma Cannon",
@@ -350,7 +354,8 @@ export const EN = {
    PracticeBattleShort: "Practice",
    Prerequisites: "Prerequisites",
    Prestige: "Prestige",
-   PrestigeReasonInvalidShip: "Your ship was built with an incompatible version of the game. You need to prestige to continue with a new ship",
+   PrestigeReasonInvalidShip:
+      "Your ship was built with an incompatible version of the game. You need to prestige to continue with a new ship",
    Priority: "Priority",
    Production: "Production",
    ProductionDisruption: "Production Disruption",
@@ -409,7 +414,8 @@ export const EN = {
    RocketFab: "Rocket Fab",
    SelectedXModules: "%% Modules Selected",
    SelectTopEndBuildings: "Select Top End Modules",
-   SelectTopEndBuildingsTooltipHTML: "Select modules that are <b>at the top of</b> the production chain, i.e. the resources produced are <b>not</b> consumed by any other modules",
+   SelectTopEndBuildingsTooltipHTML:
+      "Select modules that are <b>at the top of</b> the production chain, i.e. the resources produced are <b>not</b> consumed by any other modules",
    Shards: "Shards",
    Shield: "Shield",
    ShieldShort: "SHD",
@@ -461,7 +467,8 @@ export const EN = {
    StandardStateSolid: "Solid",
    StartPlaying: "Start Playing",
    StatusEffect: "Status Effect",
-   SuddenDeathTooltipV2: "Sudden Death is triggered when a spaceship fails to fire any projectiles for %% seconds, or when the battle has reached %% seconds. All modules take <b>%% Kinetic, Explosive and Energy damage</b>",
+   SuddenDeathTooltipV2:
+      "Sudden Death is triggered when a spaceship fails to fire any projectiles for %% seconds, or when the battle has reached %% seconds. All modules take <b>%% Kinetic, Explosive and Energy damage</b>",
    TabControl: "Control",
    TabGeneral: "General",
    Tech: "Tech",
@@ -537,46 +544,65 @@ export const EN = {
    TierX: "Tier %%",
    TimeWarp: "Time Warp",
    TimeWarpTooltip: "Warp Speed / AvailableTime Warp",
-   TutorialAdvancedGameControlContent: "<b>Select + Middle Click</b> an empty module to copy. <b>Select + Right Click</b> another module to move/swap. <b>Select + Right Click</b> the current module to recycle.",
+   TutorialAdvancedGameControlContent:
+      "<b>Select + Middle Click</b> an empty module to copy. <b>Select + Right Click</b> another module to move/swap. <b>Select + Right Click</b> the current module to recycle.",
    TutorialAmmo: "Ammo",
-   TutorialAmmoContentHTML: "When entering a battle, each module only <b>carries %% cycles of ammo</b> - make sure your spaceship have enough ammo production! Use in-game stats to help balance your production.",
+   TutorialAmmoContentHTML:
+      "When entering a battle, each module only <b>carries %% cycles of ammo</b> - make sure your spaceship have enough ammo production! Use in-game stats to help balance your production.",
    TutorialAutoBattle: "(Auto)battle",
-   TutorialAutoBattleContent: "Battles are automatic. To ensure fairness, your spaceship are matched against a spaceship of the <b>same quantum level</b>. If your spaceship performs well, it will enter the matchmaking pool.",
+   TutorialAutoBattleContent:
+      "Battles are automatic. To ensure fairness, your spaceship are matched against a spaceship of the <b>same quantum level</b>. If your spaceship performs well, it will enter the matchmaking pool.",
    TutorialBasicConcept: "Basic Concept",
-   TutorialBuild1BoosterDescHTML: "Each type of booster module can only be built once. They provide significant boost effects, do not consume quantum and do not contribute to Spaceship XP. They cost resources, rather than XP to build.",
-   TutorialBuild6ModulesDescHTML: "To build a module, click on an empty tile and select the module you want to build from the side panel.",
+   TutorialBuild1BoosterDescHTML:
+      "Each type of booster module can only be built once. They provide significant boost effects, do not consume quantum and do not contribute to Spaceship XP. They cost resources, rather than XP to build.",
+   TutorialBuild6ModulesDescHTML:
+      "To build a module, click on an empty tile and select the module you want to build from the side panel.",
    TutorialBuildXBoosters: "Build %% Booster(s)",
    TutorialBuildXModules: "Build %% Modules",
    TutorialChat: "Get Help",
-   TutorialChatContent: "If you are lost, the in-game chat is always ready to help, just ask nicely. Also choose your player handle so people recognize you!",
+   TutorialChatContent:
+      "If you are lost, the in-game chat is always ready to help, just ask nicely. Also choose your player handle so people recognize you!",
    TutorialCommunity: "In-Game Community",
-   TutorialDiscover1ElementDescHTML: "You will discover your first element when you reach <b>15 quantum</b>. You can pick one out of three choices. Each element boosts <b>production multipliers</b>. They become permanent element shards when you prestige.",
+   TutorialDiscover1ElementDescHTML:
+      "You will discover your first element when you reach <b>15 quantum</b>. You can pick one out of three choices. Each element boosts <b>production multipliers</b>. They become permanent element shards when you prestige.",
    TutorialDiscoverXElement: "Discover %% Element",
    TutorialElement: "Element",
    TutorialGameControl: "Game Control",
-   TutorialGameControlContent: "<b>Click</b> to select a module. <b>Drag</b> to move around. <b>Scroll</b> to zoom in and out. Click on an <b>empty module</b> to build. <b>Ctrl + Click</b> to multiselect.",
-   TutorialIntro: "In <b>Spaceship Idle</b>, you design your own modular spaceship, explore the vast tech tree, unlock unique weapons, and win epic space (auto)battles!",
-   TutorialPower: "Power is generated by <b>generator</b> modules. Your ship starts with a solar panel module, which generates power without consuming resources. Later on, you will unlock more powerful generators that consume resources.",
+   TutorialGameControlContent:
+      "<b>Click</b> to select a module. <b>Drag</b> to move around. <b>Scroll</b> to zoom in and out. Click on an <b>empty module</b> to build. <b>Ctrl + Click</b> to multiselect.",
+   TutorialIntro:
+      "In <b>Spaceship Idle</b>, you design your own modular spaceship, explore the vast tech tree, unlock unique weapons, and win epic space (auto)battles!",
+   TutorialPower:
+      "Power is generated by <b>generator</b> modules. Your ship starts with a solar panel module, which generates power without consuming resources. Later on, you will unlock more powerful generators that consume resources.",
    TutorialProductionCapacity: "Change Production Capacity",
    TutorialProductionCapacityDescHTML:
       "A Weapon module produces ammo that is consumed when firing. Usually it produces more than needed. Lowering <b>production capacity</b>, especially for your highest tier weapons, allow you build a more optimized spaceship. You can use <b>Match Capacity to Ammo Consumption</b> feature (magic wand) to quickly set a module's production capacity to match its ammo consumption.",
    TutorialProductionPriority: "Change Production Priority",
-   TutorialProductionPriorityDescHTML: "A module with higher priority (<b>10</b>) will produce before other modules. Usually it's a good idea to set your <b>power generators and their upstream modules</b> to the highest priority to avoid a blackout.",
+   TutorialProductionPriorityDescHTML:
+      "A module with higher priority (<b>10</b>) will produce before other modules. Usually it's a good idea to set your <b>power generators and their upstream modules</b> to the highest priority to avoid a blackout.",
    TutorialProgress: "Tutorial",
-   TutorialQualifierBattle: "When your quantum reaches a certain level, you will have to <b>win a qualifier battle</b> to unlock more quantum. Your qualified quantum determines the <b>max XP</b> you can invest in your spaceship.",
+   TutorialQualifierBattle:
+      "When your quantum reaches a certain level, you will have to <b>win a qualifier battle</b> to unlock more quantum. Your qualified quantum determines the <b>max XP</b> you can invest in your spaceship.",
    TutorialQuantum: "Quantum and Battle",
-   TutorialQuantumContent: "When your total produced XP reaches a certain level, you will unlock a new quantum. Quantum can be used to <b>either unlock a tech, or build a new module</b>.",
-   TutorialReach260SpaceshipXPDescHTML: "The <b>qualified quantum</b> determines the amount of XP you can invest in your spaceship. To prepare for your first qualifier battle, you should invest as much XP as possible.",
+   TutorialQuantumContent:
+      "When your total produced XP reaches a certain level, you will unlock a new quantum. Quantum can be used to <b>either unlock a tech, or build a new module</b>.",
+   TutorialReach260SpaceshipXPDescHTML:
+      "The <b>qualified quantum</b> determines the amount of XP you can invest in your spaceship. To prepare for your first qualifier battle, you should invest as much XP as possible.",
    TutorialReachXSpaceshipXP: "Reach %% Spaceship XP",
-   TutorialResearch8TechDescHTML: "To research a tech, click Research tab and select the tech you want to research. Keep in mind that each tech <b>costs one quantum</b> to research and cannot be undone.",
+   TutorialResearch8TechDescHTML:
+      "To research a tech, click Research tab and select the tech you want to research. Keep in mind that each tech <b>costs one quantum</b> to research and cannot be undone.",
    TutorialResearchXTech: "Research %% Tech(s)",
-   TutorialUse25QuantumDescHTML: "Quantum is generated based on the XP you've gained, which includes the <b>XP invested in your ship</b> and remaining <b>XP in the storage</b>. You can use quantum to either unlock a tech or build a new module. When you recycle a module, the quantum is refunded.",
+   TutorialUse25QuantumDescHTML:
+      "Quantum is generated based on the XP you've gained, which includes the <b>XP invested in your ship</b> and remaining <b>XP in the storage</b>. You can use quantum to either unlock a tech or build a new module. When you recycle a module, the quantum is refunded.",
    TutorialUseXQuantum: "Use %% Quantum",
    TutorialWeapon: "Weapons",
-   TutorialWeaponContent: "Weapons are unlocked by researching the tech tree. Weapons consume resources and <b>produce ammo</b> - they also <b>consume ammo</b> when firing. Weapons have different stats and abilities, which can be upgraded.",
+   TutorialWeaponContent:
+      "Weapons are unlocked by researching the tech tree. Weapons consume resources and <b>produce ammo</b> - they also <b>consume ammo</b> when firing. Weapons have different stats and abilities, which can be upgraded.",
    TutorialWinSpaceshipBattle: "Win %% Spaceship Battle(s)",
-   TutorialWinSpaceshipBattleDescHTML: "Winning a qualifier battle will unlock higher quantum limit. This can be achieved by either winning the <b>qualifier battle</b> at Quantum 30 or the <b>second chance</b> battle at Quantum 35.",
-   TutorialXP: "XP is generated when weapon modules <b>fire</b>. More advanced and higher level weapons generate more XP. Building and upgrading spaceship modules costs XP.",
+   TutorialWinSpaceshipBattleDescHTML:
+      "Winning a qualifier battle will unlock higher quantum limit. This can be achieved by either winning the <b>qualifier battle</b> at Quantum 30 or the <b>second chance</b> battle at Quantum 35.",
+   TutorialXP:
+      "XP is generated when weapon modules <b>fire</b>. More advanced and higher level weapons generate more XP. Building and upgrading spaceship modules costs XP.",
    UnlockBuildings: "Unlock Buildings",
    UnlockUpgrades: "Unlock Upgrades",
    Upgrade: "Upgrade",
@@ -596,26 +622,36 @@ export const EN = {
    XP: "XP",
    XPCollector: "XP Collector",
    TutorialUpgradeXLevels: "Upgrade %% Level(s)",
-   TutorialUpgradeXLevelsDescHTML: "Modules cost XP to upgrade. Select a module and click <b>+1</b> to upgrade. You can also downgrade or recycle a module - <b>all your invested XP will be refunded</b>",
+   TutorialUpgradeXLevelsDescHTML:
+      "Modules cost XP to upgrade. Select a module and click <b>+1</b> to upgrade. You can also downgrade or recycle a module - <b>all your invested XP will be refunded</b>",
    MatchmakingAttack: "Attack",
    MatchmakingDefense: "Defense",
    MatchmakingScore: "Rating",
    Boosters: "Boosters",
    NebulaStrength: "Nebula Strength",
-   NebulaStrengthTooltip: "Set the strength of the background nebula effect. Lower this will make the nebula less visible",
+   NebulaStrengthTooltip:
+      "Set the strength of the background nebula effect. Lower this will make the nebula less visible",
    PermanentElement: "Permanent Element",
    ElementNotDiscoveredYet: "You haven't discovered this element yet",
    ExtraElementShardsTooltipHTMLV2: "<b>Element Shards</b> can be used to upgrade <b>Permanent Elements</b>",
    WeaponBuildingXPHTMLV2: "This building produces XP when ammo is consumed. <b>XP = Consumed Ammo Value</b>",
-   TutorialElementContentV2: "Elements are discovered as you gain quantum. You can pick one out of three choices and they boost <b>production multipliers</b>. When you prestige, all elements from this run becomes permanent element shards.",
+   TutorialElementContentV2:
+      "Elements are discovered as you gain quantum. You can pick one out of three choices and they boost <b>production multipliers</b>. When you prestige, all elements from this run becomes permanent element shards.",
    SpaceshipXPTooltipV2: "Spaceship XP / Max Spaceship XP for Quantum %%",
    QualifiedQuantum: "Qualified Quantum",
    EarnedQuantum: "Earned Quantum",
-   QuantumTooltipHTML: "Used / Earned / Qualified Quantum<br><b>Used</b>: Quantum currently used by your ship (≤ Earned)<br><b>Earned</b>: Quantum earned from total XP (≤ Qualified)<br><b>Qualified</b>: Quantum qualified from battles (Win +10, Loss +5)",
-   XPTooltipHTML: "Total XP Generated: Weapons generate XP when firing. The amount of XP you can invest in your spaceship (build and upgrade weapons) is limited by your <b>Qualified Quantum</b>",
+   QuantumTooltipHTML:
+      "Used / Earned / Qualified Quantum<br><b>Used</b>: Quantum currently used by your ship (≤ Earned)<br><b>Earned</b>: Quantum earned from total XP (≤ Qualified)<br><b>Qualified</b>: Quantum qualified from battles (Win +10, Loss +5)",
+   XPTooltipHTML:
+      "Total XP Generated: Weapons generate XP when firing. The amount of XP you can invest in your spaceship (build and upgrade weapons) is limited by your <b>Qualified Quantum</b>",
    ProgressTowardsNextQuantumTooltipHTML: "Progress towards earning the next Quantum (based on total XP generated)",
-   ProgressTowardsNextQuantumTooltipNotEarningHTML: "<em>You've reached Qualified Quantum limit.</em> Complete a qualifier battle to unlock higher quantum limit",
+   ProgressTowardsNextQuantumTooltipNotEarningHTML:
+      "<em>You've reached Qualified Quantum limit.</em> Complete a qualifier battle to unlock higher quantum limit",
    Battle: "Spaceship Battle",
-   ReachedQuantumLimitV2: "<em>You've reached the quantum limit: %%.</em> Complete a qualifier battle to unlock higher quantum limit (Win +10, Loss +5)",
+   ReachedQuantumLimitV2:
+      "<em>You've reached the quantum limit: %%.</em> Complete a qualifier battle to unlock higher quantum limit (Win +10, Loss +5)",
    InsufficientResourceTooltip: "Insufficient <b>%%</b>. Try increase its production",
+   XPMultiplier: "XP Multiplier",
+   PerSec: "%%/s",
+   PerFire: "%%/Fire",
 };

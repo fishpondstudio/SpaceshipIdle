@@ -1,5 +1,5 @@
-import { forEach, formatNumber, hasFlag, mapOf, mapSafeAdd, sizeOf } from "../../utils/Helper";
-import { Config, priceMultiplier } from "../Config";
+import { forEach, formatNumber, hasFlag, mapOf, mapSafeAdd } from "../../utils/Helper";
+import { Config } from "../Config";
 import { AbilityRangeLabel } from "../definitions/Ability";
 import { BuildingFlag, type IBoosterDefinition, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
@@ -53,9 +53,8 @@ export function getBuildingValue(
    });
 
    if (xp <= 0) {
-      const inputSize = sizeOf(def.input);
       forEach(def.input, (res, value) => {
-         xp += (Config.Price.get(res) ?? 0) * value * fib(level) * priceMultiplier(inputSize);
+         xp += (Config.Price.get(res) ?? 0) * value * fib(level);
       });
    }
 
@@ -74,16 +73,16 @@ export function getNormalizedValue(data: { type: Building; level: number }): num
    if (isBooster(data.type)) {
       const booster = def as IBoosterDefinition;
       forEach(booster.unlock, (k, v) => {
-         value += v * (Config.NormalizedPrice.get(k) ?? 0);
+         value += v * (Config.Price.get(k) ?? 0);
       });
       return value;
    }
    forEach(def.output, (k, v) => {
-      value += v * (Config.NormalizedPrice.get(k) ?? 0);
+      value += v * (Config.Price.get(k) ?? 0);
    });
    if (value <= 0) {
       forEach(def.input, (k, v) => {
-         value += v * (Config.NormalizedPrice.get(k) ?? 0);
+         value += v * (Config.Price.get(k) ?? 0);
       });
    }
    if (value <= 0) {

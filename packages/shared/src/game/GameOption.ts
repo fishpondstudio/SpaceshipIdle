@@ -119,8 +119,8 @@ export class GameOption {
    chatLanguages: Set<keyof typeof Languages> = new Set(["en"]);
    language: keyof typeof Languages = "en";
    buildingColors: Map<Building, number> = new Map();
-   flag: GameOptionFlag = GameOptionFlag.ShowResources | GameOptionFlag.RetroFilter;
-   nebulaStrength = 1;
+   flag: GameOptionFlag = GameOptionFlag.ShowResources | GameOptionFlag.TheoreticalValue | GameOptionFlag.RetroFilter;
+   nebulaStrength = 0.5;
    volume = 1;
    shortcuts = DefaultShortcuts;
 }

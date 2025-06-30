@@ -49,7 +49,7 @@ export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNod
             </>
          ) : null}
          <div className="col stretch mx10 text-condensed">
-            <div className="f1">
+            <div className="f1 col g5 stretch">
                {mapOf(def.input, (res, amount) => {
                   if (res === "Power") {
                      return null;
@@ -80,14 +80,14 @@ export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNod
             <div className={classNames("mi lg text-center", rs.insufficient.size > 0 ? "text-red" : "text-green")}>
                keyboard_double_arrow_down
             </div>
-            <div className="f1">
+            <div className="f1 col g5 stretch">
                {mapOf(def.output, (res, amount) => {
                   return (
                      <div className="panel f1 p5" key={res}>
                         <div className={classNames("row g5", rs.insufficient.has(res) ? "text-red" : null)}>
                            <div>
                               {res === "Power" ? (
-                                 <div className="mi" style={{ fontSize: 36, margin: 2 }}>
+                                 <div className="mi" style={{ fontSize: 26, margin: 2 }}>
                                     bolt
                                  </div>
                               ) : (

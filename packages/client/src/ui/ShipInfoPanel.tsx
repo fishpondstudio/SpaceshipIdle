@@ -283,7 +283,7 @@ function _ProgressTowardsNextQuantumComp({
             </>
          }
       >
-         <div style={{ width: 70 }} className="block">
+         <div style={{ width: 90 }} className="block">
             <div className="mi">chart_data</div>
             <div className="f1 text-right">
                <div>{formatPercent(progress)}</div>

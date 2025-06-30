@@ -1,4 +1,4 @@
-import { Badge, Tooltip } from "@mantine/core";
+import { Badge, Switch, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageTypeLabel, ProjectileFlag, WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { getCooldownMultiplier } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
@@ -10,6 +10,7 @@ import { AbilityComp } from "./AbilityComp";
 import { RenderHTML } from "./RenderHTMLComp";
 import { ResourceAmount } from "./ResourceAmountComp";
 import { StatComp } from "./StatComp";
+import { XPIcon } from "./SVGIcons";
 import { TitleComp } from "./TitleComp";
 
 export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
@@ -74,9 +75,20 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   </Tooltip>
                </div>
             ) : null}
-            <div className="subtitle">{t(L.Ammo)}</div>
+         </div>
+         <div className="divider my10" />
+         <div className="title">
+            <div>{t(L.Ammo)}</div>
+            <div className="f1" />
+            <div>Per Fire</div>
+            <Switch className="mx10" size="xs" />
+            <div>Per Sec</div>
+         </div>
+         <div className="divider my10" />
+         <div className="mx10">
             {mapOf(def.output, (res, amount_) => {
                const amount = amount_ * getCooldownMultiplier(data);
+               const xp = (Config.Price.get(res) ?? 0) * amount * data.level;
                return (
                   <div key={res}>
                      <div className="row" key={res}>
@@ -85,25 +97,22 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                         <div className="f1" />
                         <ResourceAmount res={res} amount={amount * data.level} />
                      </div>
-                     <div style={{ textAlign: "right" }}>
-                        <Tooltip multiline maw="30vw" label={<RenderHTML html={t(L.WeaponBuildingXPHTMLV2)} />}>
-                           <div
-                              className="text-space"
-                              style={{ textAlign: "right", fontSize: "var(--mantine-font-size-sm)" }}
-                           >
-                              +
-                              {formatNumber((Config.Price.get(res) ?? 0) * amount * data.level * rs.xpMultiplier.value)}{" "}
-                              {t(L.XP)}
-                           </div>
-                        </Tooltip>
+                     <div className="row g5">
+                        <div>{t(L.XP)}</div>
+                        <div className="f1"></div>
+                        <XPIcon />
+                        <div>
+                           <StatComp current={xp * rs.xpMultiplier.value} original={xp} />
+                        </div>
                      </div>
                   </div>
                );
             })}
-            {/* TODO: XP multiplier is currently not supported */}
-            {/* {rs.xpMultiplier.value > 1 ? (
+            {rs.xpMultiplier.value > 1 ? (
                <>
-                  <Divider my="sm" variant="dashed" label={`${t(L.XPMultiplier)} x${rs.xpMultiplier.value}`} />
+                  <div className="subtitle">
+                     {t(L.XPMultiplier)} x{rs.xpMultiplier.value}
+                  </div>
                   <div className="row text-sm">
                      <div className="f1">{t(L.BaseMultiplier)}</div>
                      <div>1</div>
@@ -117,7 +126,7 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                      );
                   })}
                </>
-            ) : null} */}
+            ) : null}
             {rs.props.ability ? (
                <div className="text-sm">
                   <AbilityComp

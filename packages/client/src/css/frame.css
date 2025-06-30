@@ -26,6 +26,8 @@
 
 .sf-frame .title {
    display: flex;
+   flex-direction: row;
+   align-items: center;
    font-size: var(--mantine-font-size-sm);
    margin: -5px 10px;
    text-transform: uppercase;

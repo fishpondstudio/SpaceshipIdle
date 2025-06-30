@@ -55,6 +55,10 @@ body {
    }
 }
 
+em {
+   font-style: normal;
+}
+
 .breathing {
    animation: 1s ease infinite alternate breathing;
 }

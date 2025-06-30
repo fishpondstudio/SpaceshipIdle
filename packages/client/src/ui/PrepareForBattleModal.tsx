@@ -17,6 +17,7 @@ import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { hideModal, showModal } from "../utils/ToggleModal";
 import { hideLoading, showLoading } from "./components/LoadingComp";
+import { RenderHTML } from "./components/RenderHTMLComp";
 import { MatchMakingModal } from "./MatchmakingModal";
 import { PrepareForBattleMode } from "./PrepareForBattleMode";
 import { PrestigeModal } from "./PrestigeModal";
@@ -48,7 +49,7 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
             <div style={{ fontSize: 24 }}>{t(L.QuantumXLeague, quantum)}</div>
          </div>
          {mode === PrepareForBattleMode.Prompt ? (
-            <div className="text-red text-sm mb10">{t(L.ReachedQuantumLimitV2, quantum)}</div>
+            <RenderHTML className="panel red text-sm mb10" html={t(L.ReachedQuantumLimitV2, quantum)} />
          ) : null}
          <div className="panel mb10 p0">
             <div className="row g5 mt10">

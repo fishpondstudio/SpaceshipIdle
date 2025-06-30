@@ -24,11 +24,6 @@ export const Config = {
       ["Warp", 0],
       ["XP", 1],
    ]),
-   NormalizedPrice: new Map<Resource, number>([
-      ["Power", 0],
-      ["Warp", 0],
-      ["XP", 1],
-   ]),
    ResourceTier: new Map<Resource, number>([["Power", 1]]),
    BuildingTier: new Map<Building, number>(),
    ResourceToBuilding: new Map<Resource, Building>(),
@@ -46,48 +41,38 @@ function getBuildingThatProduces(res: Resource): [Building, IBuildingDefinition]
    throw new Error(`Resource ${res} cannot be produced by any building`);
 }
 
-function calculatePrice(res: Resource): [number, number] {
+function calculatePrice(res: Resource): number {
    if (Config.Price.has(res)) {
-      return [Config.Price.get(res)!, Config.NormalizedPrice.get(res)!];
+      return Config.Price.get(res)!;
    }
    const [building, def] = getBuildingThatProduces(res);
    Config.ResourceToBuilding.set(res, building);
    const input = new Set(keysOf(def.input));
    input.delete("Power");
    if (input.size === 0) {
-      const price = 2 ** (Config.Tech[getTechForBuilding(building)].ring - 1);
+      const price = 2 ** Config.Tech[getTechForBuilding(building)].ring;
       Config.Price.set(res, price);
-      Config.NormalizedPrice.set(res, price);
       Config.ResourceTier.set(res, 1);
-      return [price, price];
+      return price;
    }
 
    let inputPrice = 0;
-   let inputNormalizedPrice = 0;
    let inputTier = 0;
 
    forEach(def.input, (res, amount) => {
-      const [price, normalizedPrice] = calculatePrice(res);
+      const price = calculatePrice(res);
       inputPrice += price * amount;
-      inputNormalizedPrice += normalizedPrice * amount;
       inputTier = Math.max(inputTier, Config.ResourceTier.get(res) ?? 0);
    });
 
-   const multiplier = priceMultiplier(sizeOf(def.input));
    const outputAmount = reduceOf(def.output, (acc, k, v) => acc + v, 0);
    if (inputPrice === 0) {
       throw new Error(`Resource ${res} has 0 price`);
    }
-   const normalizedPrice = inputNormalizedPrice / outputAmount;
-   const price = (inputPrice * multiplier) / outputAmount;
-   Config.NormalizedPrice.set(res, normalizedPrice);
+   const price = inputPrice / outputAmount;
    Config.Price.set(res, price);
    Config.ResourceTier.set(res, inputTier + 1);
-   return [price, normalizedPrice];
-}
-
-export function priceMultiplier(inputSize: number): number {
-   return 1.25 + 0.25 * inputSize;
+   return price;
 }
 
 function initConfig(): void {
@@ -174,7 +159,6 @@ function initConfig(): void {
 
    if (typeof window !== "undefined") {
       console.log("Price", Config.Price);
-      console.log("Normalized Price", Config.NormalizedPrice);
       console.log("Resource Tier", Config.ResourceTier);
       console.log("Building Tier", Config.BuildingTier);
       console.log("Resource -> Building", Config.ResourceToBuilding);
