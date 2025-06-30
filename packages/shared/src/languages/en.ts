@@ -599,8 +599,8 @@ export const EN = {
    TutorialWeaponContent:
       "Weapons are unlocked by researching the tech tree. Weapons consume resources and <b>produce ammo</b> - they also <b>consume ammo</b> when firing. Weapons have different stats and abilities, which can be upgraded.",
    TutorialWinSpaceshipBattle: "Win %% Spaceship Battle(s)",
-   TutorialWinSpaceshipBattleDescHTML:
-      "Winning a qualifier battle will unlock higher quantum limit. This can be achieved by either winning the <b>qualifier battle</b> at Quantum 30 or the <b>second chance</b> battle at Quantum 35.",
+   TutorialWinSpaceshipBattleDescHTMLV2:
+      "Completing a qualifier battle will unlock higher quantum limit. You get <b>+10 quantum</b> if you win, and <b>+5 quantum</b> if you lose. Winning a qualifier battle will also give you XP reward",
    TutorialXP:
       "XP is generated when weapon modules <b>fire</b>. More advanced and higher level weapons generate more XP. Building and upgrading spaceship modules costs XP.",
    UnlockModules: "Unlock Modules",

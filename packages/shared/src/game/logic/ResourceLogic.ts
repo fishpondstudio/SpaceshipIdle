@@ -83,7 +83,7 @@ export function svToQ(sv: number): number {
 }
 
 export function qToSV(quantum: number): number {
-   const t = Math.log(quantum + 10);
+   const t = Math.log(quantum);
    return Math.pow(quantum, t) * 10;
 }
 
