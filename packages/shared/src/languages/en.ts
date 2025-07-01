@@ -655,8 +655,8 @@ export const EN = {
    PerFireShort: "/Fire",
    PerSec: "Per Sec",
    PerFire: "Per Fire",
-   ConsumptionTooltip: "This module consumes <b>%%</b> %% per second",
-   ProductionTooltip: "This module produces <b>%%</b> %% per second",
+   ConsumptionTooltip: "This module consumes <b>%% %%</b> per second",
+   ProductionTooltip: "This module produces <b>%% %%</b> per second (base: <b>%%</b>, multiplier <b>x%%</b>)",
    AmmoConsumptionTooltip:
       "Ammo is consumed when this weapon fires. Dividing this value by fire cooldown will show per second equivalent. <b>It only affects the displayed value and does not affect the actual consumption</b>",
    ResearchX: "Research: %%",

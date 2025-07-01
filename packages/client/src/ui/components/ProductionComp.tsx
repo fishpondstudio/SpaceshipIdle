@@ -8,6 +8,7 @@ import { G } from "../../utils/Global";
 import type { ITileWithGameState } from "../ITileWithGameState";
 import { RenderHTML } from "./RenderHTMLComp";
 import { ResourceAmount } from "./ResourceAmountComp";
+import { StatComp } from "./StatComp";
 import { XPIcon } from "./SVGIcons";
 import { TextureComp } from "./TextureComp";
 import { TitleComp } from "./TitleComp";
@@ -88,8 +89,13 @@ export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNod
                            <RenderHTML
                               html={t(
                                  L.ProductionTooltip,
-                                 ResourceAmount({ res: res, amount: amount * data.level * data.capacity }),
+                                 ResourceAmount({
+                                    res: res,
+                                    amount: amount * data.level * data.capacity * rs.productionMultiplier.value,
+                                 }),
                                  Config.Resources[res].name(),
+                                 formatNumber(amount * data.level * data.capacity),
+                                 formatNumber(rs.productionMultiplier.value),
                               )}
                            />
                         }
@@ -108,9 +114,15 @@ export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNod
                               </div>
                               <div>{Config.Resources[res].name()}</div>
                               <div className="f1" />
-                              +<ResourceAmount res={res} amount={amount * data.level * data.capacity} />
-                              {res === "Power" ? null : t(L.PerSecShort)}
-                              {rs.insufficient.has(res) ? <div className="mi sm inline">error</div> : null}
+                              <div className="row g0">
+                                 +
+                                 <StatComp
+                                    current={amount * data.level * data.capacity * rs.productionMultiplier.value}
+                                    original={amount * data.level * data.capacity}
+                                 />
+                                 {res === "Power" ? "W" : t(L.PerSecShort)}
+                                 {rs.insufficient.has(res) ? <div className="mi sm inline">error</div> : null}
+                              </div>
                            </div>
                         </div>
                      </Tooltip>

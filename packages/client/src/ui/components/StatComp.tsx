@@ -6,15 +6,17 @@ export function StatComp({ current, original, flip = false }: { current: number;
    if (flip) {
       color = diff > 0 ? "text-red" : "text-green";
    } else {
-      color = diff >= 0 ? "text-green" : "text-red";
+      color = diff > 0 ? "text-green" : "text-red";
    }
    return (
       <>
          {formatNumber(original)}
-         <span className={color}>
-            {mathSign(diff, flip ? "-" : "+")}
-            {formatNumber(Math.abs(diff))}
-         </span>
+         {diff === 0 ? null : (
+            <span className={color}>
+               {mathSign(diff, flip ? "-" : "+")}
+               {formatNumber(Math.abs(diff))}
+            </span>
+         )}
       </>
    );
 }

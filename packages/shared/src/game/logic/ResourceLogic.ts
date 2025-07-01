@@ -31,10 +31,6 @@ export function getQuantumLimit(gs: GameState): number {
    return 30 + gs.win * BattleWinQuantum + gs.loss * BattleLossQuantum;
 }
 
-function getTotalXP(gs: GameState): number {
-   return calcSpaceshipXP(gs) + (gs.resources.get("XP") ?? 0);
-}
-
 const qToSVLookup = new Map<number, number>();
 
 function populateQuantumLookup() {

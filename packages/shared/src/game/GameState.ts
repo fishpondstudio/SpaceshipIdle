@@ -85,10 +85,10 @@ export function initGameState(state: GameState): GameState {
    state.unlockedTech.add("C3");
    const ext = shipExtent(state);
    const x = MaxX / 2 - ext - 1;
-   state.tiles.set(createTile(x, MaxY / 2), makeTile("SiCollector", 1));
-   state.tiles.set(createTile(x - 1, MaxY / 2), makeTile("AC30", 1));
-   state.tiles.set(createTile(x, MaxY / 2 - 1), makeTile("TiCollector", 1));
-   state.tiles.set(createTile(x - 1, MaxY / 2 - 1), makeTile("SolarPower", 3));
+   state.tiles.set(createTile(x, MaxY / 2), makeTile("SiCollector", 2));
+   state.tiles.set(createTile(x - 1, MaxY / 2), makeTile("AC30", 2));
+   state.tiles.set(createTile(x, MaxY / 2 - 1), makeTile("TiCollector", 2));
+   state.tiles.set(createTile(x - 1, MaxY / 2 - 1), makeTile("SolarPower", 6));
    return state;
 }
 
