@@ -121,7 +121,8 @@ function _XPComp({
    sv,
    quantum,
 }: { xp: number; delta: number; maxSV: number; sv: number; quantum: number }): React.ReactNode {
-   const timeLeft = (1000 * (maxSV - sv - xp)) / delta;
+   const xpLeft = maxSV - sv - xp;
+   const timeLeft = (1000 * xpLeft) / delta;
    const [h, m, s] = getHMS(clamp(timeLeft, 0, Number.POSITIVE_INFINITY));
    return (
       <>
@@ -152,7 +153,7 @@ function _XPComp({
                      L.TimeToGenerateFullQuantum,
                      formatNumber(maxSV),
                      formatNumber(quantum),
-                     formatNumber(clamp(maxSV - sv, 0, Number.POSITIVE_INFINITY)),
+                     formatNumber(clamp(xpLeft, 0, Number.POSITIVE_INFINITY)),
                   )}
                />
             }

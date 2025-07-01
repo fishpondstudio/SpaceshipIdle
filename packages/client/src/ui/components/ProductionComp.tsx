@@ -1,11 +1,14 @@
 import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import { getNonWeaponBuildingXP } from "@spaceship-idle/shared/src/game/logic/ProductionLogic";
 import { classNames, formatNumber, isEmpty, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
 import type { ITileWithGameState } from "../ITileWithGameState";
 import { RenderHTML } from "./RenderHTMLComp";
 import { ResourceAmount } from "./ResourceAmountComp";
+import { XPIcon } from "./SVGIcons";
 import { TextureComp } from "./TextureComp";
 import { TitleComp } from "./TitleComp";
 
@@ -135,9 +138,20 @@ export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNod
                })}
             </div>
          ) : null}
-         {/* TODO: XP multiplier is currently not supported */}
-         {/* {!(WeaponKey in def) && rs.xpMultiplier.value > 1 ? (
-               <>
+         {!(WeaponKey in def) && rs.xpMultiplier.value > 1 ? (
+            <>
+               <div className="divider my10" />
+               <div className="mx10">
+                  <Tooltip maw="30vw" multiline label={<RenderHTML html={t(L.NonProductionBuildingXPHTML)} />}>
+                     <div className="row g5">
+                        <div className="f1">{t(L.XP)}</div>
+                        <XPIcon />
+                        <div>
+                           +{formatNumber(getNonWeaponBuildingXP(rs))}
+                           {t(L.PerSecShort)}
+                        </div>
+                     </div>
+                  </Tooltip>
                   <div className="subtitle">
                      {t(L.XPMultiplier)} x{rs.xpMultiplier.value - 1}
                   </div>
@@ -149,16 +163,9 @@ export function ProductionComp({ tile, gs }: ITileWithGameState): React.ReactNod
                         </div>
                      );
                   })}
-                  <div className="row text-sm">
-                     <div className="f1"></div>
-                     <Tooltip maw="30vw" multiline label={<RenderHTML html={t(L.ProductionBuildingXPHTML)} />}>
-                        <div className="text-space">
-                           +{formatNumber(getNonWeaponBuildingXP(rs))} {t(L.XP)}
-                        </div>
-                     </Tooltip>
-                  </div>
-               </>
-            ) : null} */}
+               </div>
+            </>
+         ) : null}
       </>
    );
 }

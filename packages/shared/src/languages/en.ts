@@ -661,4 +661,6 @@ export const EN = {
       "Ammo is consumed when this weapon fires. Dividing this value by fire cooldown will show per second equivalent. <b>It only affects the displayed value and does not affect the actual consumption</b>",
    ResearchX: "Research: %%",
    TimeToGenerateFullQuantum: "Estimated Time to Generate <b>%% XP</b> for Quantum <b>%%</b> (%% Left)",
+   NonProductionBuildingXPHTML:
+      "This building <b>does not</b> generate without XP multiplier. With the multiplier, the XP it generates is based on the value of the resource it produces",
 };
