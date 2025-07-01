@@ -1,4 +1,5 @@
 import { Tooltip } from "@mantine/core";
+import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
@@ -76,7 +77,11 @@ export function ShipInfoPanel(): React.ReactNode {
          <BattleComp highlight={isQualifierBattle(state)} quantum={quantumLimit} />
          <QuantumComp usedQuantum={getUsedQuantum(state)} qualifiedQuantum={quantumLimit} />
          <div className="divider vertical" />
-         <ElementComp count={mReduceOf(G.save.current.elements, (prev, curr, value) => prev + value, 0)} />
+         <ElementComp
+            thisRun={mReduceOf(G.save.current.elements, (prev, curr, value) => prev + value, 0)}
+            production={mReduceOf(G.save.current.permanentElements, (prev, curr, value) => prev + value.production, 0)}
+            xp={mReduceOf(G.save.current.permanentElements, (prev, curr, value) => prev + value.xp, 0)}
+         />
          <div className="divider vertical" />
          <DPSComp
             raw={reduceOf(rawDamages, (prev, curr, value) => prev + value, 0)}
@@ -281,18 +286,69 @@ const QuantumComp = memo(_QuantumComp, (prev, next) => {
    return prev.usedQuantum === next.usedQuantum && prev.qualifiedQuantum === next.qualifiedQuantum;
 });
 
-function _ElementComp({ count }: { count: number }): React.ReactNode {
+function _ElementComp({
+   thisRun,
+   production,
+   xp,
+}: { thisRun: number; production: number; xp: number }): React.ReactNode {
    return (
       <Tooltip
+         color="gray"
          label={
             <div>
-               <div style={{ color: "var(--mantine-color-dimmed)" }}>{t(L.ElementThisRun)}</div>
-               {mMapOf(G.save.current.elements, (symbol, amount) => (
-                  <div className="row" key={symbol}>
-                     <div>{symbol}</div>
-                     <div className="f1 text-right">{amount}</div>
+               <div className="text-space row">
+                  <div className="f1">{t(L.ElementThisRun)}</div>
+                  <div>{thisRun}</div>
+               </div>
+               {mMapOf(G.save.current.elements, (symbol, amount) => {
+                  const building = Config.Element.get(symbol);
+                  if (!building) return null;
+                  return (
+                     <div className="row" key={symbol}>
+                        <div>{Config.Buildings[building].name()}</div>
+                        <div className="text-space">({symbol})</div>
+                        <div className="f1 text-right">{amount}</div>
+                     </div>
+                  );
+               })}
+               <div className="text-space row">
+                  <div className="f1">
+                     {t(L.PermanentElement)} ({t(L.ProductionMultiplier)})
                   </div>
-               ))}
+                  <div>{production}</div>
+               </div>
+               {mMapOf(G.save.current.permanentElements, (symbol, inv) => {
+                  const building = Config.Element.get(symbol);
+                  if (!building) return null;
+                  if (inv.production <= 0) return null;
+                  return (
+                     <div key={symbol} className="row g5">
+                        <div>{Config.Buildings[building].name()}</div>
+                        <div className="text-space">({symbol})</div>
+                        <div className="f1" />
+                        <div>{inv.production}</div>
+                     </div>
+                  );
+               })}
+               <div className="text-space row">
+                  <div className="f1">
+                     {t(L.PermanentElement)} ({t(L.XPMultiplier)})
+                  </div>
+                  <div>{xp}</div>
+               </div>
+               {mMapOf(G.save.current.permanentElements, (symbol, inv) => {
+                  const building = Config.Element.get(symbol);
+                  if (!building) return null;
+                  if (inv.xp <= 0) return null;
+                  return (
+                     <div key={symbol} className="row g5">
+                        <div>{Config.Buildings[building].name()}</div>
+                        <div className="text-space">({symbol})</div>
+                        <div className="f1" />
+                        <div>{inv.xp}</div>
+                     </div>
+                  );
+               })}
             </div>
          }
       >
@@ -309,13 +365,18 @@ function _ElementComp({ count }: { count: number }): React.ReactNode {
          >
             <div className="mi">category</div>
             <div className="w5" />
-            <div className="f1 text-right">{count}</div>
+            <div className="f1 text-right">
+               {thisRun}/{production}+{xp}
+            </div>
          </div>
       </Tooltip>
    );
 }
 
-const ElementComp = memo(_ElementComp, (prev, next) => prev.count === next.count);
+const ElementComp = memo(
+   _ElementComp,
+   (prev, next) => prev.thisRun === next.thisRun && prev.production === next.production && prev.xp === next.xp,
+);
 
 function _DiscordComp({ show }: { show: boolean }): React.ReactNode {
    if (!show) return null;

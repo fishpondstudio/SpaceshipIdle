@@ -1,4 +1,3 @@
-import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { hasPermanentElementUpgrade } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import type { ElementSymbol } from "@spaceship-idle/shared/src/game/PeriodicTable";
 import { AABB } from "@spaceship-idle/shared/src/utils/Vector2";
@@ -6,6 +5,7 @@ import type { ColorSource, FederatedPointerEvent } from "pixi.js";
 import { G } from "../utils/Global";
 import { Scene, type ISceneContext } from "../utils/SceneManager";
 import { ElementCard } from "./ElementCard";
+import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 
 export class ElementsScene extends Scene {
    private _elementAABB: Map<ElementSymbol, { aabb: AABB; container: ElementCard }> = new Map();
@@ -35,7 +35,7 @@ export class ElementsScene extends Scene {
 
       this.renderTable();
 
-      GameOptionUpdated.on(() => {
+      GameStateUpdated.on(() => {
          this._elementAABB.forEach(({ aabb, container }) => {
             container.destroy({ children: true });
          });
