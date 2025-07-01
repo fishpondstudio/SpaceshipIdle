@@ -24,7 +24,7 @@ export function addElementShard(gs: GameState, element: ElementSymbol, amount: n
    if (inventory) {
       inventory.amount += amount;
    } else {
-      gs.permanentElements.set(element, { amount, level: 0 });
+      gs.permanentElements.set(element, { amount, production: 0, xp: 0 });
    }
 }
 

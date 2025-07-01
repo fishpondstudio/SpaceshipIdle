@@ -1,4 +1,4 @@
-import { DefaultPriority } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { DefaultPriority, QualifierSpaceshipValuePercent } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { getBoosterCount } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { calcSpaceshipXP, getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -77,10 +77,10 @@ export const Tutorial: ITutorial[] = [
       },
    },
    {
-      name: () => t(L.TutorialReachXSpaceshipXP, formatNumber(quantumToXP(30) * 0.9)),
+      name: () => t(L.TutorialReachXSpaceshipXP, formatNumber(quantumToXP(30) * QualifierSpaceshipValuePercent)),
       desc: () => t(L.TutorialReach260SpaceshipXPDescHTML),
       progress: (gs) => {
-         return [calcSpaceshipXP(gs), quantumToXP(30) * 0.9];
+         return [calcSpaceshipXP(gs), quantumToXP(30) * QualifierSpaceshipValuePercent];
       },
    },
    {

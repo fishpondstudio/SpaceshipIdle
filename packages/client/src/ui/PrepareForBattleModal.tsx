@@ -1,6 +1,10 @@
 import { getGradient, Tooltip, useMantineTheme } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { BattleLossQuantum, BattleWinQuantum } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import {
+   BattleLossQuantum,
+   BattleWinQuantum,
+   QualifierSpaceshipValuePercent,
+} from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
@@ -29,6 +33,8 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
    const theme = useMantineTheme();
    const quantum = getQuantumLimit(G.save.current);
    const usedQuantum = getUsedQuantum(G.save.current);
+   const xp = calcSpaceshipXP(G.save.current);
+   const maxXP = quantumToXP(quantum);
    return (
       <div className="m10">
          <div
@@ -106,13 +112,27 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                   <div>
                      {usedQuantum}/{quantum}
                   </div>
+                  <Tooltip label={<RenderHTML html={t(L.QualifierBattleQuantumRequirementHTML, quantum)} />}>
+                     {usedQuantum >= quantum ? (
+                        <div className="mi sm text-green">check_circle</div>
+                     ) : (
+                        <div className="mi sm text-yellow">info</div>
+                     )}
+                  </Tooltip>
                </div>
                <div className="row">
                   <div>{t(L.SpaceshipXP)}</div>
                   <div className="f1"></div>
                   <div>
-                     {formatNumber(calcSpaceshipXP(G.save.current))}/{formatNumber(quantumToXP(quantum))}
+                     {formatNumber(xp)}/{formatNumber(maxXP)}
                   </div>
+                  <Tooltip label={<RenderHTML html={t(L.QualifierBattleXPRequirementHTML, formatNumber(maxXP))} />}>
+                     {xp >= QualifierSpaceshipValuePercent * maxXP ? (
+                        <div className="mi sm text-green">check_circle</div>
+                     ) : (
+                        <div className="mi sm text-yellow">info</div>
+                     )}
+                  </Tooltip>
                </div>
             </div>
          </div>

@@ -21,6 +21,10 @@
       color: var(--mantine-color-yellow-text);
       border-color: var(--mantine-color-yellow-border);
    }
+
+   .title {
+      margin: -5px 0;
+   }
 }
 
 .ship-info {

@@ -9,7 +9,7 @@ import {
    getUsedQuantum,
    resourceDiffOf,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { shouldPromptQualifierBattle } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
+import { isQualifierBattle } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import {
    clamp,
    classNames,
@@ -73,7 +73,7 @@ export function ShipInfoPanel(): React.ReactNode {
          <XPComp xp={xp} delta={xpDelta} maxSV={maxSV} sv={sv} quantum={quantumLimit} />
          <div className="divider vertical" />
          <SpaceshipValueComp sv={sv} maxSV={maxSV} quantum={quantumLimit} />
-         <BattleComp highlight={shouldPromptQualifierBattle(state)} quantum={quantumLimit} />
+         <BattleComp highlight={isQualifierBattle(state)} quantum={quantumLimit} />
          <QuantumComp usedQuantum={getUsedQuantum(state)} qualifiedQuantum={quantumLimit} />
          <div className="divider vertical" />
          <ElementComp count={mReduceOf(G.save.current.elements, (prev, curr, value) => prev + value, 0)} />

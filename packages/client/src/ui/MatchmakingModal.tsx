@@ -2,7 +2,12 @@ import { Grid, Progress, Switch, Tooltip } from "@mantine/core";
 import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { calcSpaceshipXP, getQuantumLimit, getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import {
+   calcSpaceshipXP,
+   getQuantumLimit,
+   getUsedQuantum,
+   quantumToXP,
+} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { isQualifierBattle } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
@@ -16,13 +21,15 @@ import { ShipScene } from "../scenes/ShipScene";
 import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
 import { hideLoading, showLoading } from "./components/LoadingComp";
+import { RenderHTML } from "./components/RenderHTMLComp";
 import { MatchmakingShipComp } from "./MatchmakingShipComp";
 import { hideSidebar } from "./Sidebar";
 
 export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNode {
-   const [isPracticeBattle, setIsPracticeBattle] = useState(!isQualifierBattle(G.save.current, enemy));
+   const [isPracticeBattle, setIsPracticeBattle] = useState(!isQualifierBattle(G.save.current));
    const [score, hp, dps] = useMemo(() => calcShipScore(G.save.current), []);
    const [enemyScore, enemyHp, enemyDps] = useMemo(() => calcShipScore(enemy), [enemy]);
+   const quantumLimit = getQuantumLimit(G.save.current);
    return (
       <div className="m10">
          <div className="row">
@@ -39,8 +46,14 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
          <ShipStatComp left={score} right={enemyScore} icon="cards_star" tooltip={t(L.MatchmakingScore)} />
          <div className="h10" />
          <Tooltip
-            disabled={isQualifierBattle(G.save.current, enemy)}
-            label={t(L.QualifierBattleRequirement, getQuantumLimit(G.save.current))}
+            disabled={isQualifierBattle(G.save.current)}
+            multiline
+            maw="30vw"
+            label={
+               <RenderHTML
+                  html={t(L.QualifierBattleRequirementHTML, quantumLimit, formatNumber(quantumToXP(quantumLimit)))}
+               />
+            }
          >
             <div
                className="row p10"
@@ -53,7 +66,7 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
                <Switch
                   checked={isPracticeBattle}
                   onChange={(e) => {
-                     if (!isQualifierBattle(G.save.current, enemy)) {
+                     if (!isQualifierBattle(G.save.current)) {
                         setIsPracticeBattle(true);
                         return;
                      }

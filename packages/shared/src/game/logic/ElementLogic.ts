@@ -1,7 +1,7 @@
 import { shuffle } from "../../utils/Helper";
 import { Config } from "../Config";
 import { DefaultElementChoices, QuantumToElement } from "../definitions/Constant";
-import type { GameState } from "../GameState";
+import type { GameState, PermanentElementData } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { fib, getUnlockedBuildings } from "./BuildingLogic";
 import { calcSpaceshipXP, getUsedQuantum, resourceValueOf, StartQuantum, xpToQuantum } from "./ResourceLogic";
@@ -76,23 +76,44 @@ export function getElementUpgradeCost(upgradeTo: number): number {
    return fib(upgradeTo);
 }
 
-export function canUpgradeElement(symbol: ElementSymbol, gs: GameState): boolean {
+export function canUpgradeElement(symbol: ElementSymbol, type: "production" | "xp", gs: GameState): boolean {
    const inventory = gs.permanentElements.get(symbol);
    if (!inventory) {
       return false;
    }
-   return inventory.amount >= getElementUpgradeCost(inventory.level + 1);
+   return inventory.amount >= getElementUpgradeCost(inventory[type] + 1);
 }
 
-export function tryUpgradeElement(symbol: ElementSymbol, gs: GameState): boolean {
+export function tryUpgradeElement(symbol: ElementSymbol, type: "production" | "xp", gs: GameState): boolean {
    const inventory = gs.permanentElements.get(symbol);
    if (!inventory) {
       return false;
    }
-   if (!canUpgradeElement(symbol, gs)) {
+   if (!canUpgradeElement(symbol, type, gs)) {
       return false;
    }
-   inventory.amount -= getElementUpgradeCost(inventory.level + 1);
-   inventory.level++;
+   inventory.amount -= getElementUpgradeCost(inventory[type] + 1);
+   inventory[type]++;
    return true;
+}
+
+export function hasPermanentElementUpgrade(data: PermanentElementData): boolean {
+   return (
+      data.amount >= getElementUpgradeCost(data.production + 1) || data.amount >= getElementUpgradeCost(data.xp + 1)
+   );
+}
+
+export function revertElementUpgrade(symbol: ElementSymbol, type: "production" | "xp", gs: GameState): void {
+   const inventory = gs.permanentElements.get(symbol);
+   if (!inventory) {
+      return;
+   }
+   const level = inventory[type];
+   if (level <= 0) {
+      return;
+   }
+   for (let i = 1; i <= level; i++) {
+      inventory.amount += getElementUpgradeCost(i);
+      inventory[type]--;
+   }
 }

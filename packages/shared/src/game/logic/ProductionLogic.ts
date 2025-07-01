@@ -63,9 +63,13 @@ export function tickProduction(gs: GameState, stat: RuntimeStat, rt: Runtime): v
          if (thisRun > 0) {
             rs.productionMultiplier.add(thisRun, t(L.ElementAmountThisRun, element));
          }
-         const permanent = gs.permanentElements.get(element)?.level ?? 0;
+         const permanent = gs.permanentElements.get(element)?.production ?? 0;
          if (permanent > 0) {
             rs.productionMultiplier.add(permanent, t(L.ElementPermanent, element));
+         }
+         const xp = gs.permanentElements.get(element)?.xp ?? 0;
+         if (xp > 0) {
+            rs.xpMultiplier.add(xp, t(L.ElementPermanent, element));
          }
       }
 

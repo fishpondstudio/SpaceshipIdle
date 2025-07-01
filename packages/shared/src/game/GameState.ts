@@ -31,7 +31,7 @@ export class GameState {
    discoveredElements = 0;
    elements = new Map<ElementSymbol, number>();
    elementChoices: ElementChoice[] = [];
-   permanentElements = new Map<ElementSymbol, Inventory>();
+   permanentElements = new Map<ElementSymbol, PermanentElementData>();
    permanentElementChoices: ElementChoice[] = [];
    name = "Unnamed";
    flags: GameStateFlags = GameStateFlags.None;

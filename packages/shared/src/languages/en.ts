@@ -338,7 +338,6 @@ export const EN = {
    PatchNotes: "Patch Notes",
    PC: "Plasma Cannon",
    PC1: "PC1 Potoroo",
-   PermanentLevel: "Permanent Level",
    PG: "Generator",
    PlayerHandle: "Player Handle",
    PlayerHandleRequirement: "Player handle must be unique and contain 5 ~ 16 alphabets and numbers",
@@ -369,7 +368,6 @@ export const EN = {
    PropertyTooltip: "Base: %%, Growth Per Level: %%",
    Qualifier: "Qualifier",
    QualifierBattle: "Qualifier Battle",
-   QualifierBattleRequirement: "Your spaceship should have %% quantum for the qualifier battle",
    QualifierBattleShort: "Qualifier",
    Quantum: "Quantum",
    QuantumProgress: "Quantum Progress",
@@ -663,4 +661,14 @@ export const EN = {
    TimeToGenerateFullQuantum: "Estimated Time to Generate <b>%% XP</b> for Quantum <b>%%</b> (%% Left)",
    NonProductionBuildingXPHTML:
       "This building <b>does not</b> generate without XP multiplier. With the multiplier, the XP it generates is based on the value of the resource it produces",
+   BoostModule: "Boost Module",
+   RequiredShards: "Shards Required for Upgrade",
+   PlusXXPMultiplierForX: "+%% XP Multiplier for %%",
+   Revert: "Revert",
+   RevertTooltipHTML: "Revert all upgrades and refund <b>all shards</b>",
+   QualifierBattleRequirementHTML:
+      "Your spaceship should have at least <b>%% quantum</b> and <b>%% XP</b> for the <b>Qualifier Battle</b>. Practice Battle does not have quantum and XP requirement, and can be used to prepare for the qualifier battle",
+   QualifierBattleQuantumRequirementHTML:
+      "Your spaceship should have at least <b>%% quantum</b> for the Qualifier Battle",
+   QualifierBattleXPRequirementHTML: "Your spaceship should have at least <b>%% XP</b> for the Qualifier Battle",
 };

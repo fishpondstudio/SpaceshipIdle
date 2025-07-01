@@ -1,5 +1,5 @@
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
-import { getElementUpgradeCost } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
+import { hasPermanentElementUpgrade } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import type { ElementSymbol } from "@spaceship-idle/shared/src/game/PeriodicTable";
 import { AABB } from "@spaceship-idle/shared/src/utils/Vector2";
 import type { ColorSource, FederatedPointerEvent } from "pixi.js";
@@ -52,7 +52,7 @@ export class ElementsScene extends Scene {
                const e = this.viewport.addChild(new ElementCard(element, 0xffffff, 0.5, hide));
                e.position.set((x + 2) * 220 + 10, (y + 2) * 220 + 10);
                const inventory = G.save.current.permanentElements.get(element);
-               if (inventory && inventory.amount >= getElementUpgradeCost(inventory.level + 1)) {
+               if (inventory && hasPermanentElementUpgrade(inventory)) {
                   e.toggleRedCircle(true);
                } else {
                   e.toggleRedCircle(false);

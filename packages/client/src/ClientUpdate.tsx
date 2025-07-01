@@ -1,6 +1,6 @@
 import { ClientTickInterval } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateFlags } from "@spaceship-idle/shared/src/game/GameState";
-import { shouldPromptQualifierBattle } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
+import { isQualifierBattle } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { hasFlag, MINUTE, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { ChooseElementModal } from "./ui/ChooseElementModal";
@@ -49,7 +49,7 @@ function update(): void {
       !hasModalOpen() &&
       !isLoading() &&
       !hasFlag(G.save.current.flags, GameStateFlags.QualifierBattlePrompted) &&
-      shouldPromptQualifierBattle(G.save.current)
+      isQualifierBattle(G.save.current)
    ) {
       G.save.current.flags = setFlag(G.save.current.flags, GameStateFlags.QualifierBattlePrompted);
       showModal({

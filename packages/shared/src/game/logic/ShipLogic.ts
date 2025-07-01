@@ -2,6 +2,7 @@ import { createTile, type Tile, tileToPoint } from "../../utils/Helper";
 import { AABB, type IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
 import type { Building } from "../definitions/Buildings";
+import { QualifierSpaceshipValuePercent } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
 import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
@@ -182,14 +183,7 @@ function _validateShip(gs: GameState): boolean {
    return true;
 }
 
-export function isQualifierBattle(me: GameState, enemy: GameState): boolean {
-   if (getUsedQuantum(me) < getQuantumLimit(me)) {
-      return false;
-   }
-   return true;
-}
-
-export function shouldPromptQualifierBattle(gs: GameState): boolean {
+export function isQualifierBattle(gs: GameState): boolean {
    const quantumLimit = getQuantumLimit(gs);
    const usedQuantum = getUsedQuantum(gs);
    if (usedQuantum < quantumLimit) {
@@ -197,7 +191,7 @@ export function shouldPromptQualifierBattle(gs: GameState): boolean {
    }
    const sv = calcSpaceshipXP(gs);
    const maxSV = getMaxSpaceshipXP(gs);
-   if (sv < 0.9 * maxSV) {
+   if (sv < QualifierSpaceshipValuePercent * maxSV) {
       return false;
    }
    return true;

@@ -1,14 +1,21 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DefaultShortcuts, GameOption } from "@spaceship-idle/shared/src/game/GameOption";
-import { GameState, type SaveGame } from "@spaceship-idle/shared/src/game/GameState";
+import { GameState, type Inventory, type SaveGame } from "@spaceship-idle/shared/src/game/GameState";
 import { isBooster } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { migrateBuildingsAndResources } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
+import type { ElementSymbol } from "@spaceship-idle/shared/src/game/PeriodicTable";
 import { isNullOrUndefined } from "@spaceship-idle/shared/src/utils/Helper";
 
 export function migrateSave(save: SaveGame): void {
    if ("elements" in save.options) {
-      // @ts-expect-error
-      save.current.permanentElements = save.options.elements;
+      const old = save.options.elements as Map<ElementSymbol, Inventory>;
+      for (const [symbol, inventory] of old) {
+         save.current.permanentElements.set(symbol, {
+            amount: inventory.amount,
+            production: 0,
+            xp: inventory.level,
+         });
+      }
       delete save.options.elements;
    }
    if ("elementChoices" in save.options) {

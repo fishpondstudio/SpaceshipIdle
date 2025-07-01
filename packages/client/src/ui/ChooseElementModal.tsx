@@ -82,7 +82,8 @@ function ElementOption({
    }
    const [opened, { open }] = useDisclosure(false);
    useEffect(() => open(), [open]);
-   const currentLevel = G.save.current.permanentElements.get(symbol)?.level ?? 0;
+   const currentProductionMultiplier = G.save.current.permanentElements.get(symbol)?.production ?? 0;
+   const currentXpMultiplier = G.save.current.permanentElements.get(symbol)?.xp ?? 0;
    const currentAmount = G.save.current.permanentElements.get(symbol)?.amount ?? 0;
 
    return (
@@ -139,7 +140,11 @@ function ElementOption({
             >
                <ElementImageComp symbol={symbol} color={permanent ? ElementPermanentColor : ElementThisRunColor} />
                <div className="h10" />
-               <div className="text-center">{t(L.PlusXProductionMultiplierForX, 1, Config.Buildings[b].name())}</div>
+               {permanent ? (
+                  <div className="text-center">{Config.Buildings[b].name()}</div>
+               ) : (
+                  <div className="text-center">{t(L.PlusXProductionMultiplierForX, 1, Config.Buildings[b].name())}</div>
+               )}
                <div className="h10" />
                <div className="divider mx-15 mb5" />
                {permanent ? null : (
@@ -152,17 +157,21 @@ function ElementOption({
                   </>
                )}
                <div className="row">
-                  <div className="f1">{t(L.PermanentLevel)}</div>
-                  <div>{currentLevel}</div>
+                  <div className="f1">{t(L.ProductionMultiplier)}</div>
+                  <div>{currentProductionMultiplier}</div>
+               </div>
+               <div className="row">
+                  <div className="f1">{t(L.XPMultiplier)}</div>
+                  <div>{currentXpMultiplier}</div>
                </div>
                <div className="row">
                   <div className="f1">{t(L.Shards)}</div>
                   <div>
-                     {currentAmount} / {getElementUpgradeCost(currentLevel + 1)}
+                     {currentAmount} / {getElementUpgradeCost(currentProductionMultiplier + 1)}
                   </div>
                </div>
                <div className="h5" />
-               <Progress value={(100 * currentAmount) / getElementUpgradeCost(currentLevel + 1)} />
+               <Progress value={(100 * currentAmount) / getElementUpgradeCost(currentProductionMultiplier + 1)} />
             </div>
          )}
       </Transition>
