@@ -26,8 +26,6 @@ export class GameState {
    tiles: Tiles = new Map();
    resources = new Map<Resource, number>();
    unlockedTech = new Set<Tech>();
-   // battleCount = 0;
-   // trialCount = 0;
    win = 0;
    loss = 0;
    discoveredElements = 0;
@@ -43,6 +41,12 @@ export class GameState {
 export interface Inventory {
    amount: number;
    level: number;
+}
+
+export interface PermanentElementData {
+   amount: number;
+   production: number;
+   xp: number;
 }
 
 const HASH_SEED = BigInt(0xdeadbeef);

@@ -334,7 +334,7 @@ export function calcShipScore(ship: GameState): [number, number, number, Runtime
 
    // 69.35%
    const hp = rt.leftStat.maxHp;
-   return [(hp * dps) / 1_000_000, hp / 100, dps / 10, rt];
+   return [Math.sqrt((hp * dps) / 1000), hp / 100, dps / 10, rt];
 }
 
 // const data: number[][] = Array(100);

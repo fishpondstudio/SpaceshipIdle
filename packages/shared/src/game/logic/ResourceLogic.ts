@@ -35,10 +35,6 @@ function getTotalXP(gs: GameState): number {
    return calcSpaceshipXP(gs) + (gs.resources.get("XP") ?? 0);
 }
 
-export function getCurrentQuantum(gs: GameState): number {
-   return Math.min(xpToQuantum(getTotalXP(gs)), getQuantumLimit(gs));
-}
-
 const qToSVLookup = new Map<number, number>();
 
 function populateQuantumLookup() {
@@ -83,7 +79,7 @@ export function svToQ(sv: number): number {
 }
 
 export function qToSV(quantum: number): number {
-   const t = Math.log(quantum);
+   const t = Math.log(clamp(quantum, 30, Number.POSITIVE_INFINITY));
    return Math.pow(quantum, t) * 10;
 }
 
@@ -99,15 +95,7 @@ export function getUsedQuantum(gs: GameState): number {
 }
 
 export function getAvailableQuantum(gs: GameState): number {
-   return getCurrentQuantum(gs) - getUsedQuantum(gs);
-}
-
-export function getNextQuantumProgress(gs: GameState): [number, number] {
-   const sv = getTotalXP(gs);
-   const q = xpToQuantum(sv);
-   const denominator = quantumToXP(q + 1) - quantumToXP(q);
-   const progress = q >= getQuantumLimit(gs) ? 0 : (sv - quantumToXP(q)) / denominator;
-   return [progress, denominator];
+   return getQuantumLimit(gs) - getUsedQuantum(gs);
 }
 
 export function getResourceUsed(gs: GameState): Set<Resource> {

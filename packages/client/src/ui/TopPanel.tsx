@@ -7,6 +7,7 @@ import { refreshOnTypedEvent } from "../utils/Hook";
 import { BattlePanel, TimerPanel } from "./BattlePanel";
 import { ResourcePanel } from "./ResourcePanel";
 import { ShipInfoPanel } from "./ShipInfoPanel";
+import { TopRightPanel } from "./TopRightPanel";
 
 export function TopPanel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
@@ -15,8 +16,9 @@ export function TopPanel(): React.ReactNode {
    if (G.runtime.battleType === BattleType.Peace) {
       return (
          <>
-            <ShipInfoPanel />
+            <TopRightPanel />
             <ResourcePanel />
+            <ShipInfoPanel />
          </>
       );
    }

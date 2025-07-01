@@ -6,12 +6,7 @@ import {
    ElementThisRunColor,
 } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import {
-   getCurrentQuantum,
-   getQuantumLimit,
-   getUsedQuantum,
-   quantumToXP,
-} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getQuantumLimit, getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { clamp, formatNumber, mMapOf, range } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { ElementImageComp } from "../game/ElementImage";
@@ -22,13 +17,11 @@ export function QuantumProgressModal(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const start = Math.floor(getQuantumLimit(G.save.current) / BattleWinQuantum - 1) * BattleWinQuantum;
    const limit = getQuantumLimit(G.save.current);
-   const current = getCurrentQuantum(G.save.current);
    const used = getUsedQuantum(G.save.current);
    return (
       <div className="m10">
          <div className="panel p5 text-center text-xs mb10 row" style={{ padding: "5px 10px" }}>
             <div className="f1 text-left text-space">{t(L.QualifiedQuantum)}</div>
-            <div className="f1 text-center text-blue">{t(L.EarnedQuantum)}</div>
             <div className="f1 text-right text-green">{t(L.UsedQuantum)}</div>
          </div>
          <ScrollArea
@@ -40,15 +33,7 @@ export function QuantumProgressModal(): React.ReactNode {
          >
             <div>
                {range(0, 5).map((i) => {
-                  return (
-                     <QuantumBlock
-                        key={i}
-                        start={start + BattleWinQuantum * i}
-                        qualified={limit}
-                        current={current}
-                        used={used}
-                     />
-                  );
+                  return <QuantumBlock key={i} start={start + BattleWinQuantum * i} qualified={limit} used={used} />;
                })}
             </div>
          </ScrollArea>
@@ -71,14 +56,8 @@ export function QuantumProgressModal(): React.ReactNode {
    );
 }
 
-function QuantumBlock({
-   start,
-   qualified,
-   current,
-   used,
-}: { start: number; qualified: number; current: number; used: number }): React.ReactNode {
+function QuantumBlock({ start, qualified, used }: { start: number; qualified: number; used: number }): React.ReactNode {
    const qualifiedPercent = clamp((qualified - start) / BattleWinQuantum, 0, 1);
-   const currentPercent = clamp((current - start) / BattleWinQuantum, 0, 1);
    const usedPercent = clamp((used - start) / BattleWinQuantum, 0, 1);
    return (
       <div className="block">
@@ -93,7 +72,6 @@ function QuantumBlock({
          </div>
          <div className="progress">
             <div className="fill" style={{ width: `${qualifiedPercent * 100}%` }} />
-            <div className="fill blue" style={{ width: `${currentPercent * 100}%` }} />
             <div className="fill green" style={{ width: `${usedPercent * 100}%` }} />
          </div>
          <div className="row g0">

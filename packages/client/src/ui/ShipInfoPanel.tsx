@@ -4,18 +4,17 @@ import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definition
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import {
    calcSpaceshipXP,
-   getCurrentQuantum,
    getMaxSpaceshipXP,
-   getNextQuantumProgress,
    getQuantumLimit,
    getUsedQuantum,
    resourceDiffOf,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { shouldPromptQualifierBattle } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import {
    clamp,
    classNames,
    formatNumber,
-   formatPercent,
+   getHMS,
    hasFlag,
    mathSign,
    mMapOf,
@@ -59,34 +58,23 @@ export function ShipInfoPanel(): React.ReactNode {
       G.runtime.leftStat,
    );
    const xpDelta = resourceDiffOf("XP", hasFlag(options.flag, GameOptionFlag.TheoreticalValue), G.runtime.leftStat);
-   const [progress, denom] = getNextQuantumProgress(state);
-   const quantumDelta = progress <= 0 ? 0 : xpDelta / denom;
    const sv = calcSpaceshipXP(state);
    G.runtime.rightStat.averageRawDamage(10, rawDamages);
    G.runtime.rightStat.averageActualDamage(10, actualDamages);
    const maxSV = getMaxSpaceshipXP(state);
    const quantumLimit = getQuantumLimit(state);
+   const xp = state.resources.get("XP") ?? 0;
    return (
       <div className="sf-frame top ship-info">
          <HamburgerMenuComp flag={options.flag} />
          <div className="divider vertical" />
          <PowerComp power={state.resources.get("Power") ?? 0} delta={powerDelta} />
          <div className="divider vertical" />
-         <XPComp xp={state.resources.get("XP") ?? 0} delta={xpDelta} />
-         <div className="divider vertical" />
-         <ProgressTowardsNextQuantumComp
-            progress={progress}
-            delta={quantumDelta}
-            limitReached={getCurrentQuantum(state) >= quantumLimit}
-         />
+         <XPComp xp={xp} delta={xpDelta} maxSV={maxSV} sv={sv} quantum={quantumLimit} />
          <div className="divider vertical" />
          <SpaceshipValueComp sv={sv} maxSV={maxSV} quantum={quantumLimit} />
-         <BattleComp highlight={getUsedQuantum(G.save.current) >= getQuantumLimit(state)} quantum={quantumLimit} />
-         <QuantumComp
-            usedQuantum={getUsedQuantum(state)}
-            currentQuantum={getCurrentQuantum(state)}
-            qualifiedQuantum={quantumLimit}
-         />
+         <BattleComp highlight={shouldPromptQualifierBattle(state)} quantum={quantumLimit} />
+         <QuantumComp usedQuantum={getUsedQuantum(state)} qualifiedQuantum={quantumLimit} />
          <div className="divider vertical" />
          <ElementComp count={mReduceOf(G.save.current.elements, (prev, curr, value) => prev + value, 0)} />
          <div className="divider vertical" />
@@ -96,8 +84,6 @@ export function ShipInfoPanel(): React.ReactNode {
          />
          <div className="divider vertical" />
          <WarpSpeedMenuComp gs={state} />
-         <SteamComp show={!hasFlag(options.flag, GameOptionFlag.HideSteamIcon)} />
-         <DiscordComp show={!hasFlag(options.flag, GameOptionFlag.HideDiscordIcon)} />
       </div>
    );
 }
@@ -128,35 +114,74 @@ function _PowerComp({ power, delta }: { power: number; delta: number }): React.R
 
 const PowerComp = memo(_PowerComp, (prev, next) => prev.power === next.power && prev.delta === next.delta);
 
-function _XPComp({ xp, delta }: { xp: number; delta: number }): React.ReactNode {
+function _XPComp({
+   xp,
+   delta,
+   maxSV,
+   sv,
+   quantum,
+}: { xp: number; delta: number; maxSV: number; sv: number; quantum: number }): React.ReactNode {
+   const timeLeft = (1000 * (maxSV - sv - xp)) / delta;
+   const [h, m, s] = getHMS(clamp(timeLeft, 0, Number.POSITIVE_INFINITY));
    return (
-      <Tooltip multiline maw="30vw" label={<RenderHTML html={t(L.XPTooltipHTML)} />}>
-         <div className="block" style={{ width: Width }}>
-            <div className="mi">database</div>
-            <div className="f1 text-right">
-               <div>
-                  <ResourceAmount res="XP" amount={xp} />
-               </div>
-               <div
-                  className="xs"
-                  style={{
-                     color: delta >= 0 ? "var(--mantine-color-green-text)" : "var(--mantine-color-red-text)",
-                  }}
-               >
-                  {mathSign(delta)}
-                  {formatNumber(Math.abs(delta))}
+      <>
+         <Tooltip multiline maw="30vw" label={<RenderHTML html={t(L.XPTooltipHTML)} />}>
+            <div className="block" style={{ width: Width }}>
+               <div className="mi">database</div>
+               <div className="f1 text-right">
+                  <div>
+                     <ResourceAmount res="XP" amount={xp} />
+                  </div>
+                  <div
+                     className="xs"
+                     style={{
+                        color: delta >= 0 ? "var(--mantine-color-green-text)" : "var(--mantine-color-red-text)",
+                     }}
+                  >
+                     {mathSign(delta)}
+                     {formatNumber(Math.abs(delta))}
+                  </div>
                </div>
             </div>
-         </div>
-      </Tooltip>
+         </Tooltip>
+         <div className="divider vertical" />
+         <Tooltip
+            label={
+               <RenderHTML
+                  html={t(
+                     L.TimeToGenerateFullQuantum,
+                     formatNumber(maxSV),
+                     formatNumber(quantum),
+                     formatNumber(clamp(maxSV - sv, 0, Number.POSITIVE_INFINITY)),
+                  )}
+               />
+            }
+         >
+            <div style={{ width: 50 }}>
+               <div className="text-xs">
+                  {h > 0 ? `${h}h` : null}
+                  {m}m
+               </div>
+               <div>{s}s</div>
+            </div>
+         </Tooltip>
+      </>
    );
 }
 
-const XPComp = memo(_XPComp, (prev, next) => prev.xp === next.xp && prev.delta === next.delta);
+const XPComp = memo(
+   _XPComp,
+   (prev, next) =>
+      prev.xp === next.xp &&
+      prev.delta === next.delta &&
+      prev.maxSV === next.maxSV &&
+      prev.sv === next.sv &&
+      prev.quantum === next.quantum,
+);
 
 function _SpaceshipValueComp({ sv, maxSV, quantum }: { sv: number; maxSV: number; quantum: number }): React.ReactNode {
    return (
-      <Tooltip label={t(L.SpaceshipXPTooltipV2, formatNumber(quantum))}>
+      <Tooltip label={t(L.SpaceshipXPTooltipV3, formatNumber(quantum))}>
          <div className="block" style={{ width: 150, position: "relative" }}>
             <XPIcon />
             <div className="w5" />
@@ -214,15 +239,13 @@ function playQuantumParticle(): void {
 
 function _QuantumComp({
    usedQuantum,
-   currentQuantum,
    qualifiedQuantum,
 }: {
    usedQuantum: number;
-   currentQuantum: number;
    qualifiedQuantum: number;
 }): React.ReactNode {
    return (
-      <Tooltip multiline maw="30vw" label={<RenderHTML html={t(L.QuantumTooltipHTML)} />}>
+      <Tooltip multiline maw="30vw" label={<RenderHTML html={t(L.QuantumTooltipHTMLV2)} />}>
          <div
             className="block pointer"
             style={{ width: 150, position: "relative" }}
@@ -242,13 +265,10 @@ function _QuantumComp({
             <div className="f1">
                <ProgressComp
                   height={8}
-                  progress={[
-                     { color: "var(--mantine-color-space-filled)", value: currentQuantum / qualifiedQuantum },
-                     { color: "var(--mantine-color-green-filled)", value: usedQuantum / qualifiedQuantum },
-                  ]}
+                  progress={[{ color: "var(--mantine-color-green-filled)", value: usedQuantum / qualifiedQuantum }]}
                />
                <div className="xs mt5 text-right">
-                  {formatNumber(usedQuantum)}/{formatNumber(currentQuantum)}/{formatNumber(qualifiedQuantum)}
+                  {formatNumber(usedQuantum)}/{formatNumber(qualifiedQuantum)}
                </div>
             </div>
          </div>
@@ -257,56 +277,8 @@ function _QuantumComp({
 }
 
 const QuantumComp = memo(_QuantumComp, (prev, next) => {
-   if (next.currentQuantum > prev.currentQuantum) {
-      playQuantumParticle();
-   }
-   return (
-      prev.usedQuantum === next.usedQuantum &&
-      prev.currentQuantum === next.currentQuantum &&
-      prev.qualifiedQuantum === next.qualifiedQuantum
-   );
+   return prev.usedQuantum === next.usedQuantum && prev.qualifiedQuantum === next.qualifiedQuantum;
 });
-
-function _ProgressTowardsNextQuantumComp({
-   progress,
-   delta,
-   limitReached,
-}: { progress: number; delta: number; limitReached: boolean }): React.ReactNode {
-   return (
-      <Tooltip
-         multiline
-         maw="30vw"
-         label={
-            <>
-               <RenderHTML html={t(L.ProgressTowardsNextQuantumTooltipHTML)} />
-               {limitReached ? <RenderHTML html={t(L.ProgressTowardsNextQuantumTooltipNotEarningHTML)} /> : null}
-            </>
-         }
-      >
-         <div style={{ width: 90 }} className="block">
-            <div className="mi">chart_data</div>
-            <div className="f1 text-right">
-               <div>{formatPercent(progress)}</div>
-               <div
-                  className="xs"
-                  style={{
-                     color: delta >= 0 ? "var(--mantine-color-green-text)" : "var(--mantine-color-red-text)",
-                  }}
-               >
-                  {mathSign(delta)}
-                  {formatPercent(Math.abs(delta))}
-               </div>
-            </div>
-         </div>
-      </Tooltip>
-   );
-}
-
-const ProgressTowardsNextQuantumComp = memo(
-   _ProgressTowardsNextQuantumComp,
-   (prev, next) =>
-      prev.progress === next.progress && prev.delta === next.delta && prev.limitReached === next.limitReached,
-);
 
 function _ElementComp({ count }: { count: number }): React.ReactNode {
    return (
@@ -347,34 +319,24 @@ const ElementComp = memo(_ElementComp, (prev, next) => prev.count === next.count
 function _DiscordComp({ show }: { show: boolean }): React.ReactNode {
    if (!show) return null;
    return (
-      <>
-         <div className="divider vertical" />
-         <Tooltip label={t(L.JoinDiscord)}>
-            <div className="pointer" style={{ width: 40 }} onClick={() => openUrl(DiscordUrl)}>
-               <img src={Discord} style={{ height: 20 }} />
-            </div>
-         </Tooltip>
-      </>
+      <Tooltip label={t(L.JoinDiscord)}>
+         <img src={Discord} style={{ display: "block", height: 20 }} onClick={() => openUrl(DiscordUrl)} />
+      </Tooltip>
    );
 }
 
-const DiscordComp = memo(_DiscordComp, (prev, next) => prev.show === next.show);
+export const DiscordComp = memo(_DiscordComp, (prev, next) => prev.show === next.show);
 
 function _SteamComp({ show }: { show: boolean }): React.ReactNode {
    if (!show) return null;
    return (
-      <>
-         <div className="divider vertical" />
-         <Tooltip label={t(L.WishlistFullGame)}>
-            <div className="pointer" style={{ width: 40 }} onClick={() => openUrl(SteamUrl)}>
-               <img src={Steam} style={{ height: 20 }} />
-            </div>
-         </Tooltip>
-      </>
+      <Tooltip label={t(L.WishlistFullGame)}>
+         <img src={Steam} style={{ display: "block", height: 20 }} onClick={() => openUrl(SteamUrl)} />
+      </Tooltip>
    );
 }
 
-const SteamComp = memo(_SteamComp, (prev, next) => prev.show === next.show);
+export const SteamComp = memo(_SteamComp, (prev, next) => prev.show === next.show);
 
 function _BattleComp({ highlight, quantum }: { highlight: boolean; quantum: number }): React.ReactNode {
    return (

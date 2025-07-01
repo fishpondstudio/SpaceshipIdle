@@ -637,11 +637,10 @@ export const EN = {
    WeaponBuildingXPHTMLV2: "This building produces XP when ammo is consumed. <b>XP = Consumed Ammo Value</b>",
    TutorialElementContentV2:
       "Elements are discovered as you gain quantum. You can pick one out of three choices and they boost <b>production multipliers</b>. When you prestige, all elements from this run becomes permanent element shards.",
-   SpaceshipXPTooltipV2: "Spaceship XP / Max Spaceship XP for Quantum %%",
+   SpaceshipXPTooltipV3: "Current Spaceship XP / Max Spaceship XP for Quantum %%",
    QualifiedQuantum: "Qualified Quantum",
-   EarnedQuantum: "Earned Quantum",
-   QuantumTooltipHTML:
-      "Used / Earned / Qualified Quantum<br><b>Used</b>: Quantum currently used by your ship (≤ Earned)<br><b>Earned</b>: Quantum earned from total XP (≤ Qualified)<br><b>Qualified</b>: Quantum qualified from battles (Win +10, Loss +5)",
+   QuantumTooltipHTMLV2:
+      "Used / Qualified Quantum<br><b>Used</b>: Quantum currently used by your ship<br><b>Qualified</b>: Quantum qualified from battles (Win +10, Loss +5)",
    XPTooltipHTML:
       "Total XP Generated: Weapons generate XP when firing. The amount of XP you can invest in your spaceship (build and upgrade weapons) is limited by your <b>Qualified Quantum</b>",
    ProgressTowardsNextQuantumTooltipHTML: "Progress towards earning the next Quantum (based on total XP generated)",
@@ -661,4 +660,5 @@ export const EN = {
    AmmoConsumptionTooltip:
       "Ammo is consumed when this weapon fires. Dividing this value by fire cooldown will show per second equivalent. <b>It only affects the displayed value and does not affect the actual consumption</b>",
    ResearchX: "Research: %%",
+   TimeToGenerateFullQuantum: "Estimated Time to Generate <b>%% XP</b> for Quantum <b>%%</b> (%% Left)",
 };

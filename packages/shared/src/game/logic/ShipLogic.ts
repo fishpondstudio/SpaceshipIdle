@@ -189,6 +189,20 @@ export function isQualifierBattle(me: GameState, enemy: GameState): boolean {
    return true;
 }
 
+export function shouldPromptQualifierBattle(gs: GameState): boolean {
+   const quantumLimit = getQuantumLimit(gs);
+   const usedQuantum = getUsedQuantum(gs);
+   if (usedQuantum < quantumLimit) {
+      return false;
+   }
+   const sv = calcSpaceshipXP(gs);
+   const maxSV = getMaxSpaceshipXP(gs);
+   if (sv < 0.9 * maxSV) {
+      return false;
+   }
+   return true;
+}
+
 export function migrateShipForServer(ship: GameState): boolean {
    let migrated = false;
    if ("battleCount" in ship) {

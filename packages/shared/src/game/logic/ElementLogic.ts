@@ -4,10 +4,10 @@ import { DefaultElementChoices, QuantumToElement } from "../definitions/Constant
 import type { GameState } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { fib, getUnlockedBuildings } from "./BuildingLogic";
-import { calcSpaceshipXP, getCurrentQuantum, resourceValueOf, StartQuantum, xpToQuantum } from "./ResourceLogic";
+import { calcSpaceshipXP, getUsedQuantum, resourceValueOf, StartQuantum, xpToQuantum } from "./ResourceLogic";
 
 export function tickElement(gs: GameState): void {
-   const quantum = getCurrentQuantum(gs);
+   const quantum = getUsedQuantum(gs);
    const expectedElements = quantumToElement(quantum);
    while (gs.discoveredElements < expectedElements) {
       gs.discoveredElements++;

@@ -56,6 +56,25 @@
    }
 }
 
+.top-right-panel {
+   position: absolute;
+   top: 15px;
+   right: 15px;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   gap: 10px;
+
+   img {
+      opacity: 0.75;
+      &:hover {
+         opacity: 1;
+         cursor: pointer;
+      }
+      transition: opacity 0.2s ease-in-out;
+   }
+}
+
 .resource-panel {
    max-height: 30vh;
    text-shadow: 1px 1px 0 #000;

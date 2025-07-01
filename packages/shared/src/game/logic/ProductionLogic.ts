@@ -34,9 +34,7 @@ export function tickProduction(gs: GameState, stat: RuntimeStat, rt: Runtime): v
    });
 
    stat.consumed.clear();
-   stat.produced.clear();
    stat.theoreticalConsumed.clear();
-   stat.theoreticalProduced.clear();
    stat.constructed.clear();
 
    const tiles = Array.from(gs.tiles).sort(([tileA, dataA], [tileB, dataB]) => {
@@ -73,19 +71,26 @@ export function tickProduction(gs: GameState, stat: RuntimeStat, rt: Runtime): v
 
       rs.insufficient.clear();
       forEach(def.input, (res, _amount) => {
-         const amount = _amount * data.level * data.capacity;
-         if (res !== "Power") {
+         if (res === "Power") {
+            if (hasFlag(rs.props.runtimeFlag, RuntimeFlag.NoPower)) {
+               rs.insufficient.add(res);
+            }
+            const amount = _amount * data.level;
+            if (rt.productionTick === 0) {
+               mapSafeAdd(gs.resources, res, amount);
+            }
+            if ((gs.resources.get(res) ?? 0) < amount) {
+               rs.insufficient.add(res);
+            }
+         } else {
+            const amount = _amount * data.level * data.capacity;
+            if (rt.productionTick === 0) {
+               mapSafeAdd(gs.resources, res, amount * BattleStartAmmoCycles);
+            }
             mapSafeAdd(stat.theoreticalConsumed, res, amount);
-         }
-         if (rt.productionTick === 0) {
-            mapSafeAdd(gs.resources, res, amount * BattleStartAmmoCycles);
-         }
-         if (res === "Power" && hasFlag(rs.props.runtimeFlag, RuntimeFlag.NoPower)) {
-            rs.insufficient.add(res);
-            return;
-         }
-         if ((gs.resources.get(res) ?? 0) < amount) {
-            rs.insufficient.add(res);
+            if ((gs.resources.get(res) ?? 0) < amount) {
+               rs.insufficient.add(res);
+            }
          }
       });
 
@@ -114,6 +119,9 @@ export function tickProduction(gs: GameState, stat: RuntimeStat, rt: Runtime): v
    });
 
    gs.resources.set("Power", 0);
+
+   stat.produced.clear();
+   stat.theoreticalProduced.clear();
 
    // Production
    tiles.forEach(([tile, data]) => {
