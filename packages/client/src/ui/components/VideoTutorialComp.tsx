@@ -34,6 +34,7 @@ export function VideoTutorialComp({
             <video src={data.video} autoPlay loop muted />
             <RenderHTML html={data.desc()} />
             <CloseButton
+               size="sm"
                onClick={() => {
                   G.save.options.videoTutorials.add(tutorial);
                   GameOptionUpdated.emit();

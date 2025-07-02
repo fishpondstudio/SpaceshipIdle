@@ -548,8 +548,6 @@ export const EN = {
    TutorialAmmoContentHTML:
       "When entering a battle, each module only <b>carries %% cycles of ammo</b> - make sure your spaceship have enough ammo production! Use in-game stats to help balance your production.",
    TutorialAutoBattle: "(Auto)battle",
-   TutorialAutoBattleContent:
-      "Battles are automatic. To ensure fairness, your spaceship are matched against a spaceship of the <b>same quantum level</b>. If your spaceship performs well, it will enter the matchmaking pool.",
    TutorialBasicConcept: "Basic Concept",
    TutorialBuild1BoosterDescHTML:
       "Each type of booster module can only be built once. They provide significant boost effects, do not consume quantum and do not contribute to Spaceship XP. They cost resources, rather than XP to build.",
@@ -579,11 +577,7 @@ export const EN = {
    TutorialProductionPriorityDescHTML:
       "A module with higher priority (<b>10</b>) will produce before other modules. Usually it's a good idea to set your <b>power generators and their upstream modules</b> to the highest priority to avoid a blackout.",
    TutorialProgress: "Tutorial",
-   TutorialQualifierBattle:
-      "When your quantum reaches a certain level, you will have to <b>win a qualifier battle</b> to unlock more quantum. Your qualified quantum determines the <b>max XP</b> you can invest in your spaceship.",
    TutorialQuantum: "Quantum and Battle",
-   TutorialQuantumContent:
-      "When your total produced XP reaches a certain level, you will unlock a new quantum. Quantum can be used to <b>either unlock a tech, or build a new module</b>.",
    TutorialReach260SpaceshipXPDescHTML:
       "The <b>qualified quantum</b> determines the amount of XP you can invest in your spaceship. To prepare for your first qualifier battle, you should invest as much XP as possible.",
    TutorialReachXSpaceshipXP: "Reach %% Spaceship XP",
@@ -672,4 +666,15 @@ export const EN = {
       "Your spaceship should have at least <b>%% quantum</b> for the Qualifier Battle",
    QualifierBattleXPRequirementHTML: "Your spaceship should have at least <b>%% XP</b> for the Qualifier Battle",
    TutorialCopyHTML: "Select a module and <b>middle click</b> an empty tile to <b>copy</b> to that tile",
+   TutorialMoveHTML:
+      "Select a module and <b>right click</b> an empty tile to <b>move</b> to that tile, right click another module to <b>swap</b> with that module",
+   TutorialRecycleHTML:
+      "Select a module and <b>right click</b> it to <b>recycle</b>. You get all your invested XP back",
+   TutorialMultiselectHTML: "<b>Ctrl + click</b> to select multiple modules and apply changes to all of them at once",
+   TutorialQuantumContentV2:
+      "Quantum can be used to <b>either unlock a tech, or build a new module</b>. You get quantum by completing qualifier battles.",
+   TutorialQualifierBattleV2:
+      "Winning a qualifier battle will give you <b>+10 quantum</b>, and losing a qualifier battle will give you <b>+5 quantum</b>. Your qualified quantum determines the <b>max XP</b> you can invest in your spaceship.",
+   TutorialAutoBattleContentV2:
+      "Battles are automatic and your spaceship are matched against an even opponent from another player. If your spaceship performs well, it will enter the matchmaking pool.",
 };

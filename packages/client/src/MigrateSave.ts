@@ -9,6 +9,7 @@ import { isNullOrUndefined } from "@spaceship-idle/shared/src/utils/Helper";
 export function migrateSave(save: SaveGame): void {
    if ("elements" in save.options) {
       const old = save.options.elements as Map<ElementSymbol, Inventory>;
+      save.current.permanentElements = new Map();
       for (const [symbol, inventory] of old) {
          save.current.permanentElements.set(symbol, {
             amount: inventory.amount,

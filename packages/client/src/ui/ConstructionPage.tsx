@@ -66,7 +66,8 @@ export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
                   );
                })}
          </div>
-         <VideoTutorialComp tutorial="Copy" className="mx10" />
+         <VideoTutorialComp tutorial="Copy" className="mx10 mt10" />
+         <VideoTutorialComp tutorial="Multiselect" className="mx10 mt10" />
          {getUnlockedBuildings(gs)
             .sort((a, b) => Config.Buildings[a].name().localeCompare(Config.Buildings[b].name()))
             .filter((b) => {

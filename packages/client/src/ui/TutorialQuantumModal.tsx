@@ -14,7 +14,7 @@ export function TutorialQuantumModal(): React.ReactNode {
             </div>
             <div className="f1">
                <div className="text-lg text-space">{t(L.Quantum)}</div>
-               <RenderHTML className="render-html" html={t(L.TutorialQuantumContent)} />
+               <RenderHTML className="render-html" html={t(L.TutorialQuantumContentV2)} />
             </div>
          </div>
          <div className="h10" />
@@ -26,7 +26,7 @@ export function TutorialQuantumModal(): React.ReactNode {
             </div>
             <div className="f1">
                <div className="text-lg text-space">{t(L.QualifierBattle)}</div>
-               <RenderHTML className="render-html" html={t(L.TutorialQualifierBattle)} />
+               <RenderHTML className="render-html" html={t(L.TutorialQualifierBattleV2)} />
             </div>
          </div>
          <div className="h10" />
@@ -50,7 +50,7 @@ export function TutorialQuantumModal(): React.ReactNode {
             </div>
             <div className="f1">
                <div className="text-lg text-space">{t(L.TutorialAutoBattle)}</div>
-               <RenderHTML className="render-html" html={t(L.TutorialAutoBattleContent)} />
+               <RenderHTML className="render-html" html={t(L.TutorialAutoBattleContentV2)} />
             </div>
          </div>
          <div className="h10" />

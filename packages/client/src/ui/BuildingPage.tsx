@@ -16,6 +16,7 @@ import { StatusEffectComp } from "./components/StatusEffectComp";
 import { TextureComp } from "./components/TextureComp";
 import { TitleComp } from "./components/TitleComp";
 import { UpgradeComp } from "./components/UpgradeComp";
+import { VideoTutorialComp } from "./components/VideoTutorialComp";
 
 const ColorInput_ = memo(ColorInput, (oldProps, newProps) => {
    return oldProps.value === newProps.value && oldProps.onChangeEnd === newProps.onChangeEnd;
@@ -48,13 +49,13 @@ export function BuildingPage({ tile, gs, readonly }: ITileWithGameState & { read
          }
       >
          <div className="h10" />
-         {!readonly ? (
-            <>
-               <UpgradeComp tile={tile} gs={gs} />
-            </>
+         {readonly ? (
+            <TitleComp>{t(L.LevelX, data.level)}</TitleComp>
          ) : (
             <>
-               <TitleComp>{t(L.LevelX, data.level)}</TitleComp>
+               <UpgradeComp tile={tile} gs={gs} />
+               <VideoTutorialComp tutorial="Move" className="mx10 mt10" />
+               <VideoTutorialComp tutorial="Recycle" className="mx10 mt10" />
             </>
          )}
          <ProductionComp tile={tile} gs={gs} />

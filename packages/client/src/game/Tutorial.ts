@@ -5,6 +5,9 @@ import { calcSpaceshipXP, getUsedQuantum, quantumToXP } from "@spaceship-idle/sh
 import { clamp, formatNumber, mReduceOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import TutorialCopy from "../assets/videos/TutorialCopy.mkv?url";
+import TutorialMove from "../assets/videos/TutorialMove.mkv?url";
+import TutorialMultiselect from "../assets/videos/TutorialMultiselect.mkv?url";
+import TutorialRecycle from "../assets/videos/TutorialRecycle.mkv?url";
 import { G } from "../utils/Global";
 
 export interface ITutorial {
@@ -119,6 +122,18 @@ export const VideoTutorial = {
    Copy: {
       video: TutorialCopy,
       desc: () => t(L.TutorialCopyHTML),
+   },
+   Move: {
+      video: TutorialMove,
+      desc: () => t(L.TutorialMoveHTML),
+   },
+   Recycle: {
+      video: TutorialRecycle,
+      desc: () => t(L.TutorialRecycleHTML),
+   },
+   Multiselect: {
+      video: TutorialMultiselect,
+      desc: () => t(L.TutorialMultiselectHTML),
    },
 } satisfies Record<string, IVideoTutorial>;
 
