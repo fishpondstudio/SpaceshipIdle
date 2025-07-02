@@ -191,3 +191,33 @@ em {
       background-color: transparent;
    }
 }
+
+.video-tutorial {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: center;
+   gap: 10px;
+   font-size: var(--mantine-font-size-sm);
+   padding: 5px;
+   border-radius: 5px;
+   border: 1px solid var(--mantine-color-space-4);
+
+   video {
+      width: 100px;
+      display: block;
+      border-radius: 5px;
+   }
+
+   .mantine-CloseButton-root {
+      align-self: flex-start;
+   }
+
+   b {
+      color: var(--mantine-color-space-5);
+   }
+
+   em {
+      color: var(--mantine-color-red-6);
+   }
+}

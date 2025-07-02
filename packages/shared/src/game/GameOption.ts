@@ -1,3 +1,4 @@
+import { VideoTutorial } from "../../../client/src/game/Tutorial";
 import type { CountryCode } from "../utils/CountryCode";
 import type { ValueOf } from "../utils/Helper";
 import { TypedEvent } from "../utils/TypedEvent";
@@ -124,6 +125,7 @@ export class GameOption {
    nebulaStrength = 0.5;
    volume = 1;
    shortcuts = DefaultShortcuts;
+   videoTutorials: Set<VideoTutorial> = new Set();
 }
 
 export const GameOptionUpdated = new TypedEvent<void>();

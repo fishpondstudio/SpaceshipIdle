@@ -671,4 +671,6 @@ export const EN = {
    QualifierBattleQuantumRequirementHTML:
       "Your spaceship should have at least <b>%% quantum</b> for the Qualifier Battle",
    QualifierBattleXPRequirementHTML: "Your spaceship should have at least <b>%% XP</b> for the Qualifier Battle",
+   TutorialCopyHTML: "Select a module and <b>middle click</b> an empty tile to <b>copy</b> to that tile",
+   Hide: "Hide",
 };

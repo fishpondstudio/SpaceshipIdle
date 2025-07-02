@@ -30,6 +30,7 @@ import { playError } from "./Sound";
 import { ResourceListComp } from "./components/ResourceListComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
+import { VideoTutorialComp } from "./components/VideoTutorialComp";
 
 export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
    const [selected, setSelected] = useState(new Set<CodeNumber>());
@@ -65,6 +66,7 @@ export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
                   );
                })}
          </div>
+         <VideoTutorialComp tutorial="Copy" className="mx10" />
          {getUnlockedBuildings(gs)
             .sort((a, b) => Config.Buildings[a].name().localeCompare(Config.Buildings[b].name()))
             .filter((b) => {
@@ -78,7 +80,6 @@ export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
                return selected.has(def.code);
             })
             .map((b) => {
-               const def = Config.Buildings[b];
                if (isBooster(b)) {
                   return <BoostComp key={b} building={b} gs={gs} tile={tile} />;
                }

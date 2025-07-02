@@ -22,6 +22,11 @@
       border-color: var(--mantine-color-yellow-border);
    }
 
+   &.space {
+      color: var(--mantine-color-space-text);
+      border-color: var(--mantine-color-space-border);
+   }
+
    .title {
       margin: -5px 0;
    }

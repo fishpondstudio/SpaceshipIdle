@@ -4,6 +4,7 @@ import { getBoosterCount } from "@spaceship-idle/shared/src/game/logic/BuildingL
 import { calcSpaceshipXP, getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { clamp, formatNumber, mReduceOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import TutorialCopy from "../assets/videos/TutorialCopy.mkv?url";
 import { G } from "../utils/Global";
 
 export interface ITutorial {
@@ -108,3 +109,17 @@ export function getCurrentTutorial(): ITutorial | null {
    }
    return null;
 }
+
+export interface IVideoTutorial {
+   video: string;
+   desc: () => string;
+}
+
+export const VideoTutorial = {
+   Copy: {
+      video: TutorialCopy,
+      desc: () => t(L.TutorialCopyHTML),
+   },
+} satisfies Record<string, IVideoTutorial>;
+
+export type VideoTutorial = keyof typeof VideoTutorial;
