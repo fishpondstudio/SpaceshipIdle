@@ -127,21 +127,31 @@ export function isWithinShipExtent(tile: Tile, gs: GameState): boolean {
 }
 
 export function validateForClient(gs: GameState): boolean {
-   const quantumLimit = getQuantumLimit(gs);
-   const usedQuantum = getUsedQuantum(gs);
-   if (usedQuantum > quantumLimit) {
+   try {
+      const quantumLimit = getQuantumLimit(gs);
+      const usedQuantum = getUsedQuantum(gs);
+      if (usedQuantum > quantumLimit) {
+         return false;
+      }
+      return _validateShip(gs);
+   } catch (e) {
+      console.error(e);
       return false;
    }
-   return _validateShip(gs);
 }
 
 export function validateForMatchmaking(gs: GameState): boolean {
-   const quantumLimit = getQuantumLimit(gs);
-   const usedQuantum = getUsedQuantum(gs);
-   if (quantumLimit !== usedQuantum) {
+   try {
+      const quantumLimit = getQuantumLimit(gs);
+      const usedQuantum = getUsedQuantum(gs);
+      if (quantumLimit !== usedQuantum) {
+         return false;
+      }
+      return _validateShip(gs);
+   } catch (e) {
+      console.error(e);
       return false;
    }
-   return _validateShip(gs);
 }
 
 function _validateShip(gs: GameState): boolean {
