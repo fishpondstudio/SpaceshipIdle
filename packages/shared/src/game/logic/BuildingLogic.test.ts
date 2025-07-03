@@ -46,8 +46,8 @@ test("upgradeMax", () => {
 
    const tile: ITileData = { type: "AC76", level: 5, priority: 1, capacity: 1 };
    upgradeMax(tile, rt.left);
-   expect(tile.level).toBe(8);
-   getTotalBuildingValue("AC76", 5, 8).forEach((v, res) => {
+   expect(tile.level).toBe(9);
+   getTotalBuildingValue("AC76", 5, 9).forEach((v, res) => {
       expect(rt.left.resources.get(res)).toBe(1000 - v);
    });
    getTotalBuildingValue("AC76", 5, 9).forEach((v, res) => {
