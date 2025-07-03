@@ -2,6 +2,7 @@ import { DefaultPriority, QualifierSpaceshipValuePercent } from "@spaceship-idle
 import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { getBoosterCount } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { calcSpaceshipXP, getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import type { VideoTutorial } from "@spaceship-idle/shared/src/game/logic/VideoTutorials";
 import { clamp, formatNumber, mReduceOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import TutorialCopy from "../assets/videos/TutorialCopy.mkv?url";
@@ -113,28 +114,9 @@ export function getCurrentTutorial(): ITutorial | null {
    return null;
 }
 
-export interface IVideoTutorial {
-   video: string;
-   desc: () => string;
-}
-
-export const VideoTutorial = {
-   Copy: {
-      video: TutorialCopy,
-      desc: () => t(L.TutorialCopyHTML),
-   },
-   Move: {
-      video: TutorialMove,
-      desc: () => t(L.TutorialMoveHTML),
-   },
-   Recycle: {
-      video: TutorialRecycle,
-      desc: () => t(L.TutorialRecycleHTML),
-   },
-   Multiselect: {
-      video: TutorialMultiselect,
-      desc: () => t(L.TutorialMultiselectHTML),
-   },
-} satisfies Record<string, IVideoTutorial>;
-
-export type VideoTutorial = keyof typeof VideoTutorial;
+export const TutorialVideos: Record<VideoTutorial, string> = {
+   Copy: TutorialCopy,
+   Move: TutorialMove,
+   Recycle: TutorialRecycle,
+   Multiselect: TutorialMultiselect,
+};

@@ -1,10 +1,10 @@
-import type { CountryCode } from "../utils/CountryCode";
-import type { ValueOf } from "../utils/Helper";
-import { TypedEvent } from "../utils/TypedEvent";
-import type { Languages } from "./Languages";
-import type { IShortcutConfig, Shortcut } from "./Shortcut";
-import type { Building } from "./definitions/Buildings";
-import type { VideoTutorial } from "./logic/VideoTutorials";
+import type { Languages } from "@spaceship-idle/shared/src/game/Languages";
+import type { IShortcutConfig, Shortcut } from "@spaceship-idle/shared/src/game/Shortcut";
+import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
+import type { VideoTutorial } from "@spaceship-idle/shared/src/game/logic/VideoTutorials";
+import type { CountryCode } from "@spaceship-idle/shared/src/utils/CountryCode";
+import type { ValueOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { TypedEvent } from "@spaceship-idle/shared/src/utils/TypedEvent";
 
 export const GameOptionFlag = {
    None: 0,
