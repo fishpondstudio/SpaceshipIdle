@@ -12,8 +12,8 @@ export function tickElement(gs: GameState): void {
       gs.discoveredElements++;
       const candidates = getUnlockedElements(gs);
       candidates.sort((a, b) => {
-         const buildingA = Config.Element.get(a);
-         const buildingB = Config.Element.get(b);
+         const buildingA = Config.Elements.get(a);
+         const buildingB = Config.Elements.get(b);
          if (!buildingA || !buildingB) {
             return 0;
          }

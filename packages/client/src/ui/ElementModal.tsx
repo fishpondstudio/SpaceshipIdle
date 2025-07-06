@@ -1,5 +1,6 @@
 import { Progress, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { ElementPermanentColor } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
@@ -27,7 +28,7 @@ import { playClick } from "./Sound";
 export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const element = PeriodicTable[symbol];
-   const b = Config.Element.get(symbol);
+   const b = Config.Elements.get(symbol);
    const thisRun = G.save.current.elements.get(symbol);
    const permanent = G.save.current.permanentElements.get(symbol);
    if (!element || !b) {
@@ -135,55 +136,59 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                      </button>
                   </Tooltip>
                </div>
-               <div className="divider dashed mx-15 my10"></div>
-               <div className="row g5">
-                  <XPIcon />
-                  <div className="f1">{t(L.XPMultiplier)}</div>
-                  <Tooltip label={t(L.PlusXXPMultiplierForX, permanent.xp, Config.Buildings[b].name())}>
-                     <div className="mi sm text-dimmed">info</div>
-                  </Tooltip>
-                  <div>{t(L.LevelX, permanent.xp)}</div>
-               </div>
-               <div className="h5" />
-               <div className="row">
-                  <div className="f1">
-                     <div className="row">
-                        <div className="f1 text-dimmed">{t(L.RequiredShards)}</div>
-                        <div>
-                           {permanent.amount}/{getElementUpgradeCost(permanent.xp + 1)}
-                        </div>
+               {WeaponKey in Config.Buildings[b] ? (
+                  <>
+                     <div className="divider dashed mx-15 my10"></div>
+                     <div className="row g5">
+                        <XPIcon />
+                        <div className="f1">{t(L.XPMultiplier)}</div>
+                        <Tooltip label={t(L.PlusXXPMultiplierForX, permanent.xp, Config.Buildings[b].name())}>
+                           <div className="mi sm text-dimmed">info</div>
+                        </Tooltip>
+                        <div>{t(L.LevelX, permanent.xp)}</div>
                      </div>
-                     <Progress
-                        className="f1"
-                        value={(100 * permanent.amount) / getElementUpgradeCost(permanent.xp + 1)}
-                     />
-                  </div>
-                  <button
-                     className="btn py5 px10 filled"
-                     onClick={() => {
-                        playClick();
-                        if (tryUpgradeElement(symbol, "xp", G.save.current)) {
-                           GameStateUpdated.emit();
-                        }
-                     }}
-                     disabled={!canUpgradeElement(symbol, "xp", G.save.current)}
-                  >
-                     {t(L.Upgrade)}
-                  </button>
-                  <Tooltip label={<RenderHTML html={t(L.RevertTooltipHTML)} />}>
-                     <button
-                        disabled={permanent.xp <= 0}
-                        className="btn py5 px10"
-                        onClick={() => {
-                           playClick();
-                           revertElementUpgrade(symbol, "xp", G.save.current);
-                           GameStateUpdated.emit();
-                        }}
-                     >
-                        {t(L.Revert)}
-                     </button>
-                  </Tooltip>
-               </div>
+                     <div className="h5" />
+                     <div className="row">
+                        <div className="f1">
+                           <div className="row">
+                              <div className="f1 text-dimmed">{t(L.RequiredShards)}</div>
+                              <div>
+                                 {permanent.amount}/{getElementUpgradeCost(permanent.xp + 1)}
+                              </div>
+                           </div>
+                           <Progress
+                              className="f1"
+                              value={(100 * permanent.amount) / getElementUpgradeCost(permanent.xp + 1)}
+                           />
+                        </div>
+                        <button
+                           className="btn py5 px10 filled"
+                           onClick={() => {
+                              playClick();
+                              if (tryUpgradeElement(symbol, "xp", G.save.current)) {
+                                 GameStateUpdated.emit();
+                              }
+                           }}
+                           disabled={!canUpgradeElement(symbol, "xp", G.save.current)}
+                        >
+                           {t(L.Upgrade)}
+                        </button>
+                        <Tooltip label={<RenderHTML html={t(L.RevertTooltipHTML)} />}>
+                           <button
+                              disabled={permanent.xp <= 0}
+                              className="btn py5 px10"
+                              onClick={() => {
+                                 playClick();
+                                 revertElementUpgrade(symbol, "xp", G.save.current);
+                                 GameStateUpdated.emit();
+                              }}
+                           >
+                              {t(L.Revert)}
+                           </button>
+                        </Tooltip>
+                     </div>
+                  </>
+               ) : null}
             </>
          ) : null}
       </div>

@@ -119,7 +119,7 @@ export class ShipScene extends Scene {
       ShipScene.TooltipPool = new ObjectPool<UnicodeText>({
          create: () => {
             const t = this.viewport.addChild(
-               new UnicodeText("", { fontName: Fonts.SpaceshipIdleBold, fontSize: 16, tint: 0xffffff }),
+               new UnicodeText("", { fontName: Fonts.SpaceshipIdleBold, fontSize: 14, tint: 0xffffff }),
             );
             return t;
          },

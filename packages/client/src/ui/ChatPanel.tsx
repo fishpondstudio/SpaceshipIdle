@@ -5,7 +5,7 @@ import { ChatFlag, type IChat } from "@spaceship-idle/shared/src/rpc/ServerMessa
 import { classNames, hasFlag, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { TypedEvent } from "@spaceship-idle/shared/src/utils/TypedEvent";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import Mod from "../assets/images/Mod.png";
 import { handleCommand } from "../game/HandleCommand";
 import { getUser, OnChatMessage, useConnected } from "../rpc/HandleMessage";
@@ -74,15 +74,18 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
       };
    }, [channel]);
 
-   // biome-ignore lint/correctness/useExhaustiveDependencies:
-   useEffect(() => {
+   const scrollToBottom = useCallback(() => {
       if (!isLastMessageByMe(messages.current) && isMouseOver.current) {
          return;
       }
       G.pixi.ticker.addOnce(() => {
          scrollArea.current?.scrollTo({ top: scrollArea.current.scrollHeight });
       });
-   }, [handle]);
+   }, []);
+
+   // biome-ignore lint/correctness/useExhaustiveDependencies:
+   useEffect(scrollToBottom, [handle]);
+   useTypedEvent(OnImageLoaded, scrollToBottom);
 
    return (
       <div className={classNames("chat-panel", isFocused ? "active" : null)} style={{ left }}>
@@ -228,6 +231,8 @@ const LanguageMenu = memo(_LanguageMenu, (prev, next) => {
    return prev.icon === next.icon;
 });
 
+const OnImageLoaded = new TypedEvent<void>();
+
 function _ChatMessage({ message }: { message: string }): React.ReactNode {
    const isDomainWhitelisted =
       message.startsWith("https://i.imgur.com/") ||
@@ -240,7 +245,12 @@ function _ChatMessage({ message }: { message: string }): React.ReactNode {
    if (isDomainWhitelisted && isExtensionWhitelisted) {
       return (
          <div className="body">
-            <img className="chat-image" src={message} onClick={() => openUrl(message)} />
+            <img
+               className="chat-image"
+               src={message}
+               onClick={() => openUrl(message)}
+               onLoad={() => OnImageLoaded.emit()}
+            />
          </div>
       );
    }

@@ -18,7 +18,7 @@ export const Config = {
    BuildingId,
    Resources,
    Tech: new TechDefinitions(),
-   Element: new Map<ElementSymbol, Building>(),
+   Elements: new Map<ElementSymbol, Building>(),
    Price: new Map<Resource, number>([
       ["Power", 0],
       ["Warp", 0],
@@ -83,7 +83,7 @@ function initConfig(): void {
    forEach(Config.Buildings, (b) => {
       const def = Config.Buildings[b];
       if (def.element) {
-         if (Config.Element.has(def.element)) {
+         if (Config.Elements.has(def.element)) {
             const unusedElements = new Set(keysOf(PeriodicTable));
             forEach(Config.Buildings, (b, def) => {
                if (def.element) {
@@ -94,7 +94,7 @@ function initConfig(): void {
                `Element ${def.element} is already defined for building ${b}. Unused elements: ${Array.from(unusedElements).join(", ")}`,
             );
          }
-         Config.Element.set(def.element, b);
+         Config.Elements.set(def.element, b);
       }
    });
 

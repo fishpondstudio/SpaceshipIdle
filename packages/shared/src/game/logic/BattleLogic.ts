@@ -11,6 +11,7 @@ import type { Building } from "../definitions/Buildings";
 import { BattleStartAmmoCycles, BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
 import { BattleStatus } from "./BattleStatus";
 import { BattleFlag, BattleType } from "./BattleType";
+import { RequestFloater } from "./ProductionLogic";
 import { Projectile } from "./Projectile";
 import { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
@@ -195,6 +196,7 @@ export function tickTiles(
             const xp = (Config.Price.get(res) ?? 0) * amount * rs.xpMultiplier.value;
             mapSafeAdd(from.resources, "XP", xp);
             mapSafeAdd(stat.produced, "XP", xp);
+            rt.emit(RequestFloater, { tile, amount: xp });
          });
          const ability = rs.props.ability;
          if (ability?.timing === AbilityTiming.OnFire) {

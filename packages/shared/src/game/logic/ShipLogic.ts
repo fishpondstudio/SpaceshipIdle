@@ -181,7 +181,7 @@ function _validateShip(gs: GameState): boolean {
    }
 
    for (const [element, amount] of gs.elements) {
-      const building = Config.Element.get(element);
+      const building = Config.Elements.get(element);
       if (!building) {
          return false;
       }

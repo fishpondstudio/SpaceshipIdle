@@ -217,7 +217,7 @@ const SpaceshipValueComp = memo(
 function _DPSComp({ raw, actual }: { raw: number; actual: number }): React.ReactNode {
    return (
       <Tooltip label={t(L.RawActualDPS)}>
-         <div className="block" style={{ width: 80 }}>
+         <div className="block" style={{ width: 85 }}>
             <div className="mi">explosion</div>
             <div className="f1 text-right">
                <div>{formatNumber(actual)}</div>
@@ -316,7 +316,7 @@ function _ElementComp({
                   <div>{thisRun}</div>
                </div>
                {mMapOf(G.save.current.elements, (symbol, amount) => {
-                  const building = Config.Element.get(symbol);
+                  const building = Config.Elements.get(symbol);
                   if (!building) return null;
                   return (
                      <div className="row" key={symbol}>
@@ -333,7 +333,7 @@ function _ElementComp({
                   <div>{production}</div>
                </div>
                {mMapOf(G.save.current.permanentElements, (symbol, inv) => {
-                  const building = Config.Element.get(symbol);
+                  const building = Config.Elements.get(symbol);
                   if (!building) return null;
                   if (inv.production <= 0) return null;
                   return (
@@ -352,7 +352,7 @@ function _ElementComp({
                   <div>{xp}</div>
                </div>
                {mMapOf(G.save.current.permanentElements, (symbol, inv) => {
-                  const building = Config.Element.get(symbol);
+                  const building = Config.Elements.get(symbol);
                   if (!building) return null;
                   if (inv.xp <= 0) return null;
                   return (
@@ -368,7 +368,7 @@ function _ElementComp({
          }
       >
          <div
-            style={{ width: 80 }}
+            style={{ width: 85 }}
             className="block pointer"
             onClick={() => {
                showModal({

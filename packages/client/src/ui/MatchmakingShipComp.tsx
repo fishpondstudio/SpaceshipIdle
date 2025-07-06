@@ -62,7 +62,7 @@ export function MatchmakingShipComp({ ship }: { ship: GameState }): React.ReactN
          <div className="f1">{t(L.ElementThisRun)}</div>
          <div className="text-sm">
             {mMapOf(ship.elements, (element, amount) => {
-               const building = Config.Element.get(element);
+               const building = Config.Elements.get(element);
                if (!building) {
                   return null;
                }

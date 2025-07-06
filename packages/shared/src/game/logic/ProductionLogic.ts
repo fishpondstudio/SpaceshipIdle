@@ -7,10 +7,10 @@ import { abilityTarget } from "../definitions/Ability";
 import { DamageType, type IBoosterDefinition, WeaponKey } from "../definitions/BuildingProps";
 import { BattleStartAmmoCycles } from "../definitions/Constant";
 import { getCooldownMultiplier } from "./BattleLogic";
-import { getNormalizedValue, isBooster } from "./BuildingLogic";
+import { isBooster } from "./BuildingLogic";
 import type { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
-import { RuntimeFlag, type RuntimeTile } from "./RuntimeTile";
+import { RuntimeFlag } from "./RuntimeTile";
 import { getSide } from "./ShipLogic";
 import { getTechName } from "./TechLogic";
 
@@ -142,7 +142,6 @@ export function tickProduction(gs: GameState, stat: RuntimeStat, rt: Runtime): v
 
          mapSafeAdd(gs.resources, res, amount);
          mapSafeAdd(stat.produced, res, amount);
-         rt.emit(RequestFloater, { tile, amount });
       });
 
       if (isBooster(data.type)) {
@@ -151,15 +150,6 @@ export function tickProduction(gs: GameState, stat: RuntimeStat, rt: Runtime): v
             if (target === rs.tile) return;
             rt.get(target)?.addStatusEffect(booster.effect, rs.tile, rs.data.type, 1, 0);
          });
-      }
-
-      const xp = getNonWeaponBuildingXP(rs);
-      if (xp > 0) {
-         mapSafeAdd(stat.theoreticalProduced, "XP", xp);
-         if (rs.insufficient.size <= 0 && !hasFlag(rs.props.runtimeFlag, RuntimeFlag.NoProduction)) {
-            mapSafeAdd(gs.resources, "XP", xp);
-            mapSafeAdd(stat.produced, "XP", xp);
-         }
       }
 
       if (WeaponKey in def) {
@@ -189,10 +179,3 @@ export function tickProduction(gs: GameState, stat: RuntimeStat, rt: Runtime): v
 }
 
 export const RequestFloater = new TypedEvent<{ tile: Tile; amount: number }>();
-
-export function getNonWeaponBuildingXP(rs: RuntimeTile): number {
-   if (WeaponKey in rs.def) {
-      return 0;
-   }
-   return getNormalizedValue(rs.data) * rs.data.capacity * rs.productionMultiplier.value * (rs.xpMultiplier.value - 1);
-}

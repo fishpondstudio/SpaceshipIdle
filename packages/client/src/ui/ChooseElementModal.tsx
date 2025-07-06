@@ -76,7 +76,7 @@ function ElementOption({
    ...props
 }: { symbol: ElementSymbol; permanent: boolean; onClick: () => void } & PaperProps): React.ReactNode {
    const data = PeriodicTable[symbol];
-   const b = Config.Element.get(symbol);
+   const b = Config.Elements.get(symbol);
    if (!data || !b) {
       return null;
    }
