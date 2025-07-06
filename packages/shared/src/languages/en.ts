@@ -541,7 +541,7 @@ export const EN = {
    TiCollector: "Titanium Collector",
    TierX: "Tier %%",
    TimeWarp: "Time Warp",
-   TimeWarpTooltip: "Warp Speed / AvailableTime Warp",
+   TimeWarpTooltip: "Warp Speed / Available Time Warp",
    TutorialAdvancedGameControlContent:
       "<b>Select + Middle Click</b> an empty module to copy. <b>Select + Right Click</b> another module to move/swap. <b>Select + Right Click</b> the current module to recycle.",
    TutorialAmmo: "Ammo",
