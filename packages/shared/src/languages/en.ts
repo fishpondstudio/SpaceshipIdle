@@ -677,4 +677,6 @@ export const EN = {
       "Winning a qualifier battle will give you <b>+10 quantum</b>, and losing a qualifier battle will give you <b>+5 quantum</b>. Your qualified quantum determines the <b>max XP</b> you can invest in your spaceship.",
    TutorialAutoBattleContentV2:
       "Battles are automatic and your spaceship are matched against an even opponent from another player. If your spaceship performs well, it will enter the matchmaking pool.",
+   XPRequiredForNextElement: "Spaceship XP for Next Element",
+   ProgressTowardsNextElement: "Progress Towards Next Element",
 };

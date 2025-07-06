@@ -3,6 +3,7 @@ import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
+import { elementToXP } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import {
    calcSpaceshipXP,
    getMaxSpaceshipXP,
@@ -15,6 +16,7 @@ import {
    clamp,
    classNames,
    formatNumber,
+   formatPercent,
    getHMS,
    hasFlag,
    mathSign,
@@ -81,6 +83,8 @@ export function ShipInfoPanel(): React.ReactNode {
             thisRun={mReduceOf(G.save.current.elements, (prev, curr, value) => prev + value, 0)}
             production={mReduceOf(G.save.current.permanentElements, (prev, curr, value) => prev + value.production, 0)}
             xp={mReduceOf(G.save.current.permanentElements, (prev, curr, value) => prev + value.xp, 0)}
+            sv={sv}
+            requiredSV={elementToXP(state.discoveredElements + 1)}
          />
          <div className="divider vertical" />
          <DPSComp
@@ -290,12 +294,23 @@ function _ElementComp({
    thisRun,
    production,
    xp,
-}: { thisRun: number; production: number; xp: number }): React.ReactNode {
+   sv,
+   requiredSV,
+}: { thisRun: number; production: number; xp: number; sv: number; requiredSV: number }): React.ReactNode {
+   const progress = clamp(sv / requiredSV, 0, 1);
    return (
       <Tooltip
          color="gray"
          label={
             <div>
+               <div className="row">
+                  <div className="f1">{t(L.XPRequiredForNextElement)}</div>
+                  <div>{formatNumber(requiredSV)}</div>
+               </div>
+               <div className="row">
+                  <div className="f1">{t(L.ProgressTowardsNextElement)}</div>
+                  <div>{formatPercent(progress)}</div>
+               </div>
                <div className="text-space row">
                   <div className="f1">{t(L.ElementThisRun)}</div>
                   <div>{thisRun}</div>
@@ -353,6 +368,7 @@ function _ElementComp({
          }
       >
          <div
+            style={{ width: 80 }}
             className="block pointer"
             onClick={() => {
                showModal({
@@ -366,7 +382,10 @@ function _ElementComp({
             <div className="mi">category</div>
             <div className="w5" />
             <div className="f1 text-right">
-               {thisRun}/{production}+{xp}
+               <div>
+                  {thisRun}/{production}+{xp}
+               </div>
+               <div className="text-xs">{formatPercent(progress)}</div>
             </div>
          </div>
       </Tooltip>
@@ -375,7 +394,12 @@ function _ElementComp({
 
 const ElementComp = memo(
    _ElementComp,
-   (prev, next) => prev.thisRun === next.thisRun && prev.production === next.production && prev.xp === next.xp,
+   (prev, next) =>
+      prev.thisRun === next.thisRun &&
+      prev.production === next.production &&
+      prev.xp === next.xp &&
+      prev.sv === next.sv &&
+      prev.requiredSV === next.requiredSV,
 );
 
 function _DiscordComp({ show }: { show: boolean }): React.ReactNode {

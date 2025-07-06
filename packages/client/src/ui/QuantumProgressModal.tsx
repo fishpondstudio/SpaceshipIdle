@@ -82,18 +82,16 @@ function QuantumBlock({ start, qualified, used }: { start: number; qualified: nu
             <div className="indicator hidden" />
          </div>
          <div className="row g0">
-            <div className="f1">
-               Q{start} {start >= qualified ? <span className="text-xs text-dimmed">{t(L.Qualifier)}</span> : null}
-            </div>
-            <div className="f1">Q{start + BattleLossQuantum}</div>
-         </div>
-         <div className="row g0">
             <Tooltip label={t(L.MaxSpaceshipValue)}>
                <div className="f1">{formatNumber(quantumToXP(start))}</div>
             </Tooltip>
             <Tooltip label={t(L.MaxSpaceshipValue)}>
                <div className="f1">{formatNumber(quantumToXP(start + BattleLossQuantum))}</div>
             </Tooltip>
+         </div>
+         <div className="row g0">
+            <div className="f1">Q{start}</div>
+            <div className="f1">Q{start + BattleLossQuantum}</div>
          </div>
       </div>
    );

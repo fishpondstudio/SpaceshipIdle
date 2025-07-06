@@ -4,11 +4,10 @@ import { DefaultElementChoices, QuantumToElement } from "../definitions/Constant
 import type { GameState, PermanentElementData } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { fib, getUnlockedBuildings } from "./BuildingLogic";
-import { calcSpaceshipXP, getUsedQuantum, resourceValueOf, StartQuantum, xpToQuantum } from "./ResourceLogic";
+import { calcSpaceshipXP, quantumToXP, resourceValueOf, StartQuantum, xpToQuantum } from "./ResourceLogic";
 
 export function tickElement(gs: GameState): void {
-   const quantum = getUsedQuantum(gs);
-   const expectedElements = quantumToElement(quantum);
+   const expectedElements = xpToElement(calcSpaceshipXP(gs));
    while (gs.discoveredElements < expectedElements) {
       gs.discoveredElements++;
       const candidates = getUnlockedElements(gs);
@@ -37,8 +36,8 @@ export function tickElement(gs: GameState): void {
 
 export function shardsFromShipValue(gs: GameState): number {
    const totalValue = calcSpaceshipXP(gs) + resourceValueOf(gs.resources);
-   const quantum = Math.max(0, xpToQuantum(totalValue) - elementToQuantum(gs.discoveredElements));
-   return Math.max(0, quantumToElement(quantum));
+   const xp = Math.max(0, totalValue - elementToXP(gs.discoveredElements));
+   return Math.max(0, xpToElement(xp));
 }
 
 export function getUnlockedElements(gs: GameState, result?: ElementSymbol[]): ElementSymbol[] {
@@ -53,11 +52,13 @@ export function getUnlockedElements(gs: GameState, result?: ElementSymbol[]): El
    return result;
 }
 
-export function elementToQuantum(element: number): number {
-   return StartQuantum + element * QuantumToElement - 5;
+export function elementToXP(element: number): number {
+   const quantum = StartQuantum + element * QuantumToElement - 5;
+   return quantumToXP(quantum);
 }
 
-export function quantumToElement(quantum: number): number {
+export function xpToElement(xp: number): number {
+   const quantum = xpToQuantum(xp);
    return Math.floor((quantum - 5) / QuantumToElement);
 }
 
