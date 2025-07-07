@@ -1,10 +1,10 @@
 import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
-import { getQuantumLimit, getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getQualifiedQuantum, getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { RPCClient } from "../rpc/RPCClient";
 
 export async function AddShipToMatchmakingPool(gs: GameState): Promise<void> {
-   if (getQuantumLimit(gs) !== getUsedQuantum(gs)) {
+   if (getQualifiedQuantum(gs) !== getUsedQuantum(gs)) {
       return;
    }
    const [score] = calcShipScore(gs);

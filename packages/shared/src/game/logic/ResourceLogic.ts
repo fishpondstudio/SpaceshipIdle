@@ -4,6 +4,7 @@ import type { GameState } from "../GameState";
 import { BattleLossQuantum, BattleWinQuantum } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
 import { getTotalBuildingValue, isBooster } from "./BuildingLogic";
+import { getTotalElementLevels } from "./ElementLogic";
 import type { RuntimeStat } from "./RuntimeStat";
 
 export function resourceValueOf(resources: Map<Resource, number>): number {
@@ -24,11 +25,15 @@ export function resourceDiffOf(res: Resource, theoretical: boolean, stat: Runtim
 export const StartQuantum = 10;
 
 export function getMaxSpaceshipXP(gs: GameState): number {
-   return quantumToXP(getQuantumLimit(gs));
+   return quantumToXP(getQualifiedQuantum(gs));
 }
 
-export function getQuantumLimit(gs: GameState): number {
-   return 30 + gs.win * BattleWinQuantum + gs.loss * BattleLossQuantum;
+export function getQualifiedQuantum(gs: GameState): number {
+   return 30 + gs.win * BattleWinQuantum + gs.loss * BattleLossQuantum + getQuantumFromPermanentElement(gs);
+}
+
+export function getQuantumFromPermanentElement(gs: GameState): number {
+   return Math.floor(getTotalElementLevels(gs) / 10) * 5;
 }
 
 const qToSVLookup = new Map<number, number>();
@@ -91,7 +96,7 @@ export function getUsedQuantum(gs: GameState): number {
 }
 
 export function getAvailableQuantum(gs: GameState): number {
-   return getQuantumLimit(gs) - getUsedQuantum(gs);
+   return getQualifiedQuantum(gs) - getUsedQuantum(gs);
 }
 
 export function getResourceUsed(gs: GameState): Set<Resource> {

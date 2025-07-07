@@ -52,8 +52,12 @@ export function tickProduction(gs: GameState, stat: RuntimeStat, rt: Runtime): v
          const def = Config.Tech[tech];
          forEach(def.multiplier, (building, amount) => {
             if (data.type === building) {
-               rs.productionMultiplier.add(amount, t(L.ResearchX, getTechName(tech)));
-               rs.xpMultiplier.add(amount, t(L.ResearchX, getTechName(tech)));
+               if (amount.production) {
+                  rs.productionMultiplier.add(amount.production, t(L.ResearchX, getTechName(tech)));
+               }
+               if (amount.xp) {
+                  rs.xpMultiplier.add(amount.xp, t(L.ResearchX, getTechName(tech)));
+               }
             }
          });
       });

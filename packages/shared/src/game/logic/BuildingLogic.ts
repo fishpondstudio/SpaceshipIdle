@@ -13,7 +13,13 @@ export function getNextLevel(currentLevel: number, x: number): number {
    return (Math.floor(currentLevel / x) + 1) * x;
 }
 
+export const _fibTable = new Map<number, number>();
+
 export function fib(n: number): number {
+   const cached = _fibTable.get(n);
+   if (cached !== undefined) {
+      return cached;
+   }
    let a = 0;
    let b = 1;
    let c = 1;
@@ -22,6 +28,7 @@ export function fib(n: number): number {
       a = b;
       b = c;
    }
+   _fibTable.set(n, a);
    return a;
 }
 

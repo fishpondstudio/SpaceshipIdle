@@ -679,4 +679,10 @@ export const EN = {
       "Battles are automatic and your spaceship are matched against an even opponent from another player. If your spaceship performs well, it will enter the matchmaking pool.",
    XPRequiredForNextElement: "Spaceship XP for Next Element",
    ProgressTowardsNextElement: "Progress Towards Next Element",
+   PermanentElementLevels: "Permanent Element Levels",
+   PermanentElementShards: "Permanent Element Shards",
+   QuantumFromPermanentElement: "Quantum from Permanent Element",
+   QuantumFromPermanentElementTooltipHTML:
+      "Every <b>10 levels</b> of permanent element provide <b>5 qualified quantum</b>",
+   TechMultiplierBoost: "Upgrade Modules",
 };

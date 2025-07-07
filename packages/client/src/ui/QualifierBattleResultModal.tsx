@@ -1,7 +1,7 @@
 import { GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { getQuantumLimit, quantumToXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getQualifiedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, mapSafeAdd } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -12,8 +12,8 @@ import { DefeatedHeaderComp, VictoryHeaderComp } from "./components/BattleResult
 import { hideLoading, showLoading } from "./components/LoadingComp";
 
 export function QualifierBattleResultModal(): React.ReactNode {
-   const oldQuantum = getQuantumLimit(G.runtime.left);
-   const newQuantum = getQuantumLimit(G.save.current);
+   const oldQuantum = getQualifiedQuantum(G.runtime.left);
+   const newQuantum = getQualifiedQuantum(G.save.current);
    const win = G.runtime.battleStatus === BattleStatus.LeftWin;
    const xp = win ? quantumToXP(oldQuantum + 1) - quantumToXP(oldQuantum) : 0;
    return (

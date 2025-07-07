@@ -22,6 +22,17 @@
          "runOptions": {
             "runOn": "folderOpen"
          }
+      },
+      {
+         "type": "npm",
+         "script": "test",
+         "path": "packages/shared",
+         "problemMatcher": [],
+         "label": "npm: test - packages/shared",
+         "isBackground": true,
+         "runOptions": {
+            "runOn": "folderOpen"
+         }
       }
    ]
 }

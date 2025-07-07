@@ -128,30 +128,22 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
          ) : null}
          {def.multiplier ? (
             <>
-               <TitleComp>{t(L.ProductionMultiplier)}</TitleComp>
+               <TitleComp>{t(L.TechMultiplierBoost)}</TitleComp>
                <div className="divider my10" />
-               {mapOf(def.multiplier, (b, amount) => {
+               {mapOf(def.multiplier, (b, multiplier) => {
                   return (
-                     <div key={b} className="row m10">
+                     <div key={b} className="m10">
                         <div className="f1">{Config.Buildings[b].name()}</div>
-                        <div className="mi">handyman</div>
-                        <div>+{formatNumber(amount)}</div>
-                     </div>
-                  );
-               })}
-               <div className="divider my10" />
-            </>
-         ) : null}
-         {def.multiplier ? (
-            <>
-               <TitleComp>{t(L.XPMultiplier)}</TitleComp>
-               <div className="divider my10" />
-               {mapOf(def.multiplier, (b, amount) => {
-                  return (
-                     <div key={b} className="row m10">
-                        <div className="f1">{Config.Buildings[b].name()}</div>
-                        <XPIcon />
-                        <div>+{formatNumber(amount)}</div>
+                        <div className="row text-sm text-dimmed">
+                           <div className="f1">{t(L.ProductionMultiplier)}</div>
+                           <div className="mi">handyman</div>
+                           <div>+{formatNumber(multiplier.production)}</div>
+                        </div>
+                        <div className="row text-sm text-dimmed">
+                           <div className="f1">{t(L.XPMultiplier)}</div>
+                           <XPIcon />
+                           <div>+{formatNumber(multiplier.xp)}</div>
+                        </div>
                      </div>
                   );
                })}

@@ -84,6 +84,19 @@
    }
 }
 
+.element-stats-panel {
+   max-height: 30vh;
+   text-shadow: 1px 1px 0 #000;
+   position: absolute;
+   top: 50px;
+   left: 10px;
+   font-size: var(--mantine-font-size-sm);
+   line-height: 1.25;
+   & > .row {
+      gap: 50px;
+   }
+}
+
 .resource-panel {
    max-height: 30vh;
    text-shadow: 1px 1px 0 #000;

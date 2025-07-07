@@ -77,6 +77,21 @@ export function getElementUpgradeCost(upgradeTo: number): number {
    return fib(upgradeTo);
 }
 
+const _totalElementUpgradeCostTable = new Map<number, number>();
+
+export function getTotalElementUpgradeCost(upgradeTo: number): number {
+   const cached = _totalElementUpgradeCostTable.get(upgradeTo);
+   if (cached !== undefined) {
+      return cached;
+   }
+   let total = 0;
+   for (let i = 1; i <= upgradeTo; i++) {
+      total += getElementUpgradeCost(i);
+   }
+   _totalElementUpgradeCostTable.set(upgradeTo, total);
+   return total;
+}
+
 export function canUpgradeElement(symbol: ElementSymbol, type: "production" | "xp", gs: GameState): boolean {
    const inventory = gs.permanentElements.get(symbol);
    if (!inventory) {
@@ -117,4 +132,33 @@ export function revertElementUpgrade(symbol: ElementSymbol, type: "production" |
       inventory.amount += getElementUpgradeCost(i);
       inventory[type]--;
    }
+}
+
+export function getTotalElementShards(gs: GameState): number {
+   let total = 0;
+   for (const [symbol, amount] of gs.permanentElements) {
+      total += getTotalElementUpgradeCost(amount.production);
+      total += getTotalElementUpgradeCost(amount.xp);
+      total += amount.amount;
+   }
+   return total;
+}
+
+export function getTotalElementKinds(gs: GameState): number {
+   let total = 0;
+   for (const [symbol, amount] of gs.permanentElements) {
+      if (amount.amount > 0 || amount.production > 0 || amount.xp > 0) {
+         total += 1;
+      }
+   }
+   return total;
+}
+
+export function getTotalElementLevels(gs: GameState): number {
+   let total = 0;
+   for (const [symbol, amount] of gs.permanentElements) {
+      total += amount.production;
+      total += amount.xp;
+   }
+   return total;
 }

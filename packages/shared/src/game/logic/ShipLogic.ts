@@ -7,7 +7,7 @@ import type { Resource } from "../definitions/Resource";
 import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
 import type { ITileData } from "../ITileData";
-import { calcSpaceshipXP, getMaxSpaceshipXP, getQuantumLimit, getUsedQuantum } from "./ResourceLogic";
+import { calcSpaceshipXP, getMaxSpaceshipXP, getQualifiedQuantum, getUsedQuantum } from "./ResourceLogic";
 import { Side } from "./Side";
 
 export function calculateAABB(tiles: Tiles): AABB {
@@ -128,7 +128,7 @@ export function isWithinShipExtent(tile: Tile, gs: GameState): boolean {
 
 export function validateForClient(gs: GameState): boolean {
    try {
-      const quantumLimit = getQuantumLimit(gs);
+      const quantumLimit = getQualifiedQuantum(gs);
       const usedQuantum = getUsedQuantum(gs);
       if (usedQuantum > quantumLimit) {
          return false;
@@ -142,7 +142,7 @@ export function validateForClient(gs: GameState): boolean {
 
 export function validateForMatchmaking(gs: GameState): boolean {
    try {
-      const quantumLimit = getQuantumLimit(gs);
+      const quantumLimit = getQualifiedQuantum(gs);
       const usedQuantum = getUsedQuantum(gs);
       if (quantumLimit !== usedQuantum) {
          return false;
@@ -194,7 +194,7 @@ function _validateShip(gs: GameState): boolean {
 }
 
 export function isQualifierBattle(gs: GameState): boolean {
-   const quantumLimit = getQuantumLimit(gs);
+   const quantumLimit = getQualifiedQuantum(gs);
    const usedQuantum = getUsedQuantum(gs);
    if (usedQuantum < quantumLimit) {
       return false;

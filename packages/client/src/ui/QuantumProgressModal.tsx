@@ -6,7 +6,7 @@ import {
    ElementThisRunColor,
 } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { getQuantumLimit, getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getQualifiedQuantum, getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { clamp, formatNumber, mMapOf, range } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { ElementImageComp } from "../game/ElementImage";
@@ -15,8 +15,8 @@ import { refreshOnTypedEvent } from "../utils/Hook";
 
 export function QuantumProgressModal(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
-   const start = Math.floor(getQuantumLimit(G.save.current) / BattleWinQuantum - 1) * BattleWinQuantum;
-   const limit = getQuantumLimit(G.save.current);
+   const start = Math.floor(getQualifiedQuantum(G.save.current) / BattleWinQuantum - 1) * BattleWinQuantum;
+   const limit = getQualifiedQuantum(G.save.current);
    const used = getUsedQuantum(G.save.current);
    return (
       <div className="m10">

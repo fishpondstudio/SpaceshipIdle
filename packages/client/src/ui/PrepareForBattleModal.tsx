@@ -10,7 +10,7 @@ import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/l
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import {
    calcSpaceshipXP,
-   getQuantumLimit,
+   getQualifiedQuantum,
    getUsedQuantum,
    quantumToXP,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -31,7 +31,7 @@ import { playBling, playClick, playError } from "./Sound";
 export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const theme = useMantineTheme();
-   const quantum = getQuantumLimit(G.save.current);
+   const quantum = getQualifiedQuantum(G.save.current);
    const usedQuantum = getUsedQuantum(G.save.current);
    const xp = calcSpaceshipXP(G.save.current);
    const maxXP = quantumToXP(quantum);

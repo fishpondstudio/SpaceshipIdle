@@ -17,7 +17,7 @@ import { BattleFlag, BattleType } from "./BattleType";
 import { tickElement } from "./ElementLogic";
 import { tickProduction } from "./ProductionLogic";
 import type { Projectile } from "./Projectile";
-import { getQuantumLimit } from "./ResourceLogic";
+import { getQualifiedQuantum } from "./ResourceLogic";
 import { RuntimeStat } from "./RuntimeStat";
 import { RuntimeTile } from "./RuntimeTile";
 import { flipHorizontal, isEnemy, shipAABB } from "./ShipLogic";
@@ -84,7 +84,7 @@ export class Runtime {
    }
 
    public createXPTarget(): void {
-      const level = Math.floor(getQuantumLimit(this.left) / 10) + this.wave;
+      const level = Math.floor(getQualifiedQuantum(this.left) / 10) + this.wave;
       if (this.right.tiles.size > 0) {
          console.error("createEnemy called when there are still enemy tiles left");
          return;

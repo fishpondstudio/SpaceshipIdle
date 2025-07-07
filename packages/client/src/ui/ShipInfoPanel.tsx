@@ -7,7 +7,7 @@ import { elementToXP } from "@spaceship-idle/shared/src/game/logic/ElementLogic"
 import {
    calcSpaceshipXP,
    getMaxSpaceshipXP,
-   getQuantumLimit,
+   getQualifiedQuantum,
    getUsedQuantum,
    resourceDiffOf,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -65,7 +65,7 @@ export function ShipInfoPanel(): React.ReactNode {
    G.runtime.rightStat.averageRawDamage(10, rawDamages);
    G.runtime.rightStat.averageActualDamage(10, actualDamages);
    const maxSV = getMaxSpaceshipXP(state);
-   const quantumLimit = getQuantumLimit(state);
+   const quantumLimit = getQualifiedQuantum(state);
    const xp = state.resources.get("XP") ?? 0;
    return (
       <div className="sf-frame top ship-info">
@@ -255,7 +255,16 @@ function _QuantumComp({
    qualifiedQuantum: number;
 }): React.ReactNode {
    return (
-      <Tooltip multiline maw="30vw" label={<RenderHTML html={t(L.QuantumTooltipHTMLV2)} />}>
+      <Tooltip
+         multiline
+         maw="30vw"
+         label={
+            <>
+               <RenderHTML html={t(L.QuantumTooltipHTMLV2)} />
+               <RenderHTML html={t(L.QuantumFromPermanentElementTooltipHTML)} />
+            </>
+         }
+      >
          <div
             className="block pointer"
             style={{ width: 150, position: "relative" }}
