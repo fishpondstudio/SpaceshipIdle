@@ -685,4 +685,5 @@ export const EN = {
    QuantumFromPermanentElementTooltipHTML:
       "Every <b>10 levels</b> of permanent element provide <b>5 qualified quantum</b>",
    TechMultiplierBoost: "Upgrade Modules",
+   HPMultiplier: "HP Multiplier",
 };

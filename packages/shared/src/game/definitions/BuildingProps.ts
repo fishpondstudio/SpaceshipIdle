@@ -93,9 +93,9 @@ export const BaseDefenseProps: IDefenseProp = {
 
 export const ProductionDefenseProps: IDefenseProp = {
    ...BaseDefenseProps,
-   armor: [10, 1],
-   shield: [10, 1],
-   deflection: [10, 1],
+   armor: [20, 1],
+   shield: [20, 1],
+   deflection: [20, 1],
 } as const;
 
 export const BoosterDefenseProps: IDefenseProp = {

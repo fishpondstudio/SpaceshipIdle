@@ -1,6 +1,5 @@
 import { type Tile, type ValueOf, forEach, hasFlag, mapSafeAdd, safeAdd } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
-import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import type { GameState } from "../GameState";
 import { abilityTarget } from "../definitions/Ability";
@@ -12,7 +11,6 @@ import type { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag } from "./RuntimeTile";
 import { getSide } from "./ShipLogic";
-import { getTechName } from "./TechLogic";
 
 export const TickProductionOption = {
    None: 0,
@@ -47,35 +45,6 @@ export function tickProduction(gs: GameState, stat: RuntimeStat, rt: Runtime): v
       const def = Config.Buildings[data.type];
       const rs = rt.get(tile);
       if (!rs) return;
-
-      gs.unlockedTech.forEach((tech) => {
-         const def = Config.Tech[tech];
-         forEach(def.multiplier, (building, amount) => {
-            if (data.type === building) {
-               if (amount.production) {
-                  rs.productionMultiplier.add(amount.production, t(L.ResearchX, getTechName(tech)));
-               }
-               if (amount.xp) {
-                  rs.xpMultiplier.add(amount.xp, t(L.ResearchX, getTechName(tech)));
-               }
-            }
-         });
-      });
-      const element = def.element;
-      if (element) {
-         const thisRun = gs.elements.get(element) ?? 0;
-         if (thisRun > 0) {
-            rs.productionMultiplier.add(thisRun, t(L.ElementAmountThisRun, element));
-         }
-         const permanent = gs.permanentElements.get(element)?.production ?? 0;
-         if (permanent > 0) {
-            rs.productionMultiplier.add(permanent, t(L.ElementPermanent, element));
-         }
-         const xp = gs.permanentElements.get(element)?.xp ?? 0;
-         if (xp > 0) {
-            rs.xpMultiplier.add(xp, t(L.ElementPermanent, element));
-         }
-      }
 
       rs.insufficient.clear();
       forEach(def.input, (res, _amount) => {

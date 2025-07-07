@@ -1,6 +1,8 @@
 import { clamp, createTile, hasFlag, mapSafeAdd, type Tile } from "../../utils/Helper";
 import { srand } from "../../utils/Random";
 import { TypedEvent } from "../../utils/TypedEvent";
+import { L, t } from "../../utils/i18n";
+import { Config } from "../Config";
 import type { GameOption } from "../GameOption";
 import { type GameState, GameStateUpdated, hashGameStatePair, type SaveGame, type Tiles } from "../GameState";
 import { makeTile } from "../ITileData";
@@ -22,6 +24,7 @@ import { RuntimeStat } from "./RuntimeStat";
 import { RuntimeTile } from "./RuntimeTile";
 import { flipHorizontal, isEnemy, shipAABB } from "./ShipLogic";
 import { Side } from "./Side";
+import { getTechName } from "./TechLogic";
 
 interface IBattleStatusChanged {
    prevStatus: BattleStatus;
@@ -160,7 +163,7 @@ export class Runtime {
       while (this.productionTimer >= ProductionTickInterval) {
          this.productionTimer -= ProductionTickInterval;
          this._checkSpeed(g);
-         this._prepareForProduction();
+         this._tickMultipliers();
          this._tickStatusEffect();
          this._tickProduction();
          this._checkLifeTime();
@@ -262,10 +265,50 @@ export class Runtime {
       }
    }
 
-   private _prepareForProduction(): void {
+   private _tickMultipliers(): void {
       this.tiles.forEach((rs) => {
          rs.productionMultiplier.clear();
          rs.xpMultiplier.clear();
+         rs.hpMultiplier.clear();
+         rs.damageMultiplier.clear();
+
+         const gs = this.getGameState(rs.tile);
+         if (!gs) return;
+
+         gs.unlockedTech.forEach((tech) => {
+            const def = Config.Tech[tech];
+            const multipliers = def?.multiplier?.[rs.data.type];
+            if (!multipliers) {
+               return;
+            }
+            if (multipliers.production) {
+               rs.productionMultiplier.add(multipliers.production, t(L.ResearchX, getTechName(tech)));
+            }
+            if (multipliers.xp) {
+               rs.xpMultiplier.add(multipliers.xp, t(L.ResearchX, getTechName(tech)));
+            }
+            if (multipliers.hp) {
+               rs.hpMultiplier.add(multipliers.hp, t(L.ResearchX, getTechName(tech)));
+            }
+            if (multipliers.damage) {
+               rs.damageMultiplier.add(multipliers.damage, t(L.ResearchX, getTechName(tech)));
+            }
+         });
+         const element = Config.Buildings[rs.data.type].element;
+         if (element) {
+            const thisRun = gs.elements.get(element) ?? 0;
+            if (thisRun > 0) {
+               rs.productionMultiplier.add(thisRun, t(L.ElementAmountThisRun, element));
+            }
+            const permanent = gs.permanentElements.get(element)?.production ?? 0;
+            if (permanent > 0) {
+               rs.productionMultiplier.add(permanent, t(L.ElementPermanent, element));
+            }
+            const xp = gs.permanentElements.get(element)?.xp ?? 0;
+            if (xp > 0) {
+               rs.xpMultiplier.add(xp, t(L.ElementPermanent, element));
+            }
+         }
       });
    }
 

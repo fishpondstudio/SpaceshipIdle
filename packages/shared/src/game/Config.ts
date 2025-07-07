@@ -1,14 +1,14 @@
 import { forEach, hasFlag, keysOf, reduceOf, sizeOf } from "../utils/Helper";
-import { BuildingFlag, WeaponKey, type IBuildingDefinition } from "./definitions/BuildingProps";
-import { Buildings, type Building } from "./definitions/Buildings";
+import { BuildingFlag, type IBuildingDefinition, WeaponKey } from "./definitions/BuildingProps";
+import { type Building, Buildings } from "./definitions/Buildings";
 import { MaxBattleTick } from "./definitions/Constant";
 import type { Resource } from "./definitions/Resource";
 import { Resources } from "./definitions/Resource";
-import { StatusEffects, type StatusEffect } from "./definitions/StatusEffect";
+import { type StatusEffect, StatusEffects } from "./definitions/StatusEffect";
 import { TechDefinitions } from "./definitions/TechDefinitions";
-import { getBuildingValue } from "./logic/BuildingLogic";
+import { getBuildingValue, isBooster } from "./logic/BuildingLogic";
 import { getTechForBuilding } from "./logic/TechLogic";
-import { PeriodicTable, type ElementSymbol } from "./PeriodicTable";
+import { type ElementSymbol, PeriodicTable } from "./PeriodicTable";
 
 console.assert(sizeOf(Buildings) < MaxBattleTick);
 const BuildingId = Object.fromEntries(Object.entries(Buildings).map(([b, _], i) => [b, i])) as Record<Building, number>;
@@ -65,7 +65,7 @@ function calculatePrice(res: Resource): number {
       inputTier = Math.max(inputTier, Config.ResourceTier.get(res) ?? 0);
    });
 
-   const outputAmount = reduceOf(def.output, (acc, k, v) => acc + v, 0);
+   const outputAmount = reduceOf(def.output, (acc, _k, v) => acc + v, 0);
    if (inputPrice === 0) {
       throw new Error(`Resource ${res} has 0 price`);
    }
@@ -85,7 +85,7 @@ function initConfig(): void {
       if (def.element) {
          if (Config.Elements.has(def.element)) {
             const unusedElements = new Set(keysOf(PeriodicTable));
-            forEach(Config.Buildings, (b, def) => {
+            forEach(Config.Buildings, (_b, def) => {
                if (def.element) {
                   unusedElements.delete(def.element);
                }
@@ -121,7 +121,7 @@ function initConfig(): void {
                }
             });
          }
-         forEach(building.input, (res, amount) => {
+         forEach(building.input, (res, _amount) => {
             if (res === "Power") return;
             const [building, _] = getBuildingThatProduces(res);
             buildings.add(building);
@@ -147,8 +147,43 @@ function initConfig(): void {
       }
    });
 
+   for (let i = 0; i <= 6; ++i) {
+      const actual = new Set<Building>();
+      forEach(Config.Tech, (tech, def) => {
+         if (def.ring === i && def.multiplier) {
+            forEach(def.multiplier, (b, m) => {
+               if (m.hp) {
+                  if (actual.has(b)) {
+                     console.error(`Ring ${i} has duplicate building ${b} (${tech})`);
+                  }
+                  actual.add(b);
+               }
+            });
+         }
+      });
+      const expected = new Set<Building>();
+      Config.BuildingTier.forEach((tier, building) => {
+         if (tier < i && !(WeaponKey in Config.Buildings[building]) && !isBooster(building)) {
+            expected.add(building);
+         }
+      });
+      if (sizeOf(actual) !== sizeOf(expected)) {
+         console.error(`Ring ${i} has ${sizeOf(actual)} buildings, expected ${sizeOf(expected)}`);
+      }
+
+      const missing: Building[] = [];
+      expected.forEach((b) => {
+         if (!actual.has(b)) {
+            missing.push(b);
+         }
+      });
+      if (missing.length > 0) {
+         console.error(`Ring ${i} is missing building ${missing.join(", ")}`);
+      }
+   }
+
    const statusEffects = new Set<StatusEffect>(keysOf(StatusEffects));
-   forEach(Config.Buildings, (building, def) => {
+   forEach(Config.Buildings, (_building, def) => {
       if ("ability" in def && def.ability) {
          statusEffects.delete(def.ability.effect);
       }

@@ -1,7 +1,7 @@
 import { forEach, formatNumber, hasFlag, mapOf, mapSafeAdd } from "../../utils/Helper";
 import { Config } from "../Config";
 import { AbilityRangeLabel } from "../definitions/Ability";
-import { BuildingFlag, type IBoosterDefinition, WeaponKey } from "../definitions/BuildingProps";
+import { BuildingFlag, type IBoosterDefinition } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { MaxBuildingCount } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
@@ -181,14 +181,10 @@ export function getBuildingDesc(building: Building): string {
 }
 
 export function normalizedValueToHp(normalizedValue: number, building: Building): number {
-   const def = Config.Buildings[building];
    if (isBooster(building)) {
       return ((Config.BuildingTier.get(building) ?? 3) - 2) * 1000;
    }
-   if (WeaponKey in def) {
-      return normalizedValue * 10;
-   }
-   return normalizedValue * 50;
+   return normalizedValue * 10;
 }
 
 export function hasConstructed(building: Building, gs: GameState): boolean {

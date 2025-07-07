@@ -77,6 +77,8 @@ export class RuntimeTile {
 
    public readonly productionMultiplier = new Multiplier();
    public readonly xpMultiplier = new Multiplier();
+   public readonly hpMultiplier = new Multiplier();
+   public readonly damageMultiplier = new Multiplier();
 
    public readonly criticalDamages: ICriticalDamage[] = [];
 
@@ -305,12 +307,12 @@ export class RuntimeTile {
          }
       });
       const normVal = getNormalizedValue(this.data);
-      this.props.hp = normalizedValueToHp(normVal, this.data.type);
+      this.props.hp = normalizedValueToHp(normVal, this.data.type) * this.hpMultiplier.value;
       if ("lifeTime" in def) {
          this.props.lifeTime = def.lifeTime;
       }
       if (WeaponKey in def) {
-         const dmg = normVal * getCooldownMultiplier(this.data);
+         const dmg = normVal * getCooldownMultiplier(this.data) * this.damageMultiplier.value;
          this.props.damagePerProjectile = (def.damagePct * dmg) / def.projectiles;
       }
       Object.assign(this.originalProps, this.props);

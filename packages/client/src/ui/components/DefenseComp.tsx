@@ -41,6 +41,26 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   <StatComp current={rs.props.hp} original={rs.originalProps.hp} />
                </div>
             </div>
+            {rs.hpMultiplier.detail.length > 0 ? (
+               <>
+                  <div className="h10" />
+                  <div className="subtitle">
+                     {t(L.HPMultiplier)}x{formatNumber(rs.hpMultiplier.value)}
+                  </div>
+                  <div className="row text-sm">
+                     <div className="f1">{t(L.BaseMultiplier)}</div>
+                     <div>1</div>
+                  </div>
+                  {rs.hpMultiplier.detail.map((m) => {
+                     return (
+                        <div className="row text-sm" key={m.source}>
+                           <div className="f1">{m.source}</div>
+                           <div className="text-green">+{formatNumber(m.value)}</div>
+                        </div>
+                     );
+                  })}
+               </>
+            ) : null}
             <div className="divider dashed mx-10 my10" />
             <Tooltip
                label={
