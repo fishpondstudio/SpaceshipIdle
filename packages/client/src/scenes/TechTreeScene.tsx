@@ -1,21 +1,35 @@
 import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import type { Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
+import { ShipClass, type Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { getTechDesc, getTechName, isTechUnderDevelopment } from "@spaceship-idle/shared/src/game/logic/TechLogic";
-import { equal, forEach, mapSafePush, numberToRoman } from "@spaceship-idle/shared/src/utils/Helper";
+import { equal, forEach, numberToRoman } from "@spaceship-idle/shared/src/utils/Helper";
 import { AABB, type IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
-import { Container, LINE_CAP, LINE_JOIN, Sprite, type ColorSource, type FederatedPointerEvent } from "pixi.js";
+import {
+   type ColorSource,
+   Container,
+   type FederatedPointerEvent,
+   LINE_CAP,
+   LINE_JOIN,
+   NineSlicePlane,
+   Sprite,
+} from "pixi.js";
 import { Fonts } from "../assets";
 import { hideSidebar, setSidebar } from "../ui/Sidebar";
 import { playClick } from "../ui/Sound";
 import { TechPage } from "../ui/TechPage";
+import { WheelMode } from "../utils/Camera";
 import { G } from "../utils/Global";
-import { destroyAllChildren, Scene, type ISceneContext } from "../utils/SceneManager";
+import { destroyAllChildren, type ISceneContext, Scene } from "../utils/SceneManager";
 import { UnicodeText } from "../utils/UnicodeText";
 
 const BoxWidth = 200;
 const BoxHeight = 75;
-const Radius = 250;
+const ColumnWidth = 400;
+const PageHeight = 1000;
+const HeaderHeight = 100;
+const TopMargin = 40;
+const BottomMargin = 40;
+const Gap = 20;
 
 export class TechTreeScene extends Scene {
    private _graphics: SmoothGraphics;
@@ -36,109 +50,120 @@ export class TechTreeScene extends Scene {
       super(context);
       const { app, textures } = this.context;
 
-      const width = 5000;
-      const height = 5000;
+      const rowCount = new Map<number, number>();
 
-      const minZoom = Math.min(app.screen.width / width, app.screen.height / height);
-      this.viewport.setWorldSize(width, height);
-      this.viewport.setZoomRange(minZoom, 2);
-      this.viewport.center = { x: width / 2, y: height / 2 };
-      this.viewport.setWorldSize(width, height);
+      forEach(Config.Tech, (_tech, def) => {
+         const col = def.position.x;
+         const count = rowCount.get(col) ?? 0;
+         rowCount.set(col, count + 1);
+      });
 
-      // const bg = this.viewport.addChild(new Sprite(Texture.WHITE));
-      // bg.position.set(0, 0);
-      // bg.width = width;
-      // bg.height = height;
-      // bg.tint = 0x000000;
+      const zoom = app.screen.height / (PageHeight * 1.05);
+      const leftMargin = 320 / zoom;
+      const width = rowCount.size * ColumnWidth + leftMargin * 2;
+      const height = PageHeight;
+
+      this.viewport.setWorldSize(width, PageHeight);
+      this.viewport.zoom = zoom;
+      this.viewport.wheelMode = WheelMode.HorizontalScroll;
+      this.viewport.center = { x: 0, y: height / 2 };
 
       this._graphics = this.viewport.addChild(new SmoothGraphics());
       this._selectedGraphics = this.viewport.addChild(new SmoothGraphics());
       this._boxContainer = this.viewport.addChild(new Container());
       this._selectedBoxContainer = this.viewport.addChild(new Container());
 
-      const techByRing = new Map<number, Tech[]>();
-      let maxRing = 0;
+      forEach(ShipClass, (_shipClass, def) => {
+         const x = def.range[0] * ColumnWidth + Gap + leftMargin;
+         const y = TopMargin;
+         const frame = this._boxContainer.addChild(
+            new NineSlicePlane(G.textures.get("Misc/TechFrame")!, 17, 17, 17, 17),
+         );
+         frame.position.set(x, y);
+         frame.width = (def.range[1] - def.range[0] + 1) * ColumnWidth - Gap;
+         frame.height = PageHeight - BottomMargin - TopMargin;
+         frame.alpha = 0.25;
 
-      forEach(Config.Tech, (tech, def) => {
-         if (def.ring > maxRing) {
-            maxRing = def.ring;
-         }
-         mapSafePush(techByRing, def.ring, tech);
+         const name = this.viewport.addChild(
+            new UnicodeText(def.name().toUpperCase(), {
+               fontName: Fonts.SpaceshipIdleBold,
+               fontSize: 28,
+               tint: 0xffffff,
+               letterSpacing: 28,
+            }),
+         );
+         name.anchor.set(0.5);
+         name.position.set(x + frame.width / 2, y + 20);
       });
 
-      for (let ring = 0; ring <= maxRing; ring++) {
-         const techs = techByRing.get(ring);
-         if (techs) {
-            for (let i = 0; i < techs.length; i++) {
-               const tech = techs[i];
-               const angle = (i * 2 * Math.PI) / techs.length - Math.PI / 2;
-               const x = Math.cos(angle) * Radius * ring;
-               const y = Math.sin(angle) * Radius * ring;
-               const frame = this._boxContainer.addChild(new Sprite(G.textures.get("Misc/TechFrame")));
-               frame.anchor.set(0.5);
-               frame.position.set(width / 2 + x, height / 2 + y);
-               frame.alpha = 0.5;
-               const tier = this.viewport.addChild(
-                  new UnicodeText(numberToRoman(ring) ?? "", {
-                     fontName: Fonts.SpaceshipIdle,
-                     fontSize: 16,
-                     tint: 0xffffff,
-                  }),
-               );
-               tier.anchor.set(1, 0);
-               tier.position.set(width / 2 + x + BoxWidth / 2 - 4, height / 2 + y - BoxHeight / 2 + 2);
+      forEach(Config.Tech, (tech, def) => {
+         const x = def.position.x * ColumnWidth + ColumnWidth / 2 - BoxWidth / 2 + leftMargin;
+         const h = (PageHeight - BottomMargin - TopMargin - HeaderHeight) / (rowCount.get(def.position.x) ?? 1);
+         const y = HeaderHeight + def.position.y * h + h / 2 - BoxHeight / 2;
 
-               if (import.meta.env.DEV) {
-                  const id = this.viewport.addChild(
-                     new UnicodeText(numberToRoman(ring) ?? "", {
-                        fontName: Fonts.SpaceshipIdle,
-                        fontSize: 16,
-                        tint: 0xffffff,
-                     }),
-                  );
-                  id.text = tech;
-                  id.anchor.set(0, 1);
-                  id.position.set(width / 2 + x - BoxWidth / 2 + 6, height / 2 + y + BoxHeight / 2 - 8);
-               }
+         const container = this._boxContainer.addChild(new Container());
+         container.position.set(x, y);
+         container.width = BoxWidth;
+         container.height = BoxHeight;
 
-               if (!isTechUnderDevelopment(tech)) {
-                  const text = this.viewport.addChild(
-                     new UnicodeText(getTechName(tech), {
-                        fontName: Fonts.SpaceshipIdle,
-                        fontSize: 20,
-                        tint: 0xffffff,
-                     }),
-                  );
-                  while (text.width > BoxWidth - 20) {
-                     text.size--;
-                  }
-                  text.anchor.set(0.5);
-                  text.position.set(width / 2 + x, height / 2 + y - 14);
+         const frame = container.addChild(new Sprite(G.textures.get("Misc/TechFrame")));
+         frame.position.set(0, 0);
+         frame.width = BoxWidth;
+         frame.height = BoxHeight;
 
-                  const desc = this.viewport.addChild(
-                     new UnicodeText(getTechDesc(tech), {
-                        fontName: Fonts.SpaceshipIdle,
-                        fontSize: 14,
-                        tint: 0xffffff,
-                     }),
-                  );
-                  while (desc.width > BoxWidth - 20) {
-                     desc.size--;
-                  }
-                  desc.anchor.set(0.5);
-                  desc.position.set(width / 2 + x, height / 2 + y + 10);
-               }
+         frame.alpha = 0.5;
+         const tier = container.addChild(
+            new UnicodeText(numberToRoman(def.position.x + 1) ?? "", {
+               fontName: Fonts.SpaceshipIdle,
+               fontSize: 16,
+               tint: 0xffffff,
+            }),
+         );
+         tier.anchor.set(1, 0);
+         tier.position.set(BoxWidth - 4, 2);
 
-               this._techs.set(
-                  tech,
-                  new AABB(
-                     { x: width / 2 + x - BoxWidth / 2, y: height / 2 + y - BoxHeight / 2 },
-                     { x: width / 2 + x + BoxWidth / 2, y: height / 2 + y + BoxHeight / 2 },
-                  ),
-               );
-            }
+         if (import.meta.env.DEV) {
+            const id = container.addChild(
+               new UnicodeText(tech, {
+                  fontName: Fonts.SpaceshipIdle,
+                  fontSize: 16,
+                  tint: 0xffffff,
+               }),
+            );
+            id.anchor.set(0, 1);
+            id.position.set(6, BoxHeight - 8);
          }
-      }
+
+         if (!isTechUnderDevelopment(tech)) {
+            const text = container.addChild(
+               new UnicodeText(getTechName(tech), {
+                  fontName: Fonts.SpaceshipIdle,
+                  fontSize: 20,
+                  tint: 0xffffff,
+               }),
+            );
+            while (text.width > BoxWidth - 20) {
+               text.size--;
+            }
+            text.anchor.set(0.5);
+            text.position.set(BoxWidth / 2, BoxHeight / 2 - 10);
+
+            const desc = container.addChild(
+               new UnicodeText(getTechDesc(tech), {
+                  fontName: Fonts.SpaceshipIdle,
+                  fontSize: 14,
+                  tint: 0xffffff,
+               }),
+            );
+            while (desc.width > BoxWidth - 20) {
+               desc.size--;
+            }
+            desc.anchor.set(0.5);
+            desc.position.set(BoxWidth / 2, BoxHeight / 2 + 10);
+         }
+
+         this._techs.set(tech, new AABB({ x: x, y: y }, { x: x + BoxWidth, y: y + BoxHeight }));
+      });
 
       this.drawSelected();
 
@@ -247,18 +272,10 @@ export class TechTreeScene extends Scene {
       const fromCenter = from.center;
       const toCenter = to.center;
       const dx = toCenter.x - fromCenter.x;
-      const dy = toCenter.y - fromCenter.y;
       const diff = {
          x: equal(fromCenter.x, toCenter.x) ? 0 : Math.sign(dx),
-         y: equal(fromCenter.y, toCenter.y) ? 0 : Math.sign(dy),
+         y: 0,
       };
-
-      if (Math.abs(dx) > Math.abs(dy)) {
-         diff.y = 0;
-      }
-      if (Math.abs(dx) < Math.abs(dy)) {
-         diff.x = 0;
-      }
 
       diff.x *= BoxWidth / 2 + 10;
       diff.y *= BoxHeight / 2 + 10;
