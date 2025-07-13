@@ -168,8 +168,12 @@ export class Runtime {
          this._checkSpeed(g);
          this._tickMultipliers();
          this._tickStatusEffect();
-         this._tabulate();
          this._checkLifeTime();
+
+         tickElement(this.left);
+         this.leftStat.tabulate(this);
+         this.rightStat.tabulate(this);
+         ++this.productionTick;
          this.gameStateDirty = true;
       }
       while (this.battleTimer >= BattleTickInterval) {
@@ -310,13 +314,6 @@ export class Runtime {
             }
          }
       });
-   }
-
-   private _tabulate(): void {
-      this.leftStat.tabulate(this);
-      this.rightStat.tabulate(this);
-      tickElement(this.left);
-      ++this.productionTick;
    }
 
    private _checkLifeTime(): void {
