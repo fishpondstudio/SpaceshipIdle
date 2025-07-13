@@ -1,18 +1,15 @@
-import { Badge, Switch, Tooltip } from "@mantine/core";
+import { Badge, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageTypeLabel, ProjectileFlag, WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
-import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
-import { getCooldownMultiplier } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
-import { clearFlag, formatNumber, hasFlag, mapOf, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
+import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
+import { formatNumber, hasFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import type { ITileWithGameState } from "../ITileWithGameState";
 import { AbilityComp } from "./AbilityComp";
 import { RenderHTML } from "./RenderHTMLComp";
-import { ResourceAmount } from "./ResourceAmountComp";
 import { StatComp } from "./StatComp";
-import { XPIcon } from "./SVGIcons";
 import { TitleComp } from "./TitleComp";
 
 export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
@@ -79,28 +76,6 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                </div>
             ) : null}
          </div>
-         <div className="divider my10" />
-         <div className="title">
-            <div>{t(L.Ammo)}</div>
-            <div className="f1" />
-            <Tooltip label={<RenderHTML html={t(L.AmmoConsumptionTooltip)} />} multiline maw="30vw">
-               <div className="row">
-                  <div>{t(L.PerFire)}</div>
-                  <Switch
-                     size="xs"
-                     checked={hasFlag(G.save.options.flag, GameOptionFlag.ShowAmmoPerSec)}
-                     onChange={() => {
-                        G.save.options.flag = hasFlag(G.save.options.flag, GameOptionFlag.ShowAmmoPerSec)
-                           ? clearFlag(G.save.options.flag, GameOptionFlag.ShowAmmoPerSec)
-                           : setFlag(G.save.options.flag, GameOptionFlag.ShowAmmoPerSec);
-                        GameOptionUpdated.emit();
-                     }}
-                  />
-                  <div>{t(L.PerSec)}</div>
-               </div>
-            </Tooltip>
-         </div>
-         <div className="divider my10" />
          {rs.xpMultiplier.value > 1 ? (
             <div className="mx10">
                <div className="h5" />

@@ -1,4 +1,4 @@
-import { forEach, hasFlag, mapSafeAdd, Rounding, round, safeAdd, type Tile, type ValueOf } from "../../utils/Helper";
+import { forEach, hasFlag, mapSafeAdd, round, Rounding, safeAdd, type Tile, type ValueOf } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
 import {
@@ -15,8 +15,7 @@ import {
 } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { DefaultCooldown, StatusEffectTickInterval } from "../definitions/Constant";
-import type { Resource } from "../definitions/Resource";
-import { type StatusEffect, StatusEffectFlag, StatusEffects, statusEffectOf } from "../definitions/StatusEffect";
+import { type StatusEffect, StatusEffectFlag, statusEffectOf, StatusEffects } from "../definitions/StatusEffect";
 import { type GameState, GameStateUpdated } from "../GameState";
 import { GridSize } from "../Grid";
 import type { ITileData } from "../ITileData";
@@ -37,10 +36,8 @@ import { Side } from "./Side";
 
 export const RuntimeFlag = {
    None: 0,
-   NoPower: 1 << 0,
-   NoProduction: 1 << 1,
-   NoFire: 1 << 2,
-   BlockLaser: 1 << 3,
+   NoFire: 1 << 0,
+   BlockLaser: 1 << 1,
 } as const;
 
 export type RuntimeFlag = ValueOf<typeof RuntimeFlag>;

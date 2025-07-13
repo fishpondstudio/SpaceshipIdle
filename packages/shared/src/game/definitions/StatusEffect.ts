@@ -1,7 +1,7 @@
 import { clamp, formatNumber, formatPercent, hasFlag, setFlag, type ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import { RuntimeFlag, type IRuntimeEffect, type RuntimeTile } from "../logic/RuntimeTile";
+import { type IRuntimeEffect, RuntimeFlag, type RuntimeTile } from "../logic/RuntimeTile";
 import { AbilityRange, abilityTarget } from "./Ability";
 import { DamageType, ProjectileFlag } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
@@ -310,24 +310,6 @@ export const StatusEffects = {
             }
          });
          rs.props.hp *= 1 + 0.1 * count;
-      },
-   },
-   PowerBlackout: {
-      name: () => t(L.PowerBlackout),
-      desc: (value) => t(L.PowerBlackoutDesc),
-      flag: StatusEffectFlag.Negative,
-      type: StatusEffectType.Electrical,
-      onTick: (se, rs) => {
-         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoPower);
-      },
-   },
-   ProductionDisruption: {
-      name: () => t(L.ProductionDisruption),
-      desc: (value) => t(L.ProductionDisruptionDesc),
-      flag: StatusEffectFlag.Negative,
-      type: StatusEffectType.Electrical,
-      onTick: (se, rs) => {
-         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoProduction);
       },
    },
    Disarm: {

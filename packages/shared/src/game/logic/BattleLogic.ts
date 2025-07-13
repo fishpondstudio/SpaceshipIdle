@@ -11,7 +11,6 @@ import { GameState } from "../GameState";
 import { posToTile } from "../Grid";
 import { BattleStatus } from "./BattleStatus";
 import { BattleFlag, BattleType } from "./BattleType";
-import { RequestFloater } from "./ProductionLogic";
 import { Projectile } from "./Projectile";
 import { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
@@ -29,6 +28,7 @@ export const OnWeaponFire = new TypedEvent<{ from: Tile; to: Tile }>();
 export const OnProjectileHit = new TypedEvent<IProjectileHit>();
 export const OnDamaged = new TypedEvent<{ tile: Tile; amount: number }>();
 export const OnEvasion = new TypedEvent<{ tile: Tile }>();
+export const RequestFloater = new TypedEvent<{ tile: Tile; amount: number }>();
 
 export function tickProjectiles(
    side: Side,

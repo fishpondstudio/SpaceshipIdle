@@ -1,6 +1,6 @@
 import { computePosition, flip, offset, shift } from "@floating-ui/core";
 import { notifications } from "@mantine/notifications";
-import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
+import { SmoothGraphics } from "@pixi/graphics-smooth";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { AbilityTiming, abilityTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
@@ -17,7 +17,13 @@ import {
    tileToPosCenter,
 } from "@spaceship-idle/shared/src/game/Grid";
 import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
-import { OnDamaged, OnEvasion, OnProjectileHit, OnWeaponFire } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import {
+   OnDamaged,
+   OnEvasion,
+   OnProjectileHit,
+   OnWeaponFire,
+   RequestFloater,
+} from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
    canSpend,
@@ -26,7 +32,6 @@ import {
    isBooster,
    trySpend,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { RequestFloater } from "@spaceship-idle/shared/src/game/logic/ProductionLogic";
 import type { Projectile } from "@spaceship-idle/shared/src/game/logic/Projectile";
 import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
@@ -42,8 +47,6 @@ import {
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import {
    createTile,
-   drawDashedLine,
-   forEach,
    hasFlag,
    lookAt,
    mapSafeAdd,
@@ -58,8 +61,6 @@ import {
    type ColorSource,
    Container,
    type FederatedPointerEvent,
-   LINE_CAP,
-   LINE_JOIN,
    ParticleContainer,
    Sprite,
    TilingSprite,

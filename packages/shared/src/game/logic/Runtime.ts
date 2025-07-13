@@ -17,7 +17,6 @@ import { tickProjectiles, tickTiles } from "./BattleLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleFlag, BattleType } from "./BattleType";
 import { tickElement } from "./ElementLogic";
-import { tickProduction } from "./ProductionLogic";
 import type { Projectile } from "./Projectile";
 import { getQualifiedQuantum } from "./ResourceLogic";
 import { RuntimeStat } from "./RuntimeStat";
@@ -98,10 +97,14 @@ export class Runtime {
       });
       for (let y = aabb.min.y; y <= aabb.max.y; ++y) {
          for (let x = aabb.min.x; x <= aabb.max.x; ++x) {
-            this.right.tiles.set(createTile(x, y), makeTile("AC30", level));
+            const tile = createTile(x, y);
+            this.right.tiles.set(tile, makeTile("AC30", level));
          }
       }
       this.right.tiles = flipHorizontal(this.right.tiles);
+      this.right.tiles.forEach((data, tile) => {
+         this.get(tile)?.addStatusEffect("Disarm", tile, "AC30", 1, Number.POSITIVE_INFINITY);
+      });
       this.rightStat = new RuntimeStat();
    }
 
@@ -313,8 +316,8 @@ export class Runtime {
    }
 
    private _tickProduction(): void {
-      tickProduction(this.left, this.leftStat, this);
-      tickProduction(this.right, this.rightStat, this);
+      this.leftStat.tabulate(this);
+      this.rightStat.tabulate(this);
       tickElement(this.left);
       ++this.productionTick;
    }

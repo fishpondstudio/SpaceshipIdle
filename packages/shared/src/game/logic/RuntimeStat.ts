@@ -1,10 +1,11 @@
-import { forEach, safeAdd } from "../../utils/Helper";
+import { forEach, safeAdd, Tile } from "../../utils/Helper";
 import { RingBuffer } from "../../utils/RingBuffer";
+import { TypedEvent } from "../../utils/TypedEvent";
 import { DamageType } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
+import type { Runtime } from "./Runtime";
 
 export class RuntimeStat {
-   constructed = new Map<Building, number>();
    rawDamages: RingBuffer<Record<DamageType, number>> = new RingBuffer(100);
    actualDamages: RingBuffer<Record<DamageType, number>> = new RingBuffer(100);
 
@@ -89,5 +90,22 @@ export class RuntimeStat {
          result[k] = n === 0 ? 0 : v / n;
       });
       return result;
+   }
+
+   public tabulate(rt: Runtime): void {
+      forEach(this.rawDamagePerSec, (k, v) => {
+         safeAdd(this.rawDamage, k, v);
+      });
+      forEach(this.actualDamagePerSec, (k, v) => {
+         safeAdd(this.actualDamage, k, v);
+      });
+      this.rawDamages.push(this.rawDamagePerSec);
+      this.actualDamages.push(this.actualDamagePerSec);
+      this.rawDamagePerSec = { [DamageType.Kinetic]: 0, [DamageType.Explosive]: 0, [DamageType.Energy]: 0 };
+      this.actualDamagePerSec = { [DamageType.Kinetic]: 0, [DamageType.Explosive]: 0, [DamageType.Energy]: 0 };
+
+      const [hp, maxHp] = rt.tabulateHp(rt.left.tiles);
+      this.currentHp = hp;
+      this.maxHp = maxHp + this.destroyedHp;
    }
 }

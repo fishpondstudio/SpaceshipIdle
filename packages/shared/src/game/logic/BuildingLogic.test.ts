@@ -6,7 +6,6 @@ import { GameState, SaveGame } from "../GameState";
 import type { ITileData } from "../ITileData";
 import { simulateBattle } from "./BattleLogic";
 import { getBuildingValue, getNextLevel, getTotalBuildingValue, upgradeMax } from "./BuildingLogic";
-import { tickProduction } from "./ProductionLogic";
 import { Runtime } from "./Runtime";
 import TestShip from "./TestShip.json?raw";
 
@@ -42,7 +41,7 @@ test("totalBuildingValue", () => {
 test("upgradeMax", () => {
    const rt = new Runtime(new SaveGame(), new GameState());
    rt.left.resources.set("XP", 1000);
-   tickProduction(rt.left, rt.leftStat, rt);
+   rt.leftStat.tabulate(rt);
 
    const tile: ITileData = { type: "AC76", level: 5, priority: 1, capacity: 1 };
    upgradeMax(tile, rt.left);

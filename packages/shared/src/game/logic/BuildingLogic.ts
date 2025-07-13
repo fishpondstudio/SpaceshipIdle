@@ -44,7 +44,7 @@ export function getBuildingValue(
 ): Map<Resource, number> {
    result ??= new Map<Resource, number>();
    const shipClass = Config.BuildingToShipClass[building];
-   const baseValue = (ShipClass[shipClass].index + 1) * 1000;
+   const baseValue = ShipClass[shipClass].index + 1;
    result.set("XP", baseValue * fib(level));
    return result;
 }

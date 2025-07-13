@@ -1,10 +1,10 @@
 import { Badge, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
 import type { IBoosterDefinition } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { CodeLabel, type CodeNumber } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
+import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
 import {
    canSpend,
    getBuildingDesc,
@@ -18,19 +18,19 @@ import {
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { isTileConnected, isWithinShipExtent } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
-import { entriesOf, formatNumber, type Tile, toMap } from "@spaceship-idle/shared/src/utils/Helper";
+import { entriesOf, formatNumber, mapSafeAdd, type Tile, toMap } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { type ReactNode, useState } from "react";
 import { G } from "../utils/Global";
-import type { ITileWithGameState } from "./ITileWithGameState";
-import { NotConnectedPage } from "./NotConnectedPage";
-import { NotWithinExtentPage } from "./NotWithinExtentPage";
-import { playError } from "./Sound";
 import { ResourceListComp } from "./components/ResourceListComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
 import { VideoTutorialComp } from "./components/VideoTutorialComp";
+import type { ITileWithGameState } from "./ITileWithGameState";
+import { NotConnectedPage } from "./NotConnectedPage";
+import { NotWithinExtentPage } from "./NotWithinExtentPage";
+import { playError } from "./Sound";
 
 export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
    const [selected, setSelected] = useState(new Set<CodeNumber>());
@@ -40,6 +40,10 @@ export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
    if (!isTileConnected(tile, gs)) {
       return <NotConnectedPage />;
    }
+   const constructed = new Map<Building, number>();
+   G.save.current.tiles.forEach((data) => {
+      mapSafeAdd(constructed, data.type, 1);
+   });
    return (
       <SidebarComp title={t(L.Build)}>
          <div className="row g5 m10" style={{ flexWrap: "wrap", justifyContent: "flex-start" }}>
@@ -72,7 +76,7 @@ export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
             .sort((a, b) => Config.Buildings[a].name().localeCompare(Config.Buildings[b].name()))
             .filter((b) => {
                const def = Config.Buildings[b];
-               if (isBooster(b) && G.runtime.leftStat.constructed.has(b)) {
+               if (isBooster(b) && constructed.has(b)) {
                   return false;
                }
                if (selected.size === 0) {
@@ -84,7 +88,7 @@ export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
                if (isBooster(b)) {
                   return <BoostComp key={b} building={b} gs={gs} tile={tile} />;
                }
-               return <BuildingComp key={b} building={b} gs={gs} tile={tile} />;
+               return <BuildingComp constructed={constructed.get(b) ?? 0} key={b} building={b} gs={gs} tile={tile} />;
             })}
       </SidebarComp>
    );
@@ -136,10 +140,19 @@ function BoostComp({ building, tile, gs }: { building: Building; tile: Tile; gs:
    );
 }
 
-function BuildingComp({ building, tile, gs }: { building: Building; tile: Tile; gs: GameState }): React.ReactNode {
+function BuildingComp({
+   building,
+   constructed,
+   tile,
+   gs,
+}: {
+   building: Building;
+   constructed: number;
+   tile: Tile;
+   gs: GameState;
+}): React.ReactNode {
    const def = Config.Buildings[building];
    const label = CodeLabel[def.code]();
-   const constructed = G.runtime.leftStat.constructed.get(building);
    const canBuild = canSpend(getBuildingValue(building, 1), gs) && getAvailableQuantum(gs) > 0;
    return (
       <Tooltip

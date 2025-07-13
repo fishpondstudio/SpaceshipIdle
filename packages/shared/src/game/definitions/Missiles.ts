@@ -167,7 +167,7 @@ export const MS3: IWeaponDefinition = {
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.RearTrio,
-      effect: "ProductionDisruption",
+      effect: "Disarm",
       value: (building, level) => {
          return 0;
       },
