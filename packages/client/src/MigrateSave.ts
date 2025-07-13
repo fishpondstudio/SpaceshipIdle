@@ -55,12 +55,6 @@ export function migrateSave(save: SaveGame): void {
       if (!Config.Buildings[data.type]) {
          save.current.tiles.delete(tile);
       }
-      if (isNullOrUndefined(data.capacity)) {
-         data.capacity = 1;
-      }
-      if (isBooster(data.type)) {
-         data.level = 1;
-      }
    });
    save.current.resources.forEach((value, key) => {
       if (!Config.Resources[key]) {

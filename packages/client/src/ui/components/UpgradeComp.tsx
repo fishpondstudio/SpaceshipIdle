@@ -92,35 +92,6 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
 
    useShortcut("UpgradeMax", upgradeMaxCached, [upgradeMaxCached]);
 
-   const matchCapacityCached = useCallback(() => {
-      G.runtime.get(tile)?.matchCapacity();
-      GameStateUpdated.emit();
-   }, [tile]);
-
-   useShortcut("MatchCapacityToAmmoProduction", matchCapacityCached, [matchCapacityCached]);
-
-   const setPriority = useCallback(
-      (value: number) => {
-         data.priority = value;
-         GameStateUpdated.emit();
-      },
-      [data],
-   );
-
-   useShortcut("Priority0", setPriority.bind(null, 0), [setPriority]);
-   useShortcut("Priority10", setPriority.bind(null, 10), [setPriority]);
-
-   const setCapacity = useCallback(
-      (value: number) => {
-         data.capacity = round(value / 100, 2);
-         GameStateUpdated.emit();
-      },
-      [data],
-   );
-
-   useShortcut("Capacity0", setCapacity.bind(null, 0), [setCapacity]);
-   useShortcut("Capacity100", setCapacity.bind(null, 100), [setCapacity]);
-
    return (
       <>
          <div className="title">
@@ -188,47 +159,6 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   recycling
                </button>
             </Tooltip>
-         </div>
-         <div className="mx10">
-            <div className="subtitle my10">{t(L.Priority)}</div>
-            <Slider
-               flex={1}
-               min={0}
-               max={10}
-               step={1}
-               marks={[
-                  { value: 0, label: "0" },
-                  { value: 5, label: "5" },
-                  { value: 10, label: "10" },
-               ]}
-               onChange={setPriority}
-               value={data.priority}
-            />
-         </div>
-         <div className="h10" />
-         <div className="mx10">
-            <div className="subtitle my10">
-               {t(L.Capacity)}
-               <Tooltip label={t(L.MatchCapacityTooltip)}>
-                  <div className="mi text-space pointer" onClick={matchCapacityCached}>
-                     wand_stars
-                  </div>
-               </Tooltip>
-            </div>
-            <Slider
-               flex={1}
-               min={0}
-               max={100}
-               step={1}
-               marks={[
-                  { value: 0, label: "0%" },
-                  { value: 50, label: "50%" },
-                  { value: 100, label: "100%" },
-               ]}
-               onChange={setCapacity}
-               value={Math.round(data.capacity * 100)}
-            />
-            <div className="h25" />
          </div>
       </>
    );

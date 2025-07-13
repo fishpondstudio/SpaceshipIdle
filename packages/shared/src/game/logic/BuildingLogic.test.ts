@@ -33,7 +33,7 @@ test("totalBuildingValue", () => {
    getTotalBuildingValue("AC130", 5, 0).forEach((v, res) => {
       expect(result.get(res)).toBe(v);
    });
-   getTotalBuildingValue("PM1Booster", 5, 10).forEach((v, res) => {
+   getTotalBuildingValue("DMG1Booster", 5, 10).forEach((v, res) => {
       expect(result.get(res)).toBe(0);
    });
 });
@@ -43,7 +43,7 @@ test("upgradeMax", () => {
    rt.left.resources.set("XP", 1000);
    rt.leftStat.tabulate(rt);
 
-   const tile: ITileData = { type: "AC76", level: 5, priority: 1, capacity: 1 };
+   const tile: ITileData = { type: "AC76", level: 5 };
    upgradeMax(tile, rt.left);
    expect(tile.level).toBe(9);
    getTotalBuildingValue("AC76", 5, 9).forEach((v, res) => {

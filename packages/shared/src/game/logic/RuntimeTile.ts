@@ -1,4 +1,4 @@
-import { forEach, hasFlag, mapSafeAdd, round, Rounding, safeAdd, type Tile, type ValueOf } from "../../utils/Helper";
+import { forEach, hasFlag, mapSafeAdd, Rounding, round, safeAdd, type Tile, type ValueOf } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
 import {
@@ -15,7 +15,7 @@ import {
 } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { DefaultCooldown, StatusEffectTickInterval } from "../definitions/Constant";
-import { type StatusEffect, StatusEffectFlag, statusEffectOf, StatusEffects } from "../definitions/StatusEffect";
+import { type StatusEffect, StatusEffectFlag, StatusEffects, statusEffectOf } from "../definitions/StatusEffect";
 import { type GameState, GameStateUpdated } from "../GameState";
 import { GridSize } from "../Grid";
 import type { ITileData } from "../ITileData";
@@ -71,7 +71,6 @@ export class RuntimeTile {
    public buff = 0;
    public debuff = 0;
 
-   public readonly productionMultiplier = new Multiplier();
    public readonly xpMultiplier = new Multiplier();
    public readonly hpMultiplier = new Multiplier();
    public readonly damageMultiplier = new Multiplier();
@@ -209,13 +208,6 @@ export class RuntimeTile {
          return GridSize;
       }
       return 0;
-   }
-
-   public matchCapacity(): void {
-      if (WeaponKey in this.def) {
-         this.data.capacity = round(1 / (DefaultCooldown * this.productionMultiplier.value), 2, Rounding.Ceil);
-         this.runtime.emit(GameStateUpdated, undefined);
-      }
    }
 
    private _tabulate(): void {

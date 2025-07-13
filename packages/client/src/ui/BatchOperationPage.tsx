@@ -78,47 +78,6 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
 
    useShortcut("Downgrade1", downgrade, [downgrade]);
 
-   const matchCapacityCached = useCallback(() => {
-      for (const tile of tiles) {
-         G.runtime.get(tile)?.matchCapacity();
-      }
-      GameStateUpdated.emit();
-   }, [tiles]);
-
-   useShortcut("MatchCapacityToAmmoProduction", matchCapacityCached, [matchCapacityCached]);
-
-   const setPriority = useCallback(
-      (p: number) => {
-         for (const tile of tiles) {
-            const data = G.save.current.tiles.get(tile);
-            if (data) {
-               data.priority = p;
-            }
-         }
-         GameStateUpdated.emit();
-      },
-      [tiles],
-   );
-
-   const setCapacity = useCallback(
-      (p: number) => {
-         for (const tile of tiles) {
-            const data = G.save.current.tiles.get(tile);
-            if (data) {
-               data.capacity = round(p / 100, 1);
-            }
-         }
-         GameStateUpdated.emit();
-      },
-      [tiles],
-   );
-
-   useShortcut("Priority0", setPriority.bind(null, 0), [setPriority]);
-   useShortcut("Priority10", setPriority.bind(null, 10), [setPriority]);
-
-   useShortcut("Capacity0", setCapacity.bind(null, 0), [setCapacity]);
-   useShortcut("Capacity100", setCapacity.bind(null, 100), [setCapacity]);
-
    return (
       <SidebarComp title={t(L.SelectedXModules, tiles.size)}>
          <div className="h10" />
@@ -182,35 +141,6 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                   }}
                >
                   {t(L.DistributeEvenly)}
-               </button>
-            </Tooltip>
-         </div>
-         <div className="divider my10" />
-         <div className="title">{t(L.Priority)}</div>
-         <div className="divider my10" />
-         <div className="mx10" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((p) => {
-               return (
-                  <button className="btn" key={p} onClick={setPriority.bind(null, p)}>
-                     {p}
-                  </button>
-               );
-            })}
-         </div>
-         <div className="divider my10" />
-         <div className="title">{t(L.Capacity)}</div>
-         <div className="divider my10" />
-         <div className="mx10" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
-            {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((p) => {
-               return (
-                  <button key={p} className="btn" onClick={setCapacity.bind(null, p)}>
-                     {p}
-                  </button>
-               );
-            })}
-            <Tooltip label={t(L.MatchCapacityTooltip)}>
-               <button className="btn" onClick={matchCapacityCached}>
-                  <div className="mi">wand_stars</div>
                </button>
             </Tooltip>
          </div>

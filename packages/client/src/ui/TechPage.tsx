@@ -114,11 +114,6 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                      <div key={b} className="m10">
                         <div className="f1">{Config.Buildings[b].name()}</div>
                         <div className="row text-sm text-dimmed">
-                           <div className="f1">{t(L.ProductionMultiplier)}</div>
-                           <div className="mi">handyman</div>
-                           <div>+{formatNumber(multiplier.production)}</div>
-                        </div>
-                        <div className="row text-sm text-dimmed">
                            <div className="f1">{t(L.XPMultiplier)}</div>
                            <XPIcon />
                            <div>+{formatNumber(multiplier.xp)}</div>

@@ -79,10 +79,7 @@ export interface ElementChoice {
 
 export function initGameState(state: GameState): GameState {
    state.unlockedTech.add("A1");
-   state.unlockedTech.add("B4");
-   state.unlockedTech.add("B2");
-   state.unlockedTech.add("B3");
-   state.unlockedTech.add("C3");
+   state.unlockedTech.add("A2");
    const ext = shipExtent(state);
    const x = MaxX / 2 - ext - 1;
    state.tiles.set(createTile(x, MaxY / 2), makeTile("AC30", 1));

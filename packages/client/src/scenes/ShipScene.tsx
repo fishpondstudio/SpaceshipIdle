@@ -293,9 +293,6 @@ export class ShipScene extends Scene {
       }
    }
 
-   private _outputBuilding: Set<Building> = new Set();
-   private _inputBuilding: Set<Building> = new Set();
-
    public render(rt: Runtime, dt: number, timeSinceLastTick: number): void {
       const me = shipExtent(rt.left);
       const enemy = shipExtent(rt.right);

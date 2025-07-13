@@ -13,7 +13,6 @@ export const BattleStartAmmoCycles = 5;
 export const LaserArrayDamagePct = 1 / range(1, 10).reduce((a, b) => a + 1 / b, 0);
 export const BalanceVersion = 1;
 export const DefaultCooldown = 2;
-export const DefaultPriority = 5;
 export const MaxBattleTick = 10 * 60;
 export const MaxSuddenDeathTick = 5 * 60;
 export const SuddenDeathUndamagedSec = 10;

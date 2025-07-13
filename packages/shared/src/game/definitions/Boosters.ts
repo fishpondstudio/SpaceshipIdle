@@ -3,18 +3,6 @@ import { AbilityRange } from "./Ability";
 import { BoosterDefenseProps, BuildingFlag, type IBoosterDefinition } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 
-export const PM1Booster: IBoosterDefinition = {
-   ...BoosterDefenseProps,
-   name: () => t(L.PM1Booster),
-   desc: () => t(L.PM1BoosterDesc),
-   code: CodeNumber.BT,
-   buildingFlag: BuildingFlag.CanRotate | BuildingFlag.Booster,
-   unlock: { XP: 100_000 },
-   lifeTime: 60,
-   effect: "ProductionMultiplierBoost",
-   range: AbilityRange.Adjacent,
-};
-
 export const HP1Booster: IBoosterDefinition = {
    ...BoosterDefenseProps,
    name: () => t(L.HP1Booster),

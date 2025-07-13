@@ -237,15 +237,6 @@ export const StatusEffects = {
          }
       },
    },
-   ProductionMultiplierBoost: {
-      name: () => t(L.ProductionMultiplierBoost),
-      desc: (value) => t(L.ProductionMultiplierBoostDesc, formatNumber(value)),
-      flag: StatusEffectFlag.Positive,
-      type: StatusEffectType.Electrical,
-      onTick: (se, rs) => {
-         rs.productionMultiplier.add(se.value, Config.Buildings[se.sourceType].name());
-      },
-   },
    IncreaseMaxHpPct: {
       name: () => t(L.IncreaseMaxHpPct),
       desc: (value) => t(L.IncreaseMaxHpPctDesc, formatPercent(value)),

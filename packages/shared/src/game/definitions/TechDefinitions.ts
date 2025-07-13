@@ -8,7 +8,6 @@ export interface ITechUpgrade {
 }
 
 export interface IMultiplier {
-   production?: number;
    xp?: number;
    hp?: number;
    damage?: number;

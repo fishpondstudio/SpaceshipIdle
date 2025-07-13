@@ -10,7 +10,7 @@ export function showBootstrapModal(save: SaveGame, isNewPlayer: boolean): void {
          children: <NewPlayerModal />,
          size: "md",
          title: t(L.WelcomeToSpaceshipIdle),
-         dismiss: true,
+         dismiss: false,
       });
       return;
    }
