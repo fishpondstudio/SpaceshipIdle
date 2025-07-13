@@ -20,7 +20,7 @@
       "enabled": true,
       "rules": {
          "recommended": true,
-         "a11y": {},
+         "a11y": "off",
          "performance": {
             "noDelete": "warn"
          },
@@ -44,6 +44,9 @@
          },
          "complexity": {
             "noForEach": "off"
+         },
+         "correctness": {
+            "useHookAtTopLevel": "warn"
          }
       }
    },

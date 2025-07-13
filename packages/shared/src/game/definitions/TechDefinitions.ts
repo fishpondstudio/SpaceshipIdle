@@ -26,22 +26,28 @@ export interface ITechDefinition {
 export interface IShipClassDefinition {
    name: () => string;
    range: [number, number];
+   shipExtent: number;
 }
 
 export const ShipClass = {
    Skiff: {
       name: () => t(L.TechSkiff),
       range: [0, 2],
+      shipExtent: 3,
    },
    Scout: {
       name: () => t(L.TechScout),
       range: [3, 5],
+      shipExtent: 4,
    },
    Corvette: {
       name: () => t(L.TechCorvette),
       range: [6, 8],
+      shipExtent: 5,
    },
-};
+} as const satisfies Record<string, IShipClassDefinition>;
+
+export type ShipClass = keyof typeof ShipClass;
 
 export class TechDefinitions {
    A1: ITechDefinition = {

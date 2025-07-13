@@ -4,11 +4,7 @@ import type { Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefin
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingDesc } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import {
-   checkTechPrerequisites,
-   checkTierRequirement,
-   getTechName,
-} from "@spaceship-idle/shared/src/game/logic/TechLogic";
+import { checkTechPrerequisites, getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { formatNumber, mapOf, numberToRoman } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { TechTreeScene } from "../scenes/TechTreeScene";
@@ -24,15 +20,11 @@ import { playUpgrade } from "./Sound";
 export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const def = Config.Tech[tech];
-   const tier = numberToRoman(def.ring);
-   const prevTier = numberToRoman(def.ring - 1);
-   const { required, unlocked } = checkTierRequirement(def.ring, G.save.current);
-   const canUnlock = checkTechPrerequisites(tech, G.save.current) && unlocked >= required;
+   const canUnlock = checkTechPrerequisites(tech, G.save.current);
    return (
       <SidebarComp
          title={
             <div className="row">
-               {tier ? <Badge variant="outline">{t(L.TierX, tier)}</Badge> : null}
                <div className="f1">{getTechName(tech)}</div>
             </div>
          }
@@ -42,18 +34,6 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
             <>
                <TitleComp>{t(L.Prerequisites)}</TitleComp>
                <div className="divider my10" />
-               {prevTier ? (
-                  <Tooltip label={t(L.TechResearched, unlocked, required)}>
-                     <div className="row mx10 my5">
-                        <div className="f1">{t(L.ResearchTierTech, required, prevTier)}</div>
-                        {unlocked >= required ? (
-                           <div className="mi text-green">check_circle</div>
-                        ) : (
-                           <div className="mi text-red">cancel</div>
-                        )}
-                     </div>
-                  </Tooltip>
-               ) : null}
                {def.requires.map((req) => {
                   return (
                      <div className="row mx10 my5" key={req}>
@@ -74,8 +54,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                         onClick={() => {
                            if (
                               !checkTechPrerequisites(tech, G.save.current) ||
-                              getAvailableQuantum(G.save.current) <= 0 ||
-                              unlocked < required
+                              getAvailableQuantum(G.save.current) <= 0
                            ) {
                               return;
                            }

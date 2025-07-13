@@ -4,11 +4,13 @@ import { Config } from "../Config";
 import type { Building } from "../definitions/Buildings";
 import { QualifierSpaceshipValuePercent } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
+import { ShipClass } from "../definitions/TechDefinitions";
 import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
 import type { ITileData } from "../ITileData";
 import { calcSpaceshipXP, getMaxSpaceshipXP, getQualifiedQuantum, getUsedQuantum } from "./ResourceLogic";
 import { Side } from "./Side";
+import { getShipClass } from "./TechLogic";
 
 export function calculateAABB(tiles: Tiles): AABB {
    let minX = Number.POSITIVE_INFINITY;
@@ -16,7 +18,7 @@ export function calculateAABB(tiles: Tiles): AABB {
    let maxX = Number.NEGATIVE_INFINITY;
    let maxY = Number.NEGATIVE_INFINITY;
 
-   tiles.forEach((data, tile) => {
+   tiles.forEach((_data, tile) => {
       const { x, y } = tileToPoint(tile);
       minX = Math.min(minX, x);
       minY = Math.min(minY, y);
@@ -87,15 +89,8 @@ export function isShipConnected(t: Iterable<Tile>): boolean {
 }
 
 export function shipExtent(gs: GameState): number {
-   if (gs.unlockedTech.has("J15")) return 11;
-   if (gs.unlockedTech.has("I13")) return 10;
-   if (gs.unlockedTech.has("H12")) return 9;
-   if (gs.unlockedTech.has("G11")) return 8;
-   if (gs.unlockedTech.has("F10")) return 7;
-   if (gs.unlockedTech.has("E8")) return 6;
-   if (gs.unlockedTech.has("D6")) return 5;
-   if (gs.unlockedTech.has("C5")) return 4;
-   return 3;
+   const shipClass = getShipClass(gs);
+   return ShipClass[shipClass].shipExtent;
 }
 
 export function shipAABB(ext: number, side: Side): AABB {
@@ -174,13 +169,13 @@ function _validateShip(gs: GameState): boolean {
       }
    });
 
-   for (const [tile, data] of gs.tiles) {
+   for (const [_tile, data] of gs.tiles) {
       if (!buildings.has(data.type)) {
          return false;
       }
    }
 
-   for (const [element, amount] of gs.elements) {
+   for (const [element, _amount] of gs.elements) {
       const building = Config.Elements.get(element);
       if (!building) {
          return false;
@@ -212,12 +207,12 @@ export function migrateShipForServer(ship: GameState): boolean {
    if ("battleCount" in ship) {
       migrated = true;
       ship.win = ship.battleCount as number;
-      delete ship.battleCount;
+      ship.battleCount = undefined;
    }
    if ("trialCount" in ship) {
       migrated = true;
       ship.loss = ship.trialCount as number;
-      delete ship.trialCount;
+      ship.trialCount = undefined;
    }
    if (!ship.permanentElementChoices) {
       migrated = true;
@@ -236,26 +231,26 @@ export function migrateShipForServer(ship: GameState): boolean {
 
 export function migrateBuildingsAndResources(gs: GameState): boolean {
    let shouldMigrateBuildings = false;
-   for (const [tile, data] of gs.tiles) {
+   for (const [_tile, data] of gs.tiles) {
       if (!(data.type in Config.Buildings)) {
          shouldMigrateBuildings = true;
          break;
       }
    }
    if (shouldMigrateBuildings) {
-      for (const [tile, data] of gs.tiles) {
+      for (const [_tile, data] of gs.tiles) {
          if (data.type in BuildingMapping) {
             data.type = BuildingMapping[data.type as keyof typeof BuildingMapping] as Building;
          }
       }
    }
-   for (const [tile, data] of gs.tiles) {
+   for (const [_tile, data] of gs.tiles) {
       if (!(data.type in Config.Buildings)) {
          console.error(`Building ${data.type} not found in Config.Buildings`);
       }
    }
    let shouldMigrateResources = false;
-   for (const [res, amount] of gs.resources) {
+   for (const [res, _amount] of gs.resources) {
       if (!(res in Config.Resources)) {
          shouldMigrateResources = true;
          break;
