@@ -4,11 +4,11 @@ import { getCooldownMultiplier } from "../logic/BattleLogic";
 import { getNormalizedValue } from "../logic/BuildingLogic";
 import { AbilityRange, AbilityTiming } from "./Ability";
 import {
-   type IDefenseProp,
-   type IWeaponDefinition,
    BaseWeaponProps,
    BuildingFlag,
    DamageType,
+   type IDefenseProp,
+   type IWeaponDefinition,
    ProjectileFlag,
 } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
@@ -26,8 +26,6 @@ export const FD1: IWeaponDefinition = {
    name: () => t(L.FD1),
    code: CodeNumber.FD,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, MS2B: 2 },
-   output: { FD1: 1 },
    damagePct: 0.75,
    damageType: DamageType.Explosive,
    projectileFlag: ProjectileFlag.DroneDamage,

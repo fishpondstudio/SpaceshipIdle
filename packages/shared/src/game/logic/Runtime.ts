@@ -1,11 +1,8 @@
 import { clamp, createTile, hasFlag, mapSafeAdd, type Tile } from "../../utils/Helper";
+import { L, t } from "../../utils/i18n";
 import { srand } from "../../utils/Random";
 import { TypedEvent } from "../../utils/TypedEvent";
-import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import type { GameOption } from "../GameOption";
-import { type GameState, GameStateUpdated, hashGameStatePair, type SaveGame, type Tiles } from "../GameState";
-import { makeTile } from "../ITileData";
 import { DamageType, ProjectileFlag } from "../definitions/BuildingProps";
 import {
    BattleTickInterval,
@@ -13,6 +10,9 @@ import {
    ProductionTickInterval,
    SuddenDeathUndamagedSec,
 } from "../definitions/Constant";
+import type { GameOption } from "../GameOption";
+import { type GameState, GameStateUpdated, hashGameStatePair, type SaveGame, type Tiles } from "../GameState";
+import { makeTile } from "../ITileData";
 import { tickProjectiles, tickTiles } from "./BattleLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleFlag, BattleType } from "./BattleType";
@@ -98,7 +98,7 @@ export class Runtime {
       });
       for (let y = aabb.min.y; y <= aabb.max.y; ++y) {
          for (let x = aabb.min.x; x <= aabb.max.x; ++x) {
-            this.right.tiles.set(createTile(x, y), makeTile("XPCollector", level));
+            this.right.tiles.set(createTile(x, y), makeTile("AC30", level));
          }
       }
       this.right.tiles = flipHorizontal(this.right.tiles);

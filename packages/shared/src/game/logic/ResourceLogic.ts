@@ -1,25 +1,16 @@
-import { clamp, forEach, inverse } from "../../utils/Helper";
-import { Config } from "../Config";
-import type { GameState } from "../GameState";
+import { clamp, inverse } from "../../utils/Helper";
 import { BattleLossQuantum, BattleWinQuantum } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
+import type { GameState } from "../GameState";
 import { getTotalBuildingValue, isBooster } from "./BuildingLogic";
 import { getTotalElementLevels } from "./ElementLogic";
-import type { RuntimeStat } from "./RuntimeStat";
 
 export function resourceValueOf(resources: Map<Resource, number>): number {
    let result = 0;
    for (const [res, amount] of resources) {
-      result += amount * (Config.Price.get(res) ?? 0);
+      result += amount;
    }
    return result;
-}
-
-export function resourceDiffOf(res: Resource, theoretical: boolean, stat: RuntimeStat): number {
-   if (theoretical) {
-      return (stat.theoreticalProduced.get(res) ?? 0) - (stat.theoreticalConsumed.get(res) ?? 0);
-   }
-   return stat.delta.get(res) ?? 0;
 }
 
 export const StartQuantum = 10;
@@ -81,7 +72,7 @@ export function svToQ(sv: number): number {
 
 export function qToSV(quantum: number): number {
    const t = Math.log(clamp(quantum, 30, Number.POSITIVE_INFINITY));
-   return Math.pow(quantum, t) * 10;
+   return quantum ** t * 10;
 }
 
 export function getUsedQuantum(gs: GameState): number {
@@ -97,18 +88,4 @@ export function getUsedQuantum(gs: GameState): number {
 
 export function getAvailableQuantum(gs: GameState): number {
    return getQualifiedQuantum(gs) - getUsedQuantum(gs);
-}
-
-export function getResourceUsed(gs: GameState): Set<Resource> {
-   const result = new Set<Resource>();
-   for (const [_, data] of gs.tiles) {
-      const def = Config.Buildings[data.type];
-      forEach(def.input, (res, amount) => {
-         result.add(res);
-      });
-      forEach(def.output, (res, amount) => {
-         result.add(res);
-      });
-   }
-   return result;
 }

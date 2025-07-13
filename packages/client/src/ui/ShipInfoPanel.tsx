@@ -2,14 +2,12 @@ import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
-import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { elementToXP } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import {
    calcSpaceshipXP,
    getMaxSpaceshipXP,
    getQualifiedQuantum,
    getUsedQuantum,
-   resourceDiffOf,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { isQualifierBattle } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import {
@@ -18,7 +16,6 @@ import {
    formatNumber,
    formatPercent,
    getHMS,
-   hasFlag,
    mathSign,
    mMapOf,
    mReduceOf,
@@ -55,12 +52,7 @@ const actualDamages: Record<DamageType, number> = {
 export function ShipInfoPanel(): React.ReactNode {
    const state = G.save.current;
    const options = G.save.options;
-   const powerDelta = resourceDiffOf(
-      "Power",
-      hasFlag(options.flag, GameOptionFlag.TheoreticalValue),
-      G.runtime.leftStat,
-   );
-   const xpDelta = resourceDiffOf("XP", hasFlag(options.flag, GameOptionFlag.TheoreticalValue), G.runtime.leftStat);
+   const xpDelta = 0;
    const sv = calcSpaceshipXP(state);
    G.runtime.rightStat.averageRawDamage(10, rawDamages);
    G.runtime.rightStat.averageActualDamage(10, actualDamages);
@@ -70,8 +62,6 @@ export function ShipInfoPanel(): React.ReactNode {
    return (
       <div className="sf-frame top ship-info">
          <HamburgerMenuComp flag={options.flag} />
-         <div className="divider vertical" />
-         <PowerComp power={state.resources.get("Power") ?? 0} delta={powerDelta} />
          <div className="divider vertical" />
          <XPComp xp={xp} delta={xpDelta} maxSV={maxSV} sv={sv} quantum={quantumLimit} />
          <div className="divider vertical" />
@@ -99,37 +89,19 @@ export function ShipInfoPanel(): React.ReactNode {
 
 const Width = 90;
 
-function _PowerComp({ power, delta }: { power: number; delta: number }): React.ReactNode {
-   return (
-      <Tooltip label={t(L.Power)}>
-         <div className="block" style={{ width: Width }}>
-            <div className="mi">bolt</div>
-            <div className="f1 text-right">
-               <ResourceAmount res="Power" amount={power} />
-               <div
-                  className="xs"
-                  style={{
-                     color: delta >= 0 ? "var(--mantine-color-green-text)" : "var(--mantine-color-red-text)",
-                  }}
-               >
-                  {mathSign(delta)}
-                  {formatNumber(Math.abs(delta))}
-               </div>
-            </div>
-         </div>
-      </Tooltip>
-   );
-}
-
-const PowerComp = memo(_PowerComp, (prev, next) => prev.power === next.power && prev.delta === next.delta);
-
 function _XPComp({
    xp,
    delta,
    maxSV,
    sv,
    quantum,
-}: { xp: number; delta: number; maxSV: number; sv: number; quantum: number }): React.ReactNode {
+}: {
+   xp: number;
+   delta: number;
+   maxSV: number;
+   sv: number;
+   quantum: number;
+}): React.ReactNode {
    const xpLeft = maxSV - sv - xp;
    const timeLeft = (1000 * xpLeft) / delta;
    const [h, m, s] = getHMS(clamp(timeLeft, 0, Number.POSITIVE_INFINITY));
@@ -305,7 +277,13 @@ function _ElementComp({
    xp,
    sv,
    requiredSV,
-}: { thisRun: number; production: number; xp: number; sv: number; requiredSV: number }): React.ReactNode {
+}: {
+   thisRun: number;
+   production: number;
+   xp: number;
+   sv: number;
+   requiredSV: number;
+}): React.ReactNode {
    const progress = clamp(sv / requiredSV, 0, 1);
    return (
       <Tooltip
@@ -474,7 +452,10 @@ const BattleComp = memo(
 export function ProgressComp({
    height,
    progress,
-}: { height: number; progress: { color: string; value: number }[] }): React.ReactNode {
+}: {
+   height: number;
+   progress: { color: string; value: number }[];
+}): React.ReactNode {
    return (
       <div
          style={{ background: "var(--mantine-color-dark-4)", height, borderRadius: height / 2, position: "relative" }}

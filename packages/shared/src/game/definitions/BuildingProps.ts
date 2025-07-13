@@ -27,8 +27,6 @@ export interface IBuildingDefinition extends IDefenseProp {
    name: () => string;
    code: CodeNumber;
    buildingFlag: BuildingFlag;
-   input: Partial<Record<Resource, number>>;
-   output: Partial<Record<Resource, number>>;
    element?: ElementSymbol;
 }
 

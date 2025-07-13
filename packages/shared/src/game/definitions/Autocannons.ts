@@ -19,8 +19,6 @@ export const AC30: IWeaponDefinition = {
    name: () => t(L.AC30),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 1, Ti: 1, Si: 1 },
-   output: { AC30: 1 },
    element: "Li",
 };
 export const AC30A: IWeaponDefinition = {
@@ -29,8 +27,6 @@ export const AC30A: IWeaponDefinition = {
    name: () => t(L.AC30A),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 1, AC30x3: 2 },
-   output: { AC30A: 1 },
    element: "Mg",
    damagePct: 0.8,
    ability: {
@@ -49,8 +45,6 @@ export const AC30B: IWeaponDefinition = {
    name: () => t(L.AC30B),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 1, AC30x3: 2 },
-   output: { AC30B: 1 },
    element: "Cr",
    damagePct: 0.8,
    ability: {
@@ -69,8 +63,6 @@ export const AC30x3: IWeaponDefinition = {
    name: () => t(L.AC30x3),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 3, AC30: 3 },
-   output: { AC30x3: 1 },
    projectiles: 3,
    element: "Be",
 };
@@ -80,8 +72,6 @@ export const AC76: IWeaponDefinition = {
    name: () => t(L.AC76),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 1, AC30: 2 },
-   output: { AC76: 1 },
    element: "B",
 };
 export const AC76x2: IWeaponDefinition = {
@@ -90,8 +80,6 @@ export const AC76x2: IWeaponDefinition = {
    name: () => t(L.AC76x2),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 1, AC76A: 2 },
-   output: { AC76x2: 1 },
    element: "Al",
    projectiles: 2,
    damagePct: 0.8,
@@ -111,8 +99,6 @@ export const AC76A: IWeaponDefinition = {
    name: () => t(L.AC76A),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, AC76: 2, Rocket: 2 },
-   output: { AC76A: 1 },
    element: "Cl",
    damagePct: 0.5,
    fireCooldown: 2.5,
@@ -134,8 +120,6 @@ export const AC76B: IWeaponDefinition = {
    name: () => t(L.AC76B),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, AC76x2: 2, AC30B: 2 },
-   output: { AC76B: 1 },
    element: "Kr",
    damagePct: 0.8,
    fireCooldown: 2,
@@ -153,8 +137,6 @@ export const AC130: IWeaponDefinition = {
    name: () => t(L.AC130),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 1, AC30x3: 2 },
-   output: { AC130: 1 },
    element: "C",
 };
 export const AC130A: IWeaponDefinition = {
@@ -163,8 +145,6 @@ export const AC130A: IWeaponDefinition = {
    name: () => t(L.AC130A),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 1, AC130: 2 },
-   output: { AC130A: 1 },
    damagePct: 0.75,
    ability: {
       timing: AbilityTiming.OnHit,
@@ -185,8 +165,6 @@ export const AC130B: IWeaponDefinition = {
    name: () => t(L.AC130B),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 1, AC130: 2 },
-   output: { AC130B: 1 },
    damagePct: 0.8,
    ability: {
       timing: AbilityTiming.OnHit,
@@ -205,8 +183,6 @@ export const AC130C: IWeaponDefinition = {
    name: () => t(L.AC130C),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 1, AC130A: 1, AC130B: 1 },
-   output: { AC130C: 1 },
    damagePct: 0.9,
    ability: {
       timing: AbilityTiming.OnFire,

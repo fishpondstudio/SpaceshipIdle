@@ -2,15 +2,8 @@ import { forEach, safeAdd } from "../../utils/Helper";
 import { RingBuffer } from "../../utils/RingBuffer";
 import { DamageType } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
-import type { Resource } from "../definitions/Resource";
 
 export class RuntimeStat {
-   produced = new Map<Resource, number>();
-   consumed = new Map<Resource, number>();
-   delta = new Map<Resource, number>();
-   theoreticalProduced = new Map<Resource, number>();
-   theoreticalConsumed = new Map<Resource, number>();
-
    constructed = new Map<Building, number>();
    rawDamages: RingBuffer<Record<DamageType, number>> = new RingBuffer(100);
    actualDamages: RingBuffer<Record<DamageType, number>> = new RingBuffer(100);

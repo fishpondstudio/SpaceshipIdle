@@ -1,12 +1,12 @@
 import { wyhash_str } from "../thirdparty/wyhash";
-import { createTile, uuid4, type Tile } from "../utils/Helper";
+import { createTile, type Tile, uuid4 } from "../utils/Helper";
 import { jsonEncode } from "../utils/Serialization";
 import { TypedEvent } from "../utils/TypedEvent";
 import type { Resource } from "./definitions/Resource";
 import type { Tech } from "./definitions/TechDefinitions";
 import { GameOption } from "./GameOption";
 import { MaxX, MaxY } from "./Grid";
-import { makeTile, type ITileData } from "./ITileData";
+import { type ITileData, makeTile } from "./ITileData";
 import { shipExtent } from "./logic/ShipLogic";
 import type { ElementSymbol } from "./PeriodicTable";
 
@@ -85,10 +85,10 @@ export function initGameState(state: GameState): GameState {
    state.unlockedTech.add("C3");
    const ext = shipExtent(state);
    const x = MaxX / 2 - ext - 1;
-   state.tiles.set(createTile(x, MaxY / 2), makeTile("SiCollector", 2));
-   state.tiles.set(createTile(x - 1, MaxY / 2), makeTile("AC30", 2));
-   state.tiles.set(createTile(x, MaxY / 2 - 1), makeTile("TiCollector", 2));
-   state.tiles.set(createTile(x - 1, MaxY / 2 - 1), makeTile("SolarPower", 6));
+   state.tiles.set(createTile(x, MaxY / 2), makeTile("AC30", 1));
+   state.tiles.set(createTile(x - 1, MaxY / 2), makeTile("AC30", 1));
+   state.tiles.set(createTile(x, MaxY / 2 - 1), makeTile("MS1", 1));
+   state.tiles.set(createTile(x - 1, MaxY / 2 - 1), makeTile("MS1", 1));
    return state;
 }
 

@@ -1,10 +1,11 @@
-import { forEach, formatNumber, hasFlag, mapOf, mapSafeAdd } from "../../utils/Helper";
+import { formatNumber, hasFlag, mapOf, mapSafeAdd } from "../../utils/Helper";
 import { Config } from "../Config";
 import { AbilityRangeLabel } from "../definitions/Ability";
 import { BuildingFlag, type IBoosterDefinition } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { MaxBuildingCount } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
+import { ShipClass } from "../definitions/TechDefinitions";
 import type { GameState, Tiles } from "../GameState";
 import type { ITileData } from "../ITileData";
 import { calcSpaceshipXP, getMaxSpaceshipXP, resourceValueOf } from "./ResourceLogic";
@@ -36,66 +37,20 @@ export function hashBuildingAndLevel(building: Building, level: number): number 
    return level * MaxBuildingCount + Config.BuildingId[building];
 }
 
-const buildingValueCache = new Map<number, number>();
 export function getBuildingValue(
    building: Building,
    level: number,
    result: Map<Resource, number> | null = null,
 ): Map<Resource, number> {
    result ??= new Map<Resource, number>();
-   const def = Config.Buildings[building];
-   if (isBooster(building)) {
-      return result;
-   }
-   const hash = hashBuildingAndLevel(building, level);
-   const cached = buildingValueCache.get(hash);
-   if (cached !== undefined) {
-      mapSafeAdd(result, "XP", cached);
-      return result;
-   }
-
-   let xp = 0;
-   forEach(def.output, (res, value) => {
-      xp += (Config.Price.get(res) ?? 0) * value * fib(level);
-   });
-
-   if (xp <= 0) {
-      forEach(def.input, (res, value) => {
-         xp += (Config.Price.get(res) ?? 0) * value * fib(level);
-      });
-   }
-
-   if (xp <= 0) {
-      xp = fib(level);
-   }
-
-   mapSafeAdd(result, "XP", xp);
-   buildingValueCache.set(hash, xp);
+   const shipClass = Config.BuildingToShipClass[building];
+   const baseValue = (ShipClass[shipClass].index + 1) * 1000;
+   result.set("XP", baseValue * fib(level));
    return result;
 }
 
 export function getNormalizedValue(data: { type: Building; level: number }): number {
-   const def = Config.Buildings[data.type];
-   let value = 0;
-   if (isBooster(data.type)) {
-      const booster = def as IBoosterDefinition;
-      forEach(booster.unlock, (k, v) => {
-         value += v * (Config.Price.get(k) ?? 0);
-      });
-      return value;
-   }
-   forEach(def.output, (k, v) => {
-      value += v * (Config.Price.get(k) ?? 0);
-   });
-   if (value <= 0) {
-      forEach(def.input, (k, v) => {
-         value += v * (Config.Price.get(k) ?? 0);
-      });
-   }
-   if (value <= 0) {
-      value = 1;
-   }
-   return value * data.level;
+   return getBuildingValue(data.type, data.level).get("XP") ?? 0;
 }
 
 export function getTotalBuildingValue(
@@ -169,21 +124,10 @@ export function getBuildingDesc(building: Building): string {
       }).join(" + ");
       return `${booster.desc()} (${AbilityRangeLabel[booster.range]()}): ${cost}`;
    }
-   let left = "";
-   let right = "";
-   if ("output" in def) {
-      right = mapOf(def.output, (res, value) => `${value} ${Config.Resources[res].name()}`).join(" + ");
-   }
-   if ("input" in def) {
-      left = mapOf(def.input, (res, value) => `${value} ${Config.Resources[res].name()}`).join(" + ");
-   }
-   return `${left} => ${right}`;
+   return "";
 }
 
 export function normalizedValueToHp(normalizedValue: number, building: Building): number {
-   if (isBooster(building)) {
-      return ((Config.BuildingTier.get(building) ?? 3) - 2) * 1000;
-   }
    return normalizedValue * 10;
 }
 
@@ -214,30 +158,6 @@ export function getBuildingTypes(tiles: Tiles): Set<Building> {
    const result = new Set<Building>();
    for (const [_, data] of tiles) {
       result.add(data.type);
-   }
-   return result;
-}
-
-export function getTopEndBuildings(buildings: Set<Building>): Set<Building> {
-   const allInputs = new Set<Resource>();
-   const result = new Set<Building>();
-   for (const building of buildings) {
-      const def = Config.Buildings[building];
-      forEach(def.input, (k, v) => {
-         allInputs.add(k);
-      });
-   }
-   for (const building of buildings) {
-      const def = Config.Buildings[building];
-      let outputRequired = 0;
-      forEach(def.output, (k, v) => {
-         if (allInputs.has(k)) {
-            ++outputRequired;
-         }
-      });
-      if (outputRequired === 0) {
-         result.add(building);
-      }
    }
    return result;
 }

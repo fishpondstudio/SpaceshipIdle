@@ -3,9 +3,11 @@ import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { AbilityRangeLabel, AbilityTimingLabel } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import {
    DamageTypeLabel,
+   type IBuildingDefinition,
    type IWeaponDefinition,
    WeaponKey,
 } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { StatusEffects } from "@spaceship-idle/shared/src/game/definitions/StatusEffect";
 import { getCooldownMultiplier } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { getNormalizedValue, normalizedValueToHp } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
@@ -34,7 +36,7 @@ export function WeaponListModal(): React.ReactNode {
                </tr>
             </thead>
             <tbody>
-               {mapOf(Config.Buildings, (building, _def) => {
+               {mapOf(Config.Buildings as Record<Building, IBuildingDefinition>, (building, _def) => {
                   if (!(WeaponKey in _def)) {
                      return null;
                   }

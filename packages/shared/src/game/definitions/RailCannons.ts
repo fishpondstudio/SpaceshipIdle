@@ -26,8 +26,6 @@ export const RC50: IWeaponDefinition = {
    name: () => t(L.RC50),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, AC30A: 1, Circuit: 1 },
-   output: { RC50: 1 },
    damagePct: 0.75,
    fireCooldown: 1.5,
    ability: {
@@ -50,8 +48,6 @@ export const RC100: IWeaponDefinition = {
    name: () => t(L.RC100),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, RC50: 2 },
-   output: { RC100: 1 },
    damagePct: 0.75,
    fireCooldown: 1.5,
    ability: {
@@ -74,8 +70,6 @@ export const RC50A: IWeaponDefinition = {
    name: () => t(L.RC50A),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, RC50: 2 },
-   output: { RC50A: 1 },
    damagePct: 0.75,
    fireCooldown: 1.5,
    ability: {
@@ -96,8 +90,6 @@ export const RC50B: IWeaponDefinition = {
    name: () => t(L.RC50B),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, RC50A: 2 },
-   output: { RC50B: 1 },
    damagePct: 0.9,
    fireCooldown: 1.5,
    ability: {
@@ -118,8 +110,6 @@ export const RC100A: IWeaponDefinition = {
    name: () => t(L.RC100A),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, RC100: 2 },
-   output: { RC100A: 1 },
    damagePct: 0.75,
    fireCooldown: 1.5,
    ability: {
@@ -140,8 +130,6 @@ export const RC100B: IWeaponDefinition = {
    name: () => t(L.RC100B),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, RC100: 2 },
-   output: { RC100B: 1 },
    damagePct: 0.75,
    fireCooldown: 1.5,
    ability: {
@@ -162,8 +150,6 @@ export const RC100C: IWeaponDefinition = {
    name: () => t(L.RC100C),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, RC100A: 1, RC100B: 1 },
-   output: { RC100C: 1 },
    damagePct: 0.5,
    fireCooldown: 1.5,
    ability: {
@@ -182,8 +168,6 @@ export const RC100D: IWeaponDefinition = {
    name: () => t(L.RC100D),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, RC50A: 1, RC100A: 1 },
-   output: { RC100D: 1 },
    damagePct: 0.75,
    fireCooldown: 1.5,
    ability: {

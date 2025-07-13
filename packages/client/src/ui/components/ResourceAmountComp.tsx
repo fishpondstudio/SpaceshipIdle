@@ -2,8 +2,5 @@ import type { Resource } from "@spaceship-idle/shared/src/game/definitions/Resou
 import { formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 
 export function ResourceAmount({ res, amount }: { res: Resource; amount: number }): string {
-   if (res === "Power") {
-      return `${formatNumber(amount, true)}W`;
-   }
    return formatNumber(amount);
 }

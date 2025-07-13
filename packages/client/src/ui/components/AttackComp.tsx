@@ -101,34 +101,6 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             </Tooltip>
          </div>
          <div className="divider my10" />
-         <div className="mx10">
-            {mapOf(def.output, (res, amount_) => {
-               const perSec = hasFlag(G.save.options.flag, GameOptionFlag.ShowAmmoPerSec);
-               const divider = perSec ? rs.props.fireCooldown : 1;
-               const amount = (amount_ * getCooldownMultiplier(data)) / divider;
-               const xp = (Config.Price.get(res) ?? 0) * amount * data.level;
-               return (
-                  <div key={res}>
-                     <div className="row" key={res}>
-                        <div>{Config.Resources[res].name()}</div>
-                        {rs.insufficient.has(res) ? <div className="mi text-yellow">error</div> : null}
-                        <div className="f1" />
-                        -<ResourceAmount res={res} amount={amount * data.level} />
-                        {perSec ? t(L.PerSecShort) : t(L.PerFireShort)}
-                     </div>
-                     <div className="row g5">
-                        <div>{t(L.XP)}</div>
-                        <div className="f1"></div>
-                        <XPIcon />
-                        <div className="row g0">
-                           +<StatComp current={xp * rs.xpMultiplier.value} original={xp} />
-                           {perSec ? t(L.PerSecShort) : t(L.PerFireShort)}
-                        </div>
-                     </div>
-                  </div>
-               );
-            })}
-         </div>
          {rs.xpMultiplier.value > 1 ? (
             <div className="mx10">
                <div className="h5" />

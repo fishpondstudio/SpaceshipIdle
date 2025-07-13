@@ -2,13 +2,13 @@ import { forEach, hasFlag, mapSafeAdd, reduceOf, setFlag, type Tile, tileToPoint
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
-import { GameOption } from "../GameOption";
-import { GameState } from "../GameState";
-import { posToTile } from "../Grid";
-import { abilityTarget, AbilityTiming } from "../definitions/Ability";
+import { AbilityTiming, abilityTarget } from "../definitions/Ability";
 import { BuildingFlag, ProjectileFlag, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { BattleStartAmmoCycles, BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
+import { GameOption } from "../GameOption";
+import { GameState } from "../GameState";
+import { posToTile } from "../Grid";
 import { BattleStatus } from "./BattleStatus";
 import { BattleFlag, BattleType } from "./BattleType";
 import { RequestFloater } from "./ProductionLogic";
@@ -144,23 +144,11 @@ export function tickTiles(
       if (!rs) {
          return null;
       }
-      if (rs.insufficient.has("Power")) {
-         return;
-      }
       if (hasFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire)) {
          return;
       }
       rs.cooldown += BattleTickInterval;
       if (rs.cooldown < rs.props.fireCooldown) {
-         return;
-      }
-      forEach(def.output, (res, _amount) => {
-         const amount = _amount * data.level;
-         if ((from.resources.get(res) ?? 0) < amount) {
-            rs.insufficient.add(res);
-         }
-      });
-      if (rs.insufficient.size > 0) {
          return;
       }
       const point = tileToPoint(tile);
@@ -188,16 +176,7 @@ export function tickTiles(
       if (target) {
          rs.cooldown = 0;
          rs.target = target;
-         forEach(def.output, (res, _amount) => {
-            const amount = getCooldownMultiplier(data) * _amount * data.level;
-            mapSafeAdd(from.resources, res, -amount);
-            mapSafeAdd(stat.consumed, res, amount);
-
-            const xp = (Config.Price.get(res) ?? 0) * amount * rs.xpMultiplier.value;
-            mapSafeAdd(from.resources, "XP", xp);
-            mapSafeAdd(stat.produced, "XP", xp);
-            rt.emit(RequestFloater, { tile, amount: xp });
-         });
+         // TODO: XP production
          const ability = rs.props.ability;
          if (ability?.timing === AbilityTiming.OnFire) {
             abilityTarget(side, ability.range, tile, from.tiles).forEach((target) => {

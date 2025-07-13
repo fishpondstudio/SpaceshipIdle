@@ -1,11 +1,11 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { BuildingFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { GridSize, tileToPosCenter } from "@spaceship-idle/shared/src/game/Grid";
 import type { ITileData } from "@spaceship-idle/shared/src/game/ITileData";
-import { BuildingFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { isBooster } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { type Tile, type ValueOf, clamp, formatNumber, hasFlag, lookAt } from "@spaceship-idle/shared/src/utils/Helper";
+import { clamp, formatNumber, hasFlag, lookAt, type Tile, type ValueOf } from "@spaceship-idle/shared/src/utils/Helper";
 import type { Disposable } from "@spaceship-idle/shared/src/utils/TypedEvent";
 import {
    BitmapText,
@@ -15,13 +15,12 @@ import {
    type IDestroyOptions,
    NineSlicePlane,
    Sprite,
-   Texture,
 } from "pixi.js";
 import { Fonts } from "../assets";
-import { G } from "../utils/Global";
 import type { Action } from "../utils/actions/Action";
 import { runFunc, sequence, to } from "../utils/actions/Actions";
 import { Easing } from "../utils/actions/Easing";
+import { G } from "../utils/Global";
 import { ShipScene } from "./ShipScene";
 
 export const TileVisualFlag = {
@@ -173,21 +172,7 @@ export class TileVisual extends Container {
 
    private onGameStateUpdated(): void {
       this._bottomRightText.text = this.levelLabel;
-      const insufficient = G.runtime.get(this._tile)?.insufficient;
-      if (!insufficient) return;
-      this._isProducing = insufficient.size === 0;
-
-      const text: string[] = [];
-      insufficient.forEach((res) => {
-         text.push(Config.Resources[res].name());
-      });
-      if (insufficient.has("Power")) {
-         this._bottomLeftSprite.texture = G.textures.get("Misc/NoPower")!;
-      } else if (insufficient.size > 0) {
-         this._bottomLeftSprite.texture = G.textures.get("Misc/NoResource")!;
-      } else {
-         this._bottomLeftSprite.texture = Texture.EMPTY;
-      }
+      this._isProducing = true;
    }
 
    public update(dt: number) {

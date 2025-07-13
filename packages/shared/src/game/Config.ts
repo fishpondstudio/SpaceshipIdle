@@ -1,10 +1,10 @@
 import { forEach, keysOf, sizeOf } from "../utils/Helper";
 import { type Building, Buildings } from "./definitions/Buildings";
 import { MaxBattleTick } from "./definitions/Constant";
-import type { Resource } from "./definitions/Resource";
 import { Resources } from "./definitions/Resource";
 import { type StatusEffect, StatusEffects } from "./definitions/StatusEffect";
-import { TechDefinitions } from "./definitions/TechDefinitions";
+import { type ShipClass, type Tech, TechDefinitions } from "./definitions/TechDefinitions";
+import { techColumnToShipClass } from "./logic/TechLogic";
 import type { ElementSymbol } from "./PeriodicTable";
 
 console.assert(sizeOf(Buildings) < MaxBattleTick);
@@ -16,14 +16,8 @@ export const Config = {
    Resources,
    Tech: new TechDefinitions(),
    Elements: new Map<ElementSymbol, Building>(),
-   Price: new Map<Resource, number>([
-      ["Power", 0],
-      ["Warp", 0],
-      ["XP", 1],
-   ]),
-   ResourceTier: new Map<Resource, number>([["Power", 1]]),
-   BuildingTier: new Map<Building, number>(),
-   ResourceToBuilding: new Map<Resource, Building>(),
+   BuildingToTech: {} as Record<Building, Tech>,
+   BuildingToShipClass: {} as Record<Building, ShipClass>,
 };
 
 function initConfig(): void {
@@ -37,11 +31,15 @@ function initConfig(): void {
       }
    });
 
+   forEach(Config.Tech, (tech, def) => {
+      const shipClass = techColumnToShipClass(def.position.x);
+      def.unlockBuildings?.forEach((building) => {
+         Config.BuildingToTech[building] = tech;
+         Config.BuildingToShipClass[building] = shipClass;
+      });
+   });
+
    if (typeof window !== "undefined") {
-      console.log("Price", Config.Price);
-      console.log("Resource Tier", Config.ResourceTier);
-      console.log("Building Tier", Config.BuildingTier);
-      console.log("Resource -> Building", Config.ResourceToBuilding);
       console.log("Unused Status Effects", statusEffects);
    }
 }

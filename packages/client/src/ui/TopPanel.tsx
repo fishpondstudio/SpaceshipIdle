@@ -9,7 +9,6 @@ import { refreshOnTypedEvent } from "../utils/Hook";
 import { OnSceneSwitched } from "../utils/SceneManager";
 import { BattlePanel, TimerPanel } from "./BattlePanel";
 import { ElementStatsPanel } from "./ElementStatsPanel";
-import { ResourcePanel } from "./ResourcePanel";
 import { ShipInfoPanel } from "./ShipInfoPanel";
 import { TopRightPanel } from "./TopRightPanel";
 
@@ -33,7 +32,6 @@ export function TopPanel(): React.ReactNode {
       return (
          <>
             <TopRightPanel />
-            <ResourcePanel />
             <ShipInfoPanel />
          </>
       );

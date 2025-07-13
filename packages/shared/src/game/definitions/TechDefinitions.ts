@@ -27,6 +27,7 @@ export interface IShipClassDefinition {
    name: () => string;
    range: [number, number];
    shipExtent: number;
+   index: number;
 }
 
 export const ShipClass = {
@@ -34,16 +35,19 @@ export const ShipClass = {
       name: () => t(L.TechSkiff),
       range: [0, 2],
       shipExtent: 3,
+      index: 0,
    },
    Scout: {
       name: () => t(L.TechScout),
       range: [3, 5],
       shipExtent: 4,
+      index: 1,
    },
    Corvette: {
       name: () => t(L.TechCorvette),
       range: [6, 8],
       shipExtent: 5,
+      index: 2,
    },
 } as const satisfies Record<string, IShipClassDefinition>;
 

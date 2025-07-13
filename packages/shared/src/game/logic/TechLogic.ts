@@ -1,7 +1,6 @@
 import { camelToHuman, entriesOf, forEach } from "../../utils/Helper";
 import { Config } from "../Config";
 import type { Building } from "../definitions/Buildings";
-import type { Resource } from "../definitions/Resource";
 import { ShipClass, type Tech } from "../definitions/TechDefinitions";
 import type { GameState } from "../GameState";
 
@@ -25,9 +24,13 @@ export function getShipClass(gs: GameState): ShipClass {
    gs.unlockedTech.forEach((t) => {
       x = Math.max(x, Config.Tech[t].position.x);
    });
+   return techColumnToShipClass(x);
+}
+
+export function techColumnToShipClass(column: number): ShipClass {
    let shipClass: ShipClass = "Skiff";
    forEach(ShipClass, (k, v) => {
-      if (v.range[0] <= x && v.range[1] >= x) {
+      if (v.range[0] <= column && v.range[1] >= column) {
          shipClass = k;
          // break;
          return true;
@@ -49,15 +52,6 @@ export function getTechDesc(tech: Tech): string {
    return desc.join(", ");
 }
 
-export function getBuildingThatProduce(resource: Resource): Building {
-   for (const [b, def] of entriesOf(Config.Buildings)) {
-      if ("output" in def && def.output[resource]) {
-         return b;
-      }
-   }
-   throw new Error(`No building produces ${resource}`);
-}
-
 export function getTechForBuilding(building: Building): Tech {
    for (const [tech, def] of entriesOf(Config.Tech)) {
       if (def.unlockBuildings?.includes(building)) {
@@ -65,9 +59,4 @@ export function getTechForBuilding(building: Building): Tech {
       }
    }
    throw new Error(`No tech unlocks building ${building}`);
-}
-
-export function getTechForResource(resource: Resource): Tech {
-   const building = getBuildingThatProduce(resource);
-   return getTechForBuilding(building);
 }

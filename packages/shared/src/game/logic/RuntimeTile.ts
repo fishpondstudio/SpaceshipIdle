@@ -1,9 +1,6 @@
-import { Rounding, type Tile, type ValueOf, forEach, hasFlag, mapSafeAdd, round, safeAdd } from "../../utils/Helper";
+import { forEach, hasFlag, mapSafeAdd, Rounding, round, safeAdd, type Tile, type ValueOf } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
-import { type GameState, GameStateUpdated } from "../GameState";
-import { GridSize } from "../Grid";
-import type { ITileData } from "../ITileData";
 import {
    DamageType,
    type DefenseProp,
@@ -20,14 +17,17 @@ import type { Building } from "../definitions/Buildings";
 import { DefaultCooldown, StatusEffectTickInterval } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
 import { type StatusEffect, StatusEffectFlag, StatusEffects, statusEffectOf } from "../definitions/StatusEffect";
+import { type GameState, GameStateUpdated } from "../GameState";
+import { GridSize } from "../Grid";
+import type { ITileData } from "../ITileData";
 import {
-   OnDamaged,
-   OnEvasion,
    damageAfterArmor,
    damageAfterDeflection,
    damageAfterShield,
    evasionChance,
    getCooldownMultiplier,
+   OnDamaged,
+   OnEvasion,
 } from "./BattleLogic";
 import { getNormalizedValue, normalizedValueToHp } from "./BuildingLogic";
 import type { IMultiplier } from "./IMultiplier";
@@ -69,7 +69,6 @@ export const OnStatusEffectsChanged = new TypedEvent<{ tile: Tile; buff: number;
 
 export class RuntimeTile {
    public target: Tile | undefined;
-   public readonly insufficient: Set<Resource> = new Set();
    public cooldown = Number.POSITIVE_INFINITY;
    public readonly statusEffects = new Map<Tile, IRuntimeEffect>();
    public buff = 0;

@@ -2,21 +2,21 @@ import { computePosition, flip, offset, shift } from "@floating-ui/core";
 import { notifications } from "@mantine/notifications";
 import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { AbilityTiming, abilityTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
+import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated, type Tiles } from "@spaceship-idle/shared/src/game/GameState";
 import {
    GridSize,
+   getSize,
    MaxX,
    MaxY,
-   getSize,
    posToTile,
    tileToPos,
    tileToPosCenter,
 } from "@spaceship-idle/shared/src/game/Grid";
 import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
-import { AbilityTiming, abilityTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
-import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
-import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { OnDamaged, OnEvasion, OnProjectileHit, OnWeaponFire } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
@@ -41,7 +41,6 @@ import {
 } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import {
-   type Tile,
    createTile,
    drawDashedLine,
    forEach,
@@ -49,11 +48,12 @@ import {
    lookAt,
    mapSafeAdd,
    rand,
+   type Tile,
    tileToPoint,
 } from "@spaceship-idle/shared/src/utils/Helper";
+import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { ObjectPool } from "@spaceship-idle/shared/src/utils/ObjectPool";
 import { AABB, type IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
-import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import {
    type ColorSource,
    Container,
@@ -70,11 +70,11 @@ import { SetPopover } from "../ui/PopoverHelper";
 import { setSidebar } from "../ui/Sidebar";
 import { playClick, playError } from "../ui/Sound";
 import { TilePage } from "../ui/TilePage";
-import { G } from "../utils/Global";
-import { type ISceneContext, Scene, destroyAllChildren } from "../utils/SceneManager";
-import { UnicodeText } from "../utils/UnicodeText";
 import { delay, runFunc, sequence, to } from "../utils/actions/Actions";
 import { Easing } from "../utils/actions/Easing";
+import { G } from "../utils/Global";
+import { destroyAllChildren, type ISceneContext, Scene } from "../utils/SceneManager";
+import { UnicodeText } from "../utils/UnicodeText";
 import { TileVisual, TileVisualFlag } from "./TileVisual";
 
 const CheckConnected = !import.meta.env.DEV;
@@ -342,72 +342,6 @@ export class ShipScene extends Scene {
             this._projectileVisuals.delete(id);
          }
       });
-
-      this._graphics.clear();
-      if (this._selectedTiles.size === 1) {
-         for (const tile of this._selectedTiles) {
-            const { x, y } = tileToPosCenter(tile);
-            const rs = rt.get(tile);
-            if (rs?.target && rt.has(rs.target)) {
-               const to = tileToPosCenter(rs.target);
-               this._targetIndicator.position.set(to.x, to.y);
-               this._targetIndicator.visible = true;
-            } else {
-               this._targetIndicator.visible = false;
-            }
-            if (rs?.def) {
-               const input = rs.def.input;
-               this._inputBuilding.clear();
-               forEach(input, (res, amount) => {
-                  if (res === "Power") {
-                     return;
-                  }
-                  rt.getGameState(tile)?.tiles.forEach((data, fromTile) => {
-                     if (Config.Buildings[data.type].output[res] && !this._inputBuilding.has(data.type)) {
-                        this._inputBuilding.add(data.type);
-                        const from = tileToPosCenter(fromTile);
-                        const to = tileToPosCenter(tile);
-                        this._graphics.lineStyle({
-                           width: 4,
-                           color: G.save.options.buildingColors.get(data.type) ?? 0xffffff,
-                           alignment: 0.5,
-                           join: LINE_JOIN.ROUND,
-                           cap: LINE_CAP.ROUND,
-                           alpha: 0.75,
-                           scaleMode: LINE_SCALE_MODE.NONE,
-                        });
-                        drawDashedLine(this._graphics, from, to, 2, 10, { time: G.pixi.ticker.lastTime, speed: 0.025 });
-                     }
-                  });
-               });
-               const output = rs.def.output;
-               this._outputBuilding.clear();
-               forEach(output, (res, amount) => {
-                  if (res === "Power") {
-                     return;
-                  }
-                  rt.getGameState(tile)?.tiles.forEach((data, toTile) => {
-                     if (Config.Buildings[data.type].input[res] && !this._outputBuilding.has(data.type)) {
-                        this._outputBuilding.add(data.type);
-                        const from = tileToPosCenter(tile);
-                        const to = tileToPosCenter(toTile);
-                        this._graphics.lineStyle({
-                           width: 4,
-                           color: G.save.options.buildingColors.get(data.type) ?? 0xffffff,
-                           alignment: 0.5,
-                           join: LINE_JOIN.ROUND,
-                           cap: LINE_CAP.ROUND,
-                           alpha: 0.75,
-                           scaleMode: LINE_SCALE_MODE.NONE,
-                        });
-                        drawDashedLine(this._graphics, from, to, 2, 10, { time: G.pixi.ticker.lastTime, speed: 0.025 });
-                     }
-                  });
-               });
-            }
-            return;
-         }
-      }
    }
 
    private renderTiles(tiles: Tiles, rt: Runtime, dt: number, timeSinceLastTick: number): void {

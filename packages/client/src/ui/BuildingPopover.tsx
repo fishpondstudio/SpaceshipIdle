@@ -9,7 +9,6 @@ import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { AttackComp } from "./components/AttackComp";
 import { DefenseComp } from "./components/DefenseComp";
-import { ProductionComp } from "./components/ProductionComp";
 import { StatusEffectComp } from "./components/StatusEffectComp";
 import { TitleComp } from "./components/TitleComp";
 import type { ITileWithGameState } from "./ITileWithGameState";
@@ -41,7 +40,6 @@ export function BuildingPopover({ tile, gs }: ITileWithGameState): React.ReactNo
          <ScrollArea.Autosize scrollbars="y" style={{ height: 400 - 35 - 1 }}>
             <div className="h10" />
             <TitleComp>{t(L.LevelX, data.level)}</TitleComp>
-            <ProductionComp tile={tile} gs={gs} />
             <DefenseComp tile={tile} gs={gs} />
             <AttackComp tile={tile} gs={gs} />
             <StatusEffectComp tile={tile} gs={gs} />

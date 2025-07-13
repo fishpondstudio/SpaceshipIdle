@@ -1,22 +1,21 @@
 import { ColorInput, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { CodeLabel } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
+import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { memo, useCallback } from "react";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
-import type { ITileWithGameState } from "./ITileWithGameState";
 import { AttackComp } from "./components/AttackComp";
 import { DefenseComp } from "./components/DefenseComp";
-import { ProductionComp } from "./components/ProductionComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { StatusEffectComp } from "./components/StatusEffectComp";
 import { TextureComp } from "./components/TextureComp";
 import { TitleComp } from "./components/TitleComp";
 import { UpgradeComp } from "./components/UpgradeComp";
 import { VideoTutorialComp } from "./components/VideoTutorialComp";
+import type { ITileWithGameState } from "./ITileWithGameState";
 
 const ColorInput_ = memo(ColorInput, (oldProps, newProps) => {
    return oldProps.value === newProps.value && oldProps.onChangeEnd === newProps.onChangeEnd;
@@ -58,7 +57,6 @@ export function BuildingPage({ tile, gs, readonly }: ITileWithGameState & { read
                <VideoTutorialComp tutorial="Recycle" className="mx10 mt10" />
             </>
          )}
-         <ProductionComp tile={tile} gs={gs} />
          <DefenseComp tile={tile} gs={gs} />
          <AttackComp tile={tile} gs={gs} />
          <StatusEffectComp tile={tile} gs={gs} />

@@ -16,8 +16,6 @@ export const PC1: IWeaponDefinition = {
    name: () => t(L.PC1),
    code: CodeNumber.PC,
    buildingFlag: BuildingFlag.CanTarget,
-   input: { Power: 2, AC130A: 1, RC50A: 1 },
-   output: { PC1: 1 },
    damagePct: 0.9,
    ability: {
       timing: AbilityTiming.OnFire,
