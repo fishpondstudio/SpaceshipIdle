@@ -1,4 +1,4 @@
-import { forEach, hasFlag, mapSafeAdd, Rounding, round, safeAdd, type Tile, type ValueOf } from "../../utils/Helper";
+import { forEach, hasFlag, mapSafeAdd, safeAdd, type Tile, type ValueOf } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
 import {
@@ -14,9 +14,9 @@ import {
    type WeaponProp,
 } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
-import { DefaultCooldown, StatusEffectTickInterval } from "../definitions/Constant";
-import { type StatusEffect, StatusEffectFlag, StatusEffects, statusEffectOf } from "../definitions/StatusEffect";
-import { type GameState, GameStateUpdated } from "../GameState";
+import { StatusEffectTickInterval } from "../definitions/Constant";
+import { type StatusEffect, StatusEffectFlag, statusEffectOf, StatusEffects } from "../definitions/StatusEffect";
+import { type GameState } from "../GameState";
 import { GridSize } from "../Grid";
 import type { ITileData } from "../ITileData";
 import {
@@ -24,12 +24,11 @@ import {
    damageAfterDeflection,
    damageAfterShield,
    evasionChance,
-   getCooldownMultiplier,
    OnDamaged,
    OnEvasion,
 } from "./BattleLogic";
-import { getNormalizedValue, normalizedValueToHp } from "./BuildingLogic";
-import type { IMultiplier } from "./IMultiplier";
+import { getDamagePerFire, getHP } from "./BuildingLogic";
+import type { IMultiplier, Multipliers } from "./IMultiplier";
 import type { Runtime } from "./Runtime";
 import { isEnemy } from "./ShipLogic";
 import { Side } from "./Side";
@@ -210,6 +209,14 @@ export class RuntimeTile {
       return 0;
    }
 
+   public get multipliers(): Required<Multipliers> {
+      return {
+         xp: this.xpMultiplier.value,
+         hp: this.hpMultiplier.value,
+         damage: this.damageMultiplier.value,
+      };
+   }
+
    private _tabulate(): void {
       const oldBuff = this.buff;
       const oldDebuff = this.debuff;
@@ -294,14 +301,13 @@ export class RuntimeTile {
             }
          }
       });
-      const normVal = getNormalizedValue(this.data);
-      this.props.hp = normalizedValueToHp(normVal, this.data.type) * this.hpMultiplier.value;
+      this.props.hp = getHP(this.data) * this.hpMultiplier.value;
       if ("lifeTime" in def) {
          this.props.lifeTime = def.lifeTime;
       }
       if (WeaponKey in def) {
-         const dmg = normVal * getCooldownMultiplier(this.data) * this.damageMultiplier.value;
-         this.props.damagePerProjectile = (def.damagePct * dmg) / def.projectiles;
+         const damagePerFire = getDamagePerFire(this.data) * this.damageMultiplier.value;
+         this.props.damagePerProjectile = (def.damagePct * damagePerFire) / def.projectiles;
       }
       Object.assign(this.originalProps, this.props);
       this.props.runtimeFlag = RuntimeFlag.None;

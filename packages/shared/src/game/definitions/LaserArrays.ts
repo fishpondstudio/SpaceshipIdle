@@ -1,8 +1,7 @@
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import { getCooldownMultiplier } from "../logic/BattleLogic";
-import { getNormalizedValue } from "../logic/BuildingLogic";
-import { AbilityRange, AbilityTiming } from "./Ability";
+import { getDamagePerFire } from "../logic/BuildingLogic";
+import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
 import {
    BaseWeaponProps,
    BuildingFlag,
@@ -48,9 +47,10 @@ export const LA1A: IWeaponDefinition = {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
       effect: "TickExplosiveDamage",
-      value: (building, level) => {
+      flag: AbilityFlag.AffectedByDamageMultiplier,
+      value: (building, level, multipliers) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
-         const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
+         const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return (damage * (1 - def.damagePct) * LaserArrayDamagePct) / 2;
       },
       duration: (building, level) => 2,
@@ -71,6 +71,7 @@ export const LA1B: IWeaponDefinition = {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
       effect: "ReduceArmorAndDeflection",
+      flag: AbilityFlag.None,
       value: (self, level) => {
          return level / 2;
       },
@@ -92,9 +93,10 @@ export const LA2: IWeaponDefinition = {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
       effect: "ReduceMaxHp",
-      value: (building, level) => {
+      flag: AbilityFlag.AffectedByDamageMultiplier,
+      value: (building, level, multipliers) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
-         const normVal = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
+         const normVal = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return (normVal * 2.5 * (1 - def.damagePct) * LaserArrayDamagePct) / 2;
       },
       duration: (building, level) => 2,
@@ -115,9 +117,10 @@ export const LA2A: IWeaponDefinition = {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
       effect: "ReduceDamage",
-      value: (building, level) => {
+      flag: AbilityFlag.AffectedByDamageMultiplier,
+      value: (building, level, multipliers) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
-         const normVal = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
+         const normVal = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return normVal * (1 - def.damagePct) * LaserArrayDamagePct;
       },
       duration: (building, level) => 2,

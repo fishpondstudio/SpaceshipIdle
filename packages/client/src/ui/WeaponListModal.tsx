@@ -9,8 +9,8 @@ import {
 } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { StatusEffects } from "@spaceship-idle/shared/src/game/definitions/StatusEffect";
-import { getCooldownMultiplier } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
-import { getNormalizedValue, normalizedValueToHp } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
+import { getDamagePerFire, getHP } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
+import { DefaultMultipliers } from "@spaceship-idle/shared/src/game/logic/IMultiplier";
 import { getTechForBuilding, getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { formatNumber, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -41,8 +41,7 @@ export function WeaponListModal(): React.ReactNode {
                      return null;
                   }
                   const def = _def as IWeaponDefinition;
-                  const normVal = getNormalizedValue({ type: building, level: 1 });
-                  const dmgPerFire = normVal * getCooldownMultiplier({ type: building });
+                  const dmgPerFire = getDamagePerFire({ type: building, level: 1 });
                   return (
                      <tr key={building}>
                         <td className="condensed">
@@ -62,7 +61,7 @@ export function WeaponListModal(): React.ReactNode {
                            <div>{def.name()}</div>
                            <div className="text-xs text-space">{getTechName(getTechForBuilding(building))}</div>
                         </td>
-                        <td className="text-right">{formatNumber(normalizedValueToHp(normVal, building))}</td>
+                        <td className="text-right">{formatNumber(getHP({ type: building, level: 1 }))}</td>
                         <td className="text-right">
                            <div>{formatNumber(def.armor[0])}</div>
                            <div className="text-right text-green">+{formatNumber(def.armor[1])}</div>
@@ -97,7 +96,7 @@ export function WeaponListModal(): React.ReactNode {
                               <div>
                                  <div className="text-xs">{StatusEffects[def.ability.effect].name()}</div>
                                  <div className="text-xs text-space">
-                                    {t(L.AbilityDurationSeconds, def.ability.duration(building, 1))}
+                                    {t(L.AbilityDurationSeconds, def.ability.duration(building, 1, DefaultMultipliers))}
                                     {" / "}
                                     {AbilityRangeLabel[def.ability.range]()}
                                     {" / "}

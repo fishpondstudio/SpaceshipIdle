@@ -1,28 +1,15 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import type { Resource } from "@spaceship-idle/shared/src/game/definitions/Resource";
 import { canSpend } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { classNames, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { classNames, formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 import type React from "react";
 import { G } from "../../utils/Global";
-import { ResourceAmount } from "./ResourceAmountComp";
 
-export function ResourceListComp({
-   res,
-   showColor = true,
-}: { res: Map<Resource, number>; showColor?: boolean }): React.ReactNode {
+export function ResourceListComp({ xp, showColor = true }: { xp: number; showColor?: boolean }): React.ReactNode {
+   const color = canSpend(xp, G.save.current) ? "text-green" : "text-red";
    return (
-      <div>
-         {mMapOf(res, (res, amount) => {
-            const color = canSpend(new Map([[res, amount]]), G.save.current) ? "text-green" : "text-red";
-            return (
-               <div className="row" key={res}>
-                  <div className="f1">{Config.Resources[res].name()}</div>
-                  <div className={classNames(showColor ? color : null)}>
-                     <ResourceAmount res={res} amount={amount} />
-                  </div>
-               </div>
-            );
-         })}
+      <div className="row">
+         <div className="f1">{Config.Resources.XP.name()}</div>
+         <div className={classNames(showColor ? color : null)}>{formatNumber(xp)}</div>
       </div>
    );
 }

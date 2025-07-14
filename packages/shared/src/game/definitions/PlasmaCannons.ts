@@ -1,5 +1,5 @@
 import { L, t } from "../../utils/i18n";
-import { AbilityRange, AbilityTiming } from "./Ability";
+import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
 import { BaseWeaponProps, BuildingFlag, type IDefenseProp, type IWeaponDefinition } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 
@@ -21,6 +21,7 @@ export const PC1: IWeaponDefinition = {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
       effect: "LaserBlocker",
+      flag: AbilityFlag.None,
       value: (self, level) => {
          return 0;
       },

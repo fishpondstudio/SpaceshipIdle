@@ -1,4 +1,4 @@
-import { clamp, createTile, hasFlag, mapSafeAdd, type Tile } from "../../utils/Helper";
+import { clamp, createTile, hasFlag, mapSafeAdd, setFlag, type Tile } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { srand } from "../../utils/Random";
 import { TypedEvent } from "../../utils/TypedEvent";
@@ -18,9 +18,8 @@ import { BattleStatus } from "./BattleStatus";
 import { BattleFlag, BattleType } from "./BattleType";
 import { tickElement } from "./ElementLogic";
 import type { Projectile } from "./Projectile";
-import { getQualifiedQuantum } from "./ResourceLogic";
 import { RuntimeStat } from "./RuntimeStat";
-import { RuntimeTile } from "./RuntimeTile";
+import { RuntimeFlag, RuntimeTile } from "./RuntimeTile";
 import { flipHorizontal, isEnemy, shipAABB } from "./ShipLogic";
 import { Side } from "./Side";
 import { getTechName } from "./TechLogic";
@@ -86,7 +85,6 @@ export class Runtime {
    }
 
    public createXPTarget(): void {
-      const level = Math.floor(getQualifiedQuantum(this.left) / 10) + this.wave;
       if (this.right.tiles.size > 0) {
          console.error("createEnemy called when there are still enemy tiles left");
          return;
@@ -98,14 +96,18 @@ export class Runtime {
       for (let y = aabb.min.y; y <= aabb.max.y; ++y) {
          for (let x = aabb.min.x; x <= aabb.max.x; ++x) {
             const tile = createTile(x, y);
-            this.right.tiles.set(tile, makeTile("AC30", level));
+            this.right.tiles.set(tile, makeTile("AC30", this.wave + 1));
          }
       }
       this.right.tiles = flipHorizontal(this.right.tiles);
-      this.right.tiles.forEach((data, tile) => {
-         this.get(tile)?.addStatusEffect("Disarm", tile, "AC30", 1, Number.POSITIVE_INFINITY);
-      });
       this.rightStat = new RuntimeStat();
+      this.right.tiles.forEach((_data, tile) => {
+         const rs = this.get(tile);
+         if (rs) {
+            rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire);
+            rs.addStatusEffect("Disarm", tile, rs.data.type, 1, Number.POSITIVE_INFINITY);
+         }
+      });
    }
 
    public has(tile: Tile): boolean {
@@ -234,7 +236,7 @@ export class Runtime {
    public tabulateHp(tiles: Tiles): [number, number] {
       let hp = 0;
       let totalHp = 0;
-      tiles.forEach((data, tile) => {
+      tiles.forEach((_data, tile) => {
          const rs = this.get(tile);
          if (rs) {
             hp += rs.props.hp - rs.damageTaken;
@@ -247,13 +249,13 @@ export class Runtime {
    public totalDealtDamage(): [number, number] {
       let left = 0;
       let right = 0;
-      this.left.tiles.forEach((data, tile) => {
+      this.left.tiles.forEach((_data, tile) => {
          const rs = this.get(tile);
          if (rs) {
             left += rs.damageTaken;
          }
       });
-      this.right.tiles.forEach((data, tile) => {
+      this.right.tiles.forEach((_data, tile) => {
          const rs = this.get(tile);
          if (rs) {
             right += rs.damageTaken;
@@ -328,7 +330,7 @@ export class Runtime {
 
       const leftDamage = this.suddenDeathDamage(Side.Left);
       if (leftDamage > 0) {
-         this.left.tiles.forEach((data, tile) => {
+         this.left.tiles.forEach((_data, tile) => {
             this.get(tile)?.takeDamage(leftDamage, DamageType.Kinetic, ProjectileFlag.None, null);
             this.get(tile)?.takeDamage(leftDamage, DamageType.Explosive, ProjectileFlag.None, null);
             this.get(tile)?.takeDamage(leftDamage, DamageType.Energy, ProjectileFlag.None, null);
@@ -337,7 +339,7 @@ export class Runtime {
 
       const rightDamage = this.suddenDeathDamage(Side.Right);
       if (rightDamage > 0) {
-         this.right.tiles.forEach((data, tile) => {
+         this.right.tiles.forEach((_data, tile) => {
             this.get(tile)?.takeDamage(rightDamage, DamageType.Kinetic, ProjectileFlag.None, null);
             this.get(tile)?.takeDamage(rightDamage, DamageType.Explosive, ProjectileFlag.None, null);
             this.get(tile)?.takeDamage(rightDamage, DamageType.Energy, ProjectileFlag.None, null);

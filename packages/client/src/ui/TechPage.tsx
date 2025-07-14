@@ -1,11 +1,10 @@
-import { Badge, Tooltip } from "@mantine/core";
+import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import type { Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { getBuildingDesc } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { checkTechPrerequisites, getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
-import { formatNumber, mapOf, numberToRoman } from "@spaceship-idle/shared/src/utils/Helper";
+import { formatNumber, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { TechTreeScene } from "../scenes/TechTreeScene";
 import { G } from "../utils/Global";
@@ -95,7 +94,6 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                               <TextureComp name={`Building/${b}`} width={50} />
                               <div className="f1">
                                  <div>{Config.Buildings[b].name()}</div>
-                                 <div className="text-dimmed text-xs text-condensed">{getBuildingDesc(b)}</div>
                               </div>
                            </div>
                         </Tooltip>

@@ -1,9 +1,10 @@
 import type { Tile } from "../../utils/Helper";
 import { type IHaveXY, Vector2 } from "../../utils/Vector2";
-import { tileToPosCenter } from "../Grid";
 import type { Ability } from "../definitions/Ability";
 import type { DamageType, ProjectileFlag } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
+import { tileToPosCenter } from "../Grid";
+import { Multipliers } from "./IMultiplier";
 
 export class Projectile {
    private length: number;
@@ -24,6 +25,7 @@ export class Projectile {
       public readonly projectileSpeed: number,
       public readonly flag: ProjectileFlag,
       public readonly critical: boolean,
+      public readonly multipliers: Required<Multipliers>,
       public readonly ability: Ability | undefined,
       private mag: number,
    ) {

@@ -1,4 +1,4 @@
-import { Image, Slider, Tooltip } from "@mantine/core";
+import { Image, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { AbilityRangeLabel } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import type { IBoosterDefinition } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
@@ -6,15 +6,15 @@ import type { Building } from "@spaceship-idle/shared/src/game/definitions/Build
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
    canSpend,
-   getBuildingValue,
+   getBuildingCost,
    getNextLevel,
-   getTotalBuildingValue,
+   getTotalBuildingCost,
    isBooster,
    trySpend,
    upgradeMax,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { isShipConnected } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
-import { mapSafeAdd, round } from "@spaceship-idle/shared/src/utils/Helper";
+import { mapSafeAdd } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo, useCallback } from "react";
 import { G } from "../../utils/Global";
@@ -39,9 +39,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
       if (canRecycle) {
          playClick();
          G.runtime.delete(tile);
-         getTotalBuildingValue(data.type, data.level, 0).forEach((amount, res) => {
-            mapSafeAdd(gs.resources, res, amount);
-         });
+         mapSafeAdd(gs.resources, "XP", getTotalBuildingCost(data.type, data.level, 0));
          GameStateUpdated.emit();
       } else {
          playError();
@@ -50,7 +48,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
 
    const upgrade = useCallback(
       (target: number) => {
-         if (trySpend(getTotalBuildingValue(data.type, data.level, target), G.save.current)) {
+         if (trySpend(getTotalBuildingCost(data.type, data.level, target), G.save.current)) {
             data.level = target;
             GameStateUpdated.emit();
          } else {
@@ -66,9 +64,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             playError();
             return;
          }
-         getTotalBuildingValue(data.type, data.level, target).forEach((amount, res) => {
-            mapSafeAdd(gs.resources, res, amount);
-         });
+         mapSafeAdd(gs.resources, "XP", getTotalBuildingCost(data.type, data.level, target));
          data.level = target;
          GameStateUpdated.emit();
       },
@@ -104,11 +100,11 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                return (
                   <Tooltip
                      key={idx}
-                     label={<ResourceListComp res={getTotalBuildingValue(data.type, data.level, target)} />}
+                     label={<ResourceListComp xp={getTotalBuildingCost(data.type, data.level, target)} />}
                   >
                      <button
                         className="btn f1"
-                        disabled={!canSpend(getTotalBuildingValue(data.type, data.level, target), G.save.current)}
+                        disabled={!canSpend(getTotalBuildingCost(data.type, data.level, target), G.save.current)}
                         onClick={upgrade.bind(null, target)}
                      >
                         +{target - data.level}
@@ -118,7 +114,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             })}
             <button
                className="btn f1"
-               disabled={!canSpend(getBuildingValue(data.type, data.level + 1), G.save.current)}
+               disabled={!canSpend(getBuildingCost(data.type, data.level + 1), G.save.current)}
                onClick={upgradeMaxCached}
             >
                {t(L.UpgradeMax)}
@@ -131,10 +127,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   <Tooltip
                      key={idx}
                      label={
-                        <ResourceListComp
-                           res={getTotalBuildingValue(data.type, data.level, target)}
-                           showColor={false}
-                        />
+                        <ResourceListComp xp={getTotalBuildingCost(data.type, data.level, target)} showColor={false} />
                      }
                   >
                      <button className="btn f1" disabled={target <= 0} onClick={downgrade.bind(null, target)}>
@@ -148,7 +141,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   canRecycle ? (
                      <>
                         <div>{t(L.RecycleModule)}</div>
-                        <ResourceListComp res={getTotalBuildingValue(data.type, data.level, 0)} showColor={false} />
+                        <ResourceListComp xp={getTotalBuildingCost(data.type, data.level, 0)} showColor={false} />
                      </>
                   ) : (
                      t(L.CannotRecycle)

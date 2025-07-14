@@ -5,37 +5,25 @@ import type { Resource } from "../definitions/Resource";
 import { GameState, SaveGame } from "../GameState";
 import type { ITileData } from "../ITileData";
 import { simulateBattle } from "./BattleLogic";
-import { getBuildingValue, getNextLevel, getTotalBuildingValue, upgradeMax } from "./BuildingLogic";
+import { getBuildingCost, getNextLevel, getTotalBuildingCost, upgradeMax } from "./BuildingLogic";
 import { Runtime } from "./Runtime";
 import TestShip from "./TestShip.json?raw";
 
 test("totalBuildingValue", () => {
    const result = new Map<Resource, number>();
    for (let i = 6; i <= 10; i++) {
-      const value = getBuildingValue("AC130", i);
-      for (const [res, v] of value) {
-         mapSafeAdd(result, res, v);
-      }
+      const value = getBuildingCost("AC130", i);
+      mapSafeAdd(result, "XP", value);
    }
-   getTotalBuildingValue("AC130", 5, 10).forEach((v, res) => {
-      expect(result.get(res)).toBe(v);
-   });
-   getTotalBuildingValue("AC130", 10, 5).forEach((v, res) => {
-      expect(result.get(res)).toBe(v);
-   });
+   expect(result.get("XP")).toBe(getTotalBuildingCost("AC130", 5, 10));
+   expect(result.get("XP")).toBe(getTotalBuildingCost("AC130", 10, 5));
    result.clear();
    for (let i = 1; i <= 5; i++) {
-      const value = getBuildingValue("AC130", i);
-      for (const [res, v] of value) {
-         mapSafeAdd(result, res, v);
-      }
+      const value = getBuildingCost("AC130", i);
+      mapSafeAdd(result, "XP", value);
    }
-   getTotalBuildingValue("AC130", 5, 0).forEach((v, res) => {
-      expect(result.get(res)).toBe(v);
-   });
-   getTotalBuildingValue("DMG1Booster", 5, 10).forEach((v, res) => {
-      expect(result.get(res)).toBe(0);
-   });
+   expect(result.get("XP")).toBe(getTotalBuildingCost("AC130", 5, 0));
+   expect(result.get("XP")).toBe(getTotalBuildingCost("DMG1Booster", 5, 10));
 });
 
 test("upgradeMax", () => {
@@ -46,12 +34,8 @@ test("upgradeMax", () => {
    const tile: ITileData = { type: "AC76", level: 5 };
    upgradeMax(tile, rt.left);
    expect(tile.level).toBe(9);
-   getTotalBuildingValue("AC76", 5, 9).forEach((v, res) => {
-      expect(rt.left.resources.get(res)).toBe(1000 - v);
-   });
-   getTotalBuildingValue("AC76", 5, 9).forEach((v, res) => {
-      expect(rt.left.resources.get(res)).toBeLessThan(v);
-   });
+   expect(rt.left.resources.get("XP")).toBe(1000 - getTotalBuildingCost("AC76", 5, 9));
+   expect(rt.left.resources.get("XP")).toBeLessThan(getTotalBuildingCost("AC76", 5, 9));
 });
 
 test("getNextLevel", () => {

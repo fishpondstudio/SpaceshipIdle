@@ -1,14 +1,12 @@
-import { formatNumber, hasFlag, mapOf, mapSafeAdd } from "../../utils/Helper";
+import { hasFlag, mapSafeAdd } from "../../utils/Helper";
 import { Config } from "../Config";
-import { AbilityRangeLabel } from "../definitions/Ability";
-import { BuildingFlag, type IBoosterDefinition } from "../definitions/BuildingProps";
+import { BuildingFlag } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
-import { MaxBuildingCount } from "../definitions/Constant";
-import type { Resource } from "../definitions/Resource";
+import { DamageToHPMultiplier, MaxBuildingCount } from "../definitions/Constant";
 import { ShipClass } from "../definitions/TechDefinitions";
 import type { GameState, Tiles } from "../GameState";
 import type { ITileData } from "../ITileData";
-import { calcSpaceshipXP, getMaxSpaceshipXP, resourceValueOf } from "./ResourceLogic";
+import { getCooldownMultiplier } from "./BattleLogic";
 
 export function getNextLevel(currentLevel: number, x: number): number {
    return (Math.floor(currentLevel / x) + 1) * x;
@@ -37,98 +35,59 @@ export function hashBuildingAndLevel(building: Building, level: number): number 
    return level * MaxBuildingCount + Config.BuildingId[building];
 }
 
-export function getBuildingValue(
-   building: Building,
-   level: number,
-   result: Map<Resource, number> | null = null,
-): Map<Resource, number> {
-   result ??= new Map<Resource, number>();
-   const shipClass = Config.BuildingToShipClass[building];
-   const baseValue = ShipClass[shipClass].index + 1;
-   result.set("XP", baseValue * fib(level));
-   return result;
+export function getBuildingCost(building: Building, level: number): number {
+   return getBaseValue(building) * fib(level);
 }
 
-export function getNormalizedValue(data: { type: Building; level: number }): number {
-   return getBuildingValue(data.type, data.level).get("XP") ?? 0;
-}
-
-export function getTotalBuildingValue(
-   building: Building,
-   currentLevel: number,
-   targetLevel: number,
-   result: Map<Resource, number> | null = null,
-): Map<Resource, number> {
+export function getTotalBuildingCost(building: Building, currentLevel: number, targetLevel: number): number {
    const min = Math.min(currentLevel, targetLevel);
    const max = Math.max(currentLevel, targetLevel);
-   result ??= new Map<Resource, number>();
+   let result = 0;
    for (let level = min + 1; level <= max; ++level) {
-      getBuildingValue(building, level, result);
+      result += getBuildingCost(building, level);
    }
    return result;
+}
+
+function getBaseValue(building: Building): number {
+   const shipClass = Config.BuildingToShipClass[building];
+   return ShipClass[shipClass].index + 1;
+}
+
+export function getHP({ type, level }: { type: Building; level: number }): number {
+   return getBaseValue(type) * level * DamageToHPMultiplier;
+}
+
+export function getDamagePerFire({ type, level }: { type: Building; level: number }): number {
+   return getBaseValue(type) * level * getCooldownMultiplier({ type });
 }
 
 export function upgradeMax(tile: ITileData, gs: GameState): void {
-   const def = Config.Buildings[tile.type];
-   let resources = getBuildingValue(tile.type, tile.level + 1);
-   while (resourceValueOf(resources) < getMaxSpaceshipXP(gs) && trySpend(resources, gs)) {
+   let xp = getBuildingCost(tile.type, tile.level + 1);
+   while (trySpend(xp, gs)) {
       tile.level++;
-      resources = getBuildingValue(tile.type, tile.level + 1);
+      xp = getBuildingCost(tile.type, tile.level + 1);
    }
 }
 
-export function canSpend(resources: Map<Resource, number>, gs: GameState): boolean {
-   return (
-      hasEnoughResources(resources, gs.resources) &&
-      calcSpaceshipXP(gs) + resourceValueOf(resources) < getMaxSpaceshipXP(gs)
-   );
+export function canSpend(xp: number, gs: GameState): boolean {
+   return hasEnoughXP(xp, gs);
 }
 
-export function trySpend(resources: Map<Resource, number>, gs: GameState): boolean {
-   if (!canSpend(resources, gs)) {
+export function trySpend(xp: number, gs: GameState): boolean {
+   if (!canSpend(xp, gs)) {
       return false;
    }
-   return tryDeductResources(resources, gs.resources);
-}
-
-export function hasEnoughResources(required: Map<Resource, number>, resources: Map<Resource, number>): boolean {
-   for (const [res, value] of required) {
-      const current = resources.get(res);
-      if (current === undefined || current < value) {
-         return false;
-      }
-   }
+   mapSafeAdd(gs.resources, "XP", -xp);
    return true;
 }
 
-export function tryDeductResources(required: Map<Resource, number>, resources: Map<Resource, number>): boolean {
-   if (!hasEnoughResources(required, resources)) {
-      return false;
-   }
-   for (const [res, value] of required) {
-      mapSafeAdd(resources, res, -value);
-   }
-   return true;
+export function hasEnoughXP(required: number, gs: GameState): boolean {
+   return (gs.resources.get("XP") ?? 0) >= required;
 }
 
 export function getUnlockedBuildings(gs: GameState): Building[] {
    return Array.from(gs.unlockedTech).flatMap((t) => Config.Tech[t].unlockBuildings ?? []);
-}
-
-export function getBuildingDesc(building: Building): string {
-   const def = Config.Buildings[building];
-   if (isBooster(building)) {
-      const booster = def as IBoosterDefinition;
-      const cost = mapOf(booster.unlock, (res, value) => {
-         return `${formatNumber(value)} ${Config.Resources[res].name()}`;
-      }).join(" + ");
-      return `${booster.desc()} (${AbilityRangeLabel[booster.range]()}): ${cost}`;
-   }
-   return "";
-}
-
-export function normalizedValueToHp(normalizedValue: number, building: Building): number {
-   return normalizedValue * 10;
 }
 
 export function hasConstructed(building: Building, gs: GameState): boolean {

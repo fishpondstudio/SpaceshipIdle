@@ -1,5 +1,6 @@
-import { createTile, tileToPoint, type Tile, type ValueOf } from "../../utils/Helper";
+import { createTile, type Tile, tileToPoint, type ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
+import { Multipliers } from "../logic/IMultiplier";
 import { Side } from "../logic/Side";
 import type { Building } from "./Buildings";
 import type { StatusEffect } from "./StatusEffect";
@@ -37,6 +38,14 @@ export const AbilityRange = {
 
 export type AbilityRange = ValueOf<typeof AbilityRange>;
 
+export const AbilityFlag = {
+   None: 0,
+   AffectedByDamageMultiplier: 1 << 0,
+   AffectedByHPMultiplier: 1 << 1,
+};
+
+export type AbilityFlag = ValueOf<typeof AbilityFlag>;
+
 export const AbilityRangeLabel: Record<AbilityRange, () => string> = {
    [AbilityRange.Single]: () => t(L.AbilityRangeSingle),
    [AbilityRange.Adjacent]: () => t(L.AbilityRangeAdjacent),
@@ -55,8 +64,9 @@ export interface Ability {
    timing: AbilityTiming;
    range: AbilityRange;
    effect: StatusEffect;
-   value: (self: Building, level: number) => number;
-   duration: (self: Building, level: number) => number;
+   flag: AbilityFlag;
+   value: (self: Building, level: number, multipliers: Required<Multipliers>) => number;
+   duration: (self: Building, level: number, multipliers: Required<Multipliers>) => number;
 }
 
 export function abilityTarget<T>(

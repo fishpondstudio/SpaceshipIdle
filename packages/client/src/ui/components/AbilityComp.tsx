@@ -8,6 +8,7 @@ import {
 } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { StatusEffects } from "@spaceship-idle/shared/src/game/definitions/StatusEffect";
+import { DefaultMultipliers } from "@spaceship-idle/shared/src/game/logic/IMultiplier";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import Adjacent from "../../assets/images/Adjacent.png";
 import FrontTrio from "../../assets/images/FrontTrio.png";
@@ -24,13 +25,18 @@ export function AbilityComp({
    level,
    building,
    title,
-}: { level: number; building: Building; title?: React.ReactNode; space?: React.ReactNode }): React.ReactNode {
+}: {
+   level: number;
+   building: Building;
+   title?: React.ReactNode;
+   space?: React.ReactNode;
+}): React.ReactNode {
    const def = Config.Buildings[building];
    if (!("ability" in def) || !def.ability) {
       return null;
    }
    const ability = def.ability;
-   const duration = ability.duration(building, level);
+   const duration = ability.duration(building, level, DefaultMultipliers);
    return (
       <>
          {title}
@@ -62,8 +68,8 @@ export function AbilityComp({
             </Tooltip>
          </div>
          <div className="text-space" style={{ textAlign: "right" }}>
-            {StatusEffects[ability.effect].desc(ability.value(building, level))} ({t(L.AbilityDuration)}{" "}
-            {t(L.AbilityDurationSeconds, duration)})
+            {StatusEffects[ability.effect].desc(ability.value(building, level, DefaultMultipliers))} (
+            {t(L.AbilityDuration)} {t(L.AbilityDurationSeconds, duration)})
          </div>
       </>
    );

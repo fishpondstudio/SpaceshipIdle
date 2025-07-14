@@ -1,4 +1,4 @@
-import { forEach, hasFlag, mapSafeAdd, reduceOf, setFlag, type Tile, tileToPoint } from "../../utils/Helper";
+import { hasFlag, mapSafeAdd, reduceOf, setFlag, tileToPoint, type Tile } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -11,6 +11,7 @@ import { GameState } from "../GameState";
 import { posToTile } from "../Grid";
 import { BattleStatus } from "./BattleStatus";
 import { BattleFlag, BattleType } from "./BattleType";
+import { getDamagePerFire } from "./BuildingLogic";
 import { Projectile } from "./Projectile";
 import { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
@@ -80,8 +81,8 @@ export function tickProjectiles(
                   ability.effect,
                   projectile.fromTile,
                   projectile.building,
-                  ability.value(projectile.building, projectile.level) * factor,
-                  ability.duration(projectile.building, projectile.level),
+                  ability.value(projectile.building, projectile.level, projectile.multipliers) * factor,
+                  ability.duration(projectile.building, projectile.level, projectile.multipliers),
                );
             });
          }
@@ -176,7 +177,11 @@ export function tickTiles(
       if (target) {
          rs.cooldown = 0;
          rs.target = target;
-         // TODO: XP production
+
+         const damagePerFire = getDamagePerFire({ type: data.type, level: data.level });
+         mapSafeAdd(from.resources, "XP", damagePerFire);
+         RequestFloater.emit({ tile, amount: damagePerFire });
+
          const ability = rs.props.ability;
          if (ability?.timing === AbilityTiming.OnFire) {
             abilityTarget(side, ability.range, tile, from.tiles).forEach((target) => {
@@ -186,8 +191,8 @@ export function tickTiles(
                   ability.effect,
                   tile,
                   rs.data.type,
-                  ability.value(rs.data.type, rs.data.level),
-                  ability.duration(rs.data.type, rs.data.level),
+                  ability.value(rs.data.type, rs.data.level, rs.multipliers),
+                  ability.duration(rs.data.type, rs.data.level, rs.multipliers),
                );
             });
          }
@@ -208,6 +213,7 @@ export function tickTiles(
                      rs.props.projectileSpeed,
                      rs.props.projectileFlag,
                      critical,
+                     rs.multipliers,
                      rs.props.ability,
                      rs.projectileMag,
                   ),

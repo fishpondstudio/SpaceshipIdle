@@ -1,8 +1,7 @@
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import { getCooldownMultiplier } from "../logic/BattleLogic";
-import { getNormalizedValue } from "../logic/BuildingLogic";
-import { AbilityRange, AbilityTiming } from "./Ability";
+import { getDamagePerFire } from "../logic/BuildingLogic";
+import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
 import { BaseWeaponProps, BuildingFlag, type IDefenseProp, type IWeaponDefinition } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 
@@ -33,6 +32,7 @@ export const AC30A: IWeaponDefinition = {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Adjacent,
       effect: "IncreaseArmor",
+      flag: AbilityFlag.None,
       value: (self, level) => {
          return level / 2;
       },
@@ -51,6 +51,7 @@ export const AC30B: IWeaponDefinition = {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Adjacent,
       effect: "IncreaseShield",
+      flag: AbilityFlag.None,
       value: (self, level) => {
          return level / 2;
       },
@@ -87,6 +88,7 @@ export const AC76x2: IWeaponDefinition = {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.RearTrio,
       effect: "ReduceArmor",
+      flag: AbilityFlag.None,
       value: (self, level) => {
          return level / 2;
       },
@@ -106,9 +108,10 @@ export const AC76A: IWeaponDefinition = {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Adjacent,
       effect: "TickKineticDamage",
-      value: (building, level) => {
+      flag: AbilityFlag.AffectedByDamageMultiplier,
+      value: (building, level, multipliers) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
-         const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
+         const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return (damage * (1 - def.damagePct)) / 2;
       },
       duration: (building, level) => 1,
@@ -127,6 +130,7 @@ export const AC76B: IWeaponDefinition = {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.RearTrio,
       effect: "DispelBuff",
+      flag: AbilityFlag.None,
       value: (building, level) => 0,
       duration: (building, level) => 0,
    },
@@ -150,9 +154,10 @@ export const AC130A: IWeaponDefinition = {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
       effect: "TickExplosiveDamage",
-      value: (building, level) => {
+      flag: AbilityFlag.AffectedByDamageMultiplier,
+      value: (building, level, multipliers) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
-         const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
+         const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return (damage * (1 - def.damagePct)) / 2.5;
       },
       duration: (building, level) => 5,
@@ -170,6 +175,7 @@ export const AC130B: IWeaponDefinition = {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Adjacent,
       effect: "ReduceArmorAndShield",
+      flag: AbilityFlag.None,
       value: (self, level) => {
          return level / 4;
       },
@@ -188,6 +194,7 @@ export const AC130C: IWeaponDefinition = {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
       effect: "IncreaseMaxHpAutoCannonCluster",
+      flag: AbilityFlag.None,
       value: (self, level) => {
          return 0.1;
       },

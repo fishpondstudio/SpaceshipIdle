@@ -2,14 +2,13 @@ import { computePosition, flip, offset, shift } from "@floating-ui/core";
 import { notifications } from "@mantine/notifications";
 import { SmoothGraphics } from "@pixi/graphics-smooth";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { AbilityTiming, abilityTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
+import { abilityTarget, AbilityTiming } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
-import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated, type Tiles } from "@spaceship-idle/shared/src/game/GameState";
 import {
-   GridSize,
    getSize,
+   GridSize,
    MaxX,
    MaxY,
    posToTile,
@@ -27,8 +26,8 @@ import {
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
    canSpend,
-   getBuildingValue,
-   getTotalBuildingValue,
+   getBuildingCost,
+   getTotalBuildingCost,
    isBooster,
    trySpend,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
@@ -450,7 +449,7 @@ export class ShipScene extends Scene {
                      });
                      return;
                   }
-                  if (!canSpend(getBuildingValue(oldTileData.type, 1), G.save.current)) {
+                  if (!canSpend(getBuildingCost(oldTileData.type, 1), G.save.current)) {
                      playError();
                      notifications.show({
                         message: t(L.NotEnoughResources),
@@ -470,7 +469,7 @@ export class ShipScene extends Scene {
                      });
                      return;
                   }
-                  if (trySpend(getBuildingValue(oldTileData.type, 1), G.save.current)) {
+                  if (trySpend(getBuildingCost(oldTileData.type, 1), G.save.current)) {
                      G.save.current.tiles.set(clickedTile, makeTile(oldTileData.type, 1));
                      GameStateUpdated.emit();
                   }
@@ -556,9 +555,7 @@ export class ShipScene extends Scene {
                return;
             }
             G.runtime.delete(clickedTile);
-            getTotalBuildingValue(data.type, data.level, 0).forEach((amount, res) => {
-               mapSafeAdd(G.save.current.resources, res, amount);
-            });
+            mapSafeAdd(G.save.current.resources, "XP", getTotalBuildingCost(data.type, data.level, 0));
             GameStateUpdated.emit();
          }
          return;

@@ -1,11 +1,11 @@
 import { clamp } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import { getCooldownMultiplier } from "../logic/BattleLogic";
-import { getNormalizedValue, normalizedValueToHp } from "../logic/BuildingLogic";
-import { AbilityRange, AbilityTiming } from "./Ability";
+import { getDamagePerFire } from "../logic/BuildingLogic";
+import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
 import { BaseWeaponProps, BuildingFlag, DamageType, type IDefenseProp, type IWeaponDefinition } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
+import { DamageToHPMultiplier } from "./Constant";
 
 export const MissileDefenseProps: IDefenseProp = {
    armor: [0, 1],
@@ -27,9 +27,10 @@ export const MS1: IWeaponDefinition = {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Adjacent,
       effect: "TickEnergyDamage",
-      value: (building, level) => {
+      flag: AbilityFlag.AffectedByDamageMultiplier,
+      value: (building, level, multipliers) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
-         const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
+         const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return (damage * (1 - def.damagePct)) / 5 / 3;
       },
       duration: (building, level) => 5,
@@ -49,9 +50,10 @@ export const MS1A: IWeaponDefinition = {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Adjacent,
       effect: "RecoverHp",
-      value: (building, level) => {
+      flag: AbilityFlag.AffectedByDamageMultiplier,
+      value: (building, level, multipliers) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
-         const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
+         const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return (damage * (1 - def.damagePct)) / 3;
       },
       duration: (building, level) => 1,
@@ -72,10 +74,11 @@ export const MS1B: IWeaponDefinition = {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Adjacent,
       effect: "IncreaseMaxHp",
-      value: (building, level) => {
+      flag: AbilityFlag.AffectedByDamageMultiplier,
+      value: (building, level, multipliers) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
-         const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
-         return (normalizedValueToHp(damage, building) * (1 - def.damagePct)) / 3;
+         const hp = getDamagePerFire({ type: building, level }) * multipliers.damage * DamageToHPMultiplier;
+         return (hp * (1 - def.damagePct)) / 3;
       },
       duration: (building, level) => 5,
    },
@@ -94,6 +97,7 @@ export const MS2: IWeaponDefinition = {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
       effect: "CriticalDamage2",
+      flag: AbilityFlag.None,
       value: (building, level) => 0.2,
       duration: (building, level) => 5,
    },
@@ -112,6 +116,7 @@ export const MS2A: IWeaponDefinition = {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
       effect: "LifeSteal",
+      flag: AbilityFlag.None,
       value: (building, level) => 0.25,
       duration: (building, level) => 4,
    },
@@ -130,6 +135,7 @@ export const MS2B: IWeaponDefinition = {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
       effect: "DamageControl",
+      flag: AbilityFlag.None,
       value: (building, level) => 0.01,
       duration: (building, level) => 4,
    },
@@ -148,6 +154,7 @@ export const MS2C: IWeaponDefinition = {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
       effect: "ReflectDamage",
+      flag: AbilityFlag.None,
       value: (building, level) => {
          return clamp(0.05 + (level - 1) * 0.005, 0, 0.5);
       },
@@ -168,6 +175,7 @@ export const MS3: IWeaponDefinition = {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.RearTrio,
       effect: "Disarm",
+      flag: AbilityFlag.None,
       value: (building, level) => {
          return 0;
       },
@@ -189,6 +197,7 @@ export const MS2D: IWeaponDefinition = {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Adjacent,
       effect: "DispelDebuff",
+      flag: AbilityFlag.None,
       value: (building, level) => 0,
       duration: (building, level) => 0,
    },

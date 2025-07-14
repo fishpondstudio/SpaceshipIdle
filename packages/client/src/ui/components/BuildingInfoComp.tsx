@@ -1,28 +1,20 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageTypeLabel, WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
-import { getCooldownMultiplier } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
-import {
-   getBuildingDesc,
-   getNormalizedValue,
-   normalizedValueToHp,
-} from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
+import { getDamagePerFire, getHP } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { AbilityComp } from "./AbilityComp";
 
 export function BuildingInfoComp({ building }: { building: Building }): React.ReactNode {
    const def = Config.Buildings[building];
-   const normVal = getNormalizedValue({ type: building, level: 1 });
-   const dmgPerFire = normVal * getCooldownMultiplier({ type: building });
+   const dmgPerFire = getDamagePerFire({ type: building, level: 1 });
    return (
       <>
-         <div className="subtitle">{t(L.Production)}</div>
-         <div>{getBuildingDesc(building)}</div>
          <div className="subtitle">{t(L.Defense)}</div>
          <div className="row">
             <div className="f1">{t(L.HP)}</div>
-            <div>{formatNumber(normalizedValueToHp(normVal, building))}</div>
+            <div>{formatNumber(getHP({ type: building, level: 1 }))}</div>
          </div>
          <div className="row g5">
             <div className="f1">{t(L.Armor)}</div>

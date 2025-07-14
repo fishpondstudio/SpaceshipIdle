@@ -2,7 +2,7 @@ import { clamp, inverse } from "../../utils/Helper";
 import { BattleLossQuantum, BattleWinQuantum } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
 import type { GameState } from "../GameState";
-import { getTotalBuildingValue, isBooster } from "./BuildingLogic";
+import { getTotalBuildingCost, isBooster } from "./BuildingLogic";
 import { getTotalElementLevels } from "./ElementLogic";
 
 export function resourceValueOf(resources: Map<Resource, number>): number {
@@ -39,13 +39,12 @@ function populateQuantumLookup() {
    }
 }
 
-const shipValue = new Map<Resource, number>();
 export function calcSpaceshipXP(gs: GameState): number {
-   shipValue.clear();
+   let result = 0;
    for (const [tile, data] of gs.tiles) {
-      getTotalBuildingValue(data.type, 0, data.level, shipValue);
+      result += getTotalBuildingCost(data.type, 0, data.level);
    }
-   return resourceValueOf(shipValue);
+   return result;
 }
 
 export function xpToQuantum(spaceshipValue: number): number {

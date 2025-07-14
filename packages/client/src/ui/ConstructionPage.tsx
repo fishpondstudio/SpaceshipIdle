@@ -7,18 +7,14 @@ import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/gam
 import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
 import {
    canSpend,
-   getBuildingDesc,
-   getBuildingValue,
+   getBuildingCost,
    getUnlockedBuildings,
-   hasConstructed,
-   hasEnoughResources,
    isBooster,
-   tryDeductResources,
    trySpend,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { isTileConnected, isWithinShipExtent } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
-import { entriesOf, formatNumber, mapSafeAdd, type Tile, toMap } from "@spaceship-idle/shared/src/utils/Helper";
+import { entriesOf, formatNumber, mapSafeAdd, type Tile } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { type ReactNode, useState } from "react";
@@ -97,14 +93,15 @@ export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
 function BoostComp({ building, tile, gs }: { building: Building; tile: Tile; gs: GameState }): React.ReactNode {
    const def = Config.Buildings[building] as IBoosterDefinition;
    const label = CodeLabel[def.code]();
-   const cost = toMap(def.unlock);
-   const canBuild = hasEnoughResources(cost, gs.resources);
+   // TODO: Implement this
+   const cost = 1_000_000;
+   const canBuild = false;
    return (
       <Tooltip
          label={
             <>
                {canBuild ? null : <div className="text-red">{t(L.NotEnoughResources)}</div>}
-               <ResourceListComp res={cost} />
+               <ResourceListComp xp={cost} />
             </>
          }
          key={building}
@@ -112,12 +109,13 @@ function BoostComp({ building, tile, gs }: { building: Building; tile: Tile; gs:
          <div
             className="row p10 m10"
             onClick={() => {
-               if (!hasConstructed(building, gs) && tryDeductResources(cost, gs.resources)) {
-                  gs.tiles.set(tile, makeTile(building, 1));
-                  GameStateUpdated.emit();
-               } else {
-                  playError();
-               }
+               // TODO: Implement this
+               // if (!hasConstructed(building, gs) && tryDeductResources(cost, gs.resources)) {
+               //    gs.tiles.set(tile, makeTile(building, 1));
+               //    GameStateUpdated.emit();
+               // } else {
+               //    playError();
+               // }
             }}
             style={{
                cursor: canBuild ? "pointer" : "not-allowed",
@@ -133,7 +131,6 @@ function BoostComp({ building, tile, gs }: { building: Building; tile: Tile; gs:
                   <div className="text-xs text-space">{label}</div>
                   <div className="f1"></div>
                </div>
-               <div className="text-xs text-dimmed text-condensed">{getBuildingDesc(building)}</div>
             </div>
          </div>
       </Tooltip>
@@ -153,14 +150,14 @@ function BuildingComp({
 }): React.ReactNode {
    const def = Config.Buildings[building];
    const label = CodeLabel[def.code]();
-   const canBuild = canSpend(getBuildingValue(building, 1), gs) && getAvailableQuantum(gs) > 0;
+   const canBuild = canSpend(getBuildingCost(building, 1), gs) && getAvailableQuantum(gs) > 0;
    return (
       <Tooltip
          label={
             getAvailableQuantum(gs) <= 0 ? (
                t(L.NotEnoughQuantum)
             ) : (
-               <ResourceListComp res={getBuildingValue(building, 1)} />
+               <ResourceListComp xp={getBuildingCost(building, 1)} />
             )
          }
          key={building}
@@ -168,11 +165,11 @@ function BuildingComp({
          <div
             className="row p10 m10"
             onClick={() => {
-               if (!canSpend(getBuildingValue(building, 1), gs) || getAvailableQuantum(gs) <= 0) {
+               if (!canSpend(getBuildingCost(building, 1), gs) || getAvailableQuantum(gs) <= 0) {
                   playError();
                   return;
                }
-               if (trySpend(getBuildingValue(building, 1), gs)) {
+               if (trySpend(getBuildingCost(building, 1), gs)) {
                   gs.tiles.set(tile, makeTile(building, 1));
                   GameStateUpdated.emit();
                }
@@ -191,7 +188,6 @@ function BuildingComp({
                   <div className="text-xs text-space">{label}</div>
                   <div className="f1"></div>
                </div>
-               <div className="text-xs text-dimmed text-condensed">{getBuildingDesc(building)}</div>
             </div>
             {constructed ? (
                <Badge color="gray" variant="default">

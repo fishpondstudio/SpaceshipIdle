@@ -1,8 +1,7 @@
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import { getCooldownMultiplier } from "../logic/BattleLogic";
-import { getNormalizedValue } from "../logic/BuildingLogic";
-import { AbilityRange, AbilityTiming } from "./Ability";
+import { getDamagePerFire } from "../logic/BuildingLogic";
+import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
 import {
    BaseWeaponProps,
    BuildingFlag,
@@ -35,9 +34,10 @@ export const FD1: IWeaponDefinition = {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
       effect: "TickExplosiveDamage",
-      value: (building, level) => {
+      flag: AbilityFlag.AffectedByDamageMultiplier,
+      value: (building, level, multipliers) => {
          const def = Config.Buildings[building] as IWeaponDefinition;
-         const damage = getNormalizedValue({ type: building, level }) * getCooldownMultiplier({ type: building });
+         const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return (damage * (1 - def.damagePct)) / 5;
       },
       duration: (building, level) => 5,

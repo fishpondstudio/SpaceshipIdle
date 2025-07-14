@@ -1,5 +1,6 @@
 import { L, t } from "../../utils/i18n";
 import type { IHaveXY } from "../../utils/Vector2";
+import type { Multipliers } from "../logic/IMultiplier";
 import type { Building } from "./Buildings";
 
 export interface ITechUpgrade {
@@ -7,18 +8,12 @@ export interface ITechUpgrade {
    desc: () => string;
 }
 
-export interface IMultiplier {
-   xp?: number;
-   hp?: number;
-   damage?: number;
-}
-
 export interface ITechDefinition {
    position: IHaveXY;
    requires: Tech[];
    unlockBuildings?: Building[];
    unlockUpgrades?: ITechUpgrade[];
-   multiplier?: Partial<Record<Building, IMultiplier>>;
+   multiplier?: Partial<Record<Building, Multipliers>>;
    name?: () => string;
 }
 

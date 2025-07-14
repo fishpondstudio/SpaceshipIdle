@@ -11,6 +11,7 @@ export const BattleLossQuantum = 5;
 export const DefaultElementChoices = 3;
 export const BattleStartAmmoCycles = 5;
 export const LaserArrayDamagePct = 1 / range(1, 10).reduce((a, b) => a + 1 / b, 0);
+export const DamageToHPMultiplier = 10;
 export const BalanceVersion = 1;
 export const DefaultCooldown = 2;
 export const MaxBattleTick = 10 * 60;
