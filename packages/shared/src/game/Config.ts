@@ -15,19 +15,22 @@ export const Config = {
    BuildingId,
    Resources,
    Tech: new TechDefinitions(),
-   Elements: new Map<ElementSymbol, Building>(),
+   Elements: {} as Record<ElementSymbol, Building>,
    BuildingToTech: {} as Record<Building, Tech>,
    BuildingToShipClass: {} as Record<Building, ShipClass>,
 };
 
 function initConfig(): void {
    const statusEffects = new Set<StatusEffect>(keysOf(StatusEffects));
-   forEach(Config.Buildings, (_building, def) => {
+   forEach(Config.Buildings, (building, def) => {
       if ("ability" in def && def.ability) {
          statusEffects.delete(def.ability.effect);
       }
       if ("effect" in def && def.effect) {
          statusEffects.delete(def.effect);
+      }
+      if (def.element) {
+         Config.Elements[def.element] = building;
       }
    });
 

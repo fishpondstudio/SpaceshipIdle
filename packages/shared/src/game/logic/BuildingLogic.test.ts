@@ -1,7 +1,5 @@
 import { expect, test } from "vitest";
-import { mapSafeAdd } from "../../utils/Helper";
 import { jsonDecode } from "../../utils/Serialization";
-import type { Resource } from "../definitions/Resource";
 import { GameState, SaveGame } from "../GameState";
 import type { ITileData } from "../ITileData";
 import { simulateBattle } from "./BattleLogic";
@@ -10,32 +8,32 @@ import { Runtime } from "./Runtime";
 import TestShip from "./TestShip.json?raw";
 
 test("totalBuildingValue", () => {
-   const result = new Map<Resource, number>();
+   let xp = 0;
    for (let i = 6; i <= 10; i++) {
-      const value = getBuildingCost("AC130", i);
-      mapSafeAdd(result, "XP", value);
+      xp += getBuildingCost("AC130", i);
    }
-   expect(result.get("XP")).toBe(getTotalBuildingCost("AC130", 5, 10));
-   expect(result.get("XP")).toBe(getTotalBuildingCost("AC130", 10, 5));
-   result.clear();
+   expect(xp).toBe(getTotalBuildingCost("AC130", 5, 10));
+   expect(xp).toBe(getTotalBuildingCost("AC130", 10, 5));
+   xp = 0;
    for (let i = 1; i <= 5; i++) {
-      const value = getBuildingCost("AC130", i);
-      mapSafeAdd(result, "XP", value);
+      xp += getBuildingCost("AC130", i);
    }
-   expect(result.get("XP")).toBe(getTotalBuildingCost("AC130", 5, 0));
-   expect(result.get("XP")).toBe(getTotalBuildingCost("DMG1Booster", 5, 10));
+   expect(xp).toBe(getTotalBuildingCost("AC130", 5, 0));
+   expect(xp).toBe(getTotalBuildingCost("DMG1Booster", 5, 10));
 });
 
 test("upgradeMax", () => {
    const rt = new Runtime(new SaveGame(), new GameState());
    rt.left.resources.set("XP", 1000);
-   rt.leftStat.tabulate(rt);
+   rt.leftStat.tabulate(rt.tabulateHp(rt.left.tiles), rt.left);
 
    const tile: ITileData = { type: "AC76", level: 5 };
    upgradeMax(tile, rt.left);
    expect(tile.level).toBe(9);
-   expect(rt.left.resources.get("XP")).toBe(1000 - getTotalBuildingCost("AC76", 5, 9));
-   expect(rt.left.resources.get("XP")).toBeLessThan(getTotalBuildingCost("AC76", 5, 9));
+   expect(rt.left.resources.get("XPUsed")).toBe(getTotalBuildingCost("AC76", 5, 9));
+   expect(rt.left.resources.get("XP")! - rt.left.resources.get("XPUsed")!).toBeLessThan(
+      getTotalBuildingCost("AC76", 5, 9),
+   );
 });
 
 test("getNextLevel", () => {

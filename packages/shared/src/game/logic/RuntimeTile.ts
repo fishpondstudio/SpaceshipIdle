@@ -16,7 +16,7 @@ import {
 import type { Building } from "../definitions/Buildings";
 import { StatusEffectTickInterval } from "../definitions/Constant";
 import { type StatusEffect, StatusEffectFlag, statusEffectOf, StatusEffects } from "../definitions/StatusEffect";
-import { type GameState } from "../GameState";
+import type { GameState } from "../GameState";
 import { GridSize } from "../Grid";
 import type { ITileData } from "../ITileData";
 import {
@@ -70,7 +70,6 @@ export class RuntimeTile {
    public buff = 0;
    public debuff = 0;
 
-   public readonly xpMultiplier = new Multiplier();
    public readonly hpMultiplier = new Multiplier();
    public readonly damageMultiplier = new Multiplier();
 
@@ -211,7 +210,6 @@ export class RuntimeTile {
 
    public get multipliers(): Required<Multipliers> {
       return {
-         xp: this.xpMultiplier.value,
          hp: this.hpMultiplier.value,
          damage: this.damageMultiplier.value,
       };

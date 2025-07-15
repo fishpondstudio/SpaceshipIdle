@@ -10,10 +10,10 @@ import {
    tryUpgradeElement,
 } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import {
+   type ElementSymbol,
    GroupBlockLabel,
    PeriodicTable,
    StandardStateLabel,
-   type ElementSymbol,
 } from "@spaceship-idle/shared/src/game/PeriodicTable";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { ElementImageComp } from "../game/ElementImage";
@@ -28,7 +28,7 @@ import { playClick } from "./Sound";
 export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const element = PeriodicTable[symbol];
-   const b = Config.Elements.get(symbol);
+   const b = Config.Elements[symbol];
    const thisRun = G.save.current.elements.get(symbol);
    const permanent = G.save.current.permanentElements.get(symbol);
    if (!element || !b) {

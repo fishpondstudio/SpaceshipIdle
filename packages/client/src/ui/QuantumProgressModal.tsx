@@ -47,7 +47,7 @@ export function QuantumProgressModal(): React.ReactNode {
                      <span className="text-dimmed">{amount}x</span> {symbol}
                   </div>
                   <div className="text-sm text-dimmed">
-                     {t(L.PlusXProductionMultiplierForX, amount, Config.Buildings[Config.Elements.get(symbol)!].name())}
+                     {t(L.PlusXProductionMultiplierForX, amount, Config.Buildings[Config.Elements[symbol]].name())}
                   </div>
                </div>
             </div>

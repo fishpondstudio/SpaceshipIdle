@@ -45,7 +45,7 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                <>
                   <div className="h10" />
                   <div className="subtitle">
-                     {t(L.HPMultiplier)}x{formatNumber(rs.hpMultiplier.value)}
+                     {t(L.HPMultiplier)} x{formatNumber(rs.hpMultiplier.value)}
                   </div>
                   <div className="row text-sm">
                      <div className="f1">{t(L.BaseMultiplier)}</div>

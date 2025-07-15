@@ -6,6 +6,7 @@ import { AbilityTiming, abilityTarget } from "../definitions/Ability";
 import { BuildingFlag, ProjectileFlag, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { BattleStartAmmoCycles, BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
+import type { Resource } from "../definitions/Resource";
 import { GameOption } from "../GameOption";
 import { GameState } from "../GameState";
 import { posToTile } from "../Grid";
@@ -178,8 +179,11 @@ export function tickTiles(
          rs.cooldown = 0;
          rs.target = target;
 
-         const damagePerFire = getDamagePerFire({ type: data.type, level: data.level });
-         mapSafeAdd(from.resources, "XP", damagePerFire);
+         const damagePerFire =
+            getDamagePerFire({ type: data.type, level: data.level }) *
+            (rs.hpMultiplier.value + rs.damageMultiplier.value);
+
+         mapSafeAdd<Resource>(from.resources, "XP", damagePerFire);
          RequestFloater.emit({ tile, amount: damagePerFire });
 
          const ability = rs.props.ability;

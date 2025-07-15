@@ -99,11 +99,8 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                         const data = G.save.current.tiles.get(tile);
                         if (data) {
                            if (data.level > 1) {
-                              mapSafeAdd(
-                                 G.save.current.resources,
-                                 "XP",
-                                 getTotalBuildingCost(data.type, data.level, 1),
-                              );
+                              const xp = getTotalBuildingCost(data.type, data.level, 1);
+                              mapSafeAdd(G.save.current.resources, "XP", xp);
                               data.level = 1;
                            }
                         }
@@ -123,9 +120,9 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                         }
                      }
 
-                     G.save.current.resources.forEach((amount, res) => {
-                        mapSafeAdd(resources, res, amount);
-                     });
+                     const leftOver =
+                        (G.save.current.resources.get("XP") ?? 0) - (G.save.current.resources.get("XPUsed") ?? 0);
+                     mapSafeAdd(resources, "XPUsed", -leftOver);
                      G.save.current.resources = resources;
 
                      GameStateUpdated.emit();

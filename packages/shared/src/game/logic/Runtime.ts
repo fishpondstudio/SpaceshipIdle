@@ -173,8 +173,8 @@ export class Runtime {
          this._checkLifeTime();
 
          tickElement(this.left);
-         this.leftStat.tabulate(this);
-         this.rightStat.tabulate(this);
+         this.leftStat.tabulate(this.tabulateHp(this.left.tiles), this.left);
+         this.rightStat.tabulate(this.tabulateHp(this.right.tiles), this.right);
          ++this.productionTick;
          this.gameStateDirty = true;
       }
@@ -276,7 +276,6 @@ export class Runtime {
 
    private _tickMultipliers(): void {
       this.tiles.forEach((rs) => {
-         rs.xpMultiplier.clear();
          rs.hpMultiplier.clear();
          rs.damageMultiplier.clear();
 
@@ -289,9 +288,6 @@ export class Runtime {
             if (!multipliers) {
                return;
             }
-            if (multipliers.xp) {
-               rs.xpMultiplier.add(multipliers.xp, t(L.ResearchX, getTechName(tech)));
-            }
             if (multipliers.hp) {
                rs.hpMultiplier.add(multipliers.hp, t(L.ResearchX, getTechName(tech)));
             }
@@ -301,19 +297,19 @@ export class Runtime {
          });
          const element = Config.Buildings[rs.data.type].element;
          if (element) {
-            // TODO: Implement element later!
-            // const thisRun = gs.elements.get(element) ?? 0;
-            // if (thisRun > 0) {
-            //    rs.productionMultiplier.add(thisRun, t(L.ElementAmountThisRun, element));
-            // }
+            const thisRun = gs.elements.get(element) ?? 0;
+            if (thisRun > 0) {
+               rs.hpMultiplier.add(thisRun, t(L.ElementAmountThisRun, element));
+               rs.damageMultiplier.add(thisRun, t(L.ElementAmountThisRun, element));
+            }
             // const permanent = gs.permanentElements.get(element)?.production ?? 0;
             // if (permanent > 0) {
             //    rs.productionMultiplier.add(permanent, t(L.ElementPermanent, element));
             // }
-            const xp = gs.permanentElements.get(element)?.xp ?? 0;
-            if (xp > 0) {
-               rs.xpMultiplier.add(xp, t(L.ElementPermanent, element));
-            }
+            // const xp = gs.permanentElements.get(element)?.xp ?? 0;
+            // if (xp > 0) {
+            //    rs.xpMultiplier.add(xp, t(L.ElementPermanent, element));
+            // }
          }
       });
    }

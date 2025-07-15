@@ -1,5 +1,4 @@
 import { clamp, inverse } from "../../utils/Helper";
-import { BattleLossQuantum, BattleWinQuantum } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
 import type { GameState } from "../GameState";
 import { getTotalBuildingCost, isBooster } from "./BuildingLogic";
@@ -15,12 +14,8 @@ export function resourceValueOf(resources: Map<Resource, number>): number {
 
 export const StartQuantum = 10;
 
-export function getMaxSpaceshipXP(gs: GameState): number {
-   return quantumToXP(getQualifiedQuantum(gs));
-}
-
 export function getQualifiedQuantum(gs: GameState): number {
-   return 30 + gs.win * BattleWinQuantum + gs.loss * BattleLossQuantum + getQuantumFromPermanentElement(gs);
+   return Number.POSITIVE_INFINITY;
 }
 
 export function getQuantumFromPermanentElement(gs: GameState): number {

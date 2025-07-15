@@ -2,13 +2,12 @@ import { createTile, type Tile, tileToPoint } from "../../utils/Helper";
 import { AABB, type IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
 import type { Building } from "../definitions/Buildings";
-import { QualifierSpaceshipValuePercent } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
 import { ShipClass } from "../definitions/TechDefinitions";
 import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
 import type { ITileData } from "../ITileData";
-import { calcSpaceshipXP, getMaxSpaceshipXP, getQualifiedQuantum, getUsedQuantum } from "./ResourceLogic";
+import { getQualifiedQuantum, getUsedQuantum } from "./ResourceLogic";
 import { Side } from "./Side";
 import { getShipClass } from "./TechLogic";
 
@@ -150,12 +149,6 @@ export function validateForMatchmaking(gs: GameState): boolean {
 }
 
 function _validateShip(gs: GameState): boolean {
-   const sv = calcSpaceshipXP(gs);
-   const maxSV = getMaxSpaceshipXP(gs);
-   if (sv > maxSV) {
-      return false;
-   }
-
    const buildings = new Set<Building>();
    gs.unlockedTech.forEach((tech) => {
       const def = Config.Tech[tech];
@@ -176,7 +169,7 @@ function _validateShip(gs: GameState): boolean {
    }
 
    for (const [element, _amount] of gs.elements) {
-      const building = Config.Elements.get(element);
+      const building = Config.Elements[element];
       if (!building) {
          return false;
       }
@@ -194,11 +187,12 @@ export function isQualifierBattle(gs: GameState): boolean {
    if (usedQuantum < quantumLimit) {
       return false;
    }
-   const sv = calcSpaceshipXP(gs);
-   const maxSV = getMaxSpaceshipXP(gs);
-   if (sv < QualifierSpaceshipValuePercent * maxSV) {
-      return false;
-   }
+   // FIXME
+   // const sv = calcSpaceshipXP(gs);
+   // const maxSV = getMaxSpaceshipXP(gs);
+   // if (sv < QualifierSpaceshipValuePercent * maxSV) {
+   //    return false;
+   // }
    return true;
 }
 

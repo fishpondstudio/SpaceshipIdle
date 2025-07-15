@@ -1,12 +1,12 @@
-import { getDefaultZIndex, Progress, Transition, type PaperProps } from "@mantine/core";
+import { getDefaultZIndex, type PaperProps, Progress, Transition } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { ElementPermanentColor, ElementThisRunColor } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
-import { GameStateUpdated, type ElementChoice } from "@spaceship-idle/shared/src/game/GameState";
+import { type ElementChoice, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getElementUpgradeCost } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import { addElementShard } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
-import { PeriodicTable, type ElementSymbol } from "@spaceship-idle/shared/src/game/PeriodicTable";
+import { type ElementSymbol, PeriodicTable } from "@spaceship-idle/shared/src/game/PeriodicTable";
 import { mapSafeAdd, removeFrom } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useEffect } from "react";
@@ -23,12 +23,17 @@ export function ChooseElementModal({
    choice,
    sound = true,
    permanent = false,
-}: { choice: ElementChoice; sound?: boolean; permanent: boolean }): React.ReactNode {
+}: {
+   choice: ElementChoice;
+   sound?: boolean;
+   permanent: boolean;
+}): React.ReactNode {
    useEffect(() => {
       if (sound) {
          playUpgrade();
       }
    }, [sound]);
+   console.log(choice);
    return (
       <div className="m10">
          <div className="text-center text-xl">
@@ -76,7 +81,7 @@ function ElementOption({
    ...props
 }: { symbol: ElementSymbol; permanent: boolean; onClick: () => void } & PaperProps): React.ReactNode {
    const data = PeriodicTable[symbol];
-   const b = Config.Elements.get(symbol);
+   const b = Config.Elements[symbol];
    if (!data || !b) {
       return null;
    }

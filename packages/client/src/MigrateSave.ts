@@ -2,11 +2,9 @@ import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { DefaultShortcuts, GameOption } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameState, type Inventory, type SaveGame } from "@spaceship-idle/shared/src/game/GameState";
-import { isBooster } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { revertElementUpgrade } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import { migrateBuildingsAndResources } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import type { ElementSymbol } from "@spaceship-idle/shared/src/game/PeriodicTable";
-import { isNullOrUndefined } from "@spaceship-idle/shared/src/utils/Helper";
 
 export function migrateSave(save: SaveGame): void {
    if ("elements" in save.options) {
@@ -42,7 +40,7 @@ export function migrateSave(save: SaveGame): void {
    save.options.shortcuts = Object.assign({}, DefaultShortcuts, save.options.shortcuts);
 
    save.current.permanentElements.forEach((data, symbol) => {
-      const building = Config.Elements.get(symbol);
+      const building = Config.Elements[symbol];
       if (building) {
          const def = Config.Buildings[building];
          if (!(WeaponKey in def)) {

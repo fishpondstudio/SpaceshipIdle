@@ -71,19 +71,15 @@ export function upgradeMax(tile: ITileData, gs: GameState): void {
 }
 
 export function canSpend(xp: number, gs: GameState): boolean {
-   return hasEnoughXP(xp, gs);
+   return (gs.resources.get("XP") ?? 0) - (gs.resources.get("XPUsed") ?? 0) >= xp;
 }
 
 export function trySpend(xp: number, gs: GameState): boolean {
    if (!canSpend(xp, gs)) {
       return false;
    }
-   mapSafeAdd(gs.resources, "XP", -xp);
+   mapSafeAdd(gs.resources, "XPUsed", xp);
    return true;
-}
-
-export function hasEnoughXP(required: number, gs: GameState): boolean {
-   return (gs.resources.get("XP") ?? 0) >= required;
 }
 
 export function getUnlockedBuildings(gs: GameState): Building[] {

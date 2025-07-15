@@ -11,7 +11,6 @@ import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { BuildingInfoComp } from "./components/BuildingInfoComp";
 import { SidebarComp } from "./components/SidebarComp";
-import { XPIcon } from "./components/SVGIcons";
 import { TextureComp } from "./components/TextureComp";
 import { TitleComp } from "./components/TitleComp";
 import { playUpgrade } from "./Sound";
@@ -112,9 +111,12 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                      <div key={b} className="m10">
                         <div className="f1">{Config.Buildings[b].name()}</div>
                         <div className="row text-sm text-dimmed">
-                           <div className="f1">{t(L.XPMultiplier)}</div>
-                           <XPIcon />
-                           <div>+{formatNumber(multiplier.xp)}</div>
+                           <div className="f1">{t(L.HPMultiplier)}</div>
+                           <div>+{formatNumber(multiplier.hp)}</div>
+                        </div>
+                        <div className="row text-sm text-dimmed">
+                           <div className="f1">{t(L.DamageMultiplier)}</div>
+                           <div>+{formatNumber(multiplier.damage)}</div>
                         </div>
                      </div>
                   );

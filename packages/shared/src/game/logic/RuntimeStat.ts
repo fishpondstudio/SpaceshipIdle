@@ -1,13 +1,14 @@
-import { forEach, safeAdd, Tile } from "../../utils/Helper";
+import { forEach, safeAdd } from "../../utils/Helper";
 import { RingBuffer } from "../../utils/RingBuffer";
-import { TypedEvent } from "../../utils/TypedEvent";
 import { DamageType } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
-import type { Runtime } from "./Runtime";
+import type { Resource } from "../definitions/Resource";
+import type { GameState } from "../GameState";
 
 export class RuntimeStat {
    rawDamages: RingBuffer<Record<DamageType, number>> = new RingBuffer(100);
    actualDamages: RingBuffer<Record<DamageType, number>> = new RingBuffer(100);
+   previousResources: RingBuffer<Map<Resource, number>> = new RingBuffer(100);
 
    currentHp = 0;
    maxHp = 0;
@@ -92,19 +93,30 @@ export class RuntimeStat {
       return result;
    }
 
-   public tabulate(rt: Runtime): void {
+   public averageResourceDelta(res: Resource, n: number): number {
+      const prev = this.previousResources.get(-(n + 1)) ?? this.previousResources.get(0);
+      const curr = this.previousResources.get(-1) ?? this.previousResources.get(0);
+      if (!prev || !curr || n <= 0) {
+         return 0;
+      }
+      return ((curr.get(res) ?? 0) - (prev.get(res) ?? 0)) / Math.min(n, this.previousResources.size);
+   }
+
+   public tabulate([hp, maxHp]: [number, number], gs: GameState): void {
       forEach(this.rawDamagePerSec, (k, v) => {
          safeAdd(this.rawDamage, k, v);
       });
       forEach(this.actualDamagePerSec, (k, v) => {
          safeAdd(this.actualDamage, k, v);
       });
+
+      this.previousResources.push(new Map(gs.resources));
+
       this.rawDamages.push(this.rawDamagePerSec);
       this.actualDamages.push(this.actualDamagePerSec);
       this.rawDamagePerSec = { [DamageType.Kinetic]: 0, [DamageType.Explosive]: 0, [DamageType.Energy]: 0 };
       this.actualDamagePerSec = { [DamageType.Kinetic]: 0, [DamageType.Explosive]: 0, [DamageType.Energy]: 0 };
 
-      const [hp, maxHp] = rt.tabulateHp(rt.left.tiles);
       this.currentHp = hp;
       this.maxHp = maxHp + this.destroyedHp;
    }
