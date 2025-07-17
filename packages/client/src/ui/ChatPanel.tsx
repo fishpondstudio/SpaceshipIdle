@@ -83,7 +83,7 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
       });
    }, []);
 
-   // biome-ignore lint/correctness/useExhaustiveDependencies:
+   // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
    useEffect(scrollToBottom, [handle]);
    useTypedEvent(OnImageLoaded, scrollToBottom);
 
@@ -135,7 +135,10 @@ const ChatPanelSingle = memo(_ChatPanelSingle, (prev, next) => {
 function _ChatInput({
    channel,
    onFocusChanged,
-}: { channel: Language; onFocusChanged: (focus: boolean) => void }): React.ReactNode {
+}: {
+   channel: Language;
+   onFocusChanged: (focus: boolean) => void;
+}): React.ReactNode {
    const [message, setMessage] = useState("");
    const isCommand = message.startsWith("/");
    useTypedEvent(SetChatInput, (func) => {

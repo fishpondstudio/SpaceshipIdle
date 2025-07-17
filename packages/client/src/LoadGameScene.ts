@@ -1,3 +1,4 @@
+import { CatalystScene } from "./scenes/CatalystScene";
 import { ElementsScene } from "./scenes/ElementsScene";
 import { ShipScene } from "./scenes/ShipScene";
 import { TechTreeScene } from "./scenes/TechTreeScene";
@@ -13,6 +14,10 @@ export function loadGameScene() {
       }
       case "elements": {
          G.scene.loadScene(ElementsScene);
+         break;
+      }
+      case "catalyst": {
+         G.scene.loadScene(CatalystScene);
          break;
       }
       default: {

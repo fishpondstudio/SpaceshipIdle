@@ -318,7 +318,7 @@ export function filterOf<K extends string, V>(
    return result;
 }
 
-export function mFilterOf<K, V>(obj: Map<K, V>, func: (key: K, value: V) => boolean): Map<K, V> {
+export function mapFilterOf<K, V>(obj: Map<K, V>, func: (key: K, value: V) => boolean): Map<K, V> {
    const result: Map<K, V> = new Map();
    obj.forEach((v, k) => {
       if (func(k, v)) {

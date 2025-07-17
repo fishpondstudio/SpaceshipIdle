@@ -37,6 +37,10 @@
    font-size: 32px;
 }
 
+.mi.xl {
+   font-size: 48px;
+}
+
 body {
    cursor: url("../assets/images/Cursor.svg?url"), default;
    user-select: none;
@@ -158,7 +162,6 @@ em {
    border-collapse: collapse;
    border-spacing: 0;
    border: none;
-   width: 100%;
    font-size: var(--mantine-font-size-sm);
    line-height: 1.25;
 

@@ -7,6 +7,7 @@ import { formatNumber, hasFlag, round } from "@spaceship-idle/shared/src/utils/H
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
 import { getCurrentTutorial } from "../game/Tutorial";
+import { CatalystScene } from "../scenes/CatalystScene";
 import { ElementsScene } from "../scenes/ElementsScene";
 import { ShipScene } from "../scenes/ShipScene";
 import { TechTreeScene } from "../scenes/TechTreeScene";
@@ -80,7 +81,7 @@ function SpeedSwitcher({ speed }: { speed: number }): React.ReactNode {
    );
 }
 
-const sceneWidth = 360;
+const sceneWidth = 450;
 
 function Tutorial(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
@@ -173,6 +174,9 @@ function SceneSwitcher(): React.ReactNode {
                   case Scenes.TechTreeScene:
                      G.scene.loadScene(TechTreeScene);
                      break;
+                  case Scenes.CatalystScene:
+                     G.scene.loadScene(CatalystScene);
+                     break;
                   case Scenes.ElementsScene:
                      G.scene.loadScene(ElementsScene);
                      if (G.save.current.permanentElementChoices.length > 0) {
@@ -190,6 +194,7 @@ function SceneSwitcher(): React.ReactNode {
             data={[
                { label: "Spaceship", value: Scenes.ShipScene },
                { label: "Research", value: Scenes.TechTreeScene },
+               { label: "Catalyst", value: Scenes.CatalystScene },
                { label: "Elements", value: Scenes.ElementsScene },
             ]}
          />

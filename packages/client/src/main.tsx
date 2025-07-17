@@ -1,4 +1,4 @@
-import { MantineProvider, Portal, createTheme } from "@mantine/core";
+import { createTheme, MantineProvider, Portal } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
@@ -10,6 +10,7 @@ import "./css/main.css";
 import { BottomPanel } from "./ui/BottomPanel.tsx";
 import { ChatPanel } from "./ui/ChatPanel.tsx";
 import { LoadingComp } from "./ui/components/LoadingComp.tsx";
+import { FullScreen } from "./ui/FullScreen.tsx";
 import { Popover } from "./ui/Popover.tsx";
 import { Sidebar } from "./ui/Sidebar.tsx";
 import { TopPanel } from "./ui/TopPanel.tsx";
@@ -63,6 +64,7 @@ if (import.meta.env.DEV) {
 const root = document.getElementById("root")!;
 createRoot(root).render(
    <MantineProvider defaultColorScheme="dark" theme={theme}>
+      <FullScreen />
       <Notifications />
       <Sidebar />
       <TopPanel />

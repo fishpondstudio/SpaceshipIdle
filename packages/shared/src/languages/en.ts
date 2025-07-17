@@ -648,4 +648,10 @@ export const EN = {
    HPMultiplier: "HP Multiplier",
    DamageMultiplier: "Damage Multiplier",
    XPUsed: "XP Used",
+   BuildXDifferentAutocannons: "Build %% Different Auto cannons",
+   BuildXDifferentMissiles: "Build %% Different Missiles",
+   AllAutocannonsGetXDamageMultiplier: "All Autocannons get +%% Damage Multiplier",
+   AllMissilesGetXDamageMultiplier: "All Missiles get +%% Damage Multiplier",
+   BuildXDifferentSkiffClassWeapons: "Build %% Different Skiff Class Weapons",
+   AllSkiffClassWeaponsGetXDamageMultiplier: "All Skiff class weapons get +%% Damage Multiplier",
 };
