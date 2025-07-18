@@ -3,6 +3,7 @@ import { createTile, shuffle, type Tile, uuid4 } from "../utils/Helper";
 import { jsonEncode } from "../utils/Serialization";
 import { TypedEvent } from "../utils/TypedEvent";
 import { type Catalyst, CatalystCat } from "./definitions/Catalyst";
+import { CatalystPerCat } from "./definitions/Constant";
 import type { Resource } from "./definitions/Resource";
 import type { Tech } from "./definitions/TechDefinitions";
 import { GameOption } from "./GameOption";
@@ -35,7 +36,7 @@ export class GameState {
    permanentElements = new Map<ElementSymbol, PermanentElementData>();
    permanentElementChoices: ElementChoice[] = [];
    catalysts = new Map<CatalystCat, { choices: Catalyst[]; selected: Catalyst | null }>([
-      ["C1", { choices: shuffle(CatalystCat.C1.slice(0)).slice(0, 4), selected: null }],
+      ["C1", { choices: shuffle(CatalystCat.C1.slice(0)).slice(0, CatalystPerCat), selected: null }],
    ]);
    name = "Unnamed";
    flags: GameStateFlags = GameStateFlags.None;

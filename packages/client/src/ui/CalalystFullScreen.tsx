@@ -1,6 +1,7 @@
 import { ScrollArea } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { Catalyst } from "@spaceship-idle/shared/src/game/definitions/Catalyst";
+import { getEffect, getRequirement } from "@spaceship-idle/shared/src/game/logic/CatalystLogic";
 import { classNames, keysOf, numberToRoman } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useCallback, useEffect, useRef } from "react";
@@ -66,8 +67,8 @@ export function CatalystFullScreen(): React.ReactNode {
                            </div>
                            <div className="f1">
                               <div className="m10">
-                                 <div className="text-lg">{def.requirement()}</div>
-                                 <div className="text-sm text-dimmed">{def.effect()}</div>
+                                 <div className="text-lg">{getRequirement(def)}</div>
+                                 <div className="text-sm text-dimmed">{getEffect(def)}</div>
                               </div>
                               <div className="f1">
                                  <ScrollArea
@@ -85,7 +86,7 @@ export function CatalystFullScreen(): React.ReactNode {
                                                 key={b}
                                                 style={{ flexShrink: 0 }}
                                                 name={`Building/${b}`}
-                                                width={75}
+                                                width={Math.min(G.pixi.screen.height / 10, 100)}
                                              />
                                           );
                                        })}

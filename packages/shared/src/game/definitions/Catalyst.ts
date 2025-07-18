@@ -1,57 +1,73 @@
-import { mapCount } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import type { GameState } from "../GameState";
+import type { Multipliers } from "../logic/IMultiplier";
 import type { Building } from "./Buildings";
 import { CodeNumber } from "./CodeNumber";
 
 export interface ICatalystDefinition {
-   requirement: () => string;
-   effect: () => string;
+   trait: () => string;
    filter: (b: Building) => boolean;
-   progress: (self: ICatalystDefinition, gs: GameState) => [number, number];
-}
-
-function countFilter(self: ICatalystDefinition, gs: GameState): number {
-   return mapCount(gs.tiles, (data, _tile) => self.filter(data.type));
+   amount: number;
+   multipliers: Multipliers;
 }
 
 export const Catalyst = {
    A1: {
-      requirement: () => t(L.CatalystBuildXDifferentY, 3, t(L.AC)),
-      effect: () => t(L.CatalystAllXGetYMultiplier, t(L.AC), 1, t(L.CatalystDamageMultiplier)),
+      trait: () => t(L.AC),
       filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
-      progress: (self: ICatalystDefinition, gs: GameState) => [countFilter(self, gs), 3],
+      amount: 3,
+      multipliers: {
+         damage: 1,
+      },
    },
    A2: {
-      requirement: () => t(L.CatalystBuildXDifferentY, 3, t(L.AC)),
-      effect: () => t(L.CatalystAllXGetYMultiplier, t(L.AC), 1, t(L.CatalystHPMultiplier)),
+      trait: () => t(L.AC),
       filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
-      progress: (self: ICatalystDefinition, gs: GameState) => [countFilter(self, gs), 3],
+      amount: 3,
+      multipliers: {
+         hp: 1,
+      },
    },
    A3: {
-      requirement: () => t(L.CatalystBuildXDifferentY, 3, t(L.MS)),
-      effect: () => t(L.CatalystAllXGetYMultiplier, t(L.MS), 1, t(L.CatalystDamageMultiplier)),
+      trait: () => t(L.MS),
       filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
-      progress: (self: ICatalystDefinition, gs: GameState) => [countFilter(self, gs), 3],
+      amount: 3,
+      multipliers: {
+         damage: 1,
+      },
    },
    A4: {
-      requirement: () => t(L.CatalystBuildXDifferentY, 3, t(L.MS)),
-      effect: () => t(L.CatalystAllXGetYMultiplier, t(L.MS), 1, t(L.CatalystHPMultiplier)),
+      trait: () => t(L.MS),
       filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
-      progress: (self: ICatalystDefinition, gs: GameState) => [countFilter(self, gs), 3],
+      amount: 3,
+      multipliers: {
+         hp: 1,
+      },
    },
    A5: {
-      requirement: () => t(L.CatalystBuildXDifferentY, 6, t(L.CatalystXClass, L.TechSkiff)),
-      effect: () => t(L.CatalystAllXGetYMultiplier, t(L.CatalystXClass, L.TechSkiff), 2, t(L.CatalystDamageMultiplier)),
+      trait: () => t(L.TechSkiff),
       filter: (b: Building) => Config.BuildingToShipClass[b] === "Skiff",
-      progress: (self: ICatalystDefinition, gs: GameState) => [countFilter(self, gs), 6],
+      amount: 6,
+      multipliers: {
+         damage: 2,
+      },
    },
    A6: {
-      requirement: () => t(L.CatalystBuildXDifferentY, 6, t(L.CatalystXClass, L.TechSkiff)),
-      effect: () => t(L.CatalystAllXGetYMultiplier, t(L.CatalystXClass, L.TechSkiff), 2, t(L.CatalystHPMultiplier)),
+      trait: () => t(L.TechSkiff),
       filter: (b: Building) => Config.BuildingToShipClass[b] === "Skiff",
-      progress: (self: ICatalystDefinition, gs: GameState) => [countFilter(self, gs), 6],
+      amount: 6,
+      multipliers: {
+         hp: 2,
+      },
+   },
+   A7: {
+      trait: () => t(L.TechSkiff),
+      filter: (b: Building) => Config.BuildingToShipClass[b] === "Skiff",
+      amount: 6,
+      multipliers: {
+         hp: 1,
+         damage: 1,
+      },
    },
 } as const satisfies Record<string, ICatalystDefinition>;
 

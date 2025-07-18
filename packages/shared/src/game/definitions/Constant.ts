@@ -14,6 +14,7 @@ export const LaserArrayDamagePct = 1 / range(1, 10).reduce((a, b) => a + 1 / b, 
 export const DamageToHPMultiplier = 10;
 export const BalanceVersion = 1;
 export const DefaultCooldown = 2;
+export const CatalystPerCat = 3;
 export const MaxBattleTick = 10 * 60;
 export const MaxSuddenDeathTick = 5 * 60;
 export const SuddenDeathUndamagedSec = 10;

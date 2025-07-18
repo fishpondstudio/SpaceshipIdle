@@ -3,10 +3,14 @@ export interface IMultiplier {
    source: string;
 }
 
-export interface Multipliers {
+export type Multipliers = RequireAtLeastOne<{
    hp?: number;
    damage?: number;
-}
+}>;
+
+export type RequireAtLeastOne<T> = {
+   [K in keyof T]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<keyof T, K>>>;
+}[keyof T];
 
 export const DefaultMultipliers: Required<Multipliers> = {
    hp: 1,

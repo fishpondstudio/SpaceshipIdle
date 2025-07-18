@@ -24,7 +24,3 @@ export const CodeLabel: Record<CodeNumber, () => string> = {
    [CodeNumber.FD]: () => t(L.FD),
    [CodeNumber.BT]: () => t(L.BT),
 };
-
-Object.values(CodeNumber).forEach((l) => {
-   console.assert(CodeLabel[l], `Missing ${l} in CodeLabel`);
-});
