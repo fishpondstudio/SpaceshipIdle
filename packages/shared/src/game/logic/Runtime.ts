@@ -16,6 +16,7 @@ import { makeTile } from "../ITileData";
 import { tickProjectiles, tickTiles } from "./BattleLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleFlag, BattleType } from "./BattleType";
+import { tickCatalyst } from "./CatalystLogic";
 import { tickElement } from "./ElementLogic";
 import type { Projectile } from "./Projectile";
 import { RuntimeStat } from "./RuntimeStat";
@@ -173,6 +174,7 @@ export class Runtime {
          this._checkLifeTime();
 
          tickElement(this.left);
+         tickCatalyst(this.left);
          this.leftStat.tabulate(this.tabulateHp(this.left.tiles), this.left);
          this.rightStat.tabulate(this.tabulateHp(this.right.tiles), this.right);
          ++this.productionTick;

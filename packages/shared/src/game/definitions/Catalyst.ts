@@ -18,21 +18,47 @@ function countFilter(self: ICatalystDefinition, gs: GameState): number {
 
 export const Catalyst = {
    A1: {
-      requirement: () => t(L.BuildXDifferentAutocannons, 3),
-      effect: () => t(L.AllAutocannonsGetXDamageMultiplier, 1),
+      requirement: () => t(L.CatalystBuildXDifferentY, 3, t(L.AC)),
+      effect: () => t(L.CatalystAllXGetYMultiplier, t(L.AC), 1, t(L.CatalystDamageMultiplier)),
       filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
       progress: (self: ICatalystDefinition, gs: GameState) => [countFilter(self, gs), 3],
    },
    A2: {
-      requirement: () => t(L.BuildXDifferentMissiles, 3),
-      effect: () => t(L.AllMissilesGetXDamageMultiplier, 1),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      requirement: () => t(L.CatalystBuildXDifferentY, 3, t(L.AC)),
+      effect: () => t(L.CatalystAllXGetYMultiplier, t(L.AC), 1, t(L.CatalystHPMultiplier)),
+      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
       progress: (self: ICatalystDefinition, gs: GameState) => [countFilter(self, gs), 3],
    },
    A3: {
-      requirement: () => t(L.BuildXDifferentSkiffClassWeapons, 6),
-      effect: () => t(L.AllSkiffClassWeaponsGetXDamageMultiplier, 2),
+      requirement: () => t(L.CatalystBuildXDifferentY, 3, t(L.MS)),
+      effect: () => t(L.CatalystAllXGetYMultiplier, t(L.MS), 1, t(L.CatalystDamageMultiplier)),
+      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      progress: (self: ICatalystDefinition, gs: GameState) => [countFilter(self, gs), 3],
+   },
+   A4: {
+      requirement: () => t(L.CatalystBuildXDifferentY, 3, t(L.MS)),
+      effect: () => t(L.CatalystAllXGetYMultiplier, t(L.MS), 1, t(L.CatalystHPMultiplier)),
+      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      progress: (self: ICatalystDefinition, gs: GameState) => [countFilter(self, gs), 3],
+   },
+   A5: {
+      requirement: () => t(L.CatalystBuildXDifferentY, 6, t(L.CatalystXClass, L.TechSkiff)),
+      effect: () => t(L.CatalystAllXGetYMultiplier, t(L.CatalystXClass, L.TechSkiff), 2, t(L.CatalystDamageMultiplier)),
+      filter: (b: Building) => Config.BuildingToShipClass[b] === "Skiff",
+      progress: (self: ICatalystDefinition, gs: GameState) => [countFilter(self, gs), 6],
+   },
+   A6: {
+      requirement: () => t(L.CatalystBuildXDifferentY, 6, t(L.CatalystXClass, L.TechSkiff)),
+      effect: () => t(L.CatalystAllXGetYMultiplier, t(L.CatalystXClass, L.TechSkiff), 2, t(L.CatalystHPMultiplier)),
       filter: (b: Building) => Config.BuildingToShipClass[b] === "Skiff",
       progress: (self: ICatalystDefinition, gs: GameState) => [countFilter(self, gs), 6],
    },
 } as const satisfies Record<string, ICatalystDefinition>;
+
+export type Catalyst = keyof typeof Catalyst;
+
+export const CatalystCat = {
+   C1: ["A1", "A2", "A3", "A4", "A5", "A6"] as const,
+} as const satisfies Record<string, Catalyst[]>;
+
+export type CatalystCat = keyof typeof CatalystCat;

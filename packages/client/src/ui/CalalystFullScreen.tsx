@@ -1,6 +1,10 @@
 import { ScrollArea } from "@mantine/core";
-import { classNames } from "@spaceship-idle/shared/src/utils/Helper";
+import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { Catalyst } from "@spaceship-idle/shared/src/game/definitions/Catalyst";
+import { classNames, keysOf, numberToRoman } from "@spaceship-idle/shared/src/utils/Helper";
+import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useCallback, useEffect, useRef } from "react";
+import { G } from "../utils/Global";
 import styles from "./CatalystFullScreen.module.css";
 import { TextureComp } from "./components/TextureComp";
 
@@ -35,58 +39,65 @@ export function CatalystFullScreen(): React.ReactNode {
          type="never"
       >
          <div style={{ flex: "0 0 320px" }}></div>
-         <div
-            style={{
-               display: "flex",
-               flexDirection: "column",
-               gap: 20,
-            }}
-         >
-            <div className={styles.title}>Cat I</div>
-            <div className={classNames(styles.box, "f1 row g0")}>
+         {Array.from(G.save.current.catalysts).map(([cat, data], idx) => {
+            return (
                <div
-                  className="cc"
-                  style={{ width: 50, borderRight: "2px dotted rgba(255, 255, 255, 0.25)", alignSelf: "stretch" }}
+                  key={cat}
+                  style={{
+                     display: "flex",
+                     flexDirection: "column",
+                     gap: 20,
+                  }}
                >
-                  <div className="mi lg">check_box_outline_blank</div>
+                  <div className={styles.title}>{t(L.CatalystCatX, numberToRoman(idx + 1) ?? "")}</div>
+                  {data.choices.map((choice) => {
+                     const def = Catalyst[choice];
+                     return (
+                        <div key={choice} className={classNames(styles.box, "f1 row g0")}>
+                           <div
+                              className="cc"
+                              style={{
+                                 width: 50,
+                                 borderRight: "2px dotted rgba(255, 255, 255, 0.25)",
+                                 alignSelf: "stretch",
+                              }}
+                           >
+                              <div className="mi lg">check_box_outline_blank</div>
+                           </div>
+                           <div className="f1">
+                              <div className="m10">
+                                 <div className="text-lg">{def.requirement()}</div>
+                                 <div className="text-sm text-dimmed">{def.effect()}</div>
+                              </div>
+                              <div className="f1">
+                                 <ScrollArea
+                                    w={400}
+                                    scrollbars="x"
+                                    offsetScrollbars="x"
+                                    type="auto"
+                                    styles={{ content: { display: "flex" } }}
+                                 >
+                                    {keysOf(Config.Buildings)
+                                       .filter(def.filter)
+                                       .map((b) => {
+                                          return (
+                                             <TextureComp
+                                                key={b}
+                                                style={{ flexShrink: 0 }}
+                                                name={`Building/${b}`}
+                                                width={75}
+                                             />
+                                          );
+                                       })}
+                                 </ScrollArea>
+                              </div>
+                           </div>
+                        </div>
+                     );
+                  })}
                </div>
-               <div className="f1">
-                  <div className="m10">
-                     <div className="text-lg">Build 3 Different Missiles</div>
-                     <div className="text-sm text-dimmed">All missiles get +1 Damage Multiplier</div>
-                  </div>
-                  <div className="f1">
-                     <ScrollArea w={400} scrollbars="x" type="auto" styles={{ content: { display: "flex" } }}>
-                        <TextureComp style={{ flexShrink: 0 }} name="Building/MS1" width={75} />
-                        <TextureComp style={{ flexShrink: 0 }} name="Building/MS1A" width={75} />
-                        <TextureComp style={{ flexShrink: 0 }} name="Building/MS1B" width={75} />
-                     </ScrollArea>
-                  </div>
-               </div>
-            </div>
-            <div className={classNames(styles.box, "f1 col")}>
-               <div className="text-lg">Build 3 Different Autocannons</div>
-               <div className="text-sm">All autocannons get +1 Damage Multiplier</div>
-               <div className="row mt10">
-                  <TextureComp name="Building/AC30" width={75} />
-                  <TextureComp name="Building/AC30A" width={75} />
-                  <TextureComp name="Building/AC30B" width={75} />
-                  <TextureComp name="Building/AC30x3" width={75} />
-               </div>
-            </div>
-            <div className={classNames(styles.box, "f1 col")}>
-               <div className="text-lg">Building 6 Different Skiff Class Weapons</div>
-               <div className="text-sm">All skiff class weapons get +2 Damage Multiplier</div>
-            </div>
-            <div className={classNames(styles.box, "f1 col")}>
-               <div className="text-lg">Building 6 Different Skiff Class Weapons</div>
-               <div className="text-sm">All skiff class weapons get +2 HP Multiplier</div>
-            </div>
-         </div>
-         <div style={{ flex: "0 0 500px", height: "100%", background: "yellow" }}></div>
-         <div style={{ flex: "0 0 500px", height: "100%", background: "purple" }}></div>
-         <div style={{ flex: "0 0 500px", height: "100%", background: "orange" }}></div>
-         <div style={{ flex: "0 0 500px", height: "100%", background: "pink" }}></div>
+            );
+         })}
       </ScrollArea>
    );
 }
