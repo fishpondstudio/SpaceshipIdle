@@ -4,6 +4,7 @@ import { srand } from "../../utils/Random";
 import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
 import { DamageType, ProjectileFlag } from "../definitions/BuildingProps";
+import { Catalyst, CatalystCat } from "../definitions/Catalyst";
 import {
    BattleTickInterval,
    MaxSuddenDeathTick,
@@ -16,7 +17,6 @@ import { makeTile } from "../ITileData";
 import { tickProjectiles, tickTiles } from "./BattleLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleFlag, BattleType } from "./BattleType";
-import { tickCatalyst } from "./CatalystLogic";
 import { tickElement } from "./ElementLogic";
 import type { Projectile } from "./Projectile";
 import { RuntimeStat } from "./RuntimeStat";
@@ -174,7 +174,6 @@ export class Runtime {
          this._checkLifeTime();
 
          tickElement(this.left);
-         tickCatalyst(this.left);
          this.leftStat.tabulate(this.tabulateHp(this.left.tiles), this.left);
          this.rightStat.tabulate(this.tabulateHp(this.right.tiles), this.right);
          ++this.productionTick;
@@ -313,6 +312,19 @@ export class Runtime {
             //    rs.xpMultiplier.add(xp, t(L.ElementPermanent, element));
             // }
          }
+         gs.catalysts.forEach((data, cat) => {
+            if (data.selected) {
+               const def = Catalyst[data.selected];
+               if (def.filter(rs.data.type)) {
+                  if ("hp" in def.multipliers) {
+                     rs.hpMultiplier.add(def.multipliers.hp, t(L.CatXCatalystSource, CatalystCat[cat].name()));
+                  }
+                  if ("damage" in def.multipliers) {
+                     rs.damageMultiplier.add(def.multipliers.damage, t(L.CatXCatalystSource, CatalystCat[cat].name()));
+                  }
+               }
+            }
+         });
       });
    }
 

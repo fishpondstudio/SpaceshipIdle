@@ -674,4 +674,6 @@ export const EN = {
    TraitSeries6: "Series 6",
    TraitSeries7: "Series 7",
    TraitSeries8: "Series 8",
+   SelectCatalystTooltipHTML: "Once a catalyst is selected, it <b>cannot</b> be changed for the current run",
+   CatXCatalystSource: "Catalyst: %%",
 };

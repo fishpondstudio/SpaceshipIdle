@@ -1,15 +1,22 @@
-import { ScrollArea } from "@mantine/core";
+import { ScrollArea, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { Catalyst } from "@spaceship-idle/shared/src/game/definitions/Catalyst";
-import { getEffect, getRequirement } from "@spaceship-idle/shared/src/game/logic/CatalystLogic";
-import { classNames, keysOf, numberToRoman } from "@spaceship-idle/shared/src/utils/Helper";
+import { Catalyst, CatalystCat } from "@spaceship-idle/shared/src/game/definitions/Catalyst";
+import { CatalystPerCat } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { getEffect, getNextCatalystCat, getRequirement } from "@spaceship-idle/shared/src/game/logic/CatalystLogic";
+import { classNames, keysOf, shuffle } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useCallback, useEffect, useRef } from "react";
 import { G } from "../utils/Global";
+import { refreshOnTypedEvent } from "../utils/Hook";
 import styles from "./CatalystFullScreen.module.css";
+import { RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
+import { playClick, playError } from "./Sound";
 
 export function CatalystFullScreen(): React.ReactNode {
+   refreshOnTypedEvent(GameStateUpdated);
+
    const viewportRef = useRef<HTMLDivElement | null>(null);
 
    const onWheel = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
@@ -50,11 +57,15 @@ export function CatalystFullScreen(): React.ReactNode {
                      gap: 20,
                   }}
                >
-                  <div className={styles.title}>{t(L.CatalystCatX, numberToRoman(idx + 1) ?? "")}</div>
+                  <div className={styles.title}>{CatalystCat[cat].name()}</div>
                   {data.choices.map((choice) => {
                      const def = Catalyst[choice];
                      return (
-                        <div key={choice} className={classNames(styles.box, "f1 row g0")}>
+                        <div
+                           key={choice}
+                           className={classNames(styles.box, "f1 row g0")}
+                           style={{ opacity: data.selected && data.selected !== choice ? 0.25 : 1 }}
+                        >
                            <div
                               className="cc"
                               style={{
@@ -63,9 +74,34 @@ export function CatalystFullScreen(): React.ReactNode {
                                  alignSelf: "stretch",
                               }}
                            >
-                              <div className="mi lg">check_box_outline_blank</div>
+                              <Tooltip label={<RenderHTML html={t(L.SelectCatalystTooltipHTML)} />}>
+                                 <div
+                                    className="mi lg pointer"
+                                    onClick={() => {
+                                       if (data.selected) {
+                                          playError();
+                                          return;
+                                       }
+                                       playClick();
+                                       data.selected = choice;
+                                       const next = getNextCatalystCat(cat);
+                                       if (next) {
+                                          G.save.current.catalysts.set(next, {
+                                             choices: shuffle(CatalystCat[next].candidates.slice(0)).slice(
+                                                0,
+                                                CatalystPerCat,
+                                             ),
+                                             selected: null,
+                                          });
+                                       }
+                                       GameStateUpdated.emit();
+                                    }}
+                                 >
+                                    {data.selected === choice ? "check_box" : "check_box_outline_blank"}
+                                 </div>
+                              </Tooltip>
                            </div>
-                           <div className="f1">
+                           <div className="f1" style={{ width: 400 }}>
                               <div className="m10">
                                  <div className="text-lg">{getRequirement(def)}</div>
                                  <div className="text-sm text-dimmed">{getEffect(def)}</div>
