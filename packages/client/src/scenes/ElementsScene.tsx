@@ -3,9 +3,8 @@ import type { ElementSymbol } from "@spaceship-idle/shared/src/game/PeriodicTabl
 import { AABB } from "@spaceship-idle/shared/src/utils/Vector2";
 import type { ColorSource, FederatedPointerEvent } from "pixi.js";
 import { G } from "../utils/Global";
-import { Scene, type ISceneContext } from "../utils/SceneManager";
+import { type ISceneContext, Scene } from "../utils/SceneManager";
 import { ElementCard } from "./ElementCard";
-import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 
 export class ElementsScene extends Scene {
    private _elementAABB: Map<ElementSymbol, { aabb: AABB; container: ElementCard }> = new Map();
@@ -34,14 +33,6 @@ export class ElementsScene extends Scene {
       this.viewport.zoom = minZoom;
 
       this.renderTable();
-
-      GameStateUpdated.on(() => {
-         this._elementAABB.forEach(({ aabb, container }) => {
-            container.destroy({ children: true });
-         });
-         this._elementAABB.clear();
-         this.renderTable();
-      });
    }
 
    private renderTable() {
@@ -67,9 +58,14 @@ export class ElementsScene extends Scene {
    }
 
    override onClicked(e: FederatedPointerEvent): void {
+      console.log(e.screen);
       const position = this.viewport.screenToWorld(e.screen);
       for (const [element, { aabb, container }] of this._elementAABB) {
-         container.toggleSelect(aabb.contains(position));
+         if (aabb.contains(position)) {
+            container.toggleSelect(true);
+         } else {
+            container.toggleSelect(false);
+         }
       }
    }
 }

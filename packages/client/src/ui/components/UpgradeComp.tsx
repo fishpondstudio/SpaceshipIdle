@@ -1,36 +1,27 @@
-import { Image, Tooltip } from "@mantine/core";
-import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { AbilityRangeLabel } from "@spaceship-idle/shared/src/game/definitions/Ability";
-import type { IBoosterDefinition } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
-import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
+import { Tooltip } from "@mantine/core";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
    canSpend,
    getBuildingCost,
    getNextLevel,
    getTotalBuildingCost,
-   isBooster,
    trySpend,
    upgradeMax,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { isShipConnected } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { mapSafeAdd } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { memo, useCallback } from "react";
+import { useCallback } from "react";
 import { G } from "../../utils/Global";
 import { useShortcut } from "../../utils/ShortcutHook";
 import type { ITileWithGameState } from "../ITileWithGameState";
 import { playClick, playError } from "../Sound";
-import { AbilityRangeImage } from "./AbilityComp";
 import { ResourceListComp } from "./ResourceListComp";
 
 export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
    const data = gs.tiles.get(tile);
    if (!data) {
       return null;
-   }
-   if (isBooster(data.type)) {
-      return <BoosterComp building={data.type} />;
    }
    const tiles = new Set(gs.tiles.keys());
    tiles.delete(tile);
@@ -156,39 +147,3 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
       </>
    );
 }
-
-function _BoosterComp({ building }: { building: Building }): React.ReactNode {
-   const def = Config.Buildings[building];
-   if (!isBooster(building)) {
-      return null;
-   }
-   const booster = def as IBoosterDefinition;
-   return (
-      <div className="mx10">
-         <div className="row">
-            <div className="f1">{t(L.BoostEffect)}</div>
-            <div>{booster.desc()}</div>
-         </div>
-         <div className="row">
-            <div className="f1">{t(L.BoostRange)}</div>
-            <Tooltip
-               p={5}
-               disabled={!AbilityRangeImage[booster.range]}
-               label={<Image radius="sm" w={200} src={AbilityRangeImage[booster.range]} />}
-            >
-               <div className="text-space">{AbilityRangeLabel[booster.range]()}</div>
-            </Tooltip>
-         </div>
-         <div className="row">
-            <div className="f1">{t(L.BoosterLifeTime)}</div>
-            <Tooltip label={t(L.BoosterLifeTimeDesc, booster.lifeTime)}>
-               <div>{booster.lifeTime}</div>
-            </Tooltip>
-         </div>
-      </div>
-   );
-}
-
-const BoosterComp = memo(_BoosterComp, (oldProps, newProps) => {
-   return oldProps.building === newProps.building;
-});

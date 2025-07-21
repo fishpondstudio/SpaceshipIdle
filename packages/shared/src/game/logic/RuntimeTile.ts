@@ -52,7 +52,6 @@ export type RuntimeProps = DefenseProp &
    Omit<WeaponProp, "damagePct"> & {
       hp: number;
       damagePerProjectile: number;
-      lifeTime: number;
       runtimeFlag: RuntimeFlag;
    };
 
@@ -81,7 +80,6 @@ export class RuntimeTile {
    public props: RuntimeProps = {
       hp: 0,
       damagePerProjectile: 0,
-      lifeTime: Number.POSITIVE_INFINITY,
       armor: 0,
       shield: 0,
       deflection: 0,
@@ -97,7 +95,6 @@ export class RuntimeTile {
    public originalProps: RuntimeProps = {
       hp: 0,
       damagePerProjectile: 0,
-      lifeTime: Number.POSITIVE_INFINITY,
       armor: 0,
       shield: 0,
       deflection: 0,
@@ -300,9 +297,6 @@ export class RuntimeTile {
          }
       });
       this.props.hp = getHP(this.data) * this.hpMultiplier.value;
-      if ("lifeTime" in def) {
-         this.props.lifeTime = def.lifeTime;
-      }
       if (WeaponKey in def) {
          const damagePerFire = getDamagePerFire(this.data) * this.damageMultiplier.value;
          this.props.damagePerProjectile = (def.damagePct * damagePerFire) / def.projectiles;

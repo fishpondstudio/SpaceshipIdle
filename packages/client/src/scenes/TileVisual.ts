@@ -4,7 +4,6 @@ import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/ga
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { GridSize, tileToPosCenter } from "@spaceship-idle/shared/src/game/Grid";
 import type { ITileData } from "@spaceship-idle/shared/src/game/ITileData";
-import { isBooster } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { RuntimeFlag } from "@spaceship-idle/shared/src/game/logic/RuntimeTile";
 import { clamp, formatNumber, hasFlag, lookAt, type Tile, type ValueOf } from "@spaceship-idle/shared/src/utils/Helper";
 import type { Disposable } from "@spaceship-idle/shared/src/utils/TypedEvent";
@@ -154,9 +153,6 @@ export class TileVisual extends Container {
    }
 
    private get levelLabel(): string {
-      if (isBooster(this.data.type)) {
-         return "";
-      }
       return String(this.data.level);
    }
 

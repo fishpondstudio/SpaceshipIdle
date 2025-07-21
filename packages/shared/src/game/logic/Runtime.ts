@@ -171,7 +171,7 @@ export class Runtime {
          this._checkSpeed(g);
          this._tickMultipliers();
          this._tickStatusEffect();
-         this._checkLifeTime();
+         this._checkSuddenDeath();
 
          tickElement(this.left);
          this.leftStat.tabulate(this.tabulateHp(this.left.tiles), this.left);
@@ -317,15 +317,10 @@ export class Runtime {
       tickCatalyst(this.get.bind(this), this.right);
    }
 
-   private _checkLifeTime(): void {
+   private _checkSuddenDeath(): void {
       if (this.battleType === BattleType.Peace) {
          return;
       }
-      this.tiles.forEach((rs) => {
-         if (this.productionTick >= rs.props.lifeTime) {
-            this.destroy(rs.tile);
-         }
-      });
 
       const leftDamage = this.suddenDeathDamage(Side.Left);
       if (leftDamage > 0) {

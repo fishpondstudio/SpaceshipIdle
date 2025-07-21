@@ -1,7 +1,7 @@
 import { clamp, inverse } from "../../utils/Helper";
 import type { Resource } from "../definitions/Resource";
 import type { GameState } from "../GameState";
-import { getTotalBuildingCost, isBooster } from "./BuildingLogic";
+import { getTotalBuildingCost } from "./BuildingLogic";
 import { getTotalElementLevels } from "./ElementLogic";
 
 export function resourceValueOf(resources: Map<Resource, number>): number {
@@ -70,14 +70,7 @@ export function qToSV(quantum: number): number {
 }
 
 export function getUsedQuantum(gs: GameState): number {
-   let result = 0;
-   for (const [_, data] of gs.tiles) {
-      if (isBooster(data.type)) {
-         continue;
-      }
-      ++result;
-   }
-   return result + gs.unlockedTech.size;
+   return gs.tiles.size + gs.unlockedTech.size;
 }
 
 export function getAvailableQuantum(gs: GameState): number {

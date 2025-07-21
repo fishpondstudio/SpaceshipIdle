@@ -1,3 +1,4 @@
+import { EmptyString } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 
 export interface IResourceDefinition {
@@ -6,7 +7,13 @@ export interface IResourceDefinition {
 
 export const Resources = {
    XP: { name: () => t(L.XP) },
-   XPUsed: { name: () => t(L.XPUsed) },
+   XPUsed: { name: () => EmptyString },
+
+   Victory: { name: () => t(L.Victory) },
+   VictoryUsed: { name: () => EmptyString },
+
+   Loss: { name: () => EmptyString },
+
    Warp: { name: () => t(L.TimeWarp) },
 } as const satisfies Record<string, IResourceDefinition>;
 

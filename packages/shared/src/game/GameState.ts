@@ -2,6 +2,7 @@ import { wyhash_str } from "../thirdparty/wyhash";
 import { createTile, type Tile, uuid4 } from "../utils/Helper";
 import { jsonEncode } from "../utils/Serialization";
 import { TypedEvent } from "../utils/TypedEvent";
+import type { Booster } from "./definitions/Boosters";
 import type { Catalyst, CatalystCat } from "./definitions/Catalyst";
 import type { Resource } from "./definitions/Resource";
 import type { Tech } from "./definitions/TechDefinitions";
@@ -38,6 +39,7 @@ export class GameState {
    catalysts = new Map<CatalystCat, { choices: Catalyst[]; selected: Catalyst | null }>([
       ["C1", { choices: rollCatalyst("C1"), selected: null }],
    ]);
+   boosters = new Map<Booster, number>();
    name = "Unnamed";
    flags: GameStateFlags = GameStateFlags.None;
    offlineTime = 0;

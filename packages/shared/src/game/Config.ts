@@ -26,9 +26,6 @@ function initConfig(): void {
       if ("ability" in def && def.ability) {
          statusEffects.delete(def.ability.effect);
       }
-      if ("effect" in def && def.effect) {
-         statusEffects.delete(def.effect);
-      }
       if (def.element) {
          Config.Elements[def.element] = building;
       }

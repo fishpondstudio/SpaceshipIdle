@@ -28,7 +28,6 @@ import {
    canSpend,
    getBuildingCost,
    getTotalBuildingCost,
-   isBooster,
    trySpend,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import type { Projectile } from "@spaceship-idle/shared/src/game/logic/Projectile";
@@ -36,7 +35,6 @@ import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/Resou
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { OnStatusEffectsChanged } from "@spaceship-idle/shared/src/game/logic/RuntimeTile";
 import {
-   getSide,
    isEnemy,
    isShipConnected,
    isWithinShipExtent,
@@ -459,16 +457,6 @@ export class ShipScene extends Scene {
                      });
                      return;
                   }
-                  if (isBooster(oldTileData.type)) {
-                     playError();
-                     notifications.show({
-                        message: t(L.ModuleIsUnique),
-                        position: "top-center",
-                        color: "red",
-                        withBorder: true,
-                     });
-                     return;
-                  }
                   if (trySpend(getBuildingCost(oldTileData.type, 1), G.save.current)) {
                      G.save.current.tiles.set(clickedTile, makeTile(oldTileData.type, 1));
                      GameStateUpdated.emit();
@@ -532,16 +520,6 @@ export class ShipScene extends Scene {
          const data = G.save.current.tiles.get(clickedTile);
          // Right click delete
          if (data) {
-            if (isBooster(data.type)) {
-               playError();
-               notifications.show({
-                  message: t(L.ModuleCannotBeRecycled),
-                  position: "top-center",
-                  color: "red",
-                  withBorder: true,
-               });
-               return;
-            }
             const tiles = new Set(G.save.current.tiles.keys());
             tiles.delete(clickedTile);
             if (CheckConnected && !isShipConnected(tiles)) {
@@ -687,11 +665,6 @@ export class ShipScene extends Scene {
                const def = Config.Buildings[tileData.type];
                if ("ability" in def && def.ability && def.ability.timing === AbilityTiming.OnFire) {
                   abilityTarget(Side.Left, def.ability.range, tile, G.save.current.tiles).forEach((highlight) => {
-                     this._highlightedTiles.add(highlight);
-                  });
-               }
-               if ("range" in def && def.range) {
-                  abilityTarget(getSide(tile), def.range, tile, G.save.current.tiles).forEach((highlight) => {
                      this._highlightedTiles.add(highlight);
                   });
                }

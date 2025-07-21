@@ -26,6 +26,7 @@
 
 .row.stretch,
 .col.stretch {
+   align-self: stretch;
    align-items: stretch;
 }
 

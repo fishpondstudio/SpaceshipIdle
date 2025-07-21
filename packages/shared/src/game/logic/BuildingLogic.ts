@@ -1,6 +1,5 @@
-import { hasFlag, mapSafeAdd } from "../../utils/Helper";
+import { mapSafeAdd } from "../../utils/Helper";
 import { Config } from "../Config";
-import { BuildingFlag } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { DamageToHPMultiplier, MaxBuildingCount } from "../definitions/Constant";
 import { ShipClass } from "../definitions/TechDefinitions";
@@ -93,20 +92,6 @@ export function hasConstructed(building: Building, gs: GameState): boolean {
       }
    }
    return false;
-}
-
-export function getBoosterCount(gs: GameState): number {
-   let result = 0;
-   for (const [_, data] of gs.tiles) {
-      if (isBooster(data.type)) {
-         result++;
-      }
-   }
-   return result;
-}
-
-export function isBooster(building: Building): boolean {
-   return hasFlag(Config.Buildings[building].buildingFlag, BuildingFlag.Booster);
 }
 
 export function getBuildingTypes(tiles: Tiles): Set<Building> {

@@ -1,6 +1,5 @@
 import { Badge, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import type { IBoosterDefinition } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { CodeLabel, type CodeNumber } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
 import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
@@ -9,7 +8,6 @@ import {
    canSpend,
    getBuildingCost,
    getUnlockedBuildings,
-   isBooster,
    trySpend,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -72,68 +70,15 @@ export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
             .sort((a, b) => Config.Buildings[a].name().localeCompare(Config.Buildings[b].name()))
             .filter((b) => {
                const def = Config.Buildings[b];
-               if (isBooster(b) && constructed.has(b)) {
-                  return false;
-               }
                if (selected.size === 0) {
                   return true;
                }
                return selected.has(def.code);
             })
             .map((b) => {
-               if (isBooster(b)) {
-                  return <BoostComp key={b} building={b} gs={gs} tile={tile} />;
-               }
                return <BuildingComp constructed={constructed.get(b) ?? 0} key={b} building={b} gs={gs} tile={tile} />;
             })}
       </SidebarComp>
-   );
-}
-
-function BoostComp({ building, tile, gs }: { building: Building; tile: Tile; gs: GameState }): React.ReactNode {
-   const def = Config.Buildings[building] as IBoosterDefinition;
-   const label = CodeLabel[def.code]();
-   // TODO: Implement this
-   const cost = 1_000_000;
-   const canBuild = false;
-   return (
-      <Tooltip
-         label={
-            <>
-               {canBuild ? null : <div className="text-red">{t(L.NotEnoughResources)}</div>}
-               <ResourceListComp xp={cost} />
-            </>
-         }
-         key={building}
-      >
-         <div
-            className="row p10 m10"
-            onClick={() => {
-               // TODO: Implement this
-               // if (!hasConstructed(building, gs) && tryDeductResources(cost, gs.resources)) {
-               //    gs.tiles.set(tile, makeTile(building, 1));
-               //    GameStateUpdated.emit();
-               // } else {
-               //    playError();
-               // }
-            }}
-            style={{
-               cursor: canBuild ? "pointer" : "not-allowed",
-               border: "1px solid rgba(255,255,255,0.15)",
-               borderRadius: 5,
-               opacity: canBuild ? 1 : 0.25,
-            }}
-         >
-            <TextureComp name={`Building/${building}`} width={50} />
-            <div className="f1">
-               <div className="row g5">
-                  <div>{def.name()}</div>
-                  <div className="text-xs text-space">{label}</div>
-                  <div className="f1"></div>
-               </div>
-            </div>
-         </div>
-      </Tooltip>
    );
 }
 

@@ -886,6 +886,7 @@ export function capitalize(str: string): string {
 }
 
 export function EmptyFunction(): void {}
+export const EmptyString = "";
 
 export function removeFrom<T>(array: T[], item: T): boolean {
    const index = array.indexOf(item);

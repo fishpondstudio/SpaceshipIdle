@@ -1,11 +1,9 @@
 import type { ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import type { ElementSymbol } from "../PeriodicTable";
-import type { Ability, AbilityRange } from "./Ability";
+import type { Ability } from "./Ability";
 import type { CodeNumber } from "./CodeNumber";
 import { DefaultCooldown } from "./Constant";
-import type { Resource } from "./Resource";
-import type { StatusEffect } from "./StatusEffect";
 
 export type DamageType = ValueOf<typeof DamageType>;
 export const DamageType = {
@@ -18,7 +16,6 @@ export const BuildingFlag = {
    None: 0,
    CanRotate: 1 << 0,
    CanTarget: 1 << 1,
-   Booster: 1 << 2,
 } as const;
 
 export type BuildingFlag = ValueOf<typeof BuildingFlag>;
@@ -28,14 +25,6 @@ export interface IBuildingDefinition extends IDefenseProp {
    code: CodeNumber;
    buildingFlag: BuildingFlag;
    element?: ElementSymbol;
-}
-
-export interface IBoosterDefinition extends IBuildingDefinition {
-   unlock: Partial<Record<Resource, number>>;
-   desc: () => string;
-   range: AbilityRange;
-   effect: StatusEffect;
-   lifeTime: number;
 }
 
 export interface IDefenseProp {

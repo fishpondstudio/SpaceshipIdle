@@ -1,3 +1,4 @@
+import { BoosterScene } from "./scenes/BoosterScene";
 import { CatalystScene } from "./scenes/CatalystScene";
 import { ElementsScene } from "./scenes/ElementsScene";
 import { ShipScene } from "./scenes/ShipScene";
@@ -18,6 +19,10 @@ export function loadGameScene() {
       }
       case "catalyst": {
          G.scene.loadScene(CatalystScene);
+         break;
+      }
+      case "booster": {
+         G.scene.loadScene(BoosterScene);
          break;
       }
       default: {

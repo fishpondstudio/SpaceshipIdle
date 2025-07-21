@@ -9,7 +9,6 @@ export const CodeNumber = {
    PC: "PC",
    LA: "LA",
    FD: "FD",
-   BT: "BT",
 } as const;
 
 export type CodeNumber = ValueOf<typeof CodeNumber>;
@@ -22,5 +21,4 @@ export const CodeLabel: Record<CodeNumber, () => string> = {
    [CodeNumber.PC]: () => t(L.PC),
    [CodeNumber.LA]: () => t(L.LA),
    [CodeNumber.FD]: () => t(L.FD),
-   [CodeNumber.BT]: () => t(L.BT),
 };

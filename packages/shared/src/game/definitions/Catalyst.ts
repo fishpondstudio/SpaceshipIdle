@@ -46,7 +46,7 @@ export const Catalyst = {
       },
    },
    A5: {
-      trait: () => t(L.CatalystXClass, t(L.TechSkiff)),
+      trait: () => t(L.XClassWeapon, t(L.TechSkiff)),
       filter: (b: Building) => Config.BuildingToShipClass[b] === "Skiff",
       amount: 6,
       multipliers: {
@@ -54,7 +54,7 @@ export const Catalyst = {
       },
    },
    A6: {
-      trait: () => t(L.CatalystXClass, t(L.TechSkiff)),
+      trait: () => t(L.XClassWeapon, t(L.TechSkiff)),
       filter: (b: Building) => Config.BuildingToShipClass[b] === "Skiff",
       amount: 6,
       multipliers: {
@@ -62,7 +62,7 @@ export const Catalyst = {
       },
    },
    A7: {
-      trait: () => t(L.CatalystXClass, t(L.TechSkiff)),
+      trait: () => t(L.XClassWeapon, t(L.TechSkiff)),
       filter: (b: Building) => Config.BuildingToShipClass[b] === "Skiff",
       amount: 6,
       multipliers: {
@@ -71,7 +71,7 @@ export const Catalyst = {
       },
    },
    B1: {
-      trait: () => t(L.CatalystXClass, t(L.TechScout)),
+      trait: () => t(L.XClassWeapon, t(L.TechScout)),
       filter: (b: Building) => Config.BuildingToShipClass[b] === "Scout",
       amount: 6,
       multipliers: {
@@ -80,7 +80,7 @@ export const Catalyst = {
       },
    },
    B2: {
-      trait: () => t(L.CatalystXClass, t(L.TechScout)),
+      trait: () => t(L.XClassWeapon, t(L.TechScout)),
       filter: (b: Building) => Config.BuildingToShipClass[b] === "Scout",
       amount: 6,
       multipliers: {
@@ -88,7 +88,7 @@ export const Catalyst = {
       },
    },
    B3: {
-      trait: () => t(L.CatalystXClass, t(L.TechScout)),
+      trait: () => t(L.XClassWeapon, t(L.TechScout)),
       filter: (b: Building) => Config.BuildingToShipClass[b] === "Scout",
       amount: 6,
       multipliers: {
