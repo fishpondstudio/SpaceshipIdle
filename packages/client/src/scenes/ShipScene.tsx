@@ -629,7 +629,6 @@ export class ShipScene extends Scene {
          G.runtime.has(clickedTile) &&
          G.runtime.battleType !== BattleType.Peace
       ) {
-         console.log(clickedTile, data);
          const posTopLeft = tileToPos(clickedTile);
          const posBottomRight = { x: posTopLeft.x + GridSize, y: posTopLeft.y + GridSize };
          const posTopLeftScreen = this.viewport.worldToScreen(posTopLeft);
@@ -707,6 +706,12 @@ export class ShipScene extends Scene {
             }
          }
       });
+
+      for (const tile of this._selectedTiles) {
+         const tileData = G.save.current.tiles.get(tile);
+         console.log(tileData);
+         break;
+      }
 
       this._selectors.forEach((sprite, tile) => {
          if (!this._selectedTiles.has(tile)) {

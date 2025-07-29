@@ -105,31 +105,31 @@ export class TechDefinitions {
       requires: ["A6"],
       unlockBuildings: ["MS1D"],
    };
-
    B1: ITechDefinition = {
       position: { x: 3, y: 0 },
-      name: () => t(L.TechLightArtillery),
-      requires: [],
-      unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
+      name: () => t(L.TechMediumArtillery),
+      requires: ["A7", "A8"],
+      unlockBuildings: ["AC76"],
    };
    B2: ITechDefinition = {
       position: { x: 3, y: 1 },
-      name: () => t(L.TechLightArtillery),
-      requires: [],
-      unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
+      name: () => t(L.TechDamageControl),
+      requires: ["A9", "A10"],
+      unlockBuildings: ["MS2"],
    };
-   B3: ITechDefinition = {
-      position: { x: 3, y: 2 },
-      name: () => t(L.TechLightArtillery),
-      requires: [],
-      unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
-   };
-   B4: ITechDefinition = {
-      position: { x: 3, y: 3 },
-      name: () => t(L.TechLightArtillery),
-      requires: [],
-      unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
-   };
+
+   // B3: ITechDefinition = {
+   //    position: { x: 3, y: 2 },
+   //    name: () => t(L.TechLightArtillery),
+   //    requires: [],
+   //    unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
+   // };
+   // B4: ITechDefinition = {
+   //    position: { x: 3, y: 3 },
+   //    name: () => t(L.TechLightArtillery),
+   //    requires: [],
+   //    unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
+   // };
 
    B5: ITechDefinition = {
       position: { x: 4, y: 0 },

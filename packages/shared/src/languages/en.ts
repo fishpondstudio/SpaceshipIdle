@@ -319,7 +319,7 @@ export const EN = {
    MS1B: "MS1B Warbler",
    MS1A: "MS1A Lark",
    MS1C: "MS1C Robin",
-   MS2B: "MS2B Pipit",
+   MS2: "MS2 Pipit",
    MS2D: "MS2D Dove",
    MS1D: "MS1D Shrike",
    MS2C: "MS2C Tanager",
