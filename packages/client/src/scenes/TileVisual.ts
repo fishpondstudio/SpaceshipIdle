@@ -15,7 +15,6 @@ import {
    type IDestroyOptions,
    NineSlicePlane,
    Sprite,
-   Texture,
 } from "pixi.js";
 import { Fonts } from "../assets";
 import type { Action } from "../utils/actions/Action";
@@ -32,6 +31,9 @@ export const TileVisualFlag = {
 
 export type TileVisualFlag = ValueOf<typeof TileVisualFlag>;
 
+const AlphaNormal = 0.5;
+const AlphaHighlight = 1;
+
 export class TileVisual extends Container {
    private _sprite: Sprite;
    private _transform = { x: 0, y: 0, rotation: 0 };
@@ -42,7 +44,7 @@ export class TileVisual extends Container {
    private _disposables: Disposable[] = [];
    private _bottomRightText: BitmapText;
    private _bottomLeftSprite: Sprite;
-   private _isProducing = false;
+   private _isWorking = false;
    private _healthBarBg: Sprite;
    private _background: Sprite;
    private _buff: BitmapText;
@@ -60,17 +62,18 @@ export class TileVisual extends Container {
       super();
       const texture = G.textures.get(`Building/${data.type}`);
       if (!texture) {
-         throw new Error(`Texture not found for Building_${data.type}`);
+         console.error(`Texture not found for Building/${data.type}`, G.textures);
       }
 
       this._background = this.addChild(new Sprite(G.textures.get("Misc/FrameFilled")));
       this._background.position.set(-GridSize / 2, -GridSize / 2);
-      this._background.alpha = 0.25;
+      this._background.alpha = AlphaNormal;
 
       this._sprite = this.addChild(new Sprite(texture));
       this._sprite.position.set(0, 0);
       this._sprite.anchor.set(0.5);
-      this._sprite.scale.set(0.75);
+      this._sprite.width = 75;
+      this._sprite.height = 75;
       this._sprite.tint = G.save.options.buildingColors.get(data.type) ?? 0xffffff;
 
       if (!hasFlag(this.flag, BuildingFlag.CanRotate)) {
@@ -90,7 +93,7 @@ export class TileVisual extends Container {
 
       this._buff = this.addChild(
          new BitmapText("", {
-            fontName: Fonts.SpaceshipIdle,
+            fontName: Fonts.SpaceshipIdlePixel,
             fontSize: 16,
             tint: 0x7bed9f,
          }),
@@ -101,7 +104,7 @@ export class TileVisual extends Container {
 
       this._debuff = this.addChild(
          new BitmapText("", {
-            fontName: Fonts.SpaceshipIdle,
+            fontName: Fonts.SpaceshipIdlePixel,
             fontSize: 16,
             tint: 0xff7675,
          }),
@@ -112,17 +115,18 @@ export class TileVisual extends Container {
 
       this._bottomRightText = this.addChild(
          new BitmapText(this.levelLabel, {
-            fontName: Fonts.SpaceshipIdle,
+            fontName: Fonts.SpaceshipIdlePixel,
             fontSize: 16,
             tint: 0xffffff,
          }),
       );
 
       this._bottomRightText.anchor.set(1, 1);
-      this._bottomRightText.position.set(40, 40);
+      this._bottomRightText.position.set(41, 39);
 
       this._bottomLeftSprite = this.addChild(new Sprite());
-      this._bottomLeftSprite.scale.set(0.5);
+      this._bottomLeftSprite.width = 16;
+      this._bottomLeftSprite.height = 16;
       this._bottomLeftSprite.anchor.set(0, 1);
       this._bottomLeftSprite.position.set(-40, 40);
 
@@ -165,31 +169,46 @@ export class TileVisual extends Container {
    }
 
    public toggleHighlight(highlight: boolean): void {
-      this._background.alpha = highlight ? 0.5 : 0.25;
+      this._background.alpha = highlight ? AlphaHighlight : AlphaNormal;
    }
 
    private onGameStateUpdated(): void {
       this._bottomRightText.text = this.levelLabel;
       const rs = G.runtime.get(this._tile);
       if (rs) {
-         this._isProducing = !hasFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire);
+         this._isWorking = !hasFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire);
       } else {
-         this._isProducing = false;
+         this._isWorking = false;
       }
-      this._bottomLeftSprite.texture = this._isProducing ? Texture.EMPTY : G.textures.get("Misc/NoFire")!;
+
+      if (!this._isWorking) {
+         this._bottomLeftSprite.visible = true;
+         this._bottomLeftSprite.texture = G.textures.get("Status/NoFire")!;
+      } else if (rs?.booster) {
+         this._bottomLeftSprite.visible = true;
+         this._bottomLeftSprite.texture = G.textures.get(`Booster/${rs.booster}`)!;
+      } else {
+         this._bottomLeftSprite.visible = false;
+      }
    }
 
    public update(dt: number) {
       this.progress += dt;
-      if (this._isProducing) {
+      if (this._isWorking) {
          if (hasFlag(this.flag, BuildingFlag.CanRotate)) {
             this._sprite.angle += dt * 50;
          }
          this._sprite.alpha = clamp(this._sprite.alpha + dt, 0.5, 1);
       } else {
          this._sprite.alpha = clamp(this._sprite.alpha - dt, 0.5, 1);
-         this._bottomLeftSprite.alpha = 0.5 * (Math.sin(0.005 * G.pixi.ticker.lastTime) + 1);
       }
+
+      if (!this._isWorking) {
+         this._bottomLeftSprite.alpha = 0.5 * (Math.sin(0.005 * G.pixi.ticker.lastTime) + 1);
+      } else {
+         this._bottomLeftSprite.alpha = 1;
+      }
+
       const rs = G.runtime.get(this._tile);
       if (rs) {
          this._healthBar.width = 80 * (1 - rs.damageTaken / rs.props.hp);
@@ -244,8 +263,8 @@ export class TileVisual extends Container {
          this._floaterValue = 0;
          t.tint = 0xffffff;
          t.alpha = 0;
-         t.anchor.set(0, 1);
-         t.x = this.x - 40;
+         t.anchor.set(0.5, 1);
+         t.x = this.x;
          t.y = this.y + 50;
          sequence(
             to(t, { y: t.y - 10, alpha: 1 }, 0.25, Easing.OutQuad),

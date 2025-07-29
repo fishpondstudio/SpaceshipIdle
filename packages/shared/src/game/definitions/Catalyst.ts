@@ -158,6 +158,10 @@ export const CatalystCat = {
       name: () => t(L.CatalystCatX, numberToRoman(2)!),
       candidates: ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"],
    },
+   C3: {
+      name: () => t(L.CatalystCatX, numberToRoman(3)!),
+      candidates: ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"],
+   },
 } as const satisfies Record<string, { name: () => string; candidates: Catalyst[] }>;
 
 export type CatalystCat = keyof typeof CatalystCat;

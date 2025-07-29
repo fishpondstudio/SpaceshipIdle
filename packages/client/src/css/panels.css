@@ -84,6 +84,12 @@
    }
 }
 
+.top-left-panel {
+   position: absolute;
+   top: 15px;
+   left: 15px;
+}
+
 .element-stats-panel {
    max-height: 30vh;
    text-shadow: 1px 1px 0 #000;

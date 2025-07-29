@@ -50,7 +50,7 @@ export function getTotalBuildingCost(building: Building, currentLevel: number, t
 
 function getBaseValue(building: Building): number {
    const shipClass = Config.BuildingToShipClass[building];
-   return ShipClass[shipClass].index + 1;
+   return (ShipClass[shipClass].index + 1) * 10;
 }
 
 export function getHP({ type, level }: { type: Building; level: number }): number {

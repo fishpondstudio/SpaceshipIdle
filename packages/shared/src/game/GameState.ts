@@ -5,12 +5,12 @@ import { TypedEvent } from "../utils/TypedEvent";
 import type { Booster } from "./definitions/Boosters";
 import type { Catalyst, CatalystCat } from "./definitions/Catalyst";
 import type { Resource } from "./definitions/Resource";
+import type { ShipDesign } from "./definitions/ShipDesign";
 import type { Tech } from "./definitions/TechDefinitions";
 import { GameOption } from "./GameOption";
 import { MaxX, MaxY } from "./Grid";
 import { type ITileData, makeTile } from "./ITileData";
 import { rollCatalyst } from "./logic/CatalystLogic";
-import { shipExtent } from "./logic/ShipLogic";
 import type { ElementSymbol } from "./PeriodicTable";
 
 export type Tiles = Map<Tile, ITileData>;
@@ -39,8 +39,9 @@ export class GameState {
    catalysts = new Map<CatalystCat, { choices: Catalyst[]; selected: Catalyst | null }>([
       ["C1", { choices: rollCatalyst("C1"), selected: null }],
    ]);
-   boosters = new Map<Booster, number>();
+   boosters = new Map<Booster, { tile: Tile | null; amount: number }>();
    name = "Unnamed";
+   shipDesign: ShipDesign = "Ship1";
    flags: GameStateFlags = GameStateFlags.None;
    offlineTime = 0;
 }
@@ -87,8 +88,7 @@ export interface ElementChoice {
 export function initGameState(state: GameState): GameState {
    state.unlockedTech.add("A1");
    state.unlockedTech.add("A2");
-   const ext = shipExtent(state);
-   const x = MaxX / 2 - ext - 1;
+   const x = MaxX / 2 - 2;
    state.tiles.set(createTile(x, MaxY / 2), makeTile("AC30", 1));
    state.tiles.set(createTile(x - 1, MaxY / 2), makeTile("AC30", 1));
    state.tiles.set(createTile(x, MaxY / 2 - 1), makeTile("MS1", 1));

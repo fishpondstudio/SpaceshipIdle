@@ -2,13 +2,14 @@ import { computePosition, flip, offset, shift } from "@floating-ui/core";
 import { notifications } from "@mantine/notifications";
 import { SmoothGraphics } from "@pixi/graphics-smooth";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { abilityTarget, AbilityTiming } from "@spaceship-idle/shared/src/game/definitions/Ability";
+import { AbilityTiming, abilityTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import type { ShipClass } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated, type Tiles } from "@spaceship-idle/shared/src/game/GameState";
 import {
-   getSize,
    GridSize,
+   getSize,
    MaxX,
    MaxY,
    posToTile,
@@ -35,19 +36,22 @@ import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/Resou
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { OnStatusEffectsChanged } from "@spaceship-idle/shared/src/game/logic/RuntimeTile";
 import {
+   getShipBlueprint,
    isEnemy,
    isShipConnected,
    isWithinShipExtent,
    shipAABB,
-   shipExtent,
 } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
+import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import {
    createTile,
+   flatMapOf,
    hasFlag,
    lookAt,
    mapSafeAdd,
    rand,
+   shuffle,
    type Tile,
    tileToPoint,
 } from "@spaceship-idle/shared/src/utils/Helper";
@@ -75,7 +79,7 @@ import { destroyAllChildren, type ISceneContext, Scene } from "../utils/SceneMan
 import { UnicodeText } from "../utils/UnicodeText";
 import { TileVisual, TileVisualFlag } from "./TileVisual";
 
-const CheckConnected = !import.meta.env.DEV;
+const PaintMode = Number.parseInt(new URLSearchParams(location.href.split("?")[1]).get("paint") ?? "0");
 
 export class ShipScene extends Scene {
    private _selectors: Map<Tile, Sprite> = new Map();
@@ -85,7 +89,7 @@ export class ShipScene extends Scene {
    private _tileContainer: Container;
    private _projectileContainer: Container;
    private _grid: Container;
-   private _renderedExtent = 0;
+   private _shipClass: ShipClass | undefined;
 
    public static TooltipPool: ObjectPool<UnicodeText>;
    public static ShieldPool: ObjectPool<Sprite>;
@@ -117,7 +121,7 @@ export class ShipScene extends Scene {
       ShipScene.TooltipPool = new ObjectPool<UnicodeText>({
          create: () => {
             const t = this.viewport.addChild(
-               new UnicodeText("", { fontName: Fonts.SpaceshipIdleBold, fontSize: 14, tint: 0xffffff }),
+               new UnicodeText("", { fontName: Fonts.SpaceshipIdlePixel, fontSize: 14, tint: 0xffffff }),
             );
             return t;
          },
@@ -181,7 +185,7 @@ export class ShipScene extends Scene {
          }),
       );
       this.viewport.addChild(new TilingSprite(textures.get("Misc/Frame")!, width, height)).alpha = 0.15;
-      this._selectedTiles.add(createTile(MaxX / 2 - shipExtent(G.save.current) - 1, MaxY / 2));
+      this._selectedTiles.add(createTile(MaxX / 2 - 2, MaxY / 2));
       this.updateSelection();
       this._targetIndicator = this.viewport.addChild(new Sprite(G.textures.get("Misc/TargetIndicator")));
       this._targetIndicator.anchor.set(0.5, 0.5);
@@ -291,29 +295,7 @@ export class ShipScene extends Scene {
    }
 
    public render(rt: Runtime, dt: number, timeSinceLastTick: number): void {
-      const me = shipExtent(rt.left);
-      const enemy = shipExtent(rt.right);
-      const ext = createTile(me, enemy);
-      if (this._renderedExtent !== ext) {
-         this._renderedExtent = ext;
-         destroyAllChildren(this._grid);
-         const meAABB = shipAABB(shipExtent(rt.left), Side.Left);
-         for (let y = meAABB.min.y; y <= meAABB.max.y; y++) {
-            for (let x = meAABB.min.x; x <= meAABB.max.x; x++) {
-               const s = this._grid.addChild(new Sprite(this.context.textures.get("Misc/Frame")));
-               s.position.set(x * GridSize, y * GridSize);
-               s.alpha = 0.25;
-            }
-         }
-         const enemyAABB = shipAABB(shipExtent(rt.right), Side.Right);
-         for (let y = enemyAABB.min.y; y <= enemyAABB.max.y; y++) {
-            for (let x = enemyAABB.min.x; x <= enemyAABB.max.x; x++) {
-               const s = this._grid.addChild(new Sprite(this.context.textures.get("Misc/Frame")));
-               s.position.set(x * GridSize, y * GridSize);
-               s.alpha = 0.25;
-            }
-         }
-      }
+      this.renderBlueprint();
 
       this.renderTiles(rt.left.tiles, rt, dt, timeSinceLastTick);
       this.renderTiles(rt.right.tiles, rt, dt, timeSinceLastTick);
@@ -373,6 +355,38 @@ export class ShipScene extends Scene {
       });
    }
 
+   private renderBlueprint(): void {
+      if (PaintMode) {
+         const shipClass = getShipClass(G.save.current);
+         if (shipClass === this._shipClass) {
+            return;
+         }
+         this._shipClass = shipClass;
+         destroyAllChildren(this._grid);
+         const meAABB = shipAABB(PaintMode, Side.Left);
+         for (let y = meAABB.min.y; y <= meAABB.max.y; y++) {
+            for (let x = meAABB.min.x; x <= meAABB.max.x; x++) {
+               const s = this._grid.addChild(new Sprite(this.context.textures.get("Misc/Frame")));
+               s.position.set(x * GridSize, y * GridSize);
+               s.alpha = 0.35;
+            }
+         }
+      } else {
+         const shipClass = getShipClass(G.save.current);
+         if (shipClass === this._shipClass) {
+            return;
+         }
+         this._shipClass = shipClass;
+         destroyAllChildren(this._grid);
+         getShipBlueprint(G.save.current).forEach((tile) => {
+            const s = this._grid.addChild(new Sprite(this.context.textures.get("Misc/Frame")));
+            const { x, y } = tileToPoint(tile);
+            s.position.set(x * GridSize, y * GridSize);
+            s.alpha = 0.35;
+         });
+      }
+   }
+
    private drawProjectiles(projectiles: Map<number, Projectile>, dt: number, timeSinceLastTick: number): void {
       projectiles.forEach((projectile, id) => {
          let visual = this._projectileVisuals.get(id);
@@ -405,6 +419,28 @@ export class ShipScene extends Scene {
       playClick();
       const pos = this.viewport.screenToWorld(e.screen);
       const clickedTile = posToTile(pos);
+
+      if (PaintMode && (e.button === 1 || e.button === 2)) {
+         // Middle click
+
+         const buildings = flatMapOf(Config.Tech, (tech, def) => def.unlockBuildings ?? []);
+         shuffle(buildings);
+
+         if (e.button === 1) {
+            G.save.current.tiles.set(clickedTile, makeTile(buildings[0], 1));
+            const point = tileToPoint(clickedTile);
+            G.save.current.tiles.set(createTile(point.x, MaxY - 1 - point.y), makeTile(buildings[1], 1));
+         }
+         // Right click
+         if (e.button === 2) {
+            G.save.current.tiles.delete(clickedTile);
+            const point = tileToPoint(clickedTile);
+            G.save.current.tiles.delete(createTile(point.x, MaxY - 1 - point.y));
+         }
+         console.log(JSON.stringify(Array.from(G.save.current.tiles.keys())));
+         return;
+      }
+
       // Middle click copy
       if (e.button === 1) {
          if (
@@ -425,7 +461,7 @@ export class ShipScene extends Scene {
             for (const oldTile of this._selectedTiles) {
                const tiles = new Set(G.save.current.tiles.keys());
                tiles.add(clickedTile);
-               if (CheckConnected && !isShipConnected(tiles)) {
+               if (!isShipConnected(tiles)) {
                   playError();
                   notifications.show({
                      message: t(L.NotConnected),
@@ -487,7 +523,7 @@ export class ShipScene extends Scene {
                   const tiles = new Set(G.save.current.tiles.keys());
                   tiles.add(clickedTile);
                   tiles.delete(oldTile);
-                  if (CheckConnected && !isShipConnected(tiles)) {
+                  if (!isShipConnected(tiles)) {
                      playError();
                      notifications.show({
                         message: t(L.NotConnected),
@@ -522,7 +558,7 @@ export class ShipScene extends Scene {
          if (data) {
             const tiles = new Set(G.save.current.tiles.keys());
             tiles.delete(clickedTile);
-            if (CheckConnected && !isShipConnected(tiles)) {
+            if (!isShipConnected(tiles)) {
                playError();
                notifications.show({
                   message: t(L.NotConnected),

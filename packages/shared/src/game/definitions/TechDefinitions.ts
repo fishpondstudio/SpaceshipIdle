@@ -20,7 +20,6 @@ export interface ITechDefinition {
 export interface IShipClassDefinition {
    name: () => string;
    range: [number, number];
-   shipExtent: number;
    index: number;
 }
 
@@ -28,21 +27,18 @@ export const ShipClass = {
    Skiff: {
       name: () => t(L.TechSkiff),
       range: [0, 2],
-      shipExtent: 3,
       index: 0,
-   },
+   } as IShipClassDefinition,
    Scout: {
       name: () => t(L.TechScout),
       range: [3, 5],
-      shipExtent: 4,
       index: 1,
-   },
+   } as IShipClassDefinition,
    Corvette: {
       name: () => t(L.TechCorvette),
       range: [6, 8],
-      shipExtent: 5,
       index: 2,
-   },
+   } as IShipClassDefinition,
 } as const satisfies Record<string, IShipClassDefinition>;
 
 export type ShipClass = keyof typeof ShipClass;
@@ -60,7 +56,6 @@ export class TechDefinitions {
       requires: [],
       unlockBuildings: ["MS1"],
    };
-
    A3: ITechDefinition = {
       position: { x: 1, y: 0 },
       name: () => t(L.TechFortifiedArtillery),
@@ -69,9 +64,9 @@ export class TechDefinitions {
    };
    A4: ITechDefinition = {
       position: { x: 1, y: 1 },
-      name: () => t(L.TechShieldedArtillery),
       requires: ["A1"],
-      unlockBuildings: ["AC30B"],
+      name: () => t(L.TechRapidFire),
+      unlockBuildings: ["AC30x3"],
    };
    A5: ITechDefinition = {
       position: { x: 1, y: 2 },
@@ -88,27 +83,27 @@ export class TechDefinitions {
 
    A7: ITechDefinition = {
       position: { x: 2, y: 0 },
-      name: () => t(L.TechRapidFire),
       requires: ["A3"],
-      unlockBuildings: ["AC30x3"],
+      name: () => t(L.TechShieldedArtillery),
+      unlockBuildings: ["AC30B"],
    };
    A8: ITechDefinition = {
       position: { x: 2, y: 1 },
-      name: () => t(L.TechLightArtillery),
+      name: () => t(L.TechArmorPiercing),
       requires: ["A4"],
-      unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
+      unlockBuildings: ["AC30C"],
    };
    A9: ITechDefinition = {
       position: { x: 2, y: 2 },
-      name: () => t(L.TechLightArtillery),
-      requires: [],
-      unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
+      name: () => t(L.CriticalStrike),
+      requires: ["A5"],
+      unlockBuildings: ["MS1C"],
    };
    A10: ITechDefinition = {
       position: { x: 2, y: 3 },
-      name: () => t(L.TechLightArtillery),
-      requires: [],
-      unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
+      name: () => t(L.TechDamageReclaim),
+      requires: ["A6"],
+      unlockBuildings: ["MS1D"],
    };
 
    B1: ITechDefinition = {

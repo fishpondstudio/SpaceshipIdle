@@ -31,7 +31,7 @@ export interface IGlobals {
    scene: SceneManager;
    starfield: Starfield;
    textures: Map<string, Texture>;
-   atlasUrl: string;
+   atlasUrl: Map<string, string>;
    pixi: Application;
    save: SaveGame;
    runtime: Runtime;

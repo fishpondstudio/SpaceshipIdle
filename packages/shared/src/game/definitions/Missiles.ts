@@ -84,10 +84,10 @@ export const MS1B: IWeaponDefinition = {
    },
    element: "Ca",
 };
-export const MS2: IWeaponDefinition = {
+export const MS1C: IWeaponDefinition = {
    ...MissileDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.MS2),
+   name: () => t(L.MS1C),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,
@@ -103,10 +103,10 @@ export const MS2: IWeaponDefinition = {
    },
    element: "Ar",
 };
-export const MS2A: IWeaponDefinition = {
+export const MS1D: IWeaponDefinition = {
    ...MissileDefenseProps,
    ...BaseWeaponProps,
-   name: () => t(L.MS2A),
+   name: () => t(L.MS1D),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,

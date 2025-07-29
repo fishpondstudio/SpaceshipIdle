@@ -16,6 +16,7 @@ import { makeTile } from "../ITileData";
 import { tickProjectiles, tickTiles } from "./BattleLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleFlag, BattleType } from "./BattleType";
+import { tickBooster } from "./BoosterLogic";
 import { tickCatalyst } from "./CatalystLogic";
 import { tickElement } from "./ElementLogic";
 import type { Projectile } from "./Projectile";
@@ -315,6 +316,8 @@ export class Runtime {
       });
       tickCatalyst(this.get.bind(this), this.left);
       tickCatalyst(this.get.bind(this), this.right);
+      tickBooster(this.left, this);
+      tickBooster(this.right, this);
    }
 
    private _checkSuddenDeath(): void {

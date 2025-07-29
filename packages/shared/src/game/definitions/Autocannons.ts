@@ -58,6 +58,25 @@ export const AC30B: IWeaponDefinition = {
       duration: (self, level) => 3,
    },
 };
+export const AC30C: IWeaponDefinition = {
+   ...AutocannonDefenseProps,
+   ...BaseWeaponProps,
+   name: () => t(L.AC30C),
+   code: CodeNumber.AC,
+   buildingFlag: BuildingFlag.CanTarget,
+   element: "Cr",
+   damagePct: 0.8,
+   ability: {
+      timing: AbilityTiming.OnHit,
+      range: AbilityRange.RearTrio,
+      effect: "ReduceArmor",
+      flag: AbilityFlag.None,
+      value: (self, level) => {
+         return level / 2;
+      },
+      duration: (self, level) => 2,
+   },
+};
 export const AC30x3: IWeaponDefinition = {
    ...AutocannonDefenseProps,
    ...BaseWeaponProps,

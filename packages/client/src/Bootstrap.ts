@@ -4,20 +4,20 @@ import { SentryDSN } from "@spaceship-idle/shared/src/game/definitions/Constant"
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateFlags, initGameState, SaveGame } from "@spaceship-idle/shared/src/game/GameState";
 import { forEach, rejectIn, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
-import { Assets, BitmapFont, type Spritesheet, type TextStyleFontWeight, type Texture } from "pixi.js";
+import { Assets, BitmapFont, SCALE_MODES, type Spritesheet, type TextStyleFontWeight, type Texture } from "pixi.js";
 import { FontFaces, Fonts } from "./assets";
 import { checkBuildingTextures } from "./CheckBuildingTextures";
+import { startGameLoop } from "./GameLoop";
 import { addDebugFunctions } from "./game/AddDebugFunctions";
 import { loadGame, saveGame } from "./game/LoadSave";
 import { showBootstrapModal } from "./game/ShowBootstrapModal";
 import { getVersion } from "./game/Version";
-import { startGameLoop } from "./GameLoop";
 import { loadGameScene } from "./LoadGameScene";
 import { migrateSave } from "./MigrateSave";
 import { OnConnectionChanged } from "./rpc/HandleMessage";
 import { connectWebSocket } from "./rpc/RPCClient";
-import { Starfield } from "./scenes/Starfield";
 import { subscribeToEvents } from "./SubscribeToEvents";
+import { Starfield } from "./scenes/Starfield";
 import { hideLoading } from "./ui/components/LoadingComp";
 import { loadSounds } from "./ui/Sound";
 import { G, setLanguage } from "./utils/Global";
@@ -32,7 +32,7 @@ export async function bootstrap(): Promise<void> {
    console.timeEnd("Load Assets");
    console.time("Load Font");
    FontFaces.forEach((f) => {
-      BitmapFont.from(
+      const _font = BitmapFont.from(
          f.family + (f.weight === "normal" ? "" : "Bold"),
          Object.assign(
             {
@@ -54,19 +54,33 @@ export async function bootstrap(): Promise<void> {
          ),
          { chars: BitmapFont.ASCII, resolution: 2, padding: 8 },
       );
+      // if (f.family === Fonts.SpaceshipIdlePixel) {
+      //    entriesOf(font.pageTextures).forEach(([key, texture]) => {
+      //       texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
+      //    });
+      // }
    });
    console.timeEnd("Load Font");
 
    console.time("Load Sprites");
    const textures: Map<string, Texture> = new Map();
+   const atlasUrl: Map<string, string> = new Map();
 
    const bundle = await Assets.load<Spritesheet>("atlas");
    forEach(bundle.textures, (path, texture) => {
       textures.set(String(path), texture);
+      atlasUrl.set(String(path), bundle.data.meta.image!);
+   });
+
+   const pixelBundle = await Assets.load<Spritesheet>("pixel");
+   forEach(pixelBundle.textures, (path, texture) => {
+      textures.set(String(path), texture);
+      atlasUrl.set(String(path), pixelBundle.data.meta.image!);
+      texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
    });
 
    G.textures = textures;
-   G.atlasUrl = bundle.data.meta.image!;
+   G.atlasUrl = atlasUrl;
    console.timeEnd("Load Sprites");
 
    G.scene = new SceneManager({ app: G.pixi, textures });

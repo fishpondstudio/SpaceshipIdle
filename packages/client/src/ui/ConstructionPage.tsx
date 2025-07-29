@@ -126,7 +126,7 @@ function BuildingComp({
                opacity: canBuild ? 1 : 0.25,
             }}
          >
-            <TextureComp name={`Building/${building}`} width={50} />
+            <TextureComp name={`Building/${building}`} />
             <div className="f1">
                <div className="row g5">
                   <div>{def.name()}</div>

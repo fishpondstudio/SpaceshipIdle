@@ -73,6 +73,10 @@ export function addDebugFunctions(): void {
       console.log(jsonEncode(await loadGameStateFromFile()));
    };
    // @ts-expect-error
+   globalThis.printLayout = async () => {
+      console.log(JSON.stringify(Array.from(G.save.current.tiles.keys())));
+   };
+   // @ts-expect-error
    globalThis.loadGameState = async () => {
       G.save.current = await loadGameStateFromFile();
       await saveGame(G.save);

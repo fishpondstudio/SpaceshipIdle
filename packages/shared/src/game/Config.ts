@@ -1,7 +1,8 @@
-import { forEach, keysOf, sizeOf } from "../utils/Helper";
+import { forEach, keysOf, sizeOf, tileToPoint } from "../utils/Helper";
 import { type Building, Buildings } from "./definitions/Buildings";
 import { MaxBattleTick } from "./definitions/Constant";
 import { Resources } from "./definitions/Resource";
+import { ShipDesigns } from "./definitions/ShipDesign";
 import { type StatusEffect, StatusEffects } from "./definitions/StatusEffect";
 import { type ShipClass, type Tech, TechDefinitions } from "./definitions/TechDefinitions";
 import { techColumnToShipClass } from "./logic/TechLogic";
@@ -36,6 +37,22 @@ function initConfig(): void {
       def.unlockBuildings?.forEach((building) => {
          Config.BuildingToTech[building] = tech;
          Config.BuildingToShipClass[building] = shipClass;
+      });
+   });
+
+   forEach(ShipDesigns, (key, design) => {
+      let previousLayout: number[] | undefined;
+      forEach(design, (shipClass, layout) => {
+         if (!previousLayout) {
+            previousLayout = layout;
+            return;
+         }
+         previousLayout.forEach((tile, i) => {
+            if (!layout.includes(tile)) {
+               console.error(`Design ${key}: tile ${tileToPoint(tile)} required in ${shipClass} class`);
+            }
+         });
+         previousLayout = layout;
       });
    });
 

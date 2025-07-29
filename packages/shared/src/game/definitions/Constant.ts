@@ -1,5 +1,6 @@
 import { range } from "../../utils/Helper";
 
+export const PixelPerfect = true;
 export const BattleTickInterval = 0.05;
 export const ProductionTickInterval = 1;
 export const ClientTickInterval = 5;

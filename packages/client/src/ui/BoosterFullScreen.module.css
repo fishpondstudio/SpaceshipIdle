@@ -14,14 +14,16 @@
 }
 
 .container {
-   display: grid;
-   grid-template-columns: repeat(auto-fill, 200px);
+   display: flex;
+   flex-wrap: wrap;
    gap: 10px;
    justify-content: center;
+   align-items: center;
 }
 
 .item {
-   aspect-ratio: 1 / 1;
+   width: 200px;
+   height: 200px;
    border: 3px solid rgba(255, 255, 255, 0.25);
    border-radius: 10px;
    padding: 10px;

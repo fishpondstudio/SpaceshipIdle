@@ -22,7 +22,6 @@ export function startGameLoop(): void {
       G.save.current.flags = setFlag(G.save.current.flags, GameStateFlags.Incompatible);
    }
 
-   const i = 0;
    G.runtime = new Runtime(G.save, new GameState());
    G.runtime.createXPTarget();
 

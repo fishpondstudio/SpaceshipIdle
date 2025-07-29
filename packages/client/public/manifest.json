@@ -16,6 +16,20 @@
               "fix": true
             }
           }
+        },
+        {
+          "alias": [
+            "pixel"
+          ],
+          "src": [
+            "pixel.png.json"
+          ],
+          "data": {
+            "tags": {
+              "tps": true,
+              "fix": true
+            }
+          }
         }
       ]
     }

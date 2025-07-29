@@ -3,7 +3,7 @@ import { AABB, type IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
 import type { Building } from "../definitions/Buildings";
 import type { Resource } from "../definitions/Resource";
-import { ShipClass } from "../definitions/TechDefinitions";
+import { ShipDesigns } from "../definitions/ShipDesign";
 import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
 import type { ITileData } from "../ITileData";
@@ -87,11 +87,6 @@ export function isShipConnected(t: Iterable<Tile>): boolean {
    return visited.size === tiles.size;
 }
 
-export function shipExtent(gs: GameState): number {
-   const shipClass = getShipClass(gs);
-   return ShipClass[shipClass].shipExtent;
-}
-
 export function shipAABB(ext: number, side: Side): AABB {
    const min = { x: MaxX / 2 - 2 * ext - 1, y: MaxY / 2 - ext };
    const max = { x: MaxX / 2 - 2, y: MaxY / 2 + ext - 1 };
@@ -114,10 +109,8 @@ export function getSide(tile: Tile): Side {
 }
 
 export function isWithinShipExtent(tile: Tile, gs: GameState): boolean {
-   const ext = shipExtent(gs);
-   const { x, y } = tileToPoint(tile);
-   const center = { x: (MaxX >> 1) - ext - 1, y: MaxY >> 1 };
-   return x >= center.x - ext && x < center.x + ext && y >= center.y - ext && y < center.y + ext;
+   const blueprint = getShipBlueprint(gs);
+   return blueprint.includes(tile);
 }
 
 export function validateForClient(gs: GameState): boolean {
@@ -194,6 +187,10 @@ export function isQualifierBattle(gs: GameState): boolean {
    //    return false;
    // }
    return true;
+}
+
+export function getShipBlueprint(gs: GameState): number[] {
+   return ShipDesigns[gs.shipDesign][getShipClass(gs)];
 }
 
 export function migrateShipForServer(ship: GameState): boolean {

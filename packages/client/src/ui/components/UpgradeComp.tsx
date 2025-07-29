@@ -1,4 +1,5 @@
-import { Tooltip } from "@mantine/core";
+import { Popover, Tooltip } from "@mantine/core";
+import { type Booster, Boosters } from "@spaceship-idle/shared/src/game/definitions/Boosters";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
    canSpend,
@@ -9,14 +10,16 @@ import {
    upgradeMax,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { isShipConnected } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
-import { mapSafeAdd } from "@spaceship-idle/shared/src/utils/Helper";
+import { mapSafeAdd, mMapOf, type Tile } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useCallback } from "react";
 import { G } from "../../utils/Global";
 import { useShortcut } from "../../utils/ShortcutHook";
 import type { ITileWithGameState } from "../ITileWithGameState";
 import { playClick, playError } from "../Sound";
+import { RenderHTML } from "./RenderHTMLComp";
 import { ResourceListComp } from "./ResourceListComp";
+import { TextureComp } from "./TextureComp";
 
 export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
    const data = gs.tiles.get(tile);
@@ -78,6 +81,14 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
    }, [data]);
 
    useShortcut("UpgradeMax", upgradeMaxCached, [upgradeMaxCached]);
+
+   let booster: Booster | undefined;
+   for (const [b, value] of G.save.current.boosters) {
+      if (value.tile === tile) {
+         booster = b;
+         break;
+      }
+   }
 
    return (
       <>
@@ -144,6 +155,86 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                </button>
             </Tooltip>
          </div>
+         <div className="divider my10" />
+         <div className="title">{t(L.Booster)}</div>
+         <div className="divider my10" />
+         <div className="row mx10">
+            {booster ? (
+               <>
+                  <TextureComp name={`Booster/${booster}`} />
+                  <Tooltip
+                     multiline
+                     maw="30vw"
+                     label={
+                        <RenderHTML
+                           html={Boosters[booster].desc(G.save.current.boosters.get(booster)?.amount ?? 0)}
+                           className="text-sm"
+                        />
+                     }
+                  >
+                     <div>{Boosters[booster].name()}</div>
+                  </Tooltip>
+                  <div className="f1" />
+               </>
+            ) : (
+               <div className="f1 text-dimmed">{t(L.NoEquippedBooster)}</div>
+            )}
+            <Popover width={300} position="bottom-end" shadow="md" classNames={{ dropdown: "col stretch p10 g5" }}>
+               <Popover.Target>
+                  <div className="mi pointer">rule_settings</div>
+               </Popover.Target>
+               <Popover.Dropdown>
+                  {mMapOf(G.save.current.boosters, (booster) => {
+                     return (
+                        <div key={booster} className="row">
+                           <TextureComp name={`Booster/${booster}`} />
+                           <div>{Boosters[booster].name()}</div>
+                           <div className="f1" />
+                           <BoosterOpButton booster={booster} me={tile} />
+                        </div>
+                     );
+                  })}
+               </Popover.Dropdown>
+            </Popover>
+         </div>
       </>
+   );
+}
+
+function BoosterOpButton({ booster, me }: { booster: Booster; me: Tile }): React.ReactNode {
+   const inv = G.save.current.boosters.get(booster);
+   if (!inv) {
+      return null;
+   }
+   if (me === inv.tile) {
+      return (
+         <button
+            className="btn red text-sm"
+            onClick={() => {
+               inv.tile = null;
+               GameStateUpdated.emit();
+            }}
+         >
+            {t(L.Unequip)}
+         </button>
+      );
+   }
+   return (
+      <Tooltip disabled={!inv.tile} multiline maw="20vw" label={<RenderHTML html={t(L.AlreadyEquippedTooltipHTML)} />}>
+         <button
+            className="btn text-sm"
+            onClick={() => {
+               G.save.current.boosters.forEach((inv) => {
+                  if (inv.tile === me) {
+                     inv.tile = null;
+                  }
+               });
+               inv.tile = me;
+               GameStateUpdated.emit();
+            }}
+         >
+            {t(L.Equip)}
+         </button>
+      </Tooltip>
    );
 }

@@ -12,38 +12,45 @@ export interface IBoosterDefinition {
 
 export const Boosters = {
    HP1: {
-      name: () => t(L.HPCore),
-      desc: (value: number) => t(L.HPCoreDesc, formatNumber(value)),
+      name: () => t(L.HPCluster),
+      desc: (value: number) => t(L.HPCoreDesc, formatNumber(value), formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
-         const rs = runtime.get(tile);
-         if (rs) {
-            rs.props.hp *= 1 + value;
-         }
+         throw new Error("Not implemented");
       },
       shipClass: "Skiff",
-   },
-   Damage1: {
-      name: () => t(L.DamageCore),
-      desc: (value: number) => t(L.DamageCoreDesc, formatNumber(value)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
-         const rs = runtime.get(tile);
-         if (rs) {
-            rs.props.damagePerProjectile *= 1 + value;
-         }
-      },
-      shipClass: "Skiff",
-   },
+   } as IBoosterDefinition,
    Evasion1: {
-      name: () => t(L.EvasionCore),
-      desc: (value: number) => t(L.EvasionCoreDesc, formatNumber(value)),
+      name: () => t(L.EvasionCluster),
+      desc: (value: number) => t(L.EvasionCoreDesc, formatNumber(value), formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
-         const rs = runtime.get(tile);
-         if (rs) {
-            rs.props.evasion += value;
-         }
+         throw new Error("Not implemented");
       },
       shipClass: "Skiff",
-   },
+   } as IBoosterDefinition,
+   Damage1: {
+      name: () => t(L.DamageCluster),
+      desc: (value: number) => t(L.DamageCoreDesc, formatNumber(value), formatNumber(value)),
+      tick: (value: number, tile: Tile, runtime: Runtime) => {
+         throw new Error("Not implemented");
+      },
+      shipClass: "Scout",
+   } as IBoosterDefinition,
+   Damage2: {
+      name: () => t(L.DamageDiversifier),
+      desc: (value: number) => t(L.DamageDiversifierDesc, formatNumber(value)),
+      tick: (value: number, tile: Tile, runtime: Runtime) => {
+         throw new Error("Not implemented");
+      },
+      shipClass: "Scout",
+   } as IBoosterDefinition,
+   HP2: {
+      name: () => t(L.HPEqualizer),
+      desc: (value: number) => t(L.HPEqualizerDesc, formatNumber(value)),
+      tick: (value: number, tile: Tile, runtime: Runtime) => {
+         throw new Error("Not implemented");
+      },
+      shipClass: "Scout",
+   } as IBoosterDefinition,
 } as const satisfies Record<string, IBoosterDefinition>;
 
 export type Booster = keyof typeof Boosters;

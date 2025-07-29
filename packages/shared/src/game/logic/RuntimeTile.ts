@@ -1,6 +1,7 @@
 import { forEach, hasFlag, mapSafeAdd, safeAdd, type Tile, type ValueOf } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
+import type { Booster } from "../definitions/Boosters";
 import {
    DamageType,
    type DefenseProp,
@@ -68,6 +69,8 @@ export class RuntimeTile {
    public readonly statusEffects = new Map<Tile, IRuntimeEffect>();
    public buff = 0;
    public debuff = 0;
+
+   public booster: Booster | null = null;
 
    public readonly hpMultiplier = new Multiplier();
    public readonly damageMultiplier = new Multiplier();

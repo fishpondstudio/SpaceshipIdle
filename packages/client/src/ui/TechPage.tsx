@@ -90,7 +90,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                            }
                         >
                            <div className="row m10">
-                              <TextureComp name={`Building/${b}`} width={50} />
+                              <TextureComp name={`Building/${b}`} />
                               <div className="f1">
                                  <div>{Config.Buildings[b].name()}</div>
                               </div>

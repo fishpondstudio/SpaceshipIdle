@@ -121,6 +121,15 @@ export const StatusEffects = {
          rs.props.armor = clamp(rs.props.armor + se.value, 0, Number.POSITIVE_INFINITY);
       },
    },
+   IncreaseDeflection: {
+      name: () => t(L.IncreaseDeflection),
+      desc: (value) => t(L.IncreaseDeflectionDesc, formatNumber(value)),
+      flag: StatusEffectFlag.Positive,
+      type: StatusEffectType.Mechanical,
+      onTick: (se, rs) => {
+         rs.props.deflection = clamp(rs.props.deflection + se.value, 0, Number.POSITIVE_INFINITY);
+      },
+   },
    ReduceShield: {
       name: () => t(L.ReduceShield),
       desc: (value) => t(L.ReduceShieldDesc, formatNumber(value)),
