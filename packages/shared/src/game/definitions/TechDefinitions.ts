@@ -133,53 +133,53 @@ export class TechDefinitions {
 
    B5: ITechDefinition = {
       position: { x: 4, y: 0 },
-      name: () => t(L.TechLightArtillery),
-      requires: [],
-      unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
+      name: () => t(L.TechShieldCorrosion),
+      requires: ["B1"],
+      unlockBuildings: ["AC76x2"],
    };
    B6: ITechDefinition = {
       position: { x: 4, y: 1 },
-      name: () => t(L.TechLightArtillery),
-      requires: [],
-      unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
+      name: () => t(L.TechRocketArtillery),
+      requires: ["B1"],
+      unlockBuildings: ["AC76A"],
    };
    B7: ITechDefinition = {
       position: { x: 4, y: 2 },
-      name: () => t(L.TechLightArtillery),
-      requires: [],
-      unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
+      name: () => t(L.TechEchoShield),
+      requires: ["B2"],
+      unlockBuildings: ["MS2A"],
    };
    B8: ITechDefinition = {
       position: { x: 4, y: 3 },
-      name: () => t(L.TechLightArtillery),
-      requires: [],
-      unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
+      name: () => t(L.TechDebuffDispel),
+      requires: ["B2"],
+      unlockBuildings: ["MS2B"],
    };
 
    B9: ITechDefinition = {
       position: { x: 5, y: 0 },
-      name: () => t(L.TechLightArtillery),
-      requires: [],
-      unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
+      name: () => t(L.TechBacklineDamage),
+      requires: ["B5"],
+      unlockBuildings: ["AC76C"],
    };
    B10: ITechDefinition = {
       position: { x: 5, y: 1 },
-      name: () => t(L.TechLightArtillery),
-      requires: [],
-      unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
+      name: () => t(L.TechRailCannon),
+      requires: ["B6", "B7"],
+      unlockBuildings: ["RC50"],
    };
    B11: ITechDefinition = {
       position: { x: 5, y: 2 },
-      name: () => t(L.TechLightArtillery),
-      requires: [],
-      unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
+      name: () => t(L.TechWeaponDisruption),
+      requires: ["B8"],
+      unlockBuildings: ["MS2C"],
    };
-   B12: ITechDefinition = {
-      position: { x: 5, y: 3 },
-      name: () => t(L.TechLightArtillery),
-      requires: [],
-      unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
-   };
+   // B12: ITechDefinition = {
+   //    position: { x: 5, y: 3 },
+   //    name: () => t(L.TechLightArtillery),
+   //    requires: [],
+   //    unlockUpgrades: [{ name: () => t(L.Size6x6), desc: () => t(L.Size6x6Desc) }],
+   // };
 
    C1: ITechDefinition = {
       position: { x: 6, y: 0 },

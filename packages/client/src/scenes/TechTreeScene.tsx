@@ -2,7 +2,7 @@ import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { ShipClass, type Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { getTechDesc, getTechName, isTechUnderDevelopment } from "@spaceship-idle/shared/src/game/logic/TechLogic";
-import { equal, forEach, numberToRoman } from "@spaceship-idle/shared/src/utils/Helper";
+import { equal, forEach, layoutSpaceBetween, numberToRoman } from "@spaceship-idle/shared/src/utils/Helper";
 import { AABB, type IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
 import {
    type ColorSource,
@@ -29,6 +29,7 @@ const PageHeight = 1000;
 const HeaderHeight = 100;
 const TopMargin = 40;
 const BottomMargin = 40;
+const BottomPadding = 100;
 const Gap = 20;
 
 export class TechTreeScene extends Scene {
@@ -98,8 +99,17 @@ export class TechTreeScene extends Scene {
 
       forEach(Config.Tech, (tech, def) => {
          const x = def.position.x * ColumnWidth + ColumnWidth / 2 - BoxWidth / 2 + leftMargin;
-         const h = (PageHeight - BottomMargin - TopMargin - HeaderHeight) / (rowCount.get(def.position.x) ?? 1);
-         const y = HeaderHeight + def.position.y * h + h / 2 - BoxHeight / 2;
+         const totalRow = rowCount.get(def.position.x) ?? 1;
+         const totalHeight = PageHeight - BottomMargin - TopMargin - HeaderHeight - BottomPadding;
+         let y = HeaderHeight + layoutSpaceBetween(BoxHeight, totalHeight, totalRow, def.position.y) + BoxHeight / 2;
+         if (totalRow === 2) {
+            y =
+               (layoutSpaceBetween(BoxHeight, totalHeight, 4, def.position.y * 2) +
+                  layoutSpaceBetween(BoxHeight, totalHeight, 4, def.position.y * 2 + 1)) /
+                  2 +
+               HeaderHeight +
+               BoxHeight / 2;
+         }
 
          const container = this._boxContainer.addChild(new Container());
          container.position.set(x, y);

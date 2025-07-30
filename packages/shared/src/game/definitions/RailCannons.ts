@@ -4,24 +4,30 @@ import { Config } from "../Config";
 import { getDamagePerFire, getHP } from "../logic/BuildingLogic";
 import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
 import {
-   BaseDefenseProps,
-   BaseWeaponProps,
    BuildingFlag,
-   type IDefenseProp,
-   type IWeaponDefinition,
+   DamageType,
+   type IBuildingDefinition,
+   type IBuildingProp,
+   ProjectileFlag,
 } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
+import { DefaultCooldown } from "./Constant";
 
-export const RailCannonDefenseProps: IDefenseProp = {
+export const RailCannonBaseProps: IBuildingProp = {
    armor: [0, 0.5],
    shield: [0, 0.5],
    deflection: [0, 1],
    evasion: [0, 0],
+   damagePct: 1,
+   fireCooldown: DefaultCooldown,
+   projectiles: 1,
+   projectileSpeed: 300,
+   damageType: DamageType.Kinetic,
+   projectileFlag: ProjectileFlag.None,
 } as const;
 
-export const RC50: IWeaponDefinition = {
-   ...RailCannonDefenseProps,
-   ...BaseWeaponProps,
+export const RC50: IBuildingDefinition = {
+   ...RailCannonBaseProps,
    name: () => t(L.RC50),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
@@ -33,7 +39,7 @@ export const RC50: IWeaponDefinition = {
       effect: "TickEnergyDamage",
       flag: AbilityFlag.AffectedByDamageMultiplier,
       value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IWeaponDefinition;
+         const def = Config.Buildings[building] as IBuildingDefinition;
          const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return damage * (1 - def.damagePct);
       },
@@ -42,9 +48,8 @@ export const RC50: IWeaponDefinition = {
    element: "Sc",
 };
 
-export const RC100: IWeaponDefinition = {
-   ...RailCannonDefenseProps,
-   ...BaseWeaponProps,
+export const RC100: IBuildingDefinition = {
+   ...RailCannonBaseProps,
    name: () => t(L.RC100),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
@@ -56,7 +61,7 @@ export const RC100: IWeaponDefinition = {
       effect: "ReduceDamage",
       flag: AbilityFlag.AffectedByDamageMultiplier,
       value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IWeaponDefinition;
+         const def = Config.Buildings[building] as IBuildingDefinition;
          const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return (damage * (1 - def.damagePct)) / 1;
       },
@@ -65,9 +70,8 @@ export const RC100: IWeaponDefinition = {
    element: "Ni",
 };
 
-export const RC50A: IWeaponDefinition = {
-   ...RailCannonDefenseProps,
-   ...BaseWeaponProps,
+export const RC50A: IBuildingDefinition = {
+   ...RailCannonBaseProps,
    name: () => t(L.RC50A),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
@@ -86,9 +90,8 @@ export const RC50A: IWeaponDefinition = {
    element: "Zn",
 };
 
-export const RC50B: IWeaponDefinition = {
-   ...RailCannonDefenseProps,
-   ...BaseWeaponProps,
+export const RC50B: IBuildingDefinition = {
+   ...RailCannonBaseProps,
    name: () => t(L.RC50B),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
@@ -107,9 +110,8 @@ export const RC50B: IWeaponDefinition = {
    element: "Zr",
 };
 
-export const RC100A: IWeaponDefinition = {
-   ...RailCannonDefenseProps,
-   ...BaseWeaponProps,
+export const RC100A: IBuildingDefinition = {
+   ...RailCannonBaseProps,
    name: () => t(L.RC100A),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
@@ -128,9 +130,8 @@ export const RC100A: IWeaponDefinition = {
    element: "Ga",
 };
 
-export const RC100B: IWeaponDefinition = {
-   ...RailCannonDefenseProps,
-   ...BaseWeaponProps,
+export const RC100B: IBuildingDefinition = {
+   ...RailCannonBaseProps,
    name: () => t(L.RC100B),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
@@ -149,9 +150,8 @@ export const RC100B: IWeaponDefinition = {
    element: "Ge",
 };
 
-export const RC100C: IWeaponDefinition = {
-   ...BaseDefenseProps,
-   ...BaseWeaponProps,
+export const RC100C: IBuildingDefinition = {
+   ...RailCannonBaseProps,
    name: () => t(L.RC100C),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
@@ -168,9 +168,8 @@ export const RC100C: IWeaponDefinition = {
    element: "Tc",
 };
 
-export const RC100D: IWeaponDefinition = {
-   ...BaseDefenseProps,
-   ...BaseWeaponProps,
+export const RC100D: IBuildingDefinition = {
+   ...RailCannonBaseProps,
    name: () => t(L.RC100D),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,

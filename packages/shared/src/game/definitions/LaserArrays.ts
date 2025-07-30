@@ -3,26 +3,30 @@ import { Config } from "../Config";
 import { getDamagePerFire } from "../logic/BuildingLogic";
 import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
 import {
-   BaseWeaponProps,
    BuildingFlag,
    DamageType,
-   type IDefenseProp,
-   type IWeaponDefinition,
+   type IBuildingDefinition,
+   type IBuildingProp,
    ProjectileFlag,
 } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
-import { LaserArrayDamagePct } from "./Constant";
+import { DefaultCooldown, LaserArrayDamagePct } from "./Constant";
 
-export const LaserArrayDefenseProps: IDefenseProp = {
+export const LaserArrayBaseProps: IBuildingProp = {
    armor: [0, 0.5],
    shield: [0, 1],
    deflection: [0, 0.5],
    evasion: [0, 0],
+   damagePct: 1,
+   fireCooldown: DefaultCooldown,
+   projectiles: 1,
+   projectileSpeed: 300,
+   damageType: DamageType.Kinetic,
+   projectileFlag: ProjectileFlag.None,
 } as const;
 
-export const LA1: IWeaponDefinition = {
-   ...LaserArrayDefenseProps,
-   ...BaseWeaponProps,
+export const LA1: IBuildingDefinition = {
+   ...LaserArrayBaseProps,
    name: () => t(L.LA1),
    code: CodeNumber.LA,
    buildingFlag: BuildingFlag.CanTarget,
@@ -32,9 +36,8 @@ export const LA1: IWeaponDefinition = {
    damageType: DamageType.Energy,
    element: "V",
 };
-export const LA1A: IWeaponDefinition = {
-   ...LaserArrayDefenseProps,
-   ...BaseWeaponProps,
+export const LA1A: IBuildingDefinition = {
+   ...LaserArrayBaseProps,
    name: () => t(L.LA1A),
    code: CodeNumber.LA,
    buildingFlag: BuildingFlag.CanTarget,
@@ -49,16 +52,15 @@ export const LA1A: IWeaponDefinition = {
       effect: "TickExplosiveDamage",
       flag: AbilityFlag.AffectedByDamageMultiplier,
       value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IWeaponDefinition;
+         const def = Config.Buildings[building] as IBuildingDefinition;
          const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return (damage * (1 - def.damagePct) * LaserArrayDamagePct) / 2;
       },
       duration: (building, level) => 2,
    },
 };
-export const LA1B: IWeaponDefinition = {
-   ...LaserArrayDefenseProps,
-   ...BaseWeaponProps,
+export const LA1B: IBuildingDefinition = {
+   ...LaserArrayBaseProps,
    name: () => t(L.LA1B),
    code: CodeNumber.LA,
    buildingFlag: BuildingFlag.CanTarget,
@@ -78,9 +80,8 @@ export const LA1B: IWeaponDefinition = {
       duration: (self, level) => 2,
    },
 };
-export const LA2: IWeaponDefinition = {
-   ...LaserArrayDefenseProps,
-   ...BaseWeaponProps,
+export const LA2: IBuildingDefinition = {
+   ...LaserArrayBaseProps,
    name: () => t(L.LA2),
    code: CodeNumber.LA,
    buildingFlag: BuildingFlag.CanTarget,
@@ -95,16 +96,15 @@ export const LA2: IWeaponDefinition = {
       effect: "ReduceMaxHp",
       flag: AbilityFlag.AffectedByDamageMultiplier,
       value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IWeaponDefinition;
+         const def = Config.Buildings[building] as IBuildingDefinition;
          const normVal = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return (normVal * 2.5 * (1 - def.damagePct) * LaserArrayDamagePct) / 2;
       },
       duration: (building, level) => 2,
    },
 };
-export const LA2A: IWeaponDefinition = {
-   ...LaserArrayDefenseProps,
-   ...BaseWeaponProps,
+export const LA2A: IBuildingDefinition = {
+   ...LaserArrayBaseProps,
    name: () => t(L.LA2A),
    code: CodeNumber.LA,
    buildingFlag: BuildingFlag.CanTarget,
@@ -119,7 +119,7 @@ export const LA2A: IWeaponDefinition = {
       effect: "ReduceDamage",
       flag: AbilityFlag.AffectedByDamageMultiplier,
       value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IWeaponDefinition;
+         const def = Config.Buildings[building] as IBuildingDefinition;
          const normVal = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return normVal * (1 - def.damagePct) * LaserArrayDamagePct;
       },

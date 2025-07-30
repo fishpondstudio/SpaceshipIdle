@@ -2,27 +2,38 @@ import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { getDamagePerFire } from "../logic/BuildingLogic";
 import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
-import { BaseWeaponProps, BuildingFlag, type IDefenseProp, type IWeaponDefinition } from "./BuildingProps";
+import {
+   BuildingFlag,
+   DamageType,
+   type IBuildingDefinition,
+   type IBuildingProp,
+   ProjectileFlag,
+} from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
+import { DefaultCooldown } from "./Constant";
 
-export const AutocannonDefenseProps: IDefenseProp = {
+export const AutocannonBaseProps: IBuildingProp = {
    armor: [0, 0.5],
    shield: [0, 0.5],
    deflection: [0, 1],
    evasion: [0, 0],
+   damagePct: 1,
+   fireCooldown: DefaultCooldown,
+   projectiles: 1,
+   projectileSpeed: 300,
+   damageType: DamageType.Kinetic,
+   projectileFlag: ProjectileFlag.None,
 } as const;
 
-export const AC30: IWeaponDefinition = {
-   ...AutocannonDefenseProps,
-   ...BaseWeaponProps,
+export const AC30: IBuildingDefinition = {
+   ...AutocannonBaseProps,
    name: () => t(L.AC30),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    element: "Li",
 };
-export const AC30A: IWeaponDefinition = {
-   ...AutocannonDefenseProps,
-   ...BaseWeaponProps,
+export const AC30A: IBuildingDefinition = {
+   ...AutocannonBaseProps,
    name: () => t(L.AC30A),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
@@ -39,9 +50,8 @@ export const AC30A: IWeaponDefinition = {
       duration: (self, level) => 3,
    },
 };
-export const AC30B: IWeaponDefinition = {
-   ...AutocannonDefenseProps,
-   ...BaseWeaponProps,
+export const AC30B: IBuildingDefinition = {
+   ...AutocannonBaseProps,
    name: () => t(L.AC30B),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
@@ -58,9 +68,8 @@ export const AC30B: IWeaponDefinition = {
       duration: (self, level) => 3,
    },
 };
-export const AC30C: IWeaponDefinition = {
-   ...AutocannonDefenseProps,
-   ...BaseWeaponProps,
+export const AC30C: IBuildingDefinition = {
+   ...AutocannonBaseProps,
    name: () => t(L.AC30C),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
@@ -68,7 +77,7 @@ export const AC30C: IWeaponDefinition = {
    damagePct: 0.8,
    ability: {
       timing: AbilityTiming.OnHit,
-      range: AbilityRange.RearTrio,
+      range: AbilityRange.Single,
       effect: "ReduceArmor",
       flag: AbilityFlag.None,
       value: (self, level) => {
@@ -77,26 +86,23 @@ export const AC30C: IWeaponDefinition = {
       duration: (self, level) => 2,
    },
 };
-export const AC30x3: IWeaponDefinition = {
-   ...AutocannonDefenseProps,
-   ...BaseWeaponProps,
+export const AC30x3: IBuildingDefinition = {
+   ...AutocannonBaseProps,
    name: () => t(L.AC30x3),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    projectiles: 3,
    element: "Be",
 };
-export const AC76: IWeaponDefinition = {
-   ...AutocannonDefenseProps,
-   ...BaseWeaponProps,
+export const AC76: IBuildingDefinition = {
+   ...AutocannonBaseProps,
    name: () => t(L.AC76),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    element: "B",
 };
-export const AC76x2: IWeaponDefinition = {
-   ...AutocannonDefenseProps,
-   ...BaseWeaponProps,
+export const AC76x2: IBuildingDefinition = {
+   ...AutocannonBaseProps,
    name: () => t(L.AC76x2),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
@@ -105,8 +111,8 @@ export const AC76x2: IWeaponDefinition = {
    damagePct: 0.8,
    ability: {
       timing: AbilityTiming.OnHit,
-      range: AbilityRange.RearTrio,
-      effect: "ReduceArmor",
+      range: AbilityRange.Adjacent,
+      effect: "ReduceShield",
       flag: AbilityFlag.None,
       value: (self, level) => {
          return level / 2;
@@ -114,9 +120,8 @@ export const AC76x2: IWeaponDefinition = {
       duration: (self, level) => 2,
    },
 };
-export const AC76A: IWeaponDefinition = {
-   ...AutocannonDefenseProps,
-   ...BaseWeaponProps,
+export const AC76A: IBuildingDefinition = {
+   ...AutocannonBaseProps,
    name: () => t(L.AC76A),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
@@ -126,19 +131,18 @@ export const AC76A: IWeaponDefinition = {
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Adjacent,
-      effect: "TickKineticDamage",
+      effect: "TickExplosiveDamage",
       flag: AbilityFlag.AffectedByDamageMultiplier,
       value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IWeaponDefinition;
+         const def = Config.Buildings[building] as IBuildingDefinition;
          const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return (damage * (1 - def.damagePct)) / 2;
       },
       duration: (building, level) => 1,
    },
 };
-export const AC76B: IWeaponDefinition = {
-   ...AutocannonDefenseProps,
-   ...BaseWeaponProps,
+export const AC76B: IBuildingDefinition = {
+   ...AutocannonBaseProps,
    name: () => t(L.AC76B),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
@@ -154,28 +158,19 @@ export const AC76B: IWeaponDefinition = {
       duration: (building, level) => 0,
    },
 };
-export const AC130: IWeaponDefinition = {
-   ...AutocannonDefenseProps,
-   ...BaseWeaponProps,
-   name: () => t(L.AC130),
-   code: CodeNumber.AC,
-   buildingFlag: BuildingFlag.CanTarget,
-   element: "C",
-};
-export const AC130A: IWeaponDefinition = {
-   ...AutocannonDefenseProps,
-   ...BaseWeaponProps,
-   name: () => t(L.AC130A),
+export const AC76C: IBuildingDefinition = {
+   ...AutocannonBaseProps,
+   name: () => t(L.AC76C),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
    ability: {
       timing: AbilityTiming.OnHit,
-      range: AbilityRange.Single,
-      effect: "TickExplosiveDamage",
+      range: AbilityRange.Rear,
+      effect: "TickKineticDamage",
       flag: AbilityFlag.AffectedByDamageMultiplier,
       value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IWeaponDefinition;
+         const def = Config.Buildings[building] as IBuildingDefinition;
          const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return (damage * (1 - def.damagePct)) / 2.5;
       },
@@ -183,9 +178,15 @@ export const AC130A: IWeaponDefinition = {
    },
    element: "P",
 };
-export const AC130B: IWeaponDefinition = {
-   ...AutocannonDefenseProps,
-   ...BaseWeaponProps,
+export const AC130: IBuildingDefinition = {
+   ...AutocannonBaseProps,
+   name: () => t(L.AC130),
+   code: CodeNumber.AC,
+   buildingFlag: BuildingFlag.CanTarget,
+   element: "C",
+};
+export const AC130B: IBuildingDefinition = {
+   ...AutocannonBaseProps,
    name: () => t(L.AC130B),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
@@ -202,9 +203,8 @@ export const AC130B: IWeaponDefinition = {
    },
    element: "Mn",
 };
-export const AC130C: IWeaponDefinition = {
-   ...AutocannonDefenseProps,
-   ...BaseWeaponProps,
+export const AC130C: IBuildingDefinition = {
+   ...AutocannonBaseProps,
    name: () => t(L.AC130C),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,

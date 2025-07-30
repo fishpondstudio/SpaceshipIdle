@@ -149,7 +149,7 @@ export class ShipScene extends Scene {
 
       ShipScene.Explosion = new ObjectPool<Sprite>({
          create: () => {
-            const t = this.viewport.addChild(new Sprite(G.textures.get("Misc/Particle")));
+            const t = this.viewport.addChild(new Sprite(G.textures.get("Others/Particle")));
             t.anchor.set(0.5, 0.5);
             return t;
          },
@@ -269,8 +269,8 @@ export class ShipScene extends Scene {
       for (let i = 0; i < 64; i++) {
          const particle = ShipScene.Explosion.allocate();
          particle.position = pos;
-         particle.scale.set(rand(0.2, 0.3));
-         particle.alpha = 1;
+         particle.scale.set(rand(1, 2));
+         particle.alpha = rand(0.5, 1);
          particle.tint = tint;
          sequence(
             to(
@@ -280,8 +280,8 @@ export class ShipScene extends Scene {
                   x: pos.x + rand(-100, 100),
                   y: pos.y + rand(-100, 100),
                   scale: {
-                     x: rand(0.05, 0.1),
-                     y: rand(0.05, 0.1),
+                     x: rand(0.1, 0.5),
+                     y: rand(0.1, 0.5),
                   },
                },
                rand(0.5, 1),
@@ -406,7 +406,9 @@ export class ShipScene extends Scene {
          const pos = projectile.position(projectile.time + timeSinceLastTick);
          visual.position.set(pos.x, pos.y);
          visual.anchor.set(0.5, 0.5);
-         visual.alpha = 0.5;
+         visual.alpha = 0.75;
+         visual.width = 32;
+         visual.height = 32;
          if (hasFlag(projectile.flag, ProjectileFlag.DroneDamage)) {
             visual.rotation += dt * Math.PI * 4;
          } else {

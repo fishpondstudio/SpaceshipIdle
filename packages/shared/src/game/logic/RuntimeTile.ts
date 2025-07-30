@@ -3,20 +3,17 @@ import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
 import type { Booster } from "../definitions/Boosters";
 import {
+   type BuildingProp,
    DamageType,
-   type DefenseProp,
    type IBuildingDefinition,
-   type IDefenseProp,
-   type IWeaponDefinition,
-   type IWeaponProp,
+   type IBuildingProp,
    ProjectileFlag,
    type Property,
    WeaponKey,
-   type WeaponProp,
 } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { StatusEffectTickInterval } from "../definitions/Constant";
-import { type StatusEffect, StatusEffectFlag, statusEffectOf, StatusEffects } from "../definitions/StatusEffect";
+import { type StatusEffect, StatusEffectFlag, StatusEffects, statusEffectOf } from "../definitions/StatusEffect";
 import type { GameState } from "../GameState";
 import { GridSize } from "../Grid";
 import type { ITileData } from "../ITileData";
@@ -49,12 +46,11 @@ export interface IRuntimeEffect {
    timeLeft: number;
 }
 
-export type RuntimeProps = DefenseProp &
-   Omit<WeaponProp, "damagePct"> & {
-      hp: number;
-      damagePerProjectile: number;
-      runtimeFlag: RuntimeFlag;
-   };
+export type RuntimeProps = Omit<BuildingProp, "damagePct"> & {
+   hp: number;
+   damagePerProjectile: number;
+   runtimeFlag: RuntimeFlag;
+};
 
 export interface ICriticalDamage {
    chance: number;
@@ -197,7 +193,7 @@ export class RuntimeTile {
       return this.currentHp / this.props.hp;
    }
 
-   public get def(): IWeaponDefinition | IBuildingDefinition {
+   public get def(): IBuildingDefinition | IBuildingDefinition {
       return Config.Buildings[this.data.type];
    }
 
@@ -288,7 +284,7 @@ export class RuntimeTile {
       this.criticalDamages.length = 0;
 
       const def = Config.Buildings[this.data.type];
-      const props = def as IWeaponProp & IDefenseProp;
+      const props = def as IBuildingProp;
       forEach(props, (k, v) => {
          if (k in this.props) {
             const key = k as keyof typeof this.props;

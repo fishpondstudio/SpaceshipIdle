@@ -4,7 +4,6 @@ import { AbilityRangeLabel, AbilityTimingLabel } from "@spaceship-idle/shared/sr
 import {
    DamageTypeLabel,
    type IBuildingDefinition,
-   type IWeaponDefinition,
    WeaponKey,
 } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
@@ -40,7 +39,7 @@ export function WeaponListModal(): React.ReactNode {
                   if (!(WeaponKey in _def)) {
                      return null;
                   }
-                  const def = _def as IWeaponDefinition;
+                  const def = _def as IBuildingDefinition;
                   const dmgPerFire = getDamagePerFire({ type: building, level: 1 });
                   return (
                      <tr key={building}>

@@ -3,20 +3,31 @@ import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { getDamagePerFire } from "../logic/BuildingLogic";
 import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
-import { BaseWeaponProps, BuildingFlag, DamageType, type IDefenseProp, type IWeaponDefinition } from "./BuildingProps";
+import {
+   BuildingFlag,
+   DamageType,
+   type IBuildingDefinition,
+   type IBuildingProp,
+   ProjectileFlag,
+} from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
-import { DamageToHPMultiplier } from "./Constant";
+import { DamageToHPMultiplier, DefaultCooldown } from "./Constant";
 
-export const MissileDefenseProps: IDefenseProp = {
+export const MissileBaseProps: IBuildingProp = {
    armor: [0, 1],
    shield: [0, 0.5],
    deflection: [0, 0.5],
    evasion: [0, 0],
+   damagePct: 1,
+   fireCooldown: DefaultCooldown,
+   projectiles: 1,
+   projectileSpeed: 300,
+   damageType: DamageType.Kinetic,
+   projectileFlag: ProjectileFlag.None,
 } as const;
 
-export const MS1: IWeaponDefinition = {
-   ...MissileDefenseProps,
-   ...BaseWeaponProps,
+export const MS1: IBuildingDefinition = {
+   ...MissileBaseProps,
    name: () => t(L.MS1),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
@@ -29,7 +40,7 @@ export const MS1: IWeaponDefinition = {
       effect: "TickEnergyDamage",
       flag: AbilityFlag.AffectedByDamageMultiplier,
       value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IWeaponDefinition;
+         const def = Config.Buildings[building] as IBuildingDefinition;
          const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return (damage * (1 - def.damagePct)) / 5 / 3;
       },
@@ -37,9 +48,8 @@ export const MS1: IWeaponDefinition = {
    },
    element: "Na",
 };
-export const MS1A: IWeaponDefinition = {
-   ...MissileDefenseProps,
-   ...BaseWeaponProps,
+export const MS1A: IBuildingDefinition = {
+   ...MissileBaseProps,
    name: () => t(L.MS1A),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
@@ -52,7 +62,7 @@ export const MS1A: IWeaponDefinition = {
       effect: "RecoverHp",
       flag: AbilityFlag.AffectedByDamageMultiplier,
       value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IWeaponDefinition;
+         const def = Config.Buildings[building] as IBuildingDefinition;
          const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
          return (damage * (1 - def.damagePct)) / 3;
       },
@@ -61,9 +71,8 @@ export const MS1A: IWeaponDefinition = {
    element: "S",
 };
 
-export const MS1B: IWeaponDefinition = {
-   ...MissileDefenseProps,
-   ...BaseWeaponProps,
+export const MS1B: IBuildingDefinition = {
+   ...MissileBaseProps,
    name: () => t(L.MS1B),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
@@ -76,7 +85,7 @@ export const MS1B: IWeaponDefinition = {
       effect: "IncreaseMaxHp",
       flag: AbilityFlag.AffectedByDamageMultiplier,
       value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IWeaponDefinition;
+         const def = Config.Buildings[building] as IBuildingDefinition;
          const hp = getDamagePerFire({ type: building, level }) * multipliers.damage * DamageToHPMultiplier;
          return (hp * (1 - def.damagePct)) / 3;
       },
@@ -84,9 +93,8 @@ export const MS1B: IWeaponDefinition = {
    },
    element: "Ca",
 };
-export const MS1C: IWeaponDefinition = {
-   ...MissileDefenseProps,
-   ...BaseWeaponProps,
+export const MS1C: IBuildingDefinition = {
+   ...MissileBaseProps,
    name: () => t(L.MS1C),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
@@ -103,9 +111,8 @@ export const MS1C: IWeaponDefinition = {
    },
    element: "Ar",
 };
-export const MS1D: IWeaponDefinition = {
-   ...MissileDefenseProps,
-   ...BaseWeaponProps,
+export const MS1D: IBuildingDefinition = {
+   ...MissileBaseProps,
    name: () => t(L.MS1D),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
@@ -122,9 +129,8 @@ export const MS1D: IWeaponDefinition = {
    },
    element: "K",
 };
-export const MS2: IWeaponDefinition = {
-   ...MissileDefenseProps,
-   ...BaseWeaponProps,
+export const MS2: IBuildingDefinition = {
+   ...MissileBaseProps,
    name: () => t(L.MS2),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
@@ -141,10 +147,9 @@ export const MS2: IWeaponDefinition = {
    },
    element: "Fe",
 };
-export const MS2C: IWeaponDefinition = {
-   ...MissileDefenseProps,
-   ...BaseWeaponProps,
-   name: () => t(L.MS2C),
+export const MS2A: IBuildingDefinition = {
+   ...MissileBaseProps,
+   name: () => t(L.MS2A),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
@@ -162,32 +167,9 @@ export const MS2C: IWeaponDefinition = {
    },
    element: "Co",
 };
-export const MS3: IWeaponDefinition = {
-   ...MissileDefenseProps,
-   ...BaseWeaponProps,
-   name: () => t(L.MS3),
-   code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
-   damagePct: 0.9,
-   damageType: DamageType.Explosive,
-   fireCooldown: 4.5,
-   ability: {
-      timing: AbilityTiming.OnHit,
-      range: AbilityRange.RearTrio,
-      effect: "Disarm",
-      flag: AbilityFlag.None,
-      value: (building, level) => {
-         return 0;
-      },
-      duration: (building, level) => 2,
-   },
-   element: "Sr",
-};
-
-export const MS2D: IWeaponDefinition = {
-   ...MissileDefenseProps,
-   ...BaseWeaponProps,
-   name: () => t(L.MS2D),
+export const MS2B: IBuildingDefinition = {
+   ...MissileBaseProps,
+   name: () => t(L.MS2B),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
@@ -202,4 +184,24 @@ export const MS2D: IWeaponDefinition = {
       duration: (building, level) => 0,
    },
    element: "Nb",
+};
+export const MS2C: IBuildingDefinition = {
+   ...MissileBaseProps,
+   name: () => t(L.MS2C),
+   code: CodeNumber.MS,
+   buildingFlag: BuildingFlag.CanTarget,
+   damagePct: 0.9,
+   damageType: DamageType.Explosive,
+   fireCooldown: 4.5,
+   ability: {
+      timing: AbilityTiming.OnHit,
+      range: AbilityRange.Single,
+      effect: "Disarm",
+      flag: AbilityFlag.None,
+      value: (building, level) => {
+         return 0;
+      },
+      duration: (building, level) => 2,
+   },
+   element: "Sr",
 };

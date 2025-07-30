@@ -1,18 +1,30 @@
 import { L, t } from "../../utils/i18n";
 import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
-import { BaseWeaponProps, BuildingFlag, type IDefenseProp, type IWeaponDefinition } from "./BuildingProps";
+import {
+   BuildingFlag,
+   DamageType,
+   type IBuildingDefinition,
+   type IBuildingProp,
+   ProjectileFlag,
+} from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
+import { DefaultCooldown } from "./Constant";
 
-export const PlasmaCannonDefenseProps: IDefenseProp = {
+export const PlasmaCannonBaseProps: IBuildingProp = {
    armor: [0, 0.5],
    shield: [0, 0.5],
    deflection: [0, 1],
    evasion: [0, 0],
+   damagePct: 1,
+   fireCooldown: DefaultCooldown,
+   projectiles: 1,
+   projectileSpeed: 300,
+   damageType: DamageType.Kinetic,
+   projectileFlag: ProjectileFlag.None,
 } as const;
 
-export const PC1: IWeaponDefinition = {
-   ...PlasmaCannonDefenseProps,
-   ...BaseWeaponProps,
+export const PC1: IBuildingDefinition = {
+   ...PlasmaCannonBaseProps,
    name: () => t(L.PC1),
    code: CodeNumber.PC,
    buildingFlag: BuildingFlag.CanTarget,
