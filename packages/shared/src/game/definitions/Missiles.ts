@@ -205,3 +205,22 @@ export const MS2C: IBuildingDefinition = {
    },
    element: "Sr",
 };
+
+export const MS2D: IBuildingDefinition = {
+   ...MissileBaseProps,
+   name: () => t(L.MS2D),
+   code: CodeNumber.MS,
+   buildingFlag: BuildingFlag.CanTarget,
+   damagePct: 0.9,
+   damageType: DamageType.Explosive,
+   fireCooldown: 4.5,
+   ability: {
+      timing: AbilityTiming.OnHit,
+      range: AbilityRange.RearTrio,
+      effect: "DispelBuff",
+      flag: AbilityFlag.None,
+      value: (building, level) => 0,
+      duration: (building, level) => 0,
+   },
+   element: "Kr",
+};

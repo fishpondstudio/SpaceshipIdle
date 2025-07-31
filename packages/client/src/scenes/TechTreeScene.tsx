@@ -78,12 +78,12 @@ export class TechTreeScene extends Scene {
          const x = def.range[0] * ColumnWidth + Gap + leftMargin;
          const y = TopMargin;
          const frame = this._boxContainer.addChild(
-            new NineSlicePlane(G.textures.get("Misc/TechFrame")!, 17, 17, 17, 17),
+            new NineSlicePlane(G.textures.get("Misc/ClassFrame")!, 90, 90, 90, 90),
          );
          frame.position.set(x, y);
          frame.width = (def.range[1] - def.range[0] + 1) * ColumnWidth - Gap;
          frame.height = PageHeight - BottomMargin - TopMargin;
-         frame.alpha = 0.25;
+         frame.alpha = 0.5;
 
          const name = this.viewport.addChild(
             new UnicodeText(def.name().toUpperCase(), {

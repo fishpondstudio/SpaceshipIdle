@@ -31,20 +31,7 @@ export const RC50: IBuildingDefinition = {
    name: () => t(L.RC50),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
-   damagePct: 0.75,
-   fireCooldown: 1.5,
-   ability: {
-      timing: AbilityTiming.OnHit,
-      range: AbilityRange.Single,
-      effect: "TickEnergyDamage",
-      flag: AbilityFlag.AffectedByDamageMultiplier,
-      value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IBuildingDefinition;
-         const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
-         return damage * (1 - def.damagePct);
-      },
-      duration: (building, level) => 1,
-   },
+   fireCooldown: 1,
    element: "Sc",
 };
 

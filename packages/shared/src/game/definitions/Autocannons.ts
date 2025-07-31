@@ -146,23 +146,6 @@ export const AC76B: IBuildingDefinition = {
    name: () => t(L.AC76B),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
-   element: "Kr",
-   damagePct: 0.8,
-   fireCooldown: 2,
-   ability: {
-      timing: AbilityTiming.OnHit,
-      range: AbilityRange.RearTrio,
-      effect: "DispelBuff",
-      flag: AbilityFlag.None,
-      value: (building, level) => 0,
-      duration: (building, level) => 0,
-   },
-};
-export const AC76C: IBuildingDefinition = {
-   ...AutocannonBaseProps,
-   name: () => t(L.AC76C),
-   code: CodeNumber.AC,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
    ability: {
       timing: AbilityTiming.OnHit,

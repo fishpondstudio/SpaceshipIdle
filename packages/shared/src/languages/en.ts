@@ -324,6 +324,7 @@ export const EN = {
    MS1D: "MS1D Shrike",
    MS2A: "MS2A Tanager",
    MS2C: "MS2C Jay",
+   MS2D: "MS2D Finch",
    Next: "Next",
    NotConnected: "Modules need to be connected to the spaceship (no diagonal connections)",
    NotEnoughQuantum: "Not Enough Quantum",
@@ -699,6 +700,6 @@ export const EN = {
    IncreaseDeflection: "Deflection Increase",
    IncreaseDeflectionDesc: "Increase %% Deflection",
    TechShieldCorrosion: "Shield Corrosion",
-   TechWeaponDisruption: "Weapon Disruption",
+   TechWeaponDisarm: "Weapon Disarm",
    TechBacklineDamage: "Backline Damage",
 };
