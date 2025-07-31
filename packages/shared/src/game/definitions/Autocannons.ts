@@ -68,24 +68,6 @@ export const AC30B: IBuildingDefinition = {
       duration: (self, level) => 3,
    },
 };
-export const AC30C: IBuildingDefinition = {
-   ...AutocannonBaseProps,
-   name: () => t(L.AC30C),
-   code: CodeNumber.AC,
-   buildingFlag: BuildingFlag.CanTarget,
-   element: "Cr",
-   damagePct: 0.8,
-   ability: {
-      timing: AbilityTiming.OnHit,
-      range: AbilityRange.Single,
-      effect: "ReduceArmor",
-      flag: AbilityFlag.None,
-      value: (self, level) => {
-         return level / 2;
-      },
-      duration: (self, level) => 2,
-   },
-};
 export const AC30x3: IBuildingDefinition = {
    ...AutocannonBaseProps,
    name: () => t(L.AC30x3),
@@ -167,6 +149,24 @@ export const AC130: IBuildingDefinition = {
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    element: "C",
+};
+export const AC130A: IBuildingDefinition = {
+   ...AutocannonBaseProps,
+   name: () => t(L.AC130A),
+   code: CodeNumber.AC,
+   buildingFlag: BuildingFlag.CanTarget,
+   element: "Cr",
+   damagePct: 0.8,
+   ability: {
+      timing: AbilityTiming.OnHit,
+      range: AbilityRange.Single,
+      effect: "ReduceArmor",
+      flag: AbilityFlag.None,
+      value: (self, level) => {
+         return level / 2;
+      },
+      duration: (self, level) => 2,
+   },
 };
 export const AC130B: IBuildingDefinition = {
    ...AutocannonBaseProps,

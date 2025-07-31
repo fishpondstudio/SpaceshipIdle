@@ -111,24 +111,6 @@ export const MS1C: IBuildingDefinition = {
    },
    element: "Ar",
 };
-export const MS1D: IBuildingDefinition = {
-   ...MissileBaseProps,
-   name: () => t(L.MS1D),
-   code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
-   damagePct: 0.9,
-   damageType: DamageType.Explosive,
-   fireCooldown: 4.5,
-   ability: {
-      timing: AbilityTiming.OnFire,
-      range: AbilityRange.Single,
-      effect: "LifeSteal",
-      flag: AbilityFlag.None,
-      value: (building, level) => 0.25,
-      duration: (building, level) => 4,
-   },
-   element: "K",
-};
 export const MS2: IBuildingDefinition = {
    ...MissileBaseProps,
    name: () => t(L.MS2),
@@ -205,10 +187,27 @@ export const MS2C: IBuildingDefinition = {
    },
    element: "Sr",
 };
-
 export const MS2D: IBuildingDefinition = {
    ...MissileBaseProps,
    name: () => t(L.MS2D),
+   code: CodeNumber.MS,
+   buildingFlag: BuildingFlag.CanTarget,
+   damagePct: 0.9,
+   damageType: DamageType.Explosive,
+   fireCooldown: 4.5,
+   ability: {
+      timing: AbilityTiming.OnFire,
+      range: AbilityRange.Single,
+      effect: "LifeSteal",
+      flag: AbilityFlag.None,
+      value: (building, level) => 0.25,
+      duration: (building, level) => 4,
+   },
+   element: "K",
+};
+export const MS3: IBuildingDefinition = {
+   ...MissileBaseProps,
+   name: () => t(L.MS3),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,
