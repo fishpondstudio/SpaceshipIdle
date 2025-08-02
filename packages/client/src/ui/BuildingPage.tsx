@@ -2,6 +2,7 @@ import { ColorInput, Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { CodeLabel } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
+import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { memo, useCallback } from "react";
@@ -42,7 +43,7 @@ export function BuildingPage({ tile, gs, readonly }: ITileWithGameState & { read
             <Tooltip label={codeLabel} disabled={codeLabel.length <= 0} position="left">
                <div className="row g5">
                   <TextureComp name={`Building/${data.type}`} height={40} style={{ margin: "-10px -5px" }} />
-                  <div className="f1">{def.name()}</div>
+                  <div className="f1">{getBuildingName(data.type)}</div>
                </div>
             </Tooltip>
          }

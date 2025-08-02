@@ -7,6 +7,7 @@ import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
 import {
    canSpend,
    getBuildingCost,
+   getBuildingName,
    getUnlockedBuildings,
    trySpend,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
@@ -67,7 +68,7 @@ export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
          <VideoTutorialComp tutorial="Copy" className="mx10 mt10" />
          <VideoTutorialComp tutorial="Multiselect" className="mx10 mt10" />
          {getUnlockedBuildings(gs)
-            .sort((a, b) => Config.Buildings[a].name().localeCompare(Config.Buildings[b].name()))
+            .sort((a, b) => a.localeCompare(b))
             .filter((b) => {
                const def = Config.Buildings[b];
                if (selected.size === 0) {
@@ -129,7 +130,7 @@ function BuildingComp({
             <TextureComp name={`Building/${building}`} />
             <div className="f1">
                <div className="row g5">
-                  <div>{def.name()}</div>
+                  <div>{getBuildingName(building)}</div>
                   <div className="text-xs text-space">{label}</div>
                   <div className="f1"></div>
                </div>

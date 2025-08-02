@@ -8,7 +8,7 @@ import {
 } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { StatusEffects } from "@spaceship-idle/shared/src/game/definitions/StatusEffect";
-import { getDamagePerFire, getHP } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
+import { getBuildingName, getDamagePerFire, getHP } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { DefaultMultipliers } from "@spaceship-idle/shared/src/game/logic/IMultiplier";
 import { getTechForBuilding, getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { formatNumber, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
@@ -57,7 +57,7 @@ export function WeaponListModal(): React.ReactNode {
                            </Tooltip>
                         </td>
                         <td>
-                           <div>{def.name()}</div>
+                           <div>{getBuildingName(building)}</div>
                            <div className="text-xs text-space">{getTechName(getTechForBuilding(building))}</div>
                         </td>
                         <td className="text-right">{formatNumber(getHP({ type: building, level: 1 }))}</td>

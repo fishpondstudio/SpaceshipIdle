@@ -53,6 +53,10 @@ function getBaseValue(building: Building): number {
    return (ShipClass[shipClass].index + 1) * 10;
 }
 
+export function getBuildingName(building: Building): string {
+   return `${building} ${Config.Buildings[building].pet()}`;
+}
+
 export function getHP({ type, level }: { type: Building; level: number }): number {
    return getBaseValue(type) * level * DamageToHPMultiplier;
 }

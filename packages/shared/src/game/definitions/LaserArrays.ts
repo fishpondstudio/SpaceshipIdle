@@ -27,7 +27,7 @@ export const LaserArrayBaseProps: IBuildingProp = {
 
 export const LA1: IBuildingDefinition = {
    ...LaserArrayBaseProps,
-   name: () => t(L.LA1),
+   pet: () => t(L.Goby),
    code: CodeNumber.LA,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: LaserArrayDamagePct,
@@ -38,7 +38,7 @@ export const LA1: IBuildingDefinition = {
 };
 export const LA1A: IBuildingDefinition = {
    ...LaserArrayBaseProps,
-   name: () => t(L.LA1A),
+   pet: () => t(L.Tetra),
    code: CodeNumber.LA,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.1 * LaserArrayDamagePct,
@@ -61,7 +61,7 @@ export const LA1A: IBuildingDefinition = {
 };
 export const LA1B: IBuildingDefinition = {
    ...LaserArrayBaseProps,
-   name: () => t(L.LA1B),
+   pet: () => t(L.Danio),
    code: CodeNumber.LA,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: LaserArrayDamagePct,
@@ -82,7 +82,7 @@ export const LA1B: IBuildingDefinition = {
 };
 export const LA2: IBuildingDefinition = {
    ...LaserArrayBaseProps,
-   name: () => t(L.LA2),
+   pet: () => t(L.Perch),
    code: CodeNumber.LA,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.5 * LaserArrayDamagePct,
@@ -105,7 +105,7 @@ export const LA2: IBuildingDefinition = {
 };
 export const LA2A: IBuildingDefinition = {
    ...LaserArrayBaseProps,
-   name: () => t(L.LA2A),
+   pet: () => t(L.Pike),
    code: CodeNumber.LA,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.5 * LaserArrayDamagePct,

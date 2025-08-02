@@ -1,5 +1,5 @@
-import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { StatusEffectFlag, StatusEffects } from "@spaceship-idle/shared/src/game/definitions/StatusEffect";
+import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { hasFlag, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
@@ -33,7 +33,7 @@ export function StatusEffectComp({ tile, gs }: ITileWithGameState): React.ReactN
                      <div className="f1">
                         <div className="text-sm">{sd.name()}</div>
                         <div className="text-xs text-dimmed">
-                           {sd.desc(se.value)} ({Config.Buildings[se.sourceType].name()})
+                           {sd.desc(se.value)} ({getBuildingName(se.sourceType)})
                         </div>
                      </div>
                      <div>{Math.ceil(se.timeLeft) + 1}s</div>

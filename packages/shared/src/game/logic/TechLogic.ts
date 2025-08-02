@@ -3,6 +3,7 @@ import { Config } from "../Config";
 import type { Building } from "../definitions/Buildings";
 import { ShipClass, type Tech } from "../definitions/TechDefinitions";
 import type { GameState } from "../GameState";
+import { getBuildingName } from "./BuildingLogic";
 
 export function checkTechPrerequisites(tech: Tech, gs: GameState): boolean {
    const def = Config.Tech[tech];
@@ -47,7 +48,7 @@ export function getTechName(tech: Tech): string {
 export function getTechDesc(tech: Tech): string {
    const def = Config.Tech[tech];
    const desc: string[] = [];
-   def.unlockBuildings?.forEach((b) => desc.push(Config.Buildings[b].name()));
+   def.unlockBuildings?.forEach((b) => desc.push(getBuildingName(b)));
    def.unlockUpgrades?.forEach((u) => desc.push(u.name()));
    return desc.join(", ");
 }

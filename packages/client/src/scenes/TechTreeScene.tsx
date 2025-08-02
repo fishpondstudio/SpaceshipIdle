@@ -2,7 +2,7 @@ import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { ShipClass, type Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { getTechDesc, getTechName, isTechUnderDevelopment } from "@spaceship-idle/shared/src/game/logic/TechLogic";
-import { equal, forEach, layoutSpaceBetween, numberToRoman } from "@spaceship-idle/shared/src/utils/Helper";
+import { equal, forEach, layoutSpaceBetween } from "@spaceship-idle/shared/src/utils/Helper";
 import { AABB, type IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
 import {
    type ColorSource,
@@ -101,15 +101,7 @@ export class TechTreeScene extends Scene {
          const x = def.position.x * ColumnWidth + ColumnWidth / 2 - BoxWidth / 2 + leftMargin;
          const totalRow = rowCount.get(def.position.x) ?? 1;
          const totalHeight = PageHeight - BottomMargin - TopMargin - HeaderHeight - BottomPadding;
-         let y = HeaderHeight + layoutSpaceBetween(BoxHeight, totalHeight, totalRow, def.position.y) + BoxHeight / 2;
-         if (totalRow === 2) {
-            y =
-               (layoutSpaceBetween(BoxHeight, totalHeight, 4, def.position.y * 2) +
-                  layoutSpaceBetween(BoxHeight, totalHeight, 4, def.position.y * 2 + 1)) /
-                  2 +
-               HeaderHeight +
-               BoxHeight / 2;
-         }
+         const y = HeaderHeight + layoutSpaceBetween(BoxHeight, totalHeight, totalRow, def.position.y) + BoxHeight / 2;
 
          const container = this._boxContainer.addChild(new Container());
          container.position.set(x, y);
@@ -123,7 +115,7 @@ export class TechTreeScene extends Scene {
 
          frame.alpha = 0.5;
          const tier = container.addChild(
-            new UnicodeText(numberToRoman(def.position.x + 1) ?? "", {
+            new UnicodeText(String(def.position.x + 1), {
                fontName: Fonts.SpaceshipIdle,
                fontSize: 16,
                tint: 0xffffff,

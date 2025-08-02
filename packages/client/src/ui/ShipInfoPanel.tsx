@@ -2,6 +2,7 @@ import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { elementToXP } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import {
    calcSpaceshipXP,
@@ -247,7 +248,7 @@ function _ElementComp({
                   if (!building) return null;
                   return (
                      <div className="row" key={symbol}>
-                        <div>{Config.Buildings[building].name()}</div>
+                        <div>{getBuildingName(building)}</div>
                         <div className="text-space">({symbol})</div>
                         <div className="f1 text-right">{amount}</div>
                      </div>
@@ -265,7 +266,7 @@ function _ElementComp({
                   if (inv.production <= 0) return null;
                   return (
                      <div key={symbol} className="row g5">
-                        <div>{Config.Buildings[building].name()}</div>
+                        <div>{getBuildingName(building)}</div>
                         <div className="text-space">({symbol})</div>
                         <div className="f1" />
                         <div>{inv.production}</div>
@@ -284,7 +285,7 @@ function _ElementComp({
                   if (inv.xp <= 0) return null;
                   return (
                      <div key={symbol} className="row g5">
-                        <div>{Config.Buildings[building].name()}</div>
+                        <div>{getBuildingName(building)}</div>
                         <div className="text-space">({symbol})</div>
                         <div className="f1" />
                         <div>{inv.xp}</div>

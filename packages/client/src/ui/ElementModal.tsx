@@ -3,6 +3,7 @@ import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { ElementPermanentColor } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import {
    canUpgradeElement,
    getElementUpgradeCost,
@@ -62,7 +63,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
          <div className="row">
             <div className="f1">{t(L.BoostModule)}</div>
             <Tooltip multiline color="gray" label={<BuildingInfoComp building={b} />}>
-               <div>{Config.Buildings[b].name()}</div>
+               <div>{getBuildingName(b)}</div>
             </Tooltip>
          </div>
          {thisRun ? (
@@ -72,9 +73,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                <div className="divider my10 mx-15" />
                <div className="row">
                   <div className="f1">{thisRun}x</div>
-                  <div className="text-dimmed">
-                     {t(L.PlusXProductionMultiplierForX, thisRun, Config.Buildings[b].name())}
-                  </div>
+                  <div className="text-dimmed">{t(L.PlusXProductionMultiplierForX, thisRun, getBuildingName(b))}</div>
                </div>
             </>
          ) : null}
@@ -91,7 +90,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                <div className="row g5">
                   <div className="mi">handyman</div>
                   <div className="f1">{t(L.ProductionMultiplier)}</div>
-                  <Tooltip label={t(L.PlusXProductionMultiplierForX, permanent.production, Config.Buildings[b].name())}>
+                  <Tooltip label={t(L.PlusXProductionMultiplierForX, permanent.production, getBuildingName(b))}>
                      <div className="mi sm text-dimmed">info</div>
                   </Tooltip>
                   <div>{t(L.LevelX, permanent.production)}</div>
@@ -142,7 +141,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                      <div className="row g5">
                         <XPIcon />
                         <div className="f1">{t(L.XPMultiplier)}</div>
-                        <Tooltip label={t(L.PlusXXPMultiplierForX, permanent.xp, Config.Buildings[b].name())}>
+                        <Tooltip label={t(L.PlusXXPMultiplierForX, permanent.xp, getBuildingName(b))}>
                            <div className="mi sm text-dimmed">info</div>
                         </Tooltip>
                         <div>{t(L.LevelX, permanent.xp)}</div>

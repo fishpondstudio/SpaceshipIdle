@@ -1,7 +1,7 @@
 import { CloseButton, ScrollArea } from "@mantine/core";
-import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
+import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { useEffect } from "react";
@@ -32,7 +32,7 @@ export function BuildingPopover({ tile, gs }: ITileWithGameState): React.ReactNo
    return (
       <>
          <div className="row mr5 ml10" style={{ height: 35 }}>
-            <div>{Config.Buildings[data.type].name()}</div>
+            <div>{getBuildingName(data.type)}</div>
             <div className="f1" />
             <CloseButton size="sm" onClick={() => SetPopover.emit(undefined)} />
          </div>

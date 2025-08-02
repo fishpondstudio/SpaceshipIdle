@@ -1,6 +1,7 @@
 import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
+import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { calcSpaceshipXP, getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { formatNumber, mMapOf, mReduceOf } from "@spaceship-idle/shared/src/utils/Helper";
@@ -50,7 +51,7 @@ export function MatchmakingShipComp({ ship }: { ship: GameState }): React.ReactN
                return (
                   <div className="row" key={element}>
                      <div>
-                        {element} <span className="text-dimmed">({Config.Buildings[building].name()})</span>
+                        {element} <span className="text-dimmed">({getBuildingName(building)})</span>
                      </div>
                      <div className="f1 text-right">{amount}</div>
                   </div>

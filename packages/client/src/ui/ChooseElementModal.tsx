@@ -17,6 +17,7 @@ import { Easing } from "../utils/actions/Easing";
 import { G } from "../utils/Global";
 import { hideModal, showModal } from "../utils/ToggleModal";
 import "./ChooseElementModal.css";
+import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { playUpgrade } from "./Sound";
 
 export function ChooseElementModal({
@@ -146,9 +147,9 @@ function ElementOption({
                <ElementImageComp symbol={symbol} color={permanent ? ElementPermanentColor : ElementThisRunColor} />
                <div className="h10" />
                {permanent ? (
-                  <div className="text-center">{Config.Buildings[b].name()}</div>
+                  <div className="text-center">{getBuildingName(b)}</div>
                ) : (
-                  <div className="text-center">{t(L.PlusXProductionMultiplierForX, 1, Config.Buildings[b].name())}</div>
+                  <div className="text-center">{t(L.PlusXProductionMultiplierForX, 1, getBuildingName(b))}</div>
                )}
                <div className="h10" />
                <div className="divider mx-15 mb5" />

@@ -22,22 +22,23 @@ export const Config = {
 };
 
 function initConfig(): void {
-   const statusEffects = new Set<StatusEffect>(keysOf(StatusEffects));
-   forEach(Config.Buildings, (building, def) => {
-      if ("ability" in def && def.ability) {
-         statusEffects.delete(def.ability.effect);
-      }
-      if (def.element) {
-         Config.Elements[def.element] = building;
-      }
-   });
-
    forEach(Config.Tech, (tech, def) => {
       const shipClass = techColumnToShipClass(def.position.x);
       def.unlockBuildings?.forEach((building) => {
          Config.BuildingToTech[building] = tech;
          Config.BuildingToShipClass[building] = shipClass;
       });
+   });
+
+   const statusEffects = new Set<StatusEffect>(keysOf(StatusEffects));
+   forEach(Config.BuildingToTech, (building, tech) => {
+      const def = Config.Buildings[building];
+      if ("ability" in def && def.ability) {
+         statusEffects.delete(def.ability.effect);
+      }
+      if (def.element) {
+         Config.Elements[def.element] = building;
+      }
    });
 
    forEach(ShipDesigns, (key, design) => {
@@ -58,6 +59,10 @@ function initConfig(): void {
 
    if (typeof window !== "undefined") {
       console.log("Unused Status Effects", statusEffects);
+      console.log(
+         "Unused Buildings",
+         keysOf(Buildings).filter((b) => !Config.BuildingToTech[b]),
+      );
    }
 }
 

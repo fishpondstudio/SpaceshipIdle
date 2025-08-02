@@ -20,7 +20,7 @@ export const BuildingFlag = {
 export type BuildingFlag = ValueOf<typeof BuildingFlag>;
 
 export interface IBuildingDefinition extends IBuildingProp {
-   name: () => string;
+   pet: () => string;
    code: CodeNumber;
    buildingFlag: BuildingFlag;
    element?: ElementSymbol;

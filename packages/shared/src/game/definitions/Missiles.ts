@@ -28,7 +28,7 @@ export const MissileBaseProps: IBuildingProp = {
 
 export const MS1: IBuildingDefinition = {
    ...MissileBaseProps,
-   name: () => t(L.MS1),
+   pet: () => t(L.Wren),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.5,
@@ -50,7 +50,7 @@ export const MS1: IBuildingDefinition = {
 };
 export const MS1A: IBuildingDefinition = {
    ...MissileBaseProps,
-   name: () => t(L.MS1A),
+   pet: () => t(L.Lark),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.5,
@@ -73,7 +73,7 @@ export const MS1A: IBuildingDefinition = {
 
 export const MS1B: IBuildingDefinition = {
    ...MissileBaseProps,
-   name: () => t(L.MS1B),
+   pet: () => t(L.Shrike),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
@@ -95,7 +95,7 @@ export const MS1B: IBuildingDefinition = {
 };
 export const MS1C: IBuildingDefinition = {
    ...MissileBaseProps,
-   name: () => t(L.MS1C),
+   pet: () => t(L.Robin),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,
@@ -113,7 +113,7 @@ export const MS1C: IBuildingDefinition = {
 };
 export const MS2: IBuildingDefinition = {
    ...MissileBaseProps,
-   name: () => t(L.MS2),
+   pet: () => t(L.Pipit),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.8,
@@ -131,7 +131,7 @@ export const MS2: IBuildingDefinition = {
 };
 export const MS2A: IBuildingDefinition = {
    ...MissileBaseProps,
-   name: () => t(L.MS2A),
+   pet: () => t(L.Warbler),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
@@ -151,7 +151,7 @@ export const MS2A: IBuildingDefinition = {
 };
 export const MS2B: IBuildingDefinition = {
    ...MissileBaseProps,
-   name: () => t(L.MS2B),
+   pet: () => t(L.Tanager),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
@@ -167,9 +167,46 @@ export const MS2B: IBuildingDefinition = {
    },
    element: "Nb",
 };
-export const MS2C: IBuildingDefinition = {
+export const MS3: IBuildingDefinition = {
    ...MissileBaseProps,
-   name: () => t(L.MS2C),
+   pet: () => t(L.Gull),
+   code: CodeNumber.MS,
+   buildingFlag: BuildingFlag.CanTarget,
+   damagePct: 0.9,
+   damageType: DamageType.Explosive,
+   fireCooldown: 4.5,
+   ability: {
+      timing: AbilityTiming.OnHit,
+      range: AbilityRange.RearTrio,
+      effect: "DispelBuff",
+      flag: AbilityFlag.None,
+      value: (building, level) => 0,
+      duration: (building, level) => 0,
+   },
+   element: "Kr",
+};
+export const MS3A: IBuildingDefinition = {
+   ...MissileBaseProps,
+   pet: () => t(L.Jay),
+   code: CodeNumber.MS,
+   buildingFlag: BuildingFlag.CanTarget,
+   damagePct: 0.9,
+   damageType: DamageType.Explosive,
+   fireCooldown: 4.5,
+   ability: {
+      timing: AbilityTiming.OnFire,
+      range: AbilityRange.Single,
+      effect: "LifeSteal",
+      flag: AbilityFlag.None,
+      value: (building, level) => 0.25,
+      duration: (building, level) => 4,
+   },
+   element: "K",
+};
+
+export const MS3B: IBuildingDefinition = {
+   ...MissileBaseProps,
+   pet: () => t(L.Dove),
    code: CodeNumber.MS,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,
@@ -186,40 +223,4 @@ export const MS2C: IBuildingDefinition = {
       duration: (building, level) => 2,
    },
    element: "Sr",
-};
-export const MS2D: IBuildingDefinition = {
-   ...MissileBaseProps,
-   name: () => t(L.MS2D),
-   code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
-   damagePct: 0.9,
-   damageType: DamageType.Explosive,
-   fireCooldown: 4.5,
-   ability: {
-      timing: AbilityTiming.OnFire,
-      range: AbilityRange.Single,
-      effect: "LifeSteal",
-      flag: AbilityFlag.None,
-      value: (building, level) => 0.25,
-      duration: (building, level) => 4,
-   },
-   element: "K",
-};
-export const MS3: IBuildingDefinition = {
-   ...MissileBaseProps,
-   name: () => t(L.MS3),
-   code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
-   damagePct: 0.9,
-   damageType: DamageType.Explosive,
-   fireCooldown: 4.5,
-   ability: {
-      timing: AbilityTiming.OnHit,
-      range: AbilityRange.RearTrio,
-      effect: "DispelBuff",
-      flag: AbilityFlag.None,
-      value: (building, level) => 0,
-      duration: (building, level) => 0,
-   },
-   element: "Kr",
 };

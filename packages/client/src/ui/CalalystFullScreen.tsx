@@ -3,6 +3,7 @@ import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { Catalyst, CatalystCat } from "@spaceship-idle/shared/src/game/definitions/Catalyst";
 import { CatalystPerCat } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { getEffect, getNextCatalystCat, getRequirement } from "@spaceship-idle/shared/src/game/logic/CatalystLogic";
 import { classNames, keysOf, shuffle } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -10,6 +11,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import styles from "./CatalystFullScreen.module.css";
+import { BuildingInfoComp } from "./components/BuildingInfoComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
 import { playClick, playError } from "./Sound";
@@ -118,12 +120,26 @@ export function CatalystFullScreen(): React.ReactNode {
                                        .filter(def.filter)
                                        .map((b) => {
                                           return (
-                                             <TextureComp
+                                             <Tooltip
+                                                multiline
+                                                color="gray"
+                                                label={
+                                                   <div style={{ width: 330 }}>
+                                                      <div className="row g5 mb5">
+                                                         <TextureComp name={`Building/${b}`} />
+                                                         <div className="text-lg">{getBuildingName(b)}</div>
+                                                      </div>
+                                                      <BuildingInfoComp building={b} />
+                                                   </div>
+                                                }
                                                 key={b}
-                                                style={{ flexShrink: 0 }}
-                                                name={`Building/${b}`}
-                                                width={Math.min(G.pixi.screen.height / 10, 100)}
-                                             />
+                                             >
+                                                <TextureComp
+                                                   style={{ flexShrink: 0 }}
+                                                   name={`Building/${b}`}
+                                                   width={Math.min(G.pixi.screen.height / 10, 100)}
+                                                />
+                                             </Tooltip>
                                           );
                                        })}
                                  </ScrollArea>

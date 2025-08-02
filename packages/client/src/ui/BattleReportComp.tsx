@@ -1,7 +1,7 @@
 import { Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageTypeLabel } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { formatNumber, formatPercent, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
@@ -56,7 +56,7 @@ export function BattleReportComp(): React.ReactNode {
                .map(([building, damage]) => {
                   return (
                      <div key={building} className="row text-sm">
-                        <div className="f1">{Config.Buildings[building].name()}</div>
+                        <div className="f1">{getBuildingName(building)}</div>
                         <div className="text-space">{formatNumber(damage)}</div>
                      </div>
                   );

@@ -1,8 +1,8 @@
 import { Progress, Tooltip } from "@mantine/core";
-import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageType, DamageTypeLabel } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { MaxSuddenDeathTick, SuddenDeathUndamagedSec } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
+import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { classNames, formatHMS, formatNumber, formatPercent, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -125,7 +125,7 @@ function DamageComponent({ side }: { side: Side }): React.ReactNode {
             .map(([building, damage]) => {
                return (
                   <div key={building} className="row">
-                     <div>{Config.Buildings[building].name()}</div>
+                     <div>{getBuildingName(building)}</div>
                      <div className="text-right">{formatNumber(damage)}</div>
                      <div />
                   </div>

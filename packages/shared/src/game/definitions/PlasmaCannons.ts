@@ -25,7 +25,7 @@ export const PlasmaCannonBaseProps: IBuildingProp = {
 
 export const PC1: IBuildingDefinition = {
    ...PlasmaCannonBaseProps,
-   name: () => t(L.PC1),
+   pet: () => t(L.Potoroo),
    code: CodeNumber.PC,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,

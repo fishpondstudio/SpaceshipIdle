@@ -27,7 +27,7 @@ export const DroneBaseProps: IBuildingProp = {
 
 export const FD1: IBuildingDefinition = {
    ...DroneBaseProps,
-   name: () => t(L.FD1),
+   pet: () => t(L.Eoraptor),
    code: CodeNumber.FD,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,

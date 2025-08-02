@@ -27,14 +27,14 @@ export const AutocannonBaseProps: IBuildingProp = {
 
 export const AC30: IBuildingDefinition = {
    ...AutocannonBaseProps,
-   name: () => t(L.AC30),
+   pet: () => t(L.Kodkod),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    element: "Li",
 };
 export const AC30A: IBuildingDefinition = {
    ...AutocannonBaseProps,
-   name: () => t(L.AC30A),
+   pet: () => t(L.Margay),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    element: "Mg",
@@ -52,7 +52,7 @@ export const AC30A: IBuildingDefinition = {
 };
 export const AC30B: IBuildingDefinition = {
    ...AutocannonBaseProps,
-   name: () => t(L.AC30B),
+   pet: () => t(L.Oncilla),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    element: "Cr",
@@ -70,7 +70,7 @@ export const AC30B: IBuildingDefinition = {
 };
 export const AC30x3: IBuildingDefinition = {
    ...AutocannonBaseProps,
-   name: () => t(L.AC30x3),
+   pet: () => t(L.Serval),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    projectiles: 3,
@@ -78,14 +78,14 @@ export const AC30x3: IBuildingDefinition = {
 };
 export const AC76: IBuildingDefinition = {
    ...AutocannonBaseProps,
-   name: () => t(L.AC76),
+   pet: () => t(L.Caracal),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    element: "B",
 };
 export const AC76x2: IBuildingDefinition = {
    ...AutocannonBaseProps,
-   name: () => t(L.AC76x2),
+   pet: () => t(L.Ocelot),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    element: "Al",
@@ -104,7 +104,7 @@ export const AC76x2: IBuildingDefinition = {
 };
 export const AC76A: IBuildingDefinition = {
    ...AutocannonBaseProps,
-   name: () => t(L.AC76A),
+   pet: () => t(L.Caracal),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    element: "Cl",
@@ -125,7 +125,7 @@ export const AC76A: IBuildingDefinition = {
 };
 export const AC76B: IBuildingDefinition = {
    ...AutocannonBaseProps,
-   name: () => t(L.AC76B),
+   pet: () => t(L.Serval),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
@@ -145,32 +145,32 @@ export const AC76B: IBuildingDefinition = {
 };
 export const AC130: IBuildingDefinition = {
    ...AutocannonBaseProps,
-   name: () => t(L.AC130),
+   pet: () => t(L.Bobcat),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    element: "C",
 };
+// export const AC130A: IBuildingDefinition = {
+//    ...AutocannonBaseProps,
+//    pet: () => t(L.Lynx),
+//    code: CodeNumber.AC,
+//    buildingFlag: BuildingFlag.CanTarget,
+//    element: "Cr",
+//    damagePct: 0.8,
+//    ability: {
+//       timing: AbilityTiming.OnHit,
+//       range: AbilityRange.Single,
+//       effect: "ReduceArmor",
+//       flag: AbilityFlag.None,
+//       value: (self, level) => {
+//          return level / 2;
+//       },
+//       duration: (self, level) => 2,
+//    },
+// };
 export const AC130A: IBuildingDefinition = {
    ...AutocannonBaseProps,
-   name: () => t(L.AC130A),
-   code: CodeNumber.AC,
-   buildingFlag: BuildingFlag.CanTarget,
-   element: "Cr",
-   damagePct: 0.8,
-   ability: {
-      timing: AbilityTiming.OnHit,
-      range: AbilityRange.Single,
-      effect: "ReduceArmor",
-      flag: AbilityFlag.None,
-      value: (self, level) => {
-         return level / 2;
-      },
-      duration: (self, level) => 2,
-   },
-};
-export const AC130B: IBuildingDefinition = {
-   ...AutocannonBaseProps,
-   name: () => t(L.AC130B),
+   pet: () => t(L.Leopard),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.8,
@@ -186,9 +186,9 @@ export const AC130B: IBuildingDefinition = {
    },
    element: "Mn",
 };
-export const AC130C: IBuildingDefinition = {
+export const AC130B: IBuildingDefinition = {
    ...AutocannonBaseProps,
-   name: () => t(L.AC130C),
+   pet: () => t(L.Jaguar),
    code: CodeNumber.AC,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,

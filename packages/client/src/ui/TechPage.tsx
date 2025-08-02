@@ -2,6 +2,7 @@ import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import type { Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { checkTechPrerequisites, getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { formatNumber, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
@@ -90,9 +91,9 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                            }
                         >
                            <div className="row m10">
-                              <TextureComp name={`Building/${b}`} />
+                              <TextureComp name={`Building/${b}`} width={64} />
                               <div className="f1">
-                                 <div>{Config.Buildings[b].name()}</div>
+                                 <div>{getBuildingName(b)}</div>
                               </div>
                            </div>
                         </Tooltip>
@@ -109,7 +110,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                {mapOf(def.multiplier, (b, multiplier) => {
                   return (
                      <div key={b} className="m10">
-                        <div className="f1">{Config.Buildings[b].name()}</div>
+                        <div className="f1">{getBuildingName(b)}</div>
                         <div className="row text-sm text-dimmed">
                            <div className="f1">{t(L.HPMultiplier)}</div>
                            <div>+{formatNumber(multiplier.hp)}</div>

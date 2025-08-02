@@ -6,6 +6,7 @@ import {
    ElementThisRunColor,
 } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { getQualifiedQuantum, getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { clamp, formatNumber, mMapOf, range } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -47,7 +48,7 @@ export function QuantumProgressModal(): React.ReactNode {
                      <span className="text-dimmed">{amount}x</span> {symbol}
                   </div>
                   <div className="text-sm text-dimmed">
-                     {t(L.PlusXProductionMultiplierForX, amount, Config.Buildings[Config.Elements[symbol]].name())}
+                     {t(L.PlusXProductionMultiplierForX, amount, getBuildingName(Config.Elements[symbol]))}
                   </div>
                </div>
             </div>

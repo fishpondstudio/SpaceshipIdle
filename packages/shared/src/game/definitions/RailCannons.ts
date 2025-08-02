@@ -1,7 +1,6 @@
 import { clamp } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
-import { Config } from "../Config";
-import { getDamagePerFire, getHP } from "../logic/BuildingLogic";
+import { getHP } from "../logic/BuildingLogic";
 import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
 import {
    BuildingFlag,
@@ -28,7 +27,7 @@ export const RailCannonBaseProps: IBuildingProp = {
 
 export const RC50: IBuildingDefinition = {
    ...RailCannonBaseProps,
-   name: () => t(L.RC50),
+   pet: () => t(L.Fennec),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
    fireCooldown: 1,
@@ -37,29 +36,29 @@ export const RC50: IBuildingDefinition = {
 
 export const RC100: IBuildingDefinition = {
    ...RailCannonBaseProps,
-   name: () => t(L.RC100),
+   pet: () => t(L.Corsac),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
    fireCooldown: 1.5,
-   ability: {
-      timing: AbilityTiming.OnHit,
-      range: AbilityRange.Single,
-      effect: "ReduceDamage",
-      flag: AbilityFlag.AffectedByDamageMultiplier,
-      value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IBuildingDefinition;
-         const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
-         return (damage * (1 - def.damagePct)) / 1;
-      },
-      duration: (building, level) => 1,
-   },
+   // ability: {
+   //    timing: AbilityTiming.OnHit,
+   //    range: AbilityRange.Single,
+   //    effect: "ReduceDamage",
+   //    flag: AbilityFlag.AffectedByDamageMultiplier,
+   //    value: (building, level, multipliers) => {
+   //       const def = Config.Buildings[building] as IBuildingDefinition;
+   //       const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
+   //       return (damage * (1 - def.damagePct)) / 1;
+   //    },
+   //    duration: (building, level) => 1,
+   // },
    element: "Ni",
 };
 
 export const RC50A: IBuildingDefinition = {
    ...RailCannonBaseProps,
-   name: () => t(L.RC50A),
+   pet: () => t(L.Culpeo),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
@@ -79,7 +78,7 @@ export const RC50A: IBuildingDefinition = {
 
 export const RC50B: IBuildingDefinition = {
    ...RailCannonBaseProps,
-   name: () => t(L.RC50B),
+   pet: () => t(L.Dhole),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,
@@ -99,7 +98,7 @@ export const RC50B: IBuildingDefinition = {
 
 export const RC100A: IBuildingDefinition = {
    ...RailCannonBaseProps,
-   name: () => t(L.RC100A),
+   pet: () => t(L.Sechuran),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
@@ -119,7 +118,7 @@ export const RC100A: IBuildingDefinition = {
 
 export const RC100B: IBuildingDefinition = {
    ...RailCannonBaseProps,
-   name: () => t(L.RC100B),
+   pet: () => t(L.Grayfox),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
@@ -139,7 +138,7 @@ export const RC100B: IBuildingDefinition = {
 
 export const RC100C: IBuildingDefinition = {
    ...RailCannonBaseProps,
-   name: () => t(L.RC100C),
+   pet: () => t(L.Redfox),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.5,
@@ -157,7 +156,7 @@ export const RC100C: IBuildingDefinition = {
 
 export const RC100D: IBuildingDefinition = {
    ...RailCannonBaseProps,
-   name: () => t(L.RC100D),
+   pet: () => t(L.Bushdog),
    code: CodeNumber.RC,
    buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
