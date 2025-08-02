@@ -704,4 +704,9 @@ export const EN = {
    TechWeaponDisarm: "Weapon Disarm",
    TechBacklineDamage: "Backline Damage",
    TechArmoredArtillery: "Armored Artillery",
+   TabSpaceship: "Spaceship",
+   TabResearch: "Research",
+   TabCatalyst: "Catalyst",
+   TabBooster: "Booster",
+   TabElement: "Element",
 };

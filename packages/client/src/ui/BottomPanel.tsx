@@ -196,11 +196,11 @@ function SceneSwitcher(): React.ReactNode {
             }}
             value={G.scene?.currentSceneId ?? Scenes.ShipScene}
             data={[
-               { label: "Spaceship", value: Scenes.ShipScene },
-               { label: "Research", value: Scenes.TechTreeScene },
-               { label: "Catalyst", value: Scenes.CatalystScene },
-               { label: "Booster", value: Scenes.BoosterScene },
-               { label: "Element", value: Scenes.ElementsScene },
+               { label: t(L.TabSpaceship), value: Scenes.ShipScene },
+               { label: t(L.TabResearch), value: Scenes.TechTreeScene },
+               { label: t(L.TabCatalyst), value: Scenes.CatalystScene },
+               { label: t(L.TabBooster), value: Scenes.BoosterScene },
+               { label: t(L.TabElement), value: Scenes.ElementsScene },
             ]}
          />
       </>

@@ -7,7 +7,6 @@ export function TopRightPanel(): React.ReactNode {
    const options = G.save.options;
    return (
       <div className="top-right-panel">
-         t(L.ThisIsATest)
          <SteamComp show={!hasFlag(options.flag, GameOptionFlag.HideSteamIcon)} />
          <DiscordComp show={!hasFlag(options.flag, GameOptionFlag.HideDiscordIcon)} />
       </div>
