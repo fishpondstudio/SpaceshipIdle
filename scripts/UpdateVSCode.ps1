@@ -1,0 +1,1 @@
+(Get-Content "C:\Users\$($env:UserName)\AppData\Local\Programs\Cursor\resources\app\extensions\references-view\dist\extension.js") -replace '.Collapsed', '.Expanded' | Set-Content "C:\Users\$($env:UserName)\AppData\Local\Programs\Cursor\resources\app\extensions\references-view\dist\extension.js"
