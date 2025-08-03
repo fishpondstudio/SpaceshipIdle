@@ -30,14 +30,26 @@ export const FD1: IBuildingDefinition = {
    pet: () => t(L.Eoraptor),
    code: CodeNumber.FD,
    buildingFlag: BuildingFlag.CanTarget,
-   damagePct: 0.75,
    damageType: DamageType.Explosive,
    projectileFlag: ProjectileFlag.DroneDamage,
    projectileSpeed: 150,
    fireCooldown: 5,
+   element: "Ag",
+};
+
+export const FD1A: IBuildingDefinition = {
+   ...DroneBaseProps,
+   pet: () => t(L.Eoraptor),
+   code: CodeNumber.FD,
+   buildingFlag: BuildingFlag.CanTarget,
+   damageType: DamageType.Explosive,
+   projectileFlag: ProjectileFlag.DroneDamage,
+   projectileSpeed: 150,
+   fireCooldown: 5,
+   element: "Ag",
    ability: {
       timing: AbilityTiming.OnHit,
-      range: AbilityRange.Single,
+      range: AbilityRange.Adjacent,
       effect: "TickExplosiveDamage",
       flag: AbilityFlag.AffectedByDamageMultiplier,
       value: (building, level, multipliers) => {
@@ -47,5 +59,4 @@ export const FD1: IBuildingDefinition = {
       },
       duration: (building, level) => 5,
    },
-   element: "Ag",
 };

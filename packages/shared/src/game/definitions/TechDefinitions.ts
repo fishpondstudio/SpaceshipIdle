@@ -39,6 +39,36 @@ export const ShipClass = {
       range: [6, 8],
       index: 2,
    } as IShipClassDefinition,
+   Frigate: {
+      name: () => t(L.TechFrigate),
+      range: [9, 11],
+      index: 3,
+   } as IShipClassDefinition,
+   Destroyer: {
+      name: () => t(L.TechDestroyer),
+      range: [12, 14],
+      index: 4,
+   } as IShipClassDefinition,
+   Cruiser: {
+      name: () => t(L.TechCruiser),
+      range: [12, 14],
+      index: 4,
+   } as IShipClassDefinition,
+   Battlecruiser: {
+      name: () => t(L.TechBattlecruiser),
+      range: [15, 17],
+      index: 5,
+   } as IShipClassDefinition,
+   Dreadnought: {
+      name: () => t(L.TechDreadnought),
+      range: [15, 17],
+      index: 5,
+   } as IShipClassDefinition,
+   Carrier: {
+      name: () => t(L.TechCarrier),
+      range: [18, 20],
+      index: 6,
+   } as IShipClassDefinition,
 } as const satisfies Record<string, IShipClassDefinition>;
 
 export type ShipClass = keyof typeof ShipClass;
@@ -114,7 +144,7 @@ export class TechDefinitions {
    B2: ITechDefinition = {
       position: { x: 3, y: 1 },
       requires: ["A7", "A10"],
-      name: () => t(L.TechRocketry),
+      name: () => t(L.TechRailCannon),
       unlockBuildings: ["RC50"],
    };
 
@@ -139,9 +169,9 @@ export class TechDefinitions {
    // };
    B6: ITechDefinition = {
       position: { x: 4, y: 0 },
-      name: () => t(L.TechRocketArtillery),
       requires: ["B1"],
-      unlockBuildings: ["AC76A"],
+      name: () => t(L.TechTwinMount),
+      unlockBuildings: ["AC76x2"],
    };
    B7: ITechDefinition = {
       position: { x: 4, y: 1 },
@@ -155,12 +185,11 @@ export class TechDefinitions {
       name: () => t(L.TechEchoShield),
       unlockBuildings: ["MS2A"],
    };
-
    B9: ITechDefinition = {
       position: { x: 5, y: 0 },
-      name: () => t(L.TechBacklineDamage),
       requires: ["B6"],
-      unlockBuildings: ["AC76B"],
+      name: () => t(L.TechRocketArtillery),
+      unlockBuildings: ["AC76A"],
    };
    B10: ITechDefinition = {
       position: { x: 5, y: 1 },
@@ -188,7 +217,7 @@ export class TechDefinitions {
    };
    C2: ITechDefinition = {
       position: { x: 6, y: 1 },
-      name: () => t(L.TechBuffDispel),
+      name: () => t(L.MediumRailCannon),
       requires: ["B9", "B10"],
       unlockBuildings: ["RC100"],
    };
@@ -246,6 +275,85 @@ export class TechDefinitions {
       name: () => t(L.TechWeaponDisarm),
       requires: ["C8"],
       unlockBuildings: ["MS3B"],
+   };
+
+   D1: ITechDefinition = {
+      position: { x: 9, y: 0 },
+      name: () => t(L.TechHeavyRailCannon),
+      requires: ["C9"],
+      unlockBuildings: ["RC150"],
+   };
+
+   D2: ITechDefinition = {
+      position: { x: 9, y: 1 },
+      name: () => t(L.TechLaserCorruptor),
+      requires: ["C9", "C10"],
+      unlockBuildings: ["LA2"],
+   };
+
+   D3: ITechDefinition = {
+      position: { x: 9, y: 2 },
+      name: () => t(L.TechFPVDrone),
+      requires: ["C10", "C11"],
+      unlockBuildings: ["FD1"],
+   };
+
+   // D4: ITechDefinition = {
+   //    position: { x: 9, y: 3 },
+   //    name: () => "",
+   //    requires: [],
+   // };
+
+   D5: ITechDefinition = {
+      position: { x: 10, y: 0 },
+      name: () => t(L.TechReactiveRegen),
+      requires: ["D1"],
+      unlockBuildings: ["RC150A"],
+   };
+
+   D6: ITechDefinition = {
+      position: { x: 10, y: 1 },
+      name: () => t(L.TechLaserCorruptor),
+      requires: ["D2"],
+      unlockBuildings: ["LA2A"],
+   };
+
+   D7: ITechDefinition = {
+      position: { x: 10, y: 2 },
+      name: () => t(L.TechExplosiveDrone),
+      requires: ["D3"],
+      unlockBuildings: ["FD1A"],
+   };
+
+   D8: ITechDefinition = {
+      position: { x: 10, y: 3 },
+      name: () => t(L.TechFailsafeRegen),
+      requires: ["D3"],
+      unlockBuildings: ["MS4"],
+   };
+
+   D9: ITechDefinition = {
+      position: { x: 11, y: 0 },
+      name: () => "",
+      requires: [],
+   };
+
+   D10: ITechDefinition = {
+      position: { x: 11, y: 1 },
+      name: () => "",
+      requires: [],
+   };
+
+   D11: ITechDefinition = {
+      position: { x: 11, y: 2 },
+      name: () => "",
+      requires: [],
+   };
+
+   D12: ITechDefinition = {
+      position: { x: 11, y: 3 },
+      name: () => "",
+      requires: [],
    };
 
    // ////////// R1 //////////

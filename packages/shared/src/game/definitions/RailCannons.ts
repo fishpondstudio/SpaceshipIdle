@@ -34,28 +34,6 @@ export const RC50: IBuildingDefinition = {
    element: "Sc",
 };
 
-export const RC100: IBuildingDefinition = {
-   ...RailCannonBaseProps,
-   pet: () => t(L.Corsac),
-   code: CodeNumber.RC,
-   buildingFlag: BuildingFlag.CanTarget,
-   damagePct: 0.75,
-   fireCooldown: 1.5,
-   // ability: {
-   //    timing: AbilityTiming.OnHit,
-   //    range: AbilityRange.Single,
-   //    effect: "ReduceDamage",
-   //    flag: AbilityFlag.AffectedByDamageMultiplier,
-   //    value: (building, level, multipliers) => {
-   //       const def = Config.Buildings[building] as IBuildingDefinition;
-   //       const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
-   //       return (damage * (1 - def.damagePct)) / 1;
-   //    },
-   //    duration: (building, level) => 1,
-   // },
-   element: "Ni",
-};
-
 export const RC50A: IBuildingDefinition = {
    ...RailCannonBaseProps,
    pet: () => t(L.Culpeo),
@@ -96,6 +74,28 @@ export const RC50B: IBuildingDefinition = {
    element: "Zr",
 };
 
+export const RC100: IBuildingDefinition = {
+   ...RailCannonBaseProps,
+   pet: () => t(L.Corsac),
+   code: CodeNumber.RC,
+   buildingFlag: BuildingFlag.CanTarget,
+   damagePct: 0.75,
+   fireCooldown: 1.5,
+   // ability: {
+   //    timing: AbilityTiming.OnHit,
+   //    range: AbilityRange.Single,
+   //    effect: "ReduceDamage",
+   //    flag: AbilityFlag.AffectedByDamageMultiplier,
+   //    value: (building, level, multipliers) => {
+   //       const def = Config.Buildings[building] as IBuildingDefinition;
+   //       const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
+   //       return (damage * (1 - def.damagePct)) / 1;
+   //    },
+   //    duration: (building, level) => 1,
+   // },
+   element: "Ni",
+};
+
 export const RC100A: IBuildingDefinition = {
    ...RailCannonBaseProps,
    pet: () => t(L.Sechuran),
@@ -116,7 +116,16 @@ export const RC100A: IBuildingDefinition = {
    element: "Ga",
 };
 
-export const RC100B: IBuildingDefinition = {
+export const RC150: IBuildingDefinition = {
+   ...RailCannonBaseProps,
+   pet: () => t(L.Grayfox),
+   code: CodeNumber.RC,
+   buildingFlag: BuildingFlag.CanTarget,
+   fireCooldown: 1.5,
+   element: "Ge",
+};
+
+export const RC150A: IBuildingDefinition = {
    ...RailCannonBaseProps,
    pet: () => t(L.Grayfox),
    code: CodeNumber.RC,

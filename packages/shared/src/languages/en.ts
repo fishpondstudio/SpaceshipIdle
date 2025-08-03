@@ -709,4 +709,8 @@ export const EN = {
    TabCatalyst: "Catalyst",
    TabBooster: "Booster",
    TabElement: "Element",
+   MediumRailCannon: "Medium Rail Cannon",
+   TechHeavyRailCannon: "Heavy Rail Cannon",
+   TechExplosiveDrone: "Explosive Drone",
+   TechTwinMount: "Twin Mount",
 };

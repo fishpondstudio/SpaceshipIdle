@@ -123,26 +123,6 @@ export const AC76A: IBuildingDefinition = {
       duration: (building, level) => 1,
    },
 };
-export const AC76B: IBuildingDefinition = {
-   ...AutocannonBaseProps,
-   pet: () => t(L.Serval),
-   code: CodeNumber.AC,
-   buildingFlag: BuildingFlag.CanTarget,
-   damagePct: 0.75,
-   ability: {
-      timing: AbilityTiming.OnHit,
-      range: AbilityRange.Rear,
-      effect: "TickKineticDamage",
-      flag: AbilityFlag.AffectedByDamageMultiplier,
-      value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IBuildingDefinition;
-         const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
-         return (damage * (1 - def.damagePct)) / 2.5;
-      },
-      duration: (building, level) => 5,
-   },
-   element: "P",
-};
 export const AC130: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Bobcat),

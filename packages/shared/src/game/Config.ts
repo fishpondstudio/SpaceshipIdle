@@ -6,7 +6,7 @@ import { ShipDesigns } from "./definitions/ShipDesign";
 import { type StatusEffect, StatusEffects } from "./definitions/StatusEffect";
 import { type ShipClass, type Tech, TechDefinitions } from "./definitions/TechDefinitions";
 import { techColumnToShipClass } from "./logic/TechLogic";
-import type { ElementSymbol } from "./PeriodicTable";
+import { type ElementSymbol, PeriodicTable } from "./PeriodicTable";
 
 console.assert(sizeOf(Buildings) < MaxBattleTick);
 const BuildingId = Object.fromEntries(Object.entries(Buildings).map(([b, _], i) => [b, i])) as Record<Building, number>;
@@ -37,6 +37,11 @@ function initConfig(): void {
          statusEffects.delete(def.ability.effect);
       }
       if (def.element) {
+         if (Config.Elements[def.element]) {
+            console.error(
+               `Element ${def.element} are used by multiple buildings: ${Config.Elements[def.element]} and ${building}`,
+            );
+         }
          Config.Elements[def.element] = building;
       }
    });
@@ -62,6 +67,10 @@ function initConfig(): void {
       console.log(
          "Unused Buildings",
          keysOf(Buildings).filter((b) => !Config.BuildingToTech[b]),
+      );
+      console.log(
+         "Unused Elements",
+         keysOf(PeriodicTable).filter((e) => !Config.Elements[e]),
       );
    }
 }

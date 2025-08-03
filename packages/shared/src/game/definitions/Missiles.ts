@@ -224,3 +224,22 @@ export const MS3B: IBuildingDefinition = {
    },
    element: "Sr",
 };
+
+export const MS4: IBuildingDefinition = {
+   ...MissileBaseProps,
+   pet: () => t(L.Dove),
+   code: CodeNumber.MS,
+   buildingFlag: BuildingFlag.CanTarget,
+   damagePct: 0.9,
+   damageType: DamageType.Explosive,
+   fireCooldown: 4.5,
+   element: "Sr",
+   ability: {
+      timing: AbilityTiming.OnFire,
+      range: AbilityRange.Single,
+      effect: "FailsafeRegen",
+      flag: AbilityFlag.None,
+      value: (building, level) => 0,
+      duration: (building, level) => 5,
+   },
+};
