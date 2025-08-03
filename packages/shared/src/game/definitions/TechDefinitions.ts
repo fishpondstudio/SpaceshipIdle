@@ -51,23 +51,23 @@ export const ShipClass = {
    } as IShipClassDefinition,
    Cruiser: {
       name: () => t(L.TechCruiser),
-      range: [12, 14],
-      index: 4,
+      range: [15, 17],
+      index: 5,
    } as IShipClassDefinition,
    Battlecruiser: {
       name: () => t(L.TechBattlecruiser),
-      range: [15, 17],
-      index: 5,
+      range: [18, 20],
+      index: 6,
    } as IShipClassDefinition,
    Dreadnought: {
       name: () => t(L.TechDreadnought),
-      range: [15, 17],
-      index: 5,
+      range: [21, 23],
+      index: 7,
    } as IShipClassDefinition,
    Carrier: {
       name: () => t(L.TechCarrier),
-      range: [18, 20],
-      index: 6,
+      range: [24, 26],
+      index: 8,
    } as IShipClassDefinition,
 } as const satisfies Record<string, IShipClassDefinition>;
 
@@ -352,6 +352,78 @@ export class TechDefinitions {
 
    D12: ITechDefinition = {
       position: { x: 11, y: 3 },
+      name: () => "",
+      requires: [],
+   };
+
+   E1: ITechDefinition = {
+      position: { x: 12, y: 0 },
+      name: () => "",
+      requires: [],
+   };
+
+   E2: ITechDefinition = {
+      position: { x: 12, y: 1 },
+      name: () => "",
+      requires: [],
+   };
+
+   E3: ITechDefinition = {
+      position: { x: 12, y: 2 },
+      name: () => "",
+      requires: [],
+   };
+
+   // E4: ITechDefinition = {
+   //    position: { x: 12, y: 3 },
+   //    name: () => "",
+   //    requires: [],
+   // };
+
+   E5: ITechDefinition = {
+      position: { x: 13, y: 0 },
+      name: () => "",
+      requires: [],
+   };
+
+   E6: ITechDefinition = {
+      position: { x: 13, y: 1 },
+      name: () => "",
+      requires: [],
+   };
+
+   E7: ITechDefinition = {
+      position: { x: 13, y: 2 },
+      name: () => "",
+      requires: [],
+   };
+
+   E8: ITechDefinition = {
+      position: { x: 13, y: 3 },
+      name: () => "",
+      requires: [],
+   };
+
+   E9: ITechDefinition = {
+      position: { x: 14, y: 0 },
+      name: () => "",
+      requires: [],
+   };
+
+   E10: ITechDefinition = {
+      position: { x: 14, y: 1 },
+      name: () => "",
+      requires: [],
+   };
+
+   E11: ITechDefinition = {
+      position: { x: 14, y: 2 },
+      name: () => "",
+      requires: [],
+   };
+
+   E12: ITechDefinition = {
+      position: { x: 14, y: 3 },
       name: () => "",
       requires: [],
    };
