@@ -1,14 +1,22 @@
 import { containsNonASCII } from "@spaceship-idle/shared/src/utils/Helper";
-import { BitmapText, Container, type IBitmapTextStyle, type ITextStyle, type ObservablePoint, Text } from "pixi.js";
+import {
+   BitmapText,
+   Container,
+   type IBitmapTextStyle,
+   type ITextStyle,
+   type ObservablePoint,
+   Text,
+   type TextStyle,
+} from "pixi.js";
 
 export class UnicodeText extends Container {
    private _text?: Text;
    private _bitmapText?: BitmapText;
 
-   constructor(text: string, style: Partial<IBitmapTextStyle>) {
+   constructor(text: string, style: Partial<IBitmapTextStyle>, fallbackStyle: Partial<TextStyle>) {
       super();
       if (containsNonASCII(text)) {
-         const textStyle: Partial<ITextStyle> = { ...style };
+         const textStyle: Partial<ITextStyle> = { ...fallbackStyle, ...style };
          if (style.tint) {
             if (typeof style.tint === "number") {
                textStyle.fill = style.tint;
