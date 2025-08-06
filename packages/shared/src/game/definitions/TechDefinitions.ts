@@ -306,7 +306,7 @@ export class TechDefinitions {
 
    D5: ITechDefinition = {
       position: { x: 10, y: 0 },
-      name: () => t(L.TechReactiveRegen),
+      name: () => t(L.TechProactiveRegen),
       requires: ["D1"],
       unlockBuildings: ["RC150A"],
    };
@@ -327,15 +327,16 @@ export class TechDefinitions {
 
    D8: ITechDefinition = {
       position: { x: 10, y: 3 },
-      name: () => t(L.TechFailsafeRegen),
       requires: ["D3"],
+      name: () => t(L.TechFailsafeRegen),
       unlockBuildings: ["MS4"],
    };
 
    D9: ITechDefinition = {
       position: { x: 11, y: 0 },
-      name: () => "",
       requires: [],
+      name: () => "",
+      unlockBuildings: [],
    };
 
    D10: ITechDefinition = {

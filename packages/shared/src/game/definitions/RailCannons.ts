@@ -145,25 +145,25 @@ export const RC150A: IBuildingDefinition = {
    element: "Ge",
 };
 
-export const RC100C: IBuildingDefinition = {
-   ...RailCannonBaseProps,
-   pet: () => t(L.Redfox),
-   code: CodeNumber.RC,
-   buildingFlag: BuildingFlag.CanTarget,
-   damagePct: 0.5,
-   fireCooldown: 1.5,
-   ability: {
-      timing: AbilityTiming.OnFire,
-      range: AbilityRange.Single,
-      effect: "FailsafeRegen",
-      flag: AbilityFlag.None,
-      value: (building, level) => 0,
-      duration: (building, level) => 1,
-   },
-   element: "Tc",
-};
+// export const RC100C: IBuildingDefinition = {
+//    ...RailCannonBaseProps,
+//    pet: () => t(L.Redfox),
+//    code: CodeNumber.RC,
+//    buildingFlag: BuildingFlag.CanTarget,
+//    damagePct: 0.5,
+//    fireCooldown: 1.5,
+//    ability: {
+//       timing: AbilityTiming.OnFire,
+//       range: AbilityRange.Single,
+//       effect: "FailsafeRegen",
+//       flag: AbilityFlag.None,
+//       value: (building, level) => 0,
+//       duration: (building, level) => 1,
+//    },
+//    element: "Tc",
+// };
 
-export const RC100D: IBuildingDefinition = {
+export const RC150B: IBuildingDefinition = {
    ...RailCannonBaseProps,
    pet: () => t(L.Bushdog),
    code: CodeNumber.RC,
