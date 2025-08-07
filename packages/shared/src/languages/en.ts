@@ -623,7 +623,7 @@ export const EN = {
    ConsumptionTooltip: "This module consumes <b>%% %%</b> per second",
    ProductionTooltip: "This module produces <b>%% %%</b> per second (base: <b>%%</b>, multiplier <b>x%%</b>)",
    AmmoConsumptionTooltip: "Ammo is consumed when this weapon fires. Dividing this value by fire cooldown will show per second equivalent. <b>It only affects the displayed value and does not affect the actual consumption</b>",
-   ResearchX: "Research: %%",
+   SourceResearchX: "Research: %%",
    TimeToGenerateFullQuantum: "Estimated Time to Generate <b>%% XP</b> for Quantum <b>%%</b> (%% Left)",
    NonProductionBuildingXPHTML: "This building <b>does not</b> generate without XP multiplier. With the multiplier, the XP it generates is based on the value of the resource it produces",
    BoostModule: "Boost Module",
@@ -713,4 +713,9 @@ export const EN = {
    TechHeavyRailCannon: "Heavy Rail Cannon",
    TechExplosiveDrone: "Explosive Drone",
    TechTwinMount: "Twin Mount",
+   NoAvailableBoosters: "No Available Boosters",
+   ResearchVerb: "Research",
+   YouHaveToActivateThePreviousCatalystFirst: "You have to activate the previous catalyst first",
+   CatalystActivated: "Catalyst Activated",
+   CatalystNotActivated: "Catalyst Not Activated",
 };

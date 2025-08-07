@@ -1,11 +1,11 @@
-import { keysOf, shuffle, type Tile } from "../../utils/Helper";
+import { keysOf, shuffle } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
-import type { Building } from "../definitions/Buildings";
 import { Catalyst, CatalystCat, type ICatalystDefinition } from "../definitions/Catalyst";
 import { CatalystPerCat } from "../definitions/Constant";
 import type { GameState } from "../GameState";
 import type { Multipliers } from "./IMultiplier";
-import type { RuntimeTile } from "./RuntimeTile";
+import type { Runtime } from "./Runtime";
+import type { RuntimeStat } from "./RuntimeStat";
 
 export function getRequirement(def: ICatalystDefinition): string {
    return t(L.CatalystBuildXDifferentY, def.amount, def.trait());
@@ -32,19 +32,35 @@ export function getNextCatalystCat(cat: CatalystCat): CatalystCat | null {
    return keys[idx + 1] as CatalystCat;
 }
 
+export function getPreviousCatalystCat(cat: CatalystCat): CatalystCat | null {
+   const keys = keysOf(CatalystCat);
+   const idx = keys.indexOf(cat);
+   if (idx === -1) return null;
+   if (idx === 0) return null;
+   return keys[idx - 1] as CatalystCat;
+}
+
+export function canChooseCatalystCat(cat: CatalystCat, rt: Runtime): boolean {
+   const previousCat = getPreviousCatalystCat(cat);
+   if (!previousCat) return true;
+   const selected = rt.left.catalysts.get(previousCat)?.selected;
+   if (!selected) return false;
+   return rt.leftStat.isCatalystActivated(selected);
+}
+
 export function rollCatalyst(cat: CatalystCat): Catalyst[] {
    return shuffle(CatalystCat[cat].candidates.slice(0)).slice(0, CatalystPerCat);
 }
 
-export function tickCatalyst(getter: (tile: Tile) => RuntimeTile | undefined, gs: GameState): void {
-   const catalysts = new Map<Catalyst, { cat: CatalystCat; buildings: Set<Building>; tiles: Set<Tile> }>();
+export function tickCatalyst(gs: GameState, stat: RuntimeStat, runtime: Runtime): void {
+   stat.catalysts.clear();
    gs.catalysts.forEach((data, cat) => {
       if (data.selected) {
-         catalysts.set(data.selected, { cat, buildings: new Set(), tiles: new Set() });
+         stat.catalysts.set(data.selected, { cat, buildings: new Set(), tiles: new Set() });
       }
    });
    gs.tiles.forEach((tileData, tile) => {
-      catalysts.forEach((set, catalyst) => {
+      stat.catalysts.forEach((set, catalyst) => {
          const def = Catalyst[catalyst];
          if (def.filter(tileData.type)) {
             set.buildings.add(tileData.type);
@@ -52,11 +68,11 @@ export function tickCatalyst(getter: (tile: Tile) => RuntimeTile | undefined, gs
          }
       });
    });
-   catalysts.forEach((data, catalyst) => {
+   stat.catalysts.forEach((data, catalyst) => {
       const def = Catalyst[catalyst];
       if (data.buildings.size >= def.amount) {
          data.tiles.forEach((tile) => {
-            const rs = getter(tile);
+            const rs = runtime.get(tile);
             if (rs) {
                if ("hp" in def.multipliers) {
                   rs.hpMultiplier.add(def.multipliers.hp, t(L.CatXCatalystSource, CatalystCat[data.cat].name()));

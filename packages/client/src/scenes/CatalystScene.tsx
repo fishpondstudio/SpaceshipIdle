@@ -1,5 +1,5 @@
 import type { ColorSource } from "pixi.js";
-import { CatalystFullScreen } from "../ui/CalalystFullScreen";
+import { CatalystFullScreen } from "../ui/CatalystFullScreen";
 import { setFullScreen } from "../ui/FullScreen";
 import { Scene } from "../utils/SceneManager";
 

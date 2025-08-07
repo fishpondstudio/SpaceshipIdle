@@ -194,6 +194,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                         </div>
                      );
                   })}
+                  {G.save.current.boosters.size === 0 ? <div className="f1">{t(L.NoAvailableBoosters)}</div> : null}
                </Popover.Dropdown>
             </Popover>
          </div>

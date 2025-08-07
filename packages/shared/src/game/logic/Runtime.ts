@@ -291,10 +291,10 @@ export class Runtime {
                return;
             }
             if (multipliers.hp) {
-               rs.hpMultiplier.add(multipliers.hp, t(L.ResearchX, getTechName(tech)));
+               rs.hpMultiplier.add(multipliers.hp, t(L.SourceResearchX, getTechName(tech)));
             }
             if (multipliers.damage) {
-               rs.damageMultiplier.add(multipliers.damage, t(L.ResearchX, getTechName(tech)));
+               rs.damageMultiplier.add(multipliers.damage, t(L.SourceResearchX, getTechName(tech)));
             }
          });
          const element = Config.Buildings[rs.data.type].element;
@@ -314,8 +314,8 @@ export class Runtime {
             // }
          }
       });
-      tickCatalyst(this.get.bind(this), this.left);
-      tickCatalyst(this.get.bind(this), this.right);
+      tickCatalyst(this.left, this.leftStat, this);
+      tickCatalyst(this.right, this.rightStat, this);
       tickBooster(this.left, this);
       tickBooster(this.right, this);
    }

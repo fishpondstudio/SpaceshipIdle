@@ -1,10 +1,15 @@
 import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import type { Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
+import { ShipClass, type Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
+import { getTotalElementShards } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { checkTechPrerequisites, getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
+import {
+   checkTechPrerequisites,
+   getTechName,
+   techColumnToShipClass,
+} from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { formatNumber, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { TechTreeScene } from "../scenes/TechTreeScene";
@@ -20,6 +25,9 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const def = Config.Tech[tech];
    const canUnlock = checkTechPrerequisites(tech, G.save.current);
+   const shipClass = techColumnToShipClass(def.position.x);
+   const requiredShards = ShipClass[shipClass].shards;
+   const currentShards = getTotalElementShards(G.save.current);
    return (
       <SidebarComp
          title={
@@ -33,10 +41,24 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
             <>
                <TitleComp>{t(L.Prerequisites)}</TitleComp>
                <div className="divider my10" />
+               {requiredShards > 0 ? (
+                  <div className="row mx10 my5">
+                     <div className="f1">
+                        <span className="text-space">{requiredShards}</span> {t(L.PermanentElementShards)}
+                     </div>
+                     {currentShards >= requiredShards ? (
+                        <div className="mi text-green">check_circle</div>
+                     ) : (
+                        <div className="mi text-red">cancel</div>
+                     )}
+                  </div>
+               ) : null}
                {def.requires.map((req) => {
                   return (
                      <div className="row mx10 my5" key={req}>
-                        <div className="f1">{getTechName(req)}</div>
+                        <div className="f1">
+                           {t(L.ResearchVerb)} <span className="text-space">{getTechName(req)}</span>
+                        </div>
                         {G.save.current.unlockedTech.has(req) ? (
                            <div className="mi text-green">check_circle</div>
                         ) : (
@@ -53,7 +75,8 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                         onClick={() => {
                            if (
                               !checkTechPrerequisites(tech, G.save.current) ||
-                              getAvailableQuantum(G.save.current) <= 0
+                              getAvailableQuantum(G.save.current) <= 0 ||
+                              currentShards < requiredShards
                            ) {
                               return;
                            }
@@ -62,7 +85,9 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                            GameStateUpdated.emit();
                            G.scene.enqueue(TechTreeScene, (t) => t.refresh());
                         }}
-                        disabled={!canUnlock || getAvailableQuantum(G.save.current) <= 0}
+                        disabled={
+                           !canUnlock || getAvailableQuantum(G.save.current) <= 0 || currentShards < requiredShards
+                        }
                      >
                         <div>{t(L.Research)}</div>
                         <div className="f1" />

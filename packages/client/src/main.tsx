@@ -4,7 +4,7 @@ import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 import { initDevtools } from "@pixi/devtools";
 import { PixelPerfect } from "@spaceship-idle/shared/src/game/definitions/Constant.ts";
-import { Application, settings } from "pixi.js";
+import { Application } from "pixi.js";
 import { createRoot } from "react-dom/client";
 import { bootstrap } from "./Bootstrap.ts";
 import "./css/main.css";
@@ -91,7 +91,6 @@ app.ticker.maxFPS = 60;
 
 if (PixelPerfect) {
    (app.view as HTMLCanvasElement).style.imageRendering = "pixelated";
-   settings.ROUND_PIXELS = true;
 }
 
 if (import.meta.env.DEV) {

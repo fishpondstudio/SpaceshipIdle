@@ -13,7 +13,7 @@ export class UnicodeText extends Container {
    private _text?: Text;
    private _bitmapText?: BitmapText;
 
-   constructor(text: string, style: Partial<IBitmapTextStyle>, fallbackStyle: Partial<TextStyle>) {
+   constructor(text: string, style: Partial<IBitmapTextStyle> = {}, fallbackStyle: Partial<TextStyle> = {}) {
       super();
       if (containsNonASCII(text)) {
          const textStyle: Partial<ITextStyle> = { ...fallbackStyle, ...style };

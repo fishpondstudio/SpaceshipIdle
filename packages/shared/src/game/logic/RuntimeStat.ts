@@ -1,7 +1,8 @@
-import { forEach, safeAdd } from "../../utils/Helper";
+import { forEach, safeAdd, type Tile } from "../../utils/Helper";
 import { RingBuffer } from "../../utils/RingBuffer";
 import { DamageType } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
+import { Catalyst, type CatalystCat } from "../definitions/Catalyst";
 import type { Resource } from "../definitions/Resource";
 import type { GameState } from "../GameState";
 
@@ -9,6 +10,7 @@ export class RuntimeStat {
    rawDamages: RingBuffer<Record<DamageType, number>> = new RingBuffer(100);
    actualDamages: RingBuffer<Record<DamageType, number>> = new RingBuffer(100);
    previousResources: RingBuffer<Map<Resource, number>> = new RingBuffer(100);
+   catalysts = new Map<Catalyst, { cat: CatalystCat; buildings: Set<Building>; tiles: Set<Tile> }>();
 
    currentHp = 0;
    maxHp = 0;
@@ -119,5 +121,11 @@ export class RuntimeStat {
 
       this.currentHp = hp;
       this.maxHp = maxHp + this.destroyedHp;
+   }
+
+   public isCatalystActivated(catalyst: Catalyst): boolean {
+      const data = this.catalysts.get(catalyst);
+      if (!data) return false;
+      return data.buildings.size >= Catalyst[catalyst].amount;
    }
 }

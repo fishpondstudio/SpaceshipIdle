@@ -4,7 +4,12 @@ import { Catalyst, CatalystCat } from "@spaceship-idle/shared/src/game/definitio
 import { CatalystPerCat } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { getEffect, getNextCatalystCat, getRequirement } from "@spaceship-idle/shared/src/game/logic/CatalystLogic";
+import {
+   canChooseCatalystCat,
+   getEffect,
+   getNextCatalystCat,
+   getRequirement,
+} from "@spaceship-idle/shared/src/game/logic/CatalystLogic";
 import { classNames, keysOf, shuffle } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useCallback, useEffect, useRef } from "react";
@@ -62,6 +67,22 @@ export function CatalystFullScreen(): React.ReactNode {
                   <div className={styles.title}>{CatalystCat[cat].name()}</div>
                   {data.choices.map((choice) => {
                      const def = Catalyst[choice];
+                     let status: React.ReactNode = null;
+                     if (data.selected === choice) {
+                        if (G.runtime.leftStat.isCatalystActivated(choice)) {
+                           status = (
+                              <Tooltip label={t(L.CatalystActivated)}>
+                                 <div className="mi text-green">check_circle</div>
+                              </Tooltip>
+                           );
+                        } else {
+                           status = (
+                              <Tooltip label={t(L.CatalystNotActivated)}>
+                                 <div className="mi text-red">do_not_disturb_on</div>
+                              </Tooltip>
+                           );
+                        }
+                     }
                      return (
                         <div
                            key={choice}
@@ -76,36 +97,46 @@ export function CatalystFullScreen(): React.ReactNode {
                                  alignSelf: "stretch",
                               }}
                            >
-                              <Tooltip label={<RenderHTML html={t(L.SelectCatalystTooltipHTML)} />}>
-                                 <div
-                                    className="mi lg pointer"
-                                    onClick={() => {
-                                       if (data.selected) {
-                                          playError();
-                                          return;
-                                       }
-                                       playClick();
-                                       data.selected = choice;
-                                       const next = getNextCatalystCat(cat);
-                                       if (next) {
-                                          G.save.current.catalysts.set(next, {
-                                             choices: shuffle(CatalystCat[next].candidates.slice(0)).slice(
-                                                0,
-                                                CatalystPerCat,
-                                             ),
-                                             selected: null,
-                                          });
-                                       }
-                                       GameStateUpdated.emit();
-                                    }}
-                                 >
-                                    {data.selected === choice ? "check_box" : "check_box_outline_blank"}
-                                 </div>
-                              </Tooltip>
+                              {canChooseCatalystCat(cat, G.runtime) ? (
+                                 <Tooltip label={<RenderHTML html={t(L.SelectCatalystTooltipHTML)} />}>
+                                    <div
+                                       className="mi lg pointer"
+                                       onClick={() => {
+                                          if (data.selected) {
+                                             playError();
+                                             return;
+                                          }
+                                          playClick();
+                                          data.selected = choice;
+                                          const next = getNextCatalystCat(cat);
+                                          if (next) {
+                                             G.save.current.catalysts.set(next, {
+                                                choices: shuffle(CatalystCat[next].candidates.slice(0)).slice(
+                                                   0,
+                                                   CatalystPerCat,
+                                                ),
+                                                selected: null,
+                                             });
+                                          }
+                                          GameStateUpdated.emit();
+                                       }}
+                                    >
+                                       {data.selected === choice ? "check_box" : "check_box_outline_blank"}
+                                    </div>
+                                 </Tooltip>
+                              ) : (
+                                 <Tooltip label={t(L.YouHaveToActivateThePreviousCatalystFirst)}>
+                                    <div className="mi">lock</div>
+                                 </Tooltip>
+                              )}
                            </div>
                            <div className="f1" style={{ width: 400 }}>
                               <div className="m10">
-                                 <div className="text-lg">{getRequirement(def)}</div>
+                                 <div className="row">
+                                    <div className="text-lg">{getRequirement(def)}</div>
+                                    {status}
+                                    <div className="f1" />
+                                 </div>
                                  <div className="text-sm text-dimmed">{getEffect(def)}</div>
                               </div>
                               <div className="f1">

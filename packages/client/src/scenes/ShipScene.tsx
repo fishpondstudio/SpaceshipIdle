@@ -2,14 +2,13 @@ import { computePosition, flip, offset, shift } from "@floating-ui/core";
 import { notifications } from "@mantine/notifications";
 import { SmoothGraphics } from "@pixi/graphics-smooth";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { AbilityTiming, abilityTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
+import { abilityTarget, AbilityTiming } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
-import type { ShipClass } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated, type Tiles } from "@spaceship-idle/shared/src/game/GameState";
 import {
-   GridSize,
    getSize,
+   GridSize,
    MaxX,
    MaxY,
    posToTile,
@@ -43,7 +42,6 @@ import {
    shipAABB,
 } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
-import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import {
    createTile,
    flatMapOf,
@@ -89,7 +87,6 @@ export class ShipScene extends Scene {
    private _tileContainer: Container;
    private _projectileContainer: Container;
    private _grid: Container;
-   private _shipClass: ShipClass | undefined;
 
    public static TooltipPool: ObjectPool<UnicodeText>;
    public static ShieldPool: ObjectPool<Sprite>;
@@ -98,6 +95,8 @@ export class ShipScene extends Scene {
    private _selectedTiles: Set<Tile> = new Set();
    private _highlightedTiles: Set<Tile> = new Set();
    private _graphics: SmoothGraphics;
+
+   private _blueprintDirty = true;
 
    backgroundColor(): ColorSource {
       return 0x000000;
@@ -357,11 +356,10 @@ export class ShipScene extends Scene {
 
    private renderBlueprint(): void {
       if (PaintMode) {
-         const shipClass = getShipClass(G.save.current);
-         if (shipClass === this._shipClass) {
+         if (!this._blueprintDirty) {
             return;
          }
-         this._shipClass = shipClass;
+         this._blueprintDirty = false;
          destroyAllChildren(this._grid);
          const meAABB = shipAABB(PaintMode, Side.Left);
          for (let y = meAABB.min.y; y <= meAABB.max.y; y++) {
@@ -372,11 +370,10 @@ export class ShipScene extends Scene {
             }
          }
       } else {
-         const shipClass = getShipClass(G.save.current);
-         if (shipClass === this._shipClass) {
+         if (!this._blueprintDirty) {
             return;
          }
-         this._shipClass = shipClass;
+         this._blueprintDirty = false;
          destroyAllChildren(this._grid);
          getShipBlueprint(G.save.current).forEach((tile) => {
             const s = this._grid.addChild(new Sprite(this.context.textures.get("Misc/Frame")));
