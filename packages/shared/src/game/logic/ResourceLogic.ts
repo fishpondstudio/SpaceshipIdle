@@ -2,7 +2,6 @@ import { clamp, inverse } from "../../utils/Helper";
 import type { Resource } from "../definitions/Resource";
 import type { GameState } from "../GameState";
 import { getTotalBuildingCost } from "./BuildingLogic";
-import { getTotalElementLevels } from "./ElementLogic";
 
 export function resourceValueOf(resources: Map<Resource, number>): number {
    let result = 0;
@@ -15,11 +14,8 @@ export function resourceValueOf(resources: Map<Resource, number>): number {
 export const StartQuantum = 10;
 
 export function getQualifiedQuantum(gs: GameState): number {
-   return Number.POSITIVE_INFINITY;
-}
-
-export function getQuantumFromPermanentElement(gs: GameState): number {
-   return Math.floor(getTotalElementLevels(gs) / 10) * 5;
+   const currentXP = gs.resources.get("XP") ?? 0;
+   return xpToQuantum(currentXP);
 }
 
 const qToSVLookup = new Map<number, number>();

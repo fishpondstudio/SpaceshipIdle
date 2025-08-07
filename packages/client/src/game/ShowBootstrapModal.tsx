@@ -8,7 +8,7 @@ export function showBootstrapModal(save: SaveGame, isNewPlayer: boolean): void {
    if (isNewPlayer) {
       showModal({
          children: <NewPlayerModal />,
-         size: "md",
+         size: "lg",
          title: t(L.WelcomeToSpaceshipIdle),
          dismiss: false,
       });

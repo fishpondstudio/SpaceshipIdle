@@ -98,7 +98,11 @@ export function CatalystFullScreen(): React.ReactNode {
                               }}
                            >
                               {canChooseCatalystCat(cat, G.runtime) ? (
-                                 <Tooltip label={<RenderHTML html={t(L.SelectCatalystTooltipHTML)} />}>
+                                 <Tooltip
+                                    multiline
+                                    maw="30vw"
+                                    label={<RenderHTML html={t(L.SelectCatalystTooltipHTML)} />}
+                                 >
                                     <div
                                        className="mi lg pointer"
                                        onClick={() => {
