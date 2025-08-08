@@ -62,6 +62,15 @@ export function totalDiscoveredElements(gs: GameState): number {
    return amount;
 }
 
+export function hasUnassignedElements(gs: GameState): boolean {
+   for (const [symbol, data] of gs.elements) {
+      if (data.amount > 0) {
+         return true;
+      }
+   }
+   return false;
+}
+
 export function getElementUpgradeCost(upgradeTo: number): number {
    return fib(upgradeTo);
 }

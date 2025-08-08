@@ -82,9 +82,12 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
             <button className="f1 btn" onClick={downgrade}>
                -1
             </button>
+         </div>
+         <div className="h10" />
+         <div className="mx10">
             <Tooltip label={t(L.DistributeEvenlyDesc)}>
                <button
-                  className="btn"
+                  className="btn w100"
                   style={{ flex: 2 }}
                   onClick={() => {
                      const resources = G.save.current.resources;
@@ -123,9 +126,46 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                      GameStateUpdated.emit();
                   }}
                >
-                  {t(L.DistributeEvenly)}
+                  Distribute Existing Upgrades Evenly
                </button>
             </Tooltip>
+         </div>
+         <div className="h10" />
+         <div className="mx10">
+            <button
+               className="btn w100"
+               style={{ flex: 2 }}
+               onClick={() => {
+                  for (const tile of tiles) {
+                     const data = G.save.current.tiles.get(tile);
+                     if (data) {
+                        if (data.level > 1) {
+                           const xp = getTotalBuildingCost(data.type, data.level, 1);
+                           mapSafeAdd(G.save.current.resources, "XPUsed", -xp);
+                           data.level = 1;
+                        }
+                     }
+                  }
+
+                  let shouldContinue = true;
+                  while (shouldContinue) {
+                     shouldContinue = false;
+                     for (const tile of tiles) {
+                        const data = G.save.current.tiles.get(tile);
+                        if (data) {
+                           if (trySpend(getBuildingCost(data.type, data.level + 1), G.save.current)) {
+                              ++data.level;
+                              shouldContinue = true;
+                           }
+                        }
+                     }
+                  }
+
+                  GameStateUpdated.emit();
+               }}
+            >
+               Invest All XP and Redistribute Evenly
+            </button>
          </div>
       </SidebarComp>
    );

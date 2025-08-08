@@ -79,22 +79,6 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                <div className="row">
                   <div className="f1">{t(L.HPMultiplier)}</div>
                   <div
-                     className={classNames("mi", thisRun.amount <= 0 ? "text-disabled" : null)}
-                     onClick={() => {
-                        if (thisRun.amount > 0) {
-                           playClick();
-                           --thisRun.amount;
-                           ++thisRun.hp;
-                           GameStateUpdated.emit();
-                        } else {
-                           playError();
-                        }
-                     }}
-                  >
-                     add_box
-                  </div>
-                  <div className="text-center text-mono">{formatNumber(thisRun.hp)}</div>
-                  <div
                      className={classNames("mi", thisRun.hp <= 0 ? "text-disabled" : null)}
                      onClick={() => {
                         if (thisRun.hp > 0) {
@@ -109,16 +93,14 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                   >
                      indeterminate_check_box
                   </div>
-               </div>
-               <div className="row">
-                  <div className="f1">{t(L.DamageMultiplier)}</div>
+                  <div className="text-center text-mono">{formatNumber(thisRun.hp)}</div>
                   <div
                      className={classNames("mi", thisRun.amount <= 0 ? "text-disabled" : null)}
                      onClick={() => {
                         if (thisRun.amount > 0) {
                            playClick();
                            --thisRun.amount;
-                           ++thisRun.damage;
+                           ++thisRun.hp;
                            GameStateUpdated.emit();
                         } else {
                            playError();
@@ -127,7 +109,9 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                   >
                      add_box
                   </div>
-                  <div className="text-center text-mono">{formatNumber(thisRun.damage)}</div>
+               </div>
+               <div className="row">
+                  <div className="f1">{t(L.DamageMultiplier)}</div>
                   <div
                      className={classNames("mi", thisRun.damage <= 0 ? "text-disabled" : null)}
                      onClick={() => {
@@ -142,6 +126,22 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                      }}
                   >
                      indeterminate_check_box
+                  </div>
+                  <div className="text-center text-mono">{formatNumber(thisRun.damage)}</div>
+                  <div
+                     className={classNames("mi", thisRun.amount <= 0 ? "text-disabled" : null)}
+                     onClick={() => {
+                        if (thisRun.amount > 0) {
+                           playClick();
+                           --thisRun.amount;
+                           ++thisRun.damage;
+                           GameStateUpdated.emit();
+                        } else {
+                           playError();
+                        }
+                     }}
+                  >
+                     add_box
                   </div>
                </div>
             </>

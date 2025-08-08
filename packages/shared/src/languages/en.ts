@@ -721,4 +721,5 @@ export const EN = {
    Unassigned: "%% Unassigned",
    XShards: "%% Shards",
    TotalXp: "Total XP",
+   YouHaveUnassignedElementTooltip: "You have unassigned element(s) this run. Assign them to boost a multiplier of your choice",
 };

@@ -1,7 +1,8 @@
-import { Progress, SegmentedControl, Tooltip } from "@mantine/core";
+import { Indicator, Progress, SegmentedControl, Tooltip } from "@mantine/core";
 import { GameState, GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
+import { hasUnassignedElements } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, hasFlag, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -165,6 +166,7 @@ function SceneSwitcher(): React.ReactNode {
                left: `calc(50vw - ${sceneWidth / 2}px)`,
                border: "1px solid var(--mantine-color-default-border)",
             }}
+            styles={{ label: { overflow: "visible" } }}
             onChange={(value) => {
                playClick();
                hideSidebar();
@@ -200,11 +202,28 @@ function SceneSwitcher(): React.ReactNode {
                { label: t(L.TabResearch), value: Scenes.TechTreeScene },
                { label: t(L.TabCatalyst), value: Scenes.CatalystScene },
                { label: t(L.TabBooster), value: Scenes.BoosterScene },
-               { label: t(L.TabElement), value: Scenes.ElementsScene },
+               {
+                  label: <ElementTabLabel />,
+                  value: Scenes.ElementsScene,
+               },
             ]}
          />
       </>
    );
+}
+
+function ElementTabLabel(): React.ReactNode {
+   refreshOnTypedEvent(GameStateUpdated);
+   if (hasUnassignedElements(G.save.current)) {
+      return (
+         <Tooltip multiline maw="30vw" label={t(L.YouHaveUnassignedElementTooltip)}>
+            <Indicator color="red" processing>
+               {t(L.TabElement)}
+            </Indicator>
+         </Tooltip>
+      );
+   }
+   return t(L.TabElement);
 }
 
 export function BottomPanel(): React.ReactNode {
