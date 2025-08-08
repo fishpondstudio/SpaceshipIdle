@@ -1,8 +1,10 @@
 import { notifications } from "@mantine/notifications";
-import { PeriodicTable, type ElementSymbol } from "@spaceship-idle/shared/src/game/PeriodicTable";
+import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { hasPermanentElementUpgrade } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
+import { type ElementSymbol, PeriodicTable } from "@spaceship-idle/shared/src/game/PeriodicTable";
 import { capitalize } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { BitmapText, Container, Sprite } from "pixi.js";
+import { BitmapText, Container, type IDestroyOptions, Sprite } from "pixi.js";
 import { Fonts } from "../assets";
 import { ElementModal } from "../ui/ElementModal";
 import { playClick, playError } from "../ui/Sound";
@@ -12,13 +14,13 @@ import { RedCircle } from "./RedCircle";
 
 export class ElementCard extends Container {
    private _frame: Sprite;
-   private _redCircle: RedCircle | undefined;
+   private _redCircle: RedCircle;
+   private _content: Container;
 
    constructor(
       private readonly _elementSymbol: ElementSymbol,
       private readonly _tint: number = 0xffffff,
       private readonly _alpha: number = 0.5,
-      private readonly _hide = false,
    ) {
       super();
 
@@ -28,11 +30,9 @@ export class ElementCard extends Container {
       this._frame.alpha = this._alpha;
       this._frame.tint = this._tint;
 
-      if (this._hide) {
-         return;
-      }
+      this._content = this.addChild(new Container());
 
-      const symbol = this.addChild(
+      const symbol = this._content.addChild(
          new BitmapText(element.symbol, {
             fontName: Fonts.SpaceshipIdle,
             fontSize: 96,
@@ -42,7 +42,7 @@ export class ElementCard extends Container {
       symbol.anchor.set(0.5, 0.5);
       symbol.position.set(100, 75);
 
-      const name = this.addChild(
+      const name = this._content.addChild(
          new BitmapText(element.name(), {
             fontName: Fonts.SpaceshipIdle,
             fontSize: 24,
@@ -56,7 +56,7 @@ export class ElementCard extends Container {
          --name.fontSize;
       }
 
-      const number = this.addChild(
+      const number = this._content.addChild(
          new BitmapText(element.atomicNumber, {
             fontName: Fonts.SpaceshipIdle,
             fontSize: 36,
@@ -66,7 +66,7 @@ export class ElementCard extends Container {
       number.anchor.set(0, 0.5);
       number.position.set(25, 25);
 
-      const mass = this.addChild(
+      const mass = this._content.addChild(
          new BitmapText(element.atomicMass, {
             fontName: Fonts.SpaceshipIdle,
             fontSize: 24,
@@ -76,7 +76,7 @@ export class ElementCard extends Container {
       mass.anchor.set(1, 0.5);
       mass.position.set(190, 20);
 
-      const description = this.addChild(
+      const description = this._content.addChild(
          new BitmapText(`${capitalize(element.groupBlock)}    ${capitalize(element.standardState)}`, {
             fontName: Fonts.SpaceshipIdle,
             fontSize: 16,
@@ -91,20 +91,38 @@ export class ElementCard extends Container {
       description.anchor.set(0.5, 0.5);
       description.position.set(90, 180);
 
-      this._redCircle = this.addChild(new RedCircle());
+      this._redCircle = this._content.addChild(new RedCircle());
       this._redCircle.position.set(190, 10);
       this._redCircle.toggle(false);
    }
 
-   toggleRedCircle(show: boolean) {
-      this._redCircle?.toggle(show);
+   startListening() {
+      GameStateUpdated.on(this.update.bind(this));
+      this.update();
+   }
+
+   update() {
+      const permanent = G.save.current.permanentElements.get(this._elementSymbol);
+      const thisRun = G.save.current.elements.get(this._elementSymbol);
+      if (permanent && hasPermanentElementUpgrade(permanent)) {
+         this._redCircle?.toggle(true);
+      } else if (thisRun && thisRun.amount > 0) {
+         this._redCircle?.toggle(true);
+      } else {
+         this._redCircle?.toggle(false);
+      }
+      this._content.visible = !!permanent || !!thisRun;
+   }
+
+   destroy(options?: IDestroyOptions | boolean): void {
+      super.destroy(options);
    }
 
    toggleSelect(selected: boolean) {
       if (selected) {
          this._frame.texture = G.textures.get("Misc/ElementFrameSelected")!;
          this._frame.tint = 0xfdcb6e;
-         if (this._hide) {
+         if (!this._content.visible) {
             playError();
             notifications.show({
                message: t(L.ElementNotDiscoveredYet),

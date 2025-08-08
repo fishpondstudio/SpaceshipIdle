@@ -275,6 +275,10 @@
    color: var(--mantine-color-dark-2);
 }
 
+.text-disabled {
+   color: var(--mantine-color-dark-3);
+}
+
 .text-space {
    color: var(--mantine-color-space-5);
 }

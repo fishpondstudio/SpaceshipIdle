@@ -48,7 +48,7 @@
 }
 
 .chat-message-viewport {
-   max-height: 50vh;
+   max-height: 33vh;
    text-shadow: 1px 1px 0 #000;
    font-size: var(--mantine-font-size-sm);
    mask-image: linear-gradient(rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 100%);

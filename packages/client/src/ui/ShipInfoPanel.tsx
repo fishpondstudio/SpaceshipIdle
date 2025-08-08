@@ -169,7 +169,7 @@ export function ShipInfoPanel(): React.ReactNode {
             )}
             hp={mReduceOf(G.save.current.permanentElements, (prev, curr, value) => prev + value.hp, 0)}
             damage={mReduceOf(G.save.current.permanentElements, (prev, curr, value) => prev + value.damage, 0)}
-            sv={sv}
+            sv={state.resources.get("XP") ?? 0}
             requiredSV={elementToXP(state.discoveredElements + 1)}
          />
          <div className="divider vertical" />
@@ -238,6 +238,10 @@ function _ElementComp({
                <div className="row">
                   <div className="f1">{t(L.XPRequiredForNextElement)}</div>
                   <div>{formatNumber(requiredSV)}</div>
+               </div>{" "}
+               <div className="row">
+                  <div className="f1">{t(L.TotalXp)}</div>
+                  <div>{formatNumber(sv)}</div>
                </div>
                <div className="row">
                   <div className="f1">{t(L.ProgressTowardsNextElement)}</div>

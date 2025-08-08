@@ -7,7 +7,7 @@ import { fib, getUnlockedBuildings } from "./BuildingLogic";
 import { calcSpaceshipXP, quantumToXP, resourceValueOf, StartQuantum, xpToQuantum } from "./ResourceLogic";
 
 export function tickElement(gs: GameState): void {
-   const expectedElements = xpToElement(calcSpaceshipXP(gs));
+   const expectedElements = xpToElement(gs.resources.get("XP") ?? 0);
    while (gs.discoveredElements < expectedElements) {
       gs.discoveredElements++;
       const candidates = getUnlockedElements(gs);

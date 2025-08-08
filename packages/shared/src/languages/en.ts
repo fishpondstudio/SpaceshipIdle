@@ -641,7 +641,7 @@ export const EN = {
    TutorialQuantumContentV2: "Quantum can be used to <b>either unlock a tech, or build a new module</b>. You get quantum by completing qualifier battles.",
    TutorialQualifierBattleV2: "Winning a qualifier battle will give you <b>+10 quantum</b>, and losing a qualifier battle will give you <b>+5 quantum</b>. Your qualified quantum determines the <b>max XP</b> you can invest in your spaceship.",
    TutorialAutoBattleContentV2: "Battles are automatic and your spaceship are matched against an even opponent from another player. If your spaceship performs well, it will enter the matchmaking pool.",
-   XPRequiredForNextElement: "Spaceship XP for Next Element",
+   XPRequiredForNextElement: "XP for Next Element",
    ProgressTowardsNextElement: "Progress Towards Next Element",
    PermanentElementLevels: "Permanent Element Levels",
    PermanentElementShards: "Permanent Element Shards",
@@ -718,4 +718,7 @@ export const EN = {
    YouHaveToActivateThePreviousCatalystFirst: "You have to activate the previous catalyst first",
    CatalystActivated: "Catalyst Activated",
    CatalystNotActivated: "Catalyst Not Activated",
+   Unassigned: "%% Unassigned",
+   XShards: "%% Shards",
+   TotalXp: "Total XP",
 };

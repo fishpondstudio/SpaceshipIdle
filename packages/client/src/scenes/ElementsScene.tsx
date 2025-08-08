@@ -1,8 +1,6 @@
-import { hasPermanentElementUpgrade } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import type { ElementSymbol } from "@spaceship-idle/shared/src/game/PeriodicTable";
 import { AABB } from "@spaceship-idle/shared/src/utils/Vector2";
 import type { ColorSource, FederatedPointerEvent } from "pixi.js";
-import { G } from "../utils/Global";
 import { type ISceneContext, Scene } from "../utils/SceneManager";
 import { ElementCard } from "./ElementCard";
 
@@ -39,26 +37,19 @@ export class ElementsScene extends Scene {
       PeriodicTableLayout.forEach((row, y) => {
          row.forEach((element, x) => {
             if (element) {
-               const hide = !G.save.current.permanentElements.has(element) && !G.save.current.elements.has(element);
-               const e = this.viewport.addChild(new ElementCard(element, 0xffffff, 0.5, hide));
+               const e = this.viewport.addChild(new ElementCard(element, 0xffffff, 0.5));
                e.position.set((x + 2) * 220 + 10, (y + 2) * 220 + 10);
-               const inventory = G.save.current.permanentElements.get(element);
-               if (inventory && hasPermanentElementUpgrade(inventory)) {
-                  e.toggleRedCircle(true);
-               } else {
-                  e.toggleRedCircle(false);
-               }
                this._elementAABB.set(element, {
                   aabb: new AABB({ x: (x + 2) * 220, y: (y + 2) * 220 }, { x: (x + 3) * 220, y: (y + 3) * 220 }),
                   container: e,
                });
+               e.startListening();
             }
          });
       });
    }
 
    override onClicked(e: FederatedPointerEvent): void {
-      console.log(e.screen);
       const position = this.viewport.screenToWorld(e.screen);
       for (const [element, { aabb, container }] of this._elementAABB) {
          if (aabb.contains(position)) {

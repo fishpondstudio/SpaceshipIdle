@@ -35,7 +35,7 @@ export function addElementThisRun(gs: GameState, element: ElementSymbol, amount:
    if (inventory) {
       inventory.amount += amount;
    } else {
-      gs.permanentElements.set(element, { amount, hp: 0, damage: 0 });
+      gs.elements.set(element, { amount, hp: 0, damage: 0 });
    }
 }
 

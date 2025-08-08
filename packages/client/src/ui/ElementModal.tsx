@@ -15,15 +15,15 @@ import {
    PeriodicTable,
    StandardStateLabel,
 } from "@spaceship-idle/shared/src/game/PeriodicTable";
+import { classNames, formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { ElementImageComp } from "../game/ElementImage";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { BuildingInfoComp } from "./components/BuildingInfoComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
-import { XPIcon } from "./components/SVGIcons";
 import { TextureComp } from "./components/TextureComp";
-import { playClick } from "./Sound";
+import { playClick, playError } from "./Sound";
 
 export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
@@ -71,24 +71,90 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                <div className="title mx0">
                   <div>{t(L.ElementThisRun)}</div>
                   <div className="f1" />
-                  <div>{getBuildingName(b)}</div>
+                  <div className={classNames(thisRun.amount > 0 ? "text-red" : null)}>
+                     {t(L.Unassigned, formatNumber(thisRun.amount))}
+                  </div>
                </div>
                <div className="divider my10 mx-15" />
-               <div className="row"></div>
+               <div className="row">
+                  <div className="f1">{t(L.HPMultiplier)}</div>
+                  <div
+                     className={classNames("mi", thisRun.amount <= 0 ? "text-disabled" : null)}
+                     onClick={() => {
+                        if (thisRun.amount > 0) {
+                           playClick();
+                           --thisRun.amount;
+                           ++thisRun.hp;
+                           GameStateUpdated.emit();
+                        } else {
+                           playError();
+                        }
+                     }}
+                  >
+                     add_box
+                  </div>
+                  <div className="text-center text-mono">{formatNumber(thisRun.hp)}</div>
+                  <div
+                     className={classNames("mi", thisRun.hp <= 0 ? "text-disabled" : null)}
+                     onClick={() => {
+                        if (thisRun.hp > 0) {
+                           playClick();
+                           --thisRun.hp;
+                           ++thisRun.amount;
+                           GameStateUpdated.emit();
+                        } else {
+                           playError();
+                        }
+                     }}
+                  >
+                     indeterminate_check_box
+                  </div>
+               </div>
+               <div className="row">
+                  <div className="f1">{t(L.DamageMultiplier)}</div>
+                  <div
+                     className={classNames("mi", thisRun.amount <= 0 ? "text-disabled" : null)}
+                     onClick={() => {
+                        if (thisRun.amount > 0) {
+                           playClick();
+                           --thisRun.amount;
+                           ++thisRun.damage;
+                           GameStateUpdated.emit();
+                        } else {
+                           playError();
+                        }
+                     }}
+                  >
+                     add_box
+                  </div>
+                  <div className="text-center text-mono">{formatNumber(thisRun.damage)}</div>
+                  <div
+                     className={classNames("mi", thisRun.damage <= 0 ? "text-disabled" : null)}
+                     onClick={() => {
+                        if (thisRun.damage > 0) {
+                           playClick();
+                           --thisRun.damage;
+                           ++thisRun.amount;
+                           GameStateUpdated.emit();
+                        } else {
+                           playError();
+                        }
+                     }}
+                  >
+                     indeterminate_check_box
+                  </div>
+               </div>
             </>
          ) : null}
          {permanent ? (
             <>
                <div className="divider my10 mx-15" />
-               <div className="title mx0">{t(L.PermanentElement)}</div>
-               <div className="divider my10 mx-15" />
-               <div className="row">
-                  <div className="f1">{t(L.Shards)}</div>
-                  <div>{permanent.amount}</div>
+               <div className="title mx0">
+                  <div className="f1">{t(L.PermanentElement)}</div>
+                  <div>{t(L.XShards, formatNumber(permanent.amount))}</div>
                </div>
-               <div className="divider dashed mx-15 my10"></div>
+               <div className="divider my10 mx-15" />
                <div className="row g5">
-                  <div className="mi">handyman</div>
                   <div className="f1">{t(L.HPMultiplier)}</div>
                   <Tooltip label={t(L.PlusXProductionMultiplierForX, permanent.hp, getBuildingName(b))}>
                      <div className="mi sm text-dimmed">info</div>
@@ -137,7 +203,6 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                </div>
                <div className="divider dashed mx-15 my10"></div>
                <div className="row g5">
-                  <XPIcon />
                   <div className="f1">{t(L.DamageMultiplier)}</div>
                   <Tooltip label={t(L.PlusXXPMultiplierForX, permanent.damage, getBuildingName(b))}>
                      <div className="mi sm text-dimmed">info</div>
