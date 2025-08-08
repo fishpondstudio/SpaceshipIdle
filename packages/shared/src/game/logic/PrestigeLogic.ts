@@ -6,7 +6,9 @@ import { getUnlockedElements, shardsFromShipValue } from "./ElementLogic";
 
 export function prestige(save: SaveGame): void {
    for (const [element, amount] of save.current.elements) {
-      addElementShard(save.current, element, amount);
+      addElementShard(save.current, element, amount.hp);
+      addElementShard(save.current, element, amount.damage);
+      addElementShard(save.current, element, amount.amount);
    }
    rollElementShards(save.current, shardsFromShipValue(save.current));
    const old = save.current;
@@ -24,7 +26,16 @@ export function addElementShard(gs: GameState, element: ElementSymbol, amount: n
    if (inventory) {
       inventory.amount += amount;
    } else {
-      gs.permanentElements.set(element, { amount, production: 0, xp: 0 });
+      gs.permanentElements.set(element, { amount, hp: 0, damage: 0 });
+   }
+}
+
+export function addElementThisRun(gs: GameState, element: ElementSymbol, amount: number): void {
+   const inventory = gs.elements.get(element);
+   if (inventory) {
+      inventory.amount += amount;
+   } else {
+      gs.permanentElements.set(element, { amount, hp: 0, damage: 0 });
    }
 }
 

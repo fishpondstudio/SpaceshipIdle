@@ -4,10 +4,11 @@ import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { ElementPermanentColor, ElementThisRunColor } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { type ElementChoice, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { getElementUpgradeCost } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
-import { addElementShard } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
+import { addElementShard, addElementThisRun } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
 import { type ElementSymbol, PeriodicTable } from "@spaceship-idle/shared/src/game/PeriodicTable";
-import { mapSafeAdd, removeFrom } from "@spaceship-idle/shared/src/utils/Helper";
+import { removeFrom } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useEffect } from "react";
 import { ElementImageComp } from "../game/ElementImage";
@@ -17,7 +18,6 @@ import { Easing } from "../utils/actions/Easing";
 import { G } from "../utils/Global";
 import { hideModal, showModal } from "../utils/ToggleModal";
 import "./ChooseElementModal.css";
-import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { playUpgrade } from "./Sound";
 
 export function ChooseElementModal({
@@ -55,7 +55,7 @@ export function ChooseElementModal({
                            addElementShard(G.save.current, symbol, 1);
                            GameOptionUpdated.emit();
                         } else {
-                           mapSafeAdd(G.save.current.elements, symbol, 1);
+                           addElementThisRun(G.save.current, symbol, 1);
                            GameStateUpdated.emit();
                         }
                      }
@@ -88,10 +88,10 @@ function ElementOption({
    }
    const [opened, { open }] = useDisclosure(false);
    useEffect(() => open(), [open]);
-   const currentProductionMultiplier = G.save.current.permanentElements.get(symbol)?.production ?? 0;
-   const currentXpMultiplier = G.save.current.permanentElements.get(symbol)?.xp ?? 0;
+   const currentHPMultiplier = G.save.current.permanentElements.get(symbol)?.hp ?? 0;
+   const currentDamageMultiplier = G.save.current.permanentElements.get(symbol)?.damage ?? 0;
    const currentAmount = G.save.current.permanentElements.get(symbol)?.amount ?? 0;
-
+   const thisRun = G.save.current.elements.get(symbol);
    return (
       <Transition mounted={opened} transition="pop" duration={1000} timingFunction="ease" keepMounted>
          {(transitionStyle) => (
@@ -157,27 +157,29 @@ function ElementOption({
                   <>
                      <div className="row">
                         <div className="f1">{t(L.ThisRun)}</div>
-                        <div>{G.save.current.elements.get(symbol) ?? 0}</div>
+                        <div>
+                           {thisRun?.hp ?? 0} + {thisRun?.damage ?? 0} ({thisRun?.amount ?? 0})
+                        </div>
                      </div>
                      <div className="divider mx-15 my5" />
                   </>
                )}
                <div className="row">
-                  <div className="f1">{t(L.ProductionMultiplier)}</div>
-                  <div>{currentProductionMultiplier}</div>
+                  <div className="f1">{t(L.HPMultiplier)}</div>
+                  <div>{currentHPMultiplier}</div>
                </div>
                <div className="row">
-                  <div className="f1">{t(L.XPMultiplier)}</div>
-                  <div>{currentXpMultiplier}</div>
+                  <div className="f1">{t(L.DamageMultiplier)}</div>
+                  <div>{currentDamageMultiplier}</div>
                </div>
                <div className="row">
                   <div className="f1">{t(L.Shards)}</div>
                   <div>
-                     {currentAmount} / {getElementUpgradeCost(currentProductionMultiplier + 1)}
+                     {currentAmount} / {getElementUpgradeCost(currentHPMultiplier + 1)}
                   </div>
                </div>
                <div className="h5" />
-               <Progress value={(100 * currentAmount) / getElementUpgradeCost(currentProductionMultiplier + 1)} />
+               <Progress value={(100 * currentAmount) / getElementUpgradeCost(currentHPMultiplier + 1)} />
             </div>
          )}
       </Transition>

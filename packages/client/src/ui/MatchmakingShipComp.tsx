@@ -43,7 +43,7 @@ export function MatchmakingShipComp({ ship }: { ship: GameState }): React.ReactN
          <div className="divider mx-10 my5 dashed" />
          <div className="f1">{t(L.ElementThisRun)}</div>
          <div className="text-sm">
-            {mMapOf(ship.elements, (element, amount) => {
+            {mMapOf(ship.elements, (element, data) => {
                const building = Config.Elements[element];
                if (!building) {
                   return null;
@@ -53,7 +53,9 @@ export function MatchmakingShipComp({ ship }: { ship: GameState }): React.ReactN
                      <div>
                         {element} <span className="text-dimmed">({getBuildingName(building)})</span>
                      </div>
-                     <div className="f1 text-right">{amount}</div>
+                     <div className="f1 text-right">
+                        {data.hp} + {data.damage} ({data.amount})
+                     </div>
                   </div>
                );
             })}

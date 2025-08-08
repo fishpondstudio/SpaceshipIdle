@@ -1,24 +1,9 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { DefaultShortcuts, GameOption } from "@spaceship-idle/shared/src/game/GameOption";
-import { GameState, type Inventory, type SaveGame } from "@spaceship-idle/shared/src/game/GameState";
-import { revertElementUpgrade } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
+import { GameState, type SaveGame } from "@spaceship-idle/shared/src/game/GameState";
 import { migrateBuildingsAndResources } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
-import type { ElementSymbol } from "@spaceship-idle/shared/src/game/PeriodicTable";
 
 export function migrateSave(save: SaveGame): void {
-   if ("elements" in save.options) {
-      const old = save.options.elements as Map<ElementSymbol, Inventory>;
-      save.current.permanentElements = new Map();
-      for (const [symbol, inventory] of old) {
-         save.current.permanentElements.set(symbol, {
-            amount: inventory.amount,
-            production: 0,
-            xp: inventory.level,
-         });
-      }
-      delete save.options.elements;
-   }
    if ("elementChoices" in save.options) {
       // @ts-expect-error
       save.current.permanentElementChoices = save.options.elementChoices;
@@ -38,16 +23,6 @@ export function migrateSave(save: SaveGame): void {
    save.current = Object.assign(new GameState(), save.current);
    save.options = Object.assign(new GameOption(), save.options);
    save.options.shortcuts = Object.assign({}, DefaultShortcuts, save.options.shortcuts);
-
-   save.current.permanentElements.forEach((data, symbol) => {
-      const building = Config.Elements[symbol];
-      if (building) {
-         const def = Config.Buildings[building];
-         if (!(WeaponKey in def)) {
-            revertElementUpgrade(symbol, "xp", save.current);
-         }
-      }
-   });
 
    save.current.tiles.forEach((data, tile) => {
       if (!Config.Buildings[data.type]) {

@@ -46,7 +46,7 @@ export const Tutorial: ITutorial[] = [
       name: () => t(L.TutorialDiscoverXElement, 1),
       desc: () => t(L.TutorialDiscover1ElementDescHTML),
       progress: (gs) => {
-         return [mReduceOf(gs.elements, (prev, k, v) => prev + v, 0), 1];
+         return [mReduceOf(gs.elements, (prev, k, v) => prev + v.hp + v.damage, 0), 1];
       },
    },
    {

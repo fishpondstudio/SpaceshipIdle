@@ -1,7 +1,7 @@
 import { shuffle } from "../../utils/Helper";
 import { Config } from "../Config";
 import { DefaultElementChoices, QuantumToElement } from "../definitions/Constant";
-import type { GameState, PermanentElementData } from "../GameState";
+import type { ElementData, GameState } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { fib, getUnlockedBuildings } from "./BuildingLogic";
 import { calcSpaceshipXP, quantumToXP, resourceValueOf, StartQuantum, xpToQuantum } from "./ResourceLogic";
@@ -54,8 +54,10 @@ export function totalDiscoveredElements(gs: GameState): number {
    for (const choice of gs.elementChoices) {
       amount += choice.stackSize;
    }
-   for (const [symbol, amt] of gs.elements) {
-      amount += amt;
+   for (const [symbol, data] of gs.elements) {
+      amount += data.amount;
+      amount += data.hp;
+      amount += data.damage;
    }
    return amount;
 }
@@ -79,7 +81,7 @@ export function getTotalElementUpgradeCost(upgradeTo: number): number {
    return total;
 }
 
-export function canUpgradeElement(symbol: ElementSymbol, type: "production" | "xp", gs: GameState): boolean {
+export function canUpgradeElement(symbol: ElementSymbol, type: keyof ElementData, gs: GameState): boolean {
    const inventory = gs.permanentElements.get(symbol);
    if (!inventory) {
       return false;
@@ -87,7 +89,7 @@ export function canUpgradeElement(symbol: ElementSymbol, type: "production" | "x
    return inventory.amount >= getElementUpgradeCost(inventory[type] + 1);
 }
 
-export function tryUpgradeElement(symbol: ElementSymbol, type: "production" | "xp", gs: GameState): boolean {
+export function tryUpgradeElement(symbol: ElementSymbol, type: keyof ElementData, gs: GameState): boolean {
    const inventory = gs.permanentElements.get(symbol);
    if (!inventory) {
       return false;
@@ -100,13 +102,15 @@ export function tryUpgradeElement(symbol: ElementSymbol, type: "production" | "x
    return true;
 }
 
-export function hasPermanentElementUpgrade(data: PermanentElementData): boolean {
-   return (
-      data.amount >= getElementUpgradeCost(data.production + 1) || data.amount >= getElementUpgradeCost(data.xp + 1)
-   );
+export function hasPermanentElementUpgrade(data: ElementData): boolean {
+   return data.amount >= getElementUpgradeCost(data.hp + 1) || data.amount >= getElementUpgradeCost(data.damage + 1);
 }
 
-export function revertElementUpgrade(symbol: ElementSymbol, type: "production" | "xp", gs: GameState): void {
+export function revertElementUpgrade(
+   symbol: ElementSymbol,
+   type: keyof Omit<ElementData, "amount">,
+   gs: GameState,
+): void {
    const inventory = gs.permanentElements.get(symbol);
    if (!inventory) {
       return;
@@ -124,8 +128,8 @@ export function revertElementUpgrade(symbol: ElementSymbol, type: "production" |
 export function getTotalElementShards(gs: GameState): number {
    let total = 0;
    for (const [symbol, amount] of gs.permanentElements) {
-      total += getTotalElementUpgradeCost(amount.production);
-      total += getTotalElementUpgradeCost(amount.xp);
+      total += getTotalElementUpgradeCost(amount.hp);
+      total += getTotalElementUpgradeCost(amount.damage);
       total += amount.amount;
    }
    return total;
@@ -134,7 +138,7 @@ export function getTotalElementShards(gs: GameState): number {
 export function getTotalElementKinds(gs: GameState): number {
    let total = 0;
    for (const [symbol, amount] of gs.permanentElements) {
-      if (amount.amount > 0 || amount.production > 0 || amount.xp > 0) {
+      if (amount.amount > 0 || amount.hp > 0 || amount.damage > 0) {
          total += 1;
       }
    }
@@ -144,8 +148,8 @@ export function getTotalElementKinds(gs: GameState): number {
 export function getTotalElementLevels(gs: GameState): number {
    let total = 0;
    for (const [symbol, amount] of gs.permanentElements) {
-      total += amount.production;
-      total += amount.xp;
+      total += amount.hp;
+      total += amount.damage;
    }
    return total;
 }

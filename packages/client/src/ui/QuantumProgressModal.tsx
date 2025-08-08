@@ -1,12 +1,10 @@
 import { ScrollArea, Tooltip } from "@mantine/core";
-import { Config } from "@spaceship-idle/shared/src/game/Config";
 import {
    BattleLossQuantum,
    BattleWinQuantum,
    ElementThisRunColor,
 } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { getQualifiedQuantum, getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { clamp, formatNumber, mMapOf, range } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -45,10 +43,9 @@ export function QuantumProgressModal(): React.ReactNode {
                <ElementImageComp symbol={symbol} w="50" color={ElementThisRunColor} />
                <div className="f1">
                   <div className="text-lg">
-                     <span className="text-dimmed">{amount}x</span> {symbol}
-                  </div>
-                  <div className="text-sm text-dimmed">
-                     {t(L.PlusXProductionMultiplierForX, amount, getBuildingName(Config.Elements[symbol]))}
+                     <span className="text-dimmed">
+                        {amount.hp} + {amount.damage} ({amount.amount})
+                     </span>
                   </div>
                </div>
             </div>

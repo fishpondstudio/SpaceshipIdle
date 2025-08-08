@@ -300,18 +300,23 @@ export class Runtime {
          const element = Config.Buildings[rs.data.type].element;
          if (element) {
             const thisRun = gs.elements.get(element) ?? 0;
-            if (thisRun > 0) {
-               rs.hpMultiplier.add(thisRun, t(L.ElementAmountThisRun, element));
-               rs.damageMultiplier.add(thisRun, t(L.ElementAmountThisRun, element));
+            if (thisRun) {
+               if (thisRun.hp > 0) {
+                  rs.hpMultiplier.add(thisRun.hp, t(L.ElementAmountThisRun, element));
+               }
+               if (thisRun.damage > 0) {
+                  rs.damageMultiplier.add(thisRun.damage, t(L.ElementAmountThisRun, element));
+               }
             }
-            // const permanent = gs.permanentElements.get(element)?.production ?? 0;
-            // if (permanent > 0) {
-            //    rs.productionMultiplier.add(permanent, t(L.ElementPermanent, element));
-            // }
-            // const xp = gs.permanentElements.get(element)?.xp ?? 0;
-            // if (xp > 0) {
-            //    rs.xpMultiplier.add(xp, t(L.ElementPermanent, element));
-            // }
+            const permanent = gs.permanentElements.get(element);
+            if (permanent) {
+               if (permanent.hp > 0) {
+                  rs.hpMultiplier.add(permanent.hp, t(L.ElementPermanent, element));
+               }
+               if (permanent.damage > 0) {
+                  rs.damageMultiplier.add(permanent.damage, t(L.ElementPermanent, element));
+               }
+            }
          }
       });
       tickCatalyst(this.left, this.leftStat, this);

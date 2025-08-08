@@ -32,9 +32,9 @@ export class GameState {
    win = 0;
    loss = 0;
    discoveredElements = 0;
-   elements = new Map<ElementSymbol, number>();
+   elements = new Map<ElementSymbol, ElementData>();
    elementChoices: ElementChoice[] = [];
-   permanentElements = new Map<ElementSymbol, PermanentElementData>();
+   permanentElements = new Map<ElementSymbol, ElementData>();
    permanentElementChoices: ElementChoice[] = [];
    catalysts = new Map<CatalystCat, { choices: Catalyst[]; selected: Catalyst | null }>([
       ["C1", { choices: rollCatalyst("C1"), selected: null }],
@@ -46,15 +46,10 @@ export class GameState {
    offlineTime = 0;
 }
 
-export interface Inventory {
+export interface ElementData {
+   damage: number;
+   hp: number;
    amount: number;
-   level: number;
-}
-
-export interface PermanentElementData {
-   amount: number;
-   production: number;
-   xp: number;
 }
 
 const HASH_SEED = BigInt(0xdeadbeef);

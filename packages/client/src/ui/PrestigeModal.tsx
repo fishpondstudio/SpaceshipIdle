@@ -13,7 +13,7 @@ import { RenderHTML } from "./components/RenderHTMLComp";
 import { PrestigeReason } from "./PrestigeReason";
 
 export function PrestigeModal({ reason }: { reason: PrestigeReason }): React.ReactNode {
-   const fromThisRun = mReduceOf(G.save.current.elements, (prev, k, v) => prev + v, 0);
+   const fromThisRun = mReduceOf(G.save.current.elements, (prev, k, v) => prev + v.hp + v.damage + v.amount, 0);
    const extraShards = shardsFromShipValue(G.save.current);
    return (
       <div className="m10">

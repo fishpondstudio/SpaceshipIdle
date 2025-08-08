@@ -162,9 +162,13 @@ export function ShipInfoPanel(): React.ReactNode {
             </Tooltip>
          </div>
          <ElementComp
-            thisRun={mReduceOf(G.save.current.elements, (prev, curr, value) => prev + value, 0)}
-            production={mReduceOf(G.save.current.permanentElements, (prev, curr, value) => prev + value.production, 0)}
-            xp={mReduceOf(G.save.current.permanentElements, (prev, curr, value) => prev + value.xp, 0)}
+            thisRun={mReduceOf(
+               G.save.current.elements,
+               (prev, curr, value) => prev + value.hp + value.damage + value.amount,
+               0,
+            )}
+            hp={mReduceOf(G.save.current.permanentElements, (prev, curr, value) => prev + value.hp, 0)}
+            damage={mReduceOf(G.save.current.permanentElements, (prev, curr, value) => prev + value.damage, 0)}
             sv={sv}
             requiredSV={elementToXP(state.discoveredElements + 1)}
          />
@@ -214,14 +218,14 @@ function playQuantumParticle(): void {
 
 function _ElementComp({
    thisRun,
-   production,
-   xp,
+   hp: production,
+   damage: xp,
    sv,
    requiredSV,
 }: {
    thisRun: number;
-   production: number;
-   xp: number;
+   hp: number;
+   damage: number;
    sv: number;
    requiredSV: number;
 }): React.ReactNode {
@@ -243,52 +247,54 @@ function _ElementComp({
                   <div className="f1">{t(L.ElementThisRun)}</div>
                   <div>{thisRun}</div>
                </div>
-               {mMapOf(G.save.current.elements, (symbol, amount) => {
+               {mMapOf(G.save.current.elements, (symbol, data) => {
                   const building = Config.Elements[symbol];
                   if (!building) return null;
                   return (
                      <div className="row" key={symbol}>
                         <div>{getBuildingName(building)}</div>
                         <div className="text-space">({symbol})</div>
-                        <div className="f1 text-right">{amount}</div>
+                        <div className="f1 text-right">
+                           {data.hp} + {data.damage} ({data.amount})
+                        </div>
                      </div>
                   );
                })}
                <div className="text-space row">
                   <div className="f1">
-                     {t(L.PermanentElement)} ({t(L.ProductionMultiplier)})
+                     {t(L.PermanentElement)} ({t(L.HPMultiplier)})
                   </div>
                   <div>{production}</div>
                </div>
                {mMapOf(G.save.current.permanentElements, (symbol, inv) => {
                   const building = Config.Elements[symbol];
                   if (!building) return null;
-                  if (inv.production <= 0) return null;
+                  if (inv.hp <= 0) return null;
                   return (
                      <div key={symbol} className="row g5">
                         <div>{getBuildingName(building)}</div>
                         <div className="text-space">({symbol})</div>
                         <div className="f1" />
-                        <div>{inv.production}</div>
+                        <div>{inv.hp}</div>
                      </div>
                   );
                })}
                <div className="text-space row">
                   <div className="f1">
-                     {t(L.PermanentElement)} ({t(L.XPMultiplier)})
+                     {t(L.PermanentElement)} ({t(L.DamageMultiplier)})
                   </div>
                   <div>{xp}</div>
                </div>
                {mMapOf(G.save.current.permanentElements, (symbol, inv) => {
                   const building = Config.Elements[symbol];
                   if (!building) return null;
-                  if (inv.xp <= 0) return null;
+                  if (inv.damage <= 0) return null;
                   return (
                      <div key={symbol} className="row g5">
                         <div>{getBuildingName(building)}</div>
                         <div className="text-space">({symbol})</div>
                         <div className="f1" />
-                        <div>{inv.xp}</div>
+                        <div>{inv.damage}</div>
                      </div>
                   );
                })}
@@ -324,8 +330,8 @@ const ElementComp = memo(
    _ElementComp,
    (prev, next) =>
       prev.thisRun === next.thisRun &&
-      prev.production === next.production &&
-      prev.xp === next.xp &&
+      prev.hp === next.hp &&
+      prev.damage === next.damage &&
       prev.sv === next.sv &&
       prev.requiredSV === next.requiredSV,
 );
