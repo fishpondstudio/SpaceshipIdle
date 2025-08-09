@@ -4,6 +4,7 @@ import { classNames, formatNumber, range } from "@spaceship-idle/shared/src/util
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo, useCallback } from "react";
 import { G } from "../utils/Global";
+import { RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
 import { playClick } from "./Sound";
 
@@ -15,7 +16,15 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
    return (
       <Menu position="bottom-start">
          <Menu.Target>
-            <Tooltip label={t(L.TimeWarpTooltip)}>
+            <Tooltip
+               multiline
+               maw="30vw"
+               label={
+                  <RenderHTML
+                     html={t(L.TimeWarpTooltipHTML, formatNumber(G.speed), formatNumber(gs.resources.get("Warp") ?? 0))}
+                  />
+               }
+            >
                <div className="block pointer" style={{ width: 85 }}>
                   <TextureComp
                      id="ship-info-warp"
@@ -39,7 +48,10 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
 function _WarpMenu({
    speed,
    onSpeedChange,
-}: { speed: number; onSpeedChange: (speed: number) => void }): React.ReactNode {
+}: {
+   speed: number;
+   onSpeedChange: (speed: number) => void;
+}): React.ReactNode {
    return (
       <Menu.Dropdown className="sf-frame">
          <Menu.Label>{t(L.WarpSpeed)}</Menu.Label>

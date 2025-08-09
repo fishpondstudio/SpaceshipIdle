@@ -2,6 +2,7 @@ import { clamp, inverse } from "../../utils/Helper";
 import type { Resource } from "../definitions/Resource";
 import type { GameState } from "../GameState";
 import { getTotalBuildingCost } from "./BuildingLogic";
+import { getShipBlueprint } from "./ShipLogic";
 
 export function resourceValueOf(resources: Map<Resource, number>): number {
    let result = 0;
@@ -13,9 +14,17 @@ export function resourceValueOf(resources: Map<Resource, number>): number {
 
 export const StartQuantum = 10;
 
-export function getQualifiedQuantum(gs: GameState): number {
+export function getTotalQuantum(gs: GameState): number {
    const currentXP = gs.resources.get("XP") ?? 0;
    return xpToQuantum(currentXP);
+}
+
+export function getMinimumQuantumForBattle(gs: GameState): number {
+   const bp = getShipBlueprint(gs);
+   return bp.length;
+}
+export function getMinimumSpaceshipXPForBattle(gs: GameState): number {
+   return quantumToXP(getMinimumQuantumForBattle(gs));
 }
 
 const qToSVLookup = new Map<number, number>();
@@ -70,5 +79,5 @@ export function getUsedQuantum(gs: GameState): number {
 }
 
 export function getAvailableQuantum(gs: GameState): number {
-   return getQualifiedQuantum(gs) - getUsedQuantum(gs);
+   return getTotalQuantum(gs) - getUsedQuantum(gs);
 }

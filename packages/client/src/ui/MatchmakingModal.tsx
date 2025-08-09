@@ -4,7 +4,7 @@ import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import {
    calcSpaceshipXP,
-   getQualifiedQuantum,
+   getTotalQuantum,
    getUsedQuantum,
    quantumToXP,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -29,7 +29,7 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
    const [isPracticeBattle, setIsPracticeBattle] = useState(!isQualifierBattle(G.save.current));
    const [score, hp, dps] = useMemo(() => calcShipScore(G.save.current), []);
    const [enemyScore, enemyHp, enemyDps] = useMemo(() => calcShipScore(enemy), [enemy]);
-   const quantumLimit = getQualifiedQuantum(G.save.current);
+   const quantumLimit = getTotalQuantum(G.save.current);
    return (
       <div className="m10">
          <div className="row">
@@ -123,7 +123,12 @@ function ShipStatComp({
    right,
    icon,
    tooltip,
-}: { left: number; right: number; icon: string; tooltip: React.ReactNode }): React.ReactNode {
+}: {
+   left: number;
+   right: number;
+   icon: string;
+   tooltip: React.ReactNode;
+}): React.ReactNode {
    const max = Math.max(left, right);
    const min = Math.min(left, right);
    return (

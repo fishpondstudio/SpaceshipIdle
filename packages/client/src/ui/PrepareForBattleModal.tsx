@@ -1,19 +1,17 @@
 import { getGradient, Tooltip, useMantineTheme } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import {
-   BattleLossQuantum,
-   BattleWinQuantum,
-   QualifierSpaceshipValuePercent,
-} from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { QualifierSpaceshipValuePercent } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import {
    calcSpaceshipXP,
-   getQualifiedQuantum,
+   getMinimumQuantumForBattle,
+   getMinimumSpaceshipXPForBattle,
    getUsedQuantum,
-   quantumToXP,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { enumOf, formatNumber, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { findShip } from "../game/Matchmaking";
@@ -31,10 +29,10 @@ import { playBling, playClick, playError } from "./Sound";
 export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const theme = useMantineTheme();
-   const quantum = getQualifiedQuantum(G.save.current);
+   const minQuantum = getMinimumQuantumForBattle(G.save.current);
    const usedQuantum = getUsedQuantum(G.save.current);
    const xp = calcSpaceshipXP(G.save.current);
-   const maxXP = quantumToXP(quantum);
+   const minXO = getMinimumSpaceshipXPForBattle(G.save.current);
    return (
       <div className="m10">
          <div
@@ -52,68 +50,21 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
             <div className="mi" style={{ fontSize: 128 }}>
                trophy
             </div>
-            <div style={{ fontSize: 24 }}>{t(L.QuantumXLeague, quantum)}</div>
+            <div style={{ fontSize: 24 }}>{t(L.XClassLeague, ShipClass[getShipClass(G.save.current)].name())}</div>
          </div>
          {mode === PrepareForBattleMode.Prompt ? (
-            <RenderHTML className="panel red text-sm mb10" html={t(L.ReachedQuantumLimitV2, quantum)} />
+            <RenderHTML className="panel red text-sm mb10" html={t(L.ReachedQuantumLimitV2, minQuantum)} />
          ) : null}
          <div className="panel mb10 p0">
-            <div className="row g5 mt10">
-               <div className="f1" style={{ height: 2, background: "var(--mantine-color-green-4)" }}></div>
-               <div className="mi" style={{ color: "var(--mantine-color-green-4)" }}>
-                  check_circle
-               </div>
-               <div className="f2" style={{ height: 2, background: "var(--mantine-color-green-4)" }}></div>
-               <div className="mi" style={{ color: "var(--mantine-color-green-4)" }}>
-                  check_circle
-               </div>
-               <div className="f2" style={{ height: 2, background: "var(--mantine-color-green-4)" }}></div>
-               <div className="mi breathing" style={{ color: "var(--mantine-color-orange-4)" }}>
-                  swords
-               </div>
-               <div className="f2" style={{ height: 2, background: "var(--mantine-color-dark-4)" }}></div>
-               <div className="mi" style={{ color: "var(--mantine-color-dark-4)" }}>
-                  radio_button_unchecked
-               </div>
-               <div className="f2" style={{ height: 2, background: "var(--mantine-color-dark-4)" }}></div>{" "}
-               <div className="mi" style={{ color: "var(--mantine-color-dark-4)" }}>
-                  radio_button_unchecked
-               </div>
-               <div className="f1" style={{ height: 2, background: "var(--mantine-color-dark-4)" }}></div>
-            </div>
-            <div className="row g5 text-center text-sm">
-               <div className="f1" />
-               <Tooltip label={t(L.MaxSpaceshipXP, formatNumber(quantumToXP(quantum - BattleWinQuantum)))}>
-                  <div style={{ color: "var(--mantine-color-green-4)" }}>Q{quantum - BattleWinQuantum}</div>
-               </Tooltip>
-               <div className="f2" />
-               <Tooltip label={t(L.MaxSpaceshipXP, formatNumber(quantumToXP(quantum - BattleLossQuantum)))}>
-                  <div style={{ color: "var(--mantine-color-green-4)" }}>Q{quantum - BattleLossQuantum}</div>
-               </Tooltip>
-               <div className="f2" />
-               <Tooltip label={t(L.MaxSpaceshipXP, formatNumber(quantumToXP(quantum)))}>
-                  <div style={{ color: "var(--mantine-color-orange-4)" }}>Q{quantum}</div>
-               </Tooltip>
-               <div className="f2" />
-               <Tooltip label={t(L.MaxSpaceshipXP, formatNumber(quantumToXP(quantum + BattleLossQuantum)))}>
-                  <div style={{ color: "var(--mantine-color-dark-4)" }}>Q{quantum + BattleLossQuantum}</div>
-               </Tooltip>
-               <div className="f2" />
-               <Tooltip label={t(L.MaxSpaceshipXP, formatNumber(quantumToXP(quantum + BattleWinQuantum)))}>
-                  <div style={{ color: "var(--mantine-color-dark-4)" }}>Q{quantum + BattleWinQuantum}</div>
-               </Tooltip>
-               <div className="f1" />
-            </div>
-            <div className="divider mt5" />
             <div className="m10">
                <div className="row">
                   <div>{t(L.Quantum)}</div>
                   <div className="f1"></div>
                   <div>
-                     {usedQuantum}/{quantum}
+                     {usedQuantum}/{minQuantum}
                   </div>
-                  <Tooltip label={<RenderHTML html={t(L.QualifierBattleQuantumRequirementHTML, quantum)} />}>
-                     {usedQuantum >= quantum ? (
+                  <Tooltip label={<RenderHTML html={t(L.QualifierBattleQuantumRequirementHTML, minQuantum)} />}>
+                     {usedQuantum >= minQuantum ? (
                         <div className="mi sm text-green">check_circle</div>
                      ) : (
                         <div className="mi sm text-yellow">info</div>
@@ -124,10 +75,10 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                   <div>{t(L.SpaceshipXP)}</div>
                   <div className="f1"></div>
                   <div>
-                     {formatNumber(xp)}/{formatNumber(maxXP)}
+                     {formatNumber(xp)}/{formatNumber(minXO)}
                   </div>
-                  <Tooltip label={<RenderHTML html={t(L.QualifierBattleXPRequirementHTML, formatNumber(maxXP))} />}>
-                     {xp >= QualifierSpaceshipValuePercent * maxXP ? (
+                  <Tooltip label={<RenderHTML html={t(L.QualifierBattleXPRequirementHTML, formatNumber(minXO))} />}>
+                     {xp >= QualifierSpaceshipValuePercent * minXO ? (
                         <div className="mi sm text-green">check_circle</div>
                      ) : (
                         <div className="mi sm text-yellow">info</div>

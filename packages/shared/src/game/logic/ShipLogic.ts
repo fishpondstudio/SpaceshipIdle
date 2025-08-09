@@ -7,7 +7,7 @@ import { ShipDesigns } from "../definitions/ShipDesign";
 import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
 import type { ITileData } from "../ITileData";
-import { getQualifiedQuantum, getUsedQuantum } from "./ResourceLogic";
+import { getTotalQuantum, getUsedQuantum } from "./ResourceLogic";
 import { Side } from "./Side";
 import { getShipClass } from "./TechLogic";
 
@@ -115,7 +115,7 @@ export function isWithinShipExtent(tile: Tile, gs: GameState): boolean {
 
 export function validateForClient(gs: GameState): boolean {
    try {
-      const quantumLimit = getQualifiedQuantum(gs);
+      const quantumLimit = getTotalQuantum(gs);
       const usedQuantum = getUsedQuantum(gs);
       if (usedQuantum > quantumLimit) {
          return false;
@@ -129,7 +129,7 @@ export function validateForClient(gs: GameState): boolean {
 
 export function validateForMatchmaking(gs: GameState): boolean {
    try {
-      const quantumLimit = getQualifiedQuantum(gs);
+      const quantumLimit = getTotalQuantum(gs);
       const usedQuantum = getUsedQuantum(gs);
       if (quantumLimit !== usedQuantum) {
          return false;
@@ -175,7 +175,7 @@ function _validateShip(gs: GameState): boolean {
 }
 
 export function isQualifierBattle(gs: GameState): boolean {
-   const quantumLimit = getQualifiedQuantum(gs);
+   const quantumLimit = getTotalQuantum(gs);
    const usedQuantum = getUsedQuantum(gs);
    if (usedQuantum < quantumLimit) {
       return false;

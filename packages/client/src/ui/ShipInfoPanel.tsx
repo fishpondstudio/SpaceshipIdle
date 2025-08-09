@@ -6,7 +6,7 @@ import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { elementToXP, xpToElement } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import { getUsedQuantum, quantumToXP, xpToQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { isQualifierBattle } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
+import { getShipBlueprint, isQualifierBattle } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import {
    clamp,
    classNames,
@@ -67,6 +67,11 @@ export function ShipInfoPanel(): React.ReactNode {
    const nextElementXP = elementToXP(nextElement);
    const prevElementXP = elementToXP(element);
 
+   const availableXP = (state.resources.get("XP") ?? 0) - (state.resources.get("XPUsed") ?? 0);
+   const actualDPS = reduceOf(actualDamages, (prev, curr, value) => prev + value, 0);
+   const rawDPS = reduceOf(rawDamages, (prev, curr, value) => prev + value, 0);
+   const timeUntilNextQuantum = (1000 * (nextQuantumXP - currentXP)) / xpDelta;
+   const progressTowardsNextQuantum = (currentXP - prevQuantumXP) / (nextQuantumXP - prevQuantumXP);
    return (
       <div className="sf-frame top ship-info">
          <HamburgerMenuComp flag={options.flag} />
@@ -97,11 +102,11 @@ export function ShipInfoPanel(): React.ReactNode {
             </div>
          </Tooltip>
          <div className="divider vertical" />
-         <Tooltip multiline maw="30vw" label={<RenderHTML html={t(L.XPTooltipHTML)} />}>
+         <Tooltip multiline maw="30vw" label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(availableXP))} />}>
             <div className="block" style={{ width: 85 }}>
                <XPIcon />
                <div className="f1 text-right">
-                  <div>{formatNumber((state.resources.get("XP") ?? 0) - (state.resources.get("XPUsed") ?? 0))}</div>
+                  <div>{formatNumber(availableXP)}</div>
                   <div
                      className="xs"
                      style={{
@@ -115,21 +120,28 @@ export function ShipInfoPanel(): React.ReactNode {
             </div>
          </Tooltip>
          <div className="divider vertical" />
-         <div className="block" style={{ width: 85 }}>
-            <div className="mi">security</div>
-            <TextureComp name="Others/HP" />
-            <div className="f1 text-right">
-               <div>{formatNumber(G.runtime.leftStat.maxHp)}</div>
-               <div className="xs">{formatNumber(G.save.current.tiles.size)}</div>
-            </div>
-         </div>
-         <div className="divider vertical" />
-         <Tooltip label={t(L.RawActualDPS)}>
+         <Tooltip
+            multiline
+            maw="30vw"
+            label={
+               <RenderHTML
+                  html={t(
+                     L.HPTooltipHTML,
+                     formatNumber(G.runtime.leftStat.maxHp),
+                     formatNumber(G.save.current.tiles.size),
+                     formatNumber(getShipBlueprint(G.save.current).length),
+                  )}
+               />
+            }
+         >
             <div className="block" style={{ width: 85 }}>
-               <div className="mi">explosion</div>
+               <div className="mi">security</div>
+               <TextureComp name="Others/HP" />
                <div className="f1 text-right">
-                  <div>{formatNumber(reduceOf(actualDamages, (prev, curr, value) => prev + value, 0))}</div>
-                  <div className="xs">{formatNumber(reduceOf(rawDamages, (prev, curr, value) => prev + value, 0))}</div>
+                  <div>{formatNumber(G.runtime.leftStat.maxHp)}</div>
+                  <div className="xs">
+                     {formatNumber(G.save.current.tiles.size)}/{formatNumber(getShipBlueprint(G.save.current).length)}
+                  </div>
                </div>
             </div>
          </Tooltip>
@@ -137,13 +149,18 @@ export function ShipInfoPanel(): React.ReactNode {
          <Tooltip
             multiline
             maw="30vw"
-            label={
-               <>
-                  <RenderHTML html={t(L.QuantumTooltipHTMLV2)} />
-                  <RenderHTML html={t(L.QuantumFromPermanentElementTooltipHTML)} />
-               </>
-            }
+            label={<RenderHTML html={t(L.RawActualDPSHTML, formatNumber(actualDPS), formatNumber(rawDPS))} />}
          >
+            <div className="block" style={{ width: 85 }}>
+               <div className="mi">explosion</div>
+               <div className="f1 text-right">
+                  <div>{formatNumber(actualDPS)}</div>
+                  <div className="xs">{formatNumber(rawDPS)}</div>
+               </div>
+            </div>
+         </Tooltip>
+         <div className="divider vertical" />
+         <Tooltip color="gray" multiline w={300} label={<QuantumTooltip />}>
             <div
                className="block pointer"
                style={{ width: 100, position: "relative" }}
@@ -163,22 +180,24 @@ export function ShipInfoPanel(): React.ReactNode {
                   <div>
                      {formatNumber(usedQuantum)}/{formatNumber(quantum)}
                   </div>
-                  <div className="xs">{formatHMS((1000 * (nextQuantumXP - currentXP)) / xpDelta)}</div>
+                  <div className="xs">{formatHMS(timeUntilNextQuantum)}</div>
                </div>
             </div>
          </Tooltip>
          <div className="divider vertical" />
-         <div className="block pointer" style={{ width: 60 }}>
-            <div className="f1 text-right">
-               <div>{formatPercent((currentXP - prevQuantumXP) / (nextQuantumXP - prevQuantumXP))}</div>
-               <div className={classNames("xs text-right", xpDelta > 0 ? "text-green" : "text-red")}>
-                  {mathSign(xpDelta)}
-                  {formatPercent(Math.abs(xpDelta / (nextQuantumXP - prevQuantumXP)))}
+         <Tooltip multiline w={300} color="gray" label={<QuantumTooltip />}>
+            <div className="block pointer" style={{ width: 60 }}>
+               <div className="f1 text-right">
+                  <div>{formatPercent(progressTowardsNextQuantum)}</div>
+                  <div className={classNames("xs text-right", xpDelta > 0 ? "text-green" : "text-red")}>
+                     {mathSign(xpDelta)}
+                     {formatPercent(Math.abs(xpDelta / (nextQuantumXP - prevQuantumXP)))}
+                  </div>
                </div>
             </div>
-         </div>
+         </Tooltip>
          <div className="divider vertical" />
-         <Tooltip color="gray" label={<ElementTooltip />}>
+         <Tooltip multiline w={300} color="gray" label={<ElementTooltip />}>
             <div
                style={{ width: 100 }}
                className="block pointer"
@@ -191,7 +210,7 @@ export function ShipInfoPanel(): React.ReactNode {
                   });
                }}
             >
-               <div className="mi">category</div>
+               <TextureComp name="Others/Element" style={{ margin: "5px 0" }} />
                <div className="w5" />
                <div className="f1 text-right">
                   <div>
@@ -215,7 +234,7 @@ export function ShipInfoPanel(): React.ReactNode {
             </div>
          </Tooltip>
          <div className="divider vertical" />
-         <Tooltip color="gray" label={<ElementTooltip />}>
+         <Tooltip multiline w={300} color="gray" label={<ElementTooltip />}>
             <div
                style={{ width: 60 }}
                className="block pointer"
@@ -320,14 +339,14 @@ function ElementTooltip(): React.ReactNode {
    const prevElementXP = elementToXP(element);
    const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
    return (
-      <div style={{ width: 300 }}>
-         <div className="row">
-            <div className="f1">{t(L.XPRequiredForNextElement)}</div>
-            <div>{formatNumber(nextElementXP)}</div>
-         </div>
+      <>
          <div className="row">
             <div className="f1">{t(L.CurrentTotalXp)}</div>
             <div>{formatNumber(currentXP)}</div>
+         </div>
+         <div className="row">
+            <div className="f1">{t(L.XPRequiredForNextElement)}</div>
+            <div>{formatNumber(nextElementXP)}</div>
          </div>
          <div className="row">
             <div className="f1">{t(L.ProgressTowardsNextElement)}</div>
@@ -387,6 +406,45 @@ function ElementTooltip(): React.ReactNode {
                })}
             </tbody>
          </table>
-      </div>
+      </>
+   );
+}
+
+function QuantumTooltip(): React.ReactNode {
+   const usedQuantum = getUsedQuantum(G.save.current);
+   const currentXP = G.save.current.resources.get("XP") ?? 0;
+   const quantum = xpToQuantum(G.save.current.resources.get("XP") ?? 0);
+   const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
+   const nextQuantum = quantum + 1;
+   const nextQuantumXP = quantumToXP(nextQuantum);
+   const prevQuantumXP = quantumToXP(quantum);
+   const progressTowardsNextQuantum = (currentXP - prevQuantumXP) / (nextQuantumXP - prevQuantumXP);
+   const timeUntilNextQuantum = (1000 * (nextQuantumXP - currentXP)) / xpDelta;
+   return (
+      <>
+         <div className="row">
+            <div className="f1">Used/Total Quantum</div>
+            <div>
+               {formatNumber(usedQuantum)}/{formatNumber(quantum)}
+            </div>
+         </div>
+         <div className="divider light dashed my10" />
+         <div className="row">
+            <div className="f1">{t(L.CurrentTotalXp)}</div>
+            <div>{formatNumber(currentXP)}</div>
+         </div>
+         <div className="row">
+            <div className="f1">XP Required for Next Quantum</div>
+            <div>{formatNumber(nextQuantumXP)}</div>
+         </div>
+         <div className="row">
+            <div className="f1">Progress Towards Next Quantum</div>
+            <div>{formatPercent(progressTowardsNextQuantum)}</div>
+         </div>
+         <div className="row">
+            <div className="f1">Time Until Next Quantum</div>
+            <div>{formatHMS(timeUntilNextQuantum)}</div>
+         </div>
+      </>
    );
 }
