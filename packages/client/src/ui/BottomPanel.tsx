@@ -21,6 +21,7 @@ import { showModal } from "../utils/ToggleModal";
 import { ChooseElementModal } from "./ChooseElementModal";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
+import { TextureComp } from "./components/TextureComp";
 import { hideSidebar } from "./Sidebar";
 import { playClick } from "./Sound";
 import { TutorialProgressModal } from "./TutorialProgressModal";
@@ -83,7 +84,7 @@ function SpeedSwitcher({ speed }: { speed: number }): React.ReactNode {
    );
 }
 
-const sceneWidth = 500;
+const sceneWidth = 60 * 5;
 
 function Tutorial(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
@@ -101,7 +102,7 @@ function Tutorial(): React.ReactNode {
          style={{
             position: "absolute",
             width: sceneWidth,
-            bottom: 55,
+            bottom: 67,
             padding: "5px 6px",
             left: `calc(50vw - ${sceneWidth / 2}px)`,
             background: "var(--mantine-color-dark-8)",
@@ -166,7 +167,10 @@ function SceneSwitcher(): React.ReactNode {
                left: `calc(50vw - ${sceneWidth / 2}px)`,
                border: "1px solid var(--mantine-color-default-border)",
             }}
-            styles={{ label: { overflow: "visible" } }}
+            styles={{
+               label: { overflow: "visible", padding: "5px 0" },
+               innerLabel: { display: "flex", justifyContent: "center" },
+            }}
             onChange={(value) => {
                playClick();
                hideSidebar();
@@ -198,10 +202,38 @@ function SceneSwitcher(): React.ReactNode {
             }}
             value={G.scene?.currentSceneId ?? Scenes.ShipScene}
             data={[
-               { label: t(L.TabSpaceship), value: Scenes.ShipScene },
-               { label: t(L.TabResearch), value: Scenes.TechTreeScene },
-               { label: t(L.TabCatalyst), value: Scenes.CatalystScene },
-               { label: t(L.TabBooster), value: Scenes.BoosterScene },
+               {
+                  label: (
+                     <Tooltip label={t(L.TabSpaceship)}>
+                        <TextureComp name="Others/Spaceship" />
+                     </Tooltip>
+                  ),
+                  value: Scenes.ShipScene,
+               },
+               {
+                  label: (
+                     <Tooltip label={t(L.TabResearch)}>
+                        <TextureComp name="Others/Research" />
+                     </Tooltip>
+                  ),
+                  value: Scenes.TechTreeScene,
+               },
+               {
+                  label: (
+                     <Tooltip label={t(L.TabCatalyst)}>
+                        <TextureComp name="Others/Catalyst" />
+                     </Tooltip>
+                  ),
+                  value: Scenes.CatalystScene,
+               },
+               {
+                  label: (
+                     <Tooltip label={t(L.TabBooster)}>
+                        <TextureComp name="Others/Booster" />
+                     </Tooltip>
+                  ),
+                  value: Scenes.BoosterScene,
+               },
                {
                   label: <ElementTabLabel />,
                   value: Scenes.ElementsScene,
@@ -218,12 +250,16 @@ function ElementTabLabel(): React.ReactNode {
       return (
          <Tooltip multiline maw="30vw" label={t(L.YouHaveUnassignedElementTooltip)}>
             <Indicator color="red" processing>
-               {t(L.TabElement)}
+               <TextureComp name="Others/Element" />
             </Indicator>
          </Tooltip>
       );
    }
-   return t(L.TabElement);
+   return (
+      <Tooltip label={t(L.TabElement)}>
+         <TextureComp name="Others/Element" />
+      </Tooltip>
+   );
 }
 
 export function BottomPanel(): React.ReactNode {

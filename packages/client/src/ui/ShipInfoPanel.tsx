@@ -2,14 +2,10 @@ import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { elementToXP } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
-import {
-   calcSpaceshipXP,
-   getUsedQuantum,
-   quantumToXP,
-   xpToQuantum,
-} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { elementToXP, xpToElement } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
+import { getUsedQuantum, quantumToXP, xpToQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { isQualifierBattle } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import {
    clamp,
@@ -28,10 +24,12 @@ import Discord from "../../src/assets/images/Discord.svg";
 import Steam from "../../src/assets/images/Steam.svg";
 import { openUrl } from "../rpc/SteamClient";
 import { G } from "../utils/Global";
+import { refreshOnTypedEvent } from "../utils/Hook";
 import { showModal } from "../utils/ToggleModal";
 import { HamburgerMenuComp } from "./components/HamburgerMenuComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { XPIcon } from "./components/SVGIcons";
+import { TextureComp } from "./components/TextureComp";
 import { PrepareForBattleModal } from "./PrepareForBattleModal";
 import { PrepareForBattleMode } from "./PrepareForBattleMode";
 import { QuantumProgressModal } from "./QuantumProgressModal";
@@ -52,24 +50,55 @@ const actualDamages: Record<DamageType, number> = {
 export function ShipInfoPanel(): React.ReactNode {
    const state = G.save.current;
    const options = G.save.options;
-   const sv = calcSpaceshipXP(state);
    G.runtime.rightStat.averageRawDamage(10, rawDamages);
    G.runtime.rightStat.averageActualDamage(10, actualDamages);
    const usedQuantum = getUsedQuantum(state);
    const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
    const highlight = isQualifierBattle(state);
-
    const currentXP = state.resources.get("XP") ?? 0;
+
    const quantum = xpToQuantum(currentXP);
    const nextQuantum = quantum + 1;
-   const nextXP = quantumToXP(nextQuantum);
-   const prevXP = quantumToXP(quantum);
+   const nextQuantumXP = quantumToXP(nextQuantum);
+   const prevQuantumXP = quantumToXP(quantum);
+
+   const element = xpToElement(currentXP);
+   const nextElement = element + 1;
+   const nextElementXP = elementToXP(nextElement);
+   const prevElementXP = elementToXP(element);
+
    return (
       <div className="sf-frame top ship-info">
          <HamburgerMenuComp flag={options.flag} />
          <div className="divider vertical" />
+         <Tooltip
+            label={
+               <>
+                  <RenderHTML html={t(L.Battle)} />
+                  {highlight ? <RenderHTML html={t(L.ReachedQuantumLimitV2, formatNumber(quantum))} /> : null}
+               </>
+            }
+            multiline
+            maw="30vw"
+         >
+            <div
+               className="block pointer"
+               onClick={() => {
+                  showModal({
+                     children: <PrepareForBattleModal mode={PrepareForBattleMode.Normal} />,
+                     size: "sm",
+                     dismiss: true,
+                  });
+               }}
+            >
+               <div style={{ fontSize: 26 }} className={classNames("mi", highlight ? "breathing" : null)}>
+                  swords
+               </div>
+            </div>
+         </Tooltip>
+         <div className="divider vertical" />
          <Tooltip multiline maw="30vw" label={<RenderHTML html={t(L.XPTooltipHTML)} />}>
-            <div className="block" style={{ width: 100 }}>
+            <div className="block" style={{ width: 85 }}>
                <XPIcon />
                <div className="f1 text-right">
                   <div>{formatNumber((state.resources.get("XP") ?? 0) - (state.resources.get("XPUsed") ?? 0))}</div>
@@ -82,6 +111,25 @@ export function ShipInfoPanel(): React.ReactNode {
                      {mathSign(xpDelta)}
                      {formatNumber(Math.abs(xpDelta))}
                   </div>
+               </div>
+            </div>
+         </Tooltip>
+         <div className="divider vertical" />
+         <div className="block" style={{ width: 85 }}>
+            <div className="mi">security</div>
+            <TextureComp name="Others/HP" />
+            <div className="f1 text-right">
+               <div>{formatNumber(G.runtime.leftStat.maxHp)}</div>
+               <div className="xs">{formatNumber(G.save.current.tiles.size)}</div>
+            </div>
+         </div>
+         <div className="divider vertical" />
+         <Tooltip label={t(L.RawActualDPS)}>
+            <div className="block" style={{ width: 85 }}>
+               <div className="mi">explosion</div>
+               <div className="f1 text-right">
+                  <div>{formatNumber(reduceOf(actualDamages, (prev, curr, value) => prev + value, 0))}</div>
+                  <div className="xs">{formatNumber(reduceOf(rawDamages, (prev, curr, value) => prev + value, 0))}</div>
                </div>
             </div>
          </Tooltip>
@@ -115,89 +163,85 @@ export function ShipInfoPanel(): React.ReactNode {
                   <div>
                      {formatNumber(usedQuantum)}/{formatNumber(quantum)}
                   </div>
-                  <div className="xs">{formatHMS((1000 * (nextXP - currentXP)) / xpDelta)}</div>
+                  <div className="xs">{formatHMS((1000 * (nextQuantumXP - currentXP)) / xpDelta)}</div>
                </div>
             </div>
          </Tooltip>
          <div className="divider vertical" />
          <div className="block pointer" style={{ width: 60 }}>
             <div className="f1 text-right">
-               <div>{formatPercent((currentXP - prevXP) / (nextXP - prevXP))}</div>
+               <div>{formatPercent((currentXP - prevQuantumXP) / (nextQuantumXP - prevQuantumXP))}</div>
                <div className={classNames("xs text-right", xpDelta > 0 ? "text-green" : "text-red")}>
                   {mathSign(xpDelta)}
-                  {formatPercent(Math.abs(xpDelta / (nextXP - prevXP)))}
+                  {formatPercent(Math.abs(xpDelta / (nextQuantumXP - prevQuantumXP)))}
                </div>
             </div>
          </div>
          <div className="divider vertical" />
-         <div style={{ position: "relative", width: 52, alignSelf: "stretch" }}>
-            <Tooltip
-               label={
-                  <>
-                     <RenderHTML html={t(L.Battle)} />
-                     {highlight ? <RenderHTML html={t(L.ReachedQuantumLimitV2, formatNumber(quantum))} /> : null}
-                  </>
-               }
-               multiline
-               maw="30vw"
+         <Tooltip color="gray" label={<ElementTooltip />}>
+            <div
+               style={{ width: 100 }}
+               className="block pointer"
+               onClick={() => {
+                  showModal({
+                     children: <QuantumProgressModal />,
+                     title: t(L.QuantumProgress),
+                     dismiss: true,
+                     size: "lg",
+                  });
+               }}
             >
-               <div
-                  className={classNames("sf-frame top pointer", highlight ? "highlight" : null)}
-                  style={{ width: 52, height: 48, position: "absolute", top: -1, left: 0 }}
-                  onClick={() => {
-                     showModal({
-                        children: <PrepareForBattleModal mode={PrepareForBattleMode.Normal} />,
-                        size: "sm",
-                        dismiss: true,
-                     });
-                  }}
-               >
-                  <div
-                     style={{ fontSize: 30, marginTop: 8 }}
-                     className={classNames("mi", highlight ? "breathing" : null)}
-                  >
-                     swords
+               <div className="mi">category</div>
+               <div className="w5" />
+               <div className="f1 text-right">
+                  <div>
+                     +
+                     {formatNumber(
+                        mReduceOf(G.save.current.elements, (prev, curr, value) => prev + value.hp + value.damage, 0),
+                     )}
+                     /+
+                     {formatNumber(
+                        mReduceOf(
+                           G.save.current.permanentElements,
+                           (prev, curr, value) => prev + value.hp + value.damage,
+                           0,
+                        ),
+                     )}
+                  </div>
+                  <div className="text-xs">
+                     <div className="xs">{formatHMS((1000 * (nextElementXP - currentXP)) / xpDelta)}</div>
                   </div>
                </div>
-            </Tooltip>
-         </div>
-         <ElementComp
-            thisRun={mReduceOf(
-               G.save.current.elements,
-               (prev, curr, value) => prev + value.hp + value.damage + value.amount,
-               0,
-            )}
-            hp={mReduceOf(G.save.current.permanentElements, (prev, curr, value) => prev + value.hp, 0)}
-            damage={mReduceOf(G.save.current.permanentElements, (prev, curr, value) => prev + value.damage, 0)}
-            sv={state.resources.get("XP") ?? 0}
-            requiredSV={elementToXP(state.discoveredElements + 1)}
-         />
+            </div>
+         </Tooltip>
          <div className="divider vertical" />
-         <DPSComp
-            raw={reduceOf(rawDamages, (prev, curr, value) => prev + value, 0)}
-            actual={reduceOf(actualDamages, (prev, curr, value) => prev + value, 0)}
-         />
+         <Tooltip color="gray" label={<ElementTooltip />}>
+            <div
+               style={{ width: 60 }}
+               className="block pointer"
+               onClick={() => {
+                  showModal({
+                     children: <QuantumProgressModal />,
+                     title: t(L.QuantumProgress),
+                     dismiss: true,
+                     size: "lg",
+                  });
+               }}
+            >
+               <div className="f1 text-right">
+                  <div>{formatPercent((currentXP - prevElementXP) / (nextElementXP - prevElementXP))}</div>
+                  <div className={classNames("xs text-right", xpDelta > 0 ? "text-green" : "text-red")}>
+                     {mathSign(xpDelta)}
+                     {formatPercent(Math.abs(xpDelta / (nextElementXP - prevElementXP)))}
+                  </div>
+               </div>
+            </div>
+         </Tooltip>
          <div className="divider vertical" />
          <WarpSpeedMenuComp gs={state} />
       </div>
    );
 }
-
-function _DPSComp({ raw, actual }: { raw: number; actual: number }): React.ReactNode {
-   return (
-      <Tooltip label={t(L.RawActualDPS)}>
-         <div className="block" style={{ width: 85 }}>
-            <div className="mi">explosion</div>
-            <div className="f1 text-right">
-               <div>{formatNumber(actual)}</div>
-               <div className="xs">{formatNumber(raw)}</div>
-            </div>
-         </div>
-      </Tooltip>
-   );
-}
-
-const DPSComp = memo(_DPSComp, (prev, next) => prev.raw === next.raw && prev.actual === next.actual);
 
 function playQuantumParticle(): void {
    playBling();
@@ -215,130 +259,6 @@ function playQuantumParticle(): void {
       1,
    );
 }
-
-function _ElementComp({
-   thisRun,
-   hp: production,
-   damage: xp,
-   sv,
-   requiredSV,
-}: {
-   thisRun: number;
-   hp: number;
-   damage: number;
-   sv: number;
-   requiredSV: number;
-}): React.ReactNode {
-   const progress = clamp(sv / requiredSV, 0, 1);
-   return (
-      <Tooltip
-         color="gray"
-         label={
-            <div>
-               <div className="row">
-                  <div className="f1">{t(L.XPRequiredForNextElement)}</div>
-                  <div>{formatNumber(requiredSV)}</div>
-               </div>{" "}
-               <div className="row">
-                  <div className="f1">{t(L.TotalXp)}</div>
-                  <div>{formatNumber(sv)}</div>
-               </div>
-               <div className="row">
-                  <div className="f1">{t(L.ProgressTowardsNextElement)}</div>
-                  <div>{formatPercent(progress)}</div>
-               </div>
-               <div className="text-space row">
-                  <div className="f1">{t(L.ElementThisRun)}</div>
-                  <div>{thisRun}</div>
-               </div>
-               {mMapOf(G.save.current.elements, (symbol, data) => {
-                  const building = Config.Elements[symbol];
-                  if (!building) return null;
-                  return (
-                     <div className="row" key={symbol}>
-                        <div>{getBuildingName(building)}</div>
-                        <div className="text-space">({symbol})</div>
-                        <div className="f1 text-right">
-                           {data.hp} + {data.damage} ({data.amount})
-                        </div>
-                     </div>
-                  );
-               })}
-               <div className="text-space row">
-                  <div className="f1">
-                     {t(L.PermanentElement)} ({t(L.HPMultiplier)})
-                  </div>
-                  <div>{production}</div>
-               </div>
-               {mMapOf(G.save.current.permanentElements, (symbol, inv) => {
-                  const building = Config.Elements[symbol];
-                  if (!building) return null;
-                  if (inv.hp <= 0) return null;
-                  return (
-                     <div key={symbol} className="row g5">
-                        <div>{getBuildingName(building)}</div>
-                        <div className="text-space">({symbol})</div>
-                        <div className="f1" />
-                        <div>{inv.hp}</div>
-                     </div>
-                  );
-               })}
-               <div className="text-space row">
-                  <div className="f1">
-                     {t(L.PermanentElement)} ({t(L.DamageMultiplier)})
-                  </div>
-                  <div>{xp}</div>
-               </div>
-               {mMapOf(G.save.current.permanentElements, (symbol, inv) => {
-                  const building = Config.Elements[symbol];
-                  if (!building) return null;
-                  if (inv.damage <= 0) return null;
-                  return (
-                     <div key={symbol} className="row g5">
-                        <div>{getBuildingName(building)}</div>
-                        <div className="text-space">({symbol})</div>
-                        <div className="f1" />
-                        <div>{inv.damage}</div>
-                     </div>
-                  );
-               })}
-            </div>
-         }
-      >
-         <div
-            style={{ width: 85 }}
-            className="block pointer"
-            onClick={() => {
-               showModal({
-                  children: <QuantumProgressModal />,
-                  title: t(L.QuantumProgress),
-                  dismiss: true,
-                  size: "lg",
-               });
-            }}
-         >
-            <div className="mi">category</div>
-            <div className="w5" />
-            <div className="f1 text-right">
-               <div>
-                  {thisRun}/{production}+{xp}
-               </div>
-               <div className="text-xs">{formatPercent(progress)}</div>
-            </div>
-         </div>
-      </Tooltip>
-   );
-}
-
-const ElementComp = memo(
-   _ElementComp,
-   (prev, next) =>
-      prev.thisRun === next.thisRun &&
-      prev.hp === next.hp &&
-      prev.damage === next.damage &&
-      prev.sv === next.sv &&
-      prev.requiredSV === next.requiredSV,
-);
 
 function _DiscordComp({ show }: { show: boolean }): React.ReactNode {
    if (!show) return null;
@@ -387,6 +307,86 @@ export function ProgressComp({
                }}
             />
          ))}
+      </div>
+   );
+}
+
+function ElementTooltip(): React.ReactNode {
+   refreshOnTypedEvent(GameStateUpdated);
+   const currentXP = G.save.current.resources.get("XP") ?? 0;
+   const element = xpToElement(currentXP);
+   const nextElement = element + 1;
+   const nextElementXP = elementToXP(nextElement);
+   const prevElementXP = elementToXP(element);
+   const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
+   return (
+      <div style={{ width: 300 }}>
+         <div className="row">
+            <div className="f1">{t(L.XPRequiredForNextElement)}</div>
+            <div>{formatNumber(nextElementXP)}</div>
+         </div>
+         <div className="row">
+            <div className="f1">{t(L.CurrentTotalXp)}</div>
+            <div>{formatNumber(currentXP)}</div>
+         </div>
+         <div className="row">
+            <div className="f1">{t(L.ProgressTowardsNextElement)}</div>
+            <div>{formatPercent((currentXP - prevElementXP) / (nextElementXP - prevElementXP))}</div>
+         </div>
+         <div className="row">
+            <div className="f1">{t(L.TimeUntilNextElement)}</div>
+            <div>{formatHMS((1000 * (nextElementXP - currentXP)) / xpDelta)}</div>
+         </div>
+         <div className="divider light dashed my10" />
+         <table className="w100">
+            <thead>
+               <tr>
+                  <th className="text-left">{t(L.ElementThisRun)}</th>
+                  <th className="text-right">{t(L.HP)}</th>
+                  <th className="text-right">{t(L.DMG)}</th>
+               </tr>
+            </thead>
+            <tbody>
+               {mMapOf(G.save.current.elements, (element, data) => {
+                  return (
+                     <tr key={element}>
+                        <td className="row g5">
+                           <div>{t(element)}</div>
+                           <div className="text-space text-sm">({getBuildingName(Config.Elements[element])})</div>
+                           <div className="f1" />
+                        </td>
+                        <td className="text-right">+{formatNumber(data.hp)}</td>
+                        <td className="text-right">+{formatNumber(data.damage)}</td>
+                     </tr>
+                  );
+               })}
+            </tbody>
+         </table>
+         <div className="divider light dashed my10" />
+         <table className="w100">
+            <thead>
+               <tr>
+                  <th className="text-left">{t(L.PermanentElement)}</th>
+                  <th className="text-right">{t(L.HP)}</th>
+                  <th className="text-right">{t(L.DMG)}</th>
+               </tr>
+            </thead>
+            <tbody>
+               {mMapOf(G.save.current.permanentElements, (element, data) => {
+                  return (
+                     <tr key={element}>
+                        <td className="row g5">
+                           <div>{t(element)}</div>
+                           <div className="text-space text-sm">({getBuildingName(Config.Elements[element])})</div>
+                           <div className="f1" />
+                        </td>
+                        <td className="text-right">+{formatNumber(data.hp)}</td>
+                        <td className="text-right">+{formatNumber(data.damage)}</td>
+                     </tr>
+                  );
+               })}
+            </tbody>
+         </table>
       </div>
    );
 }

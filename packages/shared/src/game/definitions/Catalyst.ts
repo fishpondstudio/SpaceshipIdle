@@ -70,6 +70,22 @@ export const Catalyst = {
          damage: 1,
       },
    },
+   A8: {
+      trait: () => t(L.WeaponWithoutAbility),
+      filter: (b: Building) => !Config.Buildings[b].ability,
+      amount: 3,
+      multipliers: {
+         hp: 1,
+      },
+   },
+   A9: {
+      trait: () => t(L.WeaponWithoutAbility),
+      filter: (b: Building) => !Config.Buildings[b].ability,
+      amount: 3,
+      multipliers: {
+         damage: 1,
+      },
+   },
    B1: {
       trait: () => t(L.XClassWeapon, t(L.TechScout)),
       filter: (b: Building) => Config.BuildingToShipClass[b] === "Scout",
@@ -152,7 +168,7 @@ export type Catalyst = keyof typeof Catalyst;
 export const CatalystCat = {
    C1: {
       name: () => t(L.CatalystCatX, numberToRoman(1)!),
-      candidates: ["A1", "A2", "A3", "A4", "A5", "A6"],
+      candidates: ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9"],
    },
    C2: {
       name: () => t(L.CatalystCatX, numberToRoman(2)!),

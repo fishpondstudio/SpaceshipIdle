@@ -40,8 +40,16 @@ export function getUnlockedElements(gs: GameState, result?: ElementSymbol[]): El
 }
 
 export function elementToXP(element: number): number {
-   const quantum = StartQuantum + element * QuantumToElement - 5;
+   const quantum = elementToQuantum(element);
    return quantumToXP(quantum);
+}
+
+export function elementToQuantum(element: number): number {
+   return StartQuantum + element * QuantumToElement - 5;
+}
+
+export function quantumToElement(quantum: number): number {
+   return Math.floor((quantum - 5) / QuantumToElement);
 }
 
 export function xpToElement(xp: number): number {

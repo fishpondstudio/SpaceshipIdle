@@ -105,3 +105,20 @@ export function getBuildingTypes(tiles: Tiles): Set<Building> {
    }
    return result;
 }
+
+type BuildingCodeParts = {
+   type: string;
+   series: number;
+   variant?: string;
+};
+
+export function parseBuildingCode(name: string): BuildingCodeParts {
+   const type = name.slice(0, 2);
+   let i = 2;
+   while (i < name.length && name[i] >= "0" && name[i] <= "9") {
+      i++;
+   }
+   const series = Number.parseInt(name.slice(2, i), 10);
+   const variant = i < name.length ? name.slice(i) : undefined;
+   return { type, series, variant };
+}
