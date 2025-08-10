@@ -45,6 +45,7 @@
    flex-direction: row;
    align-items: center;
    line-height: 1;
+   height: 32px;
    .xs {
       font-size: var(--mantine-font-size-xs);
    }

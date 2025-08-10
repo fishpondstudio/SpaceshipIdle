@@ -100,7 +100,7 @@ export function CatalystFullScreen(): React.ReactNode {
                               {canChooseCatalystCat(cat, G.runtime) ? (
                                  <Tooltip
                                     multiline
-                                    maw="30vw"
+                                    maw="25vw"
                                     label={<RenderHTML html={t(L.SelectCatalystTooltipHTML)} />}
                                  >
                                     <div

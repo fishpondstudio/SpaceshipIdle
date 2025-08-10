@@ -28,7 +28,6 @@ import { refreshOnTypedEvent } from "../utils/Hook";
 import { showModal } from "../utils/ToggleModal";
 import { HamburgerMenuComp } from "./components/HamburgerMenuComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
-import { XPIcon } from "./components/SVGIcons";
 import { TextureComp } from "./components/TextureComp";
 import { PrepareForBattleModal } from "./PrepareForBattleModal";
 import { PrepareForBattleMode } from "./PrepareForBattleMode";
@@ -84,7 +83,7 @@ export function ShipInfoPanel(): React.ReactNode {
                </>
             }
             multiline
-            maw="30vw"
+            maw="25vw"
          >
             <div
                className="block pointer"
@@ -96,15 +95,13 @@ export function ShipInfoPanel(): React.ReactNode {
                   });
                }}
             >
-               <div style={{ fontSize: 26 }} className={classNames("mi", highlight ? "breathing" : null)}>
-                  swords
-               </div>
+               <TextureComp name="Others/Battle24" />
             </div>
          </Tooltip>
          <div className="divider vertical" />
-         <Tooltip multiline maw="30vw" label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(availableXP))} />}>
-            <div className="block" style={{ width: 85 }}>
-               <XPIcon />
+         <Tooltip multiline maw="25vw" label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(availableXP))} />}>
+            <div className="block" style={{ width: 100 }}>
+               <TextureComp name="Others/XP24" />
                <div className="f1 text-right">
                   <div>{formatNumber(availableXP)}</div>
                   <div
@@ -122,7 +119,7 @@ export function ShipInfoPanel(): React.ReactNode {
          <div className="divider vertical" />
          <Tooltip
             multiline
-            maw="30vw"
+            maw="25vw"
             label={
                <RenderHTML
                   html={t(
@@ -135,8 +132,7 @@ export function ShipInfoPanel(): React.ReactNode {
             }
          >
             <div className="block" style={{ width: 85 }}>
-               <div className="mi">security</div>
-               <TextureComp name="Others/HP" />
+               <TextureComp name="Others/HP24" />
                <div className="f1 text-right">
                   <div>{formatNumber(G.runtime.leftStat.maxHp)}</div>
                   <div className="xs">
@@ -148,11 +144,11 @@ export function ShipInfoPanel(): React.ReactNode {
          <div className="divider vertical" />
          <Tooltip
             multiline
-            maw="30vw"
+            maw="25vw"
             label={<RenderHTML html={t(L.RawActualDPSHTML, formatNumber(actualDPS), formatNumber(rawDPS))} />}
          >
             <div className="block" style={{ width: 85 }}>
-               <div className="mi">explosion</div>
+               <TextureComp name="Others/Damage24" />
                <div className="f1 text-right">
                   <div>{formatNumber(actualDPS)}</div>
                   <div className="xs">{formatNumber(rawDPS)}</div>
@@ -173,9 +169,7 @@ export function ShipInfoPanel(): React.ReactNode {
                   });
                }}
             >
-               <div className="mi" id="ship-info-quantum">
-                  orbit
-               </div>
+               <TextureComp name="Others/Quantum24" />
                <div className="f1 text-right">
                   <div>
                      {formatNumber(usedQuantum)}/{formatNumber(quantum)}
@@ -210,7 +204,7 @@ export function ShipInfoPanel(): React.ReactNode {
                   });
                }}
             >
-               <TextureComp name="Others/Element" style={{ margin: "5px 0" }} />
+               <TextureComp name="Others/Element24" />
                <div className="w5" />
                <div className="f1 text-right">
                   <div>

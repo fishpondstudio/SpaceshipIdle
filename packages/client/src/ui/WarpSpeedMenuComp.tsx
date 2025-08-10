@@ -18,7 +18,7 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
          <Menu.Target>
             <Tooltip
                multiline
-               maw="30vw"
+               maw="25vw"
                label={
                   <RenderHTML
                      html={t(L.TimeWarpTooltipHTML, formatNumber(G.speed), formatNumber(gs.resources.get("Warp") ?? 0))}
@@ -30,7 +30,7 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
                      id="ship-info-warp"
                      className={classNames(G.speed > 1 ? "spin" : null)}
                      style={{ animationDuration: `${8 / G.speed}s` }}
-                     name="Misc/TimeWarp"
+                     name="Others/Warp"
                      width={24}
                   />
                   <div className="f1 text-right">

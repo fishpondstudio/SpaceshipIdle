@@ -11,16 +11,15 @@ import { GameSettingsModal } from "../GameSettingsModal";
 import { PlayerProfileModal } from "../PlayerProfileModal";
 import { ShipGalleryModal } from "../ShipGalleryModal";
 import { WeaponListModal } from "../WeaponListModal";
+import { TextureComp } from "./TextureComp";
 
 export function _HamburgerMenuComp({ flag }: { flag: GameOptionFlag }): React.ReactNode {
    refreshOnTypedEvent(OnLanguageChanged);
    return (
       <Menu position="bottom-start">
          <Menu.Target>
-            <div className="cc pointer" style={{ width: 36, height: 36 }}>
-               <div className="mi" style={{ fontSize: 26 }}>
-                  menu
-               </div>
+            <div className="cc pointer" style={{ width: 44 }}>
+               <TextureComp name="Others/Menu24" />
             </div>
          </Menu.Target>
          <Menu.Dropdown className="sf-frame">

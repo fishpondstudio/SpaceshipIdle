@@ -117,7 +117,7 @@ function Tutorial(): React.ReactNode {
                </>
             }
             multiline
-            maw="30vw"
+            maw="25vw"
          >
             <div className="f1 text-sm" style={{ overflow: "hidden" }}>
                <div className="row">
@@ -248,7 +248,7 @@ function ElementTabLabel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    if (hasUnassignedElements(G.save.current)) {
       return (
-         <Tooltip multiline maw="30vw" label={t(L.YouHaveUnassignedElementTooltip)}>
+         <Tooltip multiline maw="25vw" label={t(L.YouHaveUnassignedElementTooltip)}>
             <Indicator color="red" processing>
                <TextureComp name="Others/Element" />
             </Indicator>

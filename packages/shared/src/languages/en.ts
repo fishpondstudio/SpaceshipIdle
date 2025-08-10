@@ -722,7 +722,7 @@ export const EN = {
    TimeUntilNextElement: "Time Until Next Element",
    XPTooltipHTMLV2: "Available XP: %%<br><small>Weapons generate XP when firing. XP can be used to build and upgrade weapons</small>",
    HPTooltipHTML: "Total HP: %%<br>Used Modules: %%, Total Modules: %%<br>",
-   RawActualDPSHTML: "Actual DPS: %%<br>Raw DPS: %%<br><small>Actual DPS is Raw DPS after armor, shield, deflection and evasion deduction</small>",
+   RawActualDPSHTML: "Actual DPS: %%<br>Raw DPS: %%<br><small>Actual DPS = Raw DPS after Armor (Kinetic), Shield (Explosive), Deflection (Energy) and Evasion (All) reduction</small>",
    QuantumTooltipHTMLV2: "Used Quantum: %%, Total Quantum: %%<br>Progress Towards Next Quantum: %%<br>Time Until Next Quantum: %%<br><small></small>",
    TimeWarpTooltipHTML: "Warp Speed: %%x<br>Available Time Warp: %%<br><small>Time Warp can be used to speed up game. It is generated when you are offline</small>",
    XClassLeague: "%% Class League",

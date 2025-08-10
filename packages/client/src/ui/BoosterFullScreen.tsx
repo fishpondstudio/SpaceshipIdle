@@ -44,7 +44,7 @@ export function BoosterFullScreen(): React.ReactNode {
                                        <div className="f1" />
                                        <div>{amount}</div>
                                     </div>
-                                    <Tooltip multiline maw="30vw" label={<RenderHTML html={def.desc(effect)} />}>
+                                    <Tooltip multiline maw="25vw" label={<RenderHTML html={def.desc(effect)} />}>
                                        <div className="row text-sm text-dimmed stretch">
                                           <div>{t(L.Effect)}</div>
                                           <div className="f1" />

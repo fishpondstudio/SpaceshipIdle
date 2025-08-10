@@ -48,7 +48,7 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
          <Tooltip
             disabled={isQualifierBattle(G.save.current)}
             multiline
-            maw="30vw"
+            maw="25vw"
             label={
                <RenderHTML
                   html={t(L.QualifierBattleRequirementHTML, quantumLimit, formatNumber(quantumToXP(quantumLimit)))}
