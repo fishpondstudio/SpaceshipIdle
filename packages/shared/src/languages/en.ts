@@ -719,6 +719,7 @@ export const EN = {
    XShards: "%% Shards",
    CurrentTotalXp: "Current Total XP",
    YouHaveUnassignedElementTooltip: "You have unassigned element(s) this run. Assign them to boost a multiplier of your choice",
+   YouHaveUnequippedBoosterTooltip: "You have unequipped booster(s) this run. Equip them to a module of your choice",
    DMG: "DMG",
    TimeUntilNextElement: "Time Until Next Element",
    XPTooltipHTMLV2: "Available XP: %%<br><small>Weapons generate XP when firing. XP can be used to build and upgrade weapons</small>",
@@ -729,4 +730,5 @@ export const EN = {
    XClassLeague: "%% Class League",
    HpOrDamageMultiplierForX: "HP/Damage Multiplier for %%",
    Permanent: "Permanent",
+   EquippableBoosters: "Equippable Booster(s)",
 };

@@ -36,3 +36,12 @@ export function rollBooster(gs: GameState): Booster | null {
    shuffle(candidates);
    return candidates[0];
 }
+
+export function hasUnequippedBooster(gs: GameState): boolean {
+   for (const data of gs.boosters.values()) {
+      if (data.tile === null) {
+         return true;
+      }
+   }
+   return false;
+}

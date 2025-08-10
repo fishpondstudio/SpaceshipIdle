@@ -1,6 +1,7 @@
 import { Popover, Tooltip } from "@mantine/core";
 import { type Booster, Boosters } from "@spaceship-idle/shared/src/game/definitions/Boosters";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { hasUnequippedBooster } from "@spaceship-idle/shared/src/game/logic/BoosterLogic";
 import {
    canSpend,
    getBuildingCost,
@@ -176,6 +177,8 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   </Tooltip>
                   <div className="f1" />
                </>
+            ) : hasUnequippedBooster(G.save.current) ? (
+               <div className="f1 text-green">{t(L.EquippableBoosters)}</div>
             ) : (
                <div className="f1 text-dimmed">{t(L.NoEquippedBooster)}</div>
             )}

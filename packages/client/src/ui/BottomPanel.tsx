@@ -2,6 +2,7 @@ import { Indicator, Progress, SegmentedControl, Tooltip } from "@mantine/core";
 import { GameState, GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
+import { hasUnequippedBooster } from "@spaceship-idle/shared/src/game/logic/BoosterLogic";
 import { hasUnassignedElements } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, hasFlag, round } from "@spaceship-idle/shared/src/utils/Helper";
@@ -227,11 +228,7 @@ function SceneSwitcher(): React.ReactNode {
                   value: Scenes.CatalystScene,
                },
                {
-                  label: (
-                     <Tooltip label={t(L.TabBooster)}>
-                        <TextureComp name="Others/Booster" />
-                     </Tooltip>
-                  ),
+                  label: <BoosterTabLabel />,
                   value: Scenes.BoosterScene,
                },
                {
@@ -258,6 +255,24 @@ function ElementTabLabel(): React.ReactNode {
    return (
       <Tooltip label={t(L.TabElement)}>
          <TextureComp name="Others/Element" />
+      </Tooltip>
+   );
+}
+
+function BoosterTabLabel(): React.ReactNode {
+   refreshOnTypedEvent(GameStateUpdated);
+   if (hasUnequippedBooster(G.save.current)) {
+      return (
+         <Tooltip multiline maw="25vw" label={t(L.YouHaveUnequippedBoosterTooltip)}>
+            <Indicator color="red" processing>
+               <TextureComp name="Others/Booster" />
+            </Indicator>
+         </Tooltip>
+      );
+   }
+   return (
+      <Tooltip label={t(L.TabBooster)}>
+         <TextureComp name="Others/Booster" />
       </Tooltip>
    );
 }

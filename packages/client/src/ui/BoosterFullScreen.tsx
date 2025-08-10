@@ -28,6 +28,7 @@ export function BoosterFullScreen(): React.ReactNode {
                      {mapOf(Boosters, (booster) => {
                         const def = Boosters[booster];
                         const amount = G.save.current.boosters.get(booster)?.amount ?? 0;
+                        const tile = G.save.current.boosters.get(booster)?.tile;
                         const effect = getBoosterEffect(amount);
                         if (def.shipClass !== k) {
                            return null;
@@ -39,6 +40,12 @@ export function BoosterFullScreen(): React.ReactNode {
                               <div className="f1" />
                               {amount > 0 ? (
                                  <>
+                                    {tile === null ? (
+                                       <div className="text-red row g5">
+                                          <div className="mi sm">error</div>
+                                          <div className="text-sm">Unequipped</div>
+                                       </div>
+                                    ) : null}
                                     <div className="row text-sm text-dimmed stretch">
                                        <div>{t(L.Amount)}</div>
                                        <div className="f1" />

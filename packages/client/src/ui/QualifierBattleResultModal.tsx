@@ -41,6 +41,15 @@ export function QualifierBattleResultModal(): React.ReactNode {
                G.runtime.battleType = BattleType.Peace;
                G.runtime.createXPTarget();
 
+               if (booster) {
+                  const data = G.save.current.boosters.get(booster);
+                  if (data) {
+                     data.amount++;
+                  } else {
+                     G.save.current.boosters.set(booster, { tile: null, amount: 1 });
+                  }
+               }
+
                GameStateUpdated.emit();
                setTimeout(() => {
                   hideLoading();
