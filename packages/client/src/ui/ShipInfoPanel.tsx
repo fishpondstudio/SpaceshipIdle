@@ -2,11 +2,20 @@ import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { elementToXP, xpToElement } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
-import { getUsedQuantum, quantumToXP, xpToQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { getShipBlueprint, isQualifierBattle } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
+import {
+   calcSpaceshipXP,
+   getMinimumQuantumForBattle,
+   getMinimumSpaceshipXPForBattle,
+   getUsedQuantum,
+   quantumToXP,
+   xpToQuantum,
+} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
+import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import {
    clamp,
    classNames,
@@ -31,7 +40,6 @@ import { RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
 import { PrepareForBattleModal } from "./PrepareForBattleModal";
 import { PrepareForBattleMode } from "./PrepareForBattleMode";
-import { QuantumProgressModal } from "./QuantumProgressModal";
 import { playBling } from "./Sound";
 import { WarpSpeedMenuComp } from "./WarpSpeedMenuComp";
 
@@ -53,7 +61,9 @@ export function ShipInfoPanel(): React.ReactNode {
    G.runtime.rightStat.averageActualDamage(10, actualDamages);
    const usedQuantum = getUsedQuantum(state);
    const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
-   const highlight = isQualifierBattle(state);
+   const highlight =
+      usedQuantum >= getMinimumQuantumForBattle(state) &&
+      calcSpaceshipXP(state) >= getMinimumSpaceshipXPForBattle(state);
    const currentXP = state.resources.get("XP") ?? 0;
 
    const quantum = xpToQuantum(currentXP);
@@ -79,7 +89,9 @@ export function ShipInfoPanel(): React.ReactNode {
             label={
                <>
                   <RenderHTML html={t(L.Battle)} />
-                  {highlight ? <RenderHTML html={t(L.ReachedQuantumLimitV2, formatNumber(quantum))} /> : null}
+                  {highlight ? (
+                     <RenderHTML html={t(L.ReachedQuantumLimitV2, ShipClass[getShipClass(G.save.current)].name())} />
+                  ) : null}
                </>
             }
             multiline
@@ -87,6 +99,11 @@ export function ShipInfoPanel(): React.ReactNode {
          >
             <div
                className="block pointer"
+               style={{
+                  background: highlight
+                     ? "linear-gradient(180deg, var(--mantine-color-space-7), var(--mantine-color-space-9))"
+                     : "none",
+               }}
                onClick={() => {
                   showModal({
                      children: <PrepareForBattleModal mode={PrepareForBattleMode.Normal} />,
@@ -100,7 +117,7 @@ export function ShipInfoPanel(): React.ReactNode {
          </Tooltip>
          <div className="divider vertical" />
          <Tooltip multiline maw="25vw" label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(availableXP))} />}>
-            <div className="block" style={{ width: 100 }}>
+            <div className="block" style={{ width: 85 }}>
                <TextureComp name="Others/XP24" />
                <div className="f1 text-right">
                   <div>{formatNumber(availableXP)}</div>
@@ -157,18 +174,7 @@ export function ShipInfoPanel(): React.ReactNode {
          </Tooltip>
          <div className="divider vertical" />
          <Tooltip color="gray" multiline w={300} label={<QuantumTooltip />}>
-            <div
-               className="block pointer"
-               style={{ width: 100, position: "relative" }}
-               onClick={() => {
-                  showModal({
-                     children: <QuantumProgressModal />,
-                     title: t(L.QuantumProgress),
-                     dismiss: true,
-                     size: "lg",
-                  });
-               }}
-            >
+            <div className="block pointer" style={{ width: 100, position: "relative" }}>
                <TextureComp name="Others/Quantum24" />
                <div className="f1 text-right">
                   <div>
@@ -192,18 +198,7 @@ export function ShipInfoPanel(): React.ReactNode {
          </Tooltip>
          <div className="divider vertical" />
          <Tooltip multiline w={300} color="gray" label={<ElementTooltip />}>
-            <div
-               style={{ width: 100 }}
-               className="block pointer"
-               onClick={() => {
-                  showModal({
-                     children: <QuantumProgressModal />,
-                     title: t(L.QuantumProgress),
-                     dismiss: true,
-                     size: "lg",
-                  });
-               }}
-            >
+            <div style={{ width: 100 }} className="block pointer">
                <TextureComp name="Others/Element24" />
                <div className="w5" />
                <div className="f1 text-right">
@@ -229,18 +224,7 @@ export function ShipInfoPanel(): React.ReactNode {
          </Tooltip>
          <div className="divider vertical" />
          <Tooltip multiline w={300} color="gray" label={<ElementTooltip />}>
-            <div
-               style={{ width: 60 }}
-               className="block pointer"
-               onClick={() => {
-                  showModal({
-                     children: <QuantumProgressModal />,
-                     title: t(L.QuantumProgress),
-                     dismiss: true,
-                     size: "lg",
-                  });
-               }}
-            >
+            <div style={{ width: 60 }} className="block pointer">
                <div className="f1 text-right">
                   <div>{formatPercent((currentXP - prevElementXP) / (nextElementXP - prevElementXP))}</div>
                   <div className={classNames("xs text-right", xpDelta > 0 ? "text-green" : "text-red")}>

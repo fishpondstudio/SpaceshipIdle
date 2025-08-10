@@ -436,6 +436,7 @@ export class ShipScene extends Scene {
             const point = tileToPoint(clickedTile);
             G.save.current.tiles.delete(createTile(point.x, MaxY - 1 - point.y));
          }
+         console.log(G.save.current.tiles.size);
          console.log(JSON.stringify(Array.from(G.save.current.tiles.keys())));
          return;
       }

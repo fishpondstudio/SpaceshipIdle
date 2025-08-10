@@ -72,7 +72,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                   <div>{t(L.ElementThisRun)}</div>
                   <div className="f1" />
                   <div className={classNames(thisRun.amount > 0 ? "text-red" : null)}>
-                     {t(L.Unassigned, formatNumber(thisRun.amount))}
+                     {t(L.XUnassigned, formatNumber(thisRun.amount))}
                   </div>
                </div>
                <div className="divider my10 mx-15" />

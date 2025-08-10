@@ -12,7 +12,7 @@ export const Resources = {
    Victory: { name: () => t(L.Victory) },
    VictoryUsed: { name: () => EmptyString },
 
-   Loss: { name: () => EmptyString },
+   Defeat: { name: () => EmptyString },
 
    Warp: { name: () => t(L.TimeWarp) },
 } as const satisfies Record<string, IResourceDefinition>;

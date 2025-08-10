@@ -195,16 +195,6 @@ export function getShipBlueprint(gs: GameState): number[] {
 
 export function migrateShipForServer(ship: GameState): boolean {
    let migrated = false;
-   if ("battleCount" in ship) {
-      migrated = true;
-      ship.win = ship.battleCount as number;
-      ship.battleCount = undefined;
-   }
-   if ("trialCount" in ship) {
-      migrated = true;
-      ship.loss = ship.trialCount as number;
-      ship.trialCount = undefined;
-   }
    if (!ship.permanentElementChoices) {
       migrated = true;
       ship.permanentElementChoices = [];

@@ -29,8 +29,6 @@ export class GameState {
    tiles: Tiles = new Map();
    resources = new Map<Resource, number>();
    unlockedTech = new Set<Tech>();
-   win = 0;
-   loss = 0;
    discoveredElements = 0;
    elements = new Map<ElementSymbol, ElementData>();
    elementChoices: ElementChoice[] = [];

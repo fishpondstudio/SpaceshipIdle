@@ -1,4 +1,4 @@
-import { getDefaultZIndex, type PaperProps, Progress, Transition } from "@mantine/core";
+import { getDefaultZIndex, type PaperProps, Progress, Tooltip, Transition } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { ElementPermanentColor, ElementThisRunColor } from "@spaceship-idle/shared/src/game/definitions/Constant";
@@ -146,32 +146,68 @@ function ElementOption({
             >
                <ElementImageComp symbol={symbol} color={permanent ? ElementPermanentColor : ElementThisRunColor} />
                <div className="h10" />
-               {permanent ? (
-                  <div className="text-center">{getBuildingName(b)}</div>
-               ) : (
-                  <div className="text-center">{t(L.PlusXProductionMultiplierForX, 1, getBuildingName(b))}</div>
-               )}
+               <div className="text-center">{t(L.HpOrDamageMultiplierForX, getBuildingName(b))}</div>
                <div className="h10" />
                <div className="divider mx-15 mb5" />
                {permanent ? null : (
                   <>
-                     <div className="row">
-                        <div className="f1">{t(L.ThisRun)}</div>
-                        <div>
-                           {thisRun?.hp ?? 0} + {thisRun?.damage ?? 0} ({thisRun?.amount ?? 0})
+                     <Tooltip
+                        color="gray"
+                        multiline
+                        w={300}
+                        label={
+                           <>
+                              <div className="text-space">{t(L.ElementThisRun)}</div>
+                              <div className="row">
+                                 <div className="f1">{t(L.HPMultiplier)}</div>
+                                 <div>{thisRun?.hp ?? 0}</div>
+                              </div>
+                              <div className="row">
+                                 <div className="f1">{t(L.DamageMultiplier)}</div>
+                                 <div>{thisRun?.damage ?? 0}</div>
+                              </div>
+                              <div className="row">
+                                 <div className="f1">{t(L.Unassigned)}</div>
+                                 <div>{thisRun?.amount ?? 0}</div>
+                              </div>
+                           </>
+                        }
+                     >
+                        <div className="row">
+                           <div className="f1">{t(L.ThisRun)}</div>
+                           <div>
+                              {thisRun?.hp ?? 0} + {thisRun?.damage ?? 0} ({thisRun?.amount ?? 0})
+                           </div>
                         </div>
-                     </div>
+                     </Tooltip>
                      <div className="divider mx-15 my5" />
                   </>
                )}
-               <div className="row">
-                  <div className="f1">{t(L.HPMultiplier)}</div>
-                  <div>{currentHPMultiplier}</div>
-               </div>
-               <div className="row">
-                  <div className="f1">{t(L.DamageMultiplier)}</div>
-                  <div>{currentDamageMultiplier}</div>
-               </div>
+               <Tooltip
+                  color="gray"
+                  multiline
+                  w={300}
+                  label={
+                     <>
+                        <div className="text-space">{t(L.PermanentElement)}</div>
+                        <div className="row">
+                           <div className="f1">{t(L.HPMultiplier)}</div>
+                           <div>{currentHPMultiplier}</div>
+                        </div>
+                        <div className="row">
+                           <div className="f1">{t(L.DamageMultiplier)}</div>
+                           <div>{currentHPMultiplier}</div>
+                        </div>
+                     </>
+                  }
+               >
+                  <div className="row">
+                     <div className="f1">{t(L.Permanent)}</div>
+                     <div>
+                        {currentHPMultiplier} + {currentDamageMultiplier}
+                     </div>
+                  </div>
+               </Tooltip>
                <div className="row">
                   <div className="f1">{t(L.Shards)}</div>
                   <div>

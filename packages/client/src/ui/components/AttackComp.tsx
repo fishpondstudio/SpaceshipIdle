@@ -12,7 +12,7 @@ import type { ITileWithGameState } from "../ITileWithGameState";
 import { AbilityComp } from "./AbilityComp";
 import { RenderHTML } from "./RenderHTMLComp";
 import { StatComp } from "./StatComp";
-import { XPIcon } from "./SVGIcons";
+import { TextureComp } from "./TextureComp";
 import { TitleComp } from "./TitleComp";
 
 export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
@@ -126,7 +126,7 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          <div className="divider my10" />
          <div className="mx10">
             <div className="row g5">
-               <XPIcon />
+               <TextureComp name="Others/XP24" />
                <div>{perSec ? t(L.PerSec) : t(L.PerFire)}</div>
                <div className="f1" />
                <div>

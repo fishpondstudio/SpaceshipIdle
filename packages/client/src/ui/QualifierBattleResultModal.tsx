@@ -1,9 +1,8 @@
 import { GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { getTotalQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { rollBooster } from "@spaceship-idle/shared/src/game/logic/BoosterLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { formatNumber, mapSafeAdd } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
@@ -12,25 +11,13 @@ import { DefeatedHeaderComp, VictoryHeaderComp } from "./components/BattleResult
 import { hideLoading, showLoading } from "./components/LoadingComp";
 
 export function QualifierBattleResultModal(): React.ReactNode {
-   const oldQuantum = getTotalQuantum(G.runtime.left);
-   const newQuantum = getTotalQuantum(G.save.current);
    const win = G.runtime.battleStatus === BattleStatus.LeftWin;
-   const xp = win ? quantumToXP(oldQuantum + 1) - quantumToXP(oldQuantum) : 0;
+   const booster = rollBooster(G.save.current);
+   console.log(booster);
    return (
       <div className="m10">
          {win ? <VictoryHeaderComp /> : <DefeatedHeaderComp />}
-         <div className="panel">
-            <div className="row">
-               <div className="f1">{t(L.Quantum)}</div>
-               <div className="text-green">+{newQuantum - oldQuantum}</div>
-            </div>
-            {xp > 0 ? (
-               <div className="row">
-                  <div className="f1">{t(L.XP)}</div>
-                  <div className="text-green">+{formatNumber(xp)}</div>
-               </div>
-            ) : null}
-         </div>
+         <div className="panel"></div>
          <div className="h5" />
          <BattleReportComp />
          <div className="h10" />
@@ -45,7 +32,6 @@ export function QualifierBattleResultModal(): React.ReactNode {
                G.runtime.battleType = BattleType.Peace;
                G.runtime.createXPTarget();
 
-               mapSafeAdd(G.save.current.resources, "XP", xp);
                GameStateUpdated.emit();
                setTimeout(() => {
                   hideLoading();

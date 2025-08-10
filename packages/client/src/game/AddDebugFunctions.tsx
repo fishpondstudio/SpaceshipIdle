@@ -14,11 +14,9 @@ import { ChooseElementModal } from "../ui/ChooseElementModal";
 import { MatchMakingModal } from "../ui/MatchmakingModal";
 import { NewPlayerModal } from "../ui/NewPlayerModal";
 import { OfflineTimeModal } from "../ui/OfflineTimeModal";
-import { PracticeBattleResultModal } from "../ui/PracticeBattleResultModal";
 import { PrestigeModal } from "../ui/PrestigeModal";
 import { PrestigeReason } from "../ui/PrestigeReason";
 import { QualifierBattleResultModal } from "../ui/QualifierBattleResultModal";
-import { QuantumProgressModal } from "../ui/QuantumProgressModal";
 import { ViewShipModal } from "../ui/ViewShipModal";
 import { idbClear } from "../utils/BrowserStorage";
 import { G } from "../utils/Global";
@@ -104,14 +102,8 @@ export function addDebugFunctions(): void {
       });
    };
    // @ts-expect-error
-   globalThis.practice = async () => {
-      showModal({
-         children: <PracticeBattleResultModal />,
-         size: "sm",
-      });
-   };
-   // @ts-expect-error
    globalThis.victory = async () => {
+      G.runtime.battleStatus = BattleStatus.LeftWin;
       showModal({
          children: <QualifierBattleResultModal />,
          size: "sm",
@@ -123,15 +115,6 @@ export function addDebugFunctions(): void {
          title: t(L.OfflineTime),
          children: <OfflineTimeModal offlineTime={G.save.current.offlineTime} />,
          size: "sm",
-      });
-   };
-   // @ts-expect-error
-   globalThis.progress = async () => {
-      showModal({
-         title: t(L.QuantumProgress),
-         children: <QuantumProgressModal />,
-         size: "lg",
-         dismiss: true,
       });
    };
    // @ts-expect-error
