@@ -5,12 +5,14 @@ import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { rollBooster } from "@spaceship-idle/shared/src/game/logic/BoosterLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { Sprite } from "pixi.js";
 import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
 import { BattleReportComp } from "./BattleReportComp";
 import { DefeatedHeaderComp, VictoryHeaderComp } from "./components/BattleResultHeader";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { TextureComp } from "./components/TextureComp";
+import { playBling } from "./Sound";
 
 export function QualifierBattleResultModal(): React.ReactNode {
    const win = G.runtime.battleStatus === BattleStatus.LeftWin;
@@ -32,7 +34,7 @@ export function QualifierBattleResultModal(): React.ReactNode {
          <div className="h10" />
          <button
             className="btn w100 filled p5 g5 row text-lg"
-            onClick={() => {
+            onClick={(e) => {
                showLoading();
                hideModal();
 
@@ -50,10 +52,29 @@ export function QualifierBattleResultModal(): React.ReactNode {
                   }
                }
 
+               const from = (e.target as HTMLButtonElement).getBoundingClientRect();
+
                GameStateUpdated.emit();
                setTimeout(() => {
                   hideLoading();
                   GameStateUpdated.emit();
+
+                  const target = document.getElementById("bottom-panel-booster")?.getBoundingClientRect();
+                  playBling();
+                  const sprite = new Sprite(G.textures.get(`Booster/${booster}`));
+                  sprite.scale.set(2);
+                  G.starfield.playParticle(
+                     sprite,
+                     {
+                        x: from.x + from.width / 2,
+                        y: from.y + from.height / 2,
+                     },
+                     {
+                        x: target ? target.x + target.width / 2 : 0,
+                        y: target ? target.y + target.height / 2 : 0,
+                     },
+                     1,
+                  );
                }, 1000);
             }}
          >

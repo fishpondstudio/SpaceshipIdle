@@ -1,5 +1,5 @@
 import { Popover, Tooltip } from "@mantine/core";
-import { type Booster, Boosters } from "@spaceship-idle/shared/src/game/definitions/Boosters";
+import { type Booster, Boosters, getBoosterEffect } from "@spaceship-idle/shared/src/game/definitions/Boosters";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { hasUnequippedBooster } from "@spaceship-idle/shared/src/game/logic/BoosterLogic";
 import {
@@ -102,8 +102,10 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             {[data.level + 1, getNextLevel(data.level, 5), getNextLevel(data.level, 10)].map((target, idx) => {
                return (
                   <Tooltip
+                     w={250}
+                     color="gray"
                      key={idx}
-                     label={<ResourceListComp xp={getTotalBuildingCost(data.type, data.level, target)} />}
+                     label={<ResourceListComp xp={-getTotalBuildingCost(data.type, data.level, target)} quantum={0} />}
                   >
                      <button
                         className="btn f1"
@@ -128,10 +130,10 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             {[data.level - 1, getNextLevel(data.level, -5), getNextLevel(data.level, -10)].map((target, idx) => {
                return (
                   <Tooltip
+                     w={250}
+                     color="gray"
                      key={idx}
-                     label={
-                        <ResourceListComp xp={getTotalBuildingCost(data.type, data.level, target)} showColor={false} />
-                     }
+                     label={<ResourceListComp xp={getTotalBuildingCost(data.type, data.level, target)} quantum={0} />}
                   >
                      <button className="btn f1" disabled={target <= 0} onClick={downgrade.bind(null, target)}>
                         {target - data.level}
@@ -140,11 +142,13 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                );
             })}
             <Tooltip
+               w={250}
+               color="gray"
                label={
                   canRecycle ? (
                      <>
                         <div>{t(L.RecycleModule)}</div>
-                        <ResourceListComp xp={getTotalBuildingCost(data.type, data.level, 0)} showColor={false} />
+                        <ResourceListComp xp={getTotalBuildingCost(data.type, data.level, 0)} quantum={0} />
                      </>
                   ) : (
                      t(L.CannotRecycle)
@@ -168,7 +172,9 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                      maw="25vw"
                      label={
                         <RenderHTML
-                           html={Boosters[booster].desc(G.save.current.boosters.get(booster)?.amount ?? 0)}
+                           html={Boosters[booster].desc(
+                              getBoosterEffect(G.save.current.boosters.get(booster)?.amount ?? 0),
+                           )}
                            className="text-sm"
                         />
                      }
@@ -226,7 +232,7 @@ function BoosterOpButton({ booster, me }: { booster: Booster; me: Tile }): React
    return (
       <Tooltip disabled={!inv.tile} multiline maw="20vw" label={<RenderHTML html={t(L.AlreadyEquippedTooltipHTML)} />}>
          <button
-            className="btn text-sm"
+            className="btn row g5"
             onClick={() => {
                G.save.current.boosters.forEach((inv) => {
                   if (inv.tile === me) {
@@ -237,7 +243,7 @@ function BoosterOpButton({ booster, me }: { booster: Booster; me: Tile }): React
                GameStateUpdated.emit();
             }}
          >
-            {t(L.Equip)}
+            <div>{inv.tile ? t(L.Reequip) : t(L.Equip)}</div>
          </button>
       </Tooltip>
    );

@@ -691,6 +691,7 @@ export const EN = {
    HPEqualizerDesc: "<b>Equipped module</b> gains +%% HP Multiplier. <b>Adjacent modules</b> also gain +%% HP Multiplier if they are not equipped with a booster",
    Booster: "Booster",
    Equip: "Equip",
+   Reequip: "Reequip",
    AlreadyEquippedTooltipHTML: "This booster is already equipped on another module. Equipping it on this module will unequip it from the other module",
    Unequip: "Unequip",
    NoEquippedBooster: "No Equipped Booster",
@@ -731,4 +732,5 @@ export const EN = {
    HpOrDamageMultiplierForX: "HP/Damage Multiplier for %%",
    Permanent: "Permanent",
    EquippableBoosters: "Equippable Booster(s)",
+   TabGalaxy: "Galaxy",
 };

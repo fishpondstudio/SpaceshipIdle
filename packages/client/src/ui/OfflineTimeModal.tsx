@@ -1,5 +1,6 @@
 import { formatHMS, formatNumber, mapSafeAdd, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { Sprite } from "pixi.js";
 import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
 import { playBling } from "./Sound";
@@ -24,7 +25,7 @@ export function OfflineTimeModal({ offlineTime }: { offlineTime: number }): Reac
                   hideModal();
                   playBling();
                   G.starfield.playParticle(
-                     G.textures.get("Misc/TimeWarp"),
+                     new Sprite(G.textures.get("Others/Warp")),
                      {
                         x: rect.x + rect.width / 2,
                         y: rect.y + rect.height / 2,

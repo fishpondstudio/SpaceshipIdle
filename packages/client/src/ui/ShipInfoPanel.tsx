@@ -28,6 +28,7 @@ import {
    reduceOf,
 } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { Sprite } from "pixi.js";
 import { memo } from "react";
 import Discord from "../../src/assets/images/Discord.svg";
 import Steam from "../../src/assets/images/Steam.svg";
@@ -244,7 +245,7 @@ function playQuantumParticle(): void {
    playBling();
    const target = document.getElementById("ship-info-quantum")?.getBoundingClientRect();
    G.starfield.playParticle(
-      G.textures.get("Misc/Quantum"),
+      new Sprite(G.textures.get("Misc/Quantum")),
       {
          x: document.body.clientWidth / 2,
          y: document.body.clientHeight / 2,

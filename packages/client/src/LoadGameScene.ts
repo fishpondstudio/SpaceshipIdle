@@ -1,6 +1,7 @@
 import { BoosterScene } from "./scenes/BoosterScene";
 import { CatalystScene } from "./scenes/CatalystScene";
 import { ElementsScene } from "./scenes/ElementsScene";
+import { GalaxyScene } from "./scenes/GalaxyScene";
 import { ShipScene } from "./scenes/ShipScene";
 import { TechTreeScene } from "./scenes/TechTreeScene";
 import { G } from "./utils/Global";
@@ -23,6 +24,10 @@ export function loadGameScene() {
       }
       case "booster": {
          G.scene.loadScene(BoosterScene);
+         break;
+      }
+      case "galaxy": {
+         G.scene.loadScene(GalaxyScene);
          break;
       }
       default: {

@@ -12,6 +12,7 @@ import { getCurrentTutorial } from "../game/Tutorial";
 import { BoosterScene } from "../scenes/BoosterScene";
 import { CatalystScene } from "../scenes/CatalystScene";
 import { ElementsScene } from "../scenes/ElementsScene";
+import { GalaxyScene } from "../scenes/GalaxyScene";
 import { ShipScene } from "../scenes/ShipScene";
 import { TechTreeScene } from "../scenes/TechTreeScene";
 import { G } from "../utils/Global";
@@ -185,6 +186,9 @@ function SceneSwitcher(): React.ReactNode {
                   case Scenes.CatalystScene:
                      G.scene.loadScene(CatalystScene);
                      break;
+                  case Scenes.GalaxyScene:
+                     G.scene.loadScene(GalaxyScene);
+                     break;
                   case Scenes.BoosterScene:
                      G.scene.loadScene(BoosterScene);
                      break;
@@ -218,6 +222,14 @@ function SceneSwitcher(): React.ReactNode {
                      </Tooltip>
                   ),
                   value: Scenes.TechTreeScene,
+               },
+               {
+                  label: (
+                     <Tooltip label={t(L.TabGalaxy)}>
+                        <TextureComp name="Others/Galaxy" />
+                     </Tooltip>
+                  ),
+                  value: Scenes.GalaxyScene,
                },
                {
                   label: (
@@ -265,14 +277,14 @@ function BoosterTabLabel(): React.ReactNode {
       return (
          <Tooltip multiline maw="25vw" label={t(L.YouHaveUnequippedBoosterTooltip)}>
             <Indicator color="red" processing>
-               <TextureComp name="Others/Booster" />
+               <TextureComp id="bottom-panel-booster" name="Others/Booster" />
             </Indicator>
          </Tooltip>
       );
    }
    return (
       <Tooltip label={t(L.TabBooster)}>
-         <TextureComp name="Others/Booster" />
+         <TextureComp id="bottom-panel-booster" name="Others/Booster" />
       </Tooltip>
    );
 }

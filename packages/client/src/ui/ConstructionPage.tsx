@@ -99,13 +99,9 @@ function BuildingComp({
    const canBuild = canSpend(getBuildingCost(building, 1), gs) && getAvailableQuantum(gs) > 0;
    return (
       <Tooltip
-         label={
-            getAvailableQuantum(gs) <= 0 ? (
-               t(L.NotEnoughQuantum)
-            ) : (
-               <ResourceListComp xp={getBuildingCost(building, 1)} />
-            )
-         }
+         color="gray"
+         w={250}
+         label={<ResourceListComp xp={-getBuildingCost(building, 1)} quantum={-1} />}
          key={building}
       >
          <div

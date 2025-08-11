@@ -1,7 +1,7 @@
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { RingBuffer } from "@spaceship-idle/shared/src/utils/RingBuffer";
 import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
-import { BitmapText, Container, Geometry, type IDestroyOptions, Mesh, Shader, Sprite, type Texture } from "pixi.js";
+import { BitmapText, Container, Geometry, type IDestroyOptions, Mesh, Shader, type Sprite } from "pixi.js";
 import { Fonts } from "../assets";
 import { getVersion } from "../game/Version";
 import { runFunc, sequence, to } from "../utils/actions/Actions";
@@ -47,11 +47,12 @@ export class Starfield extends Container {
       this.shader.uniforms.iStrength = G.save.options.nebulaStrength;
    }
 
-   playParticle(texture: Texture | undefined, from: IHaveXY, target: IHaveXY, count: number): void {
+   playParticle(sprite: Sprite, from: IHaveXY, target: IHaveXY, count: number): void {
+      const oldScale = { x: sprite.scale.x, y: sprite.scale.y };
       for (let i = 0; i < count; i++) {
-         const particle = this.addChild(new Sprite(texture));
+         const particle = this.addChild(sprite);
          particle.anchor.set(0.5, 0.5);
-         particle.scale.set(0.1);
+         particle.scale.set(0.1 * oldScale.x, 0.1 * oldScale.y);
          particle.position.set(from.x, from.y);
          sequence(
             to(
@@ -59,7 +60,7 @@ export class Starfield extends Container {
                {
                   x: from.x + (Math.random() - 0.5) * 100,
                   y: from.y + (Math.random() - 0.5) * 100,
-                  scale: { x: 1, y: 1 },
+                  scale: { x: oldScale.x, y: oldScale.y },
                },
                0.5 + 0.1 * i,
                Easing.OutQuad,
