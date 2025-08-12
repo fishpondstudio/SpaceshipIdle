@@ -61,10 +61,13 @@ export function QualifierBattleResultModal(): React.ReactNode {
 
                   const target = document.getElementById("bottom-panel-booster")?.getBoundingClientRect();
                   playBling();
-                  const sprite = new Sprite(G.textures.get(`Booster/${booster}`));
-                  sprite.scale.set(2);
+
                   G.starfield.playParticle(
-                     sprite,
+                     () => {
+                        const sprite = new Sprite(G.textures.get(`Booster/${booster}`));
+                        sprite.scale.set(2);
+                        return sprite;
+                     },
                      {
                         x: from.x + from.width / 2,
                         y: from.y + from.height / 2,

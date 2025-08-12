@@ -1,13 +1,13 @@
 import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
-import { type ColorSource, Sprite } from "pixi.js";
+import { type ColorSource, Container, type FederatedPointerEvent, Sprite } from "pixi.js";
 import { G } from "../utils/Global";
 import { type ISceneContext, Scene } from "../utils/SceneManager";
 
 export class GalaxyScene extends Scene {
-   graphics: SmoothGraphics;
-   ship: Sprite;
-   t = 0;
-   size = 1000;
+   private graphics: SmoothGraphics;
+   private ship: Sprite;
+   private ships: Container<Sprite>;
+   private size = 1000;
 
    backgroundColor(): ColorSource {
       return 0x000000;
@@ -40,12 +40,14 @@ export class GalaxyScene extends Scene {
       });
       this.graphics.drawCircle(this.size / 2, this.size / 2, 100);
 
+      this.ships = this.viewport.addChild(new Container<Sprite>());
+
       const galaxy = this.viewport.addChild(new Sprite(textures.get("Others/Galaxy")));
       galaxy.position.set(this.size / 2, this.size / 2);
       galaxy.anchor.set(0.5);
       galaxy.scale.set(2);
 
-      this.ship = this.viewport.addChild(new Sprite(textures.get("Others/Pirate")));
+      this.ship = this.ships.addChild(new Sprite(textures.get("Others/Pirate")));
       this.ship.anchor.set(0.5);
    }
 
@@ -57,5 +59,19 @@ export class GalaxyScene extends Scene {
 
    onDisable(): void {
       super.onDisable();
+   }
+
+   onClicked(e: FederatedPointerEvent): void {
+      const pos = this.viewport.screenToWorld(e.screen);
+      for (const ship of this.ships.children) {
+         if (
+            pos.x > ship.position.x - ship.width / 2 &&
+            pos.x < ship.position.x + ship.width / 2 &&
+            pos.y > ship.position.y - ship.height / 2 &&
+            pos.y < ship.position.y + ship.height / 2
+         ) {
+            console.log("hit");
+         }
+      }
    }
 }

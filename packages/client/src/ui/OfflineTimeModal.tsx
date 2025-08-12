@@ -25,7 +25,7 @@ export function OfflineTimeModal({ offlineTime }: { offlineTime: number }): Reac
                   hideModal();
                   playBling();
                   G.starfield.playParticle(
-                     new Sprite(G.textures.get("Others/Warp")),
+                     () => new Sprite(G.textures.get("Others/Warp")),
                      {
                         x: rect.x + rect.width / 2,
                         y: rect.y + rect.height / 2,

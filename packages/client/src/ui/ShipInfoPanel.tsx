@@ -245,7 +245,7 @@ function playQuantumParticle(): void {
    playBling();
    const target = document.getElementById("ship-info-quantum")?.getBoundingClientRect();
    G.starfield.playParticle(
-      new Sprite(G.textures.get("Misc/Quantum")),
+      () => new Sprite(G.textures.get("Misc/Quantum")),
       {
          x: document.body.clientWidth / 2,
          y: document.body.clientHeight / 2,

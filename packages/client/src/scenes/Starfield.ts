@@ -47,9 +47,10 @@ export class Starfield extends Container {
       this.shader.uniforms.iStrength = G.save.options.nebulaStrength;
    }
 
-   playParticle(sprite: Sprite, from: IHaveXY, target: IHaveXY, count: number): void {
-      const oldScale = { x: sprite.scale.x, y: sprite.scale.y };
+   playParticle(spriteBuilder: () => Sprite, from: IHaveXY, target: IHaveXY, count: number): void {
       for (let i = 0; i < count; i++) {
+         const sprite = spriteBuilder();
+         const oldScale = { x: sprite.scale.x, y: sprite.scale.y };
          const particle = this.addChild(sprite);
          particle.anchor.set(0.5, 0.5);
          particle.scale.set(0.1 * oldScale.x, 0.1 * oldScale.y);
