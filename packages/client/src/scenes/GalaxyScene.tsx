@@ -59,16 +59,16 @@ export class GalaxyScene extends Scene {
       ship2.anchor.set(0.5);
       ship2.position.set(this.size / 2 + Math.cos(r) * 150, this.size / 2 + Math.sin(r) * 150);
 
+      const selector = this.ships.addChild(new Sprite(this.context.textures.get("Misc/GalaxySelector")));
+      selector.anchor.set(0.5);
+      selector.scale.set(0.5);
+      selector.position.set(this.size / 2 + Math.cos(r) * 150, this.size / 2 + Math.sin(r) * 150);
+
       r = Math.random() * 2 * Math.PI;
       const ship3 = this.ships.addChild(new Sprite(this.context.textures.get("Others/Alien2")));
       this.graphics.drawCircle(this.size / 2, this.size / 2, 200);
       ship3.anchor.set(0.5);
       ship3.position.set(this.size / 2 + Math.cos(r) * 200, this.size / 2 + Math.sin(r) * 200);
-
-      const selector = this.ships.addChild(new Sprite(this.context.textures.get("Misc/GalaxySelector")));
-      selector.anchor.set(0.5);
-      selector.scale.set(0.5);
-      selector.position.set(this.size / 2 + Math.cos(r) * 200, this.size / 2 + Math.sin(r) * 200);
    }
 
    onEnable(): void {

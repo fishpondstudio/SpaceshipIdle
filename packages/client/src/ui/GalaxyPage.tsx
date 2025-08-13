@@ -1,7 +1,10 @@
 import { capitalize } from "@spaceship-idle/shared/src/utils/Helper";
+import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { Generator } from "@spaceship-idle/shared/src/utils/NameGen";
+import { showModal } from "../utils/ToggleModal";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
+import { PeaceTreatyModal } from "./PeaceTreatyModal";
 
 export function GalaxyPage(): React.ReactNode {
    const name = capitalize(new Generator("sVs").toString());
@@ -23,8 +26,8 @@ export function GalaxyPage(): React.ReactNode {
          <div className="divider dashed"></div>
          <div className="m10 text-sm">
             Before making a decision, you can spend <span className="text-space">1 Victory Point</span>{" "}
-            <TextureComp name="Others/Trophy16" style={{ display: "inline-block", verticalAlign: "middle" }} /> to build
-            a spy network to reveal more information about them
+            <TextureComp name="Others/Trophy16" className="inline-middle" /> to build a spy network to reveal more
+            information about them
          </div>
          <div className="mx10">
             <button className="btn w100 row g5">
@@ -80,10 +83,15 @@ export function GalaxyPage(): React.ReactNode {
             </div>
             <div className="h5" />
             <div className="text-xs text-dimmed">
-               Reparation is negotiated when signing the peace treaty and depends on battle outcome
+               War reparation is negotiated when signing the peace treaty and depends on battle outcome
             </div>
             <div className="h5" />
-            <button className="btn red w100 row g5">
+            <button
+               className="btn red w100 row g5"
+               onClick={() => {
+                  showModal({ children: <PeaceTreatyModal />, size: "lg", title: t(L.NegotiatePeaceTreaty) });
+               }}
+            >
                <div className="mi sm">swords</div>
                <div>Declare War</div>
             </button>

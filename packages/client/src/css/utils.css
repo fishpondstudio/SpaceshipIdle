@@ -354,3 +354,8 @@
    transition-duration: 250ms;
    transition-timing-function: ease;
 }
+
+.inline-middle {
+   display: inline-block;
+   vertical-align: middle;
+}

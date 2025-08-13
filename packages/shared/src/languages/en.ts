@@ -733,4 +733,5 @@ export const EN = {
    Permanent: "Permanent",
    EquippableBoosters: "Equippable Booster(s)",
    TabGalaxy: "Galaxy",
+   NegotiatePeaceTreaty: "Negotiate Peace Treaty",
 };
