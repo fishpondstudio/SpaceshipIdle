@@ -1,6 +1,6 @@
 import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
 import { type ColorSource, Container, type FederatedPointerEvent, Sprite } from "pixi.js";
-import { DiplomacyPage } from "../ui/DiplomacyPage";
+import { GalaxyPage } from "../ui/GalaxyPage";
 import { hideSidebar, setSidebar } from "../ui/Sidebar";
 import { type ISceneContext, Scene } from "../utils/SceneManager";
 
@@ -64,7 +64,11 @@ export class GalaxyScene extends Scene {
       this.graphics.drawCircle(this.size / 2, this.size / 2, 200);
       ship3.anchor.set(0.5);
       ship3.position.set(this.size / 2 + Math.cos(r) * 200, this.size / 2 + Math.sin(r) * 200);
-      // ship2.rotation = r;
+
+      const selector = this.ships.addChild(new Sprite(this.context.textures.get("Misc/GalaxySelector")));
+      selector.anchor.set(0.5);
+      selector.scale.set(0.5);
+      selector.position.set(this.size / 2 + Math.cos(r) * 200, this.size / 2 + Math.sin(r) * 200);
    }
 
    onEnable(): void {
@@ -84,7 +88,7 @@ export class GalaxyScene extends Scene {
             pos.y > ship.position.y - ship.height / 2 &&
             pos.y < ship.position.y + ship.height / 2
          ) {
-            setSidebar(<DiplomacyPage />);
+            setSidebar(<GalaxyPage />);
             return;
          }
       }

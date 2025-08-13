@@ -17,6 +17,11 @@
    color: var(--mantine-color-red-text);
 }
 
+.btn.green {
+   border-color: var(--mantine-color-green-text);
+   color: var(--mantine-color-green-text);
+}
+
 .btn:disabled {
    opacity: 0.5;
    cursor: not-allowed;
