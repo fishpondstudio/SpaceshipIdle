@@ -1,5 +1,4 @@
 import { capitalize } from "@spaceship-idle/shared/src/utils/Helper";
-import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { Generator } from "@spaceship-idle/shared/src/utils/NameGen";
 import { showModal } from "../utils/ToggleModal";
 import { SidebarComp } from "./components/SidebarComp";
@@ -45,14 +44,15 @@ export function GalaxyPage(): React.ReactNode {
             <div className="panel">
                <div className="title">Cost</div>
                <div className="h5" />
-               <div className="row fstart g5">
-                  1 Victory Point <TextureComp name="Others/Trophy16" />
+               <div>
+                  1 Victory Point <TextureComp name="Others/Trophy16" className="inline-middle" />
                </div>
                <div className="divider my10 mx-10" />
                <div className="title">Rewards</div>
                <div className="h5" />
-               <div className="row fstart g5">
-                  +1 <div className="text-space">Evasion Cluster</div> <TextureComp name="Booster/Evasion1" />
+               <div>
+                  +1 <span className="text-space">Evasion Cluster</span>{" "}
+                  <TextureComp name="Booster/Evasion1" className="inline-middle" />
                </div>
             </div>
             <div className="h10" />
@@ -71,14 +71,20 @@ export function GalaxyPage(): React.ReactNode {
             <div className="panel">
                <div className="title">Negotiable</div>
                <div className="h5" />
-               <div className="row fstart g5">
-                  Evasion Cluster <TextureComp name="Booster/Evasion1" />
+               <div>
+                  Evasion Cluster <TextureComp name="Booster/Evasion1" className="inline-middle" />
                </div>
-               <div className="row fstart g5">
-                  HP Cluster <TextureComp name="Booster/HP1" />
+               <div>
+                  HP Cluster <TextureComp name="Booster/HP1" className="inline-middle" />
                </div>
-               <div className="row fstart g5">
-                  Victory Point <TextureComp name="Others/Trophy16" />
+               <div>
+                  Victory Point <TextureComp name="Others/Trophy16" className="inline-middle" />
+               </div>
+               <div>
+                  Officer Candidate <TextureComp name="Others/Officer" className="inline-middle" />
+               </div>
+               <div>
+                  XP <TextureComp name="Others/XP" className="inline-middle" />
                </div>
             </div>
             <div className="h5" />
@@ -89,7 +95,7 @@ export function GalaxyPage(): React.ReactNode {
             <button
                className="btn red w100 row g5"
                onClick={() => {
-                  showModal({ children: <PeaceTreatyModal />, size: "lg", title: t(L.NegotiatePeaceTreaty) });
+                  showModal({ children: <PeaceTreatyModal />, size: "lg" });
                }}
             >
                <div className="mi sm">swords</div>

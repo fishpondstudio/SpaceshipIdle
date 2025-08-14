@@ -1,18 +1,20 @@
 import { capitalize } from "@spaceship-idle/shared/src/utils/Helper";
 import { Generator } from "@spaceship-idle/shared/src/utils/NameGen";
 import { G } from "../utils/Global";
+import { VictoryHeaderComp } from "./components/BattleResultHeader";
 import { TextureComp } from "./components/TextureComp";
 
 export function PeaceTreatyModal(): React.ReactNode {
    const name = capitalize(new Generator("sVs").toString());
    return (
       <div className="m10">
+         <VictoryHeaderComp title="Decisive Victory" />
          <div className="row text-lg">
-            <TextureComp name="Others/Spaceship" width={64} />
+            <TextureComp name="Others/Spaceship" width={32} />
             <div>SS {G.save.current.name}</div>
             <div className="f1" />
             <div>{name}</div>
-            <TextureComp name="Others/Alien" width={64} />
+            <TextureComp name="Others/Alien" width={32} />
          </div>
          <div className="h10" />
          <div className="row">

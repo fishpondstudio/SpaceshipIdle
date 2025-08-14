@@ -20,7 +20,7 @@ export function DefeatedHeaderComp(): React.ReactNode {
    );
 }
 
-export function VictoryHeaderComp(): React.ReactNode {
+export function VictoryHeaderComp({ title }: { title: string }): React.ReactNode {
    const theme = useMantineTheme();
    return (
       <div
@@ -34,7 +34,7 @@ export function VictoryHeaderComp(): React.ReactNode {
          <div className="mi" style={{ fontSize: 128 }}>
             trophy
          </div>
-         <div style={{ fontSize: 24 }}>{t(L.Victory)}</div>
+         <div style={{ fontSize: 24 }}>{title}</div>
       </div>
    );
 }
