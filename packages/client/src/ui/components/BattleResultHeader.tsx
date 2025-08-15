@@ -31,7 +31,7 @@ export function VictoryHeaderComp({ title }: { title: string }): React.ReactNode
             background: getGradient({ deg: 180, from: "green.5", to: "green.9" }, theme),
          }}
       >
-         <div className="mi" style={{ fontSize: 128 }}>
+         <div className="mi" style={{ fontSize: 96 }}>
             trophy
          </div>
          <div style={{ fontSize: 24 }}>{title}</div>
@@ -42,20 +42,18 @@ export function VictoryHeaderComp({ title }: { title: string }): React.ReactNode
 export function PrestigeHeaderComp(): React.ReactNode {
    const theme = useMantineTheme();
    return (
-      <>
-         <div
-            className="p10 mb10 col cc"
-            style={{
-               color: "#fff",
-               borderRadius: "5px",
-               background: getGradient({ deg: 180, from: "space.5", to: "space.9" }, theme),
-            }}
-         >
-            <div className="mi" style={{ fontSize: 128 }}>
-               model_training
-            </div>
-            <div style={{ fontSize: 24 }}>{t(L.Prestige)}</div>
+      <div
+         className="p10 mb10 col cc"
+         style={{
+            color: "#fff",
+            borderRadius: "5px",
+            background: getGradient({ deg: 180, from: "space.5", to: "space.9" }, theme),
+         }}
+      >
+         <div className="mi" style={{ fontSize: 128 }}>
+            model_training
          </div>
-      </>
+         <div style={{ fontSize: 24 }}>{t(L.Prestige)}</div>
+      </div>
    );
 }

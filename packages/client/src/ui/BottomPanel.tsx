@@ -210,7 +210,7 @@ function SceneSwitcher(): React.ReactNode {
                {
                   label: (
                      <Tooltip label={t(L.TabSpaceship)}>
-                        <TextureComp name="Others/Spaceship" />
+                        <TextureComp name="Others/Spaceship24" />
                      </Tooltip>
                   ),
                   value: Scenes.ShipScene,
@@ -218,7 +218,7 @@ function SceneSwitcher(): React.ReactNode {
                {
                   label: (
                      <Tooltip label={t(L.TabResearch)}>
-                        <TextureComp name="Others/Research" />
+                        <TextureComp name="Others/Research24" />
                      </Tooltip>
                   ),
                   value: Scenes.TechTreeScene,
@@ -226,7 +226,7 @@ function SceneSwitcher(): React.ReactNode {
                {
                   label: (
                      <Tooltip label={t(L.TabGalaxy)}>
-                        <TextureComp name="Others/Galaxy" />
+                        <TextureComp name="Others/Galaxy24" />
                      </Tooltip>
                   ),
                   value: Scenes.GalaxyScene,
@@ -234,7 +234,15 @@ function SceneSwitcher(): React.ReactNode {
                {
                   label: (
                      <Tooltip label={t(L.TabCatalyst)}>
-                        <TextureComp name="Others/Catalyst" />
+                        <TextureComp name="Others/Catalyst24" />
+                     </Tooltip>
+                  ),
+                  value: Scenes.CatalystScene,
+               },
+               {
+                  label: (
+                     <Tooltip label={t(L.TabCatalyst)}>
+                        <TextureComp name="Others/Directive24" />
                      </Tooltip>
                   ),
                   value: Scenes.CatalystScene,
@@ -277,14 +285,14 @@ function BoosterTabLabel(): React.ReactNode {
       return (
          <Tooltip multiline maw="25vw" label={t(L.YouHaveUnequippedBoosterTooltip)}>
             <Indicator color="red" processing>
-               <TextureComp id="bottom-panel-booster" name="Others/Booster" />
+               <TextureComp id="bottom-panel-booster" name="Others/Booster24" />
             </Indicator>
          </Tooltip>
       );
    }
    return (
       <Tooltip label={t(L.TabBooster)}>
-         <TextureComp id="bottom-panel-booster" name="Others/Booster" />
+         <TextureComp id="bottom-panel-booster" name="Others/Booster24" />
       </Tooltip>
    );
 }
