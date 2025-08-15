@@ -259,14 +259,14 @@ function ElementTabLabel(): React.ReactNode {
       return (
          <Tooltip multiline maw="25vw" label={t(L.YouHaveUnassignedElementTooltip)}>
             <Indicator color="red" processing>
-               <TextureComp name="Others/Element" />
+               <TextureComp name="Others/Element24" />
             </Indicator>
          </Tooltip>
       );
    }
    return (
       <Tooltip label={t(L.TabElement)}>
-         <TextureComp name="Others/Element" />
+         <TextureComp name="Others/Element24" />
       </Tooltip>
    );
 }

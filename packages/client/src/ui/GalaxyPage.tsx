@@ -81,7 +81,7 @@ export function GalaxyPage(): React.ReactNode {
                   Victory Point <TextureComp name="Others/Trophy16" className="inline-middle" />
                </div>
                <div>
-                  Officer Candidate <TextureComp name="Others/Officer" className="inline-middle" />
+                  Directive <TextureComp name="Others/Directive" className="inline-middle" />
                </div>
                <div>
                   XP <TextureComp name="Others/XP" className="inline-middle" />
