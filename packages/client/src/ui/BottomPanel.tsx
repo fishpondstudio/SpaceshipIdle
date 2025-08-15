@@ -11,6 +11,7 @@ import { memo } from "react";
 import { getCurrentTutorial } from "../game/Tutorial";
 import { BoosterScene } from "../scenes/BoosterScene";
 import { CatalystScene } from "../scenes/CatalystScene";
+import { DirectiveScene } from "../scenes/DirectiveScene";
 import { ElementsScene } from "../scenes/ElementsScene";
 import { GalaxyScene } from "../scenes/GalaxyScene";
 import { ShipScene } from "../scenes/ShipScene";
@@ -192,6 +193,9 @@ function SceneSwitcher(): React.ReactNode {
                   case Scenes.BoosterScene:
                      G.scene.loadScene(BoosterScene);
                      break;
+                  case Scenes.DirectiveScene:
+                     G.scene.loadScene(DirectiveScene);
+                     break;
                   case Scenes.ElementsScene:
                      G.scene.loadScene(ElementsScene);
                      if (G.save.current.permanentElementChoices.length > 0) {
@@ -241,11 +245,11 @@ function SceneSwitcher(): React.ReactNode {
                },
                {
                   label: (
-                     <Tooltip label={t(L.TabCatalyst)}>
+                     <Tooltip label={t(L.TabDirective)}>
                         <TextureComp name="Others/Directive24" />
                      </Tooltip>
                   ),
-                  value: Scenes.CatalystScene,
+                  value: Scenes.DirectiveScene,
                },
                {
                   label: <BoosterTabLabel />,

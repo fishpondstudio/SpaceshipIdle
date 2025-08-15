@@ -26,6 +26,7 @@
 
 .mi.inline {
    display: inline-block;
+   vertical-align: middle;
 }
 
 .mi.sm {
@@ -132,6 +133,22 @@ em {
    flex-direction: row;
    align-items: center;
    justify-content: center;
+
+   &.md {
+      font-size: var(--mantine-font-size-md);
+   }
+
+   &.lg {
+      font-size: var(--mantine-font-size-lg);
+   }
+
+   &.xl {
+      font-size: var(--mantine-font-size-xl);
+   }
+
+   &.uppercase {
+      text-transform: uppercase;
+   }
 }
 
 .subtitle::before {
@@ -146,6 +163,11 @@ em {
    flex: 1;
    border-top: 1px dashed var(--mantine-color-dark-4);
    margin-left: 10px;
+}
+
+.subtitle.dotted::before,
+.subtitle.dotted::after {
+   border-top: 3px dotted var(--mantine-color-dark-4);
 }
 
 .mantine-Tooltip-tooltip,
