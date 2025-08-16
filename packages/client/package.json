@@ -11,9 +11,9 @@
    "dependencies": {
       "@floating-ui/core": "^1.7.1",
       "@floating-ui/react": "^0.27.8",
-      "@mantine/core": "^8.0.0",
-      "@mantine/hooks": "^8.0.0",
-      "@mantine/notifications": "^8.0.0",
+      "@mantine/core": "^8.2.4",
+      "@mantine/hooks": "^8.2.4",
+      "@mantine/notifications": "^8.2.4",
       "@pixi/devtools": "^2.0.1",
       "@pixi/graphics-smooth": "^1.1.1",
       "@pixi/sound": "^5.2.3",

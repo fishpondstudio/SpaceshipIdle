@@ -9,9 +9,7 @@ import { formatNumber, hasFlag, round } from "@spaceship-idle/shared/src/utils/H
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
 import { getCurrentTutorial } from "../game/Tutorial";
-import { BoosterScene } from "../scenes/BoosterScene";
 import { CatalystScene } from "../scenes/CatalystScene";
-import { DirectiveScene } from "../scenes/DirectiveScene";
 import { ElementsScene } from "../scenes/ElementsScene";
 import { GalaxyScene } from "../scenes/GalaxyScene";
 import { ShipScene } from "../scenes/ShipScene";
@@ -21,11 +19,13 @@ import { refreshOnTypedEvent } from "../utils/Hook";
 import { OnSceneSwitched } from "../utils/SceneManager";
 import { Scenes } from "../utils/Scenes";
 import { showModal } from "../utils/ToggleModal";
+import { BoosterPage } from "./BoosterPage";
 import { ChooseElementModal } from "./ChooseElementModal";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
-import { hideSidebar } from "./Sidebar";
+import { DirectivePage } from "./DirectivePage";
+import { hideSidebar, setSidebar } from "./Sidebar";
 import { playClick } from "./Sound";
 import { TutorialProgressModal } from "./TutorialProgressModal";
 
@@ -190,11 +190,11 @@ function SceneSwitcher(): React.ReactNode {
                   case Scenes.GalaxyScene:
                      G.scene.loadScene(GalaxyScene);
                      break;
-                  case Scenes.BoosterScene:
-                     G.scene.loadScene(BoosterScene);
+                  case BoosterPage.name:
+                     setSidebar(<BoosterPage />);
                      break;
-                  case Scenes.DirectiveScene:
-                     G.scene.loadScene(DirectiveScene);
+                  case DirectivePage.name:
+                     setSidebar(<DirectivePage />);
                      break;
                   case Scenes.ElementsScene:
                      G.scene.loadScene(ElementsScene);
@@ -249,11 +249,11 @@ function SceneSwitcher(): React.ReactNode {
                         <TextureComp name="Others/Directive24" />
                      </Tooltip>
                   ),
-                  value: Scenes.DirectiveScene,
+                  value: DirectivePage.name,
                },
                {
                   label: <BoosterTabLabel />,
-                  value: Scenes.BoosterScene,
+                  value: BoosterPage.name,
                },
                {
                   label: <ElementTabLabel />,

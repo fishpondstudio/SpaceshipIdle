@@ -42,7 +42,7 @@ export function BuildingPage({ tile, gs, readonly }: ITileWithGameState & { read
          title={
             <Tooltip label={codeLabel} disabled={codeLabel.length <= 0} position="left">
                <div className="row g5">
-                  <TextureComp name={`Building/${data.type}`} height={40} style={{ margin: "-10px -5px" }} />
+                  <TextureComp name={`Building/${data.type}`} style={{ margin: "-10px -5px" }} />
                   <div className="f1">{getBuildingName(data.type)}</div>
                </div>
             </Tooltip>

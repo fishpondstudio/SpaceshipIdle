@@ -19,7 +19,7 @@ export function QualifierBattleResultModal(): React.ReactNode {
    const booster = rollBooster(G.save.current);
    return (
       <div className="m10">
-         {win ? <VictoryHeaderComp /> : <DefeatedHeaderComp />}
+         {win ? <VictoryHeaderComp title="" /> : <DefeatedHeaderComp />}
          <div className="panel">
             {booster ? (
                <div className="row">

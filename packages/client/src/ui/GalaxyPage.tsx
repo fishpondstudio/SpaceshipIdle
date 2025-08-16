@@ -24,9 +24,11 @@ export function GalaxyPage(): React.ReactNode {
          </div>
          <div className="divider dashed"></div>
          <div className="m10 text-sm">
-            Before making a decision, you can spend <span className="text-space">1 Victory Point</span>{" "}
-            <TextureComp name="Others/Trophy16" className="inline-middle" /> to build a spy network to reveal more
-            information about them
+            Before making a decision, you can spend{" "}
+            <span className="text-space">
+               1 <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
+            </span>{" "}
+            to build a spy network to reveal more information about them
          </div>
          <div className="mx10">
             <button className="btn w100 row g5">
@@ -45,14 +47,13 @@ export function GalaxyPage(): React.ReactNode {
                <div className="title">Cost</div>
                <div className="h5" />
                <div>
-                  1 Victory Point <TextureComp name="Others/Trophy16" className="inline-middle" />
+                  1 <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
                </div>
                <div className="divider my10 mx-10" />
                <div className="title">Rewards</div>
                <div className="h5" />
                <div>
-                  +1 <span className="text-space">Evasion Cluster</span>{" "}
-                  <TextureComp name="Booster/Evasion1" className="inline-middle" />
+                  1 <TextureComp name="Booster/Evasion1" className="inline-middle" /> Evasion Cluster
                </div>
             </div>
             <div className="h10" />
@@ -72,19 +73,16 @@ export function GalaxyPage(): React.ReactNode {
                <div className="title">Negotiable</div>
                <div className="h5" />
                <div>
-                  Evasion Cluster <TextureComp name="Booster/Evasion1" className="inline-middle" />
+                  <TextureComp name="Booster/Evasion1" className="inline-middle" /> Evasion Cluster
                </div>
                <div>
-                  HP Cluster <TextureComp name="Booster/HP1" className="inline-middle" />
+                  <TextureComp name="Booster/HP1" className="inline-middle" /> HP Cluster
                </div>
                <div>
-                  Victory Point <TextureComp name="Others/Trophy16" className="inline-middle" />
+                  <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
                </div>
                <div>
-                  Directive <TextureComp name="Others/Directive" className="inline-middle" />
-               </div>
-               <div>
-                  XP <TextureComp name="Others/XP" className="inline-middle" />
+                  <TextureComp name="Others/XP" className="inline-middle" /> XP
                </div>
             </div>
             <div className="h5" />

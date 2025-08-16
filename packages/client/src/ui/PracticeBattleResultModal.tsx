@@ -13,7 +13,7 @@ import { RenderHTML } from "./components/RenderHTMLComp";
 export function PracticeBattleResultModal(): React.ReactNode {
    return (
       <div className="m10">
-         {G.runtime.battleStatus === BattleStatus.RightWin ? <DefeatedHeaderComp /> : <VictoryHeaderComp />}
+         {G.runtime.battleStatus === BattleStatus.RightWin ? <DefeatedHeaderComp /> : <VictoryHeaderComp title="" />}
          <RenderHTML className="text-sm" html={t(L.PracticeBattleDescHTML)} />
          <div className="h5" />
          <BattleReportComp />

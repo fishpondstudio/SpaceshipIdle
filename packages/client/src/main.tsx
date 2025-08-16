@@ -90,7 +90,7 @@ const app = new Application({
 app.ticker.maxFPS = 60;
 
 if (PixelPerfect) {
-   (app.view as HTMLCanvasElement).style.imageRendering = "pixelated";
+   // (app.view as HTMLCanvasElement).style.imageRendering = "pixelated";
 }
 
 if (import.meta.env.DEV) {

@@ -24,7 +24,7 @@ export function PeaceTreatyModal(): React.ReactNode {
             <div className="f1 panel stretch" style={{ alignItems: "center" }}>
                <div className="row">
                   <div className="f1">
-                     Evasion Cluster <TextureComp name="Booster/Evasion1" className="inline-middle" />
+                     <TextureComp name="Booster/Evasion1" className="inline-middle" /> Evasion Cluster
                   </div>
                   <div className="mi">indeterminate_check_box</div>
                   <div className="text-center text-mono">1</div>
@@ -32,7 +32,7 @@ export function PeaceTreatyModal(): React.ReactNode {
                </div>
                <div className="row">
                   <div className="f1">
-                     HP Cluster <TextureComp name="Booster/HP1" className="inline-middle" />
+                     <TextureComp name="Booster/HP1" className="inline-middle" /> HP Cluster
                   </div>
                   <div className="mi">indeterminate_check_box</div>
                   <div className="text-center text-mono">2</div>
@@ -40,7 +40,7 @@ export function PeaceTreatyModal(): React.ReactNode {
                </div>
                <div className="row">
                   <div className="f1">
-                     Victory Point <TextureComp name="Others/Trophy16" className="inline-middle" />
+                     <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
                   </div>
                   <div className="mi">indeterminate_check_box</div>
                   <div className="text-center text-mono">0</div>

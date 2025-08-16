@@ -1,4 +1,4 @@
-import { PixelPerfect } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { SCALE_MODES } from "pixi.js";
 import { G } from "../../utils/Global";
 
 export function TextureComp({
@@ -22,7 +22,7 @@ export function TextureComp({
             height: texture.height * scale,
             backgroundPosition: `-${texture.frame.x * scale}px -${texture.frame.y * scale}px`,
             backgroundSize: `${texture.baseTexture.width * scale}px ${texture.baseTexture.height * scale}px`,
-            imageRendering: PixelPerfect ? "pixelated" : "auto",
+            imageRendering: texture.baseTexture.scaleMode === SCALE_MODES.NEAREST ? "pixelated" : "auto",
          }}
          {...rest}
       ></div>

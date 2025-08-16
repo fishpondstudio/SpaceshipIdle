@@ -1,6 +1,4 @@
-import { BoosterScene } from "../scenes/BoosterScene";
 import { CatalystScene } from "../scenes/CatalystScene";
-import { DirectiveScene } from "../scenes/DirectiveScene";
 import { ElementsScene } from "../scenes/ElementsScene";
 import { GalaxyScene } from "../scenes/GalaxyScene";
 import { ShipScene } from "../scenes/ShipScene";
@@ -12,6 +10,4 @@ export const Scenes = {
    TechTreeScene: TechTreeScene.name,
    CatalystScene: CatalystScene.name,
    GalaxyScene: GalaxyScene.name,
-   BoosterScene: BoosterScene.name,
-   DirectiveScene: DirectiveScene.name,
 } as const;

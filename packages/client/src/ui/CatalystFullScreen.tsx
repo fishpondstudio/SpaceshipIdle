@@ -172,7 +172,7 @@ export function CatalystFullScreen(): React.ReactNode {
                                                 <TextureComp
                                                    style={{ flexShrink: 0 }}
                                                    name={`Building/${b}`}
-                                                   width={Math.min(G.pixi.screen.height / 10, 100)}
+                                                   width={64}
                                                 />
                                              </Tooltip>
                                           );
