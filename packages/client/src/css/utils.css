@@ -197,6 +197,16 @@
    padding-right: 10px;
 }
 
+.px15 {
+   padding-left: 15px;
+   padding-right: 15px;
+}
+
+.px20 {
+   padding-left: 20px;
+   padding-right: 20px;
+}
+
 .py5 {
    padding-top: 5px;
    padding-bottom: 5px;

@@ -20,7 +20,10 @@ export function BoosterPage(): React.ReactNode {
          }
       >
          <div className="m10">
-            <button className="btn w100">Forge Boosters</button>
+            <button className="btn filled w100 py5 row">
+               <div className="mi">chart_data</div>
+               <div>Improve Boosters</div>
+            </button>
          </div>
          {mapOf(ShipClass, (k, v) => {
             if (reduceOf(Boosters, (prev, _, def) => prev + (def.shipClass === k ? 1 : 0), 0) === 0) {

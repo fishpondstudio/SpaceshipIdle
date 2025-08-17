@@ -13,7 +13,7 @@ export function DirectivePage(): React.ReactNode {
          }
       >
          <div className="m10">
-            <button className="btn filled w100 row px10 py5">
+            <button className="btn filled w100 row py5 px10">
                <div>Roll 1 Directive</div>
                <div className="f1" />
                <div>
