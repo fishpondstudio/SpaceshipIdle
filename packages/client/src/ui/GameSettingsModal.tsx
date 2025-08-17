@@ -199,11 +199,11 @@ function GeneralTab(): React.ReactNode {
          <div className="row">
             <div className="f1">{t(L.ShowTutorial)}</div>
             <Switch
-               checked={hasFlag(G.save.current.flags, GameStateFlags.ShowTutorial)}
+               checked={hasFlag(G.save.state.flags, GameStateFlags.ShowTutorial)}
                onChange={(e) => {
-                  G.save.current.flags = e.target.checked
-                     ? setFlag(G.save.current.flags, GameStateFlags.ShowTutorial)
-                     : clearFlag(G.save.current.flags, GameStateFlags.ShowTutorial);
+                  G.save.state.flags = e.target.checked
+                     ? setFlag(G.save.state.flags, GameStateFlags.ShowTutorial)
+                     : clearFlag(G.save.state.flags, GameStateFlags.ShowTutorial);
                   GameStateUpdated.emit();
                }}
             />
@@ -257,7 +257,7 @@ function GeneralTab(): React.ReactNode {
             <button
                className="btn text-sm"
                onClick={() => {
-                  saveGameStateToFile(G.save.current);
+                  saveGameStateToFile(G.save.state);
                }}
             >
                {t(L.ExportSpaceship)}
@@ -271,7 +271,7 @@ function GeneralTab(): React.ReactNode {
                      className="btn f1"
                      onClick={async () => {
                         try {
-                           G.save.current = await loadGameStateFromFile();
+                           G.save.state = await loadGameStateFromFile();
                            await saveGame(G.save);
                            window.location.reload();
                         } catch (e) {
@@ -285,7 +285,7 @@ function GeneralTab(): React.ReactNode {
                   <button
                      className="btn f1"
                      onClick={() => {
-                        saveGameStateToFile(G.save.current);
+                        saveGameStateToFile(G.save.state);
                      }}
                   >
                      Export

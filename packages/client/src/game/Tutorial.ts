@@ -74,7 +74,7 @@ export const Tutorial: ITutorial[] = [
 
 export function getCurrentTutorial(): ITutorial | null {
    for (const t of Tutorial) {
-      const [progress, total] = t.progress(G.save.current);
+      const [progress, total] = t.progress(G.save.state);
       if (progress < total) {
          return t;
       }

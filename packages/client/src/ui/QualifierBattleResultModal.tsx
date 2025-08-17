@@ -16,7 +16,7 @@ import { playBling } from "./Sound";
 
 export function QualifierBattleResultModal(): React.ReactNode {
    const win = G.runtime.battleStatus === BattleStatus.LeftWin;
-   const booster = rollBooster(G.save.current);
+   const booster = rollBooster(G.save.state);
    return (
       <div className="m10">
          {win ? <VictoryHeaderComp title="" /> : <DefeatedHeaderComp />}
@@ -44,11 +44,11 @@ export function QualifierBattleResultModal(): React.ReactNode {
                G.runtime.createXPTarget();
 
                if (booster) {
-                  const data = G.save.current.boosters.get(booster);
+                  const data = G.save.state.boosters.get(booster);
                   if (data) {
                      data.amount++;
                   } else {
-                     G.save.current.boosters.set(booster, { tile: null, amount: 1 });
+                     G.save.state.boosters.set(booster, { tile: null, amount: 1 });
                   }
                }
 

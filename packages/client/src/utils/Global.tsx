@@ -47,5 +47,5 @@ export function setLanguage(lang: keyof typeof Languages) {
 }
 
 UserUpdated.on((user) => {
-   G.save.current.name = user.handle;
+   G.save.state.name = user.handle;
 });

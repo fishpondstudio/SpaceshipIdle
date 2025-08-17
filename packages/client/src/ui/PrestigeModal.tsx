@@ -13,8 +13,8 @@ import { RenderHTML } from "./components/RenderHTMLComp";
 import { PrestigeReason } from "./PrestigeReason";
 
 export function PrestigeModal({ reason }: { reason: PrestigeReason }): React.ReactNode {
-   const fromThisRun = mReduceOf(G.save.current.elements, (prev, k, v) => prev + v.hp + v.damage + v.amount, 0);
-   const extraShards = shardsFromShipValue(G.save.current);
+   const fromThisRun = mReduceOf(G.save.state.elements, (prev, k, v) => prev + v.hp + v.damage + v.amount, 0);
+   const extraShards = shardsFromShipValue(G.save.state);
    return (
       <div className="m10">
          {reason === PrestigeReason.Defeated ? <DefeatedHeaderComp /> : <PrestigeHeaderComp />}

@@ -26,7 +26,7 @@ export function clientUpdate(dt: number): void {
 }
 
 function update(): void {
-   const choice = G.save.current.elementChoices[0];
+   const choice = G.save.state.elementChoices[0];
    if (!hasModalOpen() && !isLoading() && choice) {
       showModal({
          children: <ChooseElementModal choice={choice} permanent={false} />,
@@ -34,9 +34,9 @@ function update(): void {
       });
       return;
    }
-   if (G.save.current.offlineTime > MINUTE) {
-      const offlineTime = G.save.current.offlineTime;
-      G.save.current.offlineTime = 0;
+   if (G.save.state.offlineTime > MINUTE) {
+      const offlineTime = G.save.state.offlineTime;
+      G.save.state.offlineTime = 0;
       showModal({
          title: t(L.OfflineTime),
          children: <OfflineTimeModal offlineTime={offlineTime} />,
@@ -48,10 +48,10 @@ function update(): void {
    if (
       !hasModalOpen() &&
       !isLoading() &&
-      !hasFlag(G.save.current.flags, GameStateFlags.QualifierBattlePrompted) &&
-      isQualifierBattle(G.save.current)
+      !hasFlag(G.save.state.flags, GameStateFlags.QualifierBattlePrompted) &&
+      isQualifierBattle(G.save.state)
    ) {
-      G.save.current.flags = setFlag(G.save.current.flags, GameStateFlags.QualifierBattlePrompted);
+      G.save.state.flags = setFlag(G.save.state.flags, GameStateFlags.QualifierBattlePrompted);
       showModal({
          children: <PrepareForBattleModal mode={PrepareForBattleMode.Prompt} />,
          size: "sm",

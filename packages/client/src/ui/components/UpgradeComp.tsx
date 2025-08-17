@@ -43,7 +43,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
 
    const upgrade = useCallback(
       (target: number) => {
-         if (trySpend(getTotalBuildingCost(data.type, data.level, target), G.save.current)) {
+         if (trySpend(getTotalBuildingCost(data.type, data.level, target), G.save.state)) {
             data.level = target;
             GameStateUpdated.emit();
          } else {
@@ -77,14 +77,14 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
    useShortcut("Recycle", recycle, [recycle]);
 
    const upgradeMaxCached = useCallback(() => {
-      upgradeMax(data, G.save.current);
+      upgradeMax(data, G.save.state);
       GameStateUpdated.emit();
    }, [data]);
 
    useShortcut("UpgradeMax", upgradeMaxCached, [upgradeMaxCached]);
 
    let booster: Booster | undefined;
-   for (const [b, value] of G.save.current.boosters) {
+   for (const [b, value] of G.save.state.boosters) {
       if (value.tile === tile) {
          booster = b;
          break;
@@ -109,7 +109,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   >
                      <button
                         className="btn f1"
-                        disabled={!canSpend(getTotalBuildingCost(data.type, data.level, target), G.save.current)}
+                        disabled={!canSpend(getTotalBuildingCost(data.type, data.level, target), G.save.state)}
                         onClick={upgrade.bind(null, target)}
                      >
                         +{target - data.level}
@@ -119,7 +119,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             })}
             <button
                className="btn f1"
-               disabled={!canSpend(getBuildingCost(data.type, data.level + 1), G.save.current)}
+               disabled={!canSpend(getBuildingCost(data.type, data.level + 1), G.save.state)}
                onClick={upgradeMaxCached}
             >
                {t(L.UpgradeMax)}
@@ -173,7 +173,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                      label={
                         <RenderHTML
                            html={Boosters[booster].desc(
-                              getBoosterEffect(G.save.current.boosters.get(booster)?.amount ?? 0),
+                              getBoosterEffect(G.save.state.boosters.get(booster)?.amount ?? 0),
                            )}
                            className="text-sm"
                         />
@@ -183,7 +183,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   </Tooltip>
                   <div className="f1" />
                </>
-            ) : hasUnequippedBooster(G.save.current) ? (
+            ) : hasUnequippedBooster(G.save.state) ? (
                <div className="f1 text-green">{t(L.EquippableBoosters)}</div>
             ) : (
                <div className="f1 text-dimmed">{t(L.NoEquippedBooster)}</div>
@@ -193,7 +193,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   <div className="mi pointer">rule_settings</div>
                </Popover.Target>
                <Popover.Dropdown>
-                  {mMapOf(G.save.current.boosters, (booster) => {
+                  {mMapOf(G.save.state.boosters, (booster) => {
                      return (
                         <div key={booster} className="row">
                            <TextureComp name={`Booster/${booster}`} />
@@ -203,7 +203,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                         </div>
                      );
                   })}
-                  {G.save.current.boosters.size === 0 ? <div className="f1">{t(L.NoAvailableBoosters)}</div> : null}
+                  {G.save.state.boosters.size === 0 ? <div className="f1">{t(L.NoAvailableBoosters)}</div> : null}
                </Popover.Dropdown>
             </Popover>
          </div>
@@ -212,7 +212,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
 }
 
 function BoosterOpButton({ booster, me }: { booster: Booster; me: Tile }): React.ReactNode {
-   const inv = G.save.current.boosters.get(booster);
+   const inv = G.save.state.boosters.get(booster);
    if (!inv) {
       return null;
    }
@@ -234,7 +234,7 @@ function BoosterOpButton({ booster, me }: { booster: Booster; me: Tile }): React
          <button
             className="btn row g5"
             onClick={() => {
-               G.save.current.boosters.forEach((inv) => {
+               G.save.state.boosters.forEach((inv) => {
                   if (inv.tile === me) {
                      inv.tile = null;
                   }

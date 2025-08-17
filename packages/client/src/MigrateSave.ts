@@ -6,37 +6,37 @@ import { migrateBuildingsAndResources } from "@spaceship-idle/shared/src/game/lo
 export function migrateSave(save: SaveGame): void {
    if ("elementChoices" in save.options) {
       // @ts-expect-error
-      save.current.permanentElementChoices = save.options.elementChoices;
+      save.state.permanentElementChoices = save.options.elementChoices;
       delete save.options.elementChoices;
    }
-   if ("battleCount" in save.current) {
+   if ("battleCount" in save.state) {
       // @ts-expect-error
-      save.current.win = save.current.battleCount;
-      delete save.current.battleCount;
+      save.state.win = save.state.battleCount;
+      delete save.state.battleCount;
    }
-   if ("trialCount" in save.current) {
+   if ("trialCount" in save.state) {
       // @ts-expect-error
-      save.current.loss = save.current.trialCount;
-      delete save.current.trialCount;
+      save.state.loss = save.state.trialCount;
+      delete save.state.trialCount;
    }
-   migrateBuildingsAndResources(save.current);
-   save.current = Object.assign(new GameState(), save.current);
+   migrateBuildingsAndResources(save.state);
+   save.state = Object.assign(new GameState(), save.state);
    save.options = Object.assign(new GameOption(), save.options);
    save.options.shortcuts = Object.assign({}, DefaultShortcuts, save.options.shortcuts);
 
-   save.current.tiles.forEach((data, tile) => {
+   save.state.tiles.forEach((data, tile) => {
       if (!Config.Buildings[data.type]) {
-         save.current.tiles.delete(tile);
+         save.state.tiles.delete(tile);
       }
    });
-   save.current.resources.forEach((value, key) => {
+   save.state.resources.forEach((value, key) => {
       if (!Config.Resources[key]) {
-         save.current.resources.delete(key);
+         save.state.resources.delete(key);
       }
    });
-   save.current.unlockedTech.forEach((tech) => {
+   save.state.unlockedTech.forEach((tech) => {
       if (!Config.Tech[tech]) {
-         save.current.unlockedTech.delete(tech);
+         save.state.unlockedTech.delete(tech);
       }
    });
 }

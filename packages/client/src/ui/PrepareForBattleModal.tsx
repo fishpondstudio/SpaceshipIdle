@@ -29,10 +29,10 @@ import { playBling, playClick, playError } from "./Sound";
 export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const theme = useMantineTheme();
-   const minQuantum = getMinimumQuantumForBattle(G.save.current);
-   const usedQuantum = getUsedQuantum(G.save.current);
-   const xp = calcSpaceshipXP(G.save.current);
-   const minXO = getMinimumSpaceshipXPForBattle(G.save.current);
+   const minQuantum = getMinimumQuantumForBattle(G.save.state);
+   const usedQuantum = getUsedQuantum(G.save.state);
+   const xp = calcSpaceshipXP(G.save.state);
+   const minXO = getMinimumSpaceshipXPForBattle(G.save.state);
    return (
       <div className="m10">
          <div
@@ -50,7 +50,7 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
             <div className="mi" style={{ fontSize: 128 }}>
                trophy
             </div>
-            <div style={{ fontSize: 24 }}>{t(L.XClassLeague, ShipClass[getShipClass(G.save.current)].name())}</div>
+            <div style={{ fontSize: 24 }}>{t(L.XClassLeague, ShipClass[getShipClass(G.save.state)].name())}</div>
          </div>
          {mode === PrepareForBattleMode.Prompt ? (
             <RenderHTML className="panel red text-sm mb10" html={t(L.ReachedQuantumLimitV2, minQuantum)} />
@@ -93,12 +93,12 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                try {
                   playClick();
                   showLoading();
-                  const [score, hp, dps] = calcShipScore(G.save.current);
+                  const [score, hp, dps] = calcShipScore(G.save.state);
                   const ship = await findShip(score, hp, dps);
                   await resolveIn(1, null);
 
                   if (import.meta.env.DEV) {
-                     const rt = simulateBattle(G.save.current, ship.json);
+                     const rt = simulateBattle(G.save.state, ship.json);
                      console.log(`Battle with ${ship.shipId} result: ${enumOf(BattleStatus, rt.battleStatus)}`);
                   }
 

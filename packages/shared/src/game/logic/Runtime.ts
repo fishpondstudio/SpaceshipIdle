@@ -61,7 +61,7 @@ export class Runtime {
    public readonly leftOptions: GameOption;
 
    constructor(left: SaveGame, right: GameState) {
-      this.left = left.current;
+      this.left = left.state;
       // We clone the right because we will mutate it!
       this.right = structuredClone(right);
       this.right.tiles = flipHorizontal(this.right.tiles);

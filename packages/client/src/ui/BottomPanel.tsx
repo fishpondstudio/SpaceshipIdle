@@ -91,14 +91,14 @@ const sceneWidth = 60 * 5;
 
 function Tutorial(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
-   if (!hasFlag(G.save.current.flags, GameStateFlags.ShowTutorial)) {
+   if (!hasFlag(G.save.state.flags, GameStateFlags.ShowTutorial)) {
       return null;
    }
    const tutorial = getCurrentTutorial();
    if (!tutorial) {
       return null;
    }
-   const [progress, total] = tutorial.progress(G.save.current);
+   const [progress, total] = tutorial.progress(G.save.state);
    return (
       <div
          className="row panel g5"
@@ -198,10 +198,10 @@ function SceneSwitcher(): React.ReactNode {
                      break;
                   case Scenes.ElementsScene:
                      G.scene.loadScene(ElementsScene);
-                     if (G.save.current.permanentElementChoices.length > 0) {
+                     if (G.save.state.permanentElementChoices.length > 0) {
                         showModal({
                            children: (
-                              <ChooseElementModal choice={G.save.current.permanentElementChoices[0]} permanent={true} />
+                              <ChooseElementModal choice={G.save.state.permanentElementChoices[0]} permanent={true} />
                            ),
                            size: "xl",
                         });
@@ -267,7 +267,7 @@ function SceneSwitcher(): React.ReactNode {
 
 function ElementTabLabel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
-   if (hasUnassignedElements(G.save.current)) {
+   if (hasUnassignedElements(G.save.state)) {
       return (
          <Tooltip multiline maw="25vw" label={t(L.YouHaveUnassignedElementTooltip)}>
             <Indicator color="red" processing>
@@ -285,7 +285,7 @@ function ElementTabLabel(): React.ReactNode {
 
 function BoosterTabLabel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
-   if (hasUnequippedBooster(G.save.current)) {
+   if (hasUnequippedBooster(G.save.state)) {
       return (
          <Tooltip multiline maw="25vw" label={t(L.YouHaveUnequippedBoosterTooltip)}>
             <Indicator color="red" processing>

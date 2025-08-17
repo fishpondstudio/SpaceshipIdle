@@ -21,11 +21,11 @@ export function subscribeToEvents(): void {
             case BattleType.Qualifier: {
                modal = <QualifierBattleResultModal />;
                if (G.runtime.battleStatus === BattleStatus.RightWin) {
-                  mapSafeAdd<Resource>(G.save.current.resources, "Defeat", 1);
+                  mapSafeAdd<Resource>(G.save.state.resources, "Defeat", 1);
                } else {
-                  mapSafeAdd<Resource>(G.save.current.resources, "Victory", 1);
+                  mapSafeAdd<Resource>(G.save.state.resources, "Victory", 1);
                }
-               G.save.current.flags = clearFlag(G.save.current.flags, GameStateFlags.QualifierBattlePrompted);
+               G.save.state.flags = clearFlag(G.save.state.flags, GameStateFlags.QualifierBattlePrompted);
                break;
             }
             case BattleType.Practice: {

@@ -50,19 +50,19 @@ export function addDebugFunctions(): void {
    // @ts-expect-error
    globalThis.exportShip = async () => {
       const gs = new GameState();
-      gs.tiles = G.save.current.tiles;
-      gs.unlockedTech = G.save.current.unlockedTech;
+      gs.tiles = G.save.state.tiles;
+      gs.unlockedTech = G.save.state.unlockedTech;
       console.log(jsonEncode(gs));
    };
    // @ts-expect-error
    globalThis.chooseElement = () => {
-      G.save.current.discoveredElements--;
+      G.save.state.discoveredElements--;
    };
    // @ts-expect-error
    globalThis.choosePermanentElement = () => {
-      rollElementShards(G.save.current, 1);
+      rollElementShards(G.save.state, 1);
       showModal({
-         children: <ChooseElementModal permanent={true} choice={G.save.current.permanentElementChoices[0]} />,
+         children: <ChooseElementModal permanent={true} choice={G.save.state.permanentElementChoices[0]} />,
          size: "xl",
       });
    };
@@ -72,11 +72,11 @@ export function addDebugFunctions(): void {
    };
    // @ts-expect-error
    globalThis.printLayout = async () => {
-      console.log(JSON.stringify(Array.from(G.save.current.tiles.keys())));
+      console.log(JSON.stringify(Array.from(G.save.state.tiles.keys())));
    };
    // @ts-expect-error
    globalThis.loadGameState = async () => {
-      G.save.current = await loadGameStateFromFile();
+      G.save.state = await loadGameStateFromFile();
       await saveGame(G.save);
       window.location.reload();
    };
@@ -89,7 +89,7 @@ export function addDebugFunctions(): void {
    // @ts-expect-error
    globalThis.calcScore = () => {
       console.time("calcScore");
-      const [score, hp, dps, rt] = calcShipScore(G.save.current);
+      const [score, hp, dps, rt] = calcShipScore(G.save.state);
       console.log(`Score = ${score}, HP = ${hp}, DPS = ${dps}, rt = ${rt}`);
       console.timeEnd("calcScore");
    };
@@ -113,19 +113,19 @@ export function addDebugFunctions(): void {
    globalThis.offline = async () => {
       showModal({
          title: t(L.OfflineTime),
-         children: <OfflineTimeModal offlineTime={G.save.current.offlineTime} />,
+         children: <OfflineTimeModal offlineTime={G.save.state.offlineTime} />,
          size: "sm",
       });
    };
    // @ts-expect-error
    globalThis.reroll = async () => {
-      G.save.current.discoveredElements = 0;
-      G.save.current.elementChoices = [];
-      G.save.current.elements.clear();
+      G.save.state.discoveredElements = 0;
+      G.save.state.elementChoices = [];
+      G.save.state.elements.clear();
    };
    // @ts-expect-error
    globalThis.setLevel = (level: number) => {
-      G.save.current.tiles.forEach((t) => {
+      G.save.state.tiles.forEach((t) => {
          t.level = level;
       });
    };

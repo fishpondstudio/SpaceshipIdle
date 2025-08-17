@@ -56,7 +56,7 @@ const actualDamages: Record<DamageType, number> = {
 };
 
 export function ShipInfoPanel(): React.ReactNode {
-   const state = G.save.current;
+   const state = G.save.state;
    const options = G.save.options;
    G.runtime.rightStat.averageRawDamage(10, rawDamages);
    G.runtime.rightStat.averageActualDamage(10, actualDamages);
@@ -91,7 +91,7 @@ export function ShipInfoPanel(): React.ReactNode {
                <>
                   <RenderHTML html={t(L.Battle)} />
                   {highlight ? (
-                     <RenderHTML html={t(L.ReachedQuantumLimitV2, ShipClass[getShipClass(G.save.current)].name())} />
+                     <RenderHTML html={t(L.ReachedQuantumLimitV2, ShipClass[getShipClass(G.save.state)].name())} />
                   ) : null}
                </>
             }
@@ -143,8 +143,8 @@ export function ShipInfoPanel(): React.ReactNode {
                   html={t(
                      L.HPTooltipHTML,
                      formatNumber(G.runtime.leftStat.maxHp),
-                     formatNumber(G.save.current.tiles.size),
-                     formatNumber(getShipBlueprint(G.save.current).length),
+                     formatNumber(G.save.state.tiles.size),
+                     formatNumber(getShipBlueprint(G.save.state).length),
                   )}
                />
             }
@@ -154,7 +154,7 @@ export function ShipInfoPanel(): React.ReactNode {
                <div className="f1 text-right">
                   <div>{formatNumber(G.runtime.leftStat.maxHp)}</div>
                   <div className="xs">
-                     {formatNumber(G.save.current.tiles.size)}/{formatNumber(getShipBlueprint(G.save.current).length)}
+                     {formatNumber(G.save.state.tiles.size)}/{formatNumber(getShipBlueprint(G.save.state).length)}
                   </div>
                </div>
             </div>
@@ -206,12 +206,12 @@ export function ShipInfoPanel(): React.ReactNode {
                   <div>
                      +
                      {formatNumber(
-                        mReduceOf(G.save.current.elements, (prev, curr, value) => prev + value.hp + value.damage, 0),
+                        mReduceOf(G.save.state.elements, (prev, curr, value) => prev + value.hp + value.damage, 0),
                      )}
                      /+
                      {formatNumber(
                         mReduceOf(
-                           G.save.current.permanentElements,
+                           G.save.state.permanentElements,
                            (prev, curr, value) => prev + value.hp + value.damage,
                            0,
                         ),
@@ -311,7 +311,7 @@ export function ProgressComp({
 
 function ElementTooltip(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
-   const currentXP = G.save.current.resources.get("XP") ?? 0;
+   const currentXP = G.save.state.resources.get("XP") ?? 0;
    const element = xpToElement(currentXP);
    const nextElement = element + 1;
    const nextElementXP = elementToXP(nextElement);
@@ -345,7 +345,7 @@ function ElementTooltip(): React.ReactNode {
                </tr>
             </thead>
             <tbody>
-               {mMapOf(G.save.current.elements, (element, data) => {
+               {mMapOf(G.save.state.elements, (element, data) => {
                   return (
                      <tr key={element}>
                         <td className="row g5">
@@ -370,7 +370,7 @@ function ElementTooltip(): React.ReactNode {
                </tr>
             </thead>
             <tbody>
-               {mMapOf(G.save.current.permanentElements, (element, data) => {
+               {mMapOf(G.save.state.permanentElements, (element, data) => {
                   return (
                      <tr key={element}>
                         <td className="row g5">
@@ -390,9 +390,9 @@ function ElementTooltip(): React.ReactNode {
 }
 
 function QuantumTooltip(): React.ReactNode {
-   const usedQuantum = getUsedQuantum(G.save.current);
-   const currentXP = G.save.current.resources.get("XP") ?? 0;
-   const quantum = xpToQuantum(G.save.current.resources.get("XP") ?? 0);
+   const usedQuantum = getUsedQuantum(G.save.state);
+   const currentXP = G.save.state.resources.get("XP") ?? 0;
+   const quantum = xpToQuantum(G.save.state.resources.get("XP") ?? 0);
    const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
    const nextQuantum = quantum + 1;
    const nextQuantumXP = quantumToXP(nextQuantum);

@@ -36,7 +36,7 @@ export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
       return <NotConnectedPage />;
    }
    const constructed = new Map<Building, number>();
-   G.save.current.tiles.forEach((data) => {
+   G.save.state.tiles.forEach((data) => {
       mapSafeAdd(constructed, data.type, 1);
    });
    return (

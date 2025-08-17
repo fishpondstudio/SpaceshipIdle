@@ -36,8 +36,8 @@ export function BoosterPage(): React.ReactNode {
                   <div className="divider my10" />
                   {mapOf(Boosters, (booster) => {
                      const def = Boosters[booster];
-                     const amount = G.save.current.boosters.get(booster)?.amount ?? 0;
-                     const tile = G.save.current.boosters.get(booster)?.tile;
+                     const amount = G.save.state.boosters.get(booster)?.amount ?? 0;
+                     const tile = G.save.state.boosters.get(booster)?.tile;
                      const effect = getBoosterEffect(amount);
                      if (def.shipClass !== k) {
                         return null;

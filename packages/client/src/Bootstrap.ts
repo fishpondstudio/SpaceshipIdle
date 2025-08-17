@@ -93,8 +93,8 @@ export async function bootstrap(): Promise<void> {
    } catch (error) {
       isNewPlayer = true;
       G.save = new SaveGame();
-      initGameState(G.save.current);
-      G.save.current.flags = setFlag(G.save.current.flags, GameStateFlags.ShowTutorial);
+      initGameState(G.save.state);
+      G.save.state.flags = setFlag(G.save.state.flags, GameStateFlags.ShowTutorial);
    }
    migrateSave(G.save);
    setLanguage(G.save.options.language);

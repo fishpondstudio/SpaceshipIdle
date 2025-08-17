@@ -29,8 +29,8 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
    refreshOnTypedEvent(GameStateUpdated);
    const element = PeriodicTable[symbol];
    const b = Config.Elements[symbol];
-   const thisRun = G.save.current.elements.get(symbol);
-   const permanent = G.save.current.permanentElements.get(symbol);
+   const thisRun = G.save.state.elements.get(symbol);
+   const permanent = G.save.state.permanentElements.get(symbol);
    if (!element || !b) {
       return null;
    }
@@ -179,11 +179,11 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                      className="btn py5 px10 filled"
                      onClick={() => {
                         playClick();
-                        if (tryUpgradeElement(symbol, "hp", G.save.current)) {
+                        if (tryUpgradeElement(symbol, "hp", G.save.state)) {
                            GameStateUpdated.emit();
                         }
                      }}
-                     disabled={!canUpgradeElement(symbol, "hp", G.save.current)}
+                     disabled={!canUpgradeElement(symbol, "hp", G.save.state)}
                   >
                      {t(L.Upgrade)}
                   </button>
@@ -193,7 +193,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                         className="btn py5 px10"
                         onClick={() => {
                            playClick();
-                           revertElementUpgrade(symbol, "hp", G.save.current);
+                           revertElementUpgrade(symbol, "hp", G.save.state);
                            GameStateUpdated.emit();
                         }}
                      >
@@ -227,11 +227,11 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                      className="btn py5 px10 filled"
                      onClick={() => {
                         playClick();
-                        if (tryUpgradeElement(symbol, "damage", G.save.current)) {
+                        if (tryUpgradeElement(symbol, "damage", G.save.state)) {
                            GameStateUpdated.emit();
                         }
                      }}
-                     disabled={!canUpgradeElement(symbol, "damage", G.save.current)}
+                     disabled={!canUpgradeElement(symbol, "damage", G.save.state)}
                   >
                      {t(L.Upgrade)}
                   </button>
@@ -241,7 +241,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                         className="btn py5 px10"
                         onClick={() => {
                            playClick();
-                           revertElementUpgrade(symbol, "damage", G.save.current);
+                           revertElementUpgrade(symbol, "damage", G.save.state);
                            GameStateUpdated.emit();
                         }}
                      >

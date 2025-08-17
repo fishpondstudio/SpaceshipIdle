@@ -9,11 +9,11 @@ import { TextureComp } from "./TextureComp";
 export function ResourceListComp({ xp, quantum }: { xp: number; quantum: number }): React.ReactNode {
    let enoughXp = true;
    if (xp < 0) {
-      enoughXp = canSpend(Math.abs(xp), G.save.current);
+      enoughXp = canSpend(Math.abs(xp), G.save.state);
    }
    let enoughQuantum = true;
    if (quantum < 0) {
-      enoughQuantum = getAvailableQuantum(G.save.current) >= Math.abs(quantum);
+      enoughQuantum = getAvailableQuantum(G.save.state) >= Math.abs(quantum);
    }
    return (
       <>

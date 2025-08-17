@@ -26,15 +26,15 @@ import { MatchmakingShipComp } from "./MatchmakingShipComp";
 import { hideSidebar } from "./Sidebar";
 
 export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNode {
-   const [isPracticeBattle, setIsPracticeBattle] = useState(!isQualifierBattle(G.save.current));
-   const [score, hp, dps] = useMemo(() => calcShipScore(G.save.current), []);
+   const [isPracticeBattle, setIsPracticeBattle] = useState(!isQualifierBattle(G.save.state));
+   const [score, hp, dps] = useMemo(() => calcShipScore(G.save.state), []);
    const [enemyScore, enemyHp, enemyDps] = useMemo(() => calcShipScore(enemy), [enemy]);
-   const quantumLimit = getTotalQuantum(G.save.current);
+   const quantumLimit = getTotalQuantum(G.save.state);
    return (
       <div className="m10">
          <div className="row">
             <div className="f1">
-               <ShipHeaderComp gs={G.save.current} side={Side.Left} />
+               <ShipHeaderComp gs={G.save.state} side={Side.Left} />
             </div>
             <div className="f1">
                <ShipHeaderComp gs={enemy} side={Side.Right} />
@@ -46,7 +46,7 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
          <ShipStatComp left={score} right={enemyScore} icon="cards_star" tooltip={t(L.MatchmakingScore)} />
          <div className="h10" />
          <Tooltip
-            disabled={isQualifierBattle(G.save.current)}
+            disabled={isQualifierBattle(G.save.state)}
             multiline
             maw="25vw"
             label={
@@ -66,7 +66,7 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
                <Switch
                   checked={isPracticeBattle}
                   onChange={(e) => {
-                     if (!isQualifierBattle(G.save.current)) {
+                     if (!isQualifierBattle(G.save.state)) {
                         setIsPracticeBattle(true);
                         return;
                      }
@@ -90,12 +90,12 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
                onClick={() => {
                   showLoading();
 
-                  const me = structuredClone(G.save.current);
+                  const me = structuredClone(G.save.state);
                   me.resources.clear();
                   enemy.resources.clear();
 
                   G.speed = 0;
-                  G.runtime = new Runtime({ current: me, options: G.save.options }, enemy);
+                  G.runtime = new Runtime({ state: me, options: G.save.options }, enemy);
                   G.runtime.battleType = isPracticeBattle ? BattleType.Practice : BattleType.Qualifier;
                   G.scene.loadScene(ShipScene);
 

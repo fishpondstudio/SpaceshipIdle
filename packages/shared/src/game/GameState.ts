@@ -90,7 +90,7 @@ export function initGameState(state: GameState): GameState {
 }
 
 export class SaveGame {
-   current: GameState = new GameState();
+   state: GameState = new GameState();
    options: GameOption = new GameOption();
 }
 

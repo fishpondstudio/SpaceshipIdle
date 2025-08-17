@@ -209,14 +209,14 @@ export class TechTreeScene extends Scene {
    private drawSelected(tech?: Tech): void {
       this._selectedGraphics.clear();
       destroyAllChildren(this._selectedBoxContainer);
-      G.save.current.unlockedTech.forEach((t) => {
+      G.save.state.unlockedTech.forEach((t) => {
          const frame = this._selectedBoxContainer.addChild(new Sprite(G.textures.get("Misc/TechFrame")));
          frame.tint = 0xfdcb6e;
          this.drawSelectedTech(t, frame, true);
       });
       if (tech) {
          const frame = this._selectedBoxContainer.addChild(new Sprite(G.textures.get("Misc/TechFrameSelected")));
-         this.drawSelectedTech(tech, frame, !G.save.current.unlockedTech.has(tech));
+         this.drawSelectedTech(tech, frame, !G.save.state.unlockedTech.has(tech));
          if (isTechUnderDevelopment(tech)) {
             hideSidebar();
          } else {

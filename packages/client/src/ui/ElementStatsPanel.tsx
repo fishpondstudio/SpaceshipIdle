@@ -7,11 +7,11 @@ export function ElementStatsPanel(): React.ReactNode {
       <div className="element-stats-panel">
          <div className="row">
             <div className="f1">{t(L.PermanentElementLevels)}</div>
-            <div>{getTotalElementLevels(G.save.current)}</div>
+            <div>{getTotalElementLevels(G.save.state)}</div>
          </div>
          <div className="row">
             <div className="f1">{t(L.PermanentElementShards)}</div>
-            <div>{getTotalElementShards(G.save.current)}</div>
+            <div>{getTotalElementShards(G.save.state)}</div>
          </div>
       </div>
    );

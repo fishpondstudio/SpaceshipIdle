@@ -1,12 +1,12 @@
 import {
-   MessageType,
-   UserFlags,
    type AllMessageTypes,
    type IChat,
    type IChatMessage,
    type IRPCMessage,
    type IUser,
    type IWelcomeMessage,
+   MessageType,
+   UserFlags,
 } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
 import { hasFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { msgpackDecode } from "@spaceship-idle/shared/src/utils/Serialization";
@@ -63,7 +63,7 @@ export function handleMessage(e: MessageEvent<any>) {
          console.log(
             `[Server Time] Server Now: ${w.time}, Client Now = ${Date.now()}, Offset = ${serverTimeOffset}, Adjusted = ${serverNow()}`,
          );
-         G.save.current.offlineTime += w.offlineTime;
+         G.save.state.offlineTime += w.offlineTime;
          UserUpdated.emit(user);
          OnConnectionChanged.emit(true);
          break;

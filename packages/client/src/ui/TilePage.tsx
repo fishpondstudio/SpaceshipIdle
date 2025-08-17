@@ -7,8 +7,8 @@ import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { BatchOperationPage } from "./BatchOperationPage";
 import { BuildingPage } from "./BuildingPage";
-import { SidebarComp } from "./components/SidebarComp";
 import { ConstructionPage } from "./ConstructionPage";
+import { SidebarComp } from "./components/SidebarComp";
 import { hideSidebar } from "./Sidebar";
 
 export function TilePage({ selectedTiles }: { selectedTiles: Set<Tile> }): React.ReactNode {
@@ -22,9 +22,9 @@ export function TilePage({ selectedTiles }: { selectedTiles: Set<Tile> }): React
 
    if (selectedTiles.size === 1) {
       for (const tile of selectedTiles) {
-         const data = G.save.current.tiles.get(tile);
+         const data = G.save.state.tiles.get(tile);
          if (data) {
-            return <BuildingPage tile={tile} gs={G.save.current} readonly={false} />;
+            return <BuildingPage tile={tile} gs={G.save.state} readonly={false} />;
          }
          const enemy = G.runtime.right.tiles.get(tile);
          if (enemy) {
@@ -33,7 +33,7 @@ export function TilePage({ selectedTiles }: { selectedTiles: Set<Tile> }): React
          if (isEnemy(tile)) {
             return <HideSidebar key={tile} />;
          }
-         return <ConstructionPage tile={tile} gs={G.save.current} />;
+         return <ConstructionPage tile={tile} gs={G.save.state} />;
       }
    }
 

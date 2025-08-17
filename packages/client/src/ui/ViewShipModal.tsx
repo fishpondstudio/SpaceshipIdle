@@ -46,7 +46,7 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
                   <button
                      className="btn text-sm red"
                      onClick={async () => {
-                        G.save.current = ship.json;
+                        G.save.state = ship.json;
                         await saveGame(G.save);
                         window.location.reload();
                      }}

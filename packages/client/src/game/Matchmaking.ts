@@ -9,7 +9,7 @@ export async function findShip(score: number, hp: number, dps: number): Promise<
    while (true) {
       try {
          const ship = await RPCClient.findShipV3(
-            hashGameState(G.save.current),
+            hashGameState(G.save.state),
             [0, INT32_MAX],
             [score / (1 + range * 2), score * (1 + range)],
             [0, hp * (1 + range)],

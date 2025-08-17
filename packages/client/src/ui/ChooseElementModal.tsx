@@ -48,14 +48,14 @@ export function ChooseElementModal({
                   symbol={symbol}
                   permanent={permanent}
                   onClick={() => {
-                     const choices = permanent ? G.save.current.permanentElementChoices : G.save.current.elementChoices;
+                     const choices = permanent ? G.save.state.permanentElementChoices : G.save.state.elementChoices;
                      const success = removeFrom(choices, choice);
                      if (success) {
                         if (permanent) {
-                           addElementShard(G.save.current, symbol, 1);
+                           addElementShard(G.save.state, symbol, 1);
                            GameOptionUpdated.emit();
                         } else {
-                           addElementThisRun(G.save.current, symbol, 1);
+                           addElementThisRun(G.save.state, symbol, 1);
                            GameStateUpdated.emit();
                         }
                      }
@@ -88,10 +88,10 @@ function ElementOption({
    }
    const [opened, { open }] = useDisclosure(false);
    useEffect(() => open(), [open]);
-   const currentHPMultiplier = G.save.current.permanentElements.get(symbol)?.hp ?? 0;
-   const currentDamageMultiplier = G.save.current.permanentElements.get(symbol)?.damage ?? 0;
-   const currentAmount = G.save.current.permanentElements.get(symbol)?.amount ?? 0;
-   const thisRun = G.save.current.elements.get(symbol);
+   const currentHPMultiplier = G.save.state.permanentElements.get(symbol)?.hp ?? 0;
+   const currentDamageMultiplier = G.save.state.permanentElements.get(symbol)?.damage ?? 0;
+   const currentAmount = G.save.state.permanentElements.get(symbol)?.amount ?? 0;
+   const thisRun = G.save.state.elements.get(symbol);
    return (
       <Transition mounted={opened} transition="pop" duration={1000} timingFunction="ease" keepMounted>
          {(transitionStyle) => (

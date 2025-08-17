@@ -18,8 +18,8 @@ export function startGameLoop(): void {
       G.scene.root.filters = [filter];
    }
 
-   if (!import.meta.env.DEV && !validateForClient(G.save.current)) {
-      G.save.current.flags = setFlag(G.save.current.flags, GameStateFlags.Incompatible);
+   if (!import.meta.env.DEV && !validateForClient(G.save.state)) {
+      G.save.state.flags = setFlag(G.save.state.flags, GameStateFlags.Incompatible);
    }
 
    G.runtime = new Runtime(G.save, new GameState());
@@ -28,7 +28,7 @@ export function startGameLoop(): void {
    G.pixi.ticker.add(() => {
       const unscaled = G.pixi.ticker.deltaMS / 1000;
       const dt = unscaled * G.speed;
-      if (hasFlag(G.save.current.flags, GameStateFlags.Incompatible)) {
+      if (hasFlag(G.save.state.flags, GameStateFlags.Incompatible)) {
          showPrestigeModal(PrestigeReason.Incompatible);
          return;
       }

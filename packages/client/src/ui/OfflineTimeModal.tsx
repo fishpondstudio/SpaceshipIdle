@@ -21,7 +21,7 @@ export function OfflineTimeModal({ offlineTime }: { offlineTime: number }): Reac
                onClick={(e) => {
                   const rect = (e.target as HTMLButtonElement).getBoundingClientRect();
                   const target = document.getElementById("ship-info-warp")?.getBoundingClientRect();
-                  mapSafeAdd(G.save.current.resources, "Warp", warp);
+                  mapSafeAdd(G.save.state.resources, "Warp", warp);
                   hideModal();
                   playBling();
                   G.starfield.playParticle(

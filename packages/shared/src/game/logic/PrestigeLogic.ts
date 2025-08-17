@@ -5,20 +5,20 @@ import type { ElementSymbol } from "../PeriodicTable";
 import { getUnlockedElements, shardsFromShipValue } from "./ElementLogic";
 
 export function prestige(save: SaveGame): void {
-   for (const [element, amount] of save.current.elements) {
-      addElementShard(save.current, element, amount.hp);
-      addElementShard(save.current, element, amount.damage);
-      addElementShard(save.current, element, amount.amount);
+   for (const [element, amount] of save.state.elements) {
+      addElementShard(save.state, element, amount.hp);
+      addElementShard(save.state, element, amount.damage);
+      addElementShard(save.state, element, amount.amount);
    }
-   rollElementShards(save.current, shardsFromShipValue(save.current));
-   const old = save.current;
-   save.current = new GameState();
+   rollElementShards(save.state, shardsFromShipValue(save.state));
+   const old = save.state;
+   save.state = new GameState();
    // Carry over
-   save.current.resources.set("Warp", old.resources.get("Warp") ?? 0);
-   save.current.permanentElements = old.permanentElements;
-   save.current.permanentElementChoices = old.permanentElementChoices;
+   save.state.resources.set("Warp", old.resources.get("Warp") ?? 0);
+   save.state.permanentElements = old.permanentElements;
+   save.state.permanentElementChoices = old.permanentElementChoices;
 
-   initGameState(save.current);
+   initGameState(save.state);
 }
 
 export function addElementShard(gs: GameState, element: ElementSymbol, amount: number): void {

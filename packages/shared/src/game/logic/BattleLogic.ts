@@ -1,4 +1,4 @@
-import { hasFlag, mapSafeAdd, reduceOf, setFlag, tileToPoint, type Tile } from "../../utils/Helper";
+import { hasFlag, mapSafeAdd, reduceOf, setFlag, type Tile, tileToPoint } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -264,7 +264,7 @@ export function simulateBattle(ship: GameState, reference: GameState): Runtime {
    const enemy = structuredClone(reference);
    enemy.resources.clear();
 
-   const rt = new Runtime({ current: me, options: new GameOption() }, enemy);
+   const rt = new Runtime({ state: me, options: new GameOption() }, enemy);
    rt.battleType = BattleType.Qualifier;
    rt.battleFlag = setFlag(rt.battleFlag, BattleFlag.Silent);
    const speed = { speed: 1 };
@@ -282,7 +282,7 @@ const CalcShipScoreTicks = 50;
 export function calcShipScore(ship: GameState): [number, number, number, Runtime] {
    const me = structuredClone(ship);
    me.resources.clear();
-   const rt = new Runtime({ current: me, options: new GameOption() }, new GameState());
+   const rt = new Runtime({ state: me, options: new GameOption() }, new GameState());
    rt.wave = Number.POSITIVE_INFINITY;
    rt.createXPTarget();
    rt.battleType = BattleType.Peace;

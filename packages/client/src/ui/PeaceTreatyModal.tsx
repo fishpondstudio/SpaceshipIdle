@@ -11,7 +11,7 @@ export function PeaceTreatyModal(): React.ReactNode {
          <VictoryHeaderComp title="Decisive Victory" />
          <div className="row text-lg">
             <TextureComp name="Others/Spaceship" width={32} />
-            <div>SS {G.save.current.name}</div>
+            <div>SS {G.save.state.name}</div>
             <div className="f1" />
             <div>{name}</div>
             <TextureComp name="Others/Alien" width={32} />

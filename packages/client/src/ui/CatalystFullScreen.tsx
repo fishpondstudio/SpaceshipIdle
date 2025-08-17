@@ -54,7 +54,7 @@ export function CatalystFullScreen(): React.ReactNode {
          type="never"
       >
          <div style={{ flex: "0 0 320px" }}></div>
-         {Array.from(G.save.current.catalysts).map(([cat, data], idx) => {
+         {Array.from(G.save.state.catalysts).map(([cat, data], idx) => {
             return (
                <div
                   key={cat}
@@ -114,7 +114,7 @@ export function CatalystFullScreen(): React.ReactNode {
                                           data.selected = choice;
                                           const next = getNextCatalystCat(cat);
                                           if (next) {
-                                             G.save.current.catalysts.set(next, {
+                                             G.save.state.catalysts.set(next, {
                                                 choices: shuffle(CatalystCat[next].candidates.slice(0)).slice(
                                                    0,
                                                    CatalystPerCat,

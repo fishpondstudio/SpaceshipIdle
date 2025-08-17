@@ -12,7 +12,7 @@ import { SidebarComp } from "./components/SidebarComp";
 export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile> }): ReactNode {
    const tiles = new Set<Tile>();
    for (const tile of selectedTiles) {
-      if (G.save.current.tiles.has(tile)) {
+      if (G.save.state.tiles.has(tile)) {
          tiles.add(tile);
       }
    }
@@ -21,9 +21,9 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
       let success = 0;
       let total = 0;
       for (const tile of tiles) {
-         const data = G.save.current.tiles.get(tile);
+         const data = G.save.state.tiles.get(tile);
          if (data) {
-            if (trySpend(getTotalBuildingCost(data.type, data.level, data.level + 1), G.save.current)) {
+            if (trySpend(getTotalBuildingCost(data.type, data.level, data.level + 1), G.save.state)) {
                ++data.level;
                ++success;
             }
@@ -47,10 +47,10 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
       let success = 0;
       let total = 0;
       for (const tile of tiles) {
-         const data = G.save.current.tiles.get(tile);
+         const data = G.save.state.tiles.get(tile);
          if (data) {
             if (data.level > 1) {
-               mapSafeAdd(G.save.current.resources, "XP", getTotalBuildingCost(data.type, data.level, data.level - 1));
+               mapSafeAdd(G.save.state.resources, "XP", getTotalBuildingCost(data.type, data.level, data.level - 1));
                --data.level;
                ++success;
             }
@@ -90,15 +90,15 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                   className="btn w100"
                   style={{ flex: 2 }}
                   onClick={() => {
-                     const resources = G.save.current.resources;
-                     G.save.current.resources = new Map();
+                     const resources = G.save.state.resources;
+                     G.save.state.resources = new Map();
 
                      for (const tile of tiles) {
-                        const data = G.save.current.tiles.get(tile);
+                        const data = G.save.state.tiles.get(tile);
                         if (data) {
                            if (data.level > 1) {
                               const xp = getTotalBuildingCost(data.type, data.level, 1);
-                              mapSafeAdd(G.save.current.resources, "XP", xp);
+                              mapSafeAdd(G.save.state.resources, "XP", xp);
                               data.level = 1;
                            }
                         }
@@ -108,9 +108,9 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                      while (shouldContinue) {
                         shouldContinue = false;
                         for (const tile of tiles) {
-                           const data = G.save.current.tiles.get(tile);
+                           const data = G.save.state.tiles.get(tile);
                            if (data) {
-                              if (trySpend(getBuildingCost(data.type, data.level + 1), G.save.current)) {
+                              if (trySpend(getBuildingCost(data.type, data.level + 1), G.save.state)) {
                                  ++data.level;
                                  shouldContinue = true;
                               }
@@ -119,9 +119,9 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                      }
 
                      const leftOver =
-                        (G.save.current.resources.get("XP") ?? 0) - (G.save.current.resources.get("XPUsed") ?? 0);
+                        (G.save.state.resources.get("XP") ?? 0) - (G.save.state.resources.get("XPUsed") ?? 0);
                      mapSafeAdd(resources, "XPUsed", -leftOver);
-                     G.save.current.resources = resources;
+                     G.save.state.resources = resources;
 
                      GameStateUpdated.emit();
                   }}
@@ -137,11 +137,11 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                style={{ flex: 2 }}
                onClick={() => {
                   for (const tile of tiles) {
-                     const data = G.save.current.tiles.get(tile);
+                     const data = G.save.state.tiles.get(tile);
                      if (data) {
                         if (data.level > 1) {
                            const xp = getTotalBuildingCost(data.type, data.level, 1);
-                           mapSafeAdd(G.save.current.resources, "XPUsed", -xp);
+                           mapSafeAdd(G.save.state.resources, "XPUsed", -xp);
                            data.level = 1;
                         }
                      }
@@ -151,9 +151,9 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                   while (shouldContinue) {
                      shouldContinue = false;
                      for (const tile of tiles) {
-                        const data = G.save.current.tiles.get(tile);
+                        const data = G.save.state.tiles.get(tile);
                         if (data) {
-                           if (trySpend(getBuildingCost(data.type, data.level + 1), G.save.current)) {
+                           if (trySpend(getBuildingCost(data.type, data.level + 1), G.save.state)) {
                               ++data.level;
                               shouldContinue = true;
                            }

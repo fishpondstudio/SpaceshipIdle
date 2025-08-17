@@ -102,8 +102,8 @@ export class ElementCard extends Container {
    }
 
    update() {
-      const permanent = G.save.current.permanentElements.get(this._elementSymbol);
-      const thisRun = G.save.current.elements.get(this._elementSymbol);
+      const permanent = G.save.state.permanentElements.get(this._elementSymbol);
+      const thisRun = G.save.state.elements.get(this._elementSymbol);
       if (permanent && hasPermanentElementUpgrade(permanent)) {
          this._redCircle?.toggle(true);
       } else if (thisRun && thisRun.amount > 0) {

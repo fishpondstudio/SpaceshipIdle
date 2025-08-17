@@ -14,7 +14,7 @@ export function TutorialProgressModal(): React.ReactNode {
       <div className="m10">
          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {Tutorial.map((step, i) => {
-               const [progress, total] = step.progress(G.save.current);
+               const [progress, total] = step.progress(G.save.state);
                let active = false;
                if (!unfinished && progress < total) {
                   unfinished = true;
@@ -54,7 +54,7 @@ export function TutorialProgressModal(): React.ReactNode {
                onClick={() => {
                   playClick();
                   hideModal();
-                  G.save.current.flags = clearFlag(G.save.current.flags, GameStateFlags.ShowTutorial);
+                  G.save.state.flags = clearFlag(G.save.state.flags, GameStateFlags.ShowTutorial);
                   GameStateUpdated.emit();
                }}
             >

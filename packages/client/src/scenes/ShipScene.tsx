@@ -375,7 +375,7 @@ export class ShipScene extends Scene {
          }
          this._blueprintDirty = false;
          destroyAllChildren(this._grid);
-         getShipBlueprint(G.save.current).forEach((tile) => {
+         getShipBlueprint(G.save.state).forEach((tile) => {
             const s = this._grid.addChild(new Sprite(this.context.textures.get("Misc/Frame")));
             const { x, y } = tileToPoint(tile);
             s.position.set(x * GridSize, y * GridSize);
@@ -426,29 +426,29 @@ export class ShipScene extends Scene {
          shuffle(buildings);
 
          if (e.button === 1) {
-            G.save.current.tiles.set(clickedTile, makeTile(buildings[0], 1));
+            G.save.state.tiles.set(clickedTile, makeTile(buildings[0], 1));
             const point = tileToPoint(clickedTile);
-            G.save.current.tiles.set(createTile(point.x, MaxY - 1 - point.y), makeTile(buildings[1], 1));
+            G.save.state.tiles.set(createTile(point.x, MaxY - 1 - point.y), makeTile(buildings[1], 1));
          }
          // Right click
          if (e.button === 2) {
-            G.save.current.tiles.delete(clickedTile);
+            G.save.state.tiles.delete(clickedTile);
             const point = tileToPoint(clickedTile);
-            G.save.current.tiles.delete(createTile(point.x, MaxY - 1 - point.y));
+            G.save.state.tiles.delete(createTile(point.x, MaxY - 1 - point.y));
          }
-         console.log(G.save.current.tiles.size);
-         console.log(JSON.stringify(Array.from(G.save.current.tiles.keys())));
+         console.log(G.save.state.tiles.size);
+         console.log(JSON.stringify(Array.from(G.save.state.tiles.keys())));
          return;
       }
 
       // Middle click copy
       if (e.button === 1) {
          if (
-            !G.save.current.tiles.has(clickedTile) &&
+            !G.save.state.tiles.has(clickedTile) &&
             !this._selectedTiles.has(clickedTile) &&
             this._selectedTiles.size === 1
          ) {
-            if (!isWithinShipExtent(clickedTile, G.save.current)) {
+            if (!isWithinShipExtent(clickedTile, G.save.state)) {
                playError();
                notifications.show({
                   message: t(L.NotWithinExtent),
@@ -459,7 +459,7 @@ export class ShipScene extends Scene {
                return;
             }
             for (const oldTile of this._selectedTiles) {
-               const tiles = new Set(G.save.current.tiles.keys());
+               const tiles = new Set(G.save.state.tiles.keys());
                tiles.add(clickedTile);
                if (!isShipConnected(tiles)) {
                   playError();
@@ -471,9 +471,9 @@ export class ShipScene extends Scene {
                   });
                   return;
                }
-               const oldTileData = G.save.current.tiles.get(oldTile);
+               const oldTileData = G.save.state.tiles.get(oldTile);
                if (oldTileData) {
-                  if (getAvailableQuantum(G.save.current) <= 0) {
+                  if (getAvailableQuantum(G.save.state) <= 0) {
                      playError();
                      notifications.show({
                         message: t(L.NotEnoughQuantum),
@@ -483,7 +483,7 @@ export class ShipScene extends Scene {
                      });
                      return;
                   }
-                  if (!canSpend(getBuildingCost(oldTileData.type, 1), G.save.current)) {
+                  if (!canSpend(getBuildingCost(oldTileData.type, 1), G.save.state)) {
                      playError();
                      notifications.show({
                         message: t(L.NotEnoughResources),
@@ -493,8 +493,8 @@ export class ShipScene extends Scene {
                      });
                      return;
                   }
-                  if (trySpend(getBuildingCost(oldTileData.type, 1), G.save.current)) {
-                     G.save.current.tiles.set(clickedTile, makeTile(oldTileData.type, 1));
+                  if (trySpend(getBuildingCost(oldTileData.type, 1), G.save.state)) {
+                     G.save.state.tiles.set(clickedTile, makeTile(oldTileData.type, 1));
                      GameStateUpdated.emit();
                   }
                }
@@ -507,7 +507,7 @@ export class ShipScene extends Scene {
       if (e.button === 2) {
          // Right click swap
          if (!this._selectedTiles.has(clickedTile) && this._selectedTiles.size === 1) {
-            if (!isWithinShipExtent(clickedTile, G.save.current)) {
+            if (!isWithinShipExtent(clickedTile, G.save.state)) {
                playError();
                notifications.show({
                   message: t(L.NotWithinExtent),
@@ -518,9 +518,9 @@ export class ShipScene extends Scene {
                return;
             }
             for (const oldTile of this._selectedTiles) {
-               const clickedTileData = G.save.current.tiles.get(clickedTile);
+               const clickedTileData = G.save.state.tiles.get(clickedTile);
                if (!clickedTileData) {
-                  const tiles = new Set(G.save.current.tiles.keys());
+                  const tiles = new Set(G.save.state.tiles.keys());
                   tiles.add(clickedTile);
                   tiles.delete(oldTile);
                   if (!isShipConnected(tiles)) {
@@ -534,13 +534,13 @@ export class ShipScene extends Scene {
                      return;
                   }
                }
-               const oldTileData = G.save.current.tiles.get(oldTile);
+               const oldTileData = G.save.state.tiles.get(oldTile);
                if (oldTileData) {
-                  G.save.current.tiles.set(clickedTile, oldTileData);
+                  G.save.state.tiles.set(clickedTile, oldTileData);
                   if (clickedTileData) {
-                     G.save.current.tiles.set(oldTile, clickedTileData);
+                     G.save.state.tiles.set(oldTile, clickedTileData);
                   } else {
-                     G.save.current.tiles.delete(oldTile);
+                     G.save.state.tiles.delete(oldTile);
                   }
                   G.runtime.expire(oldTile);
                   G.runtime.expire(clickedTile);
@@ -553,10 +553,10 @@ export class ShipScene extends Scene {
             }
             return;
          }
-         const data = G.save.current.tiles.get(clickedTile);
+         const data = G.save.state.tiles.get(clickedTile);
          // Right click delete
          if (data) {
-            const tiles = new Set(G.save.current.tiles.keys());
+            const tiles = new Set(G.save.state.tiles.keys());
             tiles.delete(clickedTile);
             if (!isShipConnected(tiles)) {
                playError();
@@ -569,7 +569,7 @@ export class ShipScene extends Scene {
                return;
             }
             G.runtime.delete(clickedTile);
-            mapSafeAdd(G.save.current.resources, "XP", getTotalBuildingCost(data.type, data.level, 0));
+            mapSafeAdd(G.save.state.resources, "XP", getTotalBuildingCost(data.type, data.level, 0));
             GameStateUpdated.emit();
          }
          return;
@@ -604,7 +604,7 @@ export class ShipScene extends Scene {
       const data = G.runtime.get(clickedTile)?.data;
       if (data && e.detail === 2) {
          this._selectedTiles.clear();
-         for (const [tile, tileData] of G.save.current.tiles) {
+         for (const [tile, tileData] of G.save.state.tiles) {
             if (tileData.type === data.type) {
                this._selectedTiles.add(tile);
             }
@@ -613,7 +613,7 @@ export class ShipScene extends Scene {
          return;
       }
 
-      if (!e.ctrlKey || !G.save.current.tiles.has(clickedTile)) {
+      if (!e.ctrlKey || !G.save.state.tiles.has(clickedTile)) {
          this._selectedTiles.clear();
       }
 
@@ -695,11 +695,11 @@ export class ShipScene extends Scene {
             this._selectors.set(tile, selector);
          }
          if (this._selectedTiles.size === 1) {
-            const tileData = G.save.current.tiles.get(tile);
+            const tileData = G.save.state.tiles.get(tile);
             if (tileData && !isEnemy(tile)) {
                const def = Config.Buildings[tileData.type];
                if ("ability" in def && def.ability && def.ability.timing === AbilityTiming.OnFire) {
-                  abilityTarget(Side.Left, def.ability.range, tile, G.save.current.tiles).forEach((highlight) => {
+                  abilityTarget(Side.Left, def.ability.range, tile, G.save.state.tiles).forEach((highlight) => {
                      this._highlightedTiles.add(highlight);
                   });
                }
@@ -708,7 +708,7 @@ export class ShipScene extends Scene {
       });
 
       for (const tile of this._selectedTiles) {
-         const tileData = G.save.current.tiles.get(tile);
+         const tileData = G.save.state.tiles.get(tile);
          console.log(tileData);
          break;
       }

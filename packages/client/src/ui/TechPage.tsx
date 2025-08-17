@@ -24,10 +24,10 @@ import { playUpgrade } from "./Sound";
 export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const def = Config.Tech[tech];
-   const canUnlock = checkTechPrerequisites(tech, G.save.current);
+   const canUnlock = checkTechPrerequisites(tech, G.save.state);
    const shipClass = techColumnToShipClass(def.position.x);
    const requiredShards = ShipClass[shipClass].shards;
-   const currentShards = getTotalElementShards(G.save.current);
+   const currentShards = getTotalElementShards(G.save.state);
    return (
       <SidebarComp
          title={
@@ -37,7 +37,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
          }
       >
          <div className="h10" />
-         {!G.save.current.unlockedTech.has(tech) && def.requires.length > 0 ? (
+         {!G.save.state.unlockedTech.has(tech) && def.requires.length > 0 ? (
             <>
                <TitleComp>{t(L.Prerequisites)}</TitleComp>
                <div className="divider my10" />
@@ -59,7 +59,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                         <div className="f1">
                            {t(L.ResearchVerb)} <span className="text-space">{getTechName(req)}</span>
                         </div>
-                        {G.save.current.unlockedTech.has(req) ? (
+                        {G.save.state.unlockedTech.has(req) ? (
                            <div className="mi text-green">check_circle</div>
                         ) : (
                            <div className="mi text-red">cancel</div>
@@ -69,24 +69,24 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                })}
                <div className="divider my10" />
                <div className="mx10">
-                  <Tooltip disabled={getAvailableQuantum(G.save.current) > 0} label={t(L.NotEnoughQuantum)}>
+                  <Tooltip disabled={getAvailableQuantum(G.save.state) > 0} label={t(L.NotEnoughQuantum)}>
                      <button
                         className="btn filled w100 row px10 py5"
                         onClick={() => {
                            if (
-                              !checkTechPrerequisites(tech, G.save.current) ||
-                              getAvailableQuantum(G.save.current) <= 0 ||
+                              !checkTechPrerequisites(tech, G.save.state) ||
+                              getAvailableQuantum(G.save.state) <= 0 ||
                               currentShards < requiredShards
                            ) {
                               return;
                            }
                            playUpgrade();
-                           G.save.current.unlockedTech.add(tech);
+                           G.save.state.unlockedTech.add(tech);
                            GameStateUpdated.emit();
                            G.scene.enqueue(TechTreeScene, (t) => t.refresh());
                         }}
                         disabled={
-                           !canUnlock || getAvailableQuantum(G.save.current) <= 0 || currentShards < requiredShards
+                           !canUnlock || getAvailableQuantum(G.save.state) <= 0 || currentShards < requiredShards
                         }
                      >
                         <div>{t(L.Research)}</div>
