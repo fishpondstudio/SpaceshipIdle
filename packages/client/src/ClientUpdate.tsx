@@ -26,7 +26,7 @@ export function clientUpdate(dt: number): void {
 }
 
 function update(): void {
-   const choice = G.save.state.elementChoices[0];
+   const choice = G.save.data.elementChoices[0];
    if (!hasModalOpen() && !isLoading() && choice) {
       showModal({
          children: <ChooseElementModal choice={choice} permanent={false} />,

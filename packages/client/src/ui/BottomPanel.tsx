@@ -198,10 +198,10 @@ function SceneSwitcher(): React.ReactNode {
                      break;
                   case Scenes.ElementsScene:
                      G.scene.loadScene(ElementsScene);
-                     if (G.save.state.permanentElementChoices.length > 0) {
+                     if (G.save.data.permanentElementChoices.length > 0) {
                         showModal({
                            children: (
-                              <ChooseElementModal choice={G.save.state.permanentElementChoices[0]} permanent={true} />
+                              <ChooseElementModal choice={G.save.data.permanentElementChoices[0]} permanent={true} />
                            ),
                            size: "xl",
                         });

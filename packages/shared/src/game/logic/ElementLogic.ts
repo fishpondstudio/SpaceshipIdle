@@ -1,19 +1,19 @@
 import { shuffle } from "../../utils/Helper";
 import { Config } from "../Config";
 import { DefaultElementChoices, QuantumToElement } from "../definitions/Constant";
-import type { ElementData, GameState } from "../GameState";
+import type { ElementData, GameState, SaveGame } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { fib, getUnlockedBuildings } from "./BuildingLogic";
 import { calcSpaceshipXP, quantumToXP, resourceValueOf, StartQuantum, xpToQuantum } from "./ResourceLogic";
 
-export function tickElement(gs: GameState): void {
-   const expectedElements = xpToElement(gs.resources.get("XP") ?? 0);
-   while (gs.discoveredElements < expectedElements) {
-      gs.discoveredElements++;
-      const candidates = getUnlockedElements(gs);
+export function tickElement(save: SaveGame): void {
+   const expectedElements = xpToElement(save.state.resources.get("XP") ?? 0);
+   while (save.state.discoveredElements < expectedElements) {
+      save.state.discoveredElements++;
+      const candidates = getUnlockedElements(save.state);
       const choices = shuffle(candidates.slice(0, DefaultElementChoices * 2)).slice(0, DefaultElementChoices);
       if (choices.length >= DefaultElementChoices) {
-         gs.elementChoices.push({
+         save.data.elementChoices.push({
             choices: choices,
             stackSize: 1,
          });
@@ -57,12 +57,12 @@ export function xpToElement(xp: number): number {
    return Math.floor((quantum - 5) / QuantumToElement);
 }
 
-export function totalDiscoveredElements(gs: GameState): number {
+export function totalDiscoveredElements(save: SaveGame): number {
    let amount = 0;
-   for (const choice of gs.elementChoices) {
+   for (const choice of save.data.elementChoices) {
       amount += choice.stackSize;
    }
-   for (const [symbol, data] of gs.elements) {
+   for (const [symbol, data] of save.state.elements) {
       amount += data.amount;
       amount += data.hp;
       amount += data.damage;

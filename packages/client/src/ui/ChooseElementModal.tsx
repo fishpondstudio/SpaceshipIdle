@@ -48,7 +48,7 @@ export function ChooseElementModal({
                   symbol={symbol}
                   permanent={permanent}
                   onClick={() => {
-                     const choices = permanent ? G.save.state.permanentElementChoices : G.save.state.elementChoices;
+                     const choices = permanent ? G.save.data.permanentElementChoices : G.save.data.elementChoices;
                      const success = removeFrom(choices, choice);
                      if (success) {
                         if (permanent) {

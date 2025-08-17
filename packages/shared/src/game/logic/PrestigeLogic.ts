@@ -10,13 +10,14 @@ export function prestige(save: SaveGame): void {
       addElementShard(save.state, element, amount.damage);
       addElementShard(save.state, element, amount.amount);
    }
-   rollElementShards(save.state, shardsFromShipValue(save.state));
-   const old = save.state;
+   rollElementShards(save, shardsFromShipValue(save.state));
+   const oldState = save.state;
+   const oldData = save.data;
    save.state = new GameState();
    // Carry over
-   save.state.resources.set("Warp", old.resources.get("Warp") ?? 0);
-   save.state.permanentElements = old.permanentElements;
-   save.state.permanentElementChoices = old.permanentElementChoices;
+   save.state.resources.set("Warp", oldState.resources.get("Warp") ?? 0);
+   save.state.permanentElements = oldState.permanentElements;
+   save.data.permanentElementChoices = oldData.permanentElementChoices;
 
    initGameState(save.state);
 }
@@ -39,12 +40,12 @@ export function addElementThisRun(gs: GameState, element: ElementSymbol, amount:
    }
 }
 
-export function rollElementShards(gs: GameState, amount: number) {
+export function rollElementShards(save: SaveGame, amount: number) {
    const candidates: ElementSymbol[] = [];
 
    for (let i = 0; i < amount; i++) {
       if (candidates.length < DefaultElementChoices) {
-         getUnlockedElements(gs, candidates);
+         getUnlockedElements(save.state, candidates);
          shuffle(candidates);
       }
 
@@ -56,7 +57,7 @@ export function rollElementShards(gs: GameState, amount: number) {
          }
       }
 
-      gs.permanentElementChoices.push({
+      save.data.permanentElementChoices.push({
          choices,
          stackSize: 1,
       });

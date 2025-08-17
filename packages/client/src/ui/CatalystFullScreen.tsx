@@ -54,7 +54,7 @@ export function CatalystFullScreen(): React.ReactNode {
          type="never"
       >
          <div style={{ flex: "0 0 320px" }}></div>
-         {Array.from(G.save.state.catalysts).map(([cat, data], idx) => {
+         {Array.from(G.save.data.catalystChoices).map(([cat, data], idx) => {
             return (
                <div
                   key={cat}
@@ -65,10 +65,11 @@ export function CatalystFullScreen(): React.ReactNode {
                   }}
                >
                   <div className={styles.title}>{CatalystCat[cat].name()}</div>
-                  {data.choices.map((choice) => {
+                  {data.map((choice) => {
                      const def = Catalyst[choice];
                      let status: React.ReactNode = null;
-                     if (data.selected === choice) {
+                     const selected = G.save.state.selectedCatalysts.get(cat);
+                     if (selected === choice) {
                         if (G.runtime.leftStat.isCatalystActivated(choice)) {
                            status = (
                               <Tooltip label={t(L.CatalystActivated)}>
@@ -87,7 +88,7 @@ export function CatalystFullScreen(): React.ReactNode {
                         <div
                            key={choice}
                            className={classNames(styles.box, "f1 row g0")}
-                           style={{ opacity: data.selected && data.selected !== choice ? 0.25 : 1 }}
+                           style={{ opacity: selected && selected !== choice ? 0.25 : 1 }}
                         >
                            <div
                               className="cc"
@@ -106,26 +107,23 @@ export function CatalystFullScreen(): React.ReactNode {
                                     <div
                                        className="mi lg pointer"
                                        onClick={() => {
-                                          if (data.selected) {
+                                          if (selected) {
                                              playError();
                                              return;
                                           }
                                           playClick();
-                                          data.selected = choice;
+                                          G.save.state.selectedCatalysts.set(cat, choice);
                                           const next = getNextCatalystCat(cat);
                                           if (next) {
-                                             G.save.state.catalysts.set(next, {
-                                                choices: shuffle(CatalystCat[next].candidates.slice(0)).slice(
-                                                   0,
-                                                   CatalystPerCat,
-                                                ),
-                                                selected: null,
-                                             });
+                                             G.save.data.catalystChoices.set(
+                                                next,
+                                                shuffle(CatalystCat[next].candidates.slice(0)).slice(0, CatalystPerCat),
+                                             );
                                           }
                                           GameStateUpdated.emit();
                                        }}
                                     >
-                                       {data.selected === choice ? "check_box" : "check_box_outline_blank"}
+                                       {selected === choice ? "check_box" : "check_box_outline_blank"}
                                     </div>
                                  </Tooltip>
                               ) : (

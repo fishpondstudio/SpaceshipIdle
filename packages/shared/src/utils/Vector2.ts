@@ -146,7 +146,7 @@ export class Vector2 {
    }
 
    public lengthSqr(): number {
-      return Math.pow(this.x, 2) + Math.pow(this.y, 2);
+      return this.x ** 2 + this.y ** 2;
    }
 
    /**
@@ -234,4 +234,10 @@ export class AABB {
 
 export function v2({ x, y }: IHaveXY): Vector2 {
    return new Vector2(x, y);
+}
+
+export interface Circle {
+   x: number;
+   y: number;
+   r: number;
 }

@@ -60,9 +60,9 @@ export function addDebugFunctions(): void {
    };
    // @ts-expect-error
    globalThis.choosePermanentElement = () => {
-      rollElementShards(G.save.state, 1);
+      rollElementShards(G.save, 1);
       showModal({
-         children: <ChooseElementModal permanent={true} choice={G.save.state.permanentElementChoices[0]} />,
+         children: <ChooseElementModal permanent={true} choice={G.save.data.permanentElementChoices[0]} />,
          size: "xl",
       });
    };
@@ -120,7 +120,7 @@ export function addDebugFunctions(): void {
    // @ts-expect-error
    globalThis.reroll = async () => {
       G.save.state.discoveredElements = 0;
-      G.save.state.elementChoices = [];
+      G.save.data.elementChoices = [];
       G.save.state.elements.clear();
    };
    // @ts-expect-error

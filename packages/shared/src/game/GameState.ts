@@ -4,6 +4,7 @@ import { jsonEncode } from "../utils/Serialization";
 import { TypedEvent } from "../utils/TypedEvent";
 import type { Booster } from "./definitions/Boosters";
 import type { Catalyst, CatalystCat } from "./definitions/Catalyst";
+import type { Galaxy } from "./definitions/Galaxy";
 import type { Resource } from "./definitions/Resource";
 import type { ShipDesign } from "./definitions/ShipDesign";
 import type { Tech } from "./definitions/TechDefinitions";
@@ -31,17 +32,20 @@ export class GameState {
    unlockedTech = new Set<Tech>();
    discoveredElements = 0;
    elements = new Map<ElementSymbol, ElementData>();
-   elementChoices: ElementChoice[] = [];
    permanentElements = new Map<ElementSymbol, ElementData>();
-   permanentElementChoices: ElementChoice[] = [];
-   catalysts = new Map<CatalystCat, { choices: Catalyst[]; selected: Catalyst | null }>([
-      ["C1", { choices: rollCatalyst("C1"), selected: null }],
-   ]);
+   selectedCatalysts = new Map<CatalystCat, Catalyst>();
    boosters = new Map<Booster, { tile: Tile | null; amount: number }>();
    name = "Unnamed";
    shipDesign: ShipDesign = "Ship1";
    flags: GameStateFlags = GameStateFlags.None;
    offlineTime = 0;
+}
+
+export class GameData {
+   elementChoices: ElementChoice[] = [];
+   permanentElementChoices: ElementChoice[] = [];
+   catalystChoices = new Map<CatalystCat, Catalyst[]>([["C1", rollCatalyst("C1")]]);
+   galaxy: Galaxy[] = [{ seconds: 0, solarSystems: [] }];
 }
 
 export interface ElementData {
@@ -91,6 +95,7 @@ export function initGameState(state: GameState): GameState {
 
 export class SaveGame {
    state: GameState = new GameState();
+   data: GameData = new GameData();
    options: GameOption = new GameOption();
 }
 

@@ -43,7 +43,7 @@ export function getPreviousCatalystCat(cat: CatalystCat): CatalystCat | null {
 export function canChooseCatalystCat(cat: CatalystCat, rt: Runtime): boolean {
    const previousCat = getPreviousCatalystCat(cat);
    if (!previousCat) return true;
-   const selected = rt.left.catalysts.get(previousCat)?.selected;
+   const selected = rt.left.selectedCatalysts.get(previousCat);
    if (!selected) return false;
    return rt.leftStat.isCatalystActivated(selected);
 }
@@ -54,10 +54,8 @@ export function rollCatalyst(cat: CatalystCat): Catalyst[] {
 
 export function tickCatalyst(gs: GameState, stat: RuntimeStat, runtime: Runtime): void {
    stat.catalysts.clear();
-   gs.catalysts.forEach((data, cat) => {
-      if (data.selected) {
-         stat.catalysts.set(data.selected, { cat, buildings: new Set(), tiles: new Set() });
-      }
+   gs.selectedCatalysts.forEach((data, cat) => {
+      stat.catalysts.set(data, { cat, buildings: new Set(), tiles: new Set() });
    });
    gs.tiles.forEach((tileData, tile) => {
       stat.catalysts.forEach((set, catalyst) => {

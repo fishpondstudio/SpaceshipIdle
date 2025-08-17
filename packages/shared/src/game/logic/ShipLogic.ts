@@ -194,20 +194,7 @@ export function getShipBlueprint(gs: GameState): number[] {
 }
 
 export function migrateShipForServer(ship: GameState): boolean {
-   let migrated = false;
-   if (!ship.permanentElementChoices) {
-      migrated = true;
-      ship.permanentElementChoices = [];
-   }
-
-   if (!ship.permanentElements) {
-      migrated = true;
-      ship.permanentElements = new Map();
-   }
-   if (migrateBuildingsAndResources(ship)) {
-      migrated = true;
-   }
-   return migrated;
+   return false;
 }
 
 export function migrateBuildingsAndResources(gs: GameState): boolean {

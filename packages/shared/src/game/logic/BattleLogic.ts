@@ -8,7 +8,7 @@ import type { Building } from "../definitions/Buildings";
 import { BattleStartAmmoCycles, BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
 import { GameOption } from "../GameOption";
-import { GameState } from "../GameState";
+import { GameData, GameState } from "../GameState";
 import { posToTile } from "../Grid";
 import { BattleStatus } from "./BattleStatus";
 import { BattleFlag, BattleType } from "./BattleType";
@@ -264,7 +264,7 @@ export function simulateBattle(ship: GameState, reference: GameState): Runtime {
    const enemy = structuredClone(reference);
    enemy.resources.clear();
 
-   const rt = new Runtime({ state: me, options: new GameOption() }, enemy);
+   const rt = new Runtime({ state: me, options: new GameOption(), data: new GameData() }, enemy);
    rt.battleType = BattleType.Qualifier;
    rt.battleFlag = setFlag(rt.battleFlag, BattleFlag.Silent);
    const speed = { speed: 1 };
@@ -282,7 +282,7 @@ const CalcShipScoreTicks = 50;
 export function calcShipScore(ship: GameState): [number, number, number, Runtime] {
    const me = structuredClone(ship);
    me.resources.clear();
-   const rt = new Runtime({ state: me, options: new GameOption() }, new GameState());
+   const rt = new Runtime({ state: me, options: new GameOption(), data: new GameData() }, new GameState());
    rt.wave = Number.POSITIVE_INFINITY;
    rt.createXPTarget();
    rt.battleType = BattleType.Peace;

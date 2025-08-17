@@ -1,13 +1,27 @@
 import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
+import type { Galaxy, Planet, SolarSystem } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
+import { generateCircles } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import { drawDashedLine, rand, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
+import { AABB } from "@spaceship-idle/shared/src/utils/Vector2";
 import { type ColorSource, Container, type FederatedPointerEvent, Sprite } from "pixi.js";
 import { GalaxyPage } from "../ui/GalaxyPage";
 import { hideSidebar, setSidebar } from "../ui/Sidebar";
+import { G } from "../utils/Global";
 import { type ISceneContext, Scene } from "../utils/SceneManager";
 
 export class GalaxyScene extends Scene {
-   private graphics: SmoothGraphics;
-   private ships: Container<Sprite>;
-   private size = 1000;
+   private _graphics: SmoothGraphics;
+
+   private _planetsContainer: Container<Sprite>;
+   private _planets: Map<number, Sprite> = new Map();
+
+   private _width = 16 * 200;
+   private _height = 9 * 200;
+
+   private _selectedId: number | undefined;
+
+   private _galaxy: Galaxy = { solarSystems: [] };
+   private _selector: Sprite;
 
    backgroundColor(): ColorSource {
       return 0x000000;
@@ -21,58 +35,130 @@ export class GalaxyScene extends Scene {
 
       const { app, textures } = this.context;
 
-      const minZoom = Math.min(app.screen.width / this.size, app.screen.height / this.size);
+      const minZoom = Math.min(app.screen.width / this._width, app.screen.height / this._height);
 
-      this.viewport.setWorldSize(this.size, this.size);
+      this.viewport.setWorldSize(this._width, this._height);
       this.viewport.setZoomRange(minZoom, 2);
-      this.viewport.center = { x: this.size / 2, y: this.size / 2 };
-      this.viewport.setWorldSize(this.size, this.size);
+      this.viewport.center = { x: this._width / 2, y: this._height / 2 };
+      this.viewport.setWorldSize(this._width, this._height);
       this.viewport.zoom = minZoom;
 
-      this.graphics = this.viewport.addChild(new SmoothGraphics());
+      this._graphics = this.viewport.addChild(new SmoothGraphics());
 
-      this.graphics.lineStyle({
-         width: 2,
-         color: 0xffffff,
-         alpha: 0.15,
-         alignment: 0,
-         scaleMode: LINE_SCALE_MODE.NONE,
-      });
+      this._planetsContainer = this.viewport.addChild(new Container<Sprite>());
+      this._selector = this.viewport.addChild(new Sprite(textures.get("Misc/GalaxySelector")));
+      this._selector.anchor.set(0.5);
+      this._selector.scale.set(0.5);
+      this._selector.visible = false;
 
-      this.ships = this.viewport.addChild(new Container<Sprite>());
+      const count = rand(5, 10);
+      const circles = generateCircles(
+         new AABB({ x: 0.1 * this._width, y: 0.1 * this._height }, { x: 0.9 * this._width, y: 0.9 * this._height }),
+         count,
+         [200, Math.min(this._width, this._height) / 4],
+      );
 
-      const galaxy = this.viewport.addChild(new Sprite(this.context.textures.get("Others/Galaxy")));
-      galaxy.position.set(this.size / 2, this.size / 2);
-      galaxy.anchor.set(0.5);
-      galaxy.scale.set(2);
+      let id = 0;
+      for (const circle of circles) {
+         const solarSystem: SolarSystem = {
+            x: circle.x,
+            y: circle.y,
+            r: circle.r,
+            planets: [],
+         };
 
-      let r = Math.random() * 2 * Math.PI;
-      this.graphics.drawCircle(this.size / 2, this.size / 2, 100);
-      const ship = this.ships.addChild(new Sprite(this.context.textures.get("Others/Pirate")));
-      ship.anchor.set(0.5);
-      ship.position.set(this.size / 2 + Math.cos(r) * 100, this.size / 2 + Math.sin(r) * 100);
-      // ship.rotation = r;
+         let r = circle.r - rand(25, 50);
 
-      r = Math.random() * 2 * Math.PI;
-      const ship2 = this.ships.addChild(new Sprite(this.context.textures.get("Others/Alien")));
-      this.graphics.drawCircle(this.size / 2, this.size / 2, 150);
-      ship2.anchor.set(0.5);
-      ship2.position.set(this.size / 2 + Math.cos(r) * 150, this.size / 2 + Math.sin(r) * 150);
+         while (r > 50) {
+            const planet: Planet = {
+               id: ++id,
+               radian: Math.random() * 2 * Math.PI,
+               r: r,
+               speed: rand(-0.02, 0.02),
+            };
+            solarSystem.planets.push(planet);
+            r -= rand(30, 70);
+         }
 
-      const selector = this.ships.addChild(new Sprite(this.context.textures.get("Misc/GalaxySelector")));
-      selector.anchor.set(0.5);
-      selector.scale.set(0.5);
-      selector.position.set(this.size / 2 + Math.cos(r) * 150, this.size / 2 + Math.sin(r) * 150);
+         this._galaxy.solarSystems.push(solarSystem);
+      }
 
-      r = Math.random() * 2 * Math.PI;
-      const ship3 = this.ships.addChild(new Sprite(this.context.textures.get("Others/Alien2")));
-      this.graphics.drawCircle(this.size / 2, this.size / 2, 200);
-      ship3.anchor.set(0.5);
-      ship3.position.set(this.size / 2 + Math.cos(r) * 200, this.size / 2 + Math.sin(r) * 200);
+      const textureCandidates = [
+         textures.get("Others/Pirate24"),
+         textures.get("Others/Spaceship24"),
+         textures.get("Others/Alien"),
+         textures.get("Others/Alien2"),
+         textures.get("Others/Alien3"),
+      ];
+      let i = 0;
+
+      for (const solarSystem of this._galaxy.solarSystems) {
+         for (const planet of solarSystem.planets) {
+            const star = this.viewport.addChild(new Sprite(textures.get("Others/Planet")));
+            star.position.set(solarSystem.x, solarSystem.y);
+            star.anchor.set(0.5);
+            star.scale.set(2);
+            const sprite = this._planetsContainer.addChild(
+               new Sprite(textureCandidates[i++ % textureCandidates.length]),
+            );
+            sprite.anchor.set(0.5);
+            this._planets.set(planet.id, sprite);
+         }
+      }
    }
 
    onEnable(): void {
       super.onEnable();
+      G.pixi.ticker.add(() => {
+         this._graphics.clear();
+         const now = Date.now() / SECOND;
+
+         for (const solarSystem of this._galaxy.solarSystems) {
+            for (const planet of solarSystem.planets) {
+               const sprite = this._planets.get(planet.id);
+               if (sprite) {
+                  const radian = planet.radian + now * planet.speed;
+                  sprite.position.set(
+                     solarSystem.x + Math.cos(radian) * planet.r,
+                     solarSystem.y + Math.sin(radian) * planet.r,
+                  );
+                  if (sprite.texture === this.context.textures.get("Others/Spaceship24")) {
+                     sprite.rotation = planet.speed > 0 ? radian + Math.PI : radian;
+                  }
+                  this._graphics.lineStyle({
+                     width: 3,
+                     color: 0xffffff,
+                     alpha: 0.25,
+                     alignment: 0.5,
+                     scaleMode: LINE_SCALE_MODE.NONE,
+                  });
+
+                  drawDashedLine(
+                     this._graphics,
+                     { x: solarSystem.x, y: solarSystem.y },
+                     { x: sprite.x, y: sprite.y },
+                     3,
+                     6,
+                  );
+
+                  if (this._selectedId === planet.id) {
+                     this._graphics
+                        .lineStyle({
+                           width: sprite.width,
+                           color: 0xffffff,
+                           alpha: 0.1,
+                           alignment: 0.5,
+                           scaleMode: LINE_SCALE_MODE.NORMAL,
+                        })
+                        .drawCircle(solarSystem.x, solarSystem.y, planet.r);
+                     this._selector.position.set(sprite.x, sprite.y);
+                     this._selector.visible = true;
+                     this._selector.alpha = Math.sin(now * Math.PI * 1.5) * 0.5 + 0.5;
+                  }
+               }
+            }
+         }
+      });
    }
 
    onDisable(): void {
@@ -81,14 +167,15 @@ export class GalaxyScene extends Scene {
 
    onClicked(e: FederatedPointerEvent): void {
       const pos = this.viewport.screenToWorld(e.screen);
-      for (const ship of this.ships.children) {
+      for (const [id, sprite] of this._planets) {
          if (
-            pos.x > ship.position.x - ship.width / 2 &&
-            pos.x < ship.position.x + ship.width / 2 &&
-            pos.y > ship.position.y - ship.height / 2 &&
-            pos.y < ship.position.y + ship.height / 2
+            pos.x > sprite.x - sprite.width / 2 &&
+            pos.x < sprite.x + sprite.width / 2 &&
+            pos.y > sprite.y - sprite.height / 2 &&
+            pos.y < sprite.y + sprite.height / 2
          ) {
             setSidebar(<GalaxyPage />);
+            this._selectedId = id;
             return;
          }
       }

@@ -10,7 +10,6 @@ import {
    ProductionTickInterval,
    SuddenDeathUndamagedSec,
 } from "../definitions/Constant";
-import type { GameOption } from "../GameOption";
 import { type GameState, GameStateUpdated, hashGameStatePair, type SaveGame, type Tiles } from "../GameState";
 import { makeTile } from "../ITileData";
 import { tickProjectiles, tickTiles } from "./BattleLogic";
@@ -58,7 +57,7 @@ export class Runtime {
 
    public readonly left: GameState;
    public readonly right: GameState;
-   public readonly leftOptions: GameOption;
+   public readonly leftSave: SaveGame;
 
    constructor(left: SaveGame, right: GameState) {
       this.left = left.state;
@@ -66,7 +65,7 @@ export class Runtime {
       this.right = structuredClone(right);
       this.right.tiles = flipHorizontal(this.right.tiles);
 
-      this.leftOptions = left.options;
+      this.leftSave = left;
 
       const hash = hashGameStatePair(this.left, this.right);
       this.random = srand(hash.toString());
@@ -174,7 +173,7 @@ export class Runtime {
          this._tickStatusEffect();
          this._checkSuddenDeath();
 
-         tickElement(this.left);
+         tickElement(this.leftSave);
          this.leftStat.tabulate(this.tabulateHp(this.left.tiles), this.left);
          this.rightStat.tabulate(this.tabulateHp(this.right.tiles), this.right);
          ++this.productionTick;
