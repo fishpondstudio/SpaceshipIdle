@@ -18,7 +18,7 @@ export class GalaxyScene extends Scene {
    private _width = 16 * 200;
    private _height = 9 * 200;
 
-   private _selectedId: number | undefined;
+   private _selectedId: number | null = null;
 
    private _galaxy: Galaxy = { solarSystems: [] };
    private _selector: Sprite;
@@ -89,15 +89,23 @@ export class GalaxyScene extends Scene {
          textures.get("Others/Alien"),
          textures.get("Others/Alien2"),
          textures.get("Others/Alien3"),
+         textures.get("Others/Alien4"),
+         textures.get("Others/Alien5"),
+         textures.get("Others/Alien6"),
+         textures.get("Others/Alien7"),
+         textures.get("Others/Alien8"),
+         textures.get("Others/Alien9"),
+         textures.get("Others/Alien10"),
       ];
       let i = 0;
 
       for (const solarSystem of this._galaxy.solarSystems) {
+         const star = this.viewport.addChild(new Sprite(textures.get("Others/Planet")));
+         star.position.set(solarSystem.x, solarSystem.y);
+         star.anchor.set(0.5);
+         star.scale.set(2);
+
          for (const planet of solarSystem.planets) {
-            const star = this.viewport.addChild(new Sprite(textures.get("Others/Planet")));
-            star.position.set(solarSystem.x, solarSystem.y);
-            star.anchor.set(0.5);
-            star.scale.set(2);
             const sprite = this._planetsContainer.addChild(
                new Sprite(textureCandidates[i++ % textureCandidates.length]),
             );
@@ -179,6 +187,7 @@ export class GalaxyScene extends Scene {
             return;
          }
       }
+      this._selectedId = null;
       hideSidebar();
    }
 }
