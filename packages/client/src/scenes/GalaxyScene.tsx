@@ -1,6 +1,6 @@
 import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
 import type { Galaxy, Planet, SolarSystem } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
-import { generateCircles } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import { packCircles } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { drawDashedLine, rand, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
 import { AABB } from "@spaceship-idle/shared/src/utils/Vector2";
 import { type ColorSource, Container, type FederatedPointerEvent, Sprite } from "pixi.js";
@@ -13,7 +13,7 @@ export class GalaxyScene extends Scene {
    private _graphics: SmoothGraphics;
 
    private _planetsContainer: Container<Sprite>;
-   private _planets: Map<number, Sprite> = new Map();
+   private _sprites: Map<number, Sprite> = new Map();
 
    private _width = 16 * 200;
    private _height = 9 * 200;
@@ -51,25 +51,34 @@ export class GalaxyScene extends Scene {
       this._selector.scale.set(0.5);
       this._selector.visible = false;
 
-      const count = rand(5, 10);
-      const circles = generateCircles(
+      const circles = packCircles(
+         [
+            { x: 0, y: 0, r: 450 },
+            { x: 0, y: 0, r: 400 },
+            { x: 0, y: 0, r: 350 },
+            { x: 0, y: 0, r: 300 },
+            { x: 0, y: 0, r: 250 },
+            { x: 0, y: 0, r: 250 },
+            { x: 0, y: 0, r: 200 },
+            { x: 0, y: 0, r: 200 },
+         ],
          new AABB({ x: 0.1 * this._width, y: 0.1 * this._height }, { x: 0.9 * this._width, y: 0.9 * this._height }),
-         count,
-         [200, Math.min(this._width, this._height) / 4],
       );
 
       let id = 0;
       for (const circle of circles) {
          const solarSystem: SolarSystem = {
+            id: ++id,
             x: circle.x,
             y: circle.y,
             r: circle.r,
+            discovered: Math.random() > 0.5,
             planets: [],
          };
 
          let r = circle.r - rand(25, 50);
 
-         while (r > 50) {
+         while (r >= 50) {
             const planet: Planet = {
                id: ++id,
                radian: Math.random() * 2 * Math.PI,
@@ -104,13 +113,14 @@ export class GalaxyScene extends Scene {
          star.position.set(solarSystem.x, solarSystem.y);
          star.anchor.set(0.5);
          star.scale.set(2);
+         this._sprites.set(solarSystem.id, star);
 
          for (const planet of solarSystem.planets) {
             const sprite = this._planetsContainer.addChild(
                new Sprite(textureCandidates[i++ % textureCandidates.length]),
             );
             sprite.anchor.set(0.5);
-            this._planets.set(planet.id, sprite);
+            this._sprites.set(planet.id, sprite);
          }
       }
    }
@@ -122,8 +132,27 @@ export class GalaxyScene extends Scene {
          const now = Date.now() / SECOND;
 
          for (const solarSystem of this._galaxy.solarSystems) {
+            // this._graphics
+            //    .lineStyle({
+            //       width: 2,
+            //       color: 0xffffff,
+            //       alpha: 0.25,
+            //       alignment: 0.5,
+            //       scaleMode: LINE_SCALE_MODE.NONE,
+            //    })
+            //    .drawCircle(solarSystem.x, solarSystem.y, solarSystem.r);
+
+            const star = this._sprites.get(solarSystem.id);
+            if (star) {
+               star.position.set(solarSystem.x, solarSystem.y);
+
+               if (!solarSystem.discovered) {
+                  star.texture = this.context.textures.get("Misc/GalaxyUndiscovered")!;
+               }
+            }
+
             for (const planet of solarSystem.planets) {
-               const sprite = this._planets.get(planet.id);
+               const sprite = this._sprites.get(planet.id);
                if (sprite) {
                   const radian = planet.radian + now * planet.speed;
                   sprite.position.set(
@@ -133,6 +162,13 @@ export class GalaxyScene extends Scene {
                   if (sprite.texture === this.context.textures.get("Others/Spaceship24")) {
                      sprite.rotation = planet.speed > 0 ? radian + Math.PI : radian;
                   }
+
+                  if (!solarSystem.discovered) {
+                     sprite.visible = false;
+                     continue;
+                  }
+
+                  sprite.visible = true;
                   this._graphics.lineStyle({
                      width: 3,
                      color: 0xffffff,
@@ -175,7 +211,7 @@ export class GalaxyScene extends Scene {
 
    onClicked(e: FederatedPointerEvent): void {
       const pos = this.viewport.screenToWorld(e.screen);
-      for (const [id, sprite] of this._planets) {
+      for (const [id, sprite] of this._sprites) {
          if (
             pos.x > sprite.x - sprite.width / 2 &&
             pos.x < sprite.x + sprite.width / 2 &&

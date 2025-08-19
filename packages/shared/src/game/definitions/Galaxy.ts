@@ -3,9 +3,11 @@ export interface Galaxy {
 }
 
 export interface SolarSystem {
+   id: number;
    x: number;
    y: number;
    r: number;
+   discovered: boolean;
    planets: Planet[];
 }
 
