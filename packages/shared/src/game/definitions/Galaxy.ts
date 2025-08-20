@@ -25,7 +25,7 @@ export interface Planet {
 export const PlanetType = {
    Me: 0,
    Pirate: 1,
-   Country: 2,
+   State: 2,
 } as const;
 
 export type PlanetType = ValueOf<typeof PlanetType>;

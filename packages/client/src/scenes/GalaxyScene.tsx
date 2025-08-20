@@ -46,7 +46,6 @@ export class GalaxyScene extends Scene {
       this._planetsContainer = this.viewport.addChild(new Container<Sprite>());
       this._selector = this.viewport.addChild(new Sprite(textures.get("Misc/GalaxySelector")));
       this._selector.anchor.set(0.5);
-      this._selector.scale.set(0.5);
       this._selector.visible = false;
 
       const circles = packCircles(
@@ -106,15 +105,18 @@ export class GalaxyScene extends Scene {
                radian: Math.random() * 2 * Math.PI,
                r: r,
                speed: rand(-0.02, 0.02),
-               type: randOne([PlanetType.Country, PlanetType.Pirate]),
+               type: randOne([PlanetType.State, PlanetType.Pirate]),
             };
             solarSystem.planets.push(planet);
             r -= rand(30, 70);
          }
 
          if (initial) {
-            const planet = randOne(solarSystem.planets);
+            shuffle(solarSystem.planets);
+            const planet = solarSystem.planets[0];
             planet.type = PlanetType.Me;
+            solarSystem.planets[1].type = PlanetType.Pirate;
+            solarSystem.planets[2].type = PlanetType.State;
             me = { x: solarSystem.x, y: solarSystem.y };
          }
 
@@ -188,6 +190,8 @@ export class GalaxyScene extends Scene {
          this._graphics.clear();
          const now = Date.now() / SECOND;
 
+         let selectorRendered = false;
+
          for (const solarSystem of this._galaxy.solarSystems) {
             // this._graphics
             //    .lineStyle({
@@ -205,6 +209,17 @@ export class GalaxyScene extends Scene {
 
                if (!solarSystem.discovered) {
                   star.texture = this.context.textures.get("Misc/GalaxyUndiscovered")!;
+                  star.scale.set(1);
+               } else {
+                  star.scale.set(2);
+               }
+
+               if (this._selectedId === solarSystem.id) {
+                  this._selector.position.set(star.x, star.y);
+                  this._selector.visible = true;
+                  this._selector.scale.set(0.16);
+                  this._selector.alpha = Math.sin(now * Math.PI * 1.5) * 0.5 + 0.5;
+                  selectorRendered = true;
                }
             }
 
@@ -254,10 +269,16 @@ export class GalaxyScene extends Scene {
                         .drawCircle(solarSystem.x, solarSystem.y, planet.r);
                      this._selector.position.set(sprite.x, sprite.y);
                      this._selector.visible = true;
+                     this._selector.scale.set(0.1);
                      this._selector.alpha = Math.sin(now * Math.PI * 1.5) * 0.5 + 0.5;
+                     selectorRendered = true;
                   }
                }
             }
+         }
+
+         if (!selectorRendered) {
+            this._selector.visible = false;
          }
       });
    }
