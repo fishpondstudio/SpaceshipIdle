@@ -4,7 +4,7 @@ import { G } from "../utils/Global";
 
 export function ElementStatsPanel(): React.ReactNode {
    return (
-      <div className="element-stats-panel">
+      <div className="top-left-panel">
          <div className="row">
             <div className="f1">{t(L.PermanentElementLevels)}</div>
             <div>{getTotalElementLevels(G.save.state)}</div>

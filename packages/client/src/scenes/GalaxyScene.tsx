@@ -1,8 +1,14 @@
 import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
-import type { Galaxy, Planet, SolarSystem } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
+import {
+   type Galaxy,
+   type Planet,
+   PlanetType,
+   type SolarSystem,
+} from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { packCircles } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
-import { drawDashedLine, rand, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
-import { AABB } from "@spaceship-idle/shared/src/utils/Vector2";
+import { AABB } from "@spaceship-idle/shared/src/utils/AABB";
+import { drawDashedLine, rand, randOne, SECOND, shuffle } from "@spaceship-idle/shared/src/utils/Helper";
+import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
 import { type ColorSource, Container, type FederatedPointerEvent, Sprite } from "pixi.js";
 import { GalaxyPage } from "../ui/GalaxyPage";
 import { hideSidebar, setSidebar } from "../ui/Sidebar";
@@ -35,14 +41,6 @@ export class GalaxyScene extends Scene {
 
       const { app, textures } = this.context;
 
-      const minZoom = Math.min(app.screen.width / this._width, app.screen.height / this._height);
-
-      this.viewport.setWorldSize(this._width, this._height);
-      this.viewport.setZoomRange(minZoom, 2);
-      this.viewport.center = { x: this._width / 2, y: this._height / 2 };
-      this.viewport.setWorldSize(this._width, this._height);
-      this.viewport.zoom = minZoom;
-
       this._graphics = this.viewport.addChild(new SmoothGraphics());
 
       this._planetsContainer = this.viewport.addChild(new Container<Sprite>());
@@ -52,27 +50,51 @@ export class GalaxyScene extends Scene {
       this._selector.visible = false;
 
       const circles = packCircles(
-         [
-            { x: 0, y: 0, r: 450 },
-            { x: 0, y: 0, r: 400 },
-            { x: 0, y: 0, r: 350 },
-            { x: 0, y: 0, r: 300 },
-            { x: 0, y: 0, r: 250 },
-            { x: 0, y: 0, r: 250 },
-            { x: 0, y: 0, r: 200 },
-            { x: 0, y: 0, r: 200 },
-         ],
-         new AABB({ x: 0.1 * this._width, y: 0.1 * this._height }, { x: 0.9 * this._width, y: 0.9 * this._height }),
+         [{ x: 0, y: 0, r: 300 }].concat(
+            shuffle(
+               [
+                  { x: 0, y: 0, r: 500 },
+                  { x: 0, y: 0, r: 400 },
+                  { x: 0, y: 0, r: 400 },
+                  { x: 0, y: 0, r: 300 },
+                  { x: 0, y: 0, r: 250 },
+                  { x: 0, y: 0, r: 250 },
+               ],
+               Math.random,
+            ),
+         ),
+         Math.random,
       );
 
+      const aabb = AABB.fromCircles(circles);
+      aabb.extendBy({ x: aabb.width * 0.2, y: aabb.height * 0.2 });
+      this._width = aabb.width;
+      this._height = aabb.height;
+
+      const offset = aabb.min;
+      circles.forEach((circle) => {
+         circle.x = circle.x - offset.x;
+         circle.y = circle.y - offset.y;
+      });
+
+      const minZoom = Math.min(app.screen.width / this._width, app.screen.height / this._height);
+
+      this.viewport.setWorldSize(this._width, this._height);
+      this.viewport.setZoomRange(minZoom, 2);
+      this.viewport.setWorldSize(this._width, this._height);
+
       let id = 0;
-      for (const circle of circles) {
+      let me: IHaveXY | null = null;
+      for (let i = 0; i < circles.length; ++i) {
+         const circle = circles[i];
+         const initial = i === 0;
          const solarSystem: SolarSystem = {
             id: ++id,
             x: circle.x,
             y: circle.y,
             r: circle.r,
-            discovered: Math.random() > 0.5,
+            discovered: initial,
+            distance: 0,
             planets: [],
          };
 
@@ -84,17 +106,37 @@ export class GalaxyScene extends Scene {
                radian: Math.random() * 2 * Math.PI,
                r: r,
                speed: rand(-0.02, 0.02),
+               type: randOne([PlanetType.Country, PlanetType.Pirate]),
             };
             solarSystem.planets.push(planet);
             r -= rand(30, 70);
          }
 
+         if (initial) {
+            const planet = randOne(solarSystem.planets);
+            planet.type = PlanetType.Me;
+            me = { x: solarSystem.x, y: solarSystem.y };
+         }
+
          this._galaxy.solarSystems.push(solarSystem);
       }
 
+      this._galaxy.solarSystems.sort((a, b) => {
+         if (!me) return 0;
+         return Math.hypot(a.x - me.x, a.y - me.y) - Math.hypot(b.x - me.x, b.y - me.y);
+      });
+
+      for (let i = 0; i < this._galaxy.solarSystems.length; ++i) {
+         const solarSystem = this._galaxy.solarSystems[i];
+         if (i > 0) {
+            solarSystem.distance = i;
+         }
+      }
+
+      console.log(this._galaxy.solarSystems);
+
       const textureCandidates = [
          textures.get("Others/Pirate24"),
-         textures.get("Others/Spaceship24"),
          textures.get("Others/Alien"),
          textures.get("Others/Alien2"),
          textures.get("Others/Alien3"),
@@ -117,11 +159,26 @@ export class GalaxyScene extends Scene {
 
          for (const planet of solarSystem.planets) {
             const sprite = this._planetsContainer.addChild(
-               new Sprite(textureCandidates[i++ % textureCandidates.length]),
+               new Sprite(
+                  planet.type === PlanetType.Me
+                     ? textures.get("Others/Spaceship24")
+                     : textureCandidates[i++ % textureCandidates.length],
+               ),
             );
+            if (planet.type === PlanetType.Me) {
+               me = { x: solarSystem.x, y: solarSystem.y };
+               console.log(me);
+               this._selectedId = planet.id;
+            }
             sprite.anchor.set(0.5);
             this._sprites.set(planet.id, sprite);
          }
+      }
+
+      if (me) {
+         this.viewport.center = { x: me.x, y: me.y };
+         this.viewport.zoom = 1;
+         setSidebar(<GalaxyPage />);
       }
    }
 

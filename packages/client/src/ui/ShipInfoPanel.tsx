@@ -117,24 +117,6 @@ export function ShipInfoPanel(): React.ReactNode {
             </div>
          </Tooltip>
          <div className="divider vertical" />
-         <Tooltip multiline maw="25vw" label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(availableXP))} />}>
-            <div className="block" style={{ width: 85 }}>
-               <TextureComp name="Others/XP24" />
-               <div className="f1 text-right">
-                  <div>{formatNumber(availableXP)}</div>
-                  <div
-                     className="xs"
-                     style={{
-                        color: xpDelta >= 0 ? "var(--mantine-color-green-text)" : "var(--mantine-color-red-text)",
-                     }}
-                  >
-                     {mathSign(xpDelta)}
-                     {formatNumber(Math.abs(xpDelta))}
-                  </div>
-               </div>
-            </div>
-         </Tooltip>
-         <div className="divider vertical" />
          <Tooltip
             multiline
             maw="25vw"
@@ -170,6 +152,24 @@ export function ShipInfoPanel(): React.ReactNode {
                <div className="f1 text-right">
                   <div>{formatNumber(actualDPS)}</div>
                   <div className="xs">{formatNumber(rawDPS)}</div>
+               </div>
+            </div>
+         </Tooltip>
+         <div className="divider vertical" />
+         <Tooltip multiline maw="25vw" label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(availableXP))} />}>
+            <div className="block" style={{ width: 85 }}>
+               <TextureComp name="Others/XP24" />
+               <div className="f1 text-right">
+                  <div>{formatNumber(availableXP)}</div>
+                  <div
+                     className="xs"
+                     style={{
+                        color: xpDelta >= 0 ? "var(--mantine-color-green-text)" : "var(--mantine-color-red-text)",
+                     }}
+                  >
+                     {mathSign(xpDelta)}
+                     {formatNumber(Math.abs(xpDelta))}
+                  </div>
                </div>
             </div>
          </Tooltip>

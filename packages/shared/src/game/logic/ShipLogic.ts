@@ -1,5 +1,6 @@
+import { AABB } from "../../utils/AABB";
 import { createTile, type Tile, tileToPoint } from "../../utils/Helper";
-import { AABB, type IHaveXY } from "../../utils/Vector2";
+import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
 import type { Building } from "../definitions/Buildings";
 import type { Resource } from "../definitions/Resource";

@@ -1,5 +1,5 @@
 import type { ElementSymbol } from "@spaceship-idle/shared/src/game/PeriodicTable";
-import { AABB } from "@spaceship-idle/shared/src/utils/Vector2";
+import { AABB } from "@spaceship-idle/shared/src/utils/AABB";
 import type { ColorSource, FederatedPointerEvent } from "pixi.js";
 import { type ISceneContext, Scene } from "../utils/SceneManager";
 import { ElementCard } from "./ElementCard";

@@ -482,6 +482,10 @@ export function rand(min: number, max: number, random = Math.random): number {
    return min + (max - min) * random();
 }
 
+export function randOne<T>(list: T[], random = Math.random): T {
+   return list[Math.floor(random() * list.length)];
+}
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function isEmpty<K, V>(obj: Map<K, V> | Set<K> | object | null | undefined): boolean {
    if (obj instanceof Map) {

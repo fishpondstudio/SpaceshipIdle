@@ -42,6 +42,7 @@ import {
    shipAABB,
 } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
+import { AABB } from "@spaceship-idle/shared/src/utils/AABB";
 import {
    createTile,
    flatMapOf,
@@ -55,7 +56,7 @@ import {
 } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { ObjectPool } from "@spaceship-idle/shared/src/utils/ObjectPool";
-import { AABB, type IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
+import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
 import {
    type ColorSource,
    Container,
