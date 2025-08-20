@@ -10,6 +10,10 @@ export function GalaxyInfoPanel(): React.ReactNode {
             <div>1/3</div>
          </div>
          <div className="row">
+            <div className="f1">Warmonger Penalty</div>
+            <div>1</div>
+         </div>
+         <div className="row">
             <div className="f1">Backstabbing Penalty</div>
             <div>2</div>
          </div>

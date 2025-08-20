@@ -93,8 +93,8 @@ export class TileVisual extends Container {
 
       this._buff = this.addChild(
          new BitmapText("", {
-            fontName: Fonts.SpaceshipIdlePixel,
-            fontSize: 16,
+            fontName: Fonts.SpaceshipIdleBold,
+            fontSize: 18,
             tint: 0x7bed9f,
          }),
       );
@@ -104,8 +104,8 @@ export class TileVisual extends Container {
 
       this._debuff = this.addChild(
          new BitmapText("", {
-            fontName: Fonts.SpaceshipIdlePixel,
-            fontSize: 16,
+            fontName: Fonts.SpaceshipIdleBold,
+            fontSize: 18,
             tint: 0xff7675,
          }),
       );
@@ -115,8 +115,8 @@ export class TileVisual extends Container {
 
       this._bottomRightText = this.addChild(
          new BitmapText(this.levelLabel, {
-            fontName: Fonts.SpaceshipIdlePixel,
-            fontSize: 16,
+            fontName: Fonts.SpaceshipIdleBold,
+            fontSize: 18,
             tint: 0xffffff,
          }),
       );

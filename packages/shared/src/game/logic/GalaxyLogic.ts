@@ -51,7 +51,7 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
       while (r >= 50) {
          const planet: Planet = {
             id: ++id,
-            name: capitalize(new Generator("ssc").toString()),
+            name: capitalize(new Generator("sss").toString()),
             radian: random() * 2 * Math.PI,
             r: r,
             speed: rand(-0.02, 0.02),

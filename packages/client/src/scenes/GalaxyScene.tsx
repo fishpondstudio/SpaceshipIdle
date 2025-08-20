@@ -148,7 +148,7 @@ export class GalaxyScene extends Scene {
                   if (this._selectedId === planet.id) {
                      this._graphics
                         .lineStyle({
-                           width: visual.width,
+                           width: visual.sprite.width,
                            color: 0xffffff,
                            alpha: 0.1,
                            alignment: 0.5,

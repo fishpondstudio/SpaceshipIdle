@@ -1,3 +1,4 @@
+import { Tooltip } from "@mantine/core";
 import { capitalize } from "@spaceship-idle/shared/src/utils/Helper";
 import { Generator } from "@spaceship-idle/shared/src/utils/NameGen";
 import { showModal } from "../utils/ToggleModal";
@@ -18,8 +19,7 @@ export function GalaxyPage(): React.ReactNode {
       >
          <div className="m10 text-sm">
             <div>
-               <span className="text-space">{name}</span> is a neutral state. You can decide how do engage with them.
-               Your decision is final: it cannot be undone
+               <span className="text-space">{name}</span> is a neutral state. You can decide how do engage with them
             </div>
          </div>
          <div className="divider dashed"></div>
@@ -46,9 +46,33 @@ export function GalaxyPage(): React.ReactNode {
             <div className="panel">
                <div className="title">Cost</div>
                <div className="h5" />
-               <div>
-                  1 <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
-               </div>
+               <Tooltip
+                  color="gray"
+                  multiline
+                  w={300}
+                  label={
+                     <>
+                        <div>The cost of declaring friendship is determined as follows</div>
+                        <div className="divider light my10 dashed" />
+                        <div className="row">
+                           <div className="f1">Base Cost</div>
+                           <div>
+                              1 <TextureComp name="Others/Trophy16" className="inline-middle" />
+                           </div>
+                        </div>
+                        <div className="row">
+                           <div className="f1">Backstabbing Penalty</div>
+                           <div>
+                              2 <TextureComp name="Others/Trophy16" className="inline-middle" />
+                           </div>
+                        </div>
+                     </>
+                  }
+               >
+                  <div>
+                     3 <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
+                  </div>
+               </Tooltip>
                <div className="divider my10 mx-10" />
                <div className="title">Rewards</div>
                <div className="h5" />
