@@ -1,12 +1,99 @@
+import { AABB } from "../../utils/AABB";
 import type { Circle } from "../../utils/Circle";
-import { CURRENCY_EPSILON, shuffle } from "../../utils/Helper";
+import { CURRENCY_EPSILON, capitalize, rand, randOne, shuffle } from "../../utils/Helper";
+import { Generator } from "../../utils/NameGen";
+import type { IHaveXY } from "../../utils/Vector2";
+import { type Galaxy, type Planet, PlanetType, type SolarSystem } from "../definitions/Galaxy";
+
+export function generateGalaxy(random: () => number): [Galaxy, AABB] {
+   const circles = packCircles(
+      [{ x: 0, y: 0, r: 300 }].concat(
+         shuffle(
+            [
+               { x: 0, y: 0, r: 500 },
+               { x: 0, y: 0, r: 400 },
+               { x: 0, y: 0, r: 400 },
+               { x: 0, y: 0, r: 300 },
+               { x: 0, y: 0, r: 250 },
+               { x: 0, y: 0, r: 250 },
+            ],
+            random,
+         ),
+      ),
+      random,
+   );
+   const aabb = AABB.fromCircles(circles);
+   const galaxy: Galaxy = { solarSystems: [] };
+   aabb.extendBy({ x: aabb.width * 0.2, y: aabb.height * 0.2 });
+   const offset = aabb.min;
+   circles.forEach((circle) => {
+      circle.x = circle.x - offset.x;
+      circle.y = circle.y - offset.y;
+   });
+   let id = 0;
+   let me: IHaveXY | null = null;
+   for (let i = 0; i < circles.length; ++i) {
+      const circle = circles[i];
+      const initial = i === 0;
+      const solarSystem: SolarSystem = {
+         id: ++id,
+         name: capitalize(new Generator("ssV").toString()),
+         x: circle.x,
+         y: circle.y,
+         r: circle.r,
+         discovered: initial,
+         distance: 0,
+         planets: [],
+      };
+
+      let r = circle.r - rand(25, 50);
+
+      while (r >= 50) {
+         const planet: Planet = {
+            id: ++id,
+            name: capitalize(new Generator("ssc").toString()),
+            radian: random() * 2 * Math.PI,
+            r: r,
+            speed: rand(-0.02, 0.02),
+            type: randOne([PlanetType.State, PlanetType.Pirate]),
+         };
+         solarSystem.planets.push(planet);
+         r -= rand(30, 70);
+      }
+
+      if (initial) {
+         shuffle(solarSystem.planets);
+         const planet = solarSystem.planets[0];
+         planet.type = PlanetType.Me;
+         solarSystem.planets[1].type = PlanetType.Pirate;
+         solarSystem.planets[2].type = PlanetType.State;
+         me = { x: solarSystem.x, y: solarSystem.y };
+      }
+
+      galaxy.solarSystems.push(solarSystem);
+   }
+
+   galaxy.solarSystems.sort((a, b) => {
+      if (!me) return 0;
+      return Math.hypot(a.x - me.x, a.y - me.y) - Math.hypot(b.x - me.x, b.y - me.y);
+   });
+
+   for (let i = 0; i < galaxy.solarSystems.length; ++i) {
+      const solarSystem = galaxy.solarSystems[i];
+      if (i > 0) {
+         solarSystem.distance = i;
+      }
+   }
+
+   return [galaxy, aabb];
+}
 
 // This function packs circles using the following algorithm:
 // - The first circle starts at (0, 0)
 // - The second circle is placed tangent to the first circle, at a random angle
 // - Iterate over the remaining circles, find the first circle that can be placed tangent to the previous two circles and does not overlap with any packed circles, add to the result with updated x,y. If there are multiple solutions, pick a random one
 // - Do this until all circles are packed. If a circle cannot be packed, just ignore it
-export function packCircles(circles: Circle[], random: () => number): Circle[] {
+function packCircles(circles: Circle[], random: () => number): Circle[] {
    if (circles.length === 0) return [];
 
    // The result array of packed circles

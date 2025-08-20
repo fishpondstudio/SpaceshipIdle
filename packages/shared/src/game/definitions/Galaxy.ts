@@ -6,6 +6,7 @@ export interface Galaxy {
 
 export interface SolarSystem {
    id: number;
+   name: string;
    x: number;
    y: number;
    r: number;
@@ -16,6 +17,7 @@ export interface SolarSystem {
 
 export interface Planet {
    id: number;
+   name: string;
    r: number;
    radian: number;
    speed: number;
