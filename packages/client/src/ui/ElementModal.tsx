@@ -61,7 +61,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
          <div className="divider my10 mx-15" />
          <div className="row">
             <div className="f1">{t(L.BoostModule)}</div>
-            <Tooltip multiline color="gray" label={<BuildingInfoComp building={b} />}>
+            <Tooltip w={350} label={<BuildingInfoComp building={b} />}>
                <div>{getBuildingName(b)}</div>
             </Tooltip>
          </div>

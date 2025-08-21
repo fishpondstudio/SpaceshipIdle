@@ -32,7 +32,6 @@ export function MatchmakingShipComp({ ship }: { ship: GameState }): React.ReactN
             <div>{ship.unlockedTech.size}</div>
             <Tooltip
                multiline
-               maw="25vw"
                label={Array.from(ship.unlockedTech)
                   .map((tech) => getTechName(tech))
                   .join(", ")}

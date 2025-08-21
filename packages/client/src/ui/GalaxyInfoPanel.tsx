@@ -11,11 +11,13 @@ export function GalaxyInfoPanel(): React.ReactNode {
          </div>
          <div className="row">
             <div className="f1">Warmonger Penalty</div>
-            <div>1</div>
+            <div>
+               <span className="text-xs text-green">(-0.001/s)</span> 2
+            </div>
          </div>
          <div className="row">
             <div className="f1">Backstabbing Penalty</div>
-            <div>2</div>
+            <div>1</div>
          </div>
       </div>
    );

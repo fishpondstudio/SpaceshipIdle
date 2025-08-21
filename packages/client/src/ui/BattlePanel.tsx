@@ -99,7 +99,6 @@ function DamageComponent({ side }: { side: Side }): React.ReactNode {
                   />
                }
                multiline
-               maw="25vw"
             >
                <div className="row text-red mb10">
                   <div>Sudden Death</div>

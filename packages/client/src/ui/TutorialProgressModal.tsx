@@ -28,7 +28,7 @@ export function TutorialProgressModal(): React.ReactNode {
                         <div className="mi fstart">circle</div>
                      )}
                      <div className="f1">
-                        <Tooltip label={<RenderHTML html={step.desc()} />} multiline maw="25vw">
+                        <Tooltip label={<RenderHTML html={step.desc()} />} multiline>
                            <div className={classNames(active ? "text-space" : null)}>{step.name()}</div>
                         </Tooltip>
                         {active ? (

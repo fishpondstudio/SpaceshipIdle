@@ -106,15 +106,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                {def.unlockBuildings?.map((b) => {
                   return (
                      <div key={b}>
-                        <Tooltip
-                           multiline
-                           color="gray"
-                           label={
-                              <div style={{ width: 330 }}>
-                                 <BuildingInfoComp building={b} />
-                              </div>
-                           }
-                        >
+                        <Tooltip w={350} label={<BuildingInfoComp building={b} />}>
                            <div className="row m10">
                               <TextureComp name={`Building/${b}`} width={64} />
                               <div className="f1">

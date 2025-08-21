@@ -96,7 +96,6 @@ export function ShipInfoPanel(): React.ReactNode {
                </>
             }
             multiline
-            maw="25vw"
          >
             <div
                className="block pointer"
@@ -119,7 +118,6 @@ export function ShipInfoPanel(): React.ReactNode {
          <div className="divider vertical" />
          <Tooltip
             multiline
-            maw="25vw"
             label={
                <RenderHTML
                   html={t(
@@ -144,7 +142,6 @@ export function ShipInfoPanel(): React.ReactNode {
          <div className="divider vertical" />
          <Tooltip
             multiline
-            maw="25vw"
             label={<RenderHTML html={t(L.RawActualDPSHTML, formatNumber(actualDPS), formatNumber(rawDPS))} />}
          >
             <div className="block" style={{ width: 85 }}>
@@ -156,7 +153,7 @@ export function ShipInfoPanel(): React.ReactNode {
             </div>
          </Tooltip>
          <div className="divider vertical" />
-         <Tooltip multiline maw="25vw" label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(availableXP))} />}>
+         <Tooltip multiline label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(availableXP))} />}>
             <div className="block" style={{ width: 85 }}>
                <TextureComp name="Others/XP24" />
                <div className="f1 text-right">
@@ -319,23 +316,25 @@ function ElementTooltip(): React.ReactNode {
    const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
    return (
       <>
-         <div className="row">
-            <div className="f1">{t(L.CurrentTotalXp)}</div>
-            <div>{formatNumber(currentXP)}</div>
+         <div className="flex-table mx-10">
+            <div className="row">
+               <div className="f1">{t(L.CurrentTotalXp)}</div>
+               <div>{formatNumber(currentXP)}</div>
+            </div>
+            <div className="row">
+               <div className="f1">{t(L.XPRequiredForNextElement)}</div>
+               <div>{formatNumber(nextElementXP)}</div>
+            </div>
+            <div className="row">
+               <div className="f1">{t(L.ProgressTowardsNextElement)}</div>
+               <div>{formatPercent((currentXP - prevElementXP) / (nextElementXP - prevElementXP))}</div>
+            </div>
+            <div className="row">
+               <div className="f1">{t(L.TimeUntilNextElement)}</div>
+               <div>{formatHMS((1000 * (nextElementXP - currentXP)) / xpDelta)}</div>
+            </div>
          </div>
-         <div className="row">
-            <div className="f1">{t(L.XPRequiredForNextElement)}</div>
-            <div>{formatNumber(nextElementXP)}</div>
-         </div>
-         <div className="row">
-            <div className="f1">{t(L.ProgressTowardsNextElement)}</div>
-            <div>{formatPercent((currentXP - prevElementXP) / (nextElementXP - prevElementXP))}</div>
-         </div>
-         <div className="row">
-            <div className="f1">{t(L.TimeUntilNextElement)}</div>
-            <div>{formatHMS((1000 * (nextElementXP - currentXP)) / xpDelta)}</div>
-         </div>
-         <div className="divider light dashed my10" />
+         <div className="divider light my5 mx-10" />
          <table className="w100">
             <thead>
                <tr>
@@ -360,7 +359,7 @@ function ElementTooltip(): React.ReactNode {
                })}
             </tbody>
          </table>
-         <div className="divider light dashed my10" />
+         <div className="divider light my5 mx-10" />
          <table className="w100">
             <thead>
                <tr>
@@ -407,22 +406,24 @@ function QuantumTooltip(): React.ReactNode {
                {formatNumber(usedQuantum)}/{formatNumber(quantum)}
             </div>
          </div>
-         <div className="divider light dashed my10" />
-         <div className="row">
-            <div className="f1">{t(L.CurrentTotalXp)}</div>
-            <div>{formatNumber(currentXP)}</div>
-         </div>
-         <div className="row">
-            <div className="f1">XP Required for Next Quantum</div>
-            <div>{formatNumber(nextQuantumXP)}</div>
-         </div>
-         <div className="row">
-            <div className="f1">Progress Towards Next Quantum</div>
-            <div>{formatPercent(progressTowardsNextQuantum)}</div>
-         </div>
-         <div className="row">
-            <div className="f1">Time Until Next Quantum</div>
-            <div>{formatHMS(timeUntilNextQuantum)}</div>
+         <div className="divider light mx-10 mt5"></div>
+         <div className="flex-table mx-10">
+            <div className="row">
+               <div className="f1">{t(L.CurrentTotalXp)}</div>
+               <div>{formatNumber(currentXP)}</div>
+            </div>
+            <div className="row alt">
+               <div className="f1">XP Required for Next Quantum</div>
+               <div>{formatNumber(nextQuantumXP)}</div>
+            </div>
+            <div className="row">
+               <div className="f1">Progress Towards Next Quantum</div>
+               <div>{formatPercent(progressTowardsNextQuantum)}</div>
+            </div>
+            <div className="row alt">
+               <div className="f1">Time Until Next Quantum</div>
+               <div>{formatHMS(timeUntilNextQuantum)}</div>
+            </div>
          </div>
       </>
    );

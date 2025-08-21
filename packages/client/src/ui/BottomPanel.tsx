@@ -120,7 +120,6 @@ function Tutorial(): React.ReactNode {
                </>
             }
             multiline
-            maw="25vw"
          >
             <div className="f1 text-sm" style={{ overflow: "hidden" }}>
                <div className="row">
@@ -269,7 +268,7 @@ function ElementTabLabel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    if (hasUnassignedElements(G.save.state)) {
       return (
-         <Tooltip multiline maw="25vw" label={t(L.YouHaveUnassignedElementTooltip)}>
+         <Tooltip multiline label={t(L.YouHaveUnassignedElementTooltip)}>
             <Indicator color="red" processing>
                <TextureComp name="Others/Element24" />
             </Indicator>
@@ -287,7 +286,7 @@ function BoosterTabLabel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    if (hasUnequippedBooster(G.save.state)) {
       return (
-         <Tooltip multiline maw="25vw" label={t(L.YouHaveUnequippedBoosterTooltip)}>
+         <Tooltip multiline label={t(L.YouHaveUnequippedBoosterTooltip)}>
             <Indicator color="red" processing>
                <TextureComp id="bottom-panel-booster" name="Others/Booster24" />
             </Indicator>

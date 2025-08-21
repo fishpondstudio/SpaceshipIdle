@@ -99,11 +99,7 @@ export function CatalystFullScreen(): React.ReactNode {
                               }}
                            >
                               {canChooseCatalystCat(cat, G.runtime) ? (
-                                 <Tooltip
-                                    multiline
-                                    maw="25vw"
-                                    label={<RenderHTML html={t(L.SelectCatalystTooltipHTML)} />}
-                                 >
+                                 <Tooltip multiline label={<RenderHTML html={t(L.SelectCatalystTooltipHTML)} />}>
                                     <div
                                        className="mi lg pointer"
                                        onClick={() => {
@@ -154,16 +150,15 @@ export function CatalystFullScreen(): React.ReactNode {
                                        .map((b) => {
                                           return (
                                              <Tooltip
-                                                multiline
-                                                color="gray"
+                                                w={350}
                                                 label={
-                                                   <div style={{ width: 330 }}>
+                                                   <>
                                                       <div className="row g5 mb5">
                                                          <TextureComp name={`Building/${b}`} />
                                                          <div className="text-lg">{getBuildingName(b)}</div>
                                                       </div>
                                                       <BuildingInfoComp building={b} />
-                                                   </div>
+                                                   </>
                                                 }
                                                 key={b}
                                              >

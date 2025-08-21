@@ -44,15 +44,7 @@ export function WeaponListModal(): React.ReactNode {
                   return (
                      <tr key={building}>
                         <td className="condensed">
-                           <Tooltip
-                              multiline
-                              color="gray"
-                              label={
-                                 <div style={{ width: 330 }}>
-                                    <BuildingInfoComp building={building} />
-                                 </div>
-                              }
-                           >
+                           <Tooltip w={350} label={<BuildingInfoComp building={building} />}>
                               <TextureComp style={{ margin: 2 }} name={`Building/${building}`} width={40} />
                            </Tooltip>
                         </td>

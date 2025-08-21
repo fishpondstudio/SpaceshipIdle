@@ -47,30 +47,35 @@ export function GalaxyPage(): React.ReactNode {
                <div className="title">Cost</div>
                <div className="h5" />
                <Tooltip
-                  color="gray"
-                  multiline
-                  w={300}
                   label={
                      <>
                         <div>The cost of declaring friendship is determined as follows</div>
-                        <div className="divider light my10 dashed" />
-                        <div className="row">
-                           <div className="f1">Base Cost</div>
-                           <div>
-                              1 <TextureComp name="Others/Trophy16" className="inline-middle" />
+                        <div className="divider light mt5 mx-10 " />
+                        <div className="flex-table mx-10">
+                           <div className="row">
+                              <div className="f1">Base Cost</div>
+                              <div>
+                                 1 <TextureComp name="Others/Trophy16" className="inline-middle" />
+                              </div>
                            </div>
-                        </div>
-                        <div className="row">
-                           <div className="f1">Backstabbing Penalty</div>
-                           <div>
-                              2 <TextureComp name="Others/Trophy16" className="inline-middle" />
+                           <div className="row">
+                              <div className="f1">Warmonger Penalty</div>
+                              <div>
+                                 2 <TextureComp name="Others/Trophy16" className="inline-middle" />
+                              </div>
+                           </div>
+                           <div className="row">
+                              <div className="f1">Backstabbing Penalty</div>
+                              <div>
+                                 1 <TextureComp name="Others/Trophy16" className="inline-middle" />
+                              </div>
                            </div>
                         </div>
                      </>
                   }
                >
                   <div>
-                     3 <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
+                     4 <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
                   </div>
                </Tooltip>
                <div className="divider my10 mx-10" />
@@ -94,7 +99,30 @@ export function GalaxyPage(): React.ReactNode {
          <div className="divider my10" />
          <div className="m10">
             <div className="panel">
-               <div className="title">Negotiable</div>
+               <div className="title">Cost</div>
+               <div className="h5" />
+               <Tooltip
+                  label={
+                     <>
+                        <div>The cost of declaring war is determined as follows</div>
+                        <div className="divider light mt5 mx-10 " />
+                        <div className="flex-table mx-10">
+                           <div className="row">
+                              <div className="f1">Warmonger Penalty</div>
+                              <div>
+                                 2 <TextureComp name="Others/Trophy16" className="inline-middle" />
+                              </div>
+                           </div>
+                        </div>
+                     </>
+                  }
+               >
+                  <div>
+                     2 <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
+                  </div>
+               </Tooltip>
+               <div className="divider my10 mx-10" />
+               <div className="title">Negotiable Rewards</div>
                <div className="h5" />
                <div>
                   <TextureComp name="Booster/Evasion1" className="inline-middle" /> Evasion Cluster

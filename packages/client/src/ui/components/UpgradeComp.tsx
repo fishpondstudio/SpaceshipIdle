@@ -169,7 +169,6 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   <TextureComp name={`Booster/${booster}`} />
                   <Tooltip
                      multiline
-                     maw="25vw"
                      label={
                         <RenderHTML
                            html={Boosters[booster].desc(
