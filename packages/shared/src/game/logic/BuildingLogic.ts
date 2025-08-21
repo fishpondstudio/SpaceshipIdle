@@ -5,7 +5,7 @@ import { ShipClass } from "../definitions/TechDefinitions";
 import type { GameState, Tiles } from "../GameState";
 import type { ITileData } from "../ITileData";
 import { getCooldownMultiplier } from "./BattleLogic";
-import { resourceOf, spendResource } from "./ResourceLogic";
+import { trySpendResource } from "./ResourceLogic";
 
 export function getNextLevel(currentLevel: number, x: number): number {
    return (Math.floor(currentLevel / x) + 1) * x;
@@ -67,23 +67,10 @@ export function getDamagePerFire({ type, level }: { type: Building; level: numbe
 
 export function upgradeMax(tile: ITileData, gs: GameState): void {
    let xp = getBuildingCost(tile.type, tile.level + 1);
-   while (trySpend(xp, gs)) {
+   while (trySpendResource("XP", xp, gs.resources)) {
       tile.level++;
       xp = getBuildingCost(tile.type, tile.level + 1);
    }
-}
-
-export function canSpend(xp: number, gs: GameState): boolean {
-   const { current } = resourceOf("XP", gs.resources);
-   return current >= xp;
-}
-
-export function trySpend(xp: number, gs: GameState): boolean {
-   if (!canSpend(xp, gs)) {
-      return false;
-   }
-   spendResource("XP", xp, gs.resources);
-   return true;
 }
 
 export function getUnlockedBuildings(gs: GameState): Building[] {

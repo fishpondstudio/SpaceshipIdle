@@ -1,5 +1,4 @@
-import { canSpend } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { canSpendResource, getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { classNames, formatNumber, mathSign } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
@@ -9,7 +8,7 @@ import { TextureComp } from "./TextureComp";
 export function ResourceListComp({ xp, quantum }: { xp: number; quantum: number }): React.ReactNode {
    let enoughXp = true;
    if (xp < 0) {
-      enoughXp = canSpend(Math.abs(xp), G.save.state);
+      enoughXp = canSpendResource("XP", Math.abs(xp), G.save.state.resources);
    }
    let enoughQuantum = true;
    if (quantum < 0) {

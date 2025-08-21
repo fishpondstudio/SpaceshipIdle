@@ -3,14 +3,16 @@ import { type Booster, Boosters, getBoosterEffect } from "@spaceship-idle/shared
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { hasUnequippedBooster } from "@spaceship-idle/shared/src/game/logic/BoosterLogic";
 import {
-   canSpend,
    getBuildingCost,
    getNextLevel,
    getTotalBuildingCost,
-   trySpend,
    upgradeMax,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { refundResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import {
+   canSpendResource,
+   refundResource,
+   trySpendResource,
+} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { isShipConnected } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { mMapOf, type Tile } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -44,7 +46,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
 
    const upgrade = useCallback(
       (target: number) => {
-         if (trySpend(getTotalBuildingCost(data.type, data.level, target), G.save.state)) {
+         if (trySpendResource("XP", getTotalBuildingCost(data.type, data.level, target), G.save.state.resources)) {
             data.level = target;
             GameStateUpdated.emit();
          } else {
@@ -110,7 +112,13 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   >
                      <button
                         className="btn f1"
-                        disabled={!canSpend(getTotalBuildingCost(data.type, data.level, target), G.save.state)}
+                        disabled={
+                           !canSpendResource(
+                              "XP",
+                              getTotalBuildingCost(data.type, data.level, target),
+                              G.save.state.resources,
+                           )
+                        }
                         onClick={upgrade.bind(null, target)}
                      >
                         +{target - data.level}
@@ -120,7 +128,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             })}
             <button
                className="btn f1"
-               disabled={!canSpend(getBuildingCost(data.type, data.level + 1), G.save.state)}
+               disabled={!canSpendResource("XP", getBuildingCost(data.type, data.level + 1), G.save.state.resources)}
                onClick={upgradeMaxCached}
             >
                {t(L.UpgradeMax)}

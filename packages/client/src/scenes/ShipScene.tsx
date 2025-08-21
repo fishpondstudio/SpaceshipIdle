@@ -24,14 +24,14 @@ import {
    RequestFloater,
 } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import {
-   canSpend,
-   getBuildingCost,
-   getTotalBuildingCost,
-   trySpend,
-} from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
+import { getBuildingCost, getTotalBuildingCost } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import type { Projectile } from "@spaceship-idle/shared/src/game/logic/Projectile";
-import { getAvailableQuantum, refundResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import {
+   canSpendResource,
+   getAvailableQuantum,
+   refundResource,
+   trySpendResource,
+} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { OnStatusEffectsChanged } from "@spaceship-idle/shared/src/game/logic/RuntimeTile";
 import {
@@ -483,7 +483,7 @@ export class ShipScene extends Scene {
                      });
                      return;
                   }
-                  if (!canSpend(getBuildingCost(oldTileData.type, 1), G.save.state)) {
+                  if (!canSpendResource("XP", getBuildingCost(oldTileData.type, 1), G.save.state.resources)) {
                      playError();
                      notifications.show({
                         message: t(L.NotEnoughResources),
@@ -493,7 +493,7 @@ export class ShipScene extends Scene {
                      });
                      return;
                   }
-                  if (trySpend(getBuildingCost(oldTileData.type, 1), G.save.state)) {
+                  if (trySpendResource("XP", getBuildingCost(oldTileData.type, 1), G.save.state.resources)) {
                      G.save.state.tiles.set(clickedTile, makeTile(oldTileData.type, 1));
                      GameStateUpdated.emit();
                   }

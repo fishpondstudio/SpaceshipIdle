@@ -5,13 +5,15 @@ import { CodeLabel, type CodeNumber } from "@spaceship-idle/shared/src/game/defi
 import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
 import {
-   canSpend,
    getBuildingCost,
    getBuildingName,
    getUnlockedBuildings,
-   trySpend,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import {
+   canSpendResource,
+   getAvailableQuantum,
+   trySpendResource,
+} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { isTileConnected, isWithinShipExtent } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { entriesOf, formatNumber, mapSafeAdd, type Tile } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -96,7 +98,7 @@ function BuildingComp({
 }): React.ReactNode {
    const def = Config.Buildings[building];
    const label = CodeLabel[def.code]();
-   const canBuild = canSpend(getBuildingCost(building, 1), gs) && getAvailableQuantum(gs) > 0;
+   const canBuild = canSpendResource("XP", getBuildingCost(building, 1), gs.resources) && getAvailableQuantum(gs) > 0;
    return (
       <Tooltip
          color="gray"
@@ -107,11 +109,14 @@ function BuildingComp({
          <div
             className="row p10 m10"
             onClick={() => {
-               if (!canSpend(getBuildingCost(building, 1), gs) || getAvailableQuantum(gs) <= 0) {
+               if (
+                  !canSpendResource("XP", getBuildingCost(building, 1), gs.resources) ||
+                  getAvailableQuantum(gs) <= 0
+               ) {
                   playError();
                   return;
                }
-               if (trySpend(getBuildingCost(building, 1), gs)) {
+               if (trySpendResource("XP", getBuildingCost(building, 1), gs.resources)) {
                   gs.tiles.set(tile, makeTile(building, 1));
                   GameStateUpdated.emit();
                }

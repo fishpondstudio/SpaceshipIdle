@@ -35,6 +35,15 @@ export function spendResource(
    resources.set(resource, result);
 }
 
+export function canSpendResource(
+   resource: Resource,
+   amount: number,
+   resources: Map<Resource, ResourceDataPersisted>,
+): boolean {
+   const result: ResourceDataPersisted = resources.get(resource) ?? { total: 0, used: 0 };
+   return result.total - result.used >= amount;
+}
+
 export function trySpendResource(
    resource: Resource,
    amount: number,
