@@ -56,6 +56,7 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
             r: r,
             speed: rand(-0.02, 0.02),
             type: randOne([PlanetType.State, PlanetType.Pirate]),
+            actions: [],
          };
          solarSystem.planets.push(planet);
          r -= rand(30, 70);
