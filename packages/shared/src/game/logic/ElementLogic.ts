@@ -4,10 +4,10 @@ import { DefaultElementChoices, QuantumToElement } from "../definitions/Constant
 import type { ElementData, GameState, SaveGame } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { fib, getUnlockedBuildings } from "./BuildingLogic";
-import { calcSpaceshipXP, quantumToXP, resourceValueOf, StartQuantum, xpToQuantum } from "./ResourceLogic";
+import { calcSpaceshipXP, quantumToXP, resourceOf, resourceValueOf, StartQuantum, xpToQuantum } from "./ResourceLogic";
 
 export function tickElement(save: SaveGame): void {
-   const expectedElements = xpToElement(save.state.resources.get("XP") ?? 0);
+   const expectedElements = xpToElement(resourceOf("XP", save.state.resources).total);
    while (save.state.discoveredElements < expectedElements) {
       save.state.discoveredElements++;
       const candidates = getUnlockedElements(save.state);

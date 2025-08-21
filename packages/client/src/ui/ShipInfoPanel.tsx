@@ -12,6 +12,7 @@ import {
    getMinimumSpaceshipXPForBattle,
    getUsedQuantum,
    quantumToXP,
+   resourceOf,
    xpToQuantum,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
@@ -65,23 +66,22 @@ export function ShipInfoPanel(): React.ReactNode {
    const highlight =
       usedQuantum >= getMinimumQuantumForBattle(state) &&
       calcSpaceshipXP(state) >= getMinimumSpaceshipXPForBattle(state);
-   const currentXP = state.resources.get("XP") ?? 0;
+   const { current: currentXP, total: totalXP } = resourceOf("XP", state.resources);
 
-   const quantum = xpToQuantum(currentXP);
+   const quantum = xpToQuantum(totalXP);
    const nextQuantum = quantum + 1;
    const nextQuantumXP = quantumToXP(nextQuantum);
    const prevQuantumXP = quantumToXP(quantum);
 
-   const element = xpToElement(currentXP);
+   const element = xpToElement(totalXP);
    const nextElement = element + 1;
    const nextElementXP = elementToXP(nextElement);
    const prevElementXP = elementToXP(element);
 
-   const availableXP = (state.resources.get("XP") ?? 0) - (state.resources.get("XPUsed") ?? 0);
    const actualDPS = reduceOf(actualDamages, (prev, curr, value) => prev + value, 0);
    const rawDPS = reduceOf(rawDamages, (prev, curr, value) => prev + value, 0);
-   const timeUntilNextQuantum = (1000 * (nextQuantumXP - currentXP)) / xpDelta;
-   const progressTowardsNextQuantum = (currentXP - prevQuantumXP) / (nextQuantumXP - prevQuantumXP);
+   const timeUntilNextQuantum = (1000 * (nextQuantumXP - totalXP)) / xpDelta;
+   const progressTowardsNextQuantum = (totalXP - prevQuantumXP) / (nextQuantumXP - prevQuantumXP);
    return (
       <div className="sf-frame top ship-info">
          <HamburgerMenuComp flag={options.flag} />
@@ -153,11 +153,11 @@ export function ShipInfoPanel(): React.ReactNode {
             </div>
          </Tooltip>
          <div className="divider vertical" />
-         <Tooltip multiline label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(availableXP))} />}>
+         <Tooltip multiline label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(currentXP))} />}>
             <div className="block" style={{ width: 85 }}>
                <TextureComp name="Others/XP24" />
                <div className="f1 text-right">
-                  <div>{formatNumber(availableXP)}</div>
+                  <div>{formatNumber(currentXP)}</div>
                   <div
                      className="xs"
                      style={{
@@ -215,7 +215,7 @@ export function ShipInfoPanel(): React.ReactNode {
                      )}
                   </div>
                   <div className="text-xs">
-                     <div className="xs">{formatHMS((1000 * (nextElementXP - currentXP)) / xpDelta)}</div>
+                     <div className="xs">{formatHMS((1000 * (nextElementXP - totalXP)) / xpDelta)}</div>
                   </div>
                </div>
             </div>
@@ -224,7 +224,7 @@ export function ShipInfoPanel(): React.ReactNode {
          <Tooltip multiline w={300} color="gray" label={<ElementTooltip />}>
             <div style={{ width: 60 }} className="block pointer">
                <div className="f1 text-right">
-                  <div>{formatPercent((currentXP - prevElementXP) / (nextElementXP - prevElementXP))}</div>
+                  <div>{formatPercent((totalXP - prevElementXP) / (nextElementXP - prevElementXP))}</div>
                   <div className={classNames("xs text-right", xpDelta > 0 ? "text-green" : "text-red")}>
                      {mathSign(xpDelta)}
                      {formatPercent(Math.abs(xpDelta / (nextElementXP - prevElementXP)))}
@@ -308,8 +308,8 @@ export function ProgressComp({
 
 function ElementTooltip(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
-   const currentXP = G.save.state.resources.get("XP") ?? 0;
-   const element = xpToElement(currentXP);
+   const totalXP = resourceOf("XP", G.save.state.resources).total;
+   const element = xpToElement(totalXP);
    const nextElement = element + 1;
    const nextElementXP = elementToXP(nextElement);
    const prevElementXP = elementToXP(element);
@@ -319,7 +319,7 @@ function ElementTooltip(): React.ReactNode {
          <div className="flex-table mx-10">
             <div className="row">
                <div className="f1">{t(L.CurrentTotalXp)}</div>
-               <div>{formatNumber(currentXP)}</div>
+               <div>{formatNumber(totalXP)}</div>
             </div>
             <div className="row">
                <div className="f1">{t(L.XPRequiredForNextElement)}</div>
@@ -327,11 +327,11 @@ function ElementTooltip(): React.ReactNode {
             </div>
             <div className="row">
                <div className="f1">{t(L.ProgressTowardsNextElement)}</div>
-               <div>{formatPercent((currentXP - prevElementXP) / (nextElementXP - prevElementXP))}</div>
+               <div>{formatPercent((totalXP - prevElementXP) / (nextElementXP - prevElementXP))}</div>
             </div>
             <div className="row">
                <div className="f1">{t(L.TimeUntilNextElement)}</div>
-               <div>{formatHMS((1000 * (nextElementXP - currentXP)) / xpDelta)}</div>
+               <div>{formatHMS((1000 * (nextElementXP - totalXP)) / xpDelta)}</div>
             </div>
          </div>
          <div className="divider light my5 mx-10" />
@@ -390,14 +390,14 @@ function ElementTooltip(): React.ReactNode {
 
 function QuantumTooltip(): React.ReactNode {
    const usedQuantum = getUsedQuantum(G.save.state);
-   const currentXP = G.save.state.resources.get("XP") ?? 0;
-   const quantum = xpToQuantum(G.save.state.resources.get("XP") ?? 0);
+   const totalXP = resourceOf("XP", G.save.state.resources).total;
+   const quantum = xpToQuantum(totalXP);
    const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
    const nextQuantum = quantum + 1;
    const nextQuantumXP = quantumToXP(nextQuantum);
    const prevQuantumXP = quantumToXP(quantum);
-   const progressTowardsNextQuantum = (currentXP - prevQuantumXP) / (nextQuantumXP - prevQuantumXP);
-   const timeUntilNextQuantum = (1000 * (nextQuantumXP - currentXP)) / xpDelta;
+   const progressTowardsNextQuantum = (totalXP - prevQuantumXP) / (nextQuantumXP - prevQuantumXP);
+   const timeUntilNextQuantum = (1000 * (nextQuantumXP - totalXP)) / xpDelta;
    return (
       <>
          <div className="row">
@@ -410,7 +410,7 @@ function QuantumTooltip(): React.ReactNode {
          <div className="flex-table mx-10">
             <div className="row">
                <div className="f1">{t(L.CurrentTotalXp)}</div>
-               <div>{formatNumber(currentXP)}</div>
+               <div>{formatNumber(totalXP)}</div>
             </div>
             <div className="row alt">
                <div className="f1">XP Required for Next Quantum</div>

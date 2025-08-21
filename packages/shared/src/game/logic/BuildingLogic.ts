@@ -1,4 +1,3 @@
-import { mapSafeAdd } from "../../utils/Helper";
 import { Config } from "../Config";
 import type { Building } from "../definitions/Buildings";
 import { DamageToHPMultiplier, MaxBuildingCount } from "../definitions/Constant";
@@ -6,6 +5,7 @@ import { ShipClass } from "../definitions/TechDefinitions";
 import type { GameState, Tiles } from "../GameState";
 import type { ITileData } from "../ITileData";
 import { getCooldownMultiplier } from "./BattleLogic";
+import { resourceOf, spendResource } from "./ResourceLogic";
 
 export function getNextLevel(currentLevel: number, x: number): number {
    return (Math.floor(currentLevel / x) + 1) * x;
@@ -74,14 +74,15 @@ export function upgradeMax(tile: ITileData, gs: GameState): void {
 }
 
 export function canSpend(xp: number, gs: GameState): boolean {
-   return (gs.resources.get("XP") ?? 0) - (gs.resources.get("XPUsed") ?? 0) >= xp;
+   const { current } = resourceOf("XP", gs.resources);
+   return current >= xp;
 }
 
 export function trySpend(xp: number, gs: GameState): boolean {
    if (!canSpend(xp, gs)) {
       return false;
    }
-   mapSafeAdd(gs.resources, "XPUsed", xp);
+   spendResource("XP", xp, gs.resources);
    return true;
 }
 

@@ -1,4 +1,5 @@
-import { formatHMS, formatNumber, mapSafeAdd, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
+import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { formatHMS, formatNumber, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { Sprite } from "pixi.js";
 import { G } from "../utils/Global";
@@ -21,7 +22,7 @@ export function OfflineTimeModal({ offlineTime }: { offlineTime: number }): Reac
                onClick={(e) => {
                   const rect = (e.target as HTMLButtonElement).getBoundingClientRect();
                   const target = document.getElementById("ship-info-warp")?.getBoundingClientRect();
-                  mapSafeAdd(G.save.state.resources, "Warp", warp);
+                  addResource("Warp", warp, G.save.state.resources);
                   hideModal();
                   playBling();
                   G.starfield.playParticle(

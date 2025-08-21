@@ -1,5 +1,6 @@
 import { Menu, Tooltip } from "@mantine/core";
 import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { classNames, formatNumber, range } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo, useCallback } from "react";
@@ -13,16 +14,13 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
       G.speed = speed;
       GameStateUpdated.emit();
    }, []);
+   const warp = resourceOf("Warp", gs.resources).current;
    return (
       <Menu position="bottom-start">
          <Menu.Target>
             <Tooltip
                multiline
-               label={
-                  <RenderHTML
-                     html={t(L.TimeWarpTooltipHTML, formatNumber(G.speed), formatNumber(gs.resources.get("Warp") ?? 0))}
-                  />
-               }
+               label={<RenderHTML html={t(L.TimeWarpTooltipHTML, formatNumber(G.speed), formatNumber(warp))} />}
             >
                <div className="block pointer" style={{ width: 85 }}>
                   <TextureComp
@@ -34,7 +32,7 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
                   />
                   <div className="f1 text-right">
                      <div>{formatNumber(G.speed)}x</div>
-                     <div className="xs">{formatNumber(gs.resources.get("Warp") ?? 0)}</div>
+                     <div className="xs">{formatNumber(warp)}</div>
                   </div>
                </div>
             </Tooltip>

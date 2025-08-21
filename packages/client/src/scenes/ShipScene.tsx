@@ -31,7 +31,7 @@ import {
    trySpend,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import type { Projectile } from "@spaceship-idle/shared/src/game/logic/Projectile";
-import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getAvailableQuantum, refundResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { OnStatusEffectsChanged } from "@spaceship-idle/shared/src/game/logic/RuntimeTile";
 import {
@@ -48,7 +48,6 @@ import {
    flatMapOf,
    hasFlag,
    lookAt,
-   mapSafeAdd,
    rand,
    shuffle,
    type Tile,
@@ -570,7 +569,7 @@ export class ShipScene extends Scene {
                return;
             }
             G.runtime.delete(clickedTile);
-            mapSafeAdd(G.save.state.resources, "XP", getTotalBuildingCost(data.type, data.level, 0));
+            refundResource("XP", getTotalBuildingCost(data.type, data.level, 0), G.save.state.resources);
             GameStateUpdated.emit();
          }
          return;

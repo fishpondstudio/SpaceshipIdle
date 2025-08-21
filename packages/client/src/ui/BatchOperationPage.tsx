@@ -2,7 +2,8 @@ import { Tooltip } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingCost, getTotalBuildingCost, trySpend } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { mapSafeAdd, type Tile } from "@spaceship-idle/shared/src/utils/Helper";
+import { refundResource, resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import type { Tile } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { type ReactNode, useCallback } from "react";
 import { G } from "../utils/Global";
@@ -50,7 +51,11 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
          const data = G.save.state.tiles.get(tile);
          if (data) {
             if (data.level > 1) {
-               mapSafeAdd(G.save.state.resources, "XP", getTotalBuildingCost(data.type, data.level, data.level - 1));
+               refundResource(
+                  "XP",
+                  getTotalBuildingCost(data.type, data.level, data.level - 1),
+                  G.save.state.resources,
+               );
                --data.level;
                ++success;
             }
@@ -98,7 +103,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                         if (data) {
                            if (data.level > 1) {
                               const xp = getTotalBuildingCost(data.type, data.level, 1);
-                              mapSafeAdd(G.save.state.resources, "XP", xp);
+                              refundResource("XP", xp, resources);
                               data.level = 1;
                            }
                         }
@@ -118,11 +123,9 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                         }
                      }
 
-                     const leftOver =
-                        (G.save.state.resources.get("XP") ?? 0) - (G.save.state.resources.get("XPUsed") ?? 0);
-                     mapSafeAdd(resources, "XPUsed", -leftOver);
+                     const leftOver = resourceOf("XP", G.save.state.resources).current;
+                     refundResource("XP", leftOver, resources);
                      G.save.state.resources = resources;
-
                      GameStateUpdated.emit();
                   }}
                >
@@ -141,7 +144,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                      if (data) {
                         if (data.level > 1) {
                            const xp = getTotalBuildingCost(data.type, data.level, 1);
-                           mapSafeAdd(G.save.state.resources, "XPUsed", -xp);
+                           refundResource("XP", xp, G.save.state.resources);
                            data.level = 1;
                         }
                      }

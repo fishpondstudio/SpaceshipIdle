@@ -1,4 +1,4 @@
-import { hasFlag, mapSafeAdd, reduceOf, setFlag, type Tile, tileToPoint } from "../../utils/Helper";
+import { hasFlag, reduceOf, setFlag, tileToPoint, type Tile } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -6,7 +6,6 @@ import { AbilityTiming, abilityTarget } from "../definitions/Ability";
 import { BuildingFlag, ProjectileFlag, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { BattleStartAmmoCycles, BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
-import type { Resource } from "../definitions/Resource";
 import { GameOption } from "../GameOption";
 import { GameData, GameState } from "../GameState";
 import { posToTile } from "../Grid";
@@ -14,6 +13,7 @@ import { BattleStatus } from "./BattleStatus";
 import { BattleFlag, BattleType } from "./BattleType";
 import { getDamagePerFire } from "./BuildingLogic";
 import { Projectile } from "./Projectile";
+import { addResource } from "./ResourceLogic";
 import { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag, type RuntimeTile } from "./RuntimeTile";
@@ -183,7 +183,7 @@ export function tickTiles(
             getDamagePerFire({ type: data.type, level: data.level }) *
             (rs.hpMultiplier.value + rs.damageMultiplier.value);
 
-         mapSafeAdd<Resource>(from.resources, "XP", damagePerFire);
+         addResource("XP", damagePerFire, from.resources);
          RequestFloater.emit({ tile, amount: damagePerFire });
 
          const ability = rs.props.ability;

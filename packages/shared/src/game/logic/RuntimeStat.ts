@@ -112,7 +112,11 @@ export class RuntimeStat {
          safeAdd(this.actualDamage, k, v);
       });
 
-      this.previousResources.push(new Map(gs.resources));
+      const resources = new Map<Resource, number>();
+      for (const [res, data] of gs.resources) {
+         resources.set(res, data.total - data.used);
+      }
+      this.previousResources.push(resources);
 
       this.rawDamages.push(this.rawDamagePerSec);
       this.actualDamages.push(this.actualDamagePerSec);

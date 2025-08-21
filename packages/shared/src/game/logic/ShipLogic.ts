@@ -3,7 +3,6 @@ import { createTile, type Tile, tileToPoint } from "../../utils/Helper";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
 import type { Building } from "../definitions/Buildings";
-import type { Resource } from "../definitions/Resource";
 import { ShipDesigns } from "../definitions/ShipDesign";
 import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
@@ -199,65 +198,5 @@ export function migrateShipForServer(ship: GameState): boolean {
 }
 
 export function migrateBuildingsAndResources(gs: GameState): boolean {
-   let shouldMigrateBuildings = false;
-   for (const [_tile, data] of gs.tiles) {
-      if (!(data.type in Config.Buildings)) {
-         shouldMigrateBuildings = true;
-         break;
-      }
-   }
-   if (shouldMigrateBuildings) {
-      for (const [_tile, data] of gs.tiles) {
-         if (data.type in BuildingMapping) {
-            data.type = BuildingMapping[data.type as keyof typeof BuildingMapping] as Building;
-         }
-      }
-   }
-   for (const [_tile, data] of gs.tiles) {
-      if (!(data.type in Config.Buildings)) {
-         console.error(`Building ${data.type} not found in Config.Buildings`);
-      }
-   }
-   let shouldMigrateResources = false;
-   for (const [res, _amount] of gs.resources) {
-      if (!(res in Config.Resources)) {
-         shouldMigrateResources = true;
-         break;
-      }
-   }
-   if (shouldMigrateResources) {
-      const newResources = new Map<Resource, number>();
-      for (const [res, amount] of gs.resources) {
-         if (res in BuildingMapping) {
-            newResources.set(BuildingMapping[res as keyof typeof BuildingMapping] as Resource, amount);
-         } else {
-            newResources.set(res, amount);
-         }
-      }
-      gs.resources = newResources;
-   }
-   return shouldMigrateBuildings || shouldMigrateResources;
+   return false;
 }
-
-const BuildingMapping = {
-   AC30F: "AC30A",
-   AC30S: "AC30B",
-   AC76R: "AC76A",
-   AC76D: "AC76B",
-   AC130E: "AC130A",
-   AC130S: "AC130B",
-   RC50E: "RC50A",
-   RC50P: "RC50B",
-   RC100G: "RC100A",
-   RC100P: "RC100B",
-   RC100F: "RC100C",
-   RC100L: "RC100D",
-   MS1H: "MS1A",
-   MS1F: "MS1B",
-   MS2R: "MS2A",
-   MS2C: "MS2B",
-   MS2S: "MS2C",
-   LA1E: "LA1A",
-   LA1S: "LA1B",
-   LA2D: "LA2A",
-};

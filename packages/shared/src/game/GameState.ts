@@ -25,10 +25,19 @@ export const GameStateFlags = {
 
 export type GameStateFlags = (typeof GameStateFlags)[keyof typeof GameStateFlags];
 
+export interface ResourceDataPersisted {
+   total: number;
+   used: number;
+}
+
+export interface ResourceData extends ResourceDataPersisted {
+   current: number;
+}
+
 export class GameState {
    id = uuid4();
    tiles: Tiles = new Map();
-   resources = new Map<Resource, number>();
+   resources = new Map<Resource, ResourceDataPersisted>();
    unlockedTech = new Set<Tech>();
    discoveredElements = 0;
    elements = new Map<ElementSymbol, ElementData>();

@@ -1,10 +1,10 @@
 import { notifications } from "@mantine/notifications";
-import type { Resource } from "@spaceship-idle/shared/src/game/definitions/Resource";
 import { GameStateFlags } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
+import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { OnBattleStatusChanged } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { clearFlag, mapSafeAdd } from "@spaceship-idle/shared/src/utils/Helper";
+import { clearFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { saveGame } from "./game/LoadSave";
 import { onSteamClose } from "./rpc/SteamClient";
 import { PracticeBattleResultModal } from "./ui/PracticeBattleResultModal";
@@ -21,9 +21,9 @@ export function subscribeToEvents(): void {
             case BattleType.Qualifier: {
                modal = <QualifierBattleResultModal />;
                if (G.runtime.battleStatus === BattleStatus.RightWin) {
-                  mapSafeAdd<Resource>(G.save.state.resources, "Defeat", 1);
+                  addResource("Defeat", 1, G.save.state.resources);
                } else {
-                  mapSafeAdd<Resource>(G.save.state.resources, "Victory", 1);
+                  addResource("Victory", 1, G.save.state.resources);
                }
                G.save.state.flags = clearFlag(G.save.state.flags, GameStateFlags.QualifierBattlePrompted);
                break;

@@ -111,7 +111,7 @@ em {
 }
 
 .divider.light {
-   background: var(--mantine-color-dark-2);
+   background: rgba(255, 255, 255, 0.4);
 }
 
 .tooltip {

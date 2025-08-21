@@ -3,6 +3,7 @@ import { DefaultElementChoices } from "../definitions/Constant";
 import { GameState, initGameState, type SaveGame } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { getUnlockedElements, shardsFromShipValue } from "./ElementLogic";
+import { addResource, resourceOf } from "./ResourceLogic";
 
 export function prestige(save: SaveGame): void {
    for (const [element, amount] of save.state.elements) {
@@ -15,7 +16,7 @@ export function prestige(save: SaveGame): void {
    const oldData = save.data;
    save.state = new GameState();
    // Carry over
-   save.state.resources.set("Warp", oldState.resources.get("Warp") ?? 0);
+   addResource("Warp", resourceOf("Warp", oldState.resources).current, save.state.resources);
    save.state.permanentElements = oldState.permanentElements;
    save.data.permanentElementChoices = oldData.permanentElementChoices;
 

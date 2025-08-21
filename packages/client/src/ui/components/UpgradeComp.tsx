@@ -10,8 +10,9 @@ import {
    trySpend,
    upgradeMax,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
+import { refundResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { isShipConnected } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
-import { mapSafeAdd, mMapOf, type Tile } from "@spaceship-idle/shared/src/utils/Helper";
+import { mMapOf, type Tile } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useCallback } from "react";
 import { G } from "../../utils/Global";
@@ -34,7 +35,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
       if (canRecycle) {
          playClick();
          G.runtime.delete(tile);
-         mapSafeAdd(gs.resources, "XP", getTotalBuildingCost(data.type, data.level, 0));
+         refundResource("XP", getTotalBuildingCost(data.type, data.level, 0), gs.resources);
          GameStateUpdated.emit();
       } else {
          playError();
@@ -59,7 +60,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             playError();
             return;
          }
-         mapSafeAdd(gs.resources, "XP", getTotalBuildingCost(data.type, data.level, target));
+         refundResource("XP", getTotalBuildingCost(data.type, data.level, target), gs.resources);
          data.level = target;
          GameStateUpdated.emit();
       },

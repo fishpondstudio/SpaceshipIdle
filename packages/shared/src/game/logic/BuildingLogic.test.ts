@@ -2,6 +2,7 @@ import { expect, test } from "vitest";
 import { GameState, SaveGame } from "../GameState";
 import type { ITileData } from "../ITileData";
 import { getBuildingCost, getNextLevel, getTotalBuildingCost, upgradeMax } from "./BuildingLogic";
+import { addResource, resourceOf } from "./ResourceLogic";
 import { Runtime } from "./Runtime";
 
 test("totalBuildingValue", () => {
@@ -20,16 +21,14 @@ test("totalBuildingValue", () => {
 
 test("upgradeMax", () => {
    const rt = new Runtime(new SaveGame(), new GameState());
-   rt.left.resources.set("XP", 1000);
+   addResource("XP", 1000, rt.left.resources);
    rt.leftStat.tabulate(rt.tabulateHp(rt.left.tiles), rt.left);
 
    const tile: ITileData = { type: "AC30", level: 5 };
    upgradeMax(tile, rt.left);
    expect(tile.level).toBe(13);
-   expect(rt.left.resources.get("XPUsed")).toBe(getTotalBuildingCost("AC30", 5, 13));
-   expect(rt.left.resources.get("XP")! - rt.left.resources.get("XPUsed")!).toBeLessThan(
-      getTotalBuildingCost("AC30", 5, 13),
-   );
+   expect(resourceOf("XP", rt.left.resources).used).toBe(getTotalBuildingCost("AC30", 5, 13));
+   expect(resourceOf("XP", rt.left.resources).current).toBeLessThan(getTotalBuildingCost("AC30", 5, 13));
 });
 
 test("getNextLevel", () => {

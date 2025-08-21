@@ -1,22 +1,71 @@
 import { clamp, inverse } from "../../utils/Helper";
 import type { Resource } from "../definitions/Resource";
-import type { GameState } from "../GameState";
+import type { GameState, ResourceData, ResourceDataPersisted } from "../GameState";
 import { getTotalBuildingCost } from "./BuildingLogic";
 import { getShipBlueprint } from "./ShipLogic";
 
-export function resourceValueOf(resources: Map<Resource, number>): number {
+export function resourceValueOf(resources: Map<Resource, ResourceDataPersisted>): number {
    let result = 0;
    for (const [res, amount] of resources) {
-      result += amount;
+      result += amount.total - amount.used;
    }
    return result;
+}
+
+export function resourceOf(resource: Resource, resources: Map<Resource, ResourceDataPersisted>): ResourceData {
+   const result: ResourceDataPersisted = resources.get(resource) ?? { total: 0, used: 0 };
+   return { current: result.total - result.used, total: result.total, used: result.used };
+}
+
+export function addResource(resource: Resource, amount: number, resources: Map<Resource, ResourceDataPersisted>): void {
+   const result: ResourceDataPersisted = resources.get(resource) ?? { total: 0, used: 0 };
+   console.assert(amount >= 0);
+   result.total += amount;
+   resources.set(resource, result);
+}
+
+export function spendResource(
+   resource: Resource,
+   amount: number,
+   resources: Map<Resource, ResourceDataPersisted>,
+): void {
+   const result: ResourceDataPersisted = resources.get(resource) ?? { total: 0, used: 0 };
+   console.assert(amount >= 0);
+   result.used += amount;
+   resources.set(resource, result);
+}
+
+export function trySpendResource(
+   resource: Resource,
+   amount: number,
+   resources: Map<Resource, ResourceDataPersisted>,
+): boolean {
+   const result: ResourceDataPersisted = resources.get(resource) ?? { total: 0, used: 0 };
+   console.assert(amount >= 0);
+   if (result.total - result.used >= amount) {
+      result.used += amount;
+      resources.set(resource, result);
+      return true;
+   }
+   return false;
+}
+
+export function refundResource(
+   resource: Resource,
+   amount: number,
+   resources: Map<Resource, ResourceDataPersisted>,
+): void {
+   const result = resources.get(resource) ?? { current: 0, total: 0, used: 0 };
+   console.assert(amount >= 0);
+   console.assert(result.used >= amount);
+   result.used -= amount;
+   resources.set(resource, result);
 }
 
 export const StartQuantum = 10;
 
 export function getTotalQuantum(gs: GameState): number {
-   const currentXP = gs.resources.get("XP") ?? 0;
-   return xpToQuantum(currentXP);
+   return xpToQuantum(resourceOf("XP", gs.resources).total);
 }
 
 export function getMinimumQuantumForBattle(gs: GameState): number {

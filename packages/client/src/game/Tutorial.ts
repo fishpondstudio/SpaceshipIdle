@@ -1,6 +1,11 @@
 import { QualifierSpaceshipValuePercent } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
-import { calcSpaceshipXP, getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import {
+   calcSpaceshipXP,
+   getUsedQuantum,
+   quantumToXP,
+   resourceOf,
+} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { VideoTutorial } from "@spaceship-idle/shared/src/game/logic/VideoTutorials";
 import { clamp, formatNumber, mReduceOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -67,7 +72,7 @@ export const Tutorial: ITutorial[] = [
       name: () => t(L.TutorialWinSpaceshipBattle, 1),
       desc: () => t(L.TutorialWinSpaceshipBattleDescHTMLV2),
       progress: (gs) => {
-         return [gs.resources.get("Victory") ?? 0, 1];
+         return [resourceOf("Victory", gs.resources).current, 1];
       },
    },
 ] as const;

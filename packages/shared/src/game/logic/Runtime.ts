@@ -1,4 +1,4 @@
-import { clamp, createTile, hasFlag, mapSafeAdd, setFlag, type Tile } from "../../utils/Helper";
+import { clamp, createTile, hasFlag, setFlag, type Tile } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { srand } from "../../utils/Random";
 import { TypedEvent } from "../../utils/TypedEvent";
@@ -19,6 +19,7 @@ import { tickBooster } from "./BoosterLogic";
 import { tickCatalyst } from "./CatalystLogic";
 import { tickElement } from "./ElementLogic";
 import type { Projectile } from "./Projectile";
+import { trySpendResource } from "./ResourceLogic";
 import { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag, RuntimeTile } from "./RuntimeTile";
 import { flipHorizontal, isEnemy, shipAABB } from "./ShipLogic";
@@ -194,11 +195,10 @@ export class Runtime {
       }
       const cost = (g.speed - 1) / g.speed;
       if (cost > 0) {
-         if ((this.left.resources.get("Warp") ?? 0) >= cost) {
-            mapSafeAdd(this.left.resources, "Warp", -cost);
-         } else {
-            g.speed = 1;
+         if (trySpendResource("Warp", cost, this.left.resources)) {
+            return;
          }
+         g.speed = 1;
       }
    }
 
