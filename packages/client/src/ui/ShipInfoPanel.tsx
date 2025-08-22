@@ -129,7 +129,7 @@ export function ShipInfoPanel(): React.ReactNode {
                />
             }
          >
-            <div className="block" style={{ width: 85 }}>
+            <div className="block" style={{ width: 90 }}>
                <TextureComp name="Others/HP24" />
                <div className="f1 text-right">
                   <div>{formatNumber(G.runtime.leftStat.maxHp)}</div>
@@ -144,7 +144,7 @@ export function ShipInfoPanel(): React.ReactNode {
             multiline
             label={<RenderHTML html={t(L.RawActualDPSHTML, formatNumber(actualDPS), formatNumber(rawDPS))} />}
          >
-            <div className="block" style={{ width: 85 }}>
+            <div className="block" style={{ width: 90 }}>
                <TextureComp name="Others/Damage24" />
                <div className="f1 text-right">
                   <div>{formatNumber(actualDPS)}</div>
@@ -154,7 +154,7 @@ export function ShipInfoPanel(): React.ReactNode {
          </Tooltip>
          <div className="divider vertical" />
          <Tooltip multiline label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(currentXP))} />}>
-            <div className="block" style={{ width: 85 }}>
+            <div className="block" style={{ width: 90 }}>
                <TextureComp name="Others/XP24" />
                <div className="f1 text-right">
                   <div>{formatNumber(currentXP)}</div>

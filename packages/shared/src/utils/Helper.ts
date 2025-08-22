@@ -102,6 +102,15 @@ export function round(num: number, decimal: number, mode = Rounding.Round): numb
    return FormatFunc[mode](num * fac) / fac;
 }
 
+export function roundToSig(num: number, n: number, mode = Rounding.Round): number {
+   if (!Number.isFinite(num)) return num;
+   if (num === 0) return 0;
+   const d = Math.ceil(Math.log10(Math.abs(num)));
+   const power = n - d;
+   const magnitude = 10 ** power;
+   return FormatFunc[mode](num * magnitude) / magnitude;
+}
+
 export function formatPercent(p: number, decimal = 2, mode = Rounding.Round) {
    return `${round(p * 100, Math.abs(p) < 0.1 ? decimal + 1 : decimal, mode)}%`;
 }

@@ -93,7 +93,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                   >
                      indeterminate_check_box
                   </div>
-                  <div className="text-center text-mono">{formatNumber(thisRun.hp)}</div>
+                  <div className="text-center">{formatNumber(thisRun.hp)}</div>
                   <div
                      className={classNames("mi", thisRun.amount <= 0 ? "text-disabled" : null)}
                      onClick={() => {
@@ -127,7 +127,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                   >
                      indeterminate_check_box
                   </div>
-                  <div className="text-center text-mono">{formatNumber(thisRun.damage)}</div>
+                  <div className="text-center">{formatNumber(thisRun.damage)}</div>
                   <div
                      className={classNames("mi", thisRun.amount <= 0 ? "text-disabled" : null)}
                      onClick={() => {

@@ -194,7 +194,7 @@ export class Runtime {
       const change = this.leftStat.warmongerChange.value;
       const current = resourceOf("Warmonger", this.left.resources).current;
       if (current > 0) {
-         spendResource("Warmonger", change, this.left.resources);
+         spendResource("Warmonger", Math.min(current, change), this.left.resources);
       }
    }
 

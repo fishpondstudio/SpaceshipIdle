@@ -41,6 +41,10 @@
    font-size: 48px;
 }
 
+html {
+   font-variant-numeric: tabular-nums;
+}
+
 body {
    cursor: url("../assets/images/Cursor.svg?url"), default;
    user-select: none;
@@ -57,7 +61,6 @@ body {
       user-select: text;
       -webkit-user-select: text;
    }
-   -webkit-font-smoothing: none;
 }
 
 em {

@@ -27,7 +27,7 @@ export function PeaceTreatyModal(): React.ReactNode {
                      <TextureComp name="Booster/Evasion1" className="inline-middle" /> Evasion Cluster
                   </div>
                   <div className="mi">indeterminate_check_box</div>
-                  <div className="text-center text-mono">1</div>
+                  <div className="text-center">1</div>
                   <div className="mi">add_box</div>
                </div>
                <div className="row">
@@ -35,7 +35,7 @@ export function PeaceTreatyModal(): React.ReactNode {
                      <TextureComp name="Booster/HP1" className="inline-middle" /> HP Cluster
                   </div>
                   <div className="mi">indeterminate_check_box</div>
-                  <div className="text-center text-mono">2</div>
+                  <div className="text-center">2</div>
                   <div className="mi">add_box</div>
                </div>
                <div className="row">
@@ -43,7 +43,7 @@ export function PeaceTreatyModal(): React.ReactNode {
                      <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
                   </div>
                   <div className="mi">indeterminate_check_box</div>
-                  <div className="text-center text-mono">0</div>
+                  <div className="text-center">0</div>
                   <div className="mi">add_box</div>
                </div>
             </div>

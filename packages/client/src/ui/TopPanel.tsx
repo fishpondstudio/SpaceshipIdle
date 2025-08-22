@@ -12,7 +12,6 @@ import { BattlePanel, TimerPanel } from "./BattlePanel";
 import { ElementStatsPanel } from "./ElementStatsPanel";
 import { GalaxyInfoPanel } from "./GalaxyInfoPanel";
 import { ShipInfoPanel } from "./ShipInfoPanel";
-import { TopLeftPanel } from "./TopLeftPanel";
 import { TopRightPanel } from "./TopRightPanel";
 
 export function TopPanel(): React.ReactNode {
@@ -42,7 +41,6 @@ export function TopPanel(): React.ReactNode {
    if (G.runtime.battleType === BattleType.Peace) {
       return (
          <>
-            <TopLeftPanel />
             <TopRightPanel />
             <ShipInfoPanel />
          </>

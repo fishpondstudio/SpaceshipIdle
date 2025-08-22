@@ -1,7 +1,6 @@
 import { Tooltip } from "@mantine/core";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { round } from "@spaceship-idle/shared/src/utils/Helper";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 
@@ -20,8 +19,8 @@ export function GalaxyInfoPanel(): React.ReactNode {
                <>
                   <div>
                      Current Warmonger Penalty is <b>{Math.ceil(warmongerPenalty)}</b> ( rounded up from{" "}
-                     <b>{round(warmongerPenalty, 4)}</b>). It is increased when you declare war. It makes declaring
-                     further wars and declaring friendship more expensive
+                     <b className="text-tabular-nums">{warmongerPenalty.toFixed(3)}</b>). It is increased when you
+                     declare war. It makes declaring further wars and declaring friendship more expensive
                   </div>
                   <div className="divider light mx-10 my5" />
                   <div>
