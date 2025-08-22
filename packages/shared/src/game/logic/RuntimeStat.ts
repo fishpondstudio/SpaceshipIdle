@@ -3,8 +3,10 @@ import { RingBuffer } from "../../utils/RingBuffer";
 import { DamageType } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { Catalyst, type CatalystCat } from "../definitions/Catalyst";
+import { BaseWarmongerChangePerSec } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
 import type { GameState } from "../GameState";
+import { TrackedValue } from "./TrackedValue";
 
 export class RuntimeStat {
    rawDamages: RingBuffer<Record<DamageType, number>> = new RingBuffer(100);
@@ -16,6 +18,8 @@ export class RuntimeStat {
    maxHp = 0;
    destroyedHp = 0;
    zeroProjectileSec = 0;
+
+   warmongerChange = new TrackedValue(BaseWarmongerChangePerSec);
 
    rawDamage: Record<DamageType, number> = {
       [DamageType.Kinetic]: 0,
@@ -114,7 +118,7 @@ export class RuntimeStat {
 
       const resources = new Map<Resource, number>();
       for (const [res, data] of gs.resources) {
-         resources.set(res, data.total - data.used);
+         resources.set(res, data.total);
       }
       this.previousResources.push(resources);
 

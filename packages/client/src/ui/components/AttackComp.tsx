@@ -47,15 +47,11 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   <StatComp current={rs.props.damagePerProjectile} original={rs.originalProps.damagePerProjectile} />
                </div>
             </div>
-            {rs.damageMultiplier.detail.length > 0 ? (
+            {rs.damageMultiplier.detail.length > 1 ? (
                <>
                   <div className="h10" />
                   <div className="subtitle">
                      {t(L.DamageMultiplier)} x{formatNumber(rs.damageMultiplier.value)}
-                  </div>
-                  <div className="row text-sm">
-                     <div className="f1">{t(L.BaseMultiplier)}</div>
-                     <div>1</div>
                   </div>
                   {rs.damageMultiplier.detail.map((m) => {
                      return (
@@ -133,27 +129,30 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   <StatComp current={xp * (rs.hpMultiplier.value + rs.damageMultiplier.value - 1)} original={xp} />
                </div>
             </div>
-            <div className="text-sm text-dimmed">
-               <div className="row g5">
-                  <div style={{ width: 24 }} />
-                  <div className="f1">{t(L.BaseMultiplier)}</div>
-                  <div>1</div>
+            {rs.hpMultiplier.value > 1 || rs.damageMultiplier.value > 1 ? (
+               <div className="text-sm">
+                  <div className="subtitle">
+                     {t(L.XPMultiplier)} x{formatNumber(rs.damageMultiplier.value + rs.hpMultiplier.value - 1)}
+                  </div>
+                  <div className="row g5">
+                     <div className="f1">{t(L.BaseValue)}</div>
+                     <div className="text-green">+1</div>
+                  </div>
+
+                  {rs.hpMultiplier.value > 1 ? (
+                     <div className="row g5">
+                        <div className="f1">{t(L.FromExtraHpMultiplier)}</div>
+                        <div className="text-green">+{formatNumber(rs.hpMultiplier.value - 1)}</div>
+                     </div>
+                  ) : null}
+                  {rs.damageMultiplier.value > 1 ? (
+                     <div className="row g5">
+                        <div className="f1">{t(L.FromExtraDamageMultiplier)}</div>
+                        <div className="text-green">+{formatNumber(rs.damageMultiplier.value - 1)}</div>
+                     </div>
+                  ) : null}
                </div>
-               {rs.hpMultiplier.value > 1 ? (
-                  <div className="row g5">
-                     <div style={{ width: 24 }} />
-                     <div className="f1">{t(L.HPMultiplier)}</div>
-                     <div>+{formatNumber(rs.hpMultiplier.value - 1)}</div>
-                  </div>
-               ) : null}
-               {rs.damageMultiplier.value > 1 ? (
-                  <div className="row g5">
-                     <div style={{ width: 24 }} />
-                     <div className="f1">{t(L.DamageMultiplier)}</div>
-                     <div>+{formatNumber(rs.damageMultiplier.value - 1)}</div>
-                  </div>
-               ) : null}
-            </div>
+            ) : null}
          </div>
       </>
    );

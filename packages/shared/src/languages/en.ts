@@ -735,4 +735,7 @@ export const EN = {
    TabGalaxy: "Galaxy",
    NegotiatePeaceTreaty: "Negotiate Peace Treaty",
    TabDirective: "Directive",
+   BaseValue: "Base Value",
+   FromExtraHpMultiplier: "From Extra HP Multiplier",
+   FromExtraDamageMultiplier: "From Extra Damage Multiplier",
 };

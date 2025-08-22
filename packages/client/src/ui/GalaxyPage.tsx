@@ -1,6 +1,9 @@
 import { Tooltip } from "@mantine/core";
+import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { capitalize } from "@spaceship-idle/shared/src/utils/Helper";
 import { Generator } from "@spaceship-idle/shared/src/utils/NameGen";
+import { G } from "../utils/Global";
 import { showModal } from "../utils/ToggleModal";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
@@ -50,8 +53,7 @@ export function GalaxyPage(): React.ReactNode {
                   label={
                      <>
                         <div>The cost of declaring friendship is determined as follows</div>
-                        <div className="divider light mt5 mx-10 " />
-                        <div className="flex-table mx-10">
+                        <div className="flex-table mx-10 mt5">
                            <div className="row">
                               <div className="f1">Base Cost</div>
                               <div>
@@ -105,8 +107,7 @@ export function GalaxyPage(): React.ReactNode {
                   label={
                      <>
                         <div>The cost of declaring war is determined as follows</div>
-                        <div className="divider light mt5 mx-10 " />
-                        <div className="flex-table mx-10">
+                        <div className="flex-table mx-10 mt5">
                            <div className="row">
                               <div className="f1">Warmonger Penalty</div>
                               <div>
@@ -146,6 +147,8 @@ export function GalaxyPage(): React.ReactNode {
                className="btn red w100 row g5"
                onClick={() => {
                   showModal({ children: <PeaceTreatyModal />, size: "lg" });
+                  addResource("Warmonger", 1, G.save.state.resources);
+                  GameStateUpdated.emit();
                }}
             >
                <div className="mi sm">swords</div>

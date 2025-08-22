@@ -19,7 +19,7 @@ import { tickBooster } from "./BoosterLogic";
 import { tickCatalyst } from "./CatalystLogic";
 import { tickElement } from "./ElementLogic";
 import type { Projectile } from "./Projectile";
-import { trySpendResource } from "./ResourceLogic";
+import { resourceOf, spendResource, trySpendResource } from "./ResourceLogic";
 import { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag, RuntimeTile } from "./RuntimeTile";
 import { flipHorizontal, isEnemy, shipAABB } from "./ShipLogic";
@@ -173,6 +173,7 @@ export class Runtime {
          this._tickMultipliers();
          this._tickStatusEffect();
          this._checkSuddenDeath();
+         this._tickPenalty();
 
          tickElement(this.leftSave);
          this.leftStat.tabulate(this.tabulateHp(this.left.tiles), this.left);
@@ -187,6 +188,14 @@ export class Runtime {
       this.gameStateUpdateTimer += g.speed === 0 ? 0 : dt / g.speed;
       this.productionTimer += dt;
       this.battleTimer += dt;
+   }
+
+   private _tickPenalty() {
+      const change = this.leftStat.warmongerChange.value;
+      const current = resourceOf("Warmonger", this.left.resources).current;
+      if (current > 0) {
+         spendResource("Warmonger", change, this.left.resources);
+      }
    }
 
    private _checkSpeed(g: { speed: number }) {

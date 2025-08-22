@@ -10,6 +10,8 @@ export const Resources = {
    Victory: { name: () => t(L.Victory) },
    Defeat: { name: () => EmptyString },
    Warp: { name: () => t(L.TimeWarp) },
+   Warmonger: { name: () => EmptyString },
+   Backstabber: { name: () => EmptyString },
 } as const satisfies Record<string, IResourceDefinition>;
 
 export type Resource = keyof typeof Resources;

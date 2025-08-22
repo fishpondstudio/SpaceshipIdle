@@ -13,7 +13,7 @@ import {
 } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { StatusEffectTickInterval } from "../definitions/Constant";
-import { type StatusEffect, StatusEffectFlag, StatusEffects, statusEffectOf } from "../definitions/StatusEffect";
+import { type StatusEffect, StatusEffectFlag, statusEffectOf, StatusEffects } from "../definitions/StatusEffect";
 import type { GameState } from "../GameState";
 import { GridSize } from "../Grid";
 import type { ITileData } from "../ITileData";
@@ -26,10 +26,11 @@ import {
    OnEvasion,
 } from "./BattleLogic";
 import { getDamagePerFire, getHP } from "./BuildingLogic";
-import type { IMultiplier, Multipliers } from "./IMultiplier";
+import type { Multipliers } from "./IMultiplier";
 import type { Runtime } from "./Runtime";
 import { isEnemy } from "./ShipLogic";
 import { Side } from "./Side";
+import { TrackedValue } from "./TrackedValue";
 
 export const RuntimeFlag = {
    None: 0,
@@ -68,8 +69,8 @@ export class RuntimeTile {
 
    public booster: Booster | null = null;
 
-   public readonly hpMultiplier = new Multiplier();
-   public readonly damageMultiplier = new Multiplier();
+   public readonly hpMultiplier = new TrackedValue(1);
+   public readonly damageMultiplier = new TrackedValue(1);
 
    public readonly criticalDamages: ICriticalDamage[] = [];
 
@@ -307,27 +308,4 @@ export class RuntimeTile {
 
 function propertyValue(p: Property, level: number): number {
    return p[0] + level * p[1];
-}
-
-export class Multiplier {
-   private readonly _multipliers: IMultiplier[] = [];
-   private _multiplierValue = 1;
-
-   public add(value: number, source: string): void {
-      this._multipliers.push({ value, source });
-      this._multiplierValue += value;
-   }
-
-   public clear(): void {
-      this._multipliers.length = 0;
-      this._multiplierValue = 1;
-   }
-
-   public get value(): number {
-      return this._multiplierValue;
-   }
-
-   public get detail(): IMultiplier[] {
-      return this._multipliers;
-   }
 }

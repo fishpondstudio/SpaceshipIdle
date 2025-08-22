@@ -181,7 +181,7 @@ export function tickTiles(
 
          const damagePerFire =
             getDamagePerFire({ type: data.type, level: data.level }) *
-            (rs.hpMultiplier.value + rs.damageMultiplier.value);
+            (rs.hpMultiplier.value + rs.damageMultiplier.value - 1);
 
          addResource("XP", damagePerFire, from.resources);
          RequestFloater.emit({ tile, amount: damagePerFire });
