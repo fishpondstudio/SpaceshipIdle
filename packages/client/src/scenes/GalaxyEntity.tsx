@@ -1,4 +1,4 @@
-import { type Planet, PlanetType, type SolarSystem } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
+import { type Planet, PlanetType, type StarSystem } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { BitmapText, Container, Sprite } from "pixi.js";
 import { Fonts } from "../assets";
 import { G } from "../utils/Global";
@@ -18,7 +18,7 @@ export class GalaxyEntityVisual extends Container {
 }
 
 export class SolarSystemVisual extends GalaxyEntityVisual {
-   constructor(public data: SolarSystem) {
+   constructor(public data: StarSystem) {
       const sprite = new Sprite(
          data.discovered ? G.textures.get("Others/Planet")! : G.textures.get("Misc/GalaxyUndiscovered")!,
       );

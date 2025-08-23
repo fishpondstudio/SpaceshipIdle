@@ -1,11 +1,16 @@
-import { hasFlag, reduceOf, setFlag, tileToPoint, type Tile } from "../../utils/Helper";
+import { hasFlag, reduceOf, setFlag, type Tile, tileToPoint } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
 import { AbilityTiming, abilityTarget } from "../definitions/Ability";
 import { BuildingFlag, ProjectileFlag, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
-import { BattleStartAmmoCycles, BattleTickInterval, DefaultCooldown, MaxBattleTick } from "../definitions/Constant";
+import {
+   BattleStartAmmoCycles,
+   BattleTickInterval,
+   DefaultCooldown,
+   MaxBattleTick as MaxBattleSeconds,
+} from "../definitions/Constant";
 import { GameOption } from "../GameOption";
 import { GameData, GameState } from "../GameState";
 import { posToTile } from "../Grid";
@@ -268,11 +273,11 @@ export function simulateBattle(ship: GameState, reference: GameState): Runtime {
    rt.battleType = BattleType.Qualifier;
    rt.battleFlag = setFlag(rt.battleFlag, BattleFlag.Silent);
    const speed = { speed: 1 };
-   while (rt.battleStatus === BattleStatus.InProgress && rt.productionTick <= MaxBattleTick) {
+   while (rt.battleStatus === BattleStatus.InProgress && rt.battleSeconds <= MaxBattleSeconds) {
       rt.tick(BattleTickInterval, speed);
    }
-   if (rt.productionTick >= MaxBattleTick) {
-      console.log(`${ship.name} (${ship.id}) vs ${reference.name} (${reference.id}): ${rt.productionTick}s`);
+   if (rt.battleSeconds >= MaxBattleSeconds) {
+      console.log(`${ship.name} (${ship.id}) vs ${reference.name} (${reference.id}): ${rt.battleSeconds}s`);
    }
    return rt;
 }

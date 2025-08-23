@@ -51,6 +51,7 @@ export class GameState {
 }
 
 export class GameData {
+   tick = 0;
    elementChoices: ElementChoice[] = [];
    permanentElementChoices: ElementChoice[] = [];
    catalystChoices = new Map<CatalystCat, Catalyst[]>([["C1", rollCatalyst("C1")]]);

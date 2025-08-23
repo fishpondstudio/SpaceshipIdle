@@ -1,10 +1,10 @@
 import type { ValueOf } from "../../utils/Helper";
 
 export interface Galaxy {
-   solarSystems: SolarSystem[];
+   solarSystems: StarSystem[];
 }
 
-export interface SolarSystem {
+export interface StarSystem {
    id: number;
    name: string;
    x: number;

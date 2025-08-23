@@ -6,8 +6,8 @@ import { Config } from "../Config";
 import { DamageType, ProjectileFlag } from "../definitions/BuildingProps";
 import {
    BattleTickInterval,
-   MaxSuddenDeathTick,
    ProductionTickInterval,
+   SuddenDeathSeconds,
    SuddenDeathUndamagedSec,
 } from "../definitions/Constant";
 import { type GameState, GameStateUpdated, hashGameStatePair, type SaveGame, type Tiles } from "../GameState";
@@ -35,8 +35,8 @@ export const OnBattleStatusChanged = new TypedEvent<IBattleStatusChanged>();
 
 export class Runtime {
    id = 0;
-   productionTick = 0;
    wave = 0;
+   battleSeconds = 0;
    battleTimer = BattleTickInterval;
    productionTimer = ProductionTickInterval;
    gameStateUpdateTimer = ProductionTickInterval;
@@ -178,7 +178,11 @@ export class Runtime {
          tickElement(this.leftSave);
          this.leftStat.tabulate(this.tabulateHp(this.left.tiles), this.left);
          this.rightStat.tabulate(this.tabulateHp(this.right.tiles), this.right);
-         ++this.productionTick;
+         if (this.battleType === BattleType.Peace) {
+            ++this.leftSave.data.tick;
+         } else {
+            ++this.battleSeconds;
+         }
          this.gameStateDirty = true;
       }
       while (this.battleTimer >= BattleTickInterval) {
@@ -361,14 +365,14 @@ export class Runtime {
       if (side === Side.Left) {
          const damage = Math.max(
             Math.floor(this.leftStat.zeroProjectileSec - SuddenDeathUndamagedSec),
-            this.productionTick - MaxSuddenDeathTick,
+            this.battleSeconds - SuddenDeathSeconds,
          );
          return clamp(damage, 0, Number.POSITIVE_INFINITY) ** 2;
       }
       if (side === Side.Right) {
          const damage = Math.max(
             Math.floor(this.rightStat.zeroProjectileSec - SuddenDeathUndamagedSec),
-            this.productionTick - MaxSuddenDeathTick,
+            this.battleSeconds - SuddenDeathSeconds,
          );
          return clamp(damage, 0, Number.POSITIVE_INFINITY) ** 2;
       }

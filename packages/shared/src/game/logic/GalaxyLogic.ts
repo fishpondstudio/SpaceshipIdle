@@ -3,7 +3,7 @@ import type { Circle } from "../../utils/Circle";
 import { CURRENCY_EPSILON, capitalize, rand, randOne, shuffle } from "../../utils/Helper";
 import { Generator } from "../../utils/NameGen";
 import type { IHaveXY } from "../../utils/Vector2";
-import { type Galaxy, type Planet, PlanetType, type SolarSystem } from "../definitions/Galaxy";
+import { type Galaxy, type Planet, PlanetType, type StarSystem } from "../definitions/Galaxy";
 
 export function generateGalaxy(random: () => number): [Galaxy, AABB] {
    const circles = packCircles(
@@ -35,7 +35,7 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
    for (let i = 0; i < circles.length; ++i) {
       const circle = circles[i];
       const initial = i === 0;
-      const solarSystem: SolarSystem = {
+      const solarSystem: StarSystem = {
          id: ++id,
          name: capitalize(new Generator("ssV").toString()),
          x: circle.x,

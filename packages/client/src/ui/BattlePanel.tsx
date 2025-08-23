@@ -1,6 +1,6 @@
 import { Progress, Tooltip } from "@mantine/core";
 import { DamageType, DamageTypeLabel } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
-import { MaxSuddenDeathTick, SuddenDeathUndamagedSec } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { SuddenDeathSeconds, SuddenDeathUndamagedSec } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
@@ -27,7 +27,7 @@ export function TimerPanel(): React.ReactNode {
             left: `calc(50vw - ${timerPanelWidth / 2}px)`,
          }}
       >
-         <div className="timer">{formatHMS(G.runtime.productionTick * 1000)}</div>
+         <div className="timer">{formatHMS(G.runtime.battleSeconds * 1000)}</div>
          <div className="text-sm">
             {G.runtime.battleType === BattleType.Qualifier ? t(L.QualifierBattleShort) : t(L.PracticeBattleShort)}
          </div>
@@ -93,7 +93,7 @@ function DamageComponent({ side }: { side: Side }): React.ReactNode {
                      html={t(
                         L.SuddenDeathTooltipV2,
                         SuddenDeathUndamagedSec,
-                        MaxSuddenDeathTick,
+                        SuddenDeathSeconds,
                         formatNumber(suddenDeathDamage),
                      )}
                   />
