@@ -25,7 +25,7 @@ export interface Planet {
    actions: PlanetAction[];
 }
 
-export const PlanetAction = {
+export const PlanetActionType = {
    Revealed: 1,
    DeclaredFriendship: 2,
    DeclaredWar: 3,
@@ -33,7 +33,12 @@ export const PlanetAction = {
    LostWar: 5,
 };
 
-export type PlanetAction = ValueOf<typeof PlanetAction>;
+export type PlanetActionType = ValueOf<typeof PlanetActionType>;
+
+export interface PlanetAction {
+   type: PlanetActionType;
+   time: number;
+}
 
 export const PlanetType = {
    Me: 0,
