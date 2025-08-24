@@ -17,10 +17,10 @@ export class GalaxyEntityVisual extends Container {
    }
 }
 
-export class SolarSystemVisual extends GalaxyEntityVisual {
+export class StarSystemVisual extends GalaxyEntityVisual {
    constructor(public data: StarSystem) {
       const sprite = new Sprite(
-         data.discovered ? G.textures.get("Others/Planet")! : G.textures.get("Misc/GalaxyUndiscovered")!,
+         data.discovered ? G.textures.get(`Galaxy/${data.texture}`)! : G.textures.get("Misc/GalaxyUndiscovered")!,
       );
       if (data.discovered) {
          sprite.scale.set(2);
@@ -34,29 +34,13 @@ export class SolarSystemVisual extends GalaxyEntityVisual {
    }
 }
 
-const stateTextures = () => [
-   G.textures.get("Others/Alien"),
-   G.textures.get("Others/Alien2"),
-   G.textures.get("Others/Alien3"),
-   G.textures.get("Others/Alien4"),
-   G.textures.get("Others/Alien5"),
-   G.textures.get("Others/Alien6"),
-   G.textures.get("Others/Alien7"),
-   G.textures.get("Others/Alien8"),
-   G.textures.get("Others/Alien9"),
-   G.textures.get("Others/Alien10"),
-];
-
 export class PlanetVisual extends GalaxyEntityVisual {
    constructor(public data: Planet) {
-      const textures = stateTextures();
-      const sprite = new Sprite(textures[data.id % textures.length]);
-      if (data.type === PlanetType.Pirate) {
-         sprite.texture = G.textures.get("Others/Pirate24")!;
+      const texture = G.textures.get(`Galaxy/${data.texture}`);
+      if (!texture) {
+         console.error(`Texture Galaxy/${data.texture} not found`);
       }
-      if (data.type === PlanetType.Me) {
-         sprite.texture = G.textures.get("Others/Spaceship24")!;
-      }
+      const sprite = new Sprite(texture);
       const label =
          data.type === PlanetType.Me
             ? new BitmapText("You", {

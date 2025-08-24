@@ -5,6 +5,32 @@ import { Generator } from "../../utils/NameGen";
 import type { IHaveXY } from "../../utils/Vector2";
 import { type Galaxy, type Planet, PlanetType, type StarSystem } from "../definitions/Galaxy";
 
+export function findMyself(galaxy: Galaxy): [Planet, StarSystem] {
+   for (const starSystem of galaxy.starSystems) {
+      for (const planet of starSystem.planets) {
+         if (planet.type === PlanetType.Me) return [planet, starSystem];
+      }
+   }
+   throw new Error(`Cannot find myself in the galaxy: ${JSON.stringify(galaxy)}`);
+}
+
+export const PlanetTextures = [
+   "Planet1",
+   "Planet2",
+   "Planet3",
+   "Planet4",
+   "Planet5",
+   "Planet6",
+   "Planet7",
+   "Planet8",
+   "Planet9",
+   "Planet10",
+] as const;
+
+export const PirateTextures = ["Pirate"];
+
+export const StarTextures = ["Star1"];
+
 export function generateGalaxy(random: () => number): [Galaxy, AABB] {
    const circles = packCircles(
       [{ x: 0, y: 0, r: 300 }].concat(
@@ -23,7 +49,7 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
       random,
    );
    const aabb = AABB.fromCircles(circles);
-   const galaxy: Galaxy = { solarSystems: [] };
+   const galaxy: Galaxy = { starSystems: [] };
    aabb.extendBy({ x: aabb.width * 0.2, y: aabb.height * 0.2 });
    const offset = aabb.min;
    circles.forEach((circle) => {
@@ -35,9 +61,11 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
    for (let i = 0; i < circles.length; ++i) {
       const circle = circles[i];
       const initial = i === 0;
-      const solarSystem: StarSystem = {
-         id: ++id,
+      const starId = ++id;
+      const starSystem: StarSystem = {
+         id: starId,
          name: capitalize(new Generator("ssV").toString()),
+         texture: StarTextures[starId % StarTextures.length],
          x: circle.x,
          y: circle.y,
          r: circle.r,
@@ -49,40 +77,52 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
       let r = circle.r - rand(25, 50);
 
       while (r >= 50) {
+         const planetId = ++id;
+         const type = randOne([PlanetType.State, PlanetType.Pirate]);
+         const texture =
+            type === PlanetType.State
+               ? PlanetTextures[planetId % PlanetTextures.length]
+               : PirateTextures[planetId % PirateTextures.length];
          const planet: Planet = {
-            id: ++id,
+            id: planetId,
             name: capitalize(new Generator("sss").toString()),
             radian: random() * 2 * Math.PI,
-            r: r,
+            texture,
+            r,
             speed: rand(-0.02, 0.02),
-            type: randOne([PlanetType.State, PlanetType.Pirate]),
+            type,
             actions: [],
          };
-         solarSystem.planets.push(planet);
+         starSystem.planets.push(planet);
          r -= rand(30, 70);
       }
 
       if (initial) {
-         shuffle(solarSystem.planets);
-         const planet = solarSystem.planets[0];
+         shuffle(starSystem.planets);
+         const planet = starSystem.planets[0];
          planet.type = PlanetType.Me;
-         solarSystem.planets[1].type = PlanetType.Pirate;
-         solarSystem.planets[2].type = PlanetType.State;
-         me = { x: solarSystem.x, y: solarSystem.y };
+         planet.texture = "Spaceship";
+
+         const pirate = starSystem.planets[1];
+         pirate.type = PlanetType.Pirate;
+         pirate.texture = PirateTextures[pirate.id % PirateTextures.length];
+
+         starSystem.planets[2].type = PlanetType.State;
+         me = { x: starSystem.x, y: starSystem.y };
       }
 
-      galaxy.solarSystems.push(solarSystem);
+      galaxy.starSystems.push(starSystem);
    }
 
-   galaxy.solarSystems.sort((a, b) => {
+   galaxy.starSystems.sort((a, b) => {
       if (!me) return 0;
       return Math.hypot(a.x - me.x, a.y - me.y) - Math.hypot(b.x - me.x, b.y - me.y);
    });
 
-   for (let i = 0; i < galaxy.solarSystems.length; ++i) {
-      const solarSystem = galaxy.solarSystems[i];
+   for (let i = 0; i < galaxy.starSystems.length; ++i) {
+      const starSystem = galaxy.starSystems[i];
       if (i > 0) {
-         solarSystem.distance = i;
+         starSystem.distance = i;
       }
    }
 

@@ -1,5 +1,5 @@
 import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
-import { type Galaxy, PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
+import { PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { generateGalaxy } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { drawDashedLine, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
 import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
@@ -8,7 +8,7 @@ import { GalaxyPage } from "../ui/GalaxyPage";
 import { hideSidebar, setSidebar } from "../ui/Sidebar";
 import { G } from "../utils/Global";
 import { type ISceneContext, Scene } from "../utils/SceneManager";
-import { type GalaxyEntityVisual, PlanetVisual, SolarSystemVisual } from "./GalaxyEntity";
+import { type GalaxyEntityVisual, PlanetVisual, StarSystemVisual } from "./GalaxyEntity";
 
 export class GalaxyScene extends Scene {
    private _graphics: SmoothGraphics;
@@ -21,7 +21,6 @@ export class GalaxyScene extends Scene {
 
    private _selectedId: number | null = null;
 
-   private _galaxy: Galaxy;
    private _selector: Sprite;
 
    backgroundColor(): ColorSource {
@@ -44,7 +43,7 @@ export class GalaxyScene extends Scene {
       this._selector.visible = false;
 
       const [galaxy, aabb] = generateGalaxy(Math.random);
-      this._galaxy = galaxy;
+      G.save.data.galaxy = galaxy;
 
       this._width = aabb.width;
       this._height = aabb.height;
@@ -57,15 +56,15 @@ export class GalaxyScene extends Scene {
 
       let me: IHaveXY | null = null;
 
-      for (const solarSystem of galaxy.solarSystems) {
-         const star = this.viewport.addChild(new SolarSystemVisual(solarSystem));
-         star.position.set(solarSystem.x, solarSystem.y);
-         this._entities.set(solarSystem.id, star);
+      for (const starSystem of galaxy.starSystems) {
+         const star = this.viewport.addChild(new StarSystemVisual(starSystem));
+         star.position.set(starSystem.x, starSystem.y);
+         this._entities.set(starSystem.id, star);
 
-         for (const planet of solarSystem.planets) {
+         for (const planet of starSystem.planets) {
             const entity = this._planetsContainer.addChild(new PlanetVisual(planet));
             if (planet.type === PlanetType.Me) {
-               me = { x: solarSystem.x, y: solarSystem.y };
+               me = { x: starSystem.x, y: starSystem.y };
                this._selectedId = planet.id;
             }
             this._entities.set(planet.id, entity);
@@ -75,7 +74,9 @@ export class GalaxyScene extends Scene {
       if (me) {
          this.viewport.center = { x: me.x, y: me.y };
          this.viewport.zoom = 1;
-         setSidebar(<GalaxyPage />);
+         if (this._selectedId) {
+            setSidebar(<GalaxyPage id={this._selectedId} />);
+         }
       }
    }
 
@@ -87,7 +88,7 @@ export class GalaxyScene extends Scene {
 
          let selectorRendered = false;
 
-         for (const solarSystem of this._galaxy.solarSystems) {
+         for (const starSystem of G.save.data.galaxy.starSystems) {
             // this._graphics
             //    .lineStyle({
             //       width: 2,
@@ -98,11 +99,11 @@ export class GalaxyScene extends Scene {
             //    })
             //    .drawCircle(solarSystem.x, solarSystem.y, solarSystem.r);
 
-            const star = this._entities.get(solarSystem.id);
+            const star = this._entities.get(starSystem.id);
             if (star) {
-               star.position.set(solarSystem.x, solarSystem.y);
+               star.position.set(starSystem.x, starSystem.y);
 
-               if (this._selectedId === solarSystem.id) {
+               if (this._selectedId === starSystem.id) {
                   this._selector.position.set(star.x, star.y);
                   this._selector.visible = true;
                   this._selector.scale.set(0.48);
@@ -111,19 +112,19 @@ export class GalaxyScene extends Scene {
                }
             }
 
-            for (const planet of solarSystem.planets) {
+            for (const planet of starSystem.planets) {
                const visual = this._entities.get(planet.id);
                if (visual) {
                   const radian = planet.radian + now * planet.speed;
                   visual.position.set(
-                     solarSystem.x + Math.cos(radian) * planet.r,
-                     solarSystem.y + Math.sin(radian) * planet.r,
+                     starSystem.x + Math.cos(radian) * planet.r,
+                     starSystem.y + Math.sin(radian) * planet.r,
                   );
                   if (planet.type === PlanetType.Me) {
                      visual.sprite.rotation = planet.speed > 0 ? radian + Math.PI : radian;
                   }
 
-                  if (!solarSystem.discovered) {
+                  if (!starSystem.discovered) {
                      visual.visible = false;
                      continue;
                   }
@@ -139,7 +140,7 @@ export class GalaxyScene extends Scene {
 
                   drawDashedLine(
                      this._graphics,
-                     { x: solarSystem.x, y: solarSystem.y },
+                     { x: starSystem.x, y: starSystem.y },
                      { x: visual.x, y: visual.y },
                      3,
                      6,
@@ -154,7 +155,7 @@ export class GalaxyScene extends Scene {
                            alignment: 0.5,
                            scaleMode: LINE_SCALE_MODE.NORMAL,
                         })
-                        .drawCircle(solarSystem.x, solarSystem.y, planet.r);
+                        .drawCircle(starSystem.x, starSystem.y, planet.r);
                      this._selector.position.set(visual.x, visual.y);
                      this._selector.visible = true;
                      this._selector.scale.set(0.28);
@@ -184,8 +185,8 @@ export class GalaxyScene extends Scene {
             pos.y > sprite.y - sprite.height / 2 &&
             pos.y < sprite.y + sprite.height / 2
          ) {
-            setSidebar(<GalaxyPage />);
             this._selectedId = id;
+            setSidebar(<GalaxyPage id={id} />);
             return;
          }
       }

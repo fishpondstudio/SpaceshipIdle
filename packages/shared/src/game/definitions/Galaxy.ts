@@ -1,24 +1,25 @@
 import type { ValueOf } from "../../utils/Helper";
 
 export interface Galaxy {
-   solarSystems: StarSystem[];
+   starSystems: StarSystem[];
 }
 
-export interface StarSystem {
+interface GalaxyEntity {
    id: number;
    name: string;
+   texture: string;
+   r: number;
+}
+
+export interface StarSystem extends GalaxyEntity {
    x: number;
    y: number;
-   r: number;
    discovered: boolean;
    distance: number;
    planets: Planet[];
 }
 
-export interface Planet {
-   id: number;
-   name: string;
-   r: number;
+export interface Planet extends GalaxyEntity {
    radian: number;
    speed: number;
    type: PlanetType;

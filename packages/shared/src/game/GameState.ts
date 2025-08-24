@@ -55,7 +55,7 @@ export class GameData {
    elementChoices: ElementChoice[] = [];
    permanentElementChoices: ElementChoice[] = [];
    catalystChoices = new Map<CatalystCat, Catalyst[]>([["C1", rollCatalyst("C1")]]);
-   galaxy: Galaxy[] = [{ solarSystems: [] }];
+   galaxy: Galaxy = { starSystems: [] };
 }
 
 export interface ElementData {
