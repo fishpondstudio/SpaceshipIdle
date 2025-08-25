@@ -1,3 +1,4 @@
+import { widen } from "../../utils/Helper";
 import type { Runtime } from "../logic/Runtime";
 
 export interface IBonusDefinition {
@@ -8,10 +9,10 @@ export interface IBonusDefinition {
 }
 
 export const Bonus = {
-   B1: {
+   B1: widen<IBonusDefinition>({
       desc: () => "Bonus 1",
       onStart: (runtime: Runtime) => {},
       onStop: (runtime: Runtime) => {},
       onTick: (runtime: Runtime) => {},
-   },
+   }),
 } as const satisfies Record<string, IBonusDefinition>;

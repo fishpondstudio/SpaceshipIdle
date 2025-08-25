@@ -738,4 +738,9 @@ export const EN = {
    BaseValue: "Base Value",
    FromExtraHpMultiplier: "From Extra HP Multiplier",
    FromExtraDamageMultiplier: "From Extra Damage Multiplier",
+   OverwhelmingVictory: "Overwhelming Victory",
+   DecisiveVictory: "Decisive Victory",
+   MinorVictory: "Minor Victory",
+   NarrowVictory: "Narrow Victory",
+   VictoryPoint: "Victory Point",
 };

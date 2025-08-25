@@ -958,3 +958,7 @@ export function layoutSpaceAround(childSize: number, parentSize: number, total: 
    const space = (parentSize - total * childSize) / (total + 1);
    return space * (current + 1) + childSize * current;
 }
+
+export function widen<T>(value: T): T {
+   return value;
+}

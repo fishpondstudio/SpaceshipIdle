@@ -9,7 +9,7 @@ export function SidebarComp({
       <div
          className="sf-frame"
          style={{
-            margin: "50px 10px 10px 10px",
+            margin: "42px 10px 10px 10px",
             height: "calc(100vh - 60px - 10px)",
             display: "flex",
             flexDirection: "column",

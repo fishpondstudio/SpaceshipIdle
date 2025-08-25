@@ -1,4 +1,6 @@
 import type { ValueOf } from "../../utils/Helper";
+import type { Booster } from "./Boosters";
+import type { Resource } from "./Resource";
 
 export interface Galaxy {
    starSystems: StarSystem[];
@@ -25,6 +27,7 @@ export interface Planet extends GalaxyEntity {
    type: PlanetType;
    actions: PlanetAction[];
    flags: PlanetFlags;
+   battleResult: BattleResult | null;
 }
 
 export const PlanetFlags = {
@@ -56,3 +59,9 @@ export const PlanetType = {
 } as const;
 
 export type PlanetType = ValueOf<typeof PlanetType>;
+
+export interface BattleResult {
+   victory: number;
+   boosters: Map<Booster, number>;
+   resources: Map<Resource, number>;
+}

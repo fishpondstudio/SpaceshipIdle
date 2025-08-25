@@ -299,6 +299,11 @@
    color: var(--mantine-color-dark-3);
 }
 
+.disabled {
+   filter: grayscale(1);
+   opacity: 0.5;
+}
+
 .text-space {
    color: var(--mantine-color-space-5);
 }

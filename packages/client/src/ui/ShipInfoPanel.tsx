@@ -113,6 +113,14 @@ export function ShipInfoPanel(): React.ReactNode {
                }}
             >
                <TextureComp name="Others/Battle24" />
+               <div className="w10" />
+               <div className="f1 text-right">
+                  <div>{formatNumber(resourceOf("Victory", G.save.state.resources).current)}</div>
+                  <div className="xs">
+                     {formatNumber(resourceOf("Victory", G.save.state.resources).total)}/
+                     {formatNumber(resourceOf("Defeat", G.save.state.resources).total)}
+                  </div>
+               </div>
             </div>
          </Tooltip>
          <div className="divider vertical" />

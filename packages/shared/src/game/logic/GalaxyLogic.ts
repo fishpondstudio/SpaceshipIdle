@@ -132,6 +132,7 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
             type,
             actions: [],
             flags: PlanetFlags.None,
+            battleResult: null,
          };
          starSystem.planets.push(planet);
          r -= rand(30, 70);

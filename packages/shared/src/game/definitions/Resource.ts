@@ -1,17 +1,18 @@
-import { EmptyString } from "../../utils/Helper";
+import { EmptyString, widen } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 
 export interface IResourceDefinition {
    name: () => string;
+   texture?: string;
 }
 
 export const Resources = {
-   XP: { name: () => t(L.XP) },
-   Victory: { name: () => t(L.Victory) },
-   Defeat: { name: () => EmptyString },
-   Warp: { name: () => t(L.TimeWarp) },
-   Warmonger: { name: () => EmptyString },
-   Backstabber: { name: () => EmptyString },
+   XP: widen<IResourceDefinition>({ name: () => t(L.XP), texture: "Others/XP" }),
+   Victory: widen<IResourceDefinition>({ name: () => t(L.VictoryPoint), texture: "Others/Trophy16" }),
+   Defeat: widen<IResourceDefinition>({ name: () => EmptyString }),
+   Warp: widen<IResourceDefinition>({ name: () => t(L.TimeWarp) }),
+   Warmonger: widen<IResourceDefinition>({ name: () => EmptyString }),
+   Backstabber: widen<IResourceDefinition>({ name: () => EmptyString }),
 } as const satisfies Record<string, IResourceDefinition>;
 
 export type Resource = keyof typeof Resources;

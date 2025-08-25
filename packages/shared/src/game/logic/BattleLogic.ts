@@ -1,4 +1,4 @@
-import { hasFlag, reduceOf, setFlag, type Tile, tileToPoint } from "../../utils/Helper";
+import { hasFlag, reduceOf, setFlag, tileToPoint, type Tile } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -15,7 +15,7 @@ import { GameOption } from "../GameOption";
 import { GameData, GameState } from "../GameState";
 import { posToTile } from "../Grid";
 import { BattleStatus } from "./BattleStatus";
-import { BattleFlag, BattleType } from "./BattleType";
+import { BattleFlag, BattleType, type BattleVictoryType } from "./BattleType";
 import { getDamagePerFire } from "./BuildingLogic";
 import { Projectile } from "./Projectile";
 import { addResource } from "./ResourceLogic";
@@ -237,6 +237,19 @@ export function tickTiles(
    } else {
       stat.zeroProjectileSec = 0;
    }
+}
+
+export function getVictoryType(victory: number): BattleVictoryType {
+   if (victory >= 0.75) {
+      return "Overwhelming";
+   }
+   if (victory >= 0.5) {
+      return "Decisive";
+   }
+   if (victory >= 0.25) {
+      return "Minor";
+   }
+   return "Narrow";
 }
 
 export function getCooldownMultiplier(data: { type: Building }): number {
