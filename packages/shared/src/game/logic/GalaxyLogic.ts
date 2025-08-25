@@ -1,9 +1,18 @@
 import { AABB } from "../../utils/AABB";
 import type { Circle } from "../../utils/Circle";
-import { CURRENCY_EPSILON, capitalize, rand, randOne, shuffle } from "../../utils/Helper";
+import { CURRENCY_EPSILON, capitalize, hasFlag, rand, randOne, shuffle } from "../../utils/Helper";
 import { Generator } from "../../utils/NameGen";
 import type { IHaveXY } from "../../utils/Vector2";
-import { type Galaxy, type Planet, PlanetType, type StarSystem } from "../definitions/Galaxy";
+import { FriendshipDurationSeconds } from "../definitions/Constant";
+import {
+   type Galaxy,
+   type Planet,
+   PlanetActionType,
+   PlanetFlags,
+   PlanetType,
+   type StarSystem,
+} from "../definitions/Galaxy";
+import type { Runtime } from "./Runtime";
 
 export function findMyself(galaxy: Galaxy): [Planet, StarSystem] {
    for (const starSystem of galaxy.starSystems) {
@@ -12,6 +21,36 @@ export function findMyself(galaxy: Galaxy): [Planet, StarSystem] {
       }
    }
    throw new Error(`Cannot find myself in the galaxy: ${JSON.stringify(galaxy)}`);
+}
+
+export function tickGalaxy(rt: Runtime): void {
+   for (const starSystem of rt.leftSave.data.galaxy.starSystems) {
+      for (const planet of starSystem.planets) {
+         if (planet.type !== PlanetType.State) {
+            continue;
+         }
+         const current = planet.actions[0];
+         switch (current?.type) {
+            case PlanetActionType.DeclaredFriendship: {
+               const timeLeft = FriendshipDurationSeconds - (rt.leftSave.data.tick - current.tick);
+               if (timeLeft > 0) {
+                  // TODO: Tick
+               } else if (hasFlag(planet.flags, PlanetFlags.AutoRenew)) {
+                  planet.actions.unshift({
+                     type: PlanetActionType.DeclaredFriendship,
+                     tick: rt.leftSave.data.tick,
+                  });
+               } else {
+                  // TODO: Expired
+               }
+               break;
+            }
+            case PlanetActionType.DeclaredWar: {
+               break;
+            }
+         }
+      }
+   }
 }
 
 export const PlanetTextures = [
@@ -92,6 +131,7 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
             speed: rand(-0.02, 0.02),
             type,
             actions: [],
+            flags: PlanetFlags.None,
          };
          starSystem.planets.push(planet);
          r -= rand(30, 70);

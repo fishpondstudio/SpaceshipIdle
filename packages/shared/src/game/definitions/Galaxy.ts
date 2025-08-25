@@ -24,7 +24,15 @@ export interface Planet extends GalaxyEntity {
    speed: number;
    type: PlanetType;
    actions: PlanetAction[];
+   flags: PlanetFlags;
 }
+
+export const PlanetFlags = {
+   None: 0,
+   AutoRenew: 1 << 0,
+} as const;
+
+export type PlanetFlags = ValueOf<typeof PlanetFlags>;
 
 export const PlanetActionType = {
    Revealed: 1,
@@ -38,7 +46,7 @@ export type PlanetActionType = ValueOf<typeof PlanetActionType>;
 
 export interface PlanetAction {
    type: PlanetActionType;
-   time: number;
+   tick: number;
 }
 
 export const PlanetType = {

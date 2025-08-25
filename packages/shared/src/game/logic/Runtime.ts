@@ -18,6 +18,7 @@ import { BattleFlag, BattleType } from "./BattleType";
 import { tickBooster } from "./BoosterLogic";
 import { tickCatalyst } from "./CatalystLogic";
 import { tickElement } from "./ElementLogic";
+import { tickGalaxy } from "./GalaxyLogic";
 import type { Projectile } from "./Projectile";
 import { resourceOf, spendResource, trySpendResource } from "./ResourceLogic";
 import { RuntimeStat } from "./RuntimeStat";
@@ -171,6 +172,9 @@ export class Runtime {
          this.productionTimer -= ProductionTickInterval;
          this._checkSpeed(g);
          this._tickMultipliers();
+         if (this.battleType === BattleType.Peace) {
+            tickGalaxy(this);
+         }
          this._tickStatusEffect();
          this._checkSuddenDeath();
          this._tickPenalty();

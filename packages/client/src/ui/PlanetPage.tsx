@@ -58,6 +58,7 @@ export function PlanetPage({ planet }: { planet: Planet }): React.ReactNode {
          <div className="mx10">
             <WarComp planet={planet} />
          </div>
+         <div className="h10" />
       </SidebarComp>
    );
 }
