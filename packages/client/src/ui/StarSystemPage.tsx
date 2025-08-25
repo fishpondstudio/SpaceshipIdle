@@ -12,13 +12,29 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
             </div>
          }
       >
-         <div className="m10">
+         <div className="h10" />
+         <div className="title">Basic Info</div>
+         <div className="divider my10" />
+         <div className="mx10">
             <div className="row">
                <div className="f1">Name</div>
                <div className="text-space">{starSystem.name}</div>
             </div>
             <div className="row">
-               <div className="f1">Home Star System</div>
+               <div className="f1">Planets</div>
+               <div className="text-space">{starSystem.planets.length}</div>
+            </div>
+         </div>
+         <div className="divider my10" />
+         <div className="title">Relationship With You</div>
+         <div className="divider my10" />
+         <div className="mx10">
+            <div className="row">
+               <div className="f1">Distance</div>
+               <div className="text-space">{starSystem.distance} lyr</div>
+            </div>
+            <div className="row">
+               <div className="f1">Home System</div>
                <div className="text-space">
                   {starSystem.distance === 0 ? (
                      <div className="mi sm">check_circle</div>
@@ -26,14 +42,6 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
                      <div className="mi sm">cancel</div>
                   )}
                </div>
-            </div>
-            <div className="row">
-               <div className="f1">Distance</div>
-               <div className="text-space">{starSystem.distance} lyr</div>
-            </div>{" "}
-            <div className="row">
-               <div className="f1">Planets</div>
-               <div className="text-space">{starSystem.planets.length}</div>
             </div>
          </div>
       </SidebarComp>

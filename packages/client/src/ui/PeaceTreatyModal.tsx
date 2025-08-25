@@ -14,7 +14,7 @@ export function PeaceTreatyModal(): React.ReactNode {
             <div>SS {G.save.state.name}</div>
             <div className="f1" />
             <div>{name}</div>
-            <TextureComp name="Others/Alien" width={32} />
+            <TextureComp name="Galaxy/Planet3" width={32} />
          </div>
          <div className="h10" />
          <div className="row">

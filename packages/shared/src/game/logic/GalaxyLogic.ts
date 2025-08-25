@@ -98,17 +98,23 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
       }
 
       if (initial) {
-         shuffle(starSystem.planets);
-         const planet = starSystem.planets[0];
-         planet.type = PlanetType.Me;
-         planet.texture = "Spaceship";
-
-         const pirate = starSystem.planets[1];
-         pirate.type = PlanetType.Pirate;
-         pirate.texture = PirateTextures[pirate.id % PirateTextures.length];
-
-         starSystem.planets[2].type = PlanetType.State;
          me = { x: starSystem.x, y: starSystem.y };
+         shuffle(starSystem.planets);
+         for (let i = 0; i < starSystem.planets.length; ++i) {
+            if (i === 0) {
+               const planet = starSystem.planets[i];
+               planet.type = PlanetType.Me;
+               planet.texture = "Spaceship";
+            } else if (i === 1) {
+               const pirate = starSystem.planets[i];
+               pirate.type = PlanetType.Pirate;
+               pirate.texture = PirateTextures[pirate.id % PirateTextures.length];
+            } else {
+               const planet = starSystem.planets[i];
+               planet.type = PlanetType.State;
+               planet.texture = PlanetTextures[planet.id % PlanetTextures.length];
+            }
+         }
       }
 
       galaxy.starSystems.push(starSystem);
