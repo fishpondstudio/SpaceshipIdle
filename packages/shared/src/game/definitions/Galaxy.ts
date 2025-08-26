@@ -62,7 +62,7 @@ export const PlanetType = {
 export type PlanetType = ValueOf<typeof PlanetType>;
 
 export interface BattleResult {
-   victory: number;
+   battleScore: number;
    boosters: Map<Booster, number>;
    resources: Map<Resource, number>;
 }

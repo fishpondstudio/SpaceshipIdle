@@ -29,9 +29,9 @@ export function BattleReportComp(): React.ReactNode {
          <div className="panel" style={{ display: "flex", flexDirection: "column", gap: 5 }}>
             <div className="row fstart g5 title" style={{ margin: "-5px 0" }}>
                <div>{t(L.ActualRawDamageByType)}</div>
-               <Tooltip label={t(L.ActualRawDamageTooltip)}>
+               <Tooltip.Floating label={t(L.ActualRawDamageTooltip)}>
                   <div className="mi sm">info</div>
-               </Tooltip>
+               </Tooltip.Floating>
             </div>
             <div className="divider mx-10 my5" />
             {mapOf(stat.actualDamage, (damageType, damage) => {

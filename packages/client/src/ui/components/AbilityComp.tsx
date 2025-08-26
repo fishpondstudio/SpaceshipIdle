@@ -51,21 +51,21 @@ export function AbilityComp({
          {ability.range !== AbilityRange.Single ? (
             <div className="row g5">
                <div className="f1" />
-               <Tooltip
+               <Tooltip.Floating
                   p={5}
                   disabled={!AbilityRangeImage[ability.range]}
                   label={<Image radius="sm" w={200} src={AbilityRangeImage[ability.range]} />}
                >
                   <div className="text-space">{AbilityRangeLabel[ability.range]()}</div>
-               </Tooltip>
+               </Tooltip.Floating>
             </div>
          ) : null}
          <div className="row g5">
             <div className="f1">{t(L.AbilityEffect)}</div>
             <div>{StatusEffects[ability.effect].name()}</div>
-            <Tooltip label={StatusEffectTypeLabel[StatusEffects[ability.effect].type]}>
+            <Tooltip.Floating label={StatusEffectTypeLabel[StatusEffects[ability.effect].type]}>
                <div className="mi sm">{StatusEffectTypeIcon[StatusEffects[ability.effect].type]}</div>
-            </Tooltip>
+            </Tooltip.Floating>
          </div>
          <div className="text-space" style={{ textAlign: "right" }}>
             {StatusEffects[ability.effect].desc(ability.value(building, level, DefaultMultipliers))} (

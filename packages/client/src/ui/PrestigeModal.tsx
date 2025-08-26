@@ -27,18 +27,18 @@ export function PrestigeModal({ reason }: { reason: PrestigeReason }): React.Rea
          <div className="panel">
             <div className="row">
                <div>{t(L.ElementThisRun)}</div>
-               <Tooltip label={<RenderHTML html={t(L.ElementThisRunTooltipHTML)} />}>
+               <Tooltip.Floating label={<RenderHTML html={t(L.ElementThisRunTooltipHTML)} />}>
                   <div className="mi sm">info</div>
-               </Tooltip>
+               </Tooltip.Floating>
                <div className="f1" />
                <div className="text-green">+{fromThisRun}</div>
             </div>
             <div className="h5" />
             <div className="row">
                <div>{t(L.ExtraElementShards)}</div>
-               <Tooltip label={<RenderHTML html={t(L.ExtraElementShardsTooltipHTMLV2)} />}>
+               <Tooltip.Floating label={<RenderHTML html={t(L.ExtraElementShardsTooltipHTMLV2)} />}>
                   <div className="mi sm">info</div>
-               </Tooltip>
+               </Tooltip.Floating>
                <div className="f1" />
                <div className="text-green">+{extraShards}</div>
             </div>

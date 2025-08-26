@@ -14,7 +14,7 @@ export function GalaxyInfoPanel(): React.ReactNode {
             <div className="f1">Current Friendship</div>
             <div>1/3</div>
          </div>
-         <Tooltip
+         <Tooltip.Floating
             label={
                <>
                   <div>
@@ -47,7 +47,7 @@ export function GalaxyInfoPanel(): React.ReactNode {
                   {Math.ceil(warmongerPenalty)}
                </div>
             </div>
-         </Tooltip>
+         </Tooltip.Floating>
          <div className="row">
             <div className="f1">Backstabber Penalty</div>
             <div>{resourceOf("Backstabber", G.save.state.resources).current}</div>

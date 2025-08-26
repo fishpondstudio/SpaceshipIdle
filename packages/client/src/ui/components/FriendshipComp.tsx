@@ -36,9 +36,9 @@ export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode 
                <div className="divider dashed my10 mx-10" />
                <div className="row g5">
                   <div>Auto Renew</div>
-                  <Tooltip label="Automatically renews the friendship when it expires. The cost is determined at the time of renewal. Renewal will fail if there isn't enough resources">
+                  <Tooltip.Floating label="Automatically renews the friendship when it expires. The cost is determined at the time of renewal. Renewal will fail if there isn't enough resources">
                      <div className="mi sm">info</div>
-                  </Tooltip>
+                  </Tooltip.Floating>
                   <div className="f1" />
                   <Switch
                      checked={hasFlag(planet.flags, PlanetFlags.AutoRenew)}
@@ -58,7 +58,7 @@ export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode 
          <div className="panel">
             <div className="title">Cost</div>
             <div className="h5" />
-            <Tooltip
+            <Tooltip.Floating
                label={
                   <>
                      <div>The cost of declaring friendship is determined as follows</div>
@@ -88,7 +88,7 @@ export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode 
                <div>
                   4 <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
                </div>
-            </Tooltip>
+            </Tooltip.Floating>
             <div className="divider my10 mx-10" />
             <div className="title">Rewards</div>
             <div className="h5" />

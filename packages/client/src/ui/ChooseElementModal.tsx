@@ -151,7 +151,7 @@ function ElementOption({
                <div className="divider mx-15 mb5" />
                {permanent ? null : (
                   <>
-                     <Tooltip
+                     <Tooltip.Floating
                         color="gray"
                         multiline
                         w={300}
@@ -179,11 +179,11 @@ function ElementOption({
                               {thisRun?.hp ?? 0} + {thisRun?.damage ?? 0} ({thisRun?.amount ?? 0})
                            </div>
                         </div>
-                     </Tooltip>
+                     </Tooltip.Floating>
                      <div className="divider mx-15 my5" />
                   </>
                )}
-               <Tooltip
+               <Tooltip.Floating
                   color="gray"
                   multiline
                   w={300}
@@ -207,7 +207,7 @@ function ElementOption({
                         {currentHPMultiplier} + {currentDamageMultiplier}
                      </div>
                   </div>
-               </Tooltip>
+               </Tooltip.Floating>
                <div className="row">
                   <div className="f1">{t(L.Shards)}</div>
                   <div>

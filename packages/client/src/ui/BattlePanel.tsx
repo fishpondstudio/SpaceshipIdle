@@ -87,7 +87,7 @@ function DamageComponent({ side }: { side: Side }): React.ReactNode {
    return (
       <div className="battle-panel" style={side === Side.Left ? { left: 10 } : { right: 10 }}>
          {suddenDeathDamage > 0 ? (
-            <Tooltip
+            <Tooltip.Floating
                label={
                   <RenderHTML
                      html={t(
@@ -105,7 +105,7 @@ function DamageComponent({ side }: { side: Side }): React.ReactNode {
                   <div className="text-right">{formatNumber(suddenDeathDamage)}</div>
                   <div className="mi sm text-right">skull</div>
                </div>
-            </Tooltip>
+            </Tooltip.Floating>
          ) : null}
          {mapOf(DamageType, (key, value) => {
             return (

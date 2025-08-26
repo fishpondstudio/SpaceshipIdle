@@ -18,7 +18,7 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
    return (
       <Menu position="bottom-start">
          <Menu.Target>
-            <Tooltip
+            <Tooltip.Floating
                multiline
                label={<RenderHTML html={t(L.TimeWarpTooltipHTML, formatNumber(G.speed), formatNumber(warp))} />}
             >
@@ -35,7 +35,7 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
                      <div className="xs">{formatNumber(warp)}</div>
                   </div>
                </div>
-            </Tooltip>
+            </Tooltip.Floating>
          </Menu.Target>
          <WarpMenu speed={G.speed} onSpeedChange={onSpeedChange} />
       </Menu>

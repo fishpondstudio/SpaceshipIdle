@@ -104,7 +104,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          <div className="row mx10">
             {[data.level + 1, getNextLevel(data.level, 5), getNextLevel(data.level, 10)].map((target, idx) => {
                return (
-                  <Tooltip
+                  <Tooltip.Floating
                      w={250}
                      color="gray"
                      key={idx}
@@ -123,7 +123,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                      >
                         +{target - data.level}
                      </button>
-                  </Tooltip>
+                  </Tooltip.Floating>
                );
             })}
             <button
@@ -138,7 +138,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          <div className="row mx10">
             {[data.level - 1, getNextLevel(data.level, -5), getNextLevel(data.level, -10)].map((target, idx) => {
                return (
-                  <Tooltip
+                  <Tooltip.Floating
                      w={250}
                      color="gray"
                      key={idx}
@@ -147,10 +147,10 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                      <button className="btn f1" disabled={target <= 0} onClick={downgrade.bind(null, target)}>
                         {target - data.level}
                      </button>
-                  </Tooltip>
+                  </Tooltip.Floating>
                );
             })}
-            <Tooltip
+            <Tooltip.Floating
                w={250}
                color="gray"
                label={
@@ -167,7 +167,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                <button className="btn f1 cc mi" disabled={!canRecycle} onClick={recycle}>
                   recycling
                </button>
-            </Tooltip>
+            </Tooltip.Floating>
          </div>
          <div className="divider my10" />
          <div className="title">{t(L.Booster)}</div>
@@ -176,7 +176,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             {booster ? (
                <>
                   <TextureComp name={`Booster/${booster}`} />
-                  <Tooltip
+                  <Tooltip.Floating
                      multiline
                      label={
                         <RenderHTML
@@ -188,7 +188,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                      }
                   >
                      <div>{Boosters[booster].name()}</div>
-                  </Tooltip>
+                  </Tooltip.Floating>
                   <div className="f1" />
                </>
             ) : hasUnequippedBooster(G.save.state) ? (
@@ -238,7 +238,12 @@ function BoosterOpButton({ booster, me }: { booster: Booster; me: Tile }): React
       );
    }
    return (
-      <Tooltip disabled={!inv.tile} multiline maw="20vw" label={<RenderHTML html={t(L.AlreadyEquippedTooltipHTML)} />}>
+      <Tooltip.Floating
+         disabled={!inv.tile}
+         multiline
+         maw="20vw"
+         label={<RenderHTML html={t(L.AlreadyEquippedTooltipHTML)} />}
+      >
          <button
             className="btn row g5"
             onClick={() => {
@@ -253,6 +258,6 @@ function BoosterOpButton({ booster, me }: { booster: Booster; me: Tile }): React
          >
             <div>{inv.tile ? t(L.Reequip) : t(L.Equip)}</div>
          </button>
-      </Tooltip>
+      </Tooltip.Floating>
    );
 }

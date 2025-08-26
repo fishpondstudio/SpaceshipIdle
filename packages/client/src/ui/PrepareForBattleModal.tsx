@@ -63,13 +63,15 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                   <div>
                      {usedQuantum}/{minQuantum}
                   </div>
-                  <Tooltip label={<RenderHTML html={t(L.QualifierBattleQuantumRequirementHTML, minQuantum)} />}>
+                  <Tooltip.Floating
+                     label={<RenderHTML html={t(L.QualifierBattleQuantumRequirementHTML, minQuantum)} />}
+                  >
                      {usedQuantum >= minQuantum ? (
                         <div className="mi sm text-green">check_circle</div>
                      ) : (
                         <div className="mi sm text-yellow">info</div>
                      )}
-                  </Tooltip>
+                  </Tooltip.Floating>
                </div>
                <div className="row">
                   <div>{t(L.SpaceshipXP)}</div>
@@ -77,13 +79,15 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                   <div>
                      {formatNumber(xp)}/{formatNumber(minXO)}
                   </div>
-                  <Tooltip label={<RenderHTML html={t(L.QualifierBattleXPRequirementHTML, formatNumber(minXO))} />}>
+                  <Tooltip.Floating
+                     label={<RenderHTML html={t(L.QualifierBattleXPRequirementHTML, formatNumber(minXO))} />}
+                  >
                      {xp >= QualifierSpaceshipValuePercent * minXO ? (
                         <div className="mi sm text-green">check_circle</div>
                      ) : (
                         <div className="mi sm text-yellow">info</div>
                      )}
-                  </Tooltip>
+                  </Tooltip.Floating>
                </div>
             </div>
          </div>

@@ -45,7 +45,7 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
          <ShipStatComp left={dps} right={enemyDps} icon="swords" tooltip={t(L.MatchmakingAttack)} />
          <ShipStatComp left={score} right={enemyScore} icon="cards_star" tooltip={t(L.MatchmakingScore)} />
          <div className="h10" />
-         <Tooltip
+         <Tooltip.Floating
             disabled={isQualifierBattle(G.save.state)}
             multiline
             label={
@@ -73,7 +73,7 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
                   }}
                />
             </div>
-         </Tooltip>
+         </Tooltip.Floating>
          <div className="h10" />
          <div className="row">
             <button
@@ -136,7 +136,7 @@ function ShipStatComp({
             <div className="f1">
                <Progress color="green" size="lg" value={(100 * left) / max} />
             </div>
-            <Tooltip label={tooltip}>
+            <Tooltip.Floating label={tooltip}>
                <div className="row g0" style={{ fontSize: 28, width: 50 }}>
                   <div style={{ visibility: left >= right ? "visible" : "hidden" }} className="mi text-green">
                      arrow_left
@@ -146,7 +146,7 @@ function ShipStatComp({
                      arrow_right
                   </div>
                </div>
-            </Tooltip>
+            </Tooltip.Floating>
             <div className="f1">
                <Progress color="red" size="lg" value={(100 * right) / max} />
             </div>
@@ -173,7 +173,7 @@ function ShipStatComp({
 function ShipHeaderComp({ gs, side }: { gs: GameState; side: Side }): React.ReactNode {
    return (
       <>
-         <Tooltip w={300} color="gray" label={<MatchmakingShipComp ship={gs} />}>
+         <Tooltip.Floating w={300} color="gray" label={<MatchmakingShipComp ship={gs} />}>
             {side === Side.Left ? (
                <div className="text-xl row">
                   {t(L.SpaceshipPrefix, gs.name)}
@@ -187,7 +187,7 @@ function ShipHeaderComp({ gs, side }: { gs: GameState; side: Side }): React.Reac
                   {t(L.SpaceshipPrefix, gs.name)}
                </div>
             )}
-         </Tooltip>
+         </Tooltip.Floating>
          <div className="h5" />
          <ShipImageComp
             ship={gs}

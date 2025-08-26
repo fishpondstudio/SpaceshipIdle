@@ -30,14 +30,14 @@ export function MatchmakingShipComp({ ship }: { ship: GameState }): React.ReactN
          <div className="row g5">
             <div className="f1">{t(L.Research)}</div>
             <div>{ship.unlockedTech.size}</div>
-            <Tooltip
+            <Tooltip.Floating
                multiline
                label={Array.from(ship.unlockedTech)
                   .map((tech) => getTechName(tech))
                   .join(", ")}
             >
                <div className="mi sm text-space">info</div>
-            </Tooltip>
+            </Tooltip.Floating>
          </div>
          <div className="divider mx-10 my5 dashed" />
          <div className="f1">{t(L.ElementThisRun)}</div>

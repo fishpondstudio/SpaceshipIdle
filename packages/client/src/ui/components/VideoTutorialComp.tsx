@@ -12,7 +12,11 @@ export function VideoTutorialComp({
    tutorial,
    className,
    style,
-}: { tutorial: VideoTutorial; className?: string; style?: React.CSSProperties }): React.ReactNode {
+}: {
+   tutorial: VideoTutorial;
+   className?: string;
+   style?: React.CSSProperties;
+}): React.ReactNode {
    refreshOnTypedEvent(GameOptionUpdated);
    if (G.save.options.videoTutorials.has(tutorial)) {
       return null;
@@ -20,7 +24,7 @@ export function VideoTutorialComp({
    const desc = VideoTutorial[tutorial];
    const video = TutorialVideos[tutorial];
    return (
-      <Tooltip
+      <Tooltip.Floating
          styles={{
             tooltip: {
                padding: 0,
@@ -43,6 +47,6 @@ export function VideoTutorialComp({
                }}
             />
          </div>
-      </Tooltip>
+      </Tooltip.Floating>
    );
 }

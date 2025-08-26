@@ -78,9 +78,9 @@ function GeneralTab(): React.ReactNode {
          <div className="h10" />
          <div className="row">
             <div>{t(L.HideInactiveResources)}</div>
-            <Tooltip label={t(L.HideInactiveResourcesTooltip)}>
+            <Tooltip.Floating label={t(L.HideInactiveResourcesTooltip)}>
                <div className="mi sm text-space">info</div>
-            </Tooltip>
+            </Tooltip.Floating>
             <div className="f1" />
             <Switch
                checked={hasFlag(G.save.options.flag, GameOptionFlag.HideInactiveResources)}
@@ -95,9 +95,9 @@ function GeneralTab(): React.ReactNode {
          <div className="h10" />
          <div className="row">
             <div>{t(L.TheoreticalValue)}</div>
-            <Tooltip label={t(L.TheoreticalValueTooltip)}>
+            <Tooltip.Floating label={t(L.TheoreticalValueTooltip)}>
                <div className="mi sm text-space">info</div>
-            </Tooltip>
+            </Tooltip.Floating>
             <div className="f1" />
             <Switch
                checked={hasFlag(G.save.options.flag, GameOptionFlag.TheoreticalValue)}
@@ -112,9 +112,9 @@ function GeneralTab(): React.ReactNode {
          <div className="h10" />
          <div className="row">
             <div>{t(L.CooldownIndicatorOutsideBattle)}</div>
-            <Tooltip label={t(L.CooldownIndicatorOutsideBattleTooltip)}>
+            <Tooltip.Floating label={t(L.CooldownIndicatorOutsideBattleTooltip)}>
                <div className="mi sm text-space">info</div>
-            </Tooltip>
+            </Tooltip.Floating>
             <div className="f1" />
             <Switch
                checked={hasFlag(G.save.options.flag, GameOptionFlag.CooldownIndicatorOutsideBattle)}
@@ -129,9 +129,9 @@ function GeneralTab(): React.ReactNode {
          <div className="h10" />
          <div className="row">
             <div>{t(L.LinearCooldownIndicator)}</div>
-            <Tooltip label={t(L.LinearCooldownIndicatorTooltip)}>
+            <Tooltip.Floating label={t(L.LinearCooldownIndicatorTooltip)}>
                <div className="mi sm text-space">info</div>
-            </Tooltip>
+            </Tooltip.Floating>
             <div className="f1" />
             <Switch
                checked={hasFlag(G.save.options.flag, GameOptionFlag.LinearCooldownIndicator)}
@@ -146,9 +146,9 @@ function GeneralTab(): React.ReactNode {
          <div className="divider my10 mx-10" />
          <div className="row">
             <div>{t(L.RetroFilter)}</div>
-            <Tooltip label={t(L.RequireGameRestart)}>
+            <Tooltip.Floating label={t(L.RequireGameRestart)}>
                <div className="mi sm text-space">info</div>
-            </Tooltip>
+            </Tooltip.Floating>
             <div className="f1" />
             <Switch
                checked={hasFlag(G.save.options.flag, GameOptionFlag.RetroFilter)}
@@ -163,9 +163,9 @@ function GeneralTab(): React.ReactNode {
          <div className="h10"></div>
          <div className="row">
             <div>{t(L.NebulaStrength)}</div>
-            <Tooltip label={t(L.NebulaStrengthTooltip)}>
+            <Tooltip.Floating label={t(L.NebulaStrengthTooltip)}>
                <div className="mi sm text-space">info</div>
-            </Tooltip>
+            </Tooltip.Floating>
             <div className="f1" />
             <Slider
                w="50%"

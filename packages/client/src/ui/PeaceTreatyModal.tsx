@@ -1,11 +1,11 @@
 import { Tooltip } from "@mantine/core";
-import { useForceUpdate } from "@mantine/hooks";
+import { clamp, useForceUpdate } from "@mantine/hooks";
 import { Boosters } from "@spaceship-idle/shared/src/game/definitions/Boosters";
 import type { BattleResult } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { calculateRewardValue } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
-import { mMapOf, round } from "@spaceship-idle/shared/src/utils/Helper";
+import { formatNumber, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useRef } from "react";
 import { G } from "../utils/Global";
@@ -14,23 +14,25 @@ import { NumberSelect } from "./components/NumberInput";
 import { TextureComp } from "./components/TextureComp";
 
 export function PeaceTreatyModal({
-   victory,
+   battleScore,
    name,
    texture,
+   enemyXP,
    planetId,
 }: {
-   victory: number;
+   battleScore: number;
    name: string;
+   enemyXP: number;
    texture?: string;
    planetId?: number;
 }): React.ReactNode {
    const forceUpdate = useForceUpdate();
-   const victoryType = getVictoryType(victory);
+   const victoryType = getVictoryType(battleScore);
    const battleResult = useRef<BattleResult>({
-      victory,
+      battleScore: battleScore,
       boosters: new Map([
-         ["Evasion1", 1],
-         ["HP1", 1],
+         ["Evasion1", 0],
+         ["HP1", 0],
       ]),
       resources: new Map([
          ["VictoryPoint", 1],
@@ -38,7 +40,8 @@ export function PeaceTreatyModal({
       ]),
    });
    const [value, breakdown] = calculateRewardValue(battleResult.current, G.save.state);
-   const battleScore = round(victory * 100, 0);
+   const leftOver = clamp(battleScore - value, 0, Number.POSITIVE_INFINITY);
+   const xp = (leftOver / 100) * enemyXP;
    return (
       <div className="m10">
          <VictoryHeaderComp title={BattleVictoryTypeLabel[victoryType]()} />
@@ -56,7 +59,7 @@ export function PeaceTreatyModal({
                   {BattleVictoryTypeLabel[victoryType]()} ({battleScore}%)
                </div>
             </div>
-            <div className="f1 panel stretch" style={{ alignItems: "center" }}>
+            <div className="f1 panel stretch">
                <div className="row">
                   <div className="f1">
                      <TextureComp name="Others/Trophy16" className="inline-middle" /> {t(L.VictoryPoint)}
@@ -91,43 +94,51 @@ export function PeaceTreatyModal({
                   <div className="f1">
                      <TextureComp name="Others/XP" className="inline-middle" /> {t(L.XP)}
                   </div>
-                  <div>100K</div>
+                  <div>{formatNumber(xp)}</div>
                </div>
             </div>
          </div>
          <div className="row my10" style={{ fontSize: 30 }}>
             <div className="f1 text-center">{battleScore}</div>
-            <div className="mi text-red" style={{ fontSize: 30 }}>
-               sentiment_dissatisfied
-            </div>
+            {battleScore >= value ? (
+               <div className="mi text-green" style={{ fontSize: 30 }}>
+                  sentiment_satisfied
+               </div>
+            ) : (
+               <div className="mi text-red" style={{ fontSize: 30 }}>
+                  sentiment_dissatisfied
+               </div>
+            )}
             <div className="f1 text-center">{value}</div>
          </div>
-         <div className="text-center text-red my10">You ask for too much - it's unacceptable!</div>
-         <Tooltip
-            w={400}
-            label={
-               <>
-                  <div>
-                     You have {battleScore} battle score and the war reparation cannot exceed this. Your first Victory
-                     Point and Booster are free and different boosters require additional score. The remaining score
-                     will be converted to XP.
-                  </div>
-                  <div className="h5" />
-                  <div className="flex-table mx-10">
-                     {breakdown.map((b) => (
-                        <div className="row" key={b.label}>
-                           <div className="f1">{b.label}</div>
-                           <div>{b.value}</div>
-                        </div>
-                     ))}
-                  </div>
-               </>
-            }
-         >
-            <button className="btn w100 filled p5" disabled>
-               Sign Peace Treaty
-            </button>
-         </Tooltip>
+         <button className="btn w100 filled p5" disabled={battleScore < value}>
+            <Tooltip.Floating
+               w={400}
+               label={
+                  <>
+                     <div>
+                        You have <b>{battleScore}</b> battle score and the war reparation cannot exceed this. Your first
+                        Victory Point and Booster are free. Your remaining <b>{leftOver}</b> battle score is converted
+                        to <b>{formatNumber(xp)}</b> XP
+                     </div>
+                     <div className="h5" />
+                     <div className="flex-table mx-10">
+                        {breakdown.map((b) => (
+                           <div className="row" key={b.label}>
+                              <div className="f1">{b.label}</div>
+                              <div>{b.value}</div>
+                           </div>
+                        ))}
+                     </div>
+                  </>
+               }
+            >
+               <div className="row g5">
+                  <div className="mi">signature</div>
+                  <div>Sign Peace Treaty</div>
+               </div>
+            </Tooltip.Floating>
+         </button>
       </div>
    );
 }

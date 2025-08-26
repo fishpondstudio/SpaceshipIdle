@@ -242,14 +242,14 @@ export function tickTiles(
    }
 }
 
-export function getVictoryType(victory: number): BattleVictoryType {
-   if (victory >= 0.75) {
+export function getVictoryType(battleScore: number): BattleVictoryType {
+   if (battleScore >= 75) {
       return "Overwhelming";
    }
-   if (victory >= 0.5) {
+   if (battleScore >= 50) {
       return "Decisive";
    }
-   if (victory >= 0.25) {
+   if (battleScore >= 25) {
       return "Minor";
    }
    return "Narrow";

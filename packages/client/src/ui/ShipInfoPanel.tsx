@@ -88,7 +88,7 @@ export function ShipInfoPanel(): React.ReactNode {
       <div className="sf-frame top ship-info">
          <HamburgerMenuComp flag={options.flag} />
          <div className="divider vertical" />
-         <Tooltip
+         <Tooltip.Floating
             w={300}
             label={
                <div className="flex-table mx-10">
@@ -142,9 +142,9 @@ export function ShipInfoPanel(): React.ReactNode {
                   <div className="xs">{formatPercent(divide(victory.total, victory.total + defeat.total))}</div>
                </div>
             </div>
-         </Tooltip>
+         </Tooltip.Floating>
          <div className="divider vertical" />
-         <Tooltip
+         <Tooltip.Floating
             multiline
             label={
                <RenderHTML
@@ -166,9 +166,9 @@ export function ShipInfoPanel(): React.ReactNode {
                   </div>
                </div>
             </div>
-         </Tooltip>
+         </Tooltip.Floating>
          <div className="divider vertical" />
-         <Tooltip
+         <Tooltip.Floating
             multiline
             label={<RenderHTML html={t(L.RawActualDPSHTML, formatNumber(actualDPS), formatNumber(rawDPS))} />}
          >
@@ -179,9 +179,9 @@ export function ShipInfoPanel(): React.ReactNode {
                   <div className="xs">{formatNumber(rawDPS)}</div>
                </div>
             </div>
-         </Tooltip>
+         </Tooltip.Floating>
          <div className="divider vertical" />
-         <Tooltip multiline label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(currentXP))} />}>
+         <Tooltip.Floating multiline label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(currentXP))} />}>
             <div className="block" style={{ width: 90 }}>
                <TextureComp name="Others/XP24" />
                <div className="f1 text-right">
@@ -197,9 +197,9 @@ export function ShipInfoPanel(): React.ReactNode {
                   </div>
                </div>
             </div>
-         </Tooltip>
+         </Tooltip.Floating>
          <div className="divider vertical" />
-         <Tooltip color="gray" multiline w={300} label={<QuantumTooltip />}>
+         <Tooltip.Floating color="gray" multiline w={300} label={<QuantumTooltip />}>
             <div className="block pointer" style={{ width: 100, position: "relative" }}>
                <TextureComp name="Others/Quantum24" />
                <div className="f1 text-right">
@@ -209,9 +209,9 @@ export function ShipInfoPanel(): React.ReactNode {
                   <div className="xs">{formatHMS(timeUntilNextQuantum)}</div>
                </div>
             </div>
-         </Tooltip>
+         </Tooltip.Floating>
          <div className="divider vertical" />
-         <Tooltip multiline w={300} color="gray" label={<QuantumTooltip />}>
+         <Tooltip.Floating multiline w={300} color="gray" label={<QuantumTooltip />}>
             <div className="block pointer" style={{ width: 60 }}>
                <div className="f1 text-right">
                   <div>{formatPercent(progressTowardsNextQuantum)}</div>
@@ -221,9 +221,9 @@ export function ShipInfoPanel(): React.ReactNode {
                   </div>
                </div>
             </div>
-         </Tooltip>
+         </Tooltip.Floating>
          <div className="divider vertical" />
-         <Tooltip multiline w={300} color="gray" label={<ElementTooltip />}>
+         <Tooltip.Floating multiline w={300} color="gray" label={<ElementTooltip />}>
             <div style={{ width: 100 }} className="block pointer">
                <TextureComp name="Others/Element24" />
                <div className="w5" />
@@ -247,9 +247,9 @@ export function ShipInfoPanel(): React.ReactNode {
                   </div>
                </div>
             </div>
-         </Tooltip>
+         </Tooltip.Floating>
          <div className="divider vertical" />
-         <Tooltip multiline w={300} color="gray" label={<ElementTooltip />}>
+         <Tooltip.Floating multiline w={300} color="gray" label={<ElementTooltip />}>
             <div style={{ width: 60 }} className="block pointer">
                <div className="f1 text-right">
                   <div>{formatPercent((totalXP - prevElementXP) / (nextElementXP - prevElementXP))}</div>
@@ -259,7 +259,7 @@ export function ShipInfoPanel(): React.ReactNode {
                   </div>
                </div>
             </div>
-         </Tooltip>
+         </Tooltip.Floating>
          <div className="divider vertical" />
          <WarpSpeedMenuComp gs={state} />
       </div>
@@ -286,9 +286,9 @@ function playQuantumParticle(): void {
 function _DiscordComp({ show }: { show: boolean }): React.ReactNode {
    if (!show) return null;
    return (
-      <Tooltip label={t(L.JoinDiscord)}>
+      <Tooltip.Floating label={t(L.JoinDiscord)}>
          <img src={Discord} style={{ display: "block", height: 20 }} onClick={() => openUrl(DiscordUrl)} />
-      </Tooltip>
+      </Tooltip.Floating>
    );
 }
 
@@ -297,9 +297,9 @@ export const DiscordComp = memo(_DiscordComp, (prev, next) => prev.show === next
 function _SteamComp({ show }: { show: boolean }): React.ReactNode {
    if (!show) return null;
    return (
-      <Tooltip label={t(L.WishlistFullGame)}>
+      <Tooltip.Floating label={t(L.WishlistFullGame)}>
          <img src={Steam} style={{ display: "block", height: 20 }} onClick={() => openUrl(SteamUrl)} />
-      </Tooltip>
+      </Tooltip.Floating>
    );
 }
 

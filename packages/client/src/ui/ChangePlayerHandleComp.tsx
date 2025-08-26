@@ -4,7 +4,7 @@ import { CountryCode } from "@spaceship-idle/shared/src/utils/CountryCode";
 import { mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useState } from "react";
-import { UserUpdated, getUser } from "../rpc/HandleMessage";
+import { getUser, UserUpdated } from "../rpc/HandleMessage";
 import { RPCClient } from "../rpc/RPCClient";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
@@ -36,14 +36,14 @@ export function ChangePlayerHandleComp(): React.ReactNode {
                      styles={{ dropdown: { padding: "0", transform: "translate(-4px, 1px)" } }}
                   >
                      <Popover.Target>
-                        <Tooltip label={CountryCode[G.save.options.country]}>
+                        <Tooltip.Floating label={CountryCode[G.save.options.country]}>
                            <TextureComp
                               className="pointer"
                               onClick={() => setOpened(!opened)}
                               name={`Flag/${G.save.options.country}`}
                               width={30}
                            />
-                        </Tooltip>
+                        </Tooltip.Floating>
                      </Popover.Target>
                      <Popover.Dropdown>
                         <div
@@ -52,7 +52,7 @@ export function ChangePlayerHandleComp(): React.ReactNode {
                         >
                            {mapOf(CountryCode, (code) => {
                               return (
-                                 <Tooltip label={CountryCode[code]}>
+                                 <Tooltip.Floating label={CountryCode[code]}>
                                     <TextureComp
                                        name={`Flag/${code}`}
                                        width={30}
@@ -63,7 +63,7 @@ export function ChangePlayerHandleComp(): React.ReactNode {
                                           setOpened(false);
                                        }}
                                     />
-                                 </Tooltip>
+                                 </Tooltip.Floating>
                               );
                            })}
                         </div>

@@ -63,9 +63,13 @@ export function BoosterPage(): React.ReactNode {
                                     </div>
                                     <div className="row text-sm text-dimmed stretch g5">
                                        <div>{t(L.Effect)}</div>
-                                       <Tooltip multiline maw={300} label={<RenderHTML html={def.desc(effect)} />}>
+                                       <Tooltip.Floating
+                                          multiline
+                                          maw={300}
+                                          label={<RenderHTML html={def.desc(effect)} />}
+                                       >
                                           <div className="mi sm">info</div>
-                                       </Tooltip>
+                                       </Tooltip.Floating>
                                        <div className="f1" />
                                        <div>+{formatNumber(effect)}</div>
                                     </div>

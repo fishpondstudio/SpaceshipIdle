@@ -6,7 +6,7 @@ import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { formatNumber, formatPercent, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { formatNumber, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import { showModal } from "../../utils/ToggleModal";
@@ -17,13 +17,13 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
 
    if (planet.battleResult) {
-      const victoryType = getVictoryType(planet.battleResult.victory);
+      const victoryType = getVictoryType(planet.battleResult.battleScore);
       return (
          <div className="panel">
             <div className="title">Battle Result</div>
             <div className="h5" />
             <div className="text-green">
-               {BattleVictoryTypeLabel[victoryType]()} ({formatPercent(planet.battleResult.victory)})
+               {BattleVictoryTypeLabel[victoryType]()} ({planet.battleResult.battleScore}%)
             </div>
             <div className="divider my10 mx-10" />
             <div className="title">War Reparation</div>
@@ -65,7 +65,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
          <div className="panel">
             <div className="title">Cost</div>
             <div className="h5" />
-            <Tooltip
+            <Tooltip.Floating
                label={
                   <>
                      <div>The cost of declaring war is determined as follows</div>
@@ -83,7 +83,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                <div>
                   2 <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
                </div>
-            </Tooltip>
+            </Tooltip.Floating>
             <div className="divider my10 mx-10" />
             <div className="title">Negotiable Rewards</div>
             <div className="h5" />
@@ -105,7 +105,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
             War reparation is negotiated when signing the peace treaty and depends on battle outcome
          </div>
          <div className="h5" />
-         <Tooltip label={cannotDeclareWarReason} disabled={!cannotDeclareWarReason}>
+         <Tooltip.Floating label={cannotDeclareWarReason} disabled={!cannotDeclareWarReason}>
             <button
                disabled={!!cannotDeclareWarReason}
                className="btn red w100 row g5"
@@ -115,7 +115,8 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                         <PeaceTreatyModal
                            name={planet.name}
                            texture={`Galaxy/${planet.texture}`}
-                           victory={0.62}
+                           battleScore={62}
+                           enemyXP={12431}
                            planetId={planet.id}
                         />
                      ),
@@ -125,7 +126,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                   addResource("Warmonger", 1, G.save.state.resources);
                   planet.actions.push({ type: PlanetActionType.DeclaredWar, tick: G.save.data.tick });
                   planet.battleResult = {
-                     victory: 0.68,
+                     battleScore: 72,
                      boosters: new Map([["Evasion1", 1]]),
                      resources: new Map([
                         ["XP", 12900],
@@ -157,7 +158,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                <div className="mi sm">swords</div>
                <div>Declare War</div>
             </button>
-         </Tooltip>
+         </Tooltip.Floating>
       </>
    );
 }

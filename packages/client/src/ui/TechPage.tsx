@@ -69,7 +69,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                })}
                <div className="divider my10" />
                <div className="mx10">
-                  <Tooltip disabled={getAvailableQuantum(G.save.state) > 0} label={t(L.NotEnoughQuantum)}>
+                  <Tooltip.Floating disabled={getAvailableQuantum(G.save.state) > 0} label={t(L.NotEnoughQuantum)}>
                      <button
                         className="btn filled w100 row px10 py5"
                         onClick={() => {
@@ -94,7 +94,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                         <div>-1</div>
                         <div className="mi">orbit</div>
                      </button>
-                  </Tooltip>
+                  </Tooltip.Floating>
                </div>
                <div className="divider mt10 mb10" />
             </>
@@ -106,14 +106,14 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                {def.unlockBuildings?.map((b) => {
                   return (
                      <div key={b}>
-                        <Tooltip w={350} label={<BuildingInfoComp building={b} />}>
+                        <Tooltip.Floating w={350} label={<BuildingInfoComp building={b} />}>
                            <div className="row m10">
                               <TextureComp name={`Building/${b}`} width={64} />
                               <div className="f1">
                                  <div>{getBuildingName(b)}</div>
                               </div>
                            </div>
-                        </Tooltip>
+                        </Tooltip.Floating>
                         <div className="divider my10" />
                      </div>
                   );

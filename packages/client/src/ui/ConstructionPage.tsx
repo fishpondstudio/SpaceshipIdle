@@ -100,7 +100,7 @@ function BuildingComp({
    const label = CodeLabel[def.code]();
    const canBuild = canSpendResource("XP", getBuildingCost(building, 1), gs.resources) && getAvailableQuantum(gs) > 0;
    return (
-      <Tooltip
+      <Tooltip.Floating
          color="gray"
          w={250}
          label={<ResourceListComp xp={-getBuildingCost(building, 1)} quantum={-1} />}
@@ -142,6 +142,6 @@ function BuildingComp({
                </Badge>
             ) : null}
          </div>
-      </Tooltip>
+      </Tooltip.Floating>
    );
 }

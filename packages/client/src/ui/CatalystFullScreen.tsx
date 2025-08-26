@@ -72,15 +72,15 @@ export function CatalystFullScreen(): React.ReactNode {
                      if (selected === choice) {
                         if (G.runtime.leftStat.isCatalystActivated(choice)) {
                            status = (
-                              <Tooltip label={t(L.CatalystActivated)}>
+                              <Tooltip.Floating label={t(L.CatalystActivated)}>
                                  <div className="mi text-green">check_circle</div>
-                              </Tooltip>
+                              </Tooltip.Floating>
                            );
                         } else {
                            status = (
-                              <Tooltip label={t(L.CatalystNotActivated)}>
+                              <Tooltip.Floating label={t(L.CatalystNotActivated)}>
                                  <div className="mi text-red">do_not_disturb_on</div>
-                              </Tooltip>
+                              </Tooltip.Floating>
                            );
                         }
                      }
@@ -99,7 +99,10 @@ export function CatalystFullScreen(): React.ReactNode {
                               }}
                            >
                               {canChooseCatalystCat(cat, G.runtime) ? (
-                                 <Tooltip multiline label={<RenderHTML html={t(L.SelectCatalystTooltipHTML)} />}>
+                                 <Tooltip.Floating
+                                    multiline
+                                    label={<RenderHTML html={t(L.SelectCatalystTooltipHTML)} />}
+                                 >
                                     <div
                                        className="mi lg pointer"
                                        onClick={() => {
@@ -121,11 +124,11 @@ export function CatalystFullScreen(): React.ReactNode {
                                     >
                                        {selected === choice ? "check_box" : "check_box_outline_blank"}
                                     </div>
-                                 </Tooltip>
+                                 </Tooltip.Floating>
                               ) : (
-                                 <Tooltip label={t(L.YouHaveToActivateThePreviousCatalystFirst)}>
+                                 <Tooltip.Floating label={t(L.YouHaveToActivateThePreviousCatalystFirst)}>
                                     <div className="mi">lock</div>
-                                 </Tooltip>
+                                 </Tooltip.Floating>
                               )}
                            </div>
                            <div className="f1" style={{ width: 400 }}>
@@ -149,7 +152,7 @@ export function CatalystFullScreen(): React.ReactNode {
                                        .filter(def.filter)
                                        .map((b) => {
                                           return (
-                                             <Tooltip
+                                             <Tooltip.Floating
                                                 w={350}
                                                 label={
                                                    <>
@@ -167,7 +170,7 @@ export function CatalystFullScreen(): React.ReactNode {
                                                    name={`Building/${b}`}
                                                    width={64}
                                                 />
-                                             </Tooltip>
+                                             </Tooltip.Floating>
                                           );
                                        })}
                                  </ScrollArea>

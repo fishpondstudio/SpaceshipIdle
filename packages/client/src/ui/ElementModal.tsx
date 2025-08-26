@@ -62,9 +62,9 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
          <div className="divider my10 mx-15" />
          <div className="row">
             <div className="f1">{t(L.BoostModule)}</div>
-            <Tooltip w={350} label={<BuildingInfoComp building={b} />}>
+            <Tooltip.Floating w={350} label={<BuildingInfoComp building={b} />}>
                <div>{getBuildingName(b)}</div>
-            </Tooltip>
+            </Tooltip.Floating>
          </div>
          {thisRun ? (
             <>
@@ -117,9 +117,9 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                <div className="divider my10 mx-15" />
                <div className="row g5">
                   <div className="f1">{t(L.HPMultiplier)}</div>
-                  <Tooltip label={t(L.PlusXProductionMultiplierForX, permanent.hp, getBuildingName(b))}>
+                  <Tooltip.Floating label={t(L.PlusXProductionMultiplierForX, permanent.hp, getBuildingName(b))}>
                      <div className="mi sm text-dimmed">info</div>
-                  </Tooltip>
+                  </Tooltip.Floating>
                   <div>{t(L.LevelX, permanent.hp)}</div>
                </div>
                <div className="h5" />
@@ -148,7 +148,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                   >
                      {t(L.Upgrade)}
                   </button>
-                  <Tooltip label={<RenderHTML html={t(L.RevertTooltipHTML)} />}>
+                  <Tooltip.Floating label={<RenderHTML html={t(L.RevertTooltipHTML)} />}>
                      <button
                         disabled={permanent.hp <= 0}
                         className="btn py5 px10"
@@ -160,14 +160,14 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                      >
                         {t(L.Revert)}
                      </button>
-                  </Tooltip>
+                  </Tooltip.Floating>
                </div>
                <div className="divider dashed mx-15 my10"></div>
                <div className="row g5">
                   <div className="f1">{t(L.DamageMultiplier)}</div>
-                  <Tooltip label={t(L.PlusXXPMultiplierForX, permanent.damage, getBuildingName(b))}>
+                  <Tooltip.Floating label={t(L.PlusXXPMultiplierForX, permanent.damage, getBuildingName(b))}>
                      <div className="mi sm text-dimmed">info</div>
-                  </Tooltip>
+                  </Tooltip.Floating>
                   <div>{t(L.LevelX, permanent.damage)}</div>
                </div>
                <div className="h5" />
@@ -196,7 +196,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                   >
                      {t(L.Upgrade)}
                   </button>
-                  <Tooltip label={<RenderHTML html={t(L.RevertTooltipHTML)} />}>
+                  <Tooltip.Floating label={<RenderHTML html={t(L.RevertTooltipHTML)} />}>
                      <button
                         disabled={permanent.damage <= 0}
                         className="btn py5 px10"
@@ -208,7 +208,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                      >
                         {t(L.Revert)}
                      </button>
-                  </Tooltip>
+                  </Tooltip.Floating>
                </div>
             </>
          ) : null}

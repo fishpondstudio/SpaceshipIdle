@@ -96,7 +96,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
          </div>
          <div className="h10" />
          <div className="mx10">
-            <Tooltip label={t(L.DistributeEvenlyDesc)}>
+            <Tooltip.Floating label={t(L.DistributeEvenlyDesc)}>
                <button
                   className="btn w100"
                   style={{ flex: 2 }}
@@ -143,7 +143,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                >
                   Distribute Existing Upgrades Evenly
                </button>
-            </Tooltip>
+            </Tooltip.Floating>
          </div>
          <div className="h10" />
          <div className="mx10">

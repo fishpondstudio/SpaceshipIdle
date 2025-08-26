@@ -63,6 +63,15 @@ const theme = createTheme({
             color: "gray",
          },
       }),
+      TooltipFloating: Tooltip.Floating.extend({
+         defaultProps: {
+            multiline: true,
+            maw: 350,
+            color: "gray",
+            position: "bottom",
+            offset: 20,
+         },
+      }),
    },
 });
 
