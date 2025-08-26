@@ -21,9 +21,10 @@ import { ElementImageComp } from "../game/ElementImage";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { BuildingInfoComp } from "./components/BuildingInfoComp";
+import { NumberSelect } from "./components/NumberInput";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
-import { playClick, playError } from "./Sound";
+import { playClick } from "./Sound";
 
 export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
@@ -38,7 +39,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
       <div className="m15">
          <div className="row">
             <ElementImageComp symbol={element.symbol} w="100" color={ElementPermanentColor} />
-            <TextureComp name={`Building/${b}`} width={100} />
+            <TextureComp name={`Building/${b}`} width={32 * 3} />
             <div className="f1">
                <div className="row">
                   <div className="f1">{t(L.AtomicNumber)}</div>
@@ -78,71 +79,31 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                <div className="divider my10 mx-15" />
                <div className="row">
                   <div className="f1">{t(L.HPMultiplier)}</div>
-                  <div
-                     className={classNames("mi", thisRun.hp <= 0 ? "text-disabled" : null)}
-                     onClick={() => {
-                        if (thisRun.hp > 0) {
-                           playClick();
-                           --thisRun.hp;
-                           ++thisRun.amount;
-                           GameStateUpdated.emit();
-                        } else {
-                           playError();
-                        }
+                  <NumberSelect
+                     value={thisRun.hp}
+                     canIncrease={(value) => thisRun.amount > 0}
+                     canDecrease={(value) => value > 0}
+                     onChange={(value) => {
+                        const delta = value - thisRun.hp;
+                        thisRun.hp = value;
+                        thisRun.amount -= delta;
+                        GameStateUpdated.emit();
                      }}
-                  >
-                     indeterminate_check_box
-                  </div>
-                  <div className="text-center">{formatNumber(thisRun.hp)}</div>
-                  <div
-                     className={classNames("mi", thisRun.amount <= 0 ? "text-disabled" : null)}
-                     onClick={() => {
-                        if (thisRun.amount > 0) {
-                           playClick();
-                           --thisRun.amount;
-                           ++thisRun.hp;
-                           GameStateUpdated.emit();
-                        } else {
-                           playError();
-                        }
-                     }}
-                  >
-                     add_box
-                  </div>
+                  />
                </div>
                <div className="row">
                   <div className="f1">{t(L.DamageMultiplier)}</div>
-                  <div
-                     className={classNames("mi", thisRun.damage <= 0 ? "text-disabled" : null)}
-                     onClick={() => {
-                        if (thisRun.damage > 0) {
-                           playClick();
-                           --thisRun.damage;
-                           ++thisRun.amount;
-                           GameStateUpdated.emit();
-                        } else {
-                           playError();
-                        }
+                  <NumberSelect
+                     value={thisRun.damage}
+                     canIncrease={(value) => thisRun.amount > 0}
+                     canDecrease={(value) => value > 0}
+                     onChange={(value) => {
+                        const delta = value - thisRun.damage;
+                        thisRun.damage = value;
+                        thisRun.amount -= delta;
+                        GameStateUpdated.emit();
                      }}
-                  >
-                     indeterminate_check_box
-                  </div>
-                  <div className="text-center">{formatNumber(thisRun.damage)}</div>
-                  <div
-                     className={classNames("mi", thisRun.amount <= 0 ? "text-disabled" : null)}
-                     onClick={() => {
-                        if (thisRun.amount > 0) {
-                           playClick();
-                           --thisRun.amount;
-                           ++thisRun.damage;
-                           GameStateUpdated.emit();
-                        } else {
-                           playError();
-                        }
-                     }}
-                  >
-                     add_box
-                  </div>
+                  />
                </div>
             </>
          ) : null}

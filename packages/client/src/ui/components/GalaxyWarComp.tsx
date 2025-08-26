@@ -129,7 +129,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                      boosters: new Map([["Evasion1", 1]]),
                      resources: new Map([
                         ["XP", 12900],
-                        ["Victory", 2],
+                        ["VictoryPoint", 2],
                      ]),
                   };
 
