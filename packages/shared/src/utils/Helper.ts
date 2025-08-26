@@ -959,6 +959,10 @@ export function layoutSpaceAround(childSize: number, parentSize: number, total: 
    return space * (current + 1) + childSize * current;
 }
 
-export function widen<T>(value: T): T {
+export function cast<T>(value: T): T {
    return value;
+}
+
+export function randomAlphaNumeric(length: number, random = Math.random): string {
+   return Array.from({ length }, () => random().toString(36)[2]).join("");
 }

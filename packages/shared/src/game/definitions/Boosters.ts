@@ -1,4 +1,4 @@
-import { formatNumber, type Tile, widen } from "../../utils/Helper";
+import { cast, formatNumber, type Tile } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import type { Runtime } from "../logic/Runtime";
 import type { ShipClass } from "./TechDefinitions";
@@ -11,7 +11,7 @@ export interface IBoosterDefinition {
 }
 
 export const Boosters = {
-   HP1: widen<IBoosterDefinition>({
+   HP1: cast<IBoosterDefinition>({
       name: () => t(L.HPCluster),
       desc: (value: number) => t(L.HPCoreDesc, formatNumber(value), formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -19,7 +19,7 @@ export const Boosters = {
       },
       shipClass: "Skiff",
    }),
-   Evasion1: widen<IBoosterDefinition>({
+   Evasion1: cast<IBoosterDefinition>({
       name: () => t(L.EvasionCluster),
       desc: (value: number) => t(L.EvasionCoreDesc, formatNumber(value), formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -27,7 +27,7 @@ export const Boosters = {
       },
       shipClass: "Skiff",
    }),
-   Damage1: widen<IBoosterDefinition>({
+   Damage1: cast<IBoosterDefinition>({
       name: () => t(L.DamageCluster),
       desc: (value: number) => t(L.DamageCoreDesc, formatNumber(value), formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -35,7 +35,7 @@ export const Boosters = {
       },
       shipClass: "Scout",
    }),
-   Damage2: widen<IBoosterDefinition>({
+   Damage2: cast<IBoosterDefinition>({
       name: () => t(L.DamageDiversifier),
       desc: (value: number) => t(L.DamageDiversifierDesc, formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -43,7 +43,7 @@ export const Boosters = {
       },
       shipClass: "Scout",
    }),
-   HP2: widen<IBoosterDefinition>({
+   HP2: cast<IBoosterDefinition>({
       name: () => t(L.HPEqualizer),
       desc: (value: number) => t(L.HPEqualizerDesc, formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {

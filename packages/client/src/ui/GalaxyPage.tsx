@@ -7,10 +7,16 @@ import { StarSystemPage } from "./StarSystemPage";
 export function GalaxyPage({ id }: { id: number }): React.ReactNode {
    for (const starSystem of G.save.data.galaxy.starSystems) {
       if (starSystem.id === id) {
+         if (import.meta.env.DEV) {
+            console.log(starSystem);
+         }
          return <StarSystemPage starSystem={starSystem} />;
       }
       for (const planet of starSystem.planets) {
          if (planet.id === id) {
+            if (import.meta.env.DEV) {
+               console.log(planet);
+            }
             switch (planet.type) {
                case PlanetType.Me:
                   return <GalaxyMePage planet={planet} />;

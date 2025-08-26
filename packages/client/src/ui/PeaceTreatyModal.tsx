@@ -1,20 +1,36 @@
-import { capitalize } from "@spaceship-idle/shared/src/utils/Helper";
-import { Generator } from "@spaceship-idle/shared/src/utils/NameGen";
+import type { BattleResult } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
+import { getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { G } from "../utils/Global";
 import { VictoryHeaderComp } from "./components/BattleResultHeader";
 import { TextureComp } from "./components/TextureComp";
 
-export function PeaceTreatyModal(): React.ReactNode {
-   const name = capitalize(new Generator("sVs").toString());
+export function PeaceTreatyModal({
+   victory,
+   name,
+   texture,
+   planetId,
+}: {
+   victory: number;
+   name: string;
+   texture?: string;
+   planetId?: number;
+}): React.ReactNode {
+   const victoryType = getVictoryType(victory);
+   const battleResult: BattleResult = {
+      victory,
+      boosters: new Map([["Evasion1", 1]]),
+      resources: new Map([["VictoryPoint", 1]]),
+   };
    return (
       <div className="m10">
-         <VictoryHeaderComp title="Decisive Victory" />
+         <VictoryHeaderComp title={BattleVictoryTypeLabel[victoryType]()} />
          <div className="row text-lg">
-            <TextureComp name="Others/Spaceship" width={32} />
+            <TextureComp name="Others/Spaceship24" width={48} />
             <div>SS {G.save.state.name}</div>
             <div className="f1" />
             <div>{name}</div>
-            <TextureComp name="Galaxy/Planet3" width={32} />
+            <TextureComp name={texture ?? "Others/SpaceshipEnemy24"} width={48} />
          </div>
          <div className="h10" />
          <div className="row">

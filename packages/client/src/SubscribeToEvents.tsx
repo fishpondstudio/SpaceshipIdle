@@ -7,7 +7,6 @@ import { OnBattleStatusChanged } from "@spaceship-idle/shared/src/game/logic/Run
 import { clearFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { saveGame } from "./game/LoadSave";
 import { onSteamClose } from "./rpc/SteamClient";
-import { PracticeBattleResultModal } from "./ui/PracticeBattleResultModal";
 import { QualifierBattleResultModal } from "./ui/QualifierBattleResultModal";
 import { G } from "./utils/Global";
 import { SteamClient } from "./utils/Steam";
@@ -26,10 +25,6 @@ export function subscribeToEvents(): void {
                   addResource("Victory", 1, G.save.state.resources);
                }
                G.save.state.flags = clearFlag(G.save.state.flags, GameStateFlags.QualifierBattlePrompted);
-               break;
-            }
-            case BattleType.Practice: {
-               modal = <PracticeBattleResultModal />;
                break;
             }
          }

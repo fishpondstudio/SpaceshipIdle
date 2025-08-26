@@ -95,7 +95,7 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
 
                   G.speed = 0;
                   G.runtime = new Runtime({ state: me, options: G.save.options, data: G.save.data }, enemy);
-                  G.runtime.battleType = isPracticeBattle ? BattleType.Practice : BattleType.Qualifier;
+                  G.runtime.battleType = BattleType.Qualifier;
                   G.scene.loadScene(ShipScene);
 
                   AddShipToMatchmakingPool(me);

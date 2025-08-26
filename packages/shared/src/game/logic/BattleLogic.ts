@@ -1,4 +1,4 @@
-import { hasFlag, reduceOf, setFlag, tileToPoint, type Tile } from "../../utils/Helper";
+import { hasFlag, randOne, reduceOf, setFlag, type Tile, tileToPoint } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -11,6 +11,8 @@ import {
    DefaultCooldown,
    MaxBattleTick as MaxBattleSeconds,
 } from "../definitions/Constant";
+import { ShipDesigns } from "../definitions/ShipDesign";
+import type { ShipClass } from "../definitions/TechDefinitions";
 import { GameOption } from "../GameOption";
 import { GameData, GameState } from "../GameState";
 import { posToTile } from "../Grid";
@@ -24,6 +26,7 @@ import type { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag, type RuntimeTile } from "./RuntimeTile";
 import { calculateAABB } from "./ShipLogic";
 import { Side } from "./Side";
+import { getBuildingsInShipClass } from "./TechLogic";
 
 interface IProjectileHit {
    position: IHaveXY;
@@ -274,6 +277,16 @@ export function damageAfterDeflection(value: number): number {
 
 export function evasionChance(value: number): number {
    return 1 - 1 / (1 + value);
+}
+
+export function generateShip(shipClass: ShipClass, random: () => number): GameState {
+   const ship = new GameState();
+   const design = ShipDesigns[ship.shipDesign][shipClass];
+   const buildings = getBuildingsInShipClass(shipClass);
+   for (const tile of design) {
+      ship.tiles.set(tile, { type: randOne(buildings, random), level: 10 });
+   }
+   return ship;
 }
 
 export function simulateBattle(ship: GameState, reference: GameState): Runtime {

@@ -110,7 +110,18 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                disabled={!!cannotDeclareWarReason}
                className="btn red w100 row g5"
                onClick={() => {
-                  showModal({ children: <PeaceTreatyModal />, size: "lg", dismiss: true });
+                  showModal({
+                     children: (
+                        <PeaceTreatyModal
+                           name={planet.name}
+                           texture={`Galaxy/${planet.texture}`}
+                           victory={0.62}
+                           planetId={planet.id}
+                        />
+                     ),
+                     size: "lg",
+                     dismiss: true,
+                  });
                   addResource("Warmonger", 1, G.save.state.resources);
                   planet.actions.push({ type: PlanetActionType.DeclaredWar, tick: G.save.data.tick });
                   planet.battleResult = {
@@ -121,6 +132,25 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                         ["Victory", 2],
                      ]),
                   };
+
+                  // showLoading();
+                  // const enemy = generateShip("Skiff", Math.random);
+                  // const me = structuredClone(G.save.state);
+                  // me.resources.clear();
+                  // enemy.resources.clear();
+                  // G.speed = 0;
+                  // G.runtime = new Runtime({ state: me, options: G.save.options, data: G.save.data }, enemy);
+                  // G.runtime.battleType = BattleType.Qualifier;
+                  // G.scene.loadScene(ShipScene);
+                  // hideSidebar();
+                  // hideModal();
+                  // GameStateUpdated.emit();
+                  // setTimeout(() => {
+                  //    G.speed = 1;
+                  //    hideLoading();
+                  //    GameStateUpdated.emit();
+                  // }, 1000);
+
                   GameStateUpdated.emit();
                }}
             >

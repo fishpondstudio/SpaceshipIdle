@@ -27,6 +27,7 @@ export interface Planet extends GalaxyEntity {
    type: PlanetType;
    actions: PlanetAction[];
    flags: PlanetFlags;
+   seed: string;
    battleResult: BattleResult | null;
 }
 

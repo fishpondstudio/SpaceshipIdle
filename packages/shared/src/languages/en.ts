@@ -743,4 +743,7 @@ export const EN = {
    MinorVictory: "Minor Victory",
    NarrowVictory: "Narrow Victory",
    VictoryPoint: "Victory Point",
+   MatchmakingQualified: "Matchmaking Qualified",
+   TotalDefeat: "Total Defeat",
+   TotalVictory: "Total Victory",
 };

@@ -1,7 +1,7 @@
 import type { ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 
-export const BattleType = { Peace: 0, Practice: 1, Qualifier: 2 };
+export const BattleType = { Peace: 0, Qualifier: 1 };
 export type BattleType = ValueOf<typeof BattleType>;
 
 export const BattleFlag = { None: 0, Silent: 1 << 0 };

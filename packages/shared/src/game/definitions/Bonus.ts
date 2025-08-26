@@ -1,4 +1,4 @@
-import { widen } from "../../utils/Helper";
+import { cast } from "../../utils/Helper";
 import type { Runtime } from "../logic/Runtime";
 
 export interface IBonusDefinition {
@@ -9,7 +9,7 @@ export interface IBonusDefinition {
 }
 
 export const Bonus = {
-   B1: widen<IBonusDefinition>({
+   B1: cast<IBonusDefinition>({
       desc: () => "Bonus 1",
       onStart: (runtime: Runtime) => {},
       onStop: (runtime: Runtime) => {},

@@ -40,6 +40,32 @@ export function techColumnToShipClass(column: number): ShipClass {
    return shipClass;
 }
 
+export function getTechShipClass(tech: Tech): ShipClass {
+   return techColumnToShipClass(Config.Tech[tech].position.x);
+}
+
+export function getTechInShipClass(shipClass: ShipClass): Tech[] {
+   const result: Tech[] = [];
+   forEach(Config.Tech, (tech, def) => {
+      if (techColumnToShipClass(def.position.x) === shipClass) {
+         result.push(tech);
+      }
+   });
+   return result;
+}
+
+export function getBuildingsInShipClass(shipClass: ShipClass): Building[] {
+   const result: Building[] = [];
+   forEach(Config.Tech, (_, def) => {
+      if (techColumnToShipClass(def.position.x) === shipClass) {
+         def.unlockBuildings?.forEach((b) => {
+            result.push(b);
+         });
+      }
+   });
+   return result;
+}
+
 export function getTechName(tech: Tech): string {
    const def = Config.Tech[tech];
    return def.name?.() ?? camelToHuman(tech);

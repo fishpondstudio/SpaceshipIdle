@@ -1,6 +1,6 @@
 import { AABB } from "../../utils/AABB";
 import type { Circle } from "../../utils/Circle";
-import { CURRENCY_EPSILON, capitalize, hasFlag, rand, randOne, shuffle } from "../../utils/Helper";
+import { CURRENCY_EPSILON, capitalize, hasFlag, rand, randOne, randomAlphaNumeric, shuffle } from "../../utils/Helper";
 import { Generator } from "../../utils/NameGen";
 import type { IHaveXY } from "../../utils/Vector2";
 import { FriendshipDurationSeconds } from "../definitions/Constant";
@@ -133,6 +133,7 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
             actions: [],
             flags: PlanetFlags.None,
             battleResult: null,
+            seed: randomAlphaNumeric(16),
          };
          starSystem.planets.push(planet);
          r -= rand(30, 70);

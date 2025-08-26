@@ -2,7 +2,6 @@ import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
-import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { elementToXP, xpToElement } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
@@ -16,10 +15,10 @@ import {
    xpToQuantum,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
-import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import {
    clamp,
    classNames,
+   divide,
    formatHMS,
    formatNumber,
    formatPercent,
@@ -82,18 +81,42 @@ export function ShipInfoPanel(): React.ReactNode {
    const rawDPS = reduceOf(rawDamages, (prev, curr, value) => prev + value, 0);
    const timeUntilNextQuantum = (1000 * (nextQuantumXP - totalXP)) / xpDelta;
    const progressTowardsNextQuantum = (totalXP - prevQuantumXP) / (nextQuantumXP - prevQuantumXP);
+   const vp = resourceOf("VictoryPoint", G.save.state.resources);
+   const victory = resourceOf("Victory", G.save.state.resources);
+   const defeat = resourceOf("Defeat", G.save.state.resources);
    return (
       <div className="sf-frame top ship-info">
          <HamburgerMenuComp flag={options.flag} />
          <div className="divider vertical" />
          <Tooltip
+            w={300}
             label={
-               <>
-                  <RenderHTML html={t(L.Battle)} />
-                  {highlight ? (
-                     <RenderHTML html={t(L.ReachedQuantumLimitV2, ShipClass[getShipClass(G.save.state)].name())} />
-                  ) : null}
-               </>
+               <div className="flex-table mx-10">
+                  <div className="row">
+                     <div className="f1">{t(L.VictoryPoint)}</div>
+                     <div>
+                        <TextureComp name="Others/Trophy16" className="inline-middle" /> {formatNumber(vp.current)}
+                     </div>
+                  </div>
+                  <div className="row">
+                     <div className="f1">{t(L.TotalVictory)}</div>
+                     <div>{formatNumber(victory.total)}</div>
+                  </div>
+                  <div className="row">
+                     <div className="f1">{t(L.TotalDefeat)}</div>
+                     <div>{formatNumber(defeat.total)}</div>
+                  </div>
+                  <div className="row">
+                     <div className="f1">{t(L.MatchmakingQualified)}</div>
+                     <div>
+                        {highlight ? (
+                           <div className="mi sm text-green">check_circle</div>
+                        ) : (
+                           <div className="mi sm text-red">cancel</div>
+                        )}
+                     </div>
+                  </div>
+               </div>
             }
             multiline
          >
@@ -115,11 +138,8 @@ export function ShipInfoPanel(): React.ReactNode {
                <TextureComp name="Others/Battle24" />
                <div className="w10" />
                <div className="f1 text-right">
-                  <div>{formatNumber(resourceOf("Victory", G.save.state.resources).current)}</div>
-                  <div className="xs">
-                     {formatNumber(resourceOf("Victory", G.save.state.resources).total)}/
-                     {formatNumber(resourceOf("Defeat", G.save.state.resources).total)}
-                  </div>
+                  <div>{formatNumber(vp.current)}</div>
+                  <div className="xs">{formatPercent(divide(victory.total, victory.total + defeat.total))}</div>
                </div>
             </div>
          </Tooltip>

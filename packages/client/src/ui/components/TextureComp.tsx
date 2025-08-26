@@ -13,6 +13,10 @@ export function TextureComp({
    }
    const scale = width ? width / texture.width : height ? height / texture.height : 1;
    const { style, ...rest } = attrs;
+   const isPixel = texture.baseTexture.scaleMode === SCALE_MODES.NEAREST;
+   if (isPixel && !Number.isInteger(scale)) {
+      console.error(`TextureComp: Pixel texture (${name}) should have integer scale!`);
+   }
    return (
       <div
          style={{
@@ -22,7 +26,7 @@ export function TextureComp({
             height: texture.height * scale,
             backgroundPosition: `-${texture.frame.x * scale}px -${texture.frame.y * scale}px`,
             backgroundSize: `${texture.baseTexture.width * scale}px ${texture.baseTexture.height * scale}px`,
-            imageRendering: texture.baseTexture.scaleMode === SCALE_MODES.NEAREST ? "pixelated" : "auto",
+            imageRendering: isPixel ? "pixelated" : "auto",
          }}
          {...rest}
       ></div>
