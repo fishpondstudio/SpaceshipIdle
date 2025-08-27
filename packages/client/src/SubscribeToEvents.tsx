@@ -15,13 +15,13 @@ export function subscribeToEvents(): void {
       if (prevStatus === BattleStatus.InProgress && status !== BattleStatus.InProgress) {
          let modal: React.ReactNode = null;
          switch (G.runtime.battleType) {
-            case BattleType.Qualifier: {
+            case BattleType.Battle: {
                const stat = G.runtime.leftStat;
                modal = (
                   <PeaceTreatyModal
                      battleScore={Math.round((100 * stat.currentHp) / stat.maxHp)}
                      name={G.runtime.right.name}
-                     enemyXP={calcSpaceshipXP(G.runtime.right)}
+                     enemyXP={calcSpaceshipXP(G.runtime.original.right)}
                   />
                );
                if (G.runtime.battleStatus === BattleStatus.RightWin) {

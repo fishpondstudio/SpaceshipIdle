@@ -11,9 +11,9 @@ import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { jsonEncode } from "@spaceship-idle/shared/src/utils/Serialization";
 import { RPCClient } from "../rpc/RPCClient";
 import { ChooseElementModal } from "../ui/ChooseElementModal";
-import { MatchMakingModal } from "../ui/MatchmakingModal";
 import { NewPlayerModal } from "../ui/NewPlayerModal";
 import { OfflineTimeModal } from "../ui/OfflineTimeModal";
+import { PreBattleModal } from "../ui/PreBattleModal";
 import { PrestigeModal } from "../ui/PrestigeModal";
 import { PrestigeReason } from "../ui/PrestigeReason";
 import { QualifierBattleResultModal } from "../ui/QualifierBattleResultModal";
@@ -153,7 +153,7 @@ export function addDebugFunctions(): void {
    globalThis.battle = async () => {
       const gs = await loadGameStateFromFile();
       showModal({
-         children: <MatchMakingModal enemy={gs} />,
+         children: <PreBattleModal enemy={gs} info={{}} />,
          size: "lg",
          dismiss: true,
       });

@@ -1,238 +1,134 @@
-import { Grid, Progress, Switch } from "@mantine/core";
-import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
-import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
+import { getGradient, useMantineTheme } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { QualifierSpaceshipValuePercent } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
+import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import {
    calcSpaceshipXP,
-   getTotalQuantum,
+   getMinimumQuantumForBattle,
+   getMinimumSpaceshipXPForBattle,
    getUsedQuantum,
-   quantumToXP,
 } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { isQualifierBattle } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
-import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
-import { formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
+import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
+import { enumOf, formatNumber, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import type React from "react";
-import { useMemo, useState } from "react";
-import { AddShipToMatchmakingPool } from "../game/AddShipToMatchmakingPool";
-import { ShipImageComp } from "../game/ShipImageComp";
-import { ShipScene } from "../scenes/ShipScene";
+import { findShip } from "../game/Matchmaking";
 import { G } from "../utils/Global";
-import { hideModal } from "../utils/ToggleModal";
+import { refreshOnTypedEvent } from "../utils/Hook";
+import { hideModal, showModal } from "../utils/ToggleModal";
 import { FloatingTip } from "./components/FloatingTip";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
-import { MatchmakingShipComp } from "./MatchmakingShipComp";
-import { hideSidebar } from "./Sidebar";
+import { PreBattleModal } from "./PreBattleModal";
+import { PrestigeModal } from "./PrestigeModal";
+import { PrestigeReason } from "./PrestigeReason";
+import { playBling, playClick, playError } from "./Sound";
 
-export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNode {
-   const [isPracticeBattle, setIsPracticeBattle] = useState(!isQualifierBattle(G.save.state));
-   const [score, hp, dps] = useMemo(() => calcShipScore(G.save.state), []);
-   const [enemyScore, enemyHp, enemyDps] = useMemo(() => calcShipScore(enemy), [enemy]);
-   const quantumLimit = getTotalQuantum(G.save.state);
+export function MatchmakingModal(): React.ReactNode {
+   refreshOnTypedEvent(GameStateUpdated);
+   const theme = useMantineTheme();
+   const minQuantum = getMinimumQuantumForBattle(G.save.state);
+   const usedQuantum = getUsedQuantum(G.save.state);
+   const xp = calcSpaceshipXP(G.save.state);
+   const minXO = getMinimumSpaceshipXPForBattle(G.save.state);
    return (
       <div className="m10">
-         <div className="row">
-            <div className="f1">
-               <ShipHeaderComp gs={G.save.state} side={Side.Left} />
-            </div>
-            <div className="f1">
-               <ShipHeaderComp gs={enemy} side={Side.Right} />
-            </div>
-         </div>
-         <div className="h10" />
-         <ShipStatComp left={hp} right={enemyHp} icon="security" tooltip={t(L.MatchmakingDefense)} />
-         <ShipStatComp left={dps} right={enemyDps} icon="swords" tooltip={t(L.MatchmakingAttack)} />
-         <ShipStatComp left={score} right={enemyScore} icon="cards_star" tooltip={t(L.MatchmakingScore)} />
-         <div className="h10" />
-         <FloatingTip
-            disabled={isQualifierBattle(G.save.state)}
-            label={
-               <RenderHTML
-                  html={t(L.QualifierBattleRequirementHTML, quantumLimit, formatNumber(quantumToXP(quantumLimit)))}
-               />
-            }
-         >
-            <div
-               className="row p10"
-               style={{
-                  border: "1px solid var(--mantine-color-default-border)",
-                  borderRadius: "var(--mantine-radius-sm)",
-               }}
-            >
-               <div className="f1">{t(L.PracticeBattle)}</div>
-               <Switch
-                  checked={isPracticeBattle}
-                  onChange={(e) => {
-                     if (!isQualifierBattle(G.save.state)) {
-                        setIsPracticeBattle(true);
-                        return;
-                     }
-                     setIsPracticeBattle(e.target.checked);
-                  }}
-               />
-            </div>
-         </FloatingTip>
-         <div className="h10" />
-         <div className="row">
-            <button
-               className="btn w100 py5"
-               onClick={() => {
-                  hideModal();
-               }}
-            >
-               {t(L.Decline)}
-            </button>
-            <button
-               className="btn filled w100 py5"
-               onClick={() => {
-                  showLoading();
-
-                  const me = structuredClone(G.save.state);
-                  me.resources.clear();
-                  enemy.resources.clear();
-
-                  G.speed = 0;
-                  G.runtime = new Runtime({ state: me, options: G.save.options, data: G.save.data }, enemy);
-                  G.runtime.battleType = BattleType.Qualifier;
-                  G.scene.loadScene(ShipScene);
-
-                  AddShipToMatchmakingPool(me);
-
-                  hideSidebar();
-                  hideModal();
-                  GameStateUpdated.emit();
-                  setTimeout(() => {
-                     G.speed = 1;
-                     hideLoading();
-                     GameStateUpdated.emit();
-                  }, 1000);
-               }}
-            >
-               {isPracticeBattle ? t(L.PracticeBattle) : t(L.QualifierBattle)}
-            </button>
-         </div>
-      </div>
-   );
-}
-
-function ShipStatComp({
-   left,
-   right,
-   icon,
-   tooltip,
-}: {
-   left: number;
-   right: number;
-   icon: string;
-   tooltip: React.ReactNode;
-}): React.ReactNode {
-   const max = Math.max(left, right);
-   const min = Math.min(left, right);
-   return (
-      <>
-         <div className="row">
-            <div className="f1">
-               <Progress color="green" size="lg" value={(100 * left) / max} />
-            </div>
-            <FloatingTip label={tooltip}>
-               <div className="row g0" style={{ fontSize: 28, width: 50 }}>
-                  <div style={{ visibility: left >= right ? "visible" : "hidden" }} className="mi text-green">
-                     arrow_left
-                  </div>
-                  <div className="mi">{icon}</div>
-                  <div style={{ visibility: left <= right ? "visible" : "hidden" }} className="mi text-red">
-                     arrow_right
-                  </div>
-               </div>
-            </FloatingTip>
-            <div className="f1">
-               <Progress color="red" size="lg" value={(100 * right) / max} />
-            </div>
-         </div>
-         <div className="row" style={{ marginTop: -5 }}>
-            <div className="row f1">
-               <div className="f1">{formatNumber(left)}</div>
-               <div className="text-green text-sm">
-                  {left - min > 0 ? `+${formatNumber(left - min)} (${formatPercent((left - min) / max)})` : ""}
-               </div>
-            </div>
-            <div style={{ width: 50 }} />
-            <div className="row f1">
-               <div className="f1 text-red text-sm">
-                  {right - min > 0 ? `+${formatNumber(right - min)} (${formatPercent((right - min) / max)})` : ""}
-               </div>
-               <div>{formatNumber(right)}</div>
-            </div>
-         </div>
-      </>
-   );
-}
-
-function ShipHeaderComp({ gs, side }: { gs: GameState; side: Side }): React.ReactNode {
-   return (
-      <>
-         <FloatingTip w={300} label={<MatchmakingShipComp ship={gs} />}>
-            {side === Side.Left ? (
-               <div className="text-xl row">
-                  {t(L.SpaceshipPrefix, gs.name)}
-                  <div className="mi text-space">info</div>
-                  <div className="f1" />
-               </div>
-            ) : (
-               <div className="text-xl row">
-                  <div className="f1" />
-                  <div className="mi text-space">info</div>
-                  {t(L.SpaceshipPrefix, gs.name)}
-               </div>
-            )}
-         </FloatingTip>
-         <div className="h5" />
-         <ShipImageComp
-            ship={gs}
-            fit="contain"
-            side={side}
+         <div
+            className="p10 mb10 col cc"
             style={{
-               padding: 5,
-               aspectRatio: "4/3",
-               border: "1px solid var(--mantine-color-default-border)",
-               borderRadius: "var(--mantine-radius-sm)",
+               position: "relative",
+               color: "#fff",
+               borderRadius: "5px",
+               background: getGradient({ deg: 180, from: "space.5", to: "space.9" }, theme),
             }}
-         />
-      </>
-   );
-}
+         >
+            <div className="mi pointer" style={{ position: "absolute", top: 5, right: 5 }} onClick={hideModal}>
+               close
+            </div>
+            <div className="mi" style={{ fontSize: 128 }}>
+               trophy
+            </div>
+            <div style={{ fontSize: 24 }}>{t(L.XClassLeague, ShipClass[getShipClass(G.save.state)].name())}</div>
+         </div>
+         <div className="panel mb10 p0">
+            <div className="m10">
+               <div className="row">
+                  <div>{t(L.Quantum)}</div>
+                  <div className="f1"></div>
+                  <div>
+                     {usedQuantum}/{minQuantum}
+                  </div>
+                  <FloatingTip label={<RenderHTML html={t(L.QualifierBattleQuantumRequirementHTML, minQuantum)} />}>
+                     {usedQuantum >= minQuantum ? (
+                        <div className="mi sm text-green">check_circle</div>
+                     ) : (
+                        <div className="mi sm text-yellow">info</div>
+                     )}
+                  </FloatingTip>
+               </div>
+               <div className="row">
+                  <div>{t(L.SpaceshipXP)}</div>
+                  <div className="f1"></div>
+                  <div>
+                     {formatNumber(xp)}/{formatNumber(minXO)}
+                  </div>
+                  <FloatingTip label={<RenderHTML html={t(L.QualifierBattleXPRequirementHTML, formatNumber(minXO))} />}>
+                     {xp >= QualifierSpaceshipValuePercent * minXO ? (
+                        <div className="mi sm text-green">check_circle</div>
+                     ) : (
+                        <div className="mi sm text-yellow">info</div>
+                     )}
+                  </FloatingTip>
+               </div>
+            </div>
+         </div>
+         <button
+            className="btn filled w100 py5 px10 text-lg"
+            onClick={async () => {
+               try {
+                  playClick();
+                  showLoading();
+                  const [score, hp, dps] = calcShipScore(G.save.state);
+                  const ship = await findShip(score, hp, dps);
+                  await resolveIn(1, null);
 
-function ShipInfoComp({ gs, side }: { gs: GameState; side: Side }): React.ReactNode {
-   return (
-      <div
-         style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: side === Side.Left ? "flex-start" : "flex-end",
-            textAlign: side === Side.Left ? "left" : "right",
-         }}
-      >
-         <Grid>
-            <Grid.Col span={6}>
-               <div style={{ fontSize: 32 }}>{formatNumber(getUsedQuantum(gs))}</div>
-               <div className="text-sm text-dimmed">{t(L.Quantum)}</div>
-            </Grid.Col>
-            <Grid.Col span={6}>
-               <div style={{ fontSize: 32 }}>{formatNumber(calcSpaceshipXP(gs))}</div>
-               <div className="text-sm text-dimmed">{t(L.SpaceshipXP)}</div>
-            </Grid.Col>
-            <Grid.Col span={6}>
-               <div style={{ fontSize: 32 }}>{formatNumber(gs.tiles.size)}</div>
-               <div className="text-sm text-dimmed">{t(L.Modules)}</div>
-            </Grid.Col>
-            <Grid.Col span={6}>
-               <div style={{ fontSize: 32 }}>{formatNumber(gs.unlockedTech.size)}</div>
-               <div className="text-sm text-dimmed">{t(L.Tech)}</div>
-            </Grid.Col>
-         </Grid>
+                  if (import.meta.env.DEV) {
+                     const rt = simulateBattle(G.save.state, ship.json);
+                     console.log(`Battle with ${ship.shipId} result: ${enumOf(BattleStatus, rt.battleStatus)}`);
+                  }
+
+                  playBling();
+                  hideLoading();
+                  showModal({
+                     children: <PreBattleModal enemy={ship.json} info={{}} />,
+                     size: "lg",
+                     dismiss: true,
+                  });
+               } catch (e) {
+                  playError();
+                  hideLoading();
+                  console.error(e);
+                  notifications.show({ position: "top-center", color: "red", message: String(e) });
+               }
+            }}
+         >
+            {t(L.FindOpponent)}
+         </button>
+         <div className="h10" />
+         <button
+            className="btn w100 p5 row text-lg"
+            onClick={() => {
+               showModal({
+                  children: <PrestigeModal reason={PrestigeReason.None} />,
+                  size: "sm",
+                  dismiss: true,
+               });
+            }}
+         >
+            {t(L.Prestige)}
+         </button>
       </div>
    );
 }

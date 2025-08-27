@@ -1,4 +1,4 @@
-import { hasFlag, randOne, reduceOf, setFlag, tileToPoint, type Tile } from "../../utils/Helper";
+import { hasFlag, randOne, reduceOf, type Tile, tileToPoint } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -17,7 +17,7 @@ import { GameOption } from "../GameOption";
 import { GameData, GameState } from "../GameState";
 import { posToTile } from "../Grid";
 import { BattleStatus } from "./BattleStatus";
-import { BattleFlag, BattleType, type BattleVictoryType } from "./BattleType";
+import { BattleType, type BattleVictoryType } from "./BattleType";
 import { getDamagePerFire } from "./BuildingLogic";
 import { Projectile } from "./Projectile";
 import { addResource } from "./ResourceLogic";
@@ -299,8 +299,8 @@ export function simulateBattle(ship: GameState, reference: GameState): Runtime {
    enemy.resources.clear();
 
    const rt = new Runtime({ state: me, options: new GameOption(), data: new GameData() }, enemy);
-   rt.battleType = BattleType.Qualifier;
-   rt.battleFlag = setFlag(rt.battleFlag, BattleFlag.Silent);
+   rt.battleType = BattleType.Battle;
+   rt.battleInfo = { silent: true };
    const speed = { speed: 1 };
    while (rt.battleStatus === BattleStatus.InProgress && rt.battleSeconds <= MaxBattleSeconds) {
       rt.tick(BattleTickInterval, speed);
@@ -320,7 +320,7 @@ export function calcShipScore(ship: GameState): [number, number, number, Runtime
    rt.wave = Number.POSITIVE_INFINITY;
    rt.createXPTarget();
    rt.battleType = BattleType.Peace;
-   rt.battleFlag = setFlag(rt.battleFlag, BattleFlag.Silent);
+   rt.battleInfo = { silent: true };
    const speed = { speed: 1 };
    for (let i = 0; i < (CalcShipScoreTicks + BattleStartAmmoCycles * 10) / BattleTickInterval; i++) {
       rt.tick(BattleTickInterval, speed);

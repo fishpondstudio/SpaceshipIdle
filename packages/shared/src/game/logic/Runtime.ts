@@ -1,4 +1,4 @@
-import { clamp, createTile, hasFlag, setFlag, type Tile } from "../../utils/Helper";
+import { clamp, createTile, setFlag, type Tile } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { srand } from "../../utils/Random";
 import { TypedEvent } from "../../utils/TypedEvent";
@@ -12,9 +12,10 @@ import {
 } from "../definitions/Constant";
 import { type GameState, GameStateUpdated, hashGameStatePair, type SaveGame, type Tiles } from "../GameState";
 import { makeTile } from "../ITileData";
+import type { BattleInfo } from "./BattleInfo";
 import { tickProjectiles, tickTiles } from "./BattleLogic";
 import { BattleStatus } from "./BattleStatus";
-import { BattleFlag, BattleType } from "./BattleType";
+import { BattleType } from "./BattleType";
 import { tickBooster } from "./BoosterLogic";
 import { tickCatalyst } from "./CatalystLogic";
 import { tickElement } from "./ElementLogic";
@@ -53,21 +54,23 @@ export class Runtime {
    scheduled: { action: () => void; second: number }[] = [];
    random: () => number;
 
-   battleFlag: BattleFlag = BattleFlag.None;
+   battleInfo: BattleInfo = {};
    battleType: BattleType = BattleType.Peace;
    battleStatus = BattleStatus.InProgress;
 
    public readonly left: GameState;
    public readonly right: GameState;
+   public readonly original: { left: GameState; right: GameState };
    public readonly leftSave: SaveGame;
 
    constructor(left: SaveGame, right: GameState) {
+      this.leftSave = left;
       this.left = left.state;
       // We clone the right because we will mutate it!
       this.right = structuredClone(right);
       this.right.tiles = flipHorizontal(this.right.tiles);
 
-      this.leftSave = left;
+      this.original = { left: structuredClone(this.left), right: structuredClone(this.right) };
 
       const hash = hashGameStatePair(this.left, this.right);
       this.random = srand(hash.toString());
@@ -158,7 +161,7 @@ export class Runtime {
    }
 
    public emit<T>(event: TypedEvent<T>, arg: T): void {
-      if (hasFlag(this.battleFlag, BattleFlag.Silent)) return;
+      if (this.battleInfo.silent) return;
       event.emit(arg);
    }
 
@@ -184,18 +187,17 @@ export class Runtime {
          this.leftStat.tabulate(this.tabulateHp(this.left.tiles), this.left);
          this.rightStat.tabulate(this.tabulateHp(this.right.tiles), this.right);
 
-         const prevStatus = this.battleStatus;
-         const newStatus = this.getBattleStatus();
-         this.battleStatus = newStatus;
-         if (prevStatus !== newStatus) {
-            this.emit(GameStateUpdated, undefined);
-            this.emit(OnBattleStatusChanged, { status: newStatus, prevStatus });
-         }
-
          if (this.battleType === BattleType.Peace) {
             ++this.leftSave.data.tick;
          } else {
             ++this.battleSeconds;
+            const prevStatus = this.battleStatus;
+            const newStatus = this.getBattleStatus();
+            this.battleStatus = newStatus;
+            if (prevStatus !== newStatus) {
+               this.emit(GameStateUpdated, undefined);
+               this.emit(OnBattleStatusChanged, { status: newStatus, prevStatus });
+            }
          }
          this.gameStateDirty = true;
       }

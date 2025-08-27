@@ -30,7 +30,7 @@ export function TimerPanel(): React.ReactNode {
       >
          <div className="timer">{formatHMS(G.runtime.battleSeconds * 1000)}</div>
          <div className="text-sm">
-            {G.runtime.battleType === BattleType.Qualifier ? t(L.QualifierBattleShort) : t(L.PracticeBattleShort)}
+            {G.runtime.battleType === BattleType.Battle ? t(L.QualifierBattleShort) : t(L.PracticeBattleShort)}
          </div>
       </div>
    );

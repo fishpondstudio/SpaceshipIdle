@@ -39,8 +39,7 @@ import { FloatingTip } from "./components/FloatingTip";
 import { HamburgerMenuComp } from "./components/HamburgerMenuComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
-import { PrepareForBattleModal } from "./PrepareForBattleModal";
-import { PrepareForBattleMode } from "./PrepareForBattleMode";
+import { MatchmakingModal } from "./MatchmakingModal";
 import { playBling } from "./Sound";
 import { WarpSpeedMenuComp } from "./WarpSpeedMenuComp";
 
@@ -128,7 +127,7 @@ export function ShipInfoPanel(): React.ReactNode {
                }}
                onClick={() => {
                   showModal({
-                     children: <PrepareForBattleModal mode={PrepareForBattleMode.Normal} />,
+                     children: <MatchmakingModal />,
                      size: "sm",
                      dismiss: true,
                   });

@@ -4,6 +4,7 @@ import { type Booster, Boosters } from "../definitions/Boosters";
 import type { BattleResult } from "../definitions/Galaxy";
 import { ShipClass } from "../definitions/TechDefinitions";
 import type { GameState } from "../GameState";
+import { resourceOf } from "./ResourceLogic";
 import { getShipClass } from "./TechLogic";
 
 export function getBaseValue(amount: number): number {
@@ -49,4 +50,8 @@ function getBoosterFactor(booster: Booster, gs: GameState): number {
    const shipClass = Boosters[booster].shipClass;
    const currentShipClass = getShipClass(gs);
    return 2 ** (ShipClass[shipClass].index - ShipClass[currentShipClass].index);
+}
+
+export function getWarmongerPenalty(gs: GameState): number {
+   return Math.ceil(resourceOf("Warmonger", gs.resources).current);
 }

@@ -746,4 +746,5 @@ export const EN = {
    MatchmakingQualified: "Matchmaking Qualified",
    TotalDefeat: "Total Defeat",
    TotalVictory: "Total Victory",
+   StartBattle: "Start Battle",
 };

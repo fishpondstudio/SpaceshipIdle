@@ -1,4 +1,5 @@
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
@@ -18,7 +19,7 @@ export function GalaxyInfoPanel(): React.ReactNode {
             label={
                <>
                   <div>
-                     Current Warmonger Penalty is <b>{Math.ceil(warmongerPenalty)}</b> ( rounded up from{" "}
+                     Current Warmonger Penalty is <b>{getWarmongerPenalty(G.save.state)}</b> ( rounded up from{" "}
                      <b className="text-tabular-nums">{warmongerPenalty.toFixed(3)}</b>). It is increased when you
                      declare war. It makes declaring further wars and declaring friendship more expensive
                   </div>

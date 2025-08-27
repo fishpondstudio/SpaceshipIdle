@@ -8,8 +8,8 @@ import { G } from "../utils/Global";
 import { showModal } from "../utils/ToggleModal";
 import { usePromise } from "../utils/UsePromise";
 import { DevOrAdminOnly } from "./components/DevOnly";
-import { MatchMakingModal } from "./MatchmakingModal";
 import { MatchmakingShipComp } from "./MatchmakingShipComp";
+import { PreBattleModal } from "./PreBattleModal";
 import { ShipGalleryModal } from "./ShipGalleryModal";
 
 export function ViewShipModal({ id }: { id: string }): React.ReactNode {
@@ -32,7 +32,7 @@ export function ViewShipModal({ id }: { id: string }): React.ReactNode {
                className="btn text-sm"
                onClick={() => {
                   showModal({
-                     children: <MatchMakingModal enemy={ship.json} />,
+                     children: <PreBattleModal enemy={ship.json} info={{}} />,
                      size: "lg",
                      dismiss: true,
                   });
