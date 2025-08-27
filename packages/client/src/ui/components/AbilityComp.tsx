@@ -1,4 +1,4 @@
-import { Image, Tooltip } from "@mantine/core";
+import { Image } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import {
    AbilityRange,
@@ -14,6 +14,7 @@ import Adjacent from "../../assets/images/Adjacent.png";
 import FrontTrio from "../../assets/images/FrontTrio.png";
 import RearTrio from "../../assets/images/RearTrio.png";
 import { StatusEffectTypeIcon, StatusEffectTypeLabel } from "../../game/StatusEffectType";
+import { FloatingTip } from "./FloatingTip";
 
 export const AbilityRangeImage: Partial<Record<AbilityRange, string>> = {
    [AbilityRange.Adjacent]: Adjacent,
@@ -51,21 +52,20 @@ export function AbilityComp({
          {ability.range !== AbilityRange.Single ? (
             <div className="row g5">
                <div className="f1" />
-               <Tooltip.Floating
-                  p={5}
+               <FloatingTip
                   disabled={!AbilityRangeImage[ability.range]}
                   label={<Image radius="sm" w={200} src={AbilityRangeImage[ability.range]} />}
                >
                   <div className="text-space">{AbilityRangeLabel[ability.range]()}</div>
-               </Tooltip.Floating>
+               </FloatingTip>
             </div>
          ) : null}
          <div className="row g5">
             <div className="f1">{t(L.AbilityEffect)}</div>
             <div>{StatusEffects[ability.effect].name()}</div>
-            <Tooltip.Floating label={StatusEffectTypeLabel[StatusEffects[ability.effect].type]}>
+            <FloatingTip label={StatusEffectTypeLabel[StatusEffects[ability.effect].type]}>
                <div className="mi sm">{StatusEffectTypeIcon[StatusEffects[ability.effect].type]}</div>
-            </Tooltip.Floating>
+            </FloatingTip>
          </div>
          <div className="text-space" style={{ textAlign: "right" }}>
             {StatusEffects[ability.effect].desc(ability.value(building, level, DefaultMultipliers))} (

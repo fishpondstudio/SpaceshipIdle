@@ -1,10 +1,10 @@
-import { Tooltip } from "@mantine/core";
 import { GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { classNames, clearFlag, formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { Tutorial } from "../game/Tutorial";
 import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
+import { FloatingTip } from "./components/FloatingTip";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { playClick } from "./Sound";
 
@@ -28,9 +28,9 @@ export function TutorialProgressModal(): React.ReactNode {
                         <div className="mi fstart">circle</div>
                      )}
                      <div className="f1">
-                        <Tooltip.Floating label={<RenderHTML html={step.desc()} />} multiline>
+                        <FloatingTip label={<RenderHTML html={step.desc()} />}>
                            <div className={classNames(active ? "text-space" : null)}>{step.name()}</div>
-                        </Tooltip.Floating>
+                        </FloatingTip>
                         {active ? (
                            <div className="text-sm text-dimmed">
                               <RenderHTML html={step.desc()} />

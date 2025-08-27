@@ -1,4 +1,4 @@
-import { Popover, TextInput, Tooltip } from "@mantine/core";
+import { Popover, TextInput } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { CountryCode } from "@spaceship-idle/shared/src/utils/CountryCode";
 import { mapOf } from "@spaceship-idle/shared/src/utils/Helper";
@@ -8,6 +8,7 @@ import { getUser, UserUpdated } from "../rpc/HandleMessage";
 import { RPCClient } from "../rpc/RPCClient";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
+import { FloatingTip } from "./components/FloatingTip";
 import { TextureComp } from "./components/TextureComp";
 import { playError } from "./Sound";
 
@@ -36,14 +37,14 @@ export function ChangePlayerHandleComp(): React.ReactNode {
                      styles={{ dropdown: { padding: "0", transform: "translate(-4px, 1px)" } }}
                   >
                      <Popover.Target>
-                        <Tooltip.Floating label={CountryCode[G.save.options.country]}>
+                        <FloatingTip label={CountryCode[G.save.options.country]}>
                            <TextureComp
                               className="pointer"
                               onClick={() => setOpened(!opened)}
                               name={`Flag/${G.save.options.country}`}
                               width={30}
                            />
-                        </Tooltip.Floating>
+                        </FloatingTip>
                      </Popover.Target>
                      <Popover.Dropdown>
                         <div
@@ -52,7 +53,7 @@ export function ChangePlayerHandleComp(): React.ReactNode {
                         >
                            {mapOf(CountryCode, (code) => {
                               return (
-                                 <Tooltip.Floating label={CountryCode[code]}>
+                                 <FloatingTip label={CountryCode[code]}>
                                     <TextureComp
                                        name={`Flag/${code}`}
                                        width={30}
@@ -63,7 +64,7 @@ export function ChangePlayerHandleComp(): React.ReactNode {
                                           setOpened(false);
                                        }}
                                     />
-                                 </Tooltip.Floating>
+                                 </FloatingTip>
                               );
                            })}
                         </div>

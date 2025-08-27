@@ -1,4 +1,4 @@
-import { ColorInput, Tooltip } from "@mantine/core";
+import { ColorInput } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { CodeLabel } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
@@ -10,6 +10,7 @@ import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { AttackComp } from "./components/AttackComp";
 import { DefenseComp } from "./components/DefenseComp";
+import { FloatingTip } from "./components/FloatingTip";
 import { SidebarComp } from "./components/SidebarComp";
 import { StatusEffectComp } from "./components/StatusEffectComp";
 import { TextureComp } from "./components/TextureComp";
@@ -40,12 +41,12 @@ export function BuildingPage({ tile, gs, readonly }: ITileWithGameState & { read
    return (
       <SidebarComp
          title={
-            <Tooltip.Floating label={codeLabel} disabled={codeLabel.length <= 0} position="left">
+            <FloatingTip label={codeLabel} disabled={codeLabel.length <= 0} position="left">
                <div className="row g5">
                   <TextureComp name={`Building/${data.type}`} style={{ margin: "-10px -5px" }} />
                   <div className="f1">{getBuildingName(data.type)}</div>
                </div>
-            </Tooltip.Floating>
+            </FloatingTip>
          }
       >
          <div className="h10" />

@@ -1,4 +1,4 @@
-import { Grid, Progress, Switch, Tooltip } from "@mantine/core";
+import { Grid, Progress, Switch } from "@mantine/core";
 import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
@@ -20,6 +20,7 @@ import { ShipImageComp } from "../game/ShipImageComp";
 import { ShipScene } from "../scenes/ShipScene";
 import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
+import { FloatingTip } from "./components/FloatingTip";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { MatchmakingShipComp } from "./MatchmakingShipComp";
@@ -45,9 +46,8 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
          <ShipStatComp left={dps} right={enemyDps} icon="swords" tooltip={t(L.MatchmakingAttack)} />
          <ShipStatComp left={score} right={enemyScore} icon="cards_star" tooltip={t(L.MatchmakingScore)} />
          <div className="h10" />
-         <Tooltip.Floating
+         <FloatingTip
             disabled={isQualifierBattle(G.save.state)}
-            multiline
             label={
                <RenderHTML
                   html={t(L.QualifierBattleRequirementHTML, quantumLimit, formatNumber(quantumToXP(quantumLimit)))}
@@ -73,7 +73,7 @@ export function MatchMakingModal({ enemy }: { enemy: GameState }): React.ReactNo
                   }}
                />
             </div>
-         </Tooltip.Floating>
+         </FloatingTip>
          <div className="h10" />
          <div className="row">
             <button
@@ -136,7 +136,7 @@ function ShipStatComp({
             <div className="f1">
                <Progress color="green" size="lg" value={(100 * left) / max} />
             </div>
-            <Tooltip.Floating label={tooltip}>
+            <FloatingTip label={tooltip}>
                <div className="row g0" style={{ fontSize: 28, width: 50 }}>
                   <div style={{ visibility: left >= right ? "visible" : "hidden" }} className="mi text-green">
                      arrow_left
@@ -146,7 +146,7 @@ function ShipStatComp({
                      arrow_right
                   </div>
                </div>
-            </Tooltip.Floating>
+            </FloatingTip>
             <div className="f1">
                <Progress color="red" size="lg" value={(100 * right) / max} />
             </div>
@@ -173,7 +173,7 @@ function ShipStatComp({
 function ShipHeaderComp({ gs, side }: { gs: GameState; side: Side }): React.ReactNode {
    return (
       <>
-         <Tooltip.Floating w={300} color="gray" label={<MatchmakingShipComp ship={gs} />}>
+         <FloatingTip w={300} label={<MatchmakingShipComp ship={gs} />}>
             {side === Side.Left ? (
                <div className="text-xl row">
                   {t(L.SpaceshipPrefix, gs.name)}
@@ -187,7 +187,7 @@ function ShipHeaderComp({ gs, side }: { gs: GameState; side: Side }): React.Reac
                   {t(L.SpaceshipPrefix, gs.name)}
                </div>
             )}
-         </Tooltip.Floating>
+         </FloatingTip>
          <div className="h5" />
          <ShipImageComp
             ship={gs}

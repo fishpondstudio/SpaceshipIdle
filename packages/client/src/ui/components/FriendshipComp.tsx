@@ -1,10 +1,11 @@
-import { Progress, Switch, Tooltip } from "@mantine/core";
+import { Progress, Switch } from "@mantine/core";
 import { FriendshipDurationSeconds } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { type Planet, PlanetActionType, PlanetFlags } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { formatHMS, formatPercent, hasFlag, SECOND, toggleFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
+import { FloatingTip } from "./FloatingTip";
 import { TextureComp } from "./TextureComp";
 
 export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode {
@@ -36,9 +37,9 @@ export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode 
                <div className="divider dashed my10 mx-10" />
                <div className="row g5">
                   <div>Auto Renew</div>
-                  <Tooltip.Floating label="Automatically renews the friendship when it expires. The cost is determined at the time of renewal. Renewal will fail if there isn't enough resources">
+                  <FloatingTip label="Automatically renews the friendship when it expires. The cost is determined at the time of renewal. Renewal will fail if there isn't enough resources">
                      <div className="mi sm">info</div>
-                  </Tooltip.Floating>
+                  </FloatingTip>
                   <div className="f1" />
                   <Switch
                      checked={hasFlag(planet.flags, PlanetFlags.AutoRenew)}
@@ -58,7 +59,7 @@ export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode 
          <div className="panel">
             <div className="title">Cost</div>
             <div className="h5" />
-            <Tooltip.Floating
+            <FloatingTip
                label={
                   <>
                      <div>The cost of declaring friendship is determined as follows</div>
@@ -88,7 +89,7 @@ export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode 
                <div>
                   4 <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
                </div>
-            </Tooltip.Floating>
+            </FloatingTip>
             <div className="divider my10 mx-10" />
             <div className="title">Rewards</div>
             <div className="h5" />

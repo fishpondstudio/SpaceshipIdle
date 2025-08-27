@@ -1,10 +1,10 @@
-import { Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { DamageTypeLabel } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { formatNumber, formatPercent, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
+import { FloatingTip } from "./components/FloatingTip";
 
 export function BattleReportComp(): React.ReactNode {
    const [show, { open, close }] = useDisclosure();
@@ -29,9 +29,9 @@ export function BattleReportComp(): React.ReactNode {
          <div className="panel" style={{ display: "flex", flexDirection: "column", gap: 5 }}>
             <div className="row fstart g5 title" style={{ margin: "-5px 0" }}>
                <div>{t(L.ActualRawDamageByType)}</div>
-               <Tooltip.Floating label={t(L.ActualRawDamageTooltip)}>
+               <FloatingTip label={t(L.ActualRawDamageTooltip)}>
                   <div className="mi sm">info</div>
-               </Tooltip.Floating>
+               </FloatingTip>
             </div>
             <div className="divider mx-10 my5" />
             {mapOf(stat.actualDamage, (damageType, damage) => {

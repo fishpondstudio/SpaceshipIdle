@@ -1,4 +1,4 @@
-import { Badge, Switch, Tooltip } from "@mantine/core";
+import { Badge, Switch } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageTypeLabel, ProjectileFlag, WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
@@ -10,6 +10,7 @@ import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import type { ITileWithGameState } from "../ITileWithGameState";
 import { AbilityComp } from "./AbilityComp";
+import { FloatingTip } from "./FloatingTip";
 import { RenderHTML } from "./RenderHTMLComp";
 import { StatComp } from "./StatComp";
 import { TextureComp } from "./TextureComp";
@@ -87,17 +88,17 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             {hasFlag(rs.props.projectileFlag, ProjectileFlag.LaserDamage) ? (
                <div className="row">
                   <div className="f1">{t(L.LaserProjectile)}</div>
-                  <Tooltip.Floating label={<RenderHTML html={t(L.LaserProjectileDesc)} />} multiline>
+                  <FloatingTip label={<RenderHTML html={t(L.LaserProjectileDesc)} />}>
                      <div className="mi">info</div>
-                  </Tooltip.Floating>
+                  </FloatingTip>
                </div>
             ) : null}
             {hasFlag(rs.props.projectileFlag, ProjectileFlag.DroneDamage) ? (
                <div className="row">
                   <div className="f1">{t(L.DroneProjectile)}</div>
-                  <Tooltip.Floating label={<RenderHTML html={t(L.DroneProjectileDesc)} />} multiline>
+                  <FloatingTip label={<RenderHTML html={t(L.DroneProjectileDesc)} />}>
                      <div className="mi">info</div>
-                  </Tooltip.Floating>
+                  </FloatingTip>
                </div>
             ) : null}
          </div>

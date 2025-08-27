@@ -1,4 +1,4 @@
-import { Indicator, Progress, SegmentedControl, Tooltip } from "@mantine/core";
+import { Indicator, Progress, SegmentedControl } from "@mantine/core";
 import { GameState, GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
@@ -21,6 +21,7 @@ import { Scenes } from "../utils/Scenes";
 import { showModal } from "../utils/ToggleModal";
 import { BoosterPage } from "./BoosterPage";
 import { ChooseElementModal } from "./ChooseElementModal";
+import { FloatingTip } from "./components/FloatingTip";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
@@ -112,7 +113,7 @@ function Tutorial(): React.ReactNode {
          }}
       >
          <div className="mi lg">flag</div>
-         <Tooltip.Floating
+         <FloatingTip
             position="top"
             label={
                <>
@@ -136,7 +137,7 @@ function Tutorial(): React.ReactNode {
                <ProgressMemo value={(100 * progress) / total} />
                <div className="h5" />
             </div>
-         </Tooltip.Floating>
+         </FloatingTip>
          <div
             className="mi pointer"
             onClick={() => {
@@ -212,41 +213,41 @@ function SceneSwitcher(): React.ReactNode {
             data={[
                {
                   label: (
-                     <Tooltip.Floating position="top" label={t(L.TabSpaceship)}>
+                     <FloatingTip position="top" label={t(L.TabSpaceship)}>
                         <TextureComp name="Others/Spaceship24" />
-                     </Tooltip.Floating>
+                     </FloatingTip>
                   ),
                   value: Scenes.ShipScene,
                },
                {
                   label: (
-                     <Tooltip.Floating position="top" label={t(L.TabResearch)}>
+                     <FloatingTip position="top" label={t(L.TabResearch)}>
                         <TextureComp name="Others/Research24" />
-                     </Tooltip.Floating>
+                     </FloatingTip>
                   ),
                   value: Scenes.TechTreeScene,
                },
                {
                   label: (
-                     <Tooltip.Floating position="top" label={t(L.TabGalaxy)}>
+                     <FloatingTip position="top" label={t(L.TabGalaxy)}>
                         <TextureComp name="Others/Galaxy24" />
-                     </Tooltip.Floating>
+                     </FloatingTip>
                   ),
                   value: Scenes.GalaxyScene,
                },
                {
                   label: (
-                     <Tooltip.Floating position="top" label={t(L.TabCatalyst)}>
+                     <FloatingTip position="top" label={t(L.TabCatalyst)}>
                         <TextureComp name="Others/Catalyst24" />
-                     </Tooltip.Floating>
+                     </FloatingTip>
                   ),
                   value: Scenes.CatalystScene,
                },
                {
                   label: (
-                     <Tooltip.Floating position="top" label={t(L.TabDirective)}>
+                     <FloatingTip position="top" label={t(L.TabDirective)}>
                         <TextureComp name="Others/Directive24" />
-                     </Tooltip.Floating>
+                     </FloatingTip>
                   ),
                   value: DirectivePage.name,
                },
@@ -268,17 +269,17 @@ function ElementTabLabel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    if (hasUnassignedElements(G.save.state)) {
       return (
-         <Tooltip.Floating position="top" label={t(L.YouHaveUnassignedElementTooltip)}>
+         <FloatingTip position="top" label={t(L.YouHaveUnassignedElementTooltip)}>
             <Indicator color="red" processing>
                <TextureComp name="Others/Element24" />
             </Indicator>
-         </Tooltip.Floating>
+         </FloatingTip>
       );
    }
    return (
-      <Tooltip.Floating position="top" label={t(L.TabElement)}>
+      <FloatingTip position="top" label={t(L.TabElement)}>
          <TextureComp name="Others/Element24" />
-      </Tooltip.Floating>
+      </FloatingTip>
    );
 }
 
@@ -286,17 +287,17 @@ function BoosterTabLabel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    if (hasUnequippedBooster(G.save.state)) {
       return (
-         <Tooltip.Floating position="top" label={t(L.YouHaveUnequippedBoosterTooltip)}>
+         <FloatingTip position="top" label={t(L.YouHaveUnequippedBoosterTooltip)}>
             <Indicator color="red" processing>
                <TextureComp id="bottom-panel-booster" name="Others/Booster24" />
             </Indicator>
-         </Tooltip.Floating>
+         </FloatingTip>
       );
    }
    return (
-      <Tooltip.Floating position="top" label={t(L.TabBooster)}>
+      <FloatingTip position="top" label={t(L.TabBooster)}>
          <TextureComp id="bottom-panel-booster" name="Others/Booster24" />
-      </Tooltip.Floating>
+      </FloatingTip>
    );
 }
 

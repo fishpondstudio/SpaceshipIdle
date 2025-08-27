@@ -1,4 +1,3 @@
-import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
@@ -7,6 +6,7 @@ import { getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { formatNumber, mMapOf, mReduceOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
+import { FloatingTip } from "./components/FloatingTip";
 
 export function MatchmakingShipComp({ ship }: { ship: GameState }): React.ReactNode {
    return (
@@ -30,14 +30,13 @@ export function MatchmakingShipComp({ ship }: { ship: GameState }): React.ReactN
          <div className="row g5">
             <div className="f1">{t(L.Research)}</div>
             <div>{ship.unlockedTech.size}</div>
-            <Tooltip.Floating
-               multiline
+            <FloatingTip
                label={Array.from(ship.unlockedTech)
                   .map((tech) => getTechName(tech))
                   .join(", ")}
             >
                <div className="mi sm text-space">info</div>
-            </Tooltip.Floating>
+            </FloatingTip>
          </div>
          <div className="divider mx-10 my5 dashed" />
          <div className="f1">{t(L.ElementThisRun)}</div>

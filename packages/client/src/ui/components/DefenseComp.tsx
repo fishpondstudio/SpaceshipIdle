@@ -1,4 +1,4 @@
-import { Progress, Tooltip } from "@mantine/core";
+import { Progress } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import {
    damageAfterArmor,
@@ -10,6 +10,7 @@ import { formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/He
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
 import type { ITileWithGameState } from "../ITileWithGameState";
+import { FloatingTip } from "./FloatingTip";
 import { StatComp } from "./StatComp";
 import { TitleComp } from "./TitleComp";
 
@@ -30,9 +31,9 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          <div className="divider my10" />
          <div className="mx10">
             <div className="h5" />
-            <Tooltip.Floating label={formatPercent(rs.hpPct)}>
+            <FloatingTip label={formatPercent(rs.hpPct)}>
                <Progress size="lg" color="green" value={100 * rs.hpPct} />
-            </Tooltip.Floating>
+            </FloatingTip>
             <div className="row mt5">
                <div className="f1">{t(L.HP)}</div>
                <div>
@@ -58,7 +59,7 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                </>
             ) : null}
             <div className="divider dashed mx-10 my10" />
-            <Tooltip.Floating
+            <FloatingTip
                label={
                   <>
                      <div>{t(L.PropertyTooltip, def.armor[0], def.armor[1])}</div>
@@ -72,8 +73,8 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                      <StatComp current={rs.props.armor} original={rs.originalProps.armor} />
                   </div>
                </div>
-            </Tooltip.Floating>
-            <Tooltip.Floating
+            </FloatingTip>
+            <FloatingTip
                label={
                   <>
                      <div>{t(L.PropertyTooltip, def.shield[0], def.shield[1])}</div>
@@ -87,8 +88,8 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                      <StatComp current={rs.props.shield} original={rs.originalProps.shield} />
                   </div>
                </div>
-            </Tooltip.Floating>
-            <Tooltip.Floating
+            </FloatingTip>
+            <FloatingTip
                label={
                   <>
                      <div>{t(L.PropertyTooltip, def.deflection[0], def.deflection[1])}</div>
@@ -102,8 +103,8 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                      <StatComp current={rs.props.deflection} original={rs.originalProps.deflection} />
                   </div>
                </div>
-            </Tooltip.Floating>
-            <Tooltip.Floating
+            </FloatingTip>
+            <FloatingTip
                label={
                   <>
                      <div>{t(L.PropertyTooltip, def.evasion[0], def.evasion[1])}</div>
@@ -117,7 +118,7 @@ export function DefenseComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                      <StatComp current={rs.props.evasion} original={rs.originalProps.evasion} />
                   </div>
                </div>
-            </Tooltip.Floating>
+            </FloatingTip>
          </div>
       </>
    );

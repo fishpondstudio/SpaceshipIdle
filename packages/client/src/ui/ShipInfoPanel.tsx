@@ -1,4 +1,3 @@
-import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
@@ -36,6 +35,7 @@ import { openUrl } from "../rpc/SteamClient";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { showModal } from "../utils/ToggleModal";
+import { FloatingTip } from "./components/FloatingTip";
 import { HamburgerMenuComp } from "./components/HamburgerMenuComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
@@ -88,7 +88,7 @@ export function ShipInfoPanel(): React.ReactNode {
       <div className="sf-frame top ship-info">
          <HamburgerMenuComp flag={options.flag} />
          <div className="divider vertical" />
-         <Tooltip.Floating
+         <FloatingTip
             w={300}
             label={
                <div className="flex-table mx-10">
@@ -118,7 +118,6 @@ export function ShipInfoPanel(): React.ReactNode {
                   </div>
                </div>
             }
-            multiline
          >
             <div
                className="block pointer"
@@ -142,10 +141,9 @@ export function ShipInfoPanel(): React.ReactNode {
                   <div className="xs">{formatPercent(divide(victory.total, victory.total + defeat.total))}</div>
                </div>
             </div>
-         </Tooltip.Floating>
+         </FloatingTip>
          <div className="divider vertical" />
-         <Tooltip.Floating
-            multiline
+         <FloatingTip
             label={
                <RenderHTML
                   html={t(
@@ -166,10 +164,9 @@ export function ShipInfoPanel(): React.ReactNode {
                   </div>
                </div>
             </div>
-         </Tooltip.Floating>
+         </FloatingTip>
          <div className="divider vertical" />
-         <Tooltip.Floating
-            multiline
+         <FloatingTip
             label={<RenderHTML html={t(L.RawActualDPSHTML, formatNumber(actualDPS), formatNumber(rawDPS))} />}
          >
             <div className="block" style={{ width: 90 }}>
@@ -179,9 +176,9 @@ export function ShipInfoPanel(): React.ReactNode {
                   <div className="xs">{formatNumber(rawDPS)}</div>
                </div>
             </div>
-         </Tooltip.Floating>
+         </FloatingTip>
          <div className="divider vertical" />
-         <Tooltip.Floating multiline label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(currentXP))} />}>
+         <FloatingTip label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(currentXP))} />}>
             <div className="block" style={{ width: 90 }}>
                <TextureComp name="Others/XP24" />
                <div className="f1 text-right">
@@ -197,9 +194,9 @@ export function ShipInfoPanel(): React.ReactNode {
                   </div>
                </div>
             </div>
-         </Tooltip.Floating>
+         </FloatingTip>
          <div className="divider vertical" />
-         <Tooltip.Floating color="gray" multiline w={300} label={<QuantumTooltip />}>
+         <FloatingTip w={300} label={<QuantumTooltip />}>
             <div className="block pointer" style={{ width: 100, position: "relative" }}>
                <TextureComp name="Others/Quantum24" />
                <div className="f1 text-right">
@@ -209,9 +206,9 @@ export function ShipInfoPanel(): React.ReactNode {
                   <div className="xs">{formatHMS(timeUntilNextQuantum)}</div>
                </div>
             </div>
-         </Tooltip.Floating>
+         </FloatingTip>
          <div className="divider vertical" />
-         <Tooltip.Floating multiline w={300} color="gray" label={<QuantumTooltip />}>
+         <FloatingTip w={300} label={<QuantumTooltip />}>
             <div className="block pointer" style={{ width: 60 }}>
                <div className="f1 text-right">
                   <div>{formatPercent(progressTowardsNextQuantum)}</div>
@@ -221,9 +218,9 @@ export function ShipInfoPanel(): React.ReactNode {
                   </div>
                </div>
             </div>
-         </Tooltip.Floating>
+         </FloatingTip>
          <div className="divider vertical" />
-         <Tooltip.Floating multiline w={300} color="gray" label={<ElementTooltip />}>
+         <FloatingTip w={300} label={<ElementTooltip />}>
             <div style={{ width: 100 }} className="block pointer">
                <TextureComp name="Others/Element24" />
                <div className="w5" />
@@ -247,9 +244,9 @@ export function ShipInfoPanel(): React.ReactNode {
                   </div>
                </div>
             </div>
-         </Tooltip.Floating>
+         </FloatingTip>
          <div className="divider vertical" />
-         <Tooltip.Floating multiline w={300} color="gray" label={<ElementTooltip />}>
+         <FloatingTip w={300} label={<ElementTooltip />}>
             <div style={{ width: 60 }} className="block pointer">
                <div className="f1 text-right">
                   <div>{formatPercent((totalXP - prevElementXP) / (nextElementXP - prevElementXP))}</div>
@@ -259,7 +256,7 @@ export function ShipInfoPanel(): React.ReactNode {
                   </div>
                </div>
             </div>
-         </Tooltip.Floating>
+         </FloatingTip>
          <div className="divider vertical" />
          <WarpSpeedMenuComp gs={state} />
       </div>
@@ -286,9 +283,9 @@ function playQuantumParticle(): void {
 function _DiscordComp({ show }: { show: boolean }): React.ReactNode {
    if (!show) return null;
    return (
-      <Tooltip.Floating label={t(L.JoinDiscord)}>
+      <FloatingTip label={t(L.JoinDiscord)}>
          <img src={Discord} style={{ display: "block", height: 20 }} onClick={() => openUrl(DiscordUrl)} />
-      </Tooltip.Floating>
+      </FloatingTip>
    );
 }
 
@@ -297,9 +294,9 @@ export const DiscordComp = memo(_DiscordComp, (prev, next) => prev.show === next
 function _SteamComp({ show }: { show: boolean }): React.ReactNode {
    if (!show) return null;
    return (
-      <Tooltip.Floating label={t(L.WishlistFullGame)}>
+      <FloatingTip label={t(L.WishlistFullGame)}>
          <img src={Steam} style={{ display: "block", height: 20 }} onClick={() => openUrl(SteamUrl)} />
-      </Tooltip.Floating>
+      </FloatingTip>
    );
 }
 
@@ -362,7 +359,7 @@ function ElementTooltip(): React.ReactNode {
                <div>{formatHMS((1000 * (nextElementXP - totalXP)) / xpDelta)}</div>
             </div>
          </div>
-         <div className="divider light my5 mx-10" />
+         <div className="divider my5 mx-10" />
          <table className="w100">
             <thead>
                <tr>
@@ -387,7 +384,7 @@ function ElementTooltip(): React.ReactNode {
                })}
             </tbody>
          </table>
-         <div className="divider light my5 mx-10" />
+         <div className="divider my5 mx-10" />
          <table className="w100">
             <thead>
                <tr>
@@ -434,7 +431,7 @@ function QuantumTooltip(): React.ReactNode {
                {formatNumber(usedQuantum)}/{formatNumber(quantum)}
             </div>
          </div>
-         <div className="divider light mx-10 mt5"></div>
+         <div className="divider mx-10 mt5"></div>
          <div className="flex-table mx-10">
             <div className="row">
                <div className="f1">{t(L.CurrentTotalXp)}</div>

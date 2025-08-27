@@ -1,4 +1,4 @@
-import { getDefaultZIndex, type PaperProps, Progress, Tooltip, Transition } from "@mantine/core";
+import { getDefaultZIndex, type PaperProps, Progress, Transition } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { ElementPermanentColor, ElementThisRunColor } from "@spaceship-idle/shared/src/game/definitions/Constant";
@@ -18,6 +18,7 @@ import { Easing } from "../utils/actions/Easing";
 import { G } from "../utils/Global";
 import { hideModal, showModal } from "../utils/ToggleModal";
 import "./ChooseElementModal.css";
+import { FloatingTip } from "./components/FloatingTip";
 import { playUpgrade } from "./Sound";
 
 export function ChooseElementModal({
@@ -151,9 +152,7 @@ function ElementOption({
                <div className="divider mx-15 mb5" />
                {permanent ? null : (
                   <>
-                     <Tooltip.Floating
-                        color="gray"
-                        multiline
+                     <FloatingTip
                         w={300}
                         label={
                            <>
@@ -179,13 +178,11 @@ function ElementOption({
                               {thisRun?.hp ?? 0} + {thisRun?.damage ?? 0} ({thisRun?.amount ?? 0})
                            </div>
                         </div>
-                     </Tooltip.Floating>
+                     </FloatingTip>
                      <div className="divider mx-15 my5" />
                   </>
                )}
-               <Tooltip.Floating
-                  color="gray"
-                  multiline
+               <FloatingTip
                   w={300}
                   label={
                      <>
@@ -207,7 +204,7 @@ function ElementOption({
                         {currentHPMultiplier} + {currentDamageMultiplier}
                      </div>
                   </div>
-               </Tooltip.Floating>
+               </FloatingTip>
                <div className="row">
                   <div className="f1">{t(L.Shards)}</div>
                   <div>

@@ -28,7 +28,7 @@ export function calculateRewardValue(result: BattleResult, gs: GameState): [numb
    let differentBoosters = 0;
    result.boosters.forEach((count, booster) => {
       if (count > 0) {
-         totalBoosters += count * getBoosterFactor(booster, gs);
+         totalBoosters += Math.round(count * getBoosterFactor(booster, gs));
          ++differentBoosters;
       }
    });

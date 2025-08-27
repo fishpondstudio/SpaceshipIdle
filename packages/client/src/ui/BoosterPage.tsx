@@ -1,10 +1,10 @@
-import { Tooltip } from "@mantine/core";
 import { Boosters, getBoosterEffect } from "@spaceship-idle/shared/src/game/definitions/Boosters";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { formatNumber, mapOf, reduceOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import React from "react";
 import { G } from "../utils/Global";
+import { FloatingTip } from "./components/FloatingTip";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
@@ -63,13 +63,9 @@ export function BoosterPage(): React.ReactNode {
                                     </div>
                                     <div className="row text-sm text-dimmed stretch g5">
                                        <div>{t(L.Effect)}</div>
-                                       <Tooltip.Floating
-                                          multiline
-                                          maw={300}
-                                          label={<RenderHTML html={def.desc(effect)} />}
-                                       >
+                                       <FloatingTip label={<RenderHTML html={def.desc(effect)} />}>
                                           <div className="mi sm">info</div>
-                                       </Tooltip.Floating>
+                                       </FloatingTip>
                                        <div className="f1" />
                                        <div>+{formatNumber(effect)}</div>
                                     </div>

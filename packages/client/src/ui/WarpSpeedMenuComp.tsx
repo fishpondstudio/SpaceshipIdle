@@ -1,10 +1,11 @@
-import { Menu, Tooltip } from "@mantine/core";
+import { Menu } from "@mantine/core";
 import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { classNames, formatNumber, range } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo, useCallback } from "react";
 import { G } from "../utils/Global";
+import { FloatingTip } from "./components/FloatingTip";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
 import { playClick } from "./Sound";
@@ -18,8 +19,7 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
    return (
       <Menu position="bottom-start">
          <Menu.Target>
-            <Tooltip.Floating
-               multiline
+            <FloatingTip
                label={<RenderHTML html={t(L.TimeWarpTooltipHTML, formatNumber(G.speed), formatNumber(warp))} />}
             >
                <div className="block pointer" style={{ width: 85 }}>
@@ -35,7 +35,7 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
                      <div className="xs">{formatNumber(warp)}</div>
                   </div>
                </div>
-            </Tooltip.Floating>
+            </FloatingTip>
          </Menu.Target>
          <WarpMenu speed={G.speed} onSpeedChange={onSpeedChange} />
       </Menu>

@@ -1,4 +1,3 @@
-import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { ShipClass, type Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
@@ -16,6 +15,7 @@ import { TechTreeScene } from "../scenes/TechTreeScene";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { BuildingInfoComp } from "./components/BuildingInfoComp";
+import { FloatingTip } from "./components/FloatingTip";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
 import { TitleComp } from "./components/TitleComp";
@@ -69,7 +69,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                })}
                <div className="divider my10" />
                <div className="mx10">
-                  <Tooltip.Floating disabled={getAvailableQuantum(G.save.state) > 0} label={t(L.NotEnoughQuantum)}>
+                  <FloatingTip disabled={getAvailableQuantum(G.save.state) > 0} label={t(L.NotEnoughQuantum)}>
                      <button
                         className="btn filled w100 row px10 py5"
                         onClick={() => {
@@ -94,7 +94,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                         <div>-1</div>
                         <div className="mi">orbit</div>
                      </button>
-                  </Tooltip.Floating>
+                  </FloatingTip>
                </div>
                <div className="divider mt10 mb10" />
             </>
@@ -106,14 +106,14 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                {def.unlockBuildings?.map((b) => {
                   return (
                      <div key={b}>
-                        <Tooltip.Floating w={350} label={<BuildingInfoComp building={b} />}>
+                        <FloatingTip w={350} label={<BuildingInfoComp building={b} />}>
                            <div className="row m10">
                               <TextureComp name={`Building/${b}`} width={64} />
                               <div className="f1">
                                  <div>{getBuildingName(b)}</div>
                               </div>
                            </div>
-                        </Tooltip.Floating>
+                        </FloatingTip>
                         <div className="divider my10" />
                      </div>
                   );

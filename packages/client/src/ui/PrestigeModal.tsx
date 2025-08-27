@@ -1,4 +1,3 @@
-import { Tooltip } from "@mantine/core";
 import { shardsFromShipValue } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import { prestige } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
 import { mReduceOf } from "@spaceship-idle/shared/src/utils/Helper";
@@ -8,6 +7,7 @@ import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
 import { BattleReportComp } from "./BattleReportComp";
 import { DefeatedHeaderComp, PrestigeHeaderComp } from "./components/BattleResultHeader";
+import { FloatingTip } from "./components/FloatingTip";
 import { showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { PrestigeReason } from "./PrestigeReason";
@@ -27,18 +27,18 @@ export function PrestigeModal({ reason }: { reason: PrestigeReason }): React.Rea
          <div className="panel">
             <div className="row">
                <div>{t(L.ElementThisRun)}</div>
-               <Tooltip.Floating label={<RenderHTML html={t(L.ElementThisRunTooltipHTML)} />}>
+               <FloatingTip label={<RenderHTML html={t(L.ElementThisRunTooltipHTML)} />}>
                   <div className="mi sm">info</div>
-               </Tooltip.Floating>
+               </FloatingTip>
                <div className="f1" />
                <div className="text-green">+{fromThisRun}</div>
             </div>
             <div className="h5" />
             <div className="row">
                <div>{t(L.ExtraElementShards)}</div>
-               <Tooltip.Floating label={<RenderHTML html={t(L.ExtraElementShardsTooltipHTMLV2)} />}>
+               <FloatingTip label={<RenderHTML html={t(L.ExtraElementShardsTooltipHTMLV2)} />}>
                   <div className="mi sm">info</div>
-               </Tooltip.Floating>
+               </FloatingTip>
                <div className="f1" />
                <div className="text-green">+{extraShards}</div>
             </div>

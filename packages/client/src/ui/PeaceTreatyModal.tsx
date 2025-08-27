@@ -1,4 +1,3 @@
-import { Tooltip } from "@mantine/core";
 import { clamp, useForceUpdate } from "@mantine/hooks";
 import { Boosters } from "@spaceship-idle/shared/src/game/definitions/Boosters";
 import type { BattleResult } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
@@ -10,6 +9,7 @@ import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useRef } from "react";
 import { G } from "../utils/Global";
 import { VictoryHeaderComp } from "./components/BattleResultHeader";
+import { FloatingTip } from "./components/FloatingTip";
 import { NumberSelect } from "./components/NumberInput";
 import { TextureComp } from "./components/TextureComp";
 
@@ -112,7 +112,7 @@ export function PeaceTreatyModal({
             <div className="f1 text-center">{value}</div>
          </div>
          <button className="btn w100 filled p5" disabled={battleScore < value}>
-            <Tooltip.Floating
+            <FloatingTip
                w={400}
                label={
                   <>
@@ -137,7 +137,7 @@ export function PeaceTreatyModal({
                   <div className="mi">signature</div>
                   <div>Sign Peace Treaty</div>
                </div>
-            </Tooltip.Floating>
+            </FloatingTip>
          </button>
       </div>
    );

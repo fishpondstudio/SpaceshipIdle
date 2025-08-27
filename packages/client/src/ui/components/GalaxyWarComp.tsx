@@ -1,4 +1,3 @@
-import { Tooltip } from "@mantine/core";
 import { Boosters } from "@spaceship-idle/shared/src/game/definitions/Boosters";
 import { type Planet, PlanetActionType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { Resources } from "@spaceship-idle/shared/src/game/definitions/Resource";
@@ -11,6 +10,7 @@ import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import { showModal } from "../../utils/ToggleModal";
 import { PeaceTreatyModal } from "../PeaceTreatyModal";
+import { FloatingTip } from "./FloatingTip";
 import { TextureComp } from "./TextureComp";
 
 export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
@@ -65,7 +65,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
          <div className="panel">
             <div className="title">Cost</div>
             <div className="h5" />
-            <Tooltip.Floating
+            <FloatingTip
                label={
                   <>
                      <div>The cost of declaring war is determined as follows</div>
@@ -83,7 +83,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                <div>
                   2 <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
                </div>
-            </Tooltip.Floating>
+            </FloatingTip>
             <div className="divider my10 mx-10" />
             <div className="title">Negotiable Rewards</div>
             <div className="h5" />
@@ -105,7 +105,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
             War reparation is negotiated when signing the peace treaty and depends on battle outcome
          </div>
          <div className="h5" />
-         <Tooltip.Floating label={cannotDeclareWarReason} disabled={!cannotDeclareWarReason}>
+         <FloatingTip label={cannotDeclareWarReason} disabled={!cannotDeclareWarReason}>
             <button
                disabled={!!cannotDeclareWarReason}
                className="btn red w100 row g5"
@@ -158,7 +158,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                <div className="mi sm">swords</div>
                <div>Declare War</div>
             </button>
-         </Tooltip.Floating>
+         </FloatingTip>
       </>
    );
 }

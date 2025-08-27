@@ -1,4 +1,4 @@
-import { ScrollArea, Tooltip } from "@mantine/core";
+import { ScrollArea } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { Catalyst, CatalystCat } from "@spaceship-idle/shared/src/game/definitions/Catalyst";
 import { CatalystPerCat } from "@spaceship-idle/shared/src/game/definitions/Constant";
@@ -17,6 +17,7 @@ import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import styles from "./CatalystFullScreen.module.css";
 import { BuildingInfoComp } from "./components/BuildingInfoComp";
+import { FloatingTip } from "./components/FloatingTip";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
 import { playClick, playError } from "./Sound";
@@ -72,15 +73,15 @@ export function CatalystFullScreen(): React.ReactNode {
                      if (selected === choice) {
                         if (G.runtime.leftStat.isCatalystActivated(choice)) {
                            status = (
-                              <Tooltip.Floating label={t(L.CatalystActivated)}>
+                              <FloatingTip label={t(L.CatalystActivated)}>
                                  <div className="mi text-green">check_circle</div>
-                              </Tooltip.Floating>
+                              </FloatingTip>
                            );
                         } else {
                            status = (
-                              <Tooltip.Floating label={t(L.CatalystNotActivated)}>
+                              <FloatingTip label={t(L.CatalystNotActivated)}>
                                  <div className="mi text-red">do_not_disturb_on</div>
-                              </Tooltip.Floating>
+                              </FloatingTip>
                            );
                         }
                      }
@@ -99,10 +100,7 @@ export function CatalystFullScreen(): React.ReactNode {
                               }}
                            >
                               {canChooseCatalystCat(cat, G.runtime) ? (
-                                 <Tooltip.Floating
-                                    multiline
-                                    label={<RenderHTML html={t(L.SelectCatalystTooltipHTML)} />}
-                                 >
+                                 <FloatingTip label={<RenderHTML html={t(L.SelectCatalystTooltipHTML)} />}>
                                     <div
                                        className="mi lg pointer"
                                        onClick={() => {
@@ -124,11 +122,11 @@ export function CatalystFullScreen(): React.ReactNode {
                                     >
                                        {selected === choice ? "check_box" : "check_box_outline_blank"}
                                     </div>
-                                 </Tooltip.Floating>
+                                 </FloatingTip>
                               ) : (
-                                 <Tooltip.Floating label={t(L.YouHaveToActivateThePreviousCatalystFirst)}>
+                                 <FloatingTip label={t(L.YouHaveToActivateThePreviousCatalystFirst)}>
                                     <div className="mi">lock</div>
-                                 </Tooltip.Floating>
+                                 </FloatingTip>
                               )}
                            </div>
                            <div className="f1" style={{ width: 400 }}>
@@ -152,7 +150,7 @@ export function CatalystFullScreen(): React.ReactNode {
                                        .filter(def.filter)
                                        .map((b) => {
                                           return (
-                                             <Tooltip.Floating
+                                             <FloatingTip
                                                 w={350}
                                                 label={
                                                    <>
@@ -170,7 +168,7 @@ export function CatalystFullScreen(): React.ReactNode {
                                                    name={`Building/${b}`}
                                                    width={64}
                                                 />
-                                             </Tooltip.Floating>
+                                             </FloatingTip>
                                           );
                                        })}
                                  </ScrollArea>

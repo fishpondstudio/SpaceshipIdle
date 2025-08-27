@@ -1,4 +1,4 @@
-import { Badge, Tooltip } from "@mantine/core";
+import { Badge } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { CodeLabel, type CodeNumber } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
@@ -20,6 +20,7 @@ import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { type ReactNode, useState } from "react";
 import { G } from "../utils/Global";
+import { FloatingTip } from "./components/FloatingTip";
 import { ResourceListComp } from "./components/ResourceListComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
@@ -100,12 +101,7 @@ function BuildingComp({
    const label = CodeLabel[def.code]();
    const canBuild = canSpendResource("XP", getBuildingCost(building, 1), gs.resources) && getAvailableQuantum(gs) > 0;
    return (
-      <Tooltip.Floating
-         color="gray"
-         w={250}
-         label={<ResourceListComp xp={-getBuildingCost(building, 1)} quantum={-1} />}
-         key={building}
-      >
+      <FloatingTip w={250} label={<ResourceListComp xp={-getBuildingCost(building, 1)} quantum={-1} />} key={building}>
          <div
             className="row p10 m10"
             onClick={() => {
@@ -142,6 +138,6 @@ function BuildingComp({
                </Badge>
             ) : null}
          </div>
-      </Tooltip.Floating>
+      </FloatingTip>
    );
 }

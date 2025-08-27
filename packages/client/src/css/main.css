@@ -173,6 +173,16 @@ em {
    border-top: 3px dotted var(--mantine-color-dark-4);
 }
 
+.floating-tip {
+   position: absolute;
+   max-width: 350px;
+   border-image: url("../assets/images/Frame.svg") 10 10 10 10 fill / 10px 10px 10px 10px;
+   padding: 10px;
+   font-size: var(--mantine-font-size-sm);
+   z-index: var(--mantine-z-index-popover);
+}
+
+.floating-tip,
 .mantine-Tooltip-tooltip,
 .mantine-TooltipFloating-tooltip,
 .render-html {

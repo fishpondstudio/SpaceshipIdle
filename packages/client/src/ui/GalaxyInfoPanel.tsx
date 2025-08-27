@@ -1,8 +1,8 @@
-import { Tooltip } from "@mantine/core";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
+import { FloatingTip } from "./components/FloatingTip";
 
 export function GalaxyInfoPanel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
@@ -14,7 +14,7 @@ export function GalaxyInfoPanel(): React.ReactNode {
             <div className="f1">Current Friendship</div>
             <div>1/3</div>
          </div>
-         <Tooltip.Floating
+         <FloatingTip
             label={
                <>
                   <div>
@@ -22,7 +22,7 @@ export function GalaxyInfoPanel(): React.ReactNode {
                      <b className="text-tabular-nums">{warmongerPenalty.toFixed(3)}</b>). It is increased when you
                      declare war. It makes declaring further wars and declaring friendship more expensive
                   </div>
-                  <div className="divider light mx-10 my5" />
+                  <div className="divider mx-10 my5" />
                   <div>
                      Warmonger Penalty is decreased by <b>{stat.warmongerChange.value}/s</b> until it reaches 0,
                      detailed as follows
@@ -47,7 +47,7 @@ export function GalaxyInfoPanel(): React.ReactNode {
                   {Math.ceil(warmongerPenalty)}
                </div>
             </div>
-         </Tooltip.Floating>
+         </FloatingTip>
          <div className="row">
             <div className="f1">Backstabber Penalty</div>
             <div>{resourceOf("Backstabber", G.save.state.resources).current}</div>

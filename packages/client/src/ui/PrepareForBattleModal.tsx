@@ -1,4 +1,4 @@
-import { getGradient, Tooltip, useMantineTheme } from "@mantine/core";
+import { getGradient, useMantineTheme } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { QualifierSpaceshipValuePercent } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
@@ -18,6 +18,7 @@ import { findShip } from "../game/Matchmaking";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { hideModal, showModal } from "../utils/ToggleModal";
+import { FloatingTip } from "./components/FloatingTip";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { MatchMakingModal } from "./MatchmakingModal";
@@ -63,15 +64,13 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                   <div>
                      {usedQuantum}/{minQuantum}
                   </div>
-                  <Tooltip.Floating
-                     label={<RenderHTML html={t(L.QualifierBattleQuantumRequirementHTML, minQuantum)} />}
-                  >
+                  <FloatingTip label={<RenderHTML html={t(L.QualifierBattleQuantumRequirementHTML, minQuantum)} />}>
                      {usedQuantum >= minQuantum ? (
                         <div className="mi sm text-green">check_circle</div>
                      ) : (
                         <div className="mi sm text-yellow">info</div>
                      )}
-                  </Tooltip.Floating>
+                  </FloatingTip>
                </div>
                <div className="row">
                   <div>{t(L.SpaceshipXP)}</div>
@@ -79,15 +78,13 @@ export function PrepareForBattleModal({ mode }: { mode: PrepareForBattleMode }):
                   <div>
                      {formatNumber(xp)}/{formatNumber(minXO)}
                   </div>
-                  <Tooltip.Floating
-                     label={<RenderHTML html={t(L.QualifierBattleXPRequirementHTML, formatNumber(minXO))} />}
-                  >
+                  <FloatingTip label={<RenderHTML html={t(L.QualifierBattleXPRequirementHTML, formatNumber(minXO))} />}>
                      {xp >= QualifierSpaceshipValuePercent * minXO ? (
                         <div className="mi sm text-green">check_circle</div>
                      ) : (
                         <div className="mi sm text-yellow">info</div>
                      )}
-                  </Tooltip.Floating>
+                  </FloatingTip>
                </div>
             </div>
          </div>

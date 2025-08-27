@@ -1,4 +1,4 @@
-import { Input, noop, SegmentedControl, Slider, Switch, Tooltip } from "@mantine/core";
+import { Input, noop, SegmentedControl, Slider, Switch } from "@mantine/core";
 import { useForceUpdate } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { DiscordUrl, SteamUrl, TranslationUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
@@ -18,6 +18,7 @@ import { refreshOnTypedEvent } from "../utils/Hook";
 import { showModal } from "../utils/ToggleModal";
 import { ChangeLanguageComp } from "./ChangeLanguageComp";
 import { DevOrAdminOnly } from "./components/DevOnly";
+import { FloatingTip } from "./components/FloatingTip";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { playError } from "./Sound";
 import { ViewShipModal } from "./ViewShipModal";
@@ -78,9 +79,9 @@ function GeneralTab(): React.ReactNode {
          <div className="h10" />
          <div className="row">
             <div>{t(L.HideInactiveResources)}</div>
-            <Tooltip.Floating label={t(L.HideInactiveResourcesTooltip)}>
+            <FloatingTip label={t(L.HideInactiveResourcesTooltip)}>
                <div className="mi sm text-space">info</div>
-            </Tooltip.Floating>
+            </FloatingTip>
             <div className="f1" />
             <Switch
                checked={hasFlag(G.save.options.flag, GameOptionFlag.HideInactiveResources)}
@@ -95,9 +96,9 @@ function GeneralTab(): React.ReactNode {
          <div className="h10" />
          <div className="row">
             <div>{t(L.TheoreticalValue)}</div>
-            <Tooltip.Floating label={t(L.TheoreticalValueTooltip)}>
+            <FloatingTip label={t(L.TheoreticalValueTooltip)}>
                <div className="mi sm text-space">info</div>
-            </Tooltip.Floating>
+            </FloatingTip>
             <div className="f1" />
             <Switch
                checked={hasFlag(G.save.options.flag, GameOptionFlag.TheoreticalValue)}
@@ -112,9 +113,9 @@ function GeneralTab(): React.ReactNode {
          <div className="h10" />
          <div className="row">
             <div>{t(L.CooldownIndicatorOutsideBattle)}</div>
-            <Tooltip.Floating label={t(L.CooldownIndicatorOutsideBattleTooltip)}>
+            <FloatingTip label={t(L.CooldownIndicatorOutsideBattleTooltip)}>
                <div className="mi sm text-space">info</div>
-            </Tooltip.Floating>
+            </FloatingTip>
             <div className="f1" />
             <Switch
                checked={hasFlag(G.save.options.flag, GameOptionFlag.CooldownIndicatorOutsideBattle)}
@@ -129,9 +130,9 @@ function GeneralTab(): React.ReactNode {
          <div className="h10" />
          <div className="row">
             <div>{t(L.LinearCooldownIndicator)}</div>
-            <Tooltip.Floating label={t(L.LinearCooldownIndicatorTooltip)}>
+            <FloatingTip label={t(L.LinearCooldownIndicatorTooltip)}>
                <div className="mi sm text-space">info</div>
-            </Tooltip.Floating>
+            </FloatingTip>
             <div className="f1" />
             <Switch
                checked={hasFlag(G.save.options.flag, GameOptionFlag.LinearCooldownIndicator)}
@@ -146,9 +147,9 @@ function GeneralTab(): React.ReactNode {
          <div className="divider my10 mx-10" />
          <div className="row">
             <div>{t(L.RetroFilter)}</div>
-            <Tooltip.Floating label={t(L.RequireGameRestart)}>
+            <FloatingTip label={t(L.RequireGameRestart)}>
                <div className="mi sm text-space">info</div>
-            </Tooltip.Floating>
+            </FloatingTip>
             <div className="f1" />
             <Switch
                checked={hasFlag(G.save.options.flag, GameOptionFlag.RetroFilter)}
@@ -163,9 +164,9 @@ function GeneralTab(): React.ReactNode {
          <div className="h10"></div>
          <div className="row">
             <div>{t(L.NebulaStrength)}</div>
-            <Tooltip.Floating label={t(L.NebulaStrengthTooltip)}>
+            <FloatingTip label={t(L.NebulaStrengthTooltip)}>
                <div className="mi sm text-space">info</div>
-            </Tooltip.Floating>
+            </FloatingTip>
             <div className="f1" />
             <Slider
                w="50%"

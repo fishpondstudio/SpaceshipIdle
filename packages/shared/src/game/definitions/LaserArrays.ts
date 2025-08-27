@@ -126,26 +126,26 @@ export const LA2A: IBuildingDefinition = {
       duration: (building, level) => 2,
    },
 };
-export const LA2B: IBuildingDefinition = {
-   ...LaserArrayBaseProps,
-   pet: () => t(L.Pike),
-   code: CodeNumber.LA,
-   buildingFlag: BuildingFlag.CanTarget,
-   damagePct: 0.5 * LaserArrayDamagePct,
-   fireCooldown: 3.5,
-   projectileFlag: ProjectileFlag.LaserDamage,
-   damageType: DamageType.Energy,
-   element: "Pd",
-   // ability: {
-   //    timing: AbilityTiming.OnHit,
-   //    range: AbilityRange.Single,
-   //    effect: "ReduceDamage",
-   //    flag: AbilityFlag.AffectedByDamageMultiplier,
-   //    value: (building, level, multipliers) => {
-   //       const def = Config.Buildings[building] as IBuildingDefinition;
-   //       const normVal = getDamagePerFire({ type: building, level }) * multipliers.damage;
-   //       return normVal * (1 - def.damagePct) * LaserArrayDamagePct;
-   //    },
-   //    duration: (building, level) => 2,
-   // },
-};
+// export const LA2B: IBuildingDefinition = {
+//    ...LaserArrayBaseProps,
+//    pet: () => t(L.Pike),
+//    code: CodeNumber.LA,
+//    buildingFlag: BuildingFlag.CanTarget,
+//    damagePct: 0.5 * LaserArrayDamagePct,
+//    fireCooldown: 3.5,
+//    projectileFlag: ProjectileFlag.LaserDamage,
+//    damageType: DamageType.Energy,
+//    element: "Pd",
+//    ability: {
+//       timing: AbilityTiming.OnHit,
+//       range: AbilityRange.Single,
+//       effect: "ReduceDamage",
+//       flag: AbilityFlag.AffectedByDamageMultiplier,
+//       value: (building, level, multipliers) => {
+//          const def = Config.Buildings[building] as IBuildingDefinition;
+//          const normVal = getDamagePerFire({ type: building, level }) * multipliers.damage;
+//          return normVal * (1 - def.damagePct) * LaserArrayDamagePct;
+//       },
+//       duration: (building, level) => 2,
+//    },
+// };

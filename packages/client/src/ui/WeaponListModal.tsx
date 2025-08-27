@@ -1,4 +1,3 @@
-import { Tooltip } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { AbilityRangeLabel, AbilityTimingLabel } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import {
@@ -14,6 +13,7 @@ import { getTechForBuilding, getTechName } from "@spaceship-idle/shared/src/game
 import { formatNumber, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { BuildingInfoComp } from "./components/BuildingInfoComp";
+import { FloatingTip } from "./components/FloatingTip";
 import { TextureComp } from "./components/TextureComp";
 
 export function WeaponListModal(): React.ReactNode {
@@ -44,9 +44,9 @@ export function WeaponListModal(): React.ReactNode {
                   return (
                      <tr key={building}>
                         <td className="condensed">
-                           <Tooltip.Floating w={350} label={<BuildingInfoComp building={building} />}>
+                           <FloatingTip w={350} label={<BuildingInfoComp building={building} />}>
                               <TextureComp style={{ margin: 2 }} name={`Building/${building}`} width={40} />
-                           </Tooltip.Floating>
+                           </FloatingTip>
                         </td>
                         <td>
                            <div>{getBuildingName(building)}</div>

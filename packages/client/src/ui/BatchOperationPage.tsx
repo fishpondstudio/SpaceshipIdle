@@ -1,4 +1,3 @@
-import { Tooltip } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingCost, getTotalBuildingCost } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
@@ -8,6 +7,7 @@ import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { type ReactNode, useCallback } from "react";
 import { G } from "../utils/Global";
 import { useShortcut } from "../utils/ShortcutHook";
+import { FloatingTip } from "./components/FloatingTip";
 import { SidebarComp } from "./components/SidebarComp";
 
 export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile> }): ReactNode {
@@ -96,7 +96,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
          </div>
          <div className="h10" />
          <div className="mx10">
-            <Tooltip.Floating label={t(L.DistributeEvenlyDesc)}>
+            <FloatingTip label={t(L.DistributeEvenlyDesc)}>
                <button
                   className="btn w100"
                   style={{ flex: 2 }}
@@ -143,7 +143,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                >
                   Distribute Existing Upgrades Evenly
                </button>
-            </Tooltip.Floating>
+            </FloatingTip>
          </div>
          <div className="h10" />
          <div className="mx10">

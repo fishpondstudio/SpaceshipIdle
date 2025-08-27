@@ -1,4 +1,4 @@
-import { Popover, Tooltip } from "@mantine/core";
+import { Popover } from "@mantine/core";
 import { type Booster, Boosters, getBoosterEffect } from "@spaceship-idle/shared/src/game/definitions/Boosters";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { hasUnequippedBooster } from "@spaceship-idle/shared/src/game/logic/BoosterLogic";
@@ -21,6 +21,7 @@ import { G } from "../../utils/Global";
 import { useShortcut } from "../../utils/ShortcutHook";
 import type { ITileWithGameState } from "../ITileWithGameState";
 import { playClick, playError } from "../Sound";
+import { FloatingTip } from "./FloatingTip";
 import { RenderHTML } from "./RenderHTMLComp";
 import { ResourceListComp } from "./ResourceListComp";
 import { TextureComp } from "./TextureComp";
@@ -104,9 +105,8 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          <div className="row mx10">
             {[data.level + 1, getNextLevel(data.level, 5), getNextLevel(data.level, 10)].map((target, idx) => {
                return (
-                  <Tooltip.Floating
+                  <FloatingTip
                      w={250}
-                     color="gray"
                      key={idx}
                      label={<ResourceListComp xp={-getTotalBuildingCost(data.type, data.level, target)} quantum={0} />}
                   >
@@ -123,7 +123,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                      >
                         +{target - data.level}
                      </button>
-                  </Tooltip.Floating>
+                  </FloatingTip>
                );
             })}
             <button
@@ -138,21 +138,19 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          <div className="row mx10">
             {[data.level - 1, getNextLevel(data.level, -5), getNextLevel(data.level, -10)].map((target, idx) => {
                return (
-                  <Tooltip.Floating
+                  <FloatingTip
                      w={250}
-                     color="gray"
                      key={idx}
                      label={<ResourceListComp xp={getTotalBuildingCost(data.type, data.level, target)} quantum={0} />}
                   >
                      <button className="btn f1" disabled={target <= 0} onClick={downgrade.bind(null, target)}>
                         {target - data.level}
                      </button>
-                  </Tooltip.Floating>
+                  </FloatingTip>
                );
             })}
-            <Tooltip.Floating
+            <FloatingTip
                w={250}
-               color="gray"
                label={
                   canRecycle ? (
                      <>
@@ -167,7 +165,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                <button className="btn f1 cc mi" disabled={!canRecycle} onClick={recycle}>
                   recycling
                </button>
-            </Tooltip.Floating>
+            </FloatingTip>
          </div>
          <div className="divider my10" />
          <div className="title">{t(L.Booster)}</div>
@@ -176,8 +174,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             {booster ? (
                <>
                   <TextureComp name={`Booster/${booster}`} />
-                  <Tooltip.Floating
-                     multiline
+                  <FloatingTip
                      label={
                         <RenderHTML
                            html={Boosters[booster].desc(
@@ -188,7 +185,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                      }
                   >
                      <div>{Boosters[booster].name()}</div>
-                  </Tooltip.Floating>
+                  </FloatingTip>
                   <div className="f1" />
                </>
             ) : hasUnequippedBooster(G.save.state) ? (
@@ -238,12 +235,7 @@ function BoosterOpButton({ booster, me }: { booster: Booster; me: Tile }): React
       );
    }
    return (
-      <Tooltip.Floating
-         disabled={!inv.tile}
-         multiline
-         maw="20vw"
-         label={<RenderHTML html={t(L.AlreadyEquippedTooltipHTML)} />}
-      >
+      <FloatingTip disabled={!inv.tile} label={<RenderHTML html={t(L.AlreadyEquippedTooltipHTML)} />}>
          <button
             className="btn row g5"
             onClick={() => {
@@ -258,6 +250,6 @@ function BoosterOpButton({ booster, me }: { booster: Booster; me: Tile }): React
          >
             <div>{inv.tile ? t(L.Reequip) : t(L.Equip)}</div>
          </button>
-      </Tooltip.Floating>
+      </FloatingTip>
    );
 }

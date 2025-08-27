@@ -1,4 +1,4 @@
-import { Progress, Tooltip } from "@mantine/core";
+import { Progress } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { ElementPermanentColor } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
@@ -21,6 +21,7 @@ import { ElementImageComp } from "../game/ElementImage";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { BuildingInfoComp } from "./components/BuildingInfoComp";
+import { FloatingTip } from "./components/FloatingTip";
 import { NumberSelect } from "./components/NumberInput";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
@@ -62,9 +63,9 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
          <div className="divider my10 mx-15" />
          <div className="row">
             <div className="f1">{t(L.BoostModule)}</div>
-            <Tooltip.Floating w={350} label={<BuildingInfoComp building={b} />}>
+            <FloatingTip w={350} label={<BuildingInfoComp building={b} />}>
                <div>{getBuildingName(b)}</div>
-            </Tooltip.Floating>
+            </FloatingTip>
          </div>
          {thisRun ? (
             <>
@@ -117,9 +118,9 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                <div className="divider my10 mx-15" />
                <div className="row g5">
                   <div className="f1">{t(L.HPMultiplier)}</div>
-                  <Tooltip.Floating label={t(L.PlusXProductionMultiplierForX, permanent.hp, getBuildingName(b))}>
+                  <FloatingTip label={t(L.PlusXProductionMultiplierForX, permanent.hp, getBuildingName(b))}>
                      <div className="mi sm text-dimmed">info</div>
-                  </Tooltip.Floating>
+                  </FloatingTip>
                   <div>{t(L.LevelX, permanent.hp)}</div>
                </div>
                <div className="h5" />
@@ -148,7 +149,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                   >
                      {t(L.Upgrade)}
                   </button>
-                  <Tooltip.Floating label={<RenderHTML html={t(L.RevertTooltipHTML)} />}>
+                  <FloatingTip label={<RenderHTML html={t(L.RevertTooltipHTML)} />}>
                      <button
                         disabled={permanent.hp <= 0}
                         className="btn py5 px10"
@@ -160,14 +161,14 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                      >
                         {t(L.Revert)}
                      </button>
-                  </Tooltip.Floating>
+                  </FloatingTip>
                </div>
                <div className="divider dashed mx-15 my10"></div>
                <div className="row g5">
                   <div className="f1">{t(L.DamageMultiplier)}</div>
-                  <Tooltip.Floating label={t(L.PlusXXPMultiplierForX, permanent.damage, getBuildingName(b))}>
+                  <FloatingTip label={t(L.PlusXXPMultiplierForX, permanent.damage, getBuildingName(b))}>
                      <div className="mi sm text-dimmed">info</div>
-                  </Tooltip.Floating>
+                  </FloatingTip>
                   <div>{t(L.LevelX, permanent.damage)}</div>
                </div>
                <div className="h5" />
@@ -196,7 +197,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                   >
                      {t(L.Upgrade)}
                   </button>
-                  <Tooltip.Floating label={<RenderHTML html={t(L.RevertTooltipHTML)} />}>
+                  <FloatingTip label={<RenderHTML html={t(L.RevertTooltipHTML)} />}>
                      <button
                         disabled={permanent.damage <= 0}
                         className="btn py5 px10"
@@ -208,7 +209,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                      >
                         {t(L.Revert)}
                      </button>
-                  </Tooltip.Floating>
+                  </FloatingTip>
                </div>
             </>
          ) : null}
