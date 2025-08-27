@@ -7,7 +7,7 @@ export type BattleType = ValueOf<typeof BattleType>;
 export const BattleFlag = { None: 0, Silent: 1 << 0 };
 export type BattleFlag = ValueOf<typeof BattleFlag>;
 
-export const BattleVictoryType = ["Overwhelming", "Decisive", "Minor", "Narrow"] as const;
+export const BattleVictoryType = ["Overwhelming", "Decisive", "Minor", "Narrow", "Defeated"] as const;
 export type BattleVictoryType = (typeof BattleVictoryType)[number];
 
 export const BattleVictoryTypeLabel: Record<BattleVictoryType, () => string> = {
@@ -15,4 +15,5 @@ export const BattleVictoryTypeLabel: Record<BattleVictoryType, () => string> = {
    Decisive: () => t(L.DecisiveVictory),
    Minor: () => t(L.MinorVictory),
    Narrow: () => t(L.NarrowVictory),
+   Defeated: () => t(L.Defeated),
 };

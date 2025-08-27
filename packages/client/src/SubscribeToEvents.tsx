@@ -1,13 +1,11 @@
 import { notifications } from "@mantine/notifications";
-import { GameStateFlags } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { addResource, calcSpaceshipXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { OnBattleStatusChanged } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { clearFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { saveGame } from "./game/LoadSave";
 import { onSteamClose } from "./rpc/SteamClient";
-import { QualifierBattleResultModal } from "./ui/QualifierBattleResultModal";
+import { PeaceTreatyModal } from "./ui/PeaceTreatyModal";
 import { G } from "./utils/Global";
 import { SteamClient } from "./utils/Steam";
 import { showModal } from "./utils/ToggleModal";
@@ -18,13 +16,19 @@ export function subscribeToEvents(): void {
          let modal: React.ReactNode = null;
          switch (G.runtime.battleType) {
             case BattleType.Qualifier: {
-               modal = <QualifierBattleResultModal />;
+               const stat = G.runtime.leftStat;
+               modal = (
+                  <PeaceTreatyModal
+                     battleScore={Math.round((100 * stat.currentHp) / stat.maxHp)}
+                     name={G.runtime.right.name}
+                     enemyXP={calcSpaceshipXP(G.runtime.right)}
+                  />
+               );
                if (G.runtime.battleStatus === BattleStatus.RightWin) {
                   addResource("Defeat", 1, G.save.state.resources);
                } else {
                   addResource("Victory", 1, G.save.state.resources);
                }
-               G.save.state.flags = clearFlag(G.save.state.flags, GameStateFlags.QualifierBattlePrompted);
                break;
             }
          }
@@ -33,7 +37,7 @@ export function subscribeToEvents(): void {
          saveGame(G.save);
          showModal({
             children: modal,
-            size: "sm",
+            size: "lg",
             dismiss: false,
          });
       }

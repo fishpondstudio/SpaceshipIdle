@@ -1,4 +1,4 @@
-import { hasFlag, randOne, reduceOf, setFlag, type Tile, tileToPoint } from "../../utils/Helper";
+import { hasFlag, randOne, reduceOf, setFlag, tileToPoint, type Tile } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -252,7 +252,10 @@ export function getVictoryType(battleScore: number): BattleVictoryType {
    if (battleScore >= 25) {
       return "Minor";
    }
-   return "Narrow";
+   if (battleScore > 0) {
+      return "Narrow";
+   }
+   return "Defeated";
 }
 
 export function getCooldownMultiplier(data: { type: Building }): number {

@@ -180,8 +180,18 @@ export class Runtime {
          this._tickPenalty();
 
          tickElement(this.leftSave);
+
          this.leftStat.tabulate(this.tabulateHp(this.left.tiles), this.left);
          this.rightStat.tabulate(this.tabulateHp(this.right.tiles), this.right);
+
+         const prevStatus = this.battleStatus;
+         const newStatus = this.getBattleStatus();
+         this.battleStatus = newStatus;
+         if (prevStatus !== newStatus) {
+            this.emit(GameStateUpdated, undefined);
+            this.emit(OnBattleStatusChanged, { status: newStatus, prevStatus });
+         }
+
          if (this.battleType === BattleType.Peace) {
             ++this.leftSave.data.tick;
          } else {
@@ -240,14 +250,6 @@ export class Runtime {
             this.createXPTarget();
          }
          return;
-      }
-
-      const prevStatus = this.battleStatus;
-      const newStatus = this.checkBattleStatus();
-      this.battleStatus = newStatus;
-      if (prevStatus !== newStatus) {
-         this.emit(GameStateUpdated, undefined);
-         this.emit(OnBattleStatusChanged, { status: newStatus, prevStatus });
       }
    }
 
@@ -383,7 +385,7 @@ export class Runtime {
       return 0;
    }
 
-   private checkBattleStatus(): BattleStatus {
+   private getBattleStatus(): BattleStatus {
       if (this.left.tiles.size === 0 && this.right.tiles.size > 0) {
          return BattleStatus.RightWin;
       }

@@ -2,15 +2,19 @@ import { Boosters } from "@spaceship-idle/shared/src/game/definitions/Boosters";
 import { type Planet, PlanetActionType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { Resources } from "@spaceship-idle/shared/src/game/definitions/Resource";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
-import { BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
+import { generateShip, getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { BattleType, BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { ShipScene } from "../../scenes/ShipScene";
 import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
-import { showModal } from "../../utils/ToggleModal";
+import { hideModal, showModal } from "../../utils/ToggleModal";
 import { PeaceTreatyModal } from "../PeaceTreatyModal";
+import { hideSidebar } from "../Sidebar";
 import { FloatingTip } from "./FloatingTip";
+import { hideLoading, showLoading } from "./LoadingComp";
 import { TextureComp } from "./TextureComp";
 
 export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
@@ -125,32 +129,24 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                   });
                   addResource("Warmonger", 1, G.save.state.resources);
                   planet.actions.push({ type: PlanetActionType.DeclaredWar, tick: G.save.data.tick });
-                  planet.battleResult = {
-                     battleScore: 72,
-                     boosters: new Map([["Evasion1", 1]]),
-                     resources: new Map([
-                        ["XP", 12900],
-                        ["VictoryPoint", 2],
-                     ]),
-                  };
 
-                  // showLoading();
-                  // const enemy = generateShip("Skiff", Math.random);
-                  // const me = structuredClone(G.save.state);
-                  // me.resources.clear();
-                  // enemy.resources.clear();
-                  // G.speed = 0;
-                  // G.runtime = new Runtime({ state: me, options: G.save.options, data: G.save.data }, enemy);
-                  // G.runtime.battleType = BattleType.Qualifier;
-                  // G.scene.loadScene(ShipScene);
-                  // hideSidebar();
-                  // hideModal();
-                  // GameStateUpdated.emit();
-                  // setTimeout(() => {
-                  //    G.speed = 1;
-                  //    hideLoading();
-                  //    GameStateUpdated.emit();
-                  // }, 1000);
+                  showLoading();
+                  const enemy = generateShip("Skiff", Math.random);
+                  const me = structuredClone(G.save.state);
+                  me.resources.clear();
+                  enemy.resources.clear();
+                  G.speed = 0;
+                  G.runtime = new Runtime({ state: me, options: G.save.options, data: G.save.data }, enemy);
+                  G.runtime.battleType = BattleType.Qualifier;
+                  G.scene.loadScene(ShipScene);
+                  hideSidebar();
+                  hideModal();
+                  GameStateUpdated.emit();
+                  setTimeout(() => {
+                     G.speed = 1;
+                     hideLoading();
+                     GameStateUpdated.emit();
+                  }, 1000);
 
                   GameStateUpdated.emit();
                }}

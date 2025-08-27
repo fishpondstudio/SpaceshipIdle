@@ -8,7 +8,7 @@ import { formatNumber, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useRef } from "react";
 import { G } from "../utils/Global";
-import { VictoryHeaderComp } from "./components/BattleResultHeader";
+import { DefeatedHeaderComp, VictoryHeaderComp } from "./components/BattleResultHeader";
 import { FloatingTip } from "./components/FloatingTip";
 import { NumberSelect } from "./components/NumberInput";
 import { TextureComp } from "./components/TextureComp";
@@ -35,7 +35,7 @@ export function PeaceTreatyModal({
          ["HP1", 0],
       ]),
       resources: new Map([
-         ["VictoryPoint", 1],
+         ["VictoryPoint", victoryType === "Defeated" ? 0 : 1],
          ["XP", 0],
       ]),
    });
@@ -44,7 +44,11 @@ export function PeaceTreatyModal({
    const xp = (leftOver / 100) * enemyXP;
    return (
       <div className="m10">
-         <VictoryHeaderComp title={BattleVictoryTypeLabel[victoryType]()} />
+         {victoryType === "Defeated" ? (
+            <DefeatedHeaderComp />
+         ) : (
+            <VictoryHeaderComp title={BattleVictoryTypeLabel[victoryType]()} />
+         )}
          <div className="row text-lg">
             <TextureComp name="Others/Spaceship24" width={48} />
             <div>SS {G.save.state.name}</div>
@@ -66,8 +70,8 @@ export function PeaceTreatyModal({
                   </div>
                   <NumberSelect
                      value={battleResult.current.resources.get("VictoryPoint") ?? 0}
-                     canIncrease={(value) => value < 9}
-                     canDecrease={(value) => value > 0}
+                     canIncrease={(value) => victoryType !== "Defeated" && value < 9}
+                     canDecrease={(value) => victoryType !== "Defeated" && value > 0}
                      onChange={(value) => {
                         battleResult.current.resources.set("VictoryPoint", value);
                         forceUpdate();
@@ -81,8 +85,8 @@ export function PeaceTreatyModal({
                      </div>
                      <NumberSelect
                         value={count}
-                        canIncrease={(value) => value < 9}
-                        canDecrease={(value) => value > 0}
+                        canIncrease={(value) => victoryType !== "Defeated" && value < 9}
+                        canDecrease={(value) => victoryType !== "Defeated" && value > 0}
                         onChange={(value) => {
                            battleResult.current.boosters.set(booster, value);
                            forceUpdate();
@@ -113,6 +117,7 @@ export function PeaceTreatyModal({
          </div>
          <button className="btn w100 filled p5" disabled={battleScore < value}>
             <FloatingTip
+               disabled={victoryType === "Defeated"}
                w={400}
                label={
                   <>

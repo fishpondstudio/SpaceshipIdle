@@ -20,7 +20,6 @@ export const GameStateFlags = {
    None: 0,
    Incompatible: 1 << 0,
    ShowTutorial: 1 << 1,
-   QualifierBattlePrompted: 1 << 2,
 } as const;
 
 export type GameStateFlags = (typeof GameStateFlags)[keyof typeof GameStateFlags];
