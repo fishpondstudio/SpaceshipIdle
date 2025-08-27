@@ -32,11 +32,10 @@
       "@types/node": "^22.10.2",
       "@types/react": "^19.1.0",
       "@types/react-dom": "^19.1.0",
-      "@vitejs/plugin-react-swc": "^3.9.0",
+      "@vitejs/plugin-react-swc": "^3.11.0",
       "postcss": "^8.4.49",
       "postcss-preset-mantine": "^1.17.0",
       "postcss-simple-vars": "^7.0.1",
-      "vite": "^6.3.2",
-      "vite-plugin-spritesmith": "github:fishpondstudio/vite-plugin-spritesmith"
+      "vite": "^6.3.5"
    }
 }
