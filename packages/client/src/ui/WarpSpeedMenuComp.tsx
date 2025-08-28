@@ -1,4 +1,5 @@
 import { Menu } from "@mantine/core";
+import { WarpElementId } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { classNames, formatNumber, range } from "@spaceship-idle/shared/src/utils/Helper";
@@ -24,7 +25,7 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
             >
                <div className="block pointer" style={{ width: 85 }}>
                   <TextureComp
-                     id="ship-info-warp"
+                     id={WarpElementId}
                      className={classNames(G.speed > 1 ? "spin" : null)}
                      style={{ animationDuration: `${8 / G.speed}s` }}
                      name="Others/Warp"

@@ -1,3 +1,4 @@
+import { WarpElementId } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { formatHMS, formatNumber, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -21,7 +22,7 @@ export function OfflineTimeModal({ offlineTime }: { offlineTime: number }): Reac
                className="btn w100 p5 filled"
                onClick={(e) => {
                   const rect = (e.target as HTMLButtonElement).getBoundingClientRect();
-                  const target = document.getElementById("ship-info-warp")?.getBoundingClientRect();
+                  const target = document.getElementById(WarpElementId)?.getBoundingClientRect();
                   addResource("Warp", warp, G.save.state.resources);
                   hideModal();
                   playBling();

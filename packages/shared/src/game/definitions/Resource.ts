@@ -9,9 +9,10 @@ export interface IResourceDefinition {
 export const Resources = {
    XP: cast<IResourceDefinition>({ name: () => t(L.XP), texture: "Others/XP" }),
    VictoryPoint: cast<IResourceDefinition>({ name: () => t(L.VictoryPoint), texture: "Others/Trophy16" }),
+   Warp: cast<IResourceDefinition>({ name: () => t(L.TimeWarp) }),
+
    Victory: cast<IResourceDefinition>({ name: () => EmptyString }),
    Defeat: cast<IResourceDefinition>({ name: () => EmptyString }),
-   Warp: cast<IResourceDefinition>({ name: () => t(L.TimeWarp) }),
    Warmonger: cast<IResourceDefinition>({ name: () => EmptyString }),
    Backstabber: cast<IResourceDefinition>({ name: () => EmptyString }),
 } as const satisfies Record<string, IResourceDefinition>;

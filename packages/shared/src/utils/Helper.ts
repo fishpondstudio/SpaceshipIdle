@@ -966,3 +966,14 @@ export function cast<T>(value: T): T {
 export function randomAlphaNumeric(length: number, random = Math.random): string {
    return Array.from({ length }, () => random().toString(36)[2]).join("");
 }
+
+export function getDOMRectCenter(rect: DOMRect): IPointData {
+   return {
+      x: rect.x + rect.width / 2,
+      y: rect.y + rect.height / 2,
+   };
+}
+export function getElementCenter(ele: Element): IPointData {
+   const rect = ele.getBoundingClientRect();
+   return getDOMRectCenter(rect);
+}

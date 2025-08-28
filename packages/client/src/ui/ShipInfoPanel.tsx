@@ -1,6 +1,11 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
-import { DiscordUrl, SteamUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import {
+   DiscordUrl,
+   SteamUrl,
+   VictoryPointElementId,
+   XPElementId,
+} from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { elementToXP, xpToElement } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
@@ -27,7 +32,6 @@ import {
    reduceOf,
 } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { Sprite } from "pixi.js";
 import { memo } from "react";
 import Discord from "../../src/assets/images/Discord.svg";
 import Steam from "../../src/assets/images/Steam.svg";
@@ -40,7 +44,6 @@ import { HamburgerMenuComp } from "./components/HamburgerMenuComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
 import { MatchmakingModal } from "./MatchmakingModal";
-import { playBling } from "./Sound";
 import { WarpSpeedMenuComp } from "./WarpSpeedMenuComp";
 
 const rawDamages: Record<DamageType, number> = {
@@ -119,6 +122,7 @@ export function ShipInfoPanel(): React.ReactNode {
             }
          >
             <div
+               id={VictoryPointElementId}
                className="block pointer"
                style={{
                   background: highlight
@@ -178,7 +182,7 @@ export function ShipInfoPanel(): React.ReactNode {
          </FloatingTip>
          <div className="divider vertical" />
          <FloatingTip label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(currentXP))} />}>
-            <div className="block" style={{ width: 90 }}>
+            <div id={XPElementId} className="block" style={{ width: 90 }}>
                <TextureComp name="Others/XP24" />
                <div className="f1 text-right">
                   <div>{formatNumber(currentXP)}</div>
@@ -259,23 +263,6 @@ export function ShipInfoPanel(): React.ReactNode {
          <div className="divider vertical" />
          <WarpSpeedMenuComp gs={state} />
       </div>
-   );
-}
-
-function playQuantumParticle(): void {
-   playBling();
-   const target = document.getElementById("ship-info-quantum")?.getBoundingClientRect();
-   G.starfield.playParticle(
-      () => new Sprite(G.textures.get("Misc/Quantum")),
-      {
-         x: document.body.clientWidth / 2,
-         y: document.body.clientHeight / 2,
-      },
-      {
-         x: target ? target.x + target.width / 2 : 0,
-         y: target ? target.y + target.height / 2 : 0,
-      },
-      1,
    );
 }
 

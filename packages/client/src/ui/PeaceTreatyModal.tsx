@@ -1,17 +1,28 @@
 import { clamp, useForceUpdate } from "@mantine/hooks";
 import { Boosters } from "@spaceship-idle/shared/src/game/definitions/Boosters";
+import {
+   BoosterElementId,
+   VictoryPointElementId,
+   XPElementId,
+} from "@spaceship-idle/shared/src/game/definitions/Constant";
 import type { BattleResult } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
+import { GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
-import { BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
+import { BattleType, BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { calculateRewardValue } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
-import { formatNumber, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
+import { formatNumber, getDOMRectCenter, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { Sprite } from "pixi.js";
 import { useRef } from "react";
 import { G } from "../utils/Global";
+import { hideModal } from "../utils/ToggleModal";
 import { DefeatedHeaderComp, VictoryHeaderComp } from "./components/BattleResultHeader";
 import { FloatingTip } from "./components/FloatingTip";
+import { hideLoading, showLoading } from "./components/LoadingComp";
 import { NumberSelect } from "./components/NumberInput";
 import { TextureComp } from "./components/TextureComp";
+import { playBling } from "./Sound";
 
 export function PeaceTreatyModal({
    battleScore,
@@ -41,7 +52,8 @@ export function PeaceTreatyModal({
    });
    const [value, breakdown] = calculateRewardValue(battleResult.current, G.save.state);
    const leftOver = clamp(battleScore - value, 0, Number.POSITIVE_INFINITY);
-   const xp = (leftOver / 100) * enemyXP;
+   battleResult.current.resources.set("XP", (leftOver / 100) * enemyXP);
+
    return (
       <div className="m10">
          {victoryType === "Defeated" ? (
@@ -98,7 +110,7 @@ export function PeaceTreatyModal({
                   <div className="f1">
                      <TextureComp name="Others/XP" className="inline-middle" /> {t(L.XP)}
                   </div>
-                  <div>{formatNumber(xp)}</div>
+                  <div>{formatNumber(battleResult.current.resources.get("XP") ?? 0)}</div>
                </div>
             </div>
          </div>
@@ -115,7 +127,74 @@ export function PeaceTreatyModal({
             )}
             <div className="f1 text-center">{value}</div>
          </div>
-         <button className="btn w100 filled p5" disabled={battleScore < value}>
+         <button
+            className="btn w100 filled p5"
+            disabled={battleScore < value}
+            onClick={(e) => {
+               showLoading();
+               hideModal();
+
+               G.speed = 1;
+               G.runtime = new Runtime(G.save, new GameState());
+               G.runtime.battleType = BattleType.Peace;
+               G.runtime.createXPTarget();
+
+               const from = (e.target as HTMLButtonElement).getBoundingClientRect();
+
+               setTimeout(() => {
+                  hideLoading();
+
+                  GameStateUpdated.emit();
+
+                  playBling();
+                  const boosterTarget = document.getElementById(BoosterElementId)?.getBoundingClientRect();
+                  if (boosterTarget) {
+                     battleResult.current.boosters.forEach((count, booster) => {
+                        G.starfield.playParticle(
+                           () => {
+                              const sprite = new Sprite(G.textures.get(`Booster/${booster}`));
+                              sprite.scale.set(2);
+                              return sprite;
+                           },
+                           getDOMRectCenter(from),
+                           getDOMRectCenter(boosterTarget),
+                           count,
+                        );
+                     });
+                  }
+
+                  const xpTarget = document.getElementById(XPElementId)?.getBoundingClientRect();
+                  const xp = battleResult.current.resources.get("XP");
+                  if (xpTarget && xp && xp > 0) {
+                     G.starfield.playParticle(
+                        () => {
+                           const sprite = new Sprite(G.textures.get("Others/XP"));
+                           sprite.scale.set(2);
+                           return sprite;
+                        },
+                        getDOMRectCenter(from),
+                        getDOMRectCenter(xpTarget),
+                        5,
+                     );
+                  }
+
+                  const victoryPointTarget = document.getElementById(VictoryPointElementId)?.getBoundingClientRect();
+                  const victoryPoint = battleResult.current.resources.get("VictoryPoint");
+                  if (victoryPointTarget && victoryPoint && victoryPoint > 0) {
+                     G.starfield.playParticle(
+                        () => {
+                           const sprite = new Sprite(G.textures.get("Others/Trophy"));
+                           sprite.scale.set(2);
+                           return sprite;
+                        },
+                        getDOMRectCenter(from),
+                        getDOMRectCenter(victoryPointTarget),
+                        victoryPoint,
+                     );
+                  }
+               }, 1000);
+            }}
+         >
             <FloatingTip
                disabled={victoryType === "Defeated"}
                w={400}
@@ -124,7 +203,7 @@ export function PeaceTreatyModal({
                      <div>
                         You have <b>{battleScore}</b> battle score and the war reparation cannot exceed this. Your first
                         Victory Point and Booster are free. Your remaining <b>{leftOver}</b> battle score is converted
-                        to <b>{formatNumber(xp)}</b> XP
+                        to <b>{formatNumber(battleResult.current.resources.get("XP") ?? 0)}</b> XP
                      </div>
                      <div className="h5" />
                      <div className="flex-table mx-10">

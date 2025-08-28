@@ -113,6 +113,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                onClick={() => {
                   planet.actions.push({ type: PlanetActionType.DeclaredWar, tick: G.save.data.tick });
                   const enemy = generateShip("Skiff", Math.random);
+                  enemy.name = planet.name;
                   showModal({ children: <PreBattleModal enemy={enemy} info={{ hideEnemyInfo: true }} />, size: "lg" });
                }}
             >

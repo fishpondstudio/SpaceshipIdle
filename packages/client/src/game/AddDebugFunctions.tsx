@@ -16,7 +16,6 @@ import { OfflineTimeModal } from "../ui/OfflineTimeModal";
 import { PreBattleModal } from "../ui/PreBattleModal";
 import { PrestigeModal } from "../ui/PrestigeModal";
 import { PrestigeReason } from "../ui/PrestigeReason";
-import { QualifierBattleResultModal } from "../ui/QualifierBattleResultModal";
 import { ViewShipModal } from "../ui/ViewShipModal";
 import { idbClear } from "../utils/BrowserStorage";
 import { G } from "../utils/Global";
@@ -98,14 +97,6 @@ export function addDebugFunctions(): void {
       G.runtime.battleStatus = BattleStatus.RightWin;
       showModal({
          children: <PrestigeModal reason={PrestigeReason.Incompatible} />,
-         size: "sm",
-      });
-   };
-   // @ts-expect-error
-   globalThis.victory = async () => {
-      G.runtime.battleStatus = BattleStatus.LeftWin;
-      showModal({
-         children: <QualifierBattleResultModal />,
          size: "sm",
       });
    };

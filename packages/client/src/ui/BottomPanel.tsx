@@ -1,4 +1,5 @@
 import { Indicator, Progress, SegmentedControl } from "@mantine/core";
+import { BoosterElementId } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameState, GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
@@ -289,14 +290,14 @@ function BoosterTabLabel(): React.ReactNode {
       return (
          <FloatingTip position="top" label={t(L.YouHaveUnequippedBoosterTooltip)}>
             <Indicator color="red" processing>
-               <TextureComp id="bottom-panel-booster" name="Others/Booster24" />
+               <TextureComp id={BoosterElementId} name="Others/Booster24" />
             </Indicator>
          </FloatingTip>
       );
    }
    return (
       <FloatingTip position="top" label={t(L.TabBooster)}>
-         <TextureComp id="bottom-panel-booster" name="Others/Booster24" />
+         <TextureComp id={BoosterElementId} name="Others/Booster24" />
       </FloatingTip>
    );
 }
