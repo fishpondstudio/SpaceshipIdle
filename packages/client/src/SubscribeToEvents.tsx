@@ -1,7 +1,7 @@
 import { notifications } from "@mantine/notifications";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { addResource, calcSpaceshipXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { calcSpaceshipXP, changeStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { OnBattleStatusChanged } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { saveGame } from "./game/LoadSave";
 import { onSteamClose } from "./rpc/SteamClient";
@@ -25,9 +25,9 @@ export function subscribeToEvents(): void {
                   />
                );
                if (G.runtime.battleStatus === BattleStatus.RightWin) {
-                  addResource("Defeat", 1, G.save.state.resources);
+                  changeStat("Defeat", 1, G.save.state.stats);
                } else {
-                  addResource("Victory", 1, G.save.state.resources);
+                  changeStat("Victory", 1, G.save.state.stats);
                }
                break;
             }

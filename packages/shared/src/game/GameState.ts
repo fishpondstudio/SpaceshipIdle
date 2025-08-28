@@ -7,6 +7,7 @@ import type { Catalyst, CatalystCat } from "./definitions/Catalyst";
 import type { Galaxy } from "./definitions/Galaxy";
 import type { Resource } from "./definitions/Resource";
 import type { ShipDesign } from "./definitions/ShipDesign";
+import type { Stat } from "./definitions/Stat";
 import type { Tech } from "./definitions/TechDefinitions";
 import { GameOption } from "./GameOption";
 import { MaxX, MaxY } from "./Grid";
@@ -37,6 +38,7 @@ export class GameState {
    id = uuid4();
    tiles: Tiles = new Map();
    resources = new Map<Resource, ResourceDataPersisted>();
+   stats = new Map<Stat, number>();
    unlockedTech = new Set<Tech>();
    discoveredElements = 0;
    elements = new Map<ElementSymbol, ElementData>();

@@ -1,5 +1,6 @@
 import { clamp, inverse } from "../../utils/Helper";
 import type { Resource } from "../definitions/Resource";
+import type { Stat } from "../definitions/Stat";
 import type { GameState, ResourceData, ResourceDataPersisted } from "../GameState";
 import { getTotalBuildingCost } from "./BuildingLogic";
 import { getShipBlueprint } from "./ShipLogic";
@@ -69,6 +70,16 @@ export function refundResource(
    console.assert(result.used >= amount);
    result.used -= amount;
    resources.set(resource, result);
+}
+
+export function changeStat(stat: Stat, amount: number, stats: Map<Stat, number>): number {
+   const result = (stats.get(stat) ?? 0) + amount;
+   stats.set(stat, result);
+   return result;
+}
+
+export function getStat(stat: Stat, stats: Map<Stat, number>): number {
+   return stats.get(stat) ?? 0;
 }
 
 export const StartQuantum = 10;

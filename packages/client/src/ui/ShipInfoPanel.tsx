@@ -13,6 +13,7 @@ import {
    calcSpaceshipXP,
    getMinimumQuantumForBattle,
    getMinimumSpaceshipXPForBattle,
+   getStat,
    getUsedQuantum,
    quantumToXP,
    resourceOf,
@@ -84,8 +85,8 @@ export function ShipInfoPanel(): React.ReactNode {
    const timeUntilNextQuantum = (1000 * (nextQuantumXP - totalXP)) / xpDelta;
    const progressTowardsNextQuantum = (totalXP - prevQuantumXP) / (nextQuantumXP - prevQuantumXP);
    const vp = resourceOf("VictoryPoint", G.save.state.resources);
-   const victory = resourceOf("Victory", G.save.state.resources);
-   const defeat = resourceOf("Defeat", G.save.state.resources);
+   const victory = getStat("Victory", G.save.state.stats);
+   const defeat = getStat("Defeat", G.save.state.stats);
    return (
       <div className="sf-frame top ship-info">
          <HamburgerMenuComp flag={options.flag} />
@@ -102,11 +103,11 @@ export function ShipInfoPanel(): React.ReactNode {
                   </div>
                   <div className="row">
                      <div className="f1">{t(L.TotalVictory)}</div>
-                     <div>{formatNumber(victory.total)}</div>
+                     <div>{formatNumber(victory)}</div>
                   </div>
                   <div className="row">
                      <div className="f1">{t(L.TotalDefeat)}</div>
-                     <div>{formatNumber(defeat.total)}</div>
+                     <div>{formatNumber(defeat)}</div>
                   </div>
                   <div className="row">
                      <div className="f1">{t(L.MatchmakingQualified)}</div>
@@ -141,7 +142,7 @@ export function ShipInfoPanel(): React.ReactNode {
                <div className="w10" />
                <div className="f1 text-right">
                   <div>{formatNumber(vp.current)}</div>
-                  <div className="xs">{formatPercent(divide(victory.total, victory.total + defeat.total))}</div>
+                  <div className="xs">{formatPercent(divide(victory, victory + defeat))}</div>
                </div>
             </div>
          </FloatingTip>

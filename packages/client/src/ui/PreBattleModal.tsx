@@ -1,9 +1,9 @@
-import { Grid, Image, Progress } from "@mantine/core";
+import { Image, Progress } from "@mantine/core";
 import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import type { BattleInfo } from "@spaceship-idle/shared/src/game/logic/BattleInfo";
 import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { calcSpaceshipXP, getUsedQuantum, resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
@@ -29,7 +29,7 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
    if (!info.hideEnemyInfo) {
       [enemyScore, enemyHp, enemyDps] = useMemo(() => calcShipScore(enemy), [enemy]);
    }
-   const warmonger = Math.ceil(resourceOf("Warmonger", G.save.state.resources).current);
+   const warmonger = getWarmongerPenalty(G.save.state);
    return (
       <div className="m10">
          <div className="row">
@@ -214,38 +214,5 @@ function ShipHeaderComp({
             />
          )}
       </>
-   );
-}
-
-function ShipInfoComp({ gs, side }: { gs: GameState; side: Side }): React.ReactNode {
-   return (
-      <div
-         style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: side === Side.Left ? "flex-start" : "flex-end",
-            textAlign: side === Side.Left ? "left" : "right",
-         }}
-      >
-         <Grid>
-            <Grid.Col span={6}>
-               <div style={{ fontSize: 32 }}>{formatNumber(getUsedQuantum(gs))}</div>
-               <div className="text-sm text-dimmed">{t(L.Quantum)}</div>
-            </Grid.Col>
-            <Grid.Col span={6}>
-               <div style={{ fontSize: 32 }}>{formatNumber(calcSpaceshipXP(gs))}</div>
-               <div className="text-sm text-dimmed">{t(L.SpaceshipXP)}</div>
-            </Grid.Col>
-            <Grid.Col span={6}>
-               <div style={{ fontSize: 32 }}>{formatNumber(gs.tiles.size)}</div>
-               <div className="text-sm text-dimmed">{t(L.Modules)}</div>
-            </Grid.Col>
-            <Grid.Col span={6}>
-               <div style={{ fontSize: 32 }}>{formatNumber(gs.unlockedTech.size)}</div>
-               <div className="text-sm text-dimmed">{t(L.Tech)}</div>
-            </Grid.Col>
-         </Grid>
-      </div>
    );
 }

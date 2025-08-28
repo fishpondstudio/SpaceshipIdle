@@ -21,7 +21,7 @@ import { tickCatalyst } from "./CatalystLogic";
 import { tickElement } from "./ElementLogic";
 import { tickGalaxy } from "./GalaxyLogic";
 import type { Projectile } from "./Projectile";
-import { resourceOf, spendResource, trySpendResource } from "./ResourceLogic";
+import { changeStat, getStat, trySpendResource } from "./ResourceLogic";
 import { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag, RuntimeTile } from "./RuntimeTile";
 import { flipHorizontal, isEnemy, shipAABB } from "./ShipLogic";
@@ -211,10 +211,10 @@ export class Runtime {
    }
 
    private _tickPenalty() {
-      const change = this.leftStat.warmongerChange.value;
-      const current = resourceOf("Warmonger", this.left.resources).current;
+      const change = this.leftStat.warmongerDecrease.value;
+      const current = getStat("Warmonger", this.left.stats);
       if (current > 0) {
-         spendResource("Warmonger", Math.min(current, change), this.left.resources);
+         changeStat("Warmonger", -Math.min(current, change), this.left.stats);
       }
    }
 

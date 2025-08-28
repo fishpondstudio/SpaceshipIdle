@@ -19,7 +19,7 @@ export class RuntimeStat {
    destroyedHp = 0;
    zeroProjectileSec = 0;
 
-   warmongerChange = new TrackedValue(BaseWarmongerChangePerSec);
+   warmongerDecrease = new TrackedValue(BaseWarmongerChangePerSec);
 
    rawDamage: Record<DamageType, number> = {
       [DamageType.Kinetic]: 0,
