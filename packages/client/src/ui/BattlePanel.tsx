@@ -4,7 +4,7 @@ import { SuddenDeathSeconds, SuddenDeathUndamagedSec } from "@spaceship-idle/sha
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
-import { classNames, formatHMS, formatNumber, formatPercent, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls, formatHMS, formatNumber, formatPercent, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
 import { FloatingTip } from "./components/FloatingTip";
@@ -17,7 +17,7 @@ export function TimerPanel(): React.ReactNode {
    if (G.runtime.battleType === BattleType.Peace) return null;
    return (
       <div
-         className={classNames(
+         className={cls(
             "timer-panel",
             G.runtime.suddenDeathDamage(Side.Left) > 0 || G.runtime.suddenDeathDamage(Side.Right) > 0
                ? "text-red breathing"
@@ -112,7 +112,7 @@ function DamageComponent({ side }: { side: Side }): React.ReactNode {
                <div key={key} className="row">
                   <div>{DamageTypeLabel[value]()}</div>
                   <div className="text-right">{formatNumber(damageStat.actualDamage[value])}</div>
-                  <div className={classNames("text-right", side === Side.Left ? "text-green" : "text-red")}>
+                  <div className={cls("text-right", side === Side.Left ? "text-green" : "text-red")}>
                      +{formatNumber(damageStat.actualDamages.get(-1)?.[value] ?? 0)}
                   </div>
                </div>

@@ -28,6 +28,23 @@ export function getShipClass(gs: GameState): ShipClass {
    return techColumnToShipClass(x);
 }
 
+export function getPreviousShipClass(shipClass: ShipClass): ShipClass | undefined {
+   const idx = ShipClass[shipClass].index - 1;
+   for (const [shipClass, def] of entriesOf(ShipClass)) {
+      if (def.index === idx) {
+         return shipClass;
+      }
+   }
+}
+export function getNextShipClass(shipClass: ShipClass): ShipClass | undefined {
+   const idx = ShipClass[shipClass].index + 1;
+   for (const [shipClass, def] of entriesOf(ShipClass)) {
+      if (def.index === idx) {
+         return shipClass;
+      }
+   }
+}
+
 export function techColumnToShipClass(column: number): ShipClass {
    let shipClass: ShipClass = "Skiff";
    forEach(ShipClass, (k, v) => {

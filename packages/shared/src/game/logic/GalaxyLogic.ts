@@ -2,7 +2,9 @@ import { AABB } from "../../utils/AABB";
 import type { Circle } from "../../utils/Circle";
 import { CURRENCY_EPSILON, capitalize, hasFlag, rand, randOne, randomAlphaNumeric, shuffle } from "../../utils/Helper";
 import { Generator } from "../../utils/NameGen";
+import { srand } from "../../utils/Random";
 import type { IHaveXY } from "../../utils/Vector2";
+import type { Booster } from "../definitions/Boosters";
 import { FriendshipDurationSeconds } from "../definitions/Constant";
 import {
    type Galaxy,
@@ -12,7 +14,10 @@ import {
    PlanetType,
    type StarSystem,
 } from "../definitions/Galaxy";
+import type { GameState } from "../GameState";
+import { getBoostersInClass } from "./BoosterLogic";
 import type { Runtime } from "./Runtime";
+import { getPreviousShipClass, getShipClass } from "./TechLogic";
 
 export function findMyself(galaxy: Galaxy): [Planet, StarSystem] {
    for (const starSystem of galaxy.starSystems) {
@@ -30,6 +35,22 @@ export function findPlanet(id: number, galaxy: Galaxy): [Planet, StarSystem] | u
       }
    }
    return undefined;
+}
+
+export function getBoosterReward(seed: string, gs: GameState): Booster[] {
+   const shipClass = getShipClass(gs);
+   const boosters = getBoostersInClass(shipClass);
+   const random = srand(seed);
+   shuffle(boosters, random);
+   const [booster, ...candidates] = boosters;
+   const previousShipClass = getPreviousShipClass(shipClass);
+   if (previousShipClass) {
+      getBoostersInClass(previousShipClass).forEach((b) => candidates.push(b));
+   }
+   shuffle(candidates, random);
+   const result = candidates.slice(0, 2);
+   result.unshift(booster);
+   return result;
 }
 
 export function tickGalaxy(rt: Runtime): void {

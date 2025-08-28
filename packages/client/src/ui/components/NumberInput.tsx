@@ -1,4 +1,4 @@
-import { classNames, formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls, formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 import { playClick, playError } from "../Sound";
 
 export function NumberSelect({
@@ -15,7 +15,7 @@ export function NumberSelect({
    return (
       <div className="row">
          <div
-            className={classNames("mi", canDecrease(value) ? null : "text-disabled")}
+            className={cls("mi", canDecrease(value) ? null : "text-disabled")}
             onClick={() => {
                if (canDecrease(value)) {
                   playClick();
@@ -29,7 +29,7 @@ export function NumberSelect({
          </div>
          <div className="text-center">{formatNumber(value)}</div>
          <div
-            className={classNames("mi", canIncrease(value) ? null : "text-disabled")}
+            className={cls("mi", canIncrease(value) ? null : "text-disabled")}
             onClick={() => {
                if (canIncrease(value)) {
                   playClick();

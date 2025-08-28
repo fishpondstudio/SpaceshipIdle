@@ -1,6 +1,6 @@
 import { CloseButton, Overlay, ScrollArea, Transition } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { classNames } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls } from "@spaceship-idle/shared/src/utils/Helper";
 import { useState } from "react";
 import { useTypedEvent } from "./Hook";
 import { type IModalProps, ToggleModal } from "./ToggleModal";
@@ -48,7 +48,7 @@ export function ModalManager(): React.ReactNode {
                }}
                style={styles}
             >
-               <div className={classNames("sf-frame modal", currentModalProps?.size ?? "md")}>
+               <div className={cls("sf-frame modal", currentModalProps?.size ?? "md")}>
                   {currentModalProps?.title ? (
                      <>
                         <div className="row m10">

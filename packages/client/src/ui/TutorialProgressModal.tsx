@@ -1,5 +1,5 @@
 import { GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { classNames, clearFlag, formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
+import { clearFlag, cls, formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { Tutorial } from "../game/Tutorial";
 import { G } from "../utils/Global";
@@ -29,7 +29,7 @@ export function TutorialProgressModal(): React.ReactNode {
                      )}
                      <div className="f1">
                         <FloatingTip label={<RenderHTML html={step.desc()} />}>
-                           <div className={classNames(active ? "text-space" : null)}>{step.name()}</div>
+                           <div className={cls(active ? "text-space" : null)}>{step.name()}</div>
                         </FloatingTip>
                         {active ? (
                            <div className="text-sm text-dimmed">
@@ -38,7 +38,7 @@ export function TutorialProgressModal(): React.ReactNode {
                         ) : null}
                      </div>
                      {!unfinished || active ? (
-                        <div className={classNames(progress >= total ? "text-dimmed" : null)}>
+                        <div className={cls(progress >= total ? "text-dimmed" : null)}>
                            {formatNumber(progress)}/{formatNumber(total)}
                         </div>
                      ) : null}

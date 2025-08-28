@@ -1,5 +1,6 @@
 import { forEach, shuffle } from "../../utils/Helper";
 import { type Booster, Boosters } from "../definitions/Boosters";
+import { ShipClass } from "../definitions/TechDefinitions";
 import type { GameState } from "../GameState";
 import type { Runtime } from "./Runtime";
 import { getShipClass } from "./TechLogic";
@@ -44,4 +45,14 @@ export function hasUnequippedBooster(gs: GameState): boolean {
       }
    }
    return false;
+}
+
+export function getBoostersInClass(shipClass: ShipClass): Booster[] {
+   const candidates: Booster[] = [];
+   forEach(Boosters, (booster, def) => {
+      if (def.shipClass === shipClass) {
+         candidates.push(booster);
+      }
+   });
+   return candidates;
 }

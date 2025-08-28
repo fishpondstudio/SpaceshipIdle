@@ -10,10 +10,10 @@ import { GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/Gam
 import type { BattleInfo } from "@spaceship-idle/shared/src/game/logic/BattleInfo";
 import { getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType, BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { findPlanet } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import { findPlanet, getBoosterReward } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { calculateRewardValue } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { formatNumber, getDOMRectCenter, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { formatNumber, getDOMRectCenter, mMapOf, randomAlphaNumeric } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { Sprite } from "pixi.js";
 import { useRef } from "react";
@@ -42,10 +42,7 @@ export function PeaceTreatyModal({
    const victoryType = getVictoryType(battleScore);
    const battleResult = useRef<BattleResult>({
       battleScore: battleScore,
-      boosters: new Map([
-         ["Evasion1", 0],
-         ["HP1", 0],
-      ]),
+      boosters: new Map(),
       resources: new Map([
          ["VictoryPoint", victoryType === "Defeated" ? 0 : 1],
          ["XP", 0],
@@ -59,8 +56,20 @@ export function PeaceTreatyModal({
    if (battleInfo.planetId) {
       const result = findPlanet(battleInfo.planetId, G.save.data.galaxy);
       if (result) {
-         texture = `Galaxy/${result[0].texture}`;
+         const [planet, _] = result;
+         texture = `Galaxy/${planet.texture}`;
+         const boosters = getBoosterReward(planet.seed, G.save.state);
+         boosters.forEach((booster) => {
+            battleResult.current.boosters.set(booster, 0);
+         });
       }
+   }
+
+   if (battleResult.current.boosters.size === 0) {
+      const boosters = getBoosterReward(randomAlphaNumeric(16), G.save.state);
+      boosters.forEach((booster) => {
+         battleResult.current.boosters.set(booster, 0);
+      });
    }
 
    return (

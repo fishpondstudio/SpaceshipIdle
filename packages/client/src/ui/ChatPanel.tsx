@@ -2,7 +2,7 @@ import { Menu, ScrollArea } from "@mantine/core";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { type Language, Languages, LanguagesImage } from "@spaceship-idle/shared/src/game/Languages";
 import { ChatFlag, type IChat } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
-import { classNames, hasFlag, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls, hasFlag, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { TypedEvent } from "@spaceship-idle/shared/src/utils/TypedEvent";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
@@ -88,7 +88,7 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
    useTypedEvent(OnImageLoaded, scrollToBottom);
 
    return (
-      <div className={classNames("chat-panel", isFocused ? "active" : null)} style={{ left }}>
+      <div className={cls("chat-panel", isFocused ? "active" : null)} style={{ left }}>
          <ScrollArea
             onMouseEnter={() => {
                isMouseOver.current = true;
@@ -145,7 +145,7 @@ function _ChatInput({
       setMessage(func);
    });
    return (
-      <div className={classNames("chat-input", isCommand ? "command" : null)}>
+      <div className={cls("chat-input", isCommand ? "command" : null)}>
          <LanguageMenu
             icon={
                isCommand ? (
@@ -157,7 +157,7 @@ function _ChatInput({
          />
          <input
             type="text"
-            className={classNames("f1", isCommand ? "command" : null)}
+            className={cls("f1", isCommand ? "command" : null)}
             value={message}
             onChange={(e) => {
                setMessage(e.target.value);
@@ -257,7 +257,7 @@ function _ChatMessage({ message }: { message: string }): React.ReactNode {
          </div>
       );
    }
-   return <div className={classNames("body", mentionsMe ? "mentions-me" : null)}>{message}</div>;
+   return <div className={cls("body", mentionsMe ? "mentions-me" : null)}>{message}</div>;
 }
 
 const ChatMessage = memo(_ChatMessage, (prev, next) => {

@@ -1,5 +1,5 @@
 import { canSpendResource, getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { classNames, formatNumber, mathSign } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls, formatNumber, mathSign } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { G } from "../../utils/Global";
@@ -20,7 +20,7 @@ export function ResourceListComp({ xp, quantum }: { xp: number; quantum: number 
             <div className="row">
                <TextureComp name="Others/XP24" />
                <div className="f1">{t(L.XP)}</div>
-               <div className={classNames(enoughXp ? "text-green" : "text-red")}>
+               <div className={cls(enoughXp ? "text-green" : "text-red")}>
                   {mathSign(xp)}
                   {formatNumber(Math.abs(xp))}
                </div>
@@ -35,7 +35,7 @@ export function ResourceListComp({ xp, quantum }: { xp: number; quantum: number 
             <div className="row">
                <TextureComp name="Others/Quantum24" />
                <div className="f1">{t(L.Quantum)}</div>
-               <div className={classNames(enoughQuantum ? "text-green" : "text-red")}>
+               <div className={cls(enoughQuantum ? "text-green" : "text-red")}>
                   {mathSign(quantum)}
                   {formatNumber(Math.abs(quantum))}
                </div>

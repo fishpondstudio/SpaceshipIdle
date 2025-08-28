@@ -10,7 +10,7 @@ import {
    getNextCatalystCat,
    getRequirement,
 } from "@spaceship-idle/shared/src/game/logic/CatalystLogic";
-import { classNames, keysOf, shuffle } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls, keysOf, shuffle } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useCallback, useEffect, useRef } from "react";
 import { G } from "../utils/Global";
@@ -88,7 +88,7 @@ export function CatalystFullScreen(): React.ReactNode {
                      return (
                         <div
                            key={choice}
-                           className={classNames(styles.box, "f1 row g0")}
+                           className={cls(styles.box, "f1 row g0")}
                            style={{ opacity: selected && selected !== choice ? 0.25 : 1 }}
                         >
                            <div

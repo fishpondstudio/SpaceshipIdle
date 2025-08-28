@@ -22,7 +22,7 @@ import {
 import { getShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import {
    clamp,
-   classNames,
+   cls,
    divide,
    formatHMS,
    formatNumber,
@@ -216,7 +216,7 @@ export function ShipInfoPanel(): React.ReactNode {
             <div className="block pointer" style={{ width: 60 }}>
                <div className="f1 text-right">
                   <div>{formatPercent(progressTowardsNextQuantum)}</div>
-                  <div className={classNames("xs text-right", xpDelta > 0 ? "text-green" : "text-red")}>
+                  <div className={cls("xs text-right", xpDelta > 0 ? "text-green" : "text-red")}>
                      {mathSign(xpDelta)}
                      {formatPercent(Math.abs(xpDelta / (nextQuantumXP - prevQuantumXP)))}
                   </div>
@@ -254,7 +254,7 @@ export function ShipInfoPanel(): React.ReactNode {
             <div style={{ width: 60 }} className="block pointer">
                <div className="f1 text-right">
                   <div>{formatPercent((totalXP - prevElementXP) / (nextElementXP - prevElementXP))}</div>
-                  <div className={classNames("xs text-right", xpDelta > 0 ? "text-green" : "text-red")}>
+                  <div className={cls("xs text-right", xpDelta > 0 ? "text-green" : "text-red")}>
                      {mathSign(xpDelta)}
                      {formatPercent(Math.abs(xpDelta / (nextElementXP - prevElementXP)))}
                   </div>

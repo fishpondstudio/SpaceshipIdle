@@ -1,11 +1,14 @@
 import { Boosters } from "@spaceship-idle/shared/src/game/definitions/Boosters";
+import { FriendshipDurationSeconds } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { type Planet, PlanetActionType, PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { Resources } from "@spaceship-idle/shared/src/game/definitions/Resource";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { generateShip, getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
+import { getBoosterReward } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
-import { formatNumber, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls, formatNumber, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import { showModal } from "../../utils/ToggleModal";
@@ -16,13 +19,15 @@ import { TextureComp } from "./TextureComp";
 export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
 
+   const rewards = getBoosterReward(planet.seed, G.save.state);
+
    if (planet.battleResult) {
       const victoryType = getVictoryType(planet.battleResult.battleScore);
       return (
          <div className="panel">
             <div className="title">Battle Result</div>
             <div className="h5" />
-            <div className="text-green">
+            <div className={cls(victoryType === "Defeated" ? "text-red" : "text-green")}>
                {BattleVictoryTypeLabel[victoryType]()} ({planet.battleResult.battleScore}%)
             </div>
             <div className="divider my10 mx-10" />
@@ -54,10 +59,13 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
       );
    }
 
-   const current = planet.actions[0];
    let cannotDeclareWarReason = "";
+   const current = planet.actions[0];
    if (current?.type === PlanetActionType.DeclaredFriendship) {
-      cannotDeclareWarReason = "You cannot declare war because you currently have a friendship with them";
+      const timeLeft = FriendshipDurationSeconds - (G.save.data.tick - current.tick);
+      if (timeLeft > 0) {
+         cannotDeclareWarReason = "You cannot declare war because you currently have a friendship with them";
+      }
    }
 
    const warmonger = getWarmongerPenalty(G.save.state);
@@ -85,20 +93,23 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                   {warmonger} <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
                </div>
             </FloatingTip>
+            <div className="text-space text-sm">+1 Warmonger Penalty</div>
+            <div className="text-space text-sm">+1 Backstabber Penalty</div>
             <div className="divider my10 mx-10" />
             <div className="title">Negotiable Rewards</div>
             <div className="h5" />
             <div>
-               <TextureComp name="Booster/Evasion1" className="inline-middle" /> Evasion Cluster
+               <TextureComp name="Others/Trophy16" className="inline-middle" /> {t(L.VictoryPoint)}
             </div>
+            {rewards.map((booster) => {
+               return (
+                  <div key={booster}>
+                     <TextureComp name={`Booster/${booster}`} className="inline-middle" /> {Boosters[booster].name()}
+                  </div>
+               );
+            })}
             <div>
-               <TextureComp name="Booster/HP1" className="inline-middle" /> HP Cluster
-            </div>
-            <div>
-               <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
-            </div>
-            <div>
-               <TextureComp name="Others/XP" className="inline-middle" /> XP
+               <TextureComp name="Others/XP" className="inline-middle" /> {t(L.XP)}
             </div>
          </div>
          <div className="h5" />
@@ -106,33 +117,35 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
             War reparation is negotiated when signing the peace treaty and depends on battle outcome
          </div>
          <div className="h5" />
-         <FloatingTip label={cannotDeclareWarReason} disabled={!cannotDeclareWarReason}>
-            <button
-               disabled={!!cannotDeclareWarReason}
-               className="btn red w100 row g5"
-               onClick={() => {
-                  planet.actions.push({ type: PlanetActionType.DeclaredWar, tick: G.save.data.tick });
-                  const enemy = generateShip("Skiff", Math.random);
-                  enemy.name = planet.name;
-                  showModal({
-                     children: (
-                        <PreBattleModal
-                           enemy={enemy}
-                           info={{
-                              hideEnemyInfo: true,
-                              noWarmongerPenalty: planet.type === PlanetType.Pirate,
-                              planetId: planet.id,
-                           }}
-                        />
-                     ),
-                     size: "lg",
-                  });
-               }}
-            >
-               <div className="mi sm">swords</div>
-               <div>Declare War</div>
-            </button>
-         </FloatingTip>
+         <button
+            disabled={!!cannotDeclareWarReason}
+            className="btn red w100"
+            onClick={() => {
+               planet.actions.push({ type: PlanetActionType.DeclaredWar, tick: G.save.data.tick });
+               const enemy = generateShip("Skiff", Math.random);
+               enemy.name = planet.name;
+               showModal({
+                  children: (
+                     <PreBattleModal
+                        enemy={enemy}
+                        info={{
+                           hideEnemyInfo: true,
+                           noWarmongerPenalty: planet.type === PlanetType.Pirate,
+                           planetId: planet.id,
+                        }}
+                     />
+                  ),
+                  size: "lg",
+               });
+            }}
+         >
+            <FloatingTip label={cannotDeclareWarReason} disabled={!cannotDeclareWarReason}>
+               <div className="row g5">
+                  <div className="mi sm">swords</div>
+                  <div>Declare War</div>
+               </div>
+            </FloatingTip>
+         </button>
       </>
    );
 }

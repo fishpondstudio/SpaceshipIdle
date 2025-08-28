@@ -15,7 +15,7 @@ import {
    PeriodicTable,
    StandardStateLabel,
 } from "@spaceship-idle/shared/src/game/PeriodicTable";
-import { classNames, formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls, formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { ElementImageComp } from "../game/ElementImage";
 import { G } from "../utils/Global";
@@ -73,7 +73,7 @@ export function ElementModal({ symbol }: { symbol: ElementSymbol }): React.React
                <div className="title mx0">
                   <div>{t(L.ElementThisRun)}</div>
                   <div className="f1" />
-                  <div className={classNames(thisRun.amount > 0 ? "text-red" : null)}>
+                  <div className={cls(thisRun.amount > 0 ? "text-red" : null)}>
                      {t(L.XUnassigned, formatNumber(thisRun.amount))}
                   </div>
                </div>

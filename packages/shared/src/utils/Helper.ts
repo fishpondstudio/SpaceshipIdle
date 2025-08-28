@@ -910,7 +910,7 @@ export function removeFrom<T>(array: T[], item: T): boolean {
    return false;
 }
 
-export function classNames(...classes: (string | null | undefined)[]): string {
+export function cls(...classes: (string | null | undefined)[]): string {
    return classes.filter(Boolean).join(" ");
 }
 

@@ -1,13 +1,13 @@
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import type { IShip } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
-import { classNames, formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls, formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useEffect, useState } from "react";
 import { ShipImageComp } from "../game/ShipImageComp";
 import { RPCClient } from "../rpc/RPCClient";
 import { showModal } from "../utils/ToggleModal";
-import { ViewShipModal } from "./ViewShipModal";
 import { DevOrAdminOnly } from "./components/DevOnly";
+import { ViewShipModal } from "./ViewShipModal";
 
 export function ShipGalleryModal(): React.ReactNode {
    const [result, setResult] = useState<{ total: number; ships: IShip[] } | null>(null);
@@ -24,7 +24,7 @@ export function ShipGalleryModal(): React.ReactNode {
                return (
                   <button
                      key={q}
-                     className={classNames("btn", q === quantum ? "filled" : null)}
+                     className={cls("btn", q === quantum ? "filled" : null)}
                      onClick={() => {
                         setQuantum(q);
                      }}

@@ -1,7 +1,7 @@
 import { CloseButton } from "@mantine/core";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { VideoTutorial } from "@spaceship-idle/shared/src/game/logic/VideoTutorials";
-import { classNames } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls } from "@spaceship-idle/shared/src/utils/Helper";
 import type React from "react";
 import { TutorialVideos } from "../../game/Tutorial";
 import { G } from "../../utils/Global";
@@ -30,7 +30,7 @@ export function VideoTutorialComp({
          w="50vw"
          label={<video src={video} autoPlay loop muted style={{ width: "100%", display: "block" }} />}
       >
-         <div className={classNames("video-tutorial", className)} style={style}>
+         <div className={cls("video-tutorial", className)} style={style}>
             <video src={video} autoPlay loop muted />
             <RenderHTML html={desc()} />
             <CloseButton
