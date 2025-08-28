@@ -10,6 +10,7 @@ import { GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/Gam
 import type { BattleInfo } from "@spaceship-idle/shared/src/game/logic/BattleInfo";
 import { getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType, BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
+import { findPlanet } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { calculateRewardValue } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, getDOMRectCenter, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
@@ -29,7 +30,6 @@ import { playBling } from "./Sound";
 export function PeaceTreatyModal({
    battleScore,
    name,
-   texture,
    enemyXP,
    battleInfo,
 }: {
@@ -37,7 +37,6 @@ export function PeaceTreatyModal({
    name: string;
    enemyXP: number;
    battleInfo: BattleInfo;
-   texture?: string;
 }): React.ReactNode {
    const forceUpdate = useForceUpdate();
    const victoryType = getVictoryType(battleScore);
@@ -55,6 +54,14 @@ export function PeaceTreatyModal({
    const [value, breakdown] = calculateRewardValue(battleResult.current, G.save.state);
    const leftOver = clamp(battleScore - value, 0, Number.POSITIVE_INFINITY);
    battleResult.current.resources.set("XP", (leftOver / 100) * enemyXP);
+   let texture = "Others/SpaceshipEnemy24";
+
+   if (battleInfo.planetId) {
+      const result = findPlanet(battleInfo.planetId, G.save.data.galaxy);
+      if (result) {
+         texture = `Galaxy/${result[0].texture}`;
+      }
+   }
 
    return (
       <div className="m10">
@@ -68,7 +75,7 @@ export function PeaceTreatyModal({
             <div>SS {G.save.state.name}</div>
             <div className="f1" />
             <div>{name}</div>
-            <TextureComp name={texture ?? "Others/SpaceshipEnemy24"} width={48} />
+            <TextureComp name={texture} width={48} />
          </div>
          <div className="h10" />
          <div className="row">
@@ -142,6 +149,13 @@ export function PeaceTreatyModal({
                G.runtime.createXPTarget();
 
                if (battleInfo.planetId) {
+                  const result = findPlanet(battleInfo.planetId, G.save.data.galaxy);
+
+                  if (result) {
+                     const [planet, _] = result;
+                     planet.battleResult = battleResult.current;
+                  }
+
                   G.scene.loadScene(GalaxyScene).select(battleInfo.planetId).lookAt(battleInfo.planetId);
                }
 
@@ -149,10 +163,11 @@ export function PeaceTreatyModal({
 
                setTimeout(() => {
                   hideLoading();
-
                   GameStateUpdated.emit();
 
-                  playBling();
+                  if (victoryType !== "Defeated") {
+                     playBling();
+                  }
                   const boosterTarget = document.getElementById(BoosterElementId)?.getBoundingClientRect();
                   if (boosterTarget) {
                      battleResult.current.boosters.forEach((count, booster) => {

@@ -23,6 +23,15 @@ export function findMyself(galaxy: Galaxy): [Planet, StarSystem] {
    throw new Error(`Cannot find myself in the galaxy: ${JSON.stringify(galaxy)}`);
 }
 
+export function findPlanet(id: number, galaxy: Galaxy): [Planet, StarSystem] | undefined {
+   for (const starSystem of galaxy.starSystems) {
+      for (const planet of starSystem.planets) {
+         if (planet.id === id) return [planet, starSystem];
+      }
+   }
+   return undefined;
+}
+
 export function tickGalaxy(rt: Runtime): void {
    for (const starSystem of rt.leftSave.data.galaxy.starSystems) {
       for (const planet of starSystem.planets) {

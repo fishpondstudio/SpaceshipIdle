@@ -10,7 +10,6 @@ export interface IModalProps {
 }
 
 export function showModal(props: IModalProps) {
-   console.trace("showModal", props);
    ToggleModal.emit(props);
 }
 
