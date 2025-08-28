@@ -7,6 +7,7 @@ import {
 } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import type { BattleResult } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import type { BattleInfo } from "@spaceship-idle/shared/src/game/logic/BattleInfo";
 import { getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType, BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { calculateRewardValue } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
@@ -15,6 +16,7 @@ import { formatNumber, getDOMRectCenter, mMapOf } from "@spaceship-idle/shared/s
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { Sprite } from "pixi.js";
 import { useRef } from "react";
+import { GalaxyScene } from "../scenes/GalaxyScene";
 import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
 import { DefeatedHeaderComp, VictoryHeaderComp } from "./components/BattleResultHeader";
@@ -29,13 +31,13 @@ export function PeaceTreatyModal({
    name,
    texture,
    enemyXP,
-   planetId,
+   battleInfo,
 }: {
    battleScore: number;
    name: string;
    enemyXP: number;
+   battleInfo: BattleInfo;
    texture?: string;
-   planetId?: number;
 }): React.ReactNode {
    const forceUpdate = useForceUpdate();
    const victoryType = getVictoryType(battleScore);
@@ -138,6 +140,10 @@ export function PeaceTreatyModal({
                G.runtime = new Runtime(G.save, new GameState());
                G.runtime.battleType = BattleType.Peace;
                G.runtime.createXPTarget();
+
+               if (battleInfo.planetId) {
+                  G.scene.loadScene(GalaxyScene).select(battleInfo.planetId).lookAt(battleInfo.planetId);
+               }
 
                const from = (e.target as HTMLButtonElement).getBoundingClientRect();
 

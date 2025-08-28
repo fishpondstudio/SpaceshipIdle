@@ -185,12 +185,25 @@ export class GalaxyScene extends Scene {
             pos.y > sprite.y - sprite.height / 2 &&
             pos.y < sprite.y + sprite.height / 2
          ) {
-            this._selectedId = id;
-            setSidebar(<GalaxyPage id={id} />);
+            this.select(id);
             return;
          }
       }
       this._selectedId = null;
       hideSidebar();
+   }
+
+   lookAt(planetId: number): GalaxyScene {
+      const entity = this._entities.get(planetId);
+      if (entity) {
+         this.viewport.center = { x: entity.x, y: entity.y };
+      }
+      return this;
+   }
+
+   select(planetId: number): GalaxyScene {
+      this._selectedId = planetId;
+      setSidebar(<GalaxyPage id={planetId} />);
+      return this;
    }
 }

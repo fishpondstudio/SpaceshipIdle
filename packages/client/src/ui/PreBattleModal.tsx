@@ -59,10 +59,17 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
             <FloatingTip
                w={300}
                label={
-                  <>
-                     Starting this battle will cost <b>{warmonger} Victory Point</b> and will increase{" "}
-                     <b>1 Warmonger Penalty</b>
-                  </>
+                  info.noWarmongerPenalty ? (
+                     <>
+                        Starting this battle will cost <b>{warmonger} Victory Point</b> but will not increase{" "}
+                        <b>Warmonger Penalty</b>
+                     </>
+                  ) : (
+                     <>
+                        Starting this battle will cost <b>{warmonger} Victory Point</b> and will increase{" "}
+                        <b>1 Warmonger Penalty</b>
+                     </>
+                  )
                }
             >
                <button
@@ -79,9 +86,12 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
                      G.runtime = new Runtime({ state: me, options: G.save.options, data: G.save.data }, enemy);
                      G.runtime.battleType = BattleType.Battle;
                      G.runtime.battleInfo = info;
+
                      G.scene.loadScene(ShipScene);
 
-                     changeStat("Warmonger", 1, G.save.state.stats);
+                     if (!info.noWarmongerPenalty) {
+                        changeStat("Warmonger", 1, G.save.state.stats);
+                     }
 
                      AddShipToMatchmakingPool(me);
 

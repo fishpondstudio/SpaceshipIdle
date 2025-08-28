@@ -1,5 +1,5 @@
 import { Boosters } from "@spaceship-idle/shared/src/game/definitions/Boosters";
-import { type Planet, PlanetActionType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
+import { type Planet, PlanetActionType, PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { Resources } from "@spaceship-idle/shared/src/game/definitions/Resource";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { generateShip, getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
@@ -114,7 +114,19 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                   planet.actions.push({ type: PlanetActionType.DeclaredWar, tick: G.save.data.tick });
                   const enemy = generateShip("Skiff", Math.random);
                   enemy.name = planet.name;
-                  showModal({ children: <PreBattleModal enemy={enemy} info={{ hideEnemyInfo: true }} />, size: "lg" });
+                  showModal({
+                     children: (
+                        <PreBattleModal
+                           enemy={enemy}
+                           info={{
+                              hideEnemyInfo: true,
+                              noWarmongerPenalty: planet.type === PlanetType.Pirate,
+                              planetId: planet.id,
+                           }}
+                        />
+                     ),
+                     size: "lg",
+                  });
                }}
             >
                <div className="mi sm">swords</div>

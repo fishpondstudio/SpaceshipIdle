@@ -22,6 +22,7 @@ export function subscribeToEvents(): void {
                      battleScore={Math.round((100 * stat.currentHp) / stat.maxHp)}
                      name={G.runtime.right.name}
                      enemyXP={calcSpaceshipXP(G.runtime.original.right)}
+                     battleInfo={G.runtime.battleInfo}
                   />
                );
                if (G.runtime.battleStatus === BattleStatus.RightWin) {
