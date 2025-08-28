@@ -4,6 +4,7 @@ import type { BattleInfo } from "@spaceship-idle/shared/src/game/logic/BattleInf
 import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
+import { changeStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
@@ -20,6 +21,7 @@ import { FloatingTip } from "./components/FloatingTip";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { MatchmakingShipComp } from "./MatchmakingShipComp";
 import { hideSidebar } from "./Sidebar";
+import { playClick } from "./Sound";
 
 export function PreBattleModal({ enemy, info }: { enemy: GameState; info: BattleInfo }): React.ReactNode {
    const [score, hp, dps] = useMemo(() => calcShipScore(G.save.state), []);
@@ -66,6 +68,7 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
                <button
                   className="btn filled w100 row g5 py5"
                   onClick={() => {
+                     playClick();
                      showLoading();
 
                      const me = structuredClone(G.save.state);
@@ -77,6 +80,8 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
                      G.runtime.battleType = BattleType.Battle;
                      G.runtime.battleInfo = info;
                      G.scene.loadScene(ShipScene);
+
+                     changeStat("Warmonger", 1, G.save.state.stats);
 
                      AddShipToMatchmakingPool(me);
 
