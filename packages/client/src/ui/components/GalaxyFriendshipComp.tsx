@@ -2,7 +2,10 @@ import { Progress, Switch } from "@mantine/core";
 import { FriendshipDurationSeconds } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { type Planet, PlanetFlags } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
+import { canSpendResource, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import {
+   formatHM,
    formatHMS,
    formatPercent,
    hasFlag,
@@ -10,11 +13,14 @@ import {
    setFlag,
    toggleFlag,
 } from "@spaceship-idle/shared/src/utils/Helper";
+import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import { FloatingTip } from "./FloatingTip";
+import { ResourceListComp } from "./ResourceListComp";
 import { TextureComp } from "./TextureComp";
 
-export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode {
+export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    if (planet.friendshipTimeLeft > 0) {
       const progress = 1 - planet.friendshipTimeLeft / FriendshipDurationSeconds;
@@ -59,6 +65,16 @@ export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode 
       }
    }
 
+   let cannotDeclareFriendshipReason = "";
+
+   if (planet.battleResult) {
+      cannotDeclareFriendshipReason =
+         "You can no longer declare friendship with them because you have declared war on them";
+   }
+
+   const warmongerPenalty = getWarmongerPenalty(G.save.state);
+   const backstabberPenalty = getStat("Backstabber", G.save.state.stats);
+   const totalCost = warmongerPenalty + backstabberPenalty + 1;
    return (
       <>
          <div className="panel">
@@ -67,24 +83,24 @@ export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode 
             <FloatingTip
                label={
                   <>
-                     <div>The cost of declaring friendship is determined as follows</div>
+                     <div>{t(L.TheCostOfDeclaringFriendshipIsDeterminedAsFollows)}</div>
                      <div className="flex-table mx-10 mt5">
                         <div className="row">
-                           <div className="f1">Base Cost</div>
+                           <div className="f1">{t(L.BaseCost)}</div>
                            <div>
                               1 <TextureComp name="Others/Trophy16" className="inline-middle" />
                            </div>
                         </div>
                         <div className="row">
-                           <div className="f1">Warmonger Penalty</div>
+                           <div className="f1">{t(L.WarmongerPenalty)}</div>
                            <div>
-                              2 <TextureComp name="Others/Trophy16" className="inline-middle" />
+                              {warmongerPenalty} <TextureComp name="Others/Trophy16" className="inline-middle" />
                            </div>
                         </div>
                         <div className="row">
-                           <div className="f1">Backstabbing Penalty</div>
+                           <div className="f1">{t(L.BackstabberPenalty)}</div>
                            <div>
-                              1 <TextureComp name="Others/Trophy16" className="inline-middle" />
+                              {backstabberPenalty} <TextureComp name="Others/Trophy16" className="inline-middle" />
                            </div>
                         </div>
                      </div>
@@ -92,7 +108,7 @@ export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode 
                }
             >
                <div>
-                  4 <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
+                  {totalCost} <TextureComp name="Others/Trophy16" className="inline-middle" /> {t(L.VictoryPoint)}
                </div>
             </FloatingTip>
             <div className="divider my10 mx-10" />
@@ -104,11 +120,16 @@ export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode 
             <div className="divider my10 mx-10" />
             <div className="title">Duration</div>
             <div className="h5" />
-            <div>4h, renewable</div>
+            <div>
+               {formatHM(FriendshipDurationSeconds * SECOND)} ({t(L.Renewable)})
+            </div>
          </div>
          <div className="h10" />
          <button
-            className="btn green w100 row g5"
+            disabled={
+               !!cannotDeclareFriendshipReason || !canSpendResource("VictoryPoint", totalCost, G.save.state.resources)
+            }
+            className="btn green w100"
             onClick={() => {
                // TODO: Debug Only!
                planet.friendshipTimeLeft = 5;
@@ -116,8 +137,20 @@ export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode 
                GameStateUpdated.emit();
             }}
          >
-            <div className="mi sm">handshake</div>
-            <div>Declare Friendship</div>
+            <FloatingTip
+               w={300}
+               label={
+                  <>
+                     <div>{cannotDeclareFriendshipReason}</div>
+                     <ResourceListComp res={{ VictoryPoint: -totalCost }} />
+                  </>
+               }
+            >
+               <div className="row g5">
+                  <div className="mi sm">handshake</div>
+                  <div>Declare Friendship</div>
+               </div>
+            </FloatingTip>
          </button>
       </>
    );

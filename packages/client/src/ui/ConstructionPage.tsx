@@ -101,7 +101,11 @@ function BuildingComp({
    const label = CodeLabel[def.code]();
    const canBuild = canSpendResource("XP", getBuildingCost(building, 1), gs.resources) && getAvailableQuantum(gs) > 0;
    return (
-      <FloatingTip w={250} label={<ResourceListComp xp={-getBuildingCost(building, 1)} quantum={-1} />} key={building}>
+      <FloatingTip
+         w={250}
+         label={<ResourceListComp res={{ XP: -getBuildingCost(building, 1) }} quantum={-1} />}
+         key={building}
+      >
          <div
             className="row p10 m10"
             onClick={() => {

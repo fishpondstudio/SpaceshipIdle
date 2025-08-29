@@ -207,6 +207,25 @@ em {
    }
 }
 
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+   margin: 0;
+   padding: 0;
+   border: 0;
+}
+
+table {
+   border-collapse: collapse;
+   border-spacing: 0;
+   line-height: 1.25;
+}
+
 .data-table {
    width: 100%;
    border-collapse: collapse;

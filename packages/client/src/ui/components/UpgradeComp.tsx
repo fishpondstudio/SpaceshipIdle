@@ -108,7 +108,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   <FloatingTip
                      w={250}
                      key={idx}
-                     label={<ResourceListComp xp={-getTotalBuildingCost(data.type, data.level, target)} quantum={0} />}
+                     label={<ResourceListComp res={{ XP: -getTotalBuildingCost(data.type, data.level, target) }} />}
                   >
                      <button
                         className="btn f1"
@@ -141,7 +141,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   <FloatingTip
                      w={250}
                      key={idx}
-                     label={<ResourceListComp xp={getTotalBuildingCost(data.type, data.level, target)} quantum={0} />}
+                     label={<ResourceListComp res={{ XP: getTotalBuildingCost(data.type, data.level, target) }} />}
                   >
                      <button className="btn f1" disabled={target <= 0} onClick={downgrade.bind(null, target)}>
                         {target - data.level}
@@ -155,7 +155,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   canRecycle ? (
                      <>
                         <div>{t(L.RecycleModule)}</div>
-                        <ResourceListComp xp={getTotalBuildingCost(data.type, data.level, 0)} quantum={0} />
+                        <ResourceListComp res={{ XP: getTotalBuildingCost(data.type, data.level, 0) }} />
                      </>
                   ) : (
                      t(L.CannotRecycle)

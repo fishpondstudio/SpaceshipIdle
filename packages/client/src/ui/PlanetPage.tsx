@@ -1,8 +1,9 @@
 import { type Planet, PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
-import { FriendshipComp } from "./components/FriendshipComp";
+import { GalaxyFriendshipComp } from "./components/GalaxyFriendshipComp";
 import { GalaxyWarComp } from "./components/GalaxyWarComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
+import { GalaxySpyComp } from "./GalaxySpyComp";
 
 export function PlanetPage({ planet }: { planet: Planet }): React.ReactNode {
    return (
@@ -27,7 +28,7 @@ export function PlanetPage({ planet }: { planet: Planet }): React.ReactNode {
          </div>
          <div className="divider my10" />
          <div className="mx10">
-            <SpyComp planet={planet} />
+            <GalaxySpyComp planet={planet} />
          </div>
          {planet.type === PlanetType.State ? (
             <>
@@ -38,7 +39,7 @@ export function PlanetPage({ planet }: { planet: Planet }): React.ReactNode {
                </div>
                <div className="divider my10" />
                <div className="mx10">
-                  <FriendshipComp planet={planet} />
+                  <GalaxyFriendshipComp planet={planet} />
                </div>
             </>
          ) : null}
@@ -57,23 +58,5 @@ export function PlanetPage({ planet }: { planet: Planet }): React.ReactNode {
          ) : null}
          <div className="h10" />
       </SidebarComp>
-   );
-}
-
-function SpyComp({ planet }: { planet: Planet }): React.ReactNode {
-   return (
-      <>
-         <div className="text-sm">You can build a spy network to gather more intelligence on them</div>
-         <div className="h10" />
-         <div className="panel">
-            <div className="title">Cost</div>
-            <div className="h5" />1 <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
-         </div>
-         <div className="h10" />
-         <button className="btn w100 row g5">
-            <div className="mi sm">visibility</div>
-            <div>Build Spy Network</div>
-         </button>
-      </>
    );
 }

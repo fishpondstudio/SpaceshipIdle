@@ -54,9 +54,8 @@ export function PeaceTreatyModal({
    let texture = "Others/SpaceshipEnemy24";
 
    if (battleInfo.planetId) {
-      const result = findPlanet(battleInfo.planetId, G.save.data.galaxy);
-      if (result) {
-         const [planet, _] = result;
+      const planet = findPlanet(battleInfo.planetId, G.save.data.galaxy);
+      if (planet) {
          texture = `Galaxy/${planet.texture}`;
          const boosters = getBoosterReward(planet.seed, G.save.state);
          boosters.forEach((booster) => {
@@ -158,11 +157,11 @@ export function PeaceTreatyModal({
                G.runtime.createXPTarget();
 
                if (battleInfo.planetId) {
-                  const result = findPlanet(battleInfo.planetId, G.save.data.galaxy);
+                  const planet = findPlanet(battleInfo.planetId, G.save.data.galaxy);
 
-                  if (result) {
-                     const [planet, _] = result;
+                  if (planet) {
                      planet.battleResult = battleResult.current;
+                     planet.revealed = true;
                   }
 
                   G.scene.loadScene(GalaxyScene).select(battleInfo.planetId).lookAt(battleInfo.planetId);

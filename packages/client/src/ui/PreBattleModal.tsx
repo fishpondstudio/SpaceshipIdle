@@ -4,7 +4,6 @@ import type { BattleInfo } from "@spaceship-idle/shared/src/game/logic/BattleInf
 import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { findPlanet } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
-import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { changeStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
@@ -33,7 +32,6 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
    if (!info.hideEnemyInfo) {
       [enemyScore, enemyHp, enemyDps] = useMemo(() => calcShipScore(enemy), [enemy]);
    }
-   const warmonger = getWarmongerPenalty(G.save.state);
    return (
       <div className="m10">
          <div className="row">

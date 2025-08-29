@@ -166,6 +166,10 @@
    margin-left: 10px;
 }
 
+.ml5 {
+   margin-left: 5px;
+}
+
 .mr5 {
    margin-right: 5px;
 }
@@ -277,6 +281,10 @@
 
 .w100 {
    width: 100%;
+}
+
+.w0 {
+   width: 0;
 }
 
 .br5 {
