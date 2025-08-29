@@ -138,11 +138,16 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
             }}
          >
             <FloatingTip
-               w={300}
                label={
                   <>
-                     <div>{cannotDeclareFriendshipReason}</div>
-                     <ResourceListComp res={{ VictoryPoint: -totalCost }} />
+                     <div className="text-red">{cannotDeclareFriendshipReason}</div>
+                     <div>
+                        Declaring friendship will provide you with the rewards for the duration of the friendship
+                     </div>
+                     <div className="h5" />
+                     <div className="flex-table mx-10">
+                        <ResourceListComp res={{ VictoryPoint: -totalCost }} />
+                     </div>
                   </>
                }
             >

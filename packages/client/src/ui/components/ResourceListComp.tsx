@@ -20,7 +20,7 @@ export function ResourceListComp({
    return (
       <>
          {quantum === 0 ? null : (
-            <div className="row">
+            <div className="row g5">
                <TextureComp name="Others/Quantum" />
                <div className="f1">{t(L.Quantum)}</div>
                <div className={cls(enoughQuantum ? "text-green" : "text-red")}>
@@ -38,7 +38,7 @@ export function ResourceListComp({
             const def = Resources[res];
             const hasEnough = amount >= 0 ? true : canSpendResource(res, -amount, G.save.state.resources);
             return (
-               <div className="row">
+               <div className="row g5">
                   <TextureComp name={def.texture} />
                   <div className="f1">{def.name()}</div>
                   <div className={cls(hasEnough ? "text-green" : "text-red")}>
