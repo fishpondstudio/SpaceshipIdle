@@ -747,4 +747,8 @@ export const EN = {
    TotalDefeat: "Total Defeat",
    TotalVictory: "Total Victory",
    StartBattle: "Start Battle",
+   WarmongerPenalty: "Warmonger Penalty",
+   BackstabberPenalty: "Backstabber Penalty",
+   BecauseTheyArePirates: "Because they are pirates",
+   BecauseYouWereFriendsWithThem: "Because you were friends with them",
 };

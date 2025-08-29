@@ -1,11 +1,10 @@
 import { Boosters } from "@spaceship-idle/shared/src/game/definitions/Boosters";
-import { FriendshipDurationSeconds } from "@spaceship-idle/shared/src/game/definitions/Constant";
-import { type Planet, PlanetActionType, PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
+import { type Planet, PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { Resources } from "@spaceship-idle/shared/src/game/definitions/Resource";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { generateShip, getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { getBoosterReward } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import { getBoosterReward, getWarPenalty } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { cls, formatNumber, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -13,6 +12,7 @@ import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import { showModal } from "../../utils/ToggleModal";
 import { PreBattleModal } from "../PreBattleModal";
+import { DeclareWarCostComp } from "./DeclareWarCostComp";
 import { FloatingTip } from "./FloatingTip";
 import { TextureComp } from "./TextureComp";
 
@@ -60,41 +60,32 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
    }
 
    let cannotDeclareWarReason = "";
-   const current = planet.actions[0];
-   if (current?.type === PlanetActionType.DeclaredFriendship) {
-      const timeLeft = FriendshipDurationSeconds - (G.save.data.tick - current.tick);
-      if (timeLeft > 0) {
-         cannotDeclareWarReason = "You cannot declare war because you currently have a friendship with them";
-      }
+   if (planet.friendshipTimeLeft > 0) {
+      cannotDeclareWarReason = "You cannot declare war because you currently have a friendship with them";
    }
 
+   const penalties = getWarPenalty(G.save.state, planet);
    const warmonger = getWarmongerPenalty(G.save.state);
    return (
       <>
          <div className="panel">
             <div className="title">Cost</div>
             <div className="h5" />
-            <FloatingTip
-               label={
-                  <>
-                     <div>The cost of declaring war is determined as follows</div>
-                     <div className="flex-table mx-10 mt5">
-                        <div className="row">
-                           <div className="f1">Warmonger Penalty</div>
-                           <div>
-                              {warmonger} <TextureComp name="Others/Trophy16" className="inline-middle" />
-                           </div>
-                        </div>
-                     </div>
-                  </>
-               }
-            >
+            <FloatingTip label={<DeclareWarCostComp planet={planet} />}>
                <div>
-                  {warmonger} <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
+                  <div>
+                     {warmonger} <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
+                  </div>
+                  {penalties.map((penalty) => {
+                     if (penalty.value === 0) return null;
+                     return (
+                        <div key={penalty.name} className="text-red text-sm">
+                           +{penalty.value} {penalty.name}
+                        </div>
+                     );
+                  })}
                </div>
             </FloatingTip>
-            <div className="text-space text-sm">+1 Warmonger Penalty</div>
-            <div className="text-space text-sm">+1 Backstabber Penalty</div>
             <div className="divider my10 mx-10" />
             <div className="title">Negotiable Rewards</div>
             <div className="h5" />
@@ -121,7 +112,6 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
             disabled={!!cannotDeclareWarReason}
             className="btn red w100"
             onClick={() => {
-               planet.actions.push({ type: PlanetActionType.DeclaredWar, tick: G.save.data.tick });
                const enemy = generateShip("Skiff", Math.random);
                enemy.name = planet.name;
                showModal({

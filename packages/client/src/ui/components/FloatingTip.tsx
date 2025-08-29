@@ -11,6 +11,7 @@ export function useFloatingTooltip<T extends HTMLElement = any>({ position }: { 
       placement: position,
       middleware: [
          offset(10),
+         // autoPlacement(),
          shift(),
          flip({
             crossAxis: "alignment",

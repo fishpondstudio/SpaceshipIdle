@@ -1,37 +1,31 @@
 import { AABB } from "../../utils/AABB";
 import type { Circle } from "../../utils/Circle";
 import { CURRENCY_EPSILON, capitalize, hasFlag, rand, randOne, randomAlphaNumeric, shuffle } from "../../utils/Helper";
+import { L, t } from "../../utils/i18n";
 import { Generator } from "../../utils/NameGen";
 import { srand } from "../../utils/Random";
 import type { IHaveXY } from "../../utils/Vector2";
 import type { Booster } from "../definitions/Boosters";
 import { FriendshipDurationSeconds } from "../definitions/Constant";
-import {
-   type Galaxy,
-   type Planet,
-   PlanetActionType,
-   PlanetFlags,
-   PlanetType,
-   type StarSystem,
-} from "../definitions/Galaxy";
+import { type Galaxy, type Planet, PlanetFlags, PlanetType, type StarSystem } from "../definitions/Galaxy";
 import type { GameState } from "../GameState";
 import { getBoostersInClass } from "./BoosterLogic";
 import type { Runtime } from "./Runtime";
 import { getPreviousShipClass, getShipClass } from "./TechLogic";
 
-export function findMyself(galaxy: Galaxy): [Planet, StarSystem] {
+export function findMyself(galaxy: Galaxy): Planet | undefined {
    for (const starSystem of galaxy.starSystems) {
       for (const planet of starSystem.planets) {
-         if (planet.type === PlanetType.Me) return [planet, starSystem];
+         if (planet.type === PlanetType.Me) return planet;
       }
    }
-   throw new Error(`Cannot find myself in the galaxy: ${JSON.stringify(galaxy)}`);
+   return undefined;
 }
 
-export function findPlanet(id: number, galaxy: Galaxy): [Planet, StarSystem] | undefined {
+export function findPlanet(id: number, galaxy: Galaxy): Planet | undefined {
    for (const starSystem of galaxy.starSystems) {
       for (const planet of starSystem.planets) {
-         if (planet.id === id) return [planet, starSystem];
+         if (planet.id === id) return planet;
       }
    }
    return undefined;
@@ -53,31 +47,41 @@ export function getBoosterReward(seed: string, gs: GameState): Booster[] {
    return result;
 }
 
+interface ValueBreakdown {
+   name: string;
+   desc?: string;
+   value: number;
+}
+
+export function getWarPenalty(gs: GameState, planet?: Planet): ValueBreakdown[] {
+   if (!planet) return [{ name: t(L.WarmongerPenalty), value: 1 }];
+   if (planet.type === PlanetType.Pirate) {
+      return [{ name: t(L.WarmongerPenalty), desc: t(L.BecauseTheyArePirates), value: 0 }];
+   }
+   if (planet.type === PlanetType.State) {
+      const result: ValueBreakdown[] = [{ name: t(L.WarmongerPenalty), value: 1 }];
+      if (hasFlag(planet.flags, PlanetFlags.WasFriends)) {
+         result.push({ name: t(L.BackstabberPenalty), desc: t(L.BecauseYouWereFriendsWithThem), value: 1 });
+      }
+      return result;
+   }
+   return [];
+}
+
 export function tickGalaxy(rt: Runtime): void {
    for (const starSystem of rt.leftSave.data.galaxy.starSystems) {
       for (const planet of starSystem.planets) {
          if (planet.type !== PlanetType.State) {
             continue;
          }
-         const current = planet.actions[0];
-         switch (current?.type) {
-            case PlanetActionType.DeclaredFriendship: {
-               const timeLeft = FriendshipDurationSeconds - (rt.leftSave.data.tick - current.tick);
-               if (timeLeft > 0) {
-                  // TODO: Tick
-               } else if (hasFlag(planet.flags, PlanetFlags.AutoRenew)) {
-                  planet.actions.unshift({
-                     type: PlanetActionType.DeclaredFriendship,
-                     tick: rt.leftSave.data.tick,
-                  });
-               } else {
-                  // TODO: Expired
-               }
-               break;
-            }
-            case PlanetActionType.DeclaredWar: {
-               break;
-            }
+
+         if (planet.friendshipTimeLeft > 0) {
+            planet.friendshipTimeLeft -= 1;
+         }
+
+         if (planet.friendshipTimeLeft === 0 && hasFlag(planet.flags, PlanetFlags.AutoRenewFriendship)) {
+            // TODO: Deduct Victory Point
+            planet.friendshipTimeLeft = FriendshipDurationSeconds;
          }
       }
    }
@@ -160,10 +164,11 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
             r,
             speed: rand(-0.02, 0.02),
             type,
-            actions: [],
             flags: PlanetFlags.None,
-            battleResult: null,
             seed: randomAlphaNumeric(16),
+            battleResult: null,
+            friendshipTimeLeft: 0,
+            revealed: false,
          };
          starSystem.planets.push(planet);
          r -= rand(30, 70);

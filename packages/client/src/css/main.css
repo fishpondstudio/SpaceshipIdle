@@ -29,6 +29,10 @@
    vertical-align: middle;
 }
 
+.mi.xs {
+   font-size: 16px;
+}
+
 .mi.sm {
    font-size: 20px;
 }

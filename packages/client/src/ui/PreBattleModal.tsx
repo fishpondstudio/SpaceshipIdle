@@ -3,6 +3,7 @@ import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/gam
 import type { BattleInfo } from "@spaceship-idle/shared/src/game/logic/BattleInfo";
 import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
+import { findPlanet } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { changeStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
@@ -17,6 +18,7 @@ import { ShipImageComp } from "../game/ShipImageComp";
 import { ShipScene } from "../scenes/ShipScene";
 import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
+import { DeclareWarCostComp } from "./components/DeclareWarCostComp";
 import { FloatingTip } from "./components/FloatingTip";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { MatchmakingShipComp } from "./MatchmakingShipComp";
@@ -59,17 +61,9 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
             <FloatingTip
                w={300}
                label={
-                  info.noWarmongerPenalty ? (
-                     <>
-                        Starting this battle will cost <b>{warmonger} Victory Point</b> but will not increase{" "}
-                        <b>Warmonger Penalty</b>
-                     </>
-                  ) : (
-                     <>
-                        Starting this battle will cost <b>{warmonger} Victory Point</b> and will increase{" "}
-                        <b>1 Warmonger Penalty</b>
-                     </>
-                  )
+                  <DeclareWarCostComp
+                     planet={info.planetId ? findPlanet(info.planetId, G.save.data.galaxy) : undefined}
+                  />
                }
             >
                <button

@@ -1,19 +1,24 @@
 import { Progress, Switch } from "@mantine/core";
 import { FriendshipDurationSeconds } from "@spaceship-idle/shared/src/game/definitions/Constant";
-import { type Planet, PlanetActionType, PlanetFlags } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
+import { type Planet, PlanetFlags } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { formatHMS, formatPercent, hasFlag, SECOND, toggleFlag } from "@spaceship-idle/shared/src/utils/Helper";
-import { G } from "../../utils/Global";
+import {
+   formatHMS,
+   formatPercent,
+   hasFlag,
+   SECOND,
+   setFlag,
+   toggleFlag,
+} from "@spaceship-idle/shared/src/utils/Helper";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import { FloatingTip } from "./FloatingTip";
 import { TextureComp } from "./TextureComp";
 
 export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
-   const current = planet.actions[0];
-   if (current?.type === PlanetActionType.DeclaredFriendship) {
-      const progress = (G.save.data.tick - current.tick) / FriendshipDurationSeconds;
-      const timeLeft = FriendshipDurationSeconds - (G.save.data.tick - current.tick);
+   if (planet.friendshipTimeLeft > 0) {
+      const progress = 1 - planet.friendshipTimeLeft / FriendshipDurationSeconds;
+      const timeLeft = planet.friendshipTimeLeft;
       if (timeLeft > 0) {
          return (
             <>
@@ -42,9 +47,9 @@ export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode 
                   </FloatingTip>
                   <div className="f1" />
                   <Switch
-                     checked={hasFlag(planet.flags, PlanetFlags.AutoRenew)}
+                     checked={hasFlag(planet.flags, PlanetFlags.AutoRenewFriendship)}
                      onChange={() => {
-                        planet.flags = toggleFlag(planet.flags, PlanetFlags.AutoRenew);
+                        planet.flags = toggleFlag(planet.flags, PlanetFlags.AutoRenewFriendship);
                         GameStateUpdated.emit();
                      }}
                   />
@@ -105,10 +110,9 @@ export function FriendshipComp({ planet }: { planet: Planet }): React.ReactNode 
          <button
             className="btn green w100 row g5"
             onClick={() => {
-               planet.actions.unshift({
-                  type: PlanetActionType.DeclaredFriendship,
-                  tick: G.save.data.tick - Math.round(60 * 60 * 3.999),
-               });
+               // TODO: Debug Only!
+               planet.friendshipTimeLeft = 5;
+               planet.flags = setFlag(planet.flags, PlanetFlags.WasFriends);
                GameStateUpdated.emit();
             }}
          >
