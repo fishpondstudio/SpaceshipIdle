@@ -113,7 +113,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
          <div className="h5" />
          <button
             disabled={!!cannotDeclareWarReason || !canSpendResource("VictoryPoint", warmonger, G.save.state.resources)}
-            className="btn py5 red w100"
+            className="btn red w100"
             onClick={() => {
                if (!trySpendResource("VictoryPoint", warmonger, G.save.state.resources)) {
                   playError();

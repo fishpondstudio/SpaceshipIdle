@@ -111,7 +111,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
                !canSpendResource("VictoryPoint", totalCost, G.save.state.resources) ||
                getAvailableFriendship(G.save) <= 0
             }
-            className="btn py5 green w100"
+            className="btn green w100"
             onClick={() => {
                if (getAvailableFriendship(G.save) <= 0) {
                   playError();

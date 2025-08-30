@@ -90,7 +90,7 @@ export function GalaxySpyComp({ planet }: { planet: Planet }): React.ReactNode {
          </div>
          <div className="h10" />
          <button
-            className="btn w100 py5"
+            className="btn w100"
             onClick={() => {
                if (!trySpendResource("VictoryPoint", 1, G.save.state.resources)) {
                   playError();
