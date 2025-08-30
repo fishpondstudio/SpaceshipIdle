@@ -75,7 +75,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
             <FloatingTip label={<DeclareWarCostComp planet={planet} />}>
                <div>
                   <div>
-                     {warmonger} <TextureComp name="Others/Trophy16" className="inline-middle" /> Victory Point
+                     {warmonger} <TextureComp name="Others/Trophy16" className="inline-middle" /> {t(L.VictoryPoint)}
                   </div>
                   {penalties.map((penalty) => {
                      if (penalty.value === 0) return null;
@@ -111,7 +111,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
          <div className="h5" />
          <button
             disabled={!!cannotDeclareWarReason}
-            className="btn red w100"
+            className="btn py5 red w100"
             onClick={() => {
                const enemy = generateShip("Skiff", srand(planet.seed));
                enemy.name = planet.name;
@@ -130,7 +130,15 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                });
             }}
          >
-            <FloatingTip label={cannotDeclareWarReason} disabled={!cannotDeclareWarReason}>
+            <FloatingTip
+               w={350}
+               label={
+                  <>
+                     <div className="text-red">{cannotDeclareWarReason}</div>
+                     <DeclareWarCostComp planet={planet} />
+                  </>
+               }
+            >
                <div className="row g5">
                   <div className="mi sm">swords</div>
                   <div>Declare War</div>

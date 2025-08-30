@@ -125,6 +125,10 @@ export function mathSign(n: number, defaultSign = "+", epsilon = Number.EPSILON)
    return defaultSign;
 }
 
+export function formatDelta(delta: number): string {
+   return `${mathSign(delta)}${formatNumber(Math.abs(delta))}`;
+}
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function keysOf<T extends {}>(obj: T): Array<keyof T> {
    return Object.keys(obj) as Array<keyof T>;

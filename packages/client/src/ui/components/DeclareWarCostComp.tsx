@@ -1,27 +1,30 @@
 import type { Planet } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { getWarPenalty } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
+import { resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { cls } from "@spaceship-idle/shared/src/utils/Helper";
+import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
-import { TextureComp } from "./TextureComp";
+import { ResourceRequirementComp } from "./ResourceListComp";
 
 export function DeclareWarCostComp({ planet }: { planet?: Planet }): React.ReactNode {
    const penalties = getWarPenalty(G.save.state, planet);
    const warmonger = getWarmongerPenalty(G.save.state);
    return (
       <>
-         <div>The cost of declaring war is determined as follows</div>
+         <div>The cost of declaring war is as follows:</div>
          <div className="h5" />
          <div className="flex-table mx-10">
-            <div className="row">
-               <div className="f1">Warmonger Penalty</div>
-               <div>
-                  {warmonger} <TextureComp name="Others/Trophy16" className="inline-middle" />
-               </div>
-            </div>
+            <ResourceRequirementComp
+               name={t(L.VictoryPoint)}
+               desc={<>- From Warmonger Penalty: {warmonger}</>}
+               required={-warmonger}
+               current={resourceOf("VictoryPoint", G.save.state.resources).current}
+               texture="Others/Trophy16"
+            />
          </div>
-         <div className="h20" />
-         <div>Declaring war will result in the following consequences</div>
+         <div className="divider my10 mx-10 dashed"></div>
+         <div>Declaring war will result in the following consequences:</div>
          <div className="h5" />
          <div className="flex-table mx-10">
             {penalties.map((penalty) => {

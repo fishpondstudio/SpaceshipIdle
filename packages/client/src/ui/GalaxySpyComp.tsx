@@ -3,7 +3,7 @@ import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore, generateShip } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { canSpendResource, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
-import { cls, formatNumber, formatPercent, mathSign } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls, formatDelta, formatNumber, formatPercent, mathSign } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { srand } from "@spaceship-idle/shared/src/utils/Random";
 import { useMemo } from "react";
@@ -42,10 +42,7 @@ export function GalaxySpyComp({ planet }: { planet: Planet }): React.ReactNode {
                         <td className="w100"></td>
                         <td className="text-right">{formatNumber(enemyHp)}</td>
                         <td className={cls("text-sm text-right", hpDiff > 0 ? "text-red" : "text-green")}>
-                           <div className="ml10">
-                              {mathSign(hpDiff)}
-                              {formatNumber(hpDiff)}
-                           </div>
+                           <div className="ml10">{formatDelta(hpDiff)}</div>
                         </td>
                      </tr>
                   </FloatingTip>
@@ -60,10 +57,7 @@ export function GalaxySpyComp({ planet }: { planet: Planet }): React.ReactNode {
                         <td className="w100"></td>
                         <td className="text-right">{formatNumber(enemyDps)}</td>
                         <td className={cls("text-sm text-right", dpsDiff > 0 ? "text-red" : "text-green")}>
-                           <div className="ml10">
-                              {mathSign(dpsDiff)}
-                              {formatNumber(dpsDiff)}
-                           </div>
+                           <div className="ml10">{formatDelta(dpsDiff)}</div>
                         </td>
                      </tr>
                   </FloatingTip>
@@ -78,10 +72,7 @@ export function GalaxySpyComp({ planet }: { planet: Planet }): React.ReactNode {
                         <td className="w100"></td>
                         <td className="text-right">{formatNumber(enemyScore)}</td>
                         <td className={cls("text-sm text-right", scoreDiff > 0 ? "text-red" : "text-green")}>
-                           <div className="ml10">
-                              {mathSign(scoreDiff)}
-                              {formatNumber(scoreDiff)}
-                           </div>
+                           <div className="ml10">{formatDelta(scoreDiff)}</div>
                         </td>
                      </tr>
                   </FloatingTip>
@@ -99,7 +90,7 @@ export function GalaxySpyComp({ planet }: { planet: Planet }): React.ReactNode {
          </div>
          <div className="h10" />
          <button
-            className="btn w100"
+            className="btn w100 py5"
             onClick={() => {
                if (trySpendResource("VictoryPoint", 1, G.save.state.resources)) {
                   playClick();
@@ -140,7 +131,7 @@ function StatDiffComp({ yours, theirs }: { yours: number; theirs: number }): Rea
             L.StatCompDescHTML,
             formatNumber(theirs),
             formatNumber(yours),
-            mathSign(diff) + formatNumber(diff),
+            formatDelta(diff),
             mathSign(diff) + formatPercent(diff / yours),
          )}
       />

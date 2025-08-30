@@ -34,6 +34,13 @@ const spaceColors = [
 const theme = createTheme({
    fontFamily: "SpaceshipIdle, sans-serif",
    fontFamilyMonospace: "SpaceshipIdleMono, monospace",
+   lineHeights: {
+      xs: "1.1",
+      sm: "1.2",
+      md: "1.3",
+      lg: "1.4",
+      xl: "1.5",
+   },
    primaryColor: "space",
    colors: {
       space: spaceColors,

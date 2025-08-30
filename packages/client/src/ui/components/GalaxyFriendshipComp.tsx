@@ -2,8 +2,9 @@ import { Progress, Switch } from "@mantine/core";
 import { FriendshipDurationSeconds } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { type Planet, PlanetFlags } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { getCurrentFriendship, getMaxFriendship } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
-import { canSpendResource, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { canSpendResource, getStat, resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import {
    formatHM,
    formatHMS,
@@ -17,7 +18,7 @@ import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import { FloatingTip } from "./FloatingTip";
-import { ResourceListComp } from "./ResourceListComp";
+import { ResourceRequirementComp } from "./ResourceListComp";
 import { TextureComp } from "./TextureComp";
 
 export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.ReactNode {
@@ -31,7 +32,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
                <div className="panel green">
                   <div className="title">Rewards</div>
                   <div className="h5" />
-                  <div className="text-condensed text-sm">
+                  <div className="text-sm">
                      All Missiles get +1 Damage Multiplier. All Autocannons get +1 HP Multiplier
                   </div>
                </div>
@@ -80,33 +81,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
          <div className="panel">
             <div className="title">Cost</div>
             <div className="h5" />
-            <FloatingTip
-               label={
-                  <>
-                     <div>{t(L.TheCostOfDeclaringFriendshipIsDeterminedAsFollows)}</div>
-                     <div className="flex-table mx-10 mt5">
-                        <div className="row">
-                           <div className="f1">{t(L.BaseCost)}</div>
-                           <div>
-                              1 <TextureComp name="Others/Trophy16" className="inline-middle" />
-                           </div>
-                        </div>
-                        <div className="row">
-                           <div className="f1">{t(L.WarmongerPenalty)}</div>
-                           <div>
-                              {warmongerPenalty} <TextureComp name="Others/Trophy16" className="inline-middle" />
-                           </div>
-                        </div>
-                        <div className="row">
-                           <div className="f1">{t(L.BackstabberPenalty)}</div>
-                           <div>
-                              {backstabberPenalty} <TextureComp name="Others/Trophy16" className="inline-middle" />
-                           </div>
-                        </div>
-                     </div>
-                  </>
-               }
-            >
+            <FloatingTip label={<FriendshipCostComp />}>
                <div>
                   {totalCost} <TextureComp name="Others/Trophy16" className="inline-middle" /> {t(L.VictoryPoint)}
                </div>
@@ -129,7 +104,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
             disabled={
                !!cannotDeclareFriendshipReason || !canSpendResource("VictoryPoint", totalCost, G.save.state.resources)
             }
-            className="btn green w100"
+            className="btn py5 green w100"
             onClick={() => {
                // TODO: Debug Only!
                planet.friendshipTimeLeft = 5;
@@ -141,13 +116,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
                label={
                   <>
                      <div className="text-red">{cannotDeclareFriendshipReason}</div>
-                     <div>
-                        Declaring friendship will provide you with the rewards for the duration of the friendship
-                     </div>
-                     <div className="h5" />
-                     <div className="flex-table mx-10">
-                        <ResourceListComp res={{ VictoryPoint: -totalCost }} />
-                     </div>
+                     <FriendshipCostComp />
                   </>
                }
             >
@@ -157,6 +126,39 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
                </div>
             </FloatingTip>
          </button>
+      </>
+   );
+}
+
+function FriendshipCostComp(): React.ReactNode {
+   const warmongerPenalty = getWarmongerPenalty(G.save.state);
+   const backstabberPenalty = getStat("Backstabber", G.save.state.stats);
+   const totalCost = warmongerPenalty + backstabberPenalty + 1;
+   const victoryPoint = resourceOf("VictoryPoint", G.save.state.resources).current;
+   return (
+      <>
+         <div>To declare friendship, the following resources are required:</div>
+         <div className="h5"></div>
+         <div className="flex-table mx-10">
+            <ResourceRequirementComp
+               name={t(L.VictoryPoint)}
+               desc={
+                  <>
+                     <div>- Base Cost: 1</div>
+                     <div>- Warmonger Penalty: {warmongerPenalty}</div>
+                     <div>- Backstabber Penalty: {backstabberPenalty}</div>
+                  </>
+               }
+               required={-totalCost}
+               current={victoryPoint}
+               texture="Others/Trophy16"
+            />
+            <ResourceRequirementComp
+               name={t(L.FriendshipSlot)}
+               required={-1}
+               current={getMaxFriendship(G.save.state)[0] - getCurrentFriendship(G.save)}
+            />
+         </div>
       </>
    );
 }

@@ -6,10 +6,10 @@
 }
 
 .flex-table {
-   .row:nth-child(odd) {
+   > .row:nth-child(odd) {
       background-color: rgba(255, 255, 255, 0.1);
    }
-   .row {
+   > .row {
       padding: 5px 10px;
    }
    line-height: 1.25;
@@ -42,6 +42,10 @@
 
 .row .fstart {
    align-self: flex-start;
+}
+
+.row.fstart {
+   align-items: flex-start;
 }
 
 .col {
@@ -322,10 +326,6 @@
 
 .text-red {
    color: var(--mantine-color-red-5);
-}
-
-.text-condensed {
-   line-height: 1.25;
 }
 
 .text-lh1 {

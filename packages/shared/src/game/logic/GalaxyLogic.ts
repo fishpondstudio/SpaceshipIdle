@@ -8,7 +8,8 @@ import type { IHaveXY } from "../../utils/Vector2";
 import type { Booster } from "../definitions/Boosters";
 import { FriendshipDurationSeconds } from "../definitions/Constant";
 import { type Galaxy, type Planet, PlanetFlags, PlanetType, type StarSystem } from "../definitions/Galaxy";
-import type { GameState } from "../GameState";
+import { ShipClass } from "../definitions/TechDefinitions";
+import type { GameState, SaveGame } from "../GameState";
 import { getBoostersInClass } from "./BoosterLogic";
 import type { Runtime } from "./Runtime";
 import { getPreviousShipClass, getShipClass } from "./TechLogic";
@@ -66,6 +67,24 @@ export function getWarPenalty(gs: GameState, planet?: Planet): ValueBreakdown[] 
       return result;
    }
    return [];
+}
+
+export function getMaxFriendship(gs: GameState): [number, ValueBreakdown[]] {
+   const shipClass = getShipClass(gs);
+   const def = ShipClass[shipClass];
+   return [def.index + 1, [{ name: `${def.name()} Ship Class`, value: def.index + 1 }]];
+}
+
+export function getCurrentFriendship(save: SaveGame): number {
+   let result = 0;
+   for (const starSystem of save.data.galaxy.starSystems) {
+      for (const planet of starSystem.planets) {
+         if (planet.friendshipTimeLeft > 0) {
+            ++result;
+         }
+      }
+   }
+   return result;
 }
 
 export function tickGalaxy(rt: Runtime): void {

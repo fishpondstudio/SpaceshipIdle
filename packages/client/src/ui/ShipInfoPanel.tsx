@@ -24,6 +24,7 @@ import {
    clamp,
    cls,
    divide,
+   formatDelta,
    formatHMS,
    formatNumber,
    formatPercent,
@@ -193,8 +194,7 @@ export function ShipInfoPanel(): React.ReactNode {
                         color: xpDelta >= 0 ? "var(--mantine-color-green-text)" : "var(--mantine-color-red-text)",
                      }}
                   >
-                     {mathSign(xpDelta)}
-                     {formatNumber(Math.abs(xpDelta))}
+                     {formatDelta(xpDelta)}
                   </div>
                </div>
             </div>

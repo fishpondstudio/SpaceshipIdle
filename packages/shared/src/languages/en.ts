@@ -753,8 +753,11 @@ export const EN = {
    BecauseYouWereFriendsWithThem: "Because you were friends with them",
    BaseCost: "Base Cost",
    Renewable: "renewable",
-   TheCostOfDeclaringFriendshipIsDeterminedAsFollows: "The cost of declaring friendship is determined as follows",
+   TheCostOfDeclaringFriendshipIsDeterminedAsFollows: "The victory point cost for friendship is determined as follows",
    StatCompDescHTML: "Theirs is <b>%%</b>. Yours is <b>%%</b>. Theirs is <b>%% (%%)</b> compared to yours",
    BuildingSpyNetworkTooltip: "Building a spy network will reveal their ship design and stats: knowing your enemy is half the battle won. The cost is as follows:",
    BuildSpyNetwork: "Build Spy Network",
+   FriendshipSlot: "Friendship Slot",
+   TotalCost: "Total Cost",
+   TheVictoryPointCostForFriendshipIsDeterminedAsFollows: "The victory point cost for friendship is determined as follows:",
 };

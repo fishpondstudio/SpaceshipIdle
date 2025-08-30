@@ -1,6 +1,9 @@
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { getCurrentFriendship, getMaxFriendship } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { formatDelta } from "@spaceship-idle/shared/src/utils/Helper";
+import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { FloatingTip } from "./components/FloatingTip";
@@ -9,12 +12,36 @@ export function GalaxyInfoPanel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const stat = G.runtime.leftStat;
    const warmongerPenalty = getStat("Warmonger", G.save.state.stats);
+   const [maxFriendship, friendshipDetail] = getMaxFriendship(G.save.state);
+
    return (
       <div className="top-left-panel text-sm">
-         <div className="row">
-            <div className="f1">Current Friendship</div>
-            <div>1/3</div>
-         </div>
+         <FloatingTip
+            w={350}
+            label={
+               <>
+                  <div>
+                     You can have maximum <b>{maxFriendship}</b> friendships, determined as follows
+                  </div>
+                  <div className="h5" />
+                  <div className="flex-table mx-10">
+                     {friendshipDetail.map((detail) => (
+                        <div className="row" key={detail.name}>
+                           <div className="f1">{detail.name}</div>
+                           <div>{formatDelta(detail.value)}</div>
+                        </div>
+                     ))}
+                  </div>
+               </>
+            }
+         >
+            <div className="row">
+               <div className="f1">{t(L.FriendshipSlot)}</div>
+               <div>
+                  {getCurrentFriendship(G.save)}/{maxFriendship}
+               </div>
+            </div>
+         </FloatingTip>
          <FloatingTip
             label={
                <>
