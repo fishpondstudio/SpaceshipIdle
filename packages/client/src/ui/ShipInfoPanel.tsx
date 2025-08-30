@@ -139,7 +139,7 @@ export function ShipInfoPanel(): React.ReactNode {
                   });
                }}
             >
-               <TextureComp name="Others/Battle24" />
+               <TextureComp name="Others/Trophy" />
                <div className="w10" />
                <div className="f1 text-right">
                   <div>{formatNumber(vp.current)}</div>
@@ -201,7 +201,7 @@ export function ShipInfoPanel(): React.ReactNode {
          </FloatingTip>
          <div className="divider vertical" />
          <FloatingTip w={300} label={<QuantumTooltip />}>
-            <div className="block pointer" style={{ width: 100, position: "relative" }}>
+            <div className="block" style={{ width: 100, position: "relative" }}>
                <TextureComp name="Others/Quantum24" />
                <div className="f1 text-right">
                   <div>
@@ -213,7 +213,7 @@ export function ShipInfoPanel(): React.ReactNode {
          </FloatingTip>
          <div className="divider vertical" />
          <FloatingTip w={300} label={<QuantumTooltip />}>
-            <div className="block pointer" style={{ width: 60 }}>
+            <div className="block" style={{ width: 60 }}>
                <div className="f1 text-right">
                   <div>{formatPercent(progressTowardsNextQuantum)}</div>
                   <div className={cls("xs text-right", xpDelta > 0 ? "text-green" : "text-red")}>
@@ -225,7 +225,7 @@ export function ShipInfoPanel(): React.ReactNode {
          </FloatingTip>
          <div className="divider vertical" />
          <FloatingTip w={300} label={<ElementTooltip />}>
-            <div style={{ width: 100 }} className="block pointer">
+            <div style={{ width: 100 }} className="block">
                <TextureComp name="Others/Element24" />
                <div className="w5" />
                <div className="f1 text-right">
@@ -251,7 +251,7 @@ export function ShipInfoPanel(): React.ReactNode {
          </FloatingTip>
          <div className="divider vertical" />
          <FloatingTip w={300} label={<ElementTooltip />}>
-            <div style={{ width: 60 }} className="block pointer">
+            <div style={{ width: 60 }} className="block">
                <div className="f1 text-right">
                   <div>{formatPercent((totalXP - prevElementXP) / (nextElementXP - prevElementXP))}</div>
                   <div className={cls("xs text-right", xpDelta > 0 ? "text-green" : "text-red")}>

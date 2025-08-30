@@ -87,6 +87,10 @@ export function getCurrentFriendship(save: SaveGame): number {
    return result;
 }
 
+export function getAvailableFriendship(gs: SaveGame): number {
+   return getMaxFriendship(gs.state)[0] - getCurrentFriendship(gs);
+}
+
 export function tickGalaxy(rt: Runtime): void {
    for (const starSystem of rt.leftSave.data.galaxy.starSystems) {
       for (const planet of starSystem.planets) {

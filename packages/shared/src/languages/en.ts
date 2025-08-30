@@ -760,4 +760,5 @@ export const EN = {
    FriendshipSlot: "Friendship Slot",
    TotalCost: "Total Cost",
    TheVictoryPointCostForFriendshipIsDeterminedAsFollows: "The victory point cost for friendship is determined as follows:",
+   FriendshipInvalidDueToWar: "You can no longer declare friendship with them because you have declared war on them.",
 };

@@ -2,9 +2,14 @@ import { Progress, Switch } from "@mantine/core";
 import { FriendshipDurationSeconds } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { type Planet, PlanetFlags } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { getCurrentFriendship, getMaxFriendship } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import { getAvailableFriendship } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
-import { canSpendResource, getStat, resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import {
+   canSpendResource,
+   getStat,
+   resourceOf,
+   trySpendResource,
+} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import {
    formatHM,
    formatHMS,
@@ -17,6 +22,7 @@ import {
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
+import { playError } from "../Sound";
 import { FloatingTip } from "./FloatingTip";
 import { ResourceRequirementComp } from "./ResourceListComp";
 import { TextureComp } from "./TextureComp";
@@ -69,8 +75,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
    let cannotDeclareFriendshipReason = "";
 
    if (planet.battleResult) {
-      cannotDeclareFriendshipReason =
-         "You can no longer declare friendship with them because you have declared war on them";
+      cannotDeclareFriendshipReason = t(L.FriendshipInvalidDueToWar);
    }
 
    const warmongerPenalty = getWarmongerPenalty(G.save.state);
@@ -102,10 +107,22 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
          <div className="h10" />
          <button
             disabled={
-               !!cannotDeclareFriendshipReason || !canSpendResource("VictoryPoint", totalCost, G.save.state.resources)
+               !!cannotDeclareFriendshipReason ||
+               !canSpendResource("VictoryPoint", totalCost, G.save.state.resources) ||
+               getAvailableFriendship(G.save) <= 0
             }
             className="btn py5 green w100"
             onClick={() => {
+               if (getAvailableFriendship(G.save) <= 0) {
+                  playError();
+                  return;
+               }
+
+               if (!trySpendResource("VictoryPoint", totalCost, G.save.state.resources)) {
+                  playError();
+                  return;
+               }
+
                // TODO: Debug Only!
                planet.friendshipTimeLeft = 5;
                planet.flags = setFlag(planet.flags, PlanetFlags.WasFriends);
@@ -156,7 +173,7 @@ function FriendshipCostComp(): React.ReactNode {
             <ResourceRequirementComp
                name={t(L.FriendshipSlot)}
                required={-1}
-               current={getMaxFriendship(G.save.state)[0] - getCurrentFriendship(G.save)}
+               current={getAvailableFriendship(G.save)}
             />
          </div>
       </>

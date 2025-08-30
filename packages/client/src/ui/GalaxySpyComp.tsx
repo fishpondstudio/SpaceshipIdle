@@ -92,13 +92,13 @@ export function GalaxySpyComp({ planet }: { planet: Planet }): React.ReactNode {
          <button
             className="btn w100 py5"
             onClick={() => {
-               if (trySpendResource("VictoryPoint", 1, G.save.state.resources)) {
-                  playClick();
-                  planet.revealed = true;
-                  GameStateUpdated.emit();
-               } else {
+               if (!trySpendResource("VictoryPoint", 1, G.save.state.resources)) {
                   playError();
+                  return;
                }
+               playClick();
+               planet.revealed = true;
+               GameStateUpdated.emit();
             }}
             disabled={!canSpendResource("VictoryPoint", 1, G.save.state.resources)}
          >

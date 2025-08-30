@@ -6,6 +6,7 @@ import { generateShip, getVictoryType } from "@spaceship-idle/shared/src/game/lo
 import { BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { getBoosterReward, getWarPenalty } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
+import { canSpendResource, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { cls, formatNumber, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { srand } from "@spaceship-idle/shared/src/utils/Random";
@@ -13,6 +14,7 @@ import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import { showModal } from "../../utils/ToggleModal";
 import { PreBattleModal } from "../PreBattleModal";
+import { playClick, playError } from "../Sound";
 import { DeclareWarCostComp } from "./DeclareWarCostComp";
 import { FloatingTip } from "./FloatingTip";
 import { TextureComp } from "./TextureComp";
@@ -110,9 +112,14 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
          </div>
          <div className="h5" />
          <button
-            disabled={!!cannotDeclareWarReason}
+            disabled={!!cannotDeclareWarReason || !canSpendResource("VictoryPoint", warmonger, G.save.state.resources)}
             className="btn py5 red w100"
             onClick={() => {
+               if (!trySpendResource("VictoryPoint", warmonger, G.save.state.resources)) {
+                  playError();
+                  return;
+               }
+               playClick();
                const enemy = generateShip("Skiff", srand(planet.seed));
                enemy.name = planet.name;
                showModal({

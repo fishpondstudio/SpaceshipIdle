@@ -17,7 +17,7 @@ export function DeclareWarCostComp({ planet }: { planet?: Planet }): React.React
          <div className="flex-table mx-10">
             <ResourceRequirementComp
                name={t(L.VictoryPoint)}
-               desc={<>- From Warmonger Penalty: {warmonger}</>}
+               desc={<>- Warmonger Penalty: {warmonger}</>}
                required={-warmonger}
                current={resourceOf("VictoryPoint", G.save.state.resources).current}
                texture="Others/Trophy16"

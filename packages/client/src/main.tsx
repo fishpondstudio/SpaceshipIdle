@@ -36,10 +36,10 @@ const theme = createTheme({
    fontFamilyMonospace: "SpaceshipIdleMono, monospace",
    lineHeights: {
       xs: "1.1",
-      sm: "1.2",
-      md: "1.3",
-      lg: "1.4",
-      xl: "1.5",
+      sm: "1.25",
+      md: "1.5",
+      lg: "1.75",
+      xl: "2",
    },
    primaryColor: "space",
    colors: {

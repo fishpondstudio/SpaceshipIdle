@@ -47,12 +47,12 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
 
    const upgrade = useCallback(
       (target: number) => {
-         if (trySpendResource("XP", getTotalBuildingCost(data.type, data.level, target), G.save.state.resources)) {
-            data.level = target;
-            GameStateUpdated.emit();
-         } else {
+         if (!trySpendResource("XP", getTotalBuildingCost(data.type, data.level, target), G.save.state.resources)) {
             playError();
+            return;
          }
+         data.level = target;
+         GameStateUpdated.emit();
       },
       [data],
    );
