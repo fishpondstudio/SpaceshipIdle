@@ -82,7 +82,7 @@ readdirSync(LANG_PATH).forEach((fileName) => {
 
 console.log("🟡 Format Translation Files");
 
-execSync(`npx @biomejs/biome format --config-path=${LANG_PATH}/ --write ${LANG_PATH}/`, {
+execSync(`npx @biomejs/biome format --write ${LANG_PATH}/`, {
    encoding: "utf8",
 });
 

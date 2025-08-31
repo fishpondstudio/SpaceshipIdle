@@ -15,7 +15,7 @@ export function AddonPage(): React.ReactNode {
          title={
             <div className="row g5">
                <TextureComp name="Others/Booster24" />
-               <div className="f1">{t(L.Boosters)}</div>
+               <div className="f1">{t(L.Addons)}</div>
             </div>
          }
       >
