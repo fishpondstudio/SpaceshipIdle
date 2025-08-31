@@ -269,6 +269,9 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
       if (i > 0) {
          starSystem.distance = i;
       }
+      for (const planet of starSystem.planets) {
+         planet.revealed = planet.type !== PlanetType.State;
+      }
    }
 
    return [galaxy, aabb];

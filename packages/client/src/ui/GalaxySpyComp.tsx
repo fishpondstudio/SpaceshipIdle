@@ -33,7 +33,7 @@ export function GalaxySpyComp({ planet }: { planet: Planet }): React.ReactNode {
          <div className="panel">
             <ShipImageComp style={{ padding: "0 5%" }} ship={ship} side={Side.Left} />
             <div className="divider my10 mx-10" />
-            <table className="w100">
+            <table className="w100 text-sm">
                <tbody>
                   <FloatingTip label={<StatDiffComp yours={hp} theirs={enemyHp} />}>
                      <tr>

@@ -665,4 +665,6 @@ export const EN = {
    YouHaveUnequippedAddonTooltip: "You have unequipped add-on(s) this run. Equip them to a module of your choice",
    WarmongerPenaltyPerSec: "-%% Warmonger Penalty/s",
    FriendshipWith: "Friendship with %%",
+   NeutralStateDescHTML: "<b>%%</b> is a neutral state - you can decide how do engage with them",
+   PirateDescHTML: "<b>%%</b> is a pirate - declaring war on them will not result in warmonger penalty",
 };

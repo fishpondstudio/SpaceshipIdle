@@ -1,6 +1,8 @@
 import { type Planet, PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
+import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { GalaxyFriendshipComp } from "./components/GalaxyFriendshipComp";
 import { GalaxyWarComp } from "./components/GalaxyWarComp";
+import { RenderHTML } from "./components/RenderHTMLComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
 import { GalaxySpyComp } from "./GalaxySpyComp";
@@ -16,10 +18,11 @@ export function PlanetPage({ planet }: { planet: Planet }): React.ReactNode {
          }
       >
          <div className="m10 text-sm">
-            <div>
-               <span className="text-space">{planet.name}</span> is a neutral state. You can decide how do engage with
-               them
-            </div>
+            {planet.type === PlanetType.State ? (
+               <RenderHTML html={t(L.NeutralStateDescHTML, planet.name)} className="render-html" />
+            ) : (
+               <RenderHTML html={t(L.PirateDescHTML, planet.name)} className="render-html" />
+            )}
          </div>
          <div className="divider my10" />
          <div className="title g5">
