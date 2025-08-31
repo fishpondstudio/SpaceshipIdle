@@ -184,9 +184,9 @@ export class TileVisual extends Container {
       if (!this._isWorking) {
          this._bottomLeftSprite.visible = true;
          this._bottomLeftSprite.texture = G.textures.get("Status/NoFire")!;
-      } else if (rs?.booster) {
+      } else if (rs?.addon) {
          this._bottomLeftSprite.visible = true;
-         this._bottomLeftSprite.texture = G.textures.get(`Booster/${rs.booster}`)!;
+         this._bottomLeftSprite.texture = G.textures.get(`Addon/${rs.addon}`)!;
       } else {
          this._bottomLeftSprite.visible = false;
       }

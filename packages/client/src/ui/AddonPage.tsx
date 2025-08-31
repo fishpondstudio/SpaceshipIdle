@@ -1,4 +1,4 @@
-import { Boosters, getBoosterEffect } from "@spaceship-idle/shared/src/game/definitions/Boosters";
+import { Addons, getAddonEffect } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { formatNumber, mapOf, reduceOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -9,7 +9,7 @@ import { RenderHTML } from "./components/RenderHTMLComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
 
-export function BoosterPage(): React.ReactNode {
+export function AddonPage(): React.ReactNode {
    return (
       <SidebarComp
          title={
@@ -26,7 +26,7 @@ export function BoosterPage(): React.ReactNode {
             </button>
          </div>
          {mapOf(ShipClass, (k, v) => {
-            if (reduceOf(Boosters, (prev, _, def) => prev + (def.shipClass === k ? 1 : 0), 0) === 0) {
+            if (reduceOf(Addons, (prev, _, def) => prev + (def.shipClass === k ? 1 : 0), 0) === 0) {
                return null;
             }
             return (
@@ -34,11 +34,11 @@ export function BoosterPage(): React.ReactNode {
                   <div className="divider my10" />
                   <div className="title">{t(L.XClass, v.name())}</div>
                   <div className="divider my10" />
-                  {mapOf(Boosters, (booster) => {
-                     const def = Boosters[booster];
-                     const amount = G.save.state.boosters.get(booster)?.amount ?? 0;
-                     const tile = G.save.state.boosters.get(booster)?.tile;
-                     const effect = getBoosterEffect(amount);
+                  {mapOf(Addons, (booster) => {
+                     const def = Addons[booster];
+                     const amount = G.save.state.addons.get(booster)?.amount ?? 0;
+                     const tile = G.save.state.addons.get(booster)?.tile;
+                     const effect = getAddonEffect(amount);
                      if (def.shipClass !== k) {
                         return null;
                      }

@@ -2,7 +2,7 @@ import { wyhash_str } from "../thirdparty/wyhash";
 import { createTile, type Tile, uuid4 } from "../utils/Helper";
 import { jsonEncode } from "../utils/Serialization";
 import { TypedEvent } from "../utils/TypedEvent";
-import type { Booster } from "./definitions/Boosters";
+import type { Addon } from "./definitions/Addons";
 import type { Catalyst, CatalystCat } from "./definitions/Catalyst";
 import type { Galaxy } from "./definitions/Galaxy";
 import type { Resource } from "./definitions/Resource";
@@ -44,7 +44,7 @@ export class GameState {
    elements = new Map<ElementSymbol, ElementData>();
    permanentElements = new Map<ElementSymbol, ElementData>();
    selectedCatalysts = new Map<CatalystCat, Catalyst>();
-   boosters = new Map<Booster, { tile: Tile | null; amount: number }>();
+   addons = new Map<Addon, { tile: Tile | null; amount: number }>();
    name = "Unnamed";
    shipDesign: ShipDesign = "Ship1";
    flags: GameStateFlags = GameStateFlags.None;

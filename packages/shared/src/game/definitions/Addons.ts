@@ -3,15 +3,15 @@ import { L, t } from "../../utils/i18n";
 import type { Runtime } from "../logic/Runtime";
 import type { ShipClass } from "./TechDefinitions";
 
-export interface IBoosterDefinition {
+export interface IAddonDefinition {
    name: () => string;
    desc: (value: number) => string;
    tick: (value: number, tile: Tile, runtime: Runtime) => void;
    shipClass: ShipClass;
 }
 
-export const Boosters = {
-   HP1: cast<IBoosterDefinition>({
+export const Addons = {
+   HP1: cast<IAddonDefinition>({
       name: () => t(L.HPCluster),
       desc: (value: number) => t(L.HPCoreDesc, formatNumber(value), formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -19,7 +19,7 @@ export const Boosters = {
       },
       shipClass: "Skiff",
    }),
-   Evasion1: cast<IBoosterDefinition>({
+   Evasion1: cast<IAddonDefinition>({
       name: () => t(L.EvasionCluster),
       desc: (value: number) => t(L.EvasionCoreDesc, formatNumber(value), formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -27,7 +27,7 @@ export const Boosters = {
       },
       shipClass: "Skiff",
    }),
-   Damage1: cast<IBoosterDefinition>({
+   Damage1: cast<IAddonDefinition>({
       name: () => t(L.DamageCluster),
       desc: (value: number) => t(L.DamageCoreDesc, formatNumber(value), formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -35,7 +35,7 @@ export const Boosters = {
       },
       shipClass: "Scout",
    }),
-   Damage2: cast<IBoosterDefinition>({
+   Damage2: cast<IAddonDefinition>({
       name: () => t(L.DamageDiversifier),
       desc: (value: number) => t(L.DamageDiversifierDesc, formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -43,7 +43,7 @@ export const Boosters = {
       },
       shipClass: "Scout",
    }),
-   HP2: cast<IBoosterDefinition>({
+   HP2: cast<IAddonDefinition>({
       name: () => t(L.HPEqualizer),
       desc: (value: number) => t(L.HPEqualizerDesc, formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -51,11 +51,11 @@ export const Boosters = {
       },
       shipClass: "Scout",
    }),
-} as const satisfies Record<string, IBoosterDefinition>;
+} as const satisfies Record<string, IAddonDefinition>;
 
-export type Booster = keyof typeof Boosters;
+export type Addon = keyof typeof Addons;
 
-export function getBoosterEffect(amount: number): number {
+export function getAddonEffect(amount: number): number {
    if (amount <= 0) {
       return 0;
    }

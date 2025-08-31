@@ -3,7 +3,7 @@ import { ElementsScene } from "./scenes/ElementsScene";
 import { GalaxyScene } from "./scenes/GalaxyScene";
 import { ShipScene } from "./scenes/ShipScene";
 import { TechTreeScene } from "./scenes/TechTreeScene";
-import { BoosterPage } from "./ui/BoosterPage";
+import { AddonPage } from "./ui/AddonPage";
 import { DirectivePage } from "./ui/DirectivePage";
 import { setSidebar } from "./ui/Sidebar";
 import { G } from "./utils/Global";
@@ -24,8 +24,8 @@ export function loadGameScene() {
          G.scene.loadScene(CatalystScene);
          break;
       }
-      case "booster": {
-         setSidebar(<BoosterPage />);
+      case "addon": {
+         setSidebar(<AddonPage />);
          break;
       }
       case "directive": {

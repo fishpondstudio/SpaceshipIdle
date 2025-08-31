@@ -1,32 +1,32 @@
 import { forEach, shuffle } from "../../utils/Helper";
-import { type Booster, Boosters } from "../definitions/Boosters";
-import { ShipClass } from "../definitions/TechDefinitions";
+import { type Addon, Addons } from "../definitions/Addons";
+import type { ShipClass } from "../definitions/TechDefinitions";
 import type { GameState } from "../GameState";
 import type { Runtime } from "./Runtime";
 import { getShipClass } from "./TechLogic";
 
-export function tickBooster(gs: GameState, rt: Runtime): void {
+export function tickAddon(gs: GameState, rt: Runtime): void {
    gs.tiles.forEach((data, tile) => {
       const rs = rt.get(tile);
       if (!rs) {
          return;
       }
-      rs.booster = null;
+      rs.addon = null;
    });
-   gs.boosters.forEach((data, booster) => {
+   gs.addons.forEach((data, booster) => {
       if (data.tile) {
          const rs = rt.get(data.tile);
          if (rs) {
-            rs.booster = booster;
+            rs.addon = booster;
          }
       }
    });
 }
 
-export function rollBooster(gs: GameState): Booster | null {
+export function rollAddon(gs: GameState): Addon | null {
    const shipClass = getShipClass(gs);
-   const candidates: Booster[] = [];
-   forEach(Boosters, (booster, def) => {
+   const candidates: Addon[] = [];
+   forEach(Addons, (booster, def) => {
       if (def.shipClass === shipClass) {
          candidates.push(booster);
       }
@@ -38,8 +38,8 @@ export function rollBooster(gs: GameState): Booster | null {
    return candidates[0];
 }
 
-export function hasUnequippedBooster(gs: GameState): boolean {
-   for (const data of gs.boosters.values()) {
+export function hasUnequippedAddon(gs: GameState): boolean {
+   for (const data of gs.addons.values()) {
       if (data.tile === null) {
          return true;
       }
@@ -47,11 +47,11 @@ export function hasUnequippedBooster(gs: GameState): boolean {
    return false;
 }
 
-export function getBoostersInClass(shipClass: ShipClass): Booster[] {
-   const candidates: Booster[] = [];
-   forEach(Boosters, (booster, def) => {
+export function getAddonsInClass(shipClass: ShipClass): Addon[] {
+   const candidates: Addon[] = [];
+   forEach(Addons, (addon, def) => {
       if (def.shipClass === shipClass) {
-         candidates.push(booster);
+         candidates.push(addon);
       }
    });
    return candidates;

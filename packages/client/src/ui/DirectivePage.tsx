@@ -46,11 +46,11 @@ function DirectiveItem(): React.ReactNode {
          <div>
             <div className="row g5">
                <div className="mi text-green">check_circle</div>
-               <div className="f1">Equip 2 Boosters</div>
+               <div className="f1">Equip 2 Addons</div>
             </div>
             <div className="row g5">
                <div className="mi">bubble</div>
-               <div className="f1">All modules equipped with a booster get +1 HP Multiplier</div>
+               <div className="f1">All modules equipped with an addon get +1 HP Multiplier</div>
             </div>
             <div className="h5" />
             <div className="row g5">

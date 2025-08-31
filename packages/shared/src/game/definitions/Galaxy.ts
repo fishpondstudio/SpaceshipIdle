@@ -1,5 +1,5 @@
 import type { ValueOf } from "../../utils/Helper";
-import type { Booster } from "./Boosters";
+import type { Addon } from "./Addons";
 import type { Resource } from "./Resource";
 
 export interface Galaxy {
@@ -50,6 +50,6 @@ export type PlanetType = ValueOf<typeof PlanetType>;
 
 export interface BattleResult {
    battleScore: number;
-   boosters: Map<Booster, number>;
+   addons: Map<Addon, number>;
    resources: Map<Resource, number>;
 }

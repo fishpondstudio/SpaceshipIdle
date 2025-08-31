@@ -38,4 +38,4 @@ export const Version = "0.5";
 export const WarpElementId = "ship-info-warp";
 export const XPElementId = "ship-info-xp";
 export const VictoryPointElementId = "ship-info-victory-point";
-export const BoosterElementId = "bottom-panel-booster";
+export const AddonElementId = "bottom-panel-addon";

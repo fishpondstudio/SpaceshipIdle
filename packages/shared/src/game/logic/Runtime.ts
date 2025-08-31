@@ -12,11 +12,11 @@ import {
 } from "../definitions/Constant";
 import { type GameState, GameStateUpdated, hashGameStatePair, type SaveGame, type Tiles } from "../GameState";
 import { makeTile } from "../ITileData";
+import { tickAddon } from "./AddonLogic";
 import type { BattleInfo } from "./BattleInfo";
 import { tickProjectiles, tickTiles } from "./BattleLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType } from "./BattleType";
-import { tickBooster } from "./BoosterLogic";
 import { tickCatalyst } from "./CatalystLogic";
 import { tickElement } from "./ElementLogic";
 import { tickGalaxy } from "./GalaxyLogic";
@@ -341,8 +341,8 @@ export class Runtime {
       });
       tickCatalyst(this.left, this.leftStat, this);
       tickCatalyst(this.right, this.rightStat, this);
-      tickBooster(this.left, this);
-      tickBooster(this.right, this);
+      tickAddon(this.left, this);
+      tickAddon(this.right, this);
    }
 
    private _checkSuddenDeath(): void {

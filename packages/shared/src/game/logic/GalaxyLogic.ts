@@ -5,12 +5,12 @@ import { L, t } from "../../utils/i18n";
 import { Generator } from "../../utils/NameGen";
 import { srand } from "../../utils/Random";
 import type { IHaveXY } from "../../utils/Vector2";
-import type { Booster } from "../definitions/Boosters";
+import type { Addon } from "../definitions/Addons";
 import { FriendshipDurationSeconds } from "../definitions/Constant";
 import { type Galaxy, type Planet, PlanetFlags, PlanetType, type StarSystem } from "../definitions/Galaxy";
 import { ShipClass } from "../definitions/TechDefinitions";
 import type { GameState, SaveGame } from "../GameState";
-import { getBoostersInClass } from "./BoosterLogic";
+import { getAddonsInClass } from "./AddonLogic";
 import type { Runtime } from "./Runtime";
 import { getPreviousShipClass, getShipClass } from "./TechLogic";
 
@@ -32,19 +32,19 @@ export function findPlanet(id: number, galaxy: Galaxy): Planet | undefined {
    return undefined;
 }
 
-export function getBoosterReward(seed: string, gs: GameState): Booster[] {
+export function getAddonReward(seed: string, gs: GameState): Addon[] {
    const shipClass = getShipClass(gs);
-   const boosters = getBoostersInClass(shipClass);
+   const addons = getAddonsInClass(shipClass);
    const random = srand(seed);
-   shuffle(boosters, random);
-   const [booster, ...candidates] = boosters;
+   shuffle(addons, random);
+   const [addon, ...candidates] = addons;
    const previousShipClass = getPreviousShipClass(shipClass);
    if (previousShipClass) {
-      getBoostersInClass(previousShipClass).forEach((b) => candidates.push(b));
+      getAddonsInClass(previousShipClass).forEach((b) => candidates.push(b));
    }
    shuffle(candidates, random);
    const result = candidates.slice(0, 2);
-   result.unshift(booster);
+   result.unshift(addon);
    return result;
 }
 

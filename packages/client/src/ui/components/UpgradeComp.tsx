@@ -1,7 +1,7 @@
 import { Popover } from "@mantine/core";
-import { type Booster, Boosters, getBoosterEffect } from "@spaceship-idle/shared/src/game/definitions/Boosters";
+import { type Addon, Addons, getAddonEffect } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { hasUnequippedBooster } from "@spaceship-idle/shared/src/game/logic/BoosterLogic";
+import { hasUnequippedAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
 import {
    getBuildingCost,
    getNextLevel,
@@ -87,10 +87,10 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
 
    useShortcut("UpgradeMax", upgradeMaxCached, [upgradeMaxCached]);
 
-   let booster: Booster | undefined;
-   for (const [b, value] of G.save.state.boosters) {
+   let addon: Addon | undefined;
+   for (const [b, value] of G.save.state.addons) {
       if (value.tile === tile) {
-         booster = b;
+         addon = b;
          break;
       }
    }
@@ -168,47 +168,45 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             </FloatingTip>
          </div>
          <div className="divider my10" />
-         <div className="title">{t(L.Booster)}</div>
+         <div className="title">{t(L.Addon)}</div>
          <div className="divider my10" />
          <div className="row mx10">
-            {booster ? (
+            {addon ? (
                <>
-                  <TextureComp name={`Booster/${booster}`} />
+                  <TextureComp name={`Addon/${addon}`} />
                   <FloatingTip
                      label={
                         <RenderHTML
-                           html={Boosters[booster].desc(
-                              getBoosterEffect(G.save.state.boosters.get(booster)?.amount ?? 0),
-                           )}
+                           html={Addons[addon].desc(getAddonEffect(G.save.state.addons.get(addon)?.amount ?? 0))}
                            className="text-sm"
                         />
                      }
                   >
-                     <div>{Boosters[booster].name()}</div>
+                     <div>{Addons[addon].name()}</div>
                   </FloatingTip>
                   <div className="f1" />
                </>
-            ) : hasUnequippedBooster(G.save.state) ? (
-               <div className="f1 text-green">{t(L.EquippableBoosters)}</div>
+            ) : hasUnequippedAddon(G.save.state) ? (
+               <div className="f1 text-green">{t(L.EquippableAddons)}</div>
             ) : (
-               <div className="f1 text-dimmed">{t(L.NoEquippedBooster)}</div>
+               <div className="f1 text-dimmed">{t(L.NoEquippedAddon)}</div>
             )}
             <Popover width={300} position="bottom-end" shadow="md" classNames={{ dropdown: "col stretch p10 g5" }}>
                <Popover.Target>
                   <div className="mi pointer">rule_settings</div>
                </Popover.Target>
                <Popover.Dropdown>
-                  {mMapOf(G.save.state.boosters, (booster) => {
+                  {mMapOf(G.save.state.addons, (addon) => {
                      return (
-                        <div key={booster} className="row">
-                           <TextureComp name={`Booster/${booster}`} />
-                           <div>{Boosters[booster].name()}</div>
+                        <div key={addon} className="row">
+                           <TextureComp name={`Addon/${addon}`} />
+                           <div>{Addons[addon].name()}</div>
                            <div className="f1" />
-                           <BoosterOpButton booster={booster} me={tile} />
+                           <AddonOpButton addon={addon} me={tile} />
                         </div>
                      );
                   })}
-                  {G.save.state.boosters.size === 0 ? <div className="f1">{t(L.NoAvailableBoosters)}</div> : null}
+                  {G.save.state.addons.size === 0 ? <div className="f1">{t(L.NoAvailableAddons)}</div> : null}
                </Popover.Dropdown>
             </Popover>
          </div>
@@ -216,8 +214,8 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
    );
 }
 
-function BoosterOpButton({ booster, me }: { booster: Booster; me: Tile }): React.ReactNode {
-   const inv = G.save.state.boosters.get(booster);
+function AddonOpButton({ addon, me }: { addon: Addon; me: Tile }): React.ReactNode {
+   const inv = G.save.state.addons.get(addon);
    if (!inv) {
       return null;
    }
@@ -239,7 +237,7 @@ function BoosterOpButton({ booster, me }: { booster: Booster; me: Tile }): React
          <button
             className="btn row g5"
             onClick={() => {
-               G.save.state.boosters.forEach((inv) => {
+               G.save.state.addons.forEach((inv) => {
                   if (inv.tile === me) {
                      inv.tile = null;
                   }

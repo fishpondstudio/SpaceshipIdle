@@ -1,9 +1,9 @@
 import { Indicator, Progress, SegmentedControl } from "@mantine/core";
-import { BoosterElementId } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { AddonElementId } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameState, GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { hasUnequippedAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { hasUnequippedBooster } from "@spaceship-idle/shared/src/game/logic/BoosterLogic";
 import { hasUnassignedElements } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, hasFlag, round } from "@spaceship-idle/shared/src/utils/Helper";
@@ -20,7 +20,7 @@ import { refreshOnTypedEvent } from "../utils/Hook";
 import { OnSceneSwitched } from "../utils/SceneManager";
 import { Scenes } from "../utils/Scenes";
 import { showModal } from "../utils/ToggleModal";
-import { BoosterPage } from "./BoosterPage";
+import { AddonPage } from "./AddonPage";
 import { ChooseElementModal } from "./ChooseElementModal";
 import { FloatingTip } from "./components/FloatingTip";
 import { hideLoading, showLoading } from "./components/LoadingComp";
@@ -191,8 +191,8 @@ function SceneSwitcher(): React.ReactNode {
                   case Scenes.GalaxyScene:
                      G.scene.loadScene(GalaxyScene);
                      break;
-                  case BoosterPage.name:
-                     setSidebar(<BoosterPage />);
+                  case AddonPage.name:
+                     setSidebar(<AddonPage />);
                      break;
                   case DirectivePage.name:
                      setSidebar(<DirectivePage />);
@@ -253,8 +253,8 @@ function SceneSwitcher(): React.ReactNode {
                   value: DirectivePage.name,
                },
                {
-                  label: <BoosterTabLabel />,
-                  value: BoosterPage.name,
+                  label: <AddonTabLabel />,
+                  value: AddonPage.name,
                },
                {
                   label: <ElementTabLabel />,
@@ -284,20 +284,20 @@ function ElementTabLabel(): React.ReactNode {
    );
 }
 
-function BoosterTabLabel(): React.ReactNode {
+function AddonTabLabel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
-   if (hasUnequippedBooster(G.save.state)) {
+   if (hasUnequippedAddon(G.save.state)) {
       return (
-         <FloatingTip position="top" label={t(L.YouHaveUnequippedBoosterTooltip)}>
+         <FloatingTip position="top" label={t(L.YouHaveUnequippedAddonTooltip)}>
             <Indicator color="red" processing>
-               <TextureComp id={BoosterElementId} name="Others/Booster24" />
+               <TextureComp id={AddonElementId} name="Others/Addon24" />
             </Indicator>
          </FloatingTip>
       );
    }
    return (
-      <FloatingTip position="top" label={t(L.TabBooster)}>
-         <TextureComp id={BoosterElementId} name="Others/Booster24" />
+      <FloatingTip position="top" label={t(L.TabAddon)}>
+         <TextureComp id={AddonElementId} name="Others/Addon24" />
       </FloatingTip>
    );
 }

@@ -1,10 +1,10 @@
-import { Boosters } from "@spaceship-idle/shared/src/game/definitions/Boosters";
+import { Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { type Planet, PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { Resources } from "@spaceship-idle/shared/src/game/definitions/Resource";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { generateShip, getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { getBoosterReward, getWarPenalty } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import { getAddonReward, getWarPenalty } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { canSpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { cls, formatNumber, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
@@ -22,7 +22,7 @@ import { TextureComp } from "./TextureComp";
 export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
 
-   const rewards = getBoosterReward(planet.seed, G.save.state);
+   const rewards = getAddonReward(planet.seed, G.save.state);
 
    if (planet.battleResult) {
       const victoryType = getVictoryType(planet.battleResult.battleScore);
@@ -36,11 +36,11 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
             <div className="divider my10 mx-10" />
             <div className="title">War Reparation</div>
             <div className="h5" />
-            {mMapOf(planet.battleResult.boosters, (booster, count) => {
+            {mMapOf(planet.battleResult.addons, (addon, count) => {
                return (
-                  <div key={booster} className="row">
+                  <div key={addon} className="row">
                      <div className="f1">
-                        <TextureComp name={`Booster/${booster}`} className="inline-middle" /> {Boosters[booster].name()}
+                        <TextureComp name={`Addon/${addon}`} className="inline-middle" /> {Addons[addon].name()}
                      </div>
                      <div>{count}</div>
                   </div>
@@ -95,10 +95,10 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
             <div>
                <TextureComp name="Others/Trophy16" className="inline-middle" /> {t(L.VictoryPoint)}
             </div>
-            {rewards.map((booster) => {
+            {rewards.map((addon) => {
                return (
-                  <div key={booster}>
-                     <TextureComp name={`Booster/${booster}`} className="inline-middle" /> {Boosters[booster].name()}
+                  <div key={addon}>
+                     <TextureComp name={`Addon/${addon}`} className="inline-middle" /> {Addons[addon].name()}
                   </div>
                );
             })}

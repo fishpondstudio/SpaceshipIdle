@@ -95,7 +95,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
             <div className="title">Rewards</div>
             <div className="h5" />
             <div>
-               1 <TextureComp name="Booster/Evasion1" className="inline-middle" /> Evasion Cluster
+               1 <TextureComp name="Addon/Evasion1" className="inline-middle" /> Evasion Cluster
             </div>
             <div className="divider my10 mx-10" />
             <div className="title">Duration</div>

@@ -1,7 +1,7 @@
 import { forEach, hasFlag, mapSafeAdd, safeAdd, type Tile, type ValueOf } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
-import type { Booster } from "../definitions/Boosters";
+import type { Addon } from "../definitions/Addons";
 import {
    type BuildingProp,
    DamageType,
@@ -13,7 +13,7 @@ import {
 } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { StatusEffectTickInterval } from "../definitions/Constant";
-import { type StatusEffect, StatusEffectFlag, statusEffectOf, StatusEffects } from "../definitions/StatusEffect";
+import { type StatusEffect, StatusEffectFlag, StatusEffects, statusEffectOf } from "../definitions/StatusEffect";
 import type { GameState } from "../GameState";
 import { GridSize } from "../Grid";
 import type { ITileData } from "../ITileData";
@@ -67,7 +67,7 @@ export class RuntimeTile {
    public buff = 0;
    public debuff = 0;
 
-   public booster: Booster | null = null;
+   public addon: Addon | null = null;
 
    public readonly hpMultiplier = new TrackedValue(1);
    public readonly damageMultiplier = new TrackedValue(1);

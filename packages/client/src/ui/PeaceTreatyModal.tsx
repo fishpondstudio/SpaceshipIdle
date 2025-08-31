@@ -1,7 +1,7 @@
 import { clamp, useForceUpdate } from "@mantine/hooks";
-import { Boosters } from "@spaceship-idle/shared/src/game/definitions/Boosters";
+import { Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import {
-   BoosterElementId,
+   AddonElementId,
    VictoryPointElementId,
    XPElementId,
 } from "@spaceship-idle/shared/src/game/definitions/Constant";
@@ -10,7 +10,7 @@ import { GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/Gam
 import type { BattleInfo } from "@spaceship-idle/shared/src/game/logic/BattleInfo";
 import { getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType, BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { findPlanet, getBoosterReward } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import { findPlanet, getAddonReward } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { calculateRewardValue } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, getDOMRectCenter, mMapOf, randomAlphaNumeric } from "@spaceship-idle/shared/src/utils/Helper";
@@ -42,7 +42,7 @@ export function PeaceTreatyModal({
    const victoryType = getVictoryType(battleScore);
    const battleResult = useRef<BattleResult>({
       battleScore: battleScore,
-      boosters: new Map(),
+      addons: new Map(),
       resources: new Map([
          ["VictoryPoint", victoryType === "Defeated" ? 0 : 1],
          ["XP", 0],
@@ -57,17 +57,17 @@ export function PeaceTreatyModal({
       const planet = findPlanet(battleInfo.planetId, G.save.data.galaxy);
       if (planet) {
          texture = `Galaxy/${planet.texture}`;
-         const boosters = getBoosterReward(planet.seed, G.save.state);
-         boosters.forEach((booster) => {
-            battleResult.current.boosters.set(booster, 0);
+         const addons = getAddonReward(planet.seed, G.save.state);
+         addons.forEach((addon) => {
+            battleResult.current.addons.set(addon, 0);
          });
       }
    }
 
-   if (battleResult.current.boosters.size === 0) {
-      const boosters = getBoosterReward(randomAlphaNumeric(16), G.save.state);
-      boosters.forEach((booster) => {
-         battleResult.current.boosters.set(booster, 0);
+   if (battleResult.current.addons.size === 0) {
+      const addons = getAddonReward(randomAlphaNumeric(16), G.save.state);
+      addons.forEach((addon) => {
+         battleResult.current.addons.set(addon, 0);
       });
    }
 
@@ -107,17 +107,17 @@ export function PeaceTreatyModal({
                      }}
                   />
                </div>
-               {mMapOf(battleResult.current.boosters, (booster, count) => (
-                  <div key={booster} className="row">
+               {mMapOf(battleResult.current.addons, (addon, count) => (
+                  <div key={addon} className="row">
                      <div className="f1">
-                        <TextureComp name={`Booster/${booster}`} className="inline-middle" /> {Boosters[booster].name()}
+                        <TextureComp name={`Addon/${addon}`} className="inline-middle" /> {Addons[addon].name()}
                      </div>
                      <NumberSelect
                         value={count}
                         canIncrease={(value) => victoryType !== "Defeated" && value < 9}
                         canDecrease={(value) => victoryType !== "Defeated" && value > 0}
                         onChange={(value) => {
-                           battleResult.current.boosters.set(booster, value);
+                           battleResult.current.addons.set(addon, value);
                            forceUpdate();
                         }}
                      />
@@ -176,17 +176,17 @@ export function PeaceTreatyModal({
                   if (victoryType !== "Defeated") {
                      playBling();
                   }
-                  const boosterTarget = document.getElementById(BoosterElementId)?.getBoundingClientRect();
-                  if (boosterTarget) {
-                     battleResult.current.boosters.forEach((count, booster) => {
+                  const addonTarget = document.getElementById(AddonElementId)?.getBoundingClientRect();
+                  if (addonTarget) {
+                     battleResult.current.addons.forEach((count, addon) => {
                         G.starfield.playParticle(
                            () => {
-                              const sprite = new Sprite(G.textures.get(`Booster/${booster}`));
+                              const sprite = new Sprite(G.textures.get(`Addon/${addon}`));
                               sprite.scale.set(2);
                               return sprite;
                            },
                            getDOMRectCenter(from),
-                           getDOMRectCenter(boosterTarget),
+                           getDOMRectCenter(addonTarget),
                            count,
                         );
                      });
@@ -231,8 +231,8 @@ export function PeaceTreatyModal({
                   <>
                      <div>
                         You have <b>{battleScore}</b> battle score and the war reparation cannot exceed this. Your first
-                        Victory Point and Booster are free. Your remaining <b>{leftOver}</b> battle score is converted
-                        to <b>{formatNumber(battleResult.current.resources.get("XP") ?? 0)}</b> XP
+                        Victory Point and Add-on are free. Your remaining <b>{leftOver}</b> battle score is converted to{" "}
+                        <b>{formatNumber(battleResult.current.resources.get("XP") ?? 0)}</b> XP
                      </div>
                      <div className="h5" />
                      <div className="flex-table mx-10">

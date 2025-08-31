@@ -82,94 +82,92 @@ export class GalaxyScene extends Scene {
 
    onEnable(): void {
       super.onEnable();
-      G.pixi.ticker.add(() => {
-         this._graphics.clear();
-         const now = Date.now() / SECOND;
+      if (this._selectedId) {
+         setSidebar(<GalaxyPage id={this._selectedId} />);
+      }
+   }
 
-         let selectorRendered = false;
+   render(): void {
+      this._graphics.clear();
+      const now = Date.now() / SECOND;
 
-         for (const starSystem of G.save.data.galaxy.starSystems) {
-            // this._graphics
-            //    .lineStyle({
-            //       width: 2,
-            //       color: 0xffffff,
-            //       alpha: 0.25,
-            //       alignment: 0.5,
-            //       scaleMode: LINE_SCALE_MODE.NONE,
-            //    })
-            //    .drawCircle(solarSystem.x, solarSystem.y, solarSystem.r);
+      let selectorRendered = false;
 
-            const star = this._entities.get(starSystem.id);
-            if (star) {
-               star.position.set(starSystem.x, starSystem.y);
+      for (const starSystem of G.save.data.galaxy.starSystems) {
+         // this._graphics
+         //    .lineStyle({
+         //       width: 2,
+         //       color: 0xffffff,
+         //       alpha: 0.25,
+         //       alignment: 0.5,
+         //       scaleMode: LINE_SCALE_MODE.NONE,
+         //    })
+         //    .drawCircle(solarSystem.x, solarSystem.y, solarSystem.r);
 
-               if (this._selectedId === starSystem.id) {
-                  this._selector.position.set(star.x, star.y);
+         const star = this._entities.get(starSystem.id);
+         if (star) {
+            star.position.set(starSystem.x, starSystem.y);
+
+            if (this._selectedId === starSystem.id) {
+               this._selector.position.set(star.x, star.y);
+               this._selector.visible = true;
+               this._selector.scale.set(0.48);
+               this._selector.alpha = Math.sin(now * Math.PI * 1.5) * 0.5 + 0.5;
+               selectorRendered = true;
+            }
+         }
+
+         for (const planet of starSystem.planets) {
+            const visual = this._entities.get(planet.id);
+            if (visual) {
+               const radian = planet.radian + now * planet.speed;
+               visual.position.set(
+                  starSystem.x + Math.cos(radian) * planet.r,
+                  starSystem.y + Math.sin(radian) * planet.r,
+               );
+               if (planet.type === PlanetType.Me) {
+                  visual.sprite.rotation = planet.speed > 0 ? radian + Math.PI : radian;
+               }
+
+               if (!starSystem.discovered) {
+                  visual.visible = false;
+                  continue;
+               }
+
+               visual.visible = true;
+               this._graphics.lineStyle({
+                  width: 3,
+                  color: 0xffffff,
+                  alpha: 0.25,
+                  alignment: 0.5,
+                  scaleMode: LINE_SCALE_MODE.NONE,
+               });
+
+               drawDashedLine(this._graphics, { x: starSystem.x, y: starSystem.y }, { x: visual.x, y: visual.y }, 3, 6);
+
+               if (this._selectedId === planet.id) {
+                  this._graphics
+                     .lineStyle({
+                        width: visual.sprite.width,
+                        color: 0xffffff,
+                        alpha: 0.1,
+                        alignment: 0.5,
+                        scaleMode: LINE_SCALE_MODE.NORMAL,
+                     })
+                     .drawCircle(starSystem.x, starSystem.y, planet.r);
+                  this._selector.position.set(visual.x, visual.y);
                   this._selector.visible = true;
-                  this._selector.scale.set(0.48);
+                  this._selector.scale.set(0.28);
                   this._selector.alpha = Math.sin(now * Math.PI * 1.5) * 0.5 + 0.5;
                   selectorRendered = true;
                }
             }
-
-            for (const planet of starSystem.planets) {
-               const visual = this._entities.get(planet.id);
-               if (visual) {
-                  const radian = planet.radian + now * planet.speed;
-                  visual.position.set(
-                     starSystem.x + Math.cos(radian) * planet.r,
-                     starSystem.y + Math.sin(radian) * planet.r,
-                  );
-                  if (planet.type === PlanetType.Me) {
-                     visual.sprite.rotation = planet.speed > 0 ? radian + Math.PI : radian;
-                  }
-
-                  if (!starSystem.discovered) {
-                     visual.visible = false;
-                     continue;
-                  }
-
-                  visual.visible = true;
-                  this._graphics.lineStyle({
-                     width: 3,
-                     color: 0xffffff,
-                     alpha: 0.25,
-                     alignment: 0.5,
-                     scaleMode: LINE_SCALE_MODE.NONE,
-                  });
-
-                  drawDashedLine(
-                     this._graphics,
-                     { x: starSystem.x, y: starSystem.y },
-                     { x: visual.x, y: visual.y },
-                     3,
-                     6,
-                  );
-
-                  if (this._selectedId === planet.id) {
-                     this._graphics
-                        .lineStyle({
-                           width: visual.sprite.width,
-                           color: 0xffffff,
-                           alpha: 0.1,
-                           alignment: 0.5,
-                           scaleMode: LINE_SCALE_MODE.NORMAL,
-                        })
-                        .drawCircle(starSystem.x, starSystem.y, planet.r);
-                     this._selector.position.set(visual.x, visual.y);
-                     this._selector.visible = true;
-                     this._selector.scale.set(0.28);
-                     this._selector.alpha = Math.sin(now * Math.PI * 1.5) * 0.5 + 0.5;
-                     selectorRendered = true;
-                  }
-               }
-            }
          }
+      }
 
-         if (!selectorRendered) {
-            this._selector.visible = false;
-         }
-      });
+      if (!selectorRendered) {
+         this._selector.visible = false;
+      }
    }
 
    onDisable(): void {

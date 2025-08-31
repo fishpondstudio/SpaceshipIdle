@@ -5,6 +5,7 @@ import { validateForClient } from "@spaceship-idle/shared/src/game/logic/ShipLog
 import { hasFlag, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { CRTFilter } from "pixi-filters";
 import { clientUpdate } from "./ClientUpdate";
+import { GalaxyScene } from "./scenes/GalaxyScene";
 import { ShipScene } from "./scenes/ShipScene";
 import { PrestigeReason } from "./ui/PrestigeReason";
 import { showPrestigeModal } from "./ui/ShowPrestigeModal";
@@ -35,6 +36,7 @@ export function startGameLoop(): void {
 
       G.runtime.tick(dt, G);
       G.scene.getCurrent(ShipScene)?.render(G.runtime, dt, G.runtime.battleTimer);
+      G.scene.getCurrent(GalaxyScene)?.render();
       G.starfield.update();
       clientUpdate(unscaled);
       if (filter) {
