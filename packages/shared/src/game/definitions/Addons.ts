@@ -1,7 +1,7 @@
 import { cast, formatNumber, type Tile } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import type { Runtime } from "../logic/Runtime";
-import type { ShipClass } from "./TechDefinitions";
+import type { ShipClass } from "./ShipClass";
 
 export interface IAddonDefinition {
    name: () => string;

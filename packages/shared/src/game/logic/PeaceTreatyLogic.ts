@@ -2,7 +2,7 @@ import { clamp } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { type Addon, Addons } from "../definitions/Addons";
 import type { BattleResult } from "../definitions/Galaxy";
-import { ShipClass } from "../definitions/TechDefinitions";
+import { ShipClassList } from "../definitions/ShipClass";
 import type { GameState } from "../GameState";
 import { addResource, getStat } from "./ResourceLogic";
 import { getShipClass } from "./TechLogic";
@@ -49,7 +49,7 @@ export function calculateRewardValue(result: BattleResult, gs: GameState): [numb
 function getAddonFactor(Addon: Addon, gs: GameState): number {
    const shipClass = Addons[Addon].shipClass;
    const currentShipClass = getShipClass(gs);
-   return 2 ** (ShipClass[shipClass].index - ShipClass[currentShipClass].index);
+   return 2 ** (ShipClassList.indexOf(shipClass) - ShipClassList.indexOf(currentShipClass));
 }
 
 export function getWarmongerPenalty(gs: GameState): number {

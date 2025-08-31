@@ -1,4 +1,4 @@
-import type { ShipClass } from "./TechDefinitions";
+import type { ShipClass } from "./ShipClass";
 
 type ShipDesignDefinition = Record<ShipClass, number[]>;
 

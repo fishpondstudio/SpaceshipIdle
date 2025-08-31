@@ -1,7 +1,8 @@
 import { camelToHuman, entriesOf, forEach } from "../../utils/Helper";
 import { Config } from "../Config";
 import type { Building } from "../definitions/Buildings";
-import { ShipClass, type Tech } from "../definitions/TechDefinitions";
+import { ShipClass, ShipClassList } from "../definitions/ShipClass";
+import type { Tech } from "../definitions/TechDefinitions";
 import type { GameState } from "../GameState";
 import { getBuildingName } from "./BuildingLogic";
 
@@ -29,20 +30,19 @@ export function getShipClass(gs: GameState): ShipClass {
 }
 
 export function getPreviousShipClass(shipClass: ShipClass): ShipClass | undefined {
-   const idx = ShipClass[shipClass].index - 1;
-   for (const [shipClass, def] of entriesOf(ShipClass)) {
-      if (def.index === idx) {
-         return shipClass;
-      }
+   const idx = ShipClassList.indexOf(shipClass) - 1;
+   if (idx >= 0 && idx < ShipClassList.length) {
+      return ShipClassList[idx];
    }
+   return undefined;
 }
+
 export function getNextShipClass(shipClass: ShipClass): ShipClass | undefined {
-   const idx = ShipClass[shipClass].index + 1;
-   for (const [shipClass, def] of entriesOf(ShipClass)) {
-      if (def.index === idx) {
-         return shipClass;
-      }
+   const idx = ShipClassList.indexOf(shipClass) + 1;
+   if (idx >= 0 || idx < ShipClassList.length) {
+      return ShipClassList[idx];
    }
+   return undefined;
 }
 
 export function techColumnToShipClass(column: number): ShipClass {

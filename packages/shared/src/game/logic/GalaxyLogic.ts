@@ -3,6 +3,7 @@ import type { Circle } from "../../utils/Circle";
 import {
    CURRENCY_EPSILON,
    capitalize,
+   clamp,
    hasFlag,
    keysOf,
    rand,
@@ -18,7 +19,7 @@ import type { Addon } from "../definitions/Addons";
 import { Bonus } from "../definitions/Bonus";
 import { FriendshipBaseCost, FriendshipDurationSeconds } from "../definitions/Constant";
 import { type Galaxy, type Planet, PlanetFlags, PlanetType, type StarSystem } from "../definitions/Galaxy";
-import { ShipClass } from "../definitions/TechDefinitions";
+import { ShipClass, ShipClassList } from "../definitions/ShipClass";
 import type { GameState, SaveGame } from "../GameState";
 import { getAddonsInClass } from "./AddonLogic";
 import { getWarmongerPenalty } from "./PeaceTreatyLogic";
@@ -84,7 +85,23 @@ export function getWarPenalty(gs: GameState, planet?: Planet): ValueBreakdown[] 
 export function getMaxFriendship(gs: GameState): [number, ValueBreakdown[]] {
    const shipClass = getShipClass(gs);
    const def = ShipClass[shipClass];
-   return [def.index + 1, [{ name: `${def.name()} Ship Class`, value: def.index + 1 }]];
+   const result = ShipClassList.indexOf(shipClass) + 1;
+   return [result, [{ name: `${def.name()} Ship Class`, value: result }]];
+}
+
+export function getShipClassByIndex(idx: number): ShipClass {
+   return ShipClassList[clamp(idx, 0, ShipClassList.length - 1)];
+}
+
+export function getPlanetShipClass(planetId: number, galaxy: Galaxy): ShipClass {
+   for (const starSystem of galaxy.starSystems) {
+      for (const planet of starSystem.planets) {
+         if (planet.id === planetId) {
+            return getShipClassByIndex(starSystem.distance);
+         }
+      }
+   }
+   return ShipClassList[0];
 }
 
 export function getCurrentFriendship(save: SaveGame): number {

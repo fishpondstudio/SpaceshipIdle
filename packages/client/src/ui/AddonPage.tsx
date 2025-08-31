@@ -1,5 +1,5 @@
 import { Addons, getAddonEffect } from "@spaceship-idle/shared/src/game/definitions/Addons";
-import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
+import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { formatNumber, mapOf, reduceOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import React from "react";

@@ -1,5 +1,6 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { ShipClass, type Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
+import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
+import type { Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { getTotalElementShards } from "@spaceship-idle/shared/src/game/logic/ElementLogic";

@@ -4,7 +4,7 @@ import { Resources } from "@spaceship-idle/shared/src/game/definitions/Resource"
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { generateShip, getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { getAddonReward, getWarPenalty } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import { getAddonReward, getPlanetShipClass, getWarPenalty } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { canSpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { cls, formatNumber, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
@@ -116,7 +116,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
             className="btn red w100"
             onClick={() => {
                playClick();
-               const enemy = generateShip("Skiff", srand(planet.seed));
+               const enemy = generateShip(getPlanetShipClass(planet.id, G.save.data.galaxy), srand(planet.seed));
                enemy.name = planet.name;
                showModal({
                   children: (

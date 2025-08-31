@@ -1,4 +1,4 @@
-import { hasFlag, randOne, reduceOf, type Tile, tileToPoint } from "../../utils/Helper";
+import { hasFlag, randOne, reduceOf, tileToPoint, type Tile } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -11,8 +11,8 @@ import {
    DefaultCooldown,
    MaxBattleTick as MaxBattleSeconds,
 } from "../definitions/Constant";
+import type { ShipClass } from "../definitions/ShipClass";
 import { ShipDesigns } from "../definitions/ShipDesign";
-import type { ShipClass } from "../definitions/TechDefinitions";
 import { GameOption } from "../GameOption";
 import { GameData, GameState } from "../GameState";
 import { posToTile } from "../Grid";

@@ -1,6 +1,7 @@
 import type { Planet } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore, generateShip } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { getPlanetShipClass } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { canSpendResource, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { cls, formatDelta, formatNumber, formatPercent, mathSign } from "@spaceship-idle/shared/src/utils/Helper";
@@ -18,7 +19,10 @@ import { playClick, playError } from "./Sound";
 
 export function GalaxySpyComp({ planet }: { planet: Planet }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
-   const ship = useMemo(() => generateShip("Skiff", srand(planet.seed)), [planet.seed]);
+   const ship = useMemo(
+      () => generateShip(getPlanetShipClass(planet.id, G.save.data.galaxy), srand(planet.seed)),
+      [planet.seed, planet.id],
+   );
    const [score, hp, dps] = useMemo(() => calcShipScore(G.save.state), []);
    const [enemyScore, enemyHp, enemyDps] = useMemo(() => calcShipScore(ship), [ship]);
    const hpDiff = enemyHp - hp;

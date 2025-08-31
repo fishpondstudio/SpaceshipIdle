@@ -2,9 +2,10 @@ import { forEach, keysOf, sizeOf, tileToPoint } from "../utils/Helper";
 import { type Building, Buildings } from "./definitions/Buildings";
 import { MaxBattleTick } from "./definitions/Constant";
 import { Resources } from "./definitions/Resource";
+import type { ShipClass } from "./definitions/ShipClass";
 import { ShipDesigns } from "./definitions/ShipDesign";
 import { type StatusEffect, StatusEffects } from "./definitions/StatusEffect";
-import { type ShipClass, type Tech, TechDefinitions } from "./definitions/TechDefinitions";
+import { type Tech, TechDefinitions } from "./definitions/TechDefinitions";
 import { techColumnToShipClass } from "./logic/TechLogic";
 import { type ElementSymbol, PeriodicTable } from "./PeriodicTable";
 

@@ -1,6 +1,6 @@
 import { forEach, shuffle } from "../../utils/Helper";
 import { type Addon, Addons } from "../definitions/Addons";
-import type { ShipClass } from "../definitions/TechDefinitions";
+import type { ShipClass } from "../definitions/ShipClass";
 import type { GameState } from "../GameState";
 import type { Runtime } from "./Runtime";
 import { getShipClass } from "./TechLogic";

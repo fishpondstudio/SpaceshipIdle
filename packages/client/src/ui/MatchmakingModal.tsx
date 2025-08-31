@@ -1,6 +1,6 @@
 import { getGradient, useMantineTheme } from "@mantine/core";
 import { QualifierSpaceshipValuePercent } from "@spaceship-idle/shared/src/game/definitions/Constant";
-import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
+import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
