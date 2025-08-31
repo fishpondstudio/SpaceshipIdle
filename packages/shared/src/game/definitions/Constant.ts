@@ -20,6 +20,7 @@ export const MaxBattleTick = 10 * 60;
 export const SuddenDeathSeconds = 5 * 60;
 export const SuddenDeathUndamagedSec = 10;
 export const FriendshipDurationSeconds = 4 * 60 * 60;
+export const FriendshipBaseCost = 1;
 export const MaxBuildingCount = 1000;
 export const ElementThisRunColor = 0x94a9cd;
 export const ElementPermanentColor = 0xffeaa7;

@@ -1,4 +1,6 @@
+import type { MantineColor } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
+import { OnAlert, showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { calcSpaceshipXP, changeStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -44,26 +46,50 @@ export function subscribeToEvents(): void {
       }
    });
 
+   OnAlert.on(({ message, type, persist }) => {
+      let color: MantineColor;
+      switch (type) {
+         case "info":
+            color = "blue";
+            break;
+         case "success":
+            color = "green";
+            break;
+         case "warning":
+            color = "yellow";
+            break;
+         case "error":
+            color = "red";
+            break;
+         default:
+            color = "blue";
+            break;
+      }
+
+      notifications.show({
+         message,
+         position: "top-center",
+         color,
+         withBorder: true,
+      });
+      if (persist) {
+         G.save.data.alerts.unshift({ message, type, time: Date.now() });
+         while (G.save.data.alerts.length > 100) {
+            G.save.data.alerts.pop();
+         }
+      }
+   });
+
    onSteamClose(async () => {
       await saveGame(G.save);
       SteamClient.quit();
    });
 
    window.addEventListener("error", (event) => {
-      notifications.show({
-         message: String(event.message),
-         position: "top-center",
-         color: "red",
-         withBorder: true,
-      });
+      showError(String(event.message));
    });
 
    window.addEventListener("unhandledrejection", (event) => {
-      notifications.show({
-         message: String(event.reason),
-         position: "top-center",
-         color: "red",
-         withBorder: true,
-      });
+      showError(String(event.reason));
    });
 }

@@ -1,5 +1,4 @@
 import { computePosition, flip, offset, shift } from "@floating-ui/core";
-import { notifications } from "@mantine/notifications";
 import { SmoothGraphics } from "@pixi/graphics-smooth";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { abilityTarget, AbilityTiming } from "@spaceship-idle/shared/src/game/definitions/Ability";
@@ -16,6 +15,7 @@ import {
    tileToPosCenter,
 } from "@spaceship-idle/shared/src/game/Grid";
 import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
+import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import {
    OnDamaged,
    OnEvasion,
@@ -450,12 +450,7 @@ export class ShipScene extends Scene {
          ) {
             if (!isWithinShipExtent(clickedTile, G.save.state)) {
                playError();
-               notifications.show({
-                  message: t(L.NotWithinExtent),
-                  position: "top-center",
-                  color: "red",
-                  withBorder: true,
-               });
+               showError(t(L.NotWithinExtent));
                return;
             }
             for (const oldTile of this._selectedTiles) {
@@ -463,34 +458,19 @@ export class ShipScene extends Scene {
                tiles.add(clickedTile);
                if (!isShipConnected(tiles)) {
                   playError();
-                  notifications.show({
-                     message: t(L.NotConnected),
-                     position: "top-center",
-                     color: "red",
-                     withBorder: true,
-                  });
+                  showError(t(L.NotConnected));
                   return;
                }
                const oldTileData = G.save.state.tiles.get(oldTile);
                if (oldTileData) {
                   if (getAvailableQuantum(G.save.state) <= 0) {
                      playError();
-                     notifications.show({
-                        message: t(L.NotEnoughQuantum),
-                        position: "top-center",
-                        color: "red",
-                        withBorder: true,
-                     });
+                     showError(t(L.NotEnoughQuantum));
                      return;
                   }
                   if (!canSpendResource("XP", getBuildingCost(oldTileData.type, 1), G.save.state.resources)) {
                      playError();
-                     notifications.show({
-                        message: t(L.NotEnoughResources),
-                        position: "top-center",
-                        color: "red",
-                        withBorder: true,
-                     });
+                     showError(t(L.NotEnoughResources));
                      return;
                   }
                   if (trySpendResource("XP", getBuildingCost(oldTileData.type, 1), G.save.state.resources)) {
@@ -509,12 +489,7 @@ export class ShipScene extends Scene {
          if (!this._selectedTiles.has(clickedTile) && this._selectedTiles.size === 1) {
             if (!isWithinShipExtent(clickedTile, G.save.state)) {
                playError();
-               notifications.show({
-                  message: t(L.NotWithinExtent),
-                  position: "top-center",
-                  color: "red",
-                  withBorder: true,
-               });
+               showError(t(L.NotWithinExtent));
                return;
             }
             for (const oldTile of this._selectedTiles) {
@@ -525,12 +500,7 @@ export class ShipScene extends Scene {
                   tiles.delete(oldTile);
                   if (!isShipConnected(tiles)) {
                      playError();
-                     notifications.show({
-                        message: t(L.NotConnected),
-                        position: "top-center",
-                        color: "red",
-                        withBorder: true,
-                     });
+                     showError(t(L.NotConnected));
                      return;
                   }
                }
@@ -560,12 +530,7 @@ export class ShipScene extends Scene {
             tiles.delete(clickedTile);
             if (!isShipConnected(tiles)) {
                playError();
-               notifications.show({
-                  message: t(L.NotConnected),
-                  position: "top-center",
-                  color: "red",
-                  withBorder: true,
-               });
+               showError(t(L.NotConnected));
                return;
             }
             G.runtime.delete(clickedTile);

@@ -1,5 +1,5 @@
-import { notifications } from "@mantine/notifications";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { hasPermanentElementUpgrade } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import { type ElementSymbol, PeriodicTable } from "@spaceship-idle/shared/src/game/PeriodicTable";
 import { capitalize } from "@spaceship-idle/shared/src/utils/Helper";
@@ -124,12 +124,7 @@ export class ElementCard extends Container {
          this._frame.tint = 0xfdcb6e;
          if (!this._content.visible) {
             playError();
-            notifications.show({
-               message: t(L.ElementNotDiscoveredYet),
-               position: "top-center",
-               color: "red",
-               withBorder: true,
-            });
+            showError(t(L.ElementNotDiscoveredYet));
          } else {
             playClick();
             showModal({

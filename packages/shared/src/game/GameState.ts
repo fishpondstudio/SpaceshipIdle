@@ -12,6 +12,7 @@ import type { Tech } from "./definitions/TechDefinitions";
 import { GameOption } from "./GameOption";
 import { MaxX, MaxY } from "./Grid";
 import { type ITileData, makeTile } from "./ITileData";
+import type { AlertType } from "./logic/AlertLogic";
 import { rollCatalyst } from "./logic/CatalystLogic";
 import type { ElementSymbol } from "./PeriodicTable";
 
@@ -57,6 +58,7 @@ export class GameData {
    permanentElementChoices: ElementChoice[] = [];
    catalystChoices = new Map<CatalystCat, Catalyst[]>([["C1", rollCatalyst("C1")]]);
    galaxy: Galaxy = { starSystems: [] };
+   alerts: { message: string; type: AlertType; time: number }[] = [];
 }
 
 export interface ElementData {

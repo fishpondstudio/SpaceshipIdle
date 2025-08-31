@@ -1,9 +1,9 @@
 import { Input, noop, SegmentedControl, Slider, Switch } from "@mantine/core";
 import { useForceUpdate } from "@mantine/hooks";
-import { notifications } from "@mantine/notifications";
 import { DiscordUrl, SteamUrl, TranslationUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { getShortcutKey, isShortcutEqual, makeShortcut, Shortcut } from "@spaceship-idle/shared/src/game/Shortcut";
 import { clearFlag, forEach, hasFlag, mapOf, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -277,7 +277,7 @@ function GeneralTab(): React.ReactNode {
                            window.location.reload();
                         } catch (e) {
                            playError();
-                           notifications.show({ position: "top-center", color: "red", message: String(e) });
+                           showError(String(e));
                         }
                      }}
                   >
@@ -305,7 +305,7 @@ function GeneralTab(): React.ReactNode {
                            });
                         } catch (e) {
                            playError();
-                           notifications.show({ position: "top-center", color: "red", message: String(e) });
+                           showError(String(e));
                         }
                      }}
                   >

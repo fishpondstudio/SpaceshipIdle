@@ -663,4 +663,6 @@ export const EN = {
    YouHaveToActivateThePreviousCatalystFirst: "You have to activate the previous catalyst first",
    YouHaveUnassignedElementTooltip: "You have unassigned element(s) this run. Assign them to boost a multiplier of your choice",
    YouHaveUnequippedAddonTooltip: "You have unequipped add-on(s) this run. Equip them to a module of your choice",
+   WarmongerPenaltyPerSec: "-%% Warmonger Penalty/s",
+   FriendshipWith: "Friendship with %%",
 };

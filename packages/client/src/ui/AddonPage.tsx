@@ -14,7 +14,7 @@ export function AddonPage(): React.ReactNode {
       <SidebarComp
          title={
             <div className="row g5">
-               <TextureComp name="Others/Booster24" />
+               <TextureComp name="Others/Addon24" />
                <div className="f1">{t(L.Addons)}</div>
             </div>
          }
@@ -22,7 +22,7 @@ export function AddonPage(): React.ReactNode {
          <div className="m10">
             <button className="btn filled w100 py5 row">
                <div className="mi">chart_data</div>
-               <div>Improve Boosters</div>
+               <div>Improve Add-ons</div>
             </button>
          </div>
          {mapOf(ShipClass, (k, v) => {
@@ -34,17 +34,17 @@ export function AddonPage(): React.ReactNode {
                   <div className="divider my10" />
                   <div className="title">{t(L.XClass, v.name())}</div>
                   <div className="divider my10" />
-                  {mapOf(Addons, (booster) => {
-                     const def = Addons[booster];
-                     const amount = G.save.state.addons.get(booster)?.amount ?? 0;
-                     const tile = G.save.state.addons.get(booster)?.tile;
+                  {mapOf(Addons, (addons) => {
+                     const def = Addons[addons];
+                     const amount = G.save.state.addons.get(addons)?.amount ?? 0;
+                     const tile = G.save.state.addons.get(addons)?.tile;
                      const effect = getAddonEffect(amount);
                      if (def.shipClass !== k) {
                         return null;
                      }
                      return (
-                        <div key={booster} className="panel m10 row">
-                           <TextureComp name={`Booster/${booster}`} width={16 * 2} />
+                        <div key={addons} className="panel m10 row">
+                           <TextureComp name={`Addon/${addons}`} width={16 * 2} />
                            <div className="f1">
                               <div>{def.name()}</div>
                               <div className="f1" />

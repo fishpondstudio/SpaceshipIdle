@@ -1,5 +1,5 @@
-import { notifications } from "@mantine/notifications";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { showWarning } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { getBuildingCost, getTotalBuildingCost } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { refundResource, resourceOf, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Tile } from "@spaceship-idle/shared/src/utils/Helper";
@@ -38,12 +38,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
          }
       }
       if (success < total) {
-         notifications.show({
-            message: t(L.BatchOperationResult, success, total),
-            position: "top-center",
-            color: "yellow",
-            withBorder: true,
-         });
+         showWarning(t(L.BatchOperationResult, success, total));
       }
       GameStateUpdated.emit();
    }, [tiles]);
@@ -69,12 +64,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
          }
       }
       if (success < total) {
-         notifications.show({
-            message: t(L.BatchOperationResult, success, total),
-            position: "top-center",
-            color: "yellow",
-            withBorder: true,
-         });
+         showWarning(t(L.BatchOperationResult, success, total));
       }
       GameStateUpdated.emit();
    }, [tiles]);

@@ -1,16 +1,28 @@
 import { AABB } from "../../utils/AABB";
 import type { Circle } from "../../utils/Circle";
-import { CURRENCY_EPSILON, capitalize, hasFlag, rand, randOne, randomAlphaNumeric, shuffle } from "../../utils/Helper";
+import {
+   CURRENCY_EPSILON,
+   capitalize,
+   hasFlag,
+   keysOf,
+   rand,
+   randOne,
+   randomAlphaNumeric,
+   shuffle,
+} from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Generator } from "../../utils/NameGen";
 import { srand } from "../../utils/Random";
 import type { IHaveXY } from "../../utils/Vector2";
 import type { Addon } from "../definitions/Addons";
-import { FriendshipDurationSeconds } from "../definitions/Constant";
+import { Bonus } from "../definitions/Bonus";
+import { FriendshipBaseCost, FriendshipDurationSeconds } from "../definitions/Constant";
 import { type Galaxy, type Planet, PlanetFlags, PlanetType, type StarSystem } from "../definitions/Galaxy";
 import { ShipClass } from "../definitions/TechDefinitions";
 import type { GameState, SaveGame } from "../GameState";
 import { getAddonsInClass } from "./AddonLogic";
+import { getWarmongerPenalty } from "./PeaceTreatyLogic";
+import { getStat, trySpendResource } from "./ResourceLogic";
 import type { Runtime } from "./Runtime";
 import { getPreviousShipClass, getShipClass } from "./TechLogic";
 
@@ -92,6 +104,7 @@ export function getAvailableFriendship(gs: SaveGame): number {
 }
 
 export function tickGalaxy(rt: Runtime): void {
+   rt.leftStat.warmongerDecrease.clear();
    for (const starSystem of rt.leftSave.data.galaxy.starSystems) {
       for (const planet of starSystem.planets) {
          if (planet.type !== PlanetType.State) {
@@ -99,12 +112,20 @@ export function tickGalaxy(rt: Runtime): void {
          }
 
          if (planet.friendshipTimeLeft > 0) {
-            planet.friendshipTimeLeft -= 1;
+            --planet.friendshipTimeLeft;
+
+            const def = Bonus[planet.friendshipBonus];
+            def.onTick(planet.friendshipTimeLeft, t(L.FriendshipWith, planet.name), rt);
+            if (planet.friendshipTimeLeft === 0) {
+               def.onStop(rt);
+            }
          }
 
          if (planet.friendshipTimeLeft === 0 && hasFlag(planet.flags, PlanetFlags.AutoRenewFriendship)) {
-            // TODO: Deduct Victory Point
-            planet.friendshipTimeLeft = FriendshipDurationSeconds;
+            const totalCost = getWarmongerPenalty(rt.left) + getStat("Backstabber", rt.left.stats) + FriendshipBaseCost;
+            if (trySpendResource("VictoryPoint", totalCost, rt.left.resources)) {
+               planet.friendshipTimeLeft = FriendshipDurationSeconds;
+            }
          }
       }
    }
@@ -190,6 +211,7 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
             flags: PlanetFlags.None,
             seed: randomAlphaNumeric(16),
             battleResult: null,
+            friendshipBonus: randOne(keysOf(Bonus)),
             friendshipTimeLeft: 0,
             revealed: false,
          };

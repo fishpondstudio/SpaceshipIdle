@@ -13,11 +13,11 @@ export function tickAddon(gs: GameState, rt: Runtime): void {
       }
       rs.addon = null;
    });
-   gs.addons.forEach((data, booster) => {
+   gs.addons.forEach((data, addon) => {
       if (data.tile) {
          const rs = rt.get(data.tile);
          if (rs) {
-            rs.addon = booster;
+            rs.addon = addon;
          }
       }
    });
@@ -26,9 +26,9 @@ export function tickAddon(gs: GameState, rt: Runtime): void {
 export function rollAddon(gs: GameState): Addon | null {
    const shipClass = getShipClass(gs);
    const candidates: Addon[] = [];
-   forEach(Addons, (booster, def) => {
+   forEach(Addons, (addon, def) => {
       if (def.shipClass === shipClass) {
-         candidates.push(booster);
+         candidates.push(addon);
       }
    });
    if (candidates.length === 0) {

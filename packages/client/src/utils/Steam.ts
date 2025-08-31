@@ -1,5 +1,5 @@
-import { notifications } from "@mantine/notifications";
 import type { IPCService } from "@spaceship-idle/electron/src/IPCService";
+import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { rpcClient } from "@spaceship-idle/shared/src/thirdparty/TRPCClient";
 import { saveGame } from "../game/LoadSave";
 import { playError } from "../ui/Sound";
@@ -24,12 +24,7 @@ if (typeof IPCBridge !== "undefined") {
          .then(() => SteamClient.quit())
          .catch((e) => {
             playError();
-            notifications.show({
-               message: String(e),
-               position: "top-center",
-               color: "red",
-               withBorder: true,
-            });
+            showError(String(e));
          });
    });
 }

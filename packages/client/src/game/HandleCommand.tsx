@@ -1,27 +1,17 @@
-import { notifications } from "@mantine/notifications";
+import { showError, showSuccess } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { RPCClient } from "../rpc/RPCClient";
-import { playBling, playError } from "../ui/Sound";
 import { RenderHTML } from "../ui/components/RenderHTMLComp";
+import { playBling, playError } from "../ui/Sound";
 
 export function handleCommand(command: string): void {
    RPCClient.sendCommand(command)
       .then(async (message) => {
          playBling();
-         notifications.show({
-            message: <CommandOutput command={command} result={message} />,
-            color: "blue",
-            autoClose: false,
-            position: "top-center",
-         });
+         showSuccess(message);
       })
       .catch((e) => {
          playError();
-         notifications.show({
-            message: <CommandOutput command={command} result={String(e)} />,
-            color: "red",
-            autoClose: false,
-            position: "top-center",
-         });
+         showError(String(e));
       });
 }
 

@@ -1,5 +1,5 @@
 import { Popover, TextInput } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
+import { showError, showSuccess } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { CountryCode } from "@spaceship-idle/shared/src/utils/CountryCode";
 import { mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -80,20 +80,10 @@ export function ChangePlayerHandleComp(): React.ReactNode {
                      await RPCClient.changePlayerHandle(name);
                      user.handle = name;
                      UserUpdated.emit(user);
-                     notifications.show({
-                        message: t(L.OperationSuccessful),
-                        color: "green",
-                        position: "top-center",
-                        withBorder: true,
-                     });
+                     showSuccess(t(L.OperationSuccessful));
                   } catch (e) {
                      playError();
-                     notifications.show({
-                        message: String(e),
-                        color: "red",
-                        position: "top-center",
-                        withBorder: true,
-                     });
+                     showError(String(e));
                      setName(user.handle);
                   }
                }}

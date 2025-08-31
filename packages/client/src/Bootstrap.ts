@@ -1,8 +1,8 @@
-import { notifications } from "@mantine/notifications";
 import * as Sentry from "@sentry/browser";
 import { SentryDSN } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateFlags, initGameState, SaveGame } from "@spaceship-idle/shared/src/game/GameState";
+import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { forEach, rejectIn, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { Assets, BitmapFont, SCALE_MODES, type Spritesheet, type TextStyleFontWeight, type Texture } from "pixi.js";
 import { FontFaces, Fonts } from "./assets";
@@ -102,12 +102,7 @@ export async function bootstrap(): Promise<void> {
       await Promise.race([OnConnectionChanged.toPromise((connected) => connected), rejectIn(10)]);
    } catch (error) {
       console.error(error);
-      notifications.show({
-         message: String(error),
-         position: "top-center",
-         color: "red",
-         withBorder: true,
-      });
+      showError(String(error));
    }
    loadGameScene();
    startGameLoop();

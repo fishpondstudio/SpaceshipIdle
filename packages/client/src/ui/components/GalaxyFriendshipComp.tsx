@@ -1,5 +1,6 @@
 import { Progress, Switch } from "@mantine/core";
-import { FriendshipDurationSeconds } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { Bonus } from "@spaceship-idle/shared/src/game/definitions/Bonus";
+import { FriendshipBaseCost, FriendshipDurationSeconds } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { type Planet, PlanetFlags } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getAvailableFriendship } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
@@ -38,9 +39,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
                <div className="panel green">
                   <div className="title">Rewards</div>
                   <div className="h5" />
-                  <div className="text-sm">
-                     All Missiles get +1 Damage Multiplier. All Autocannons get +1 HP Multiplier
-                  </div>
+                  <div className="text-sm">{Bonus[planet.friendshipBonus].desc(G.runtime)}</div>
                </div>
                <div className="h10" />
                <Progress size="lg" value={progress * 100} />
@@ -80,7 +79,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
 
    const warmongerPenalty = getWarmongerPenalty(G.save.state);
    const backstabberPenalty = getStat("Backstabber", G.save.state.stats);
-   const totalCost = warmongerPenalty + backstabberPenalty + 1;
+   const totalCost = warmongerPenalty + backstabberPenalty + FriendshipBaseCost;
    return (
       <>
          <div className="panel">
@@ -94,9 +93,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
             <div className="divider my10 mx-10" />
             <div className="title">Rewards</div>
             <div className="h5" />
-            <div>
-               1 <TextureComp name="Addon/Evasion1" className="inline-middle" /> Evasion Cluster
-            </div>
+            <div>{Bonus[planet.friendshipBonus].desc(G.runtime)}</div>
             <div className="divider my10 mx-10" />
             <div className="title">Duration</div>
             <div className="h5" />
@@ -125,6 +122,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
 
                // TODO: Debug Only!
                planet.friendshipTimeLeft = 5;
+               Bonus[planet.friendshipBonus].onStart(G.runtime);
                planet.flags = setFlag(planet.flags, PlanetFlags.WasFriends);
                GameStateUpdated.emit();
             }}
@@ -161,7 +159,7 @@ function FriendshipCostComp(): React.ReactNode {
                name={t(L.VictoryPoint)}
                desc={
                   <>
-                     <div>- Base Cost: 1</div>
+                     <div>- Base Cost: {FriendshipBaseCost}</div>
                      <div>- Warmonger Penalty: {warmongerPenalty}</div>
                      <div>- Backstabber Penalty: {backstabberPenalty}</div>
                   </>

@@ -1,8 +1,8 @@
 import { getGradient, useMantineTheme } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
 import { QualifierSpaceshipValuePercent } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import {
@@ -110,7 +110,7 @@ export function MatchmakingModal(): React.ReactNode {
                   playError();
                   hideLoading();
                   console.error(e);
-                  notifications.show({ position: "top-center", color: "red", message: String(e) });
+                  showError(String(e));
                }
             }}
          >
