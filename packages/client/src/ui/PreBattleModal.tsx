@@ -5,7 +5,7 @@ import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { findPlanet } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
-import { canSpendResource, changeStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { canSpendResource, changeStat, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
@@ -55,7 +55,6 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
                   playClick();
                   hideModal();
                }}
-               disabled={!canSpendResource("VictoryPoint", getWarmongerPenalty(G.save.state), G.save.state.resources)}
             >
                {t(L.Decline)}
             </button>
@@ -69,8 +68,11 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
             >
                <button
                   className="btn filled w100 row g5 py5"
+                  disabled={
+                     !canSpendResource("VictoryPoint", getWarmongerPenalty(G.save.state), G.save.state.resources)
+                  }
                   onClick={() => {
-                     if (!canSpendResource("VictoryPoint", getWarmongerPenalty(G.save.state), G.save.state.resources)) {
+                     if (!trySpendResource("VictoryPoint", getWarmongerPenalty(G.save.state), G.save.state.resources)) {
                         playError();
                         return;
                      }
