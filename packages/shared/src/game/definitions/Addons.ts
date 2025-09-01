@@ -41,7 +41,27 @@ export const Addons = {
    Evasion1: cast<IAddonDefinition>({
       name: () => t(L.EvasionCluster),
       desc: (value: number) => t(L.EvasionCoreDesc, formatNumber(value), formatNumber(value)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {},
+      tick: (value: number, tile: Tile, runtime: Runtime) => {
+         const rs = runtime.get(tile);
+         if (!rs) {
+            return;
+         }
+         rs.props.evasion += value;
+         const result = runtime.getGameState(tile);
+         if (!result) {
+            return;
+         }
+         const { side, state } = result;
+         abilityTarget(side, AbilityRange.Adjacent, tile, state.tiles).forEach((target) => {
+            if (target === tile) {
+               return;
+            }
+            const targetRs = runtime.get(target);
+            if (targetRs && targetRs.data.type === rs.data.type) {
+               targetRs.props.evasion += value;
+            }
+         });
+      },
       shipClass: "Skiff",
    }),
    Damage1: cast<IAddonDefinition>({
