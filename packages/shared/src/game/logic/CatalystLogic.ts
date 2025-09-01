@@ -2,7 +2,7 @@ import { keysOf, shuffle } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Catalyst, CatalystCat, type ICatalystDefinition } from "../definitions/Catalyst";
 import { CatalystPerCat } from "../definitions/Constant";
-import type { GameState } from "../GameState";
+import type { GameState, SaveGame } from "../GameState";
 import type { Multipliers } from "./IMultiplier";
 import type { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
@@ -46,6 +46,15 @@ export function canChooseCatalystCat(cat: CatalystCat, rt: Runtime): boolean {
    const selected = rt.left.selectedCatalysts.get(previousCat);
    if (!selected) return false;
    return rt.leftStat.isCatalystActivated(selected);
+}
+
+export function hasCatalystToChoose(save: SaveGame): boolean {
+   for (const [cat, choices] of save.data.catalystChoices) {
+      if (!save.state.selectedCatalysts.has(cat)) {
+         return true;
+      }
+   }
+   return false;
 }
 
 export function rollCatalyst(cat: CatalystCat): Catalyst[] {

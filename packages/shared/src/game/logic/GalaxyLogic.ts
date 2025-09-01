@@ -121,7 +121,6 @@ export function getAvailableFriendship(gs: SaveGame): number {
 }
 
 export function tickGalaxy(rt: Runtime): void {
-   rt.leftStat.warmongerDecrease.clear();
    for (const starSystem of rt.leftSave.data.galaxy.starSystems) {
       for (const planet of starSystem.planets) {
          if (planet.type !== PlanetType.State) {

@@ -13,7 +13,7 @@ import {
 } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { StatusEffectTickInterval } from "../definitions/Constant";
-import { type StatusEffect, StatusEffectFlag, StatusEffects, statusEffectOf } from "../definitions/StatusEffect";
+import { type StatusEffect, StatusEffectFlag, statusEffectOf, StatusEffects } from "../definitions/StatusEffect";
 import type { GameState } from "../GameState";
 import { GridSize } from "../Grid";
 import type { ITileData } from "../ITileData";
@@ -242,7 +242,6 @@ export class RuntimeTile {
    }
 
    public tickStatusEffect(): void {
-      this._copyProps();
       for (const [tile, se] of this.statusEffects) {
          if (se.timeLeft <= 0) {
             this.statusEffects.delete(tile);
@@ -251,6 +250,12 @@ export class RuntimeTile {
          se.timeLeft -= StatusEffectTickInterval;
       }
       this._tabulate();
+   }
+
+   public prepareForTick(): void {
+      this._copyProps();
+      this.hpMultiplier.clear();
+      this.damageMultiplier.clear();
    }
 
    public onDestroyed(): void {

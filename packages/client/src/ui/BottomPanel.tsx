@@ -4,6 +4,7 @@ import { GameState, GameStateFlags, GameStateUpdated } from "@spaceship-idle/sha
 import { hasUnequippedAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
+import { hasCatalystToChoose } from "@spaceship-idle/shared/src/game/logic/CatalystLogic";
 import { hasUnassignedElements } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, hasFlag, round } from "@spaceship-idle/shared/src/utils/Helper";
@@ -237,11 +238,7 @@ function SceneSwitcher(): React.ReactNode {
                   value: Scenes.TechTreeScene,
                },
                {
-                  label: (
-                     <FloatingTip position="top" label={t(L.TabCatalyst)}>
-                        <TextureComp name="Others/Catalyst24" />
-                     </FloatingTip>
-                  ),
+                  label: <CatalystTabLabel />,
                   value: CatalystPage.name,
                },
                {
@@ -263,6 +260,24 @@ function SceneSwitcher(): React.ReactNode {
             ]}
          />
       </>
+   );
+}
+
+function CatalystTabLabel(): React.ReactNode {
+   refreshOnTypedEvent(GameStateUpdated);
+   if (hasCatalystToChoose(G.save)) {
+      return (
+         <FloatingTip position="top" label={t(L.YouHaveCatalystToChooseTooltip)}>
+            <Indicator color="red" processing>
+               <TextureComp name="Others/Catalyst24" />
+            </Indicator>
+         </FloatingTip>
+      );
+   }
+   return (
+      <FloatingTip position="top" label={t(L.TabCatalyst)}>
+         <TextureComp name="Others/Catalyst24" />
+      </FloatingTip>
    );
 }
 

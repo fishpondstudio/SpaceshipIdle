@@ -174,6 +174,7 @@ export class Runtime {
       while (this.productionTimer >= ProductionTickInterval) {
          this.productionTimer -= ProductionTickInterval;
          this._checkSpeed(g);
+         this._prepareForTick();
          this._tickMultipliers();
          if (this.battleType === BattleType.Peace) {
             tickGalaxy(this);
@@ -208,6 +209,12 @@ export class Runtime {
       this.gameStateUpdateTimer += g.speed === 0 ? 0 : dt / g.speed;
       this.productionTimer += dt;
       this.battleTimer += dt;
+   }
+
+   private _prepareForTick() {
+      this.tiles.forEach((rs) => rs.prepareForTick());
+      this.leftStat.prepareForTick();
+      this.rightStat.prepareForTick();
    }
 
    private _tickPenalty() {
@@ -298,9 +305,6 @@ export class Runtime {
 
    private _tickMultipliers(): void {
       this.tiles.forEach((rs) => {
-         rs.hpMultiplier.clear();
-         rs.damageMultiplier.clear();
-
          const result = this.getGameState(rs.tile);
          if (!result) return;
 

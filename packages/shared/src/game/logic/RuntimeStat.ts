@@ -136,4 +136,8 @@ export class RuntimeStat {
       if (!data) return false;
       return data.buildings.size >= Catalyst[catalyst].amount;
    }
+
+   public prepareForTick(): void {
+      this.warmongerDecrease.clear();
+   }
 }
