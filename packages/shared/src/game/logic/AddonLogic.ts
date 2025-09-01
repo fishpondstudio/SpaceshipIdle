@@ -19,6 +19,8 @@ export function tickAddon(gs: GameState, rt: Runtime): void {
          if (rs) {
             rs.addon = addon;
          }
+         const def = Addons[addon];
+         def.tick(data.amount, data.tile, rt);
       }
    });
 }

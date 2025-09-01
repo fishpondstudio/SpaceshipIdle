@@ -112,7 +112,7 @@ export const EN = {
    ElementActinium: "Actinium",
    ElementAluminum: "Aluminum",
    ElementAmericium: "Americium",
-   ElementAmountThisRun: "Element %% (This Run)",
+   ElementAmountThisRun: "Element This Run: %%",
    ElementAntimony: "Antimony",
    ElementArgon: "Argon",
    ElementArsenic: "Arsenic",
@@ -280,7 +280,7 @@ export const EN = {
    HideTutorial: "Hide Tutorial",
    HP: "HP",
    HPCluster: "HP Cluster",
-   HPCoreDesc: "<b>Equipped module</b> gains +%% HP Multiplier. <b>Adjacent modules</b> also gain +%% HP Multiplier if they are the same weapon model as the equipped module",
+   HPClusterDesc: "<b>Equipped module</b> gains +%% HP Multiplier. <b>Adjacent modules</b> also gain +%% HP Multiplier if they are the same weapon model as the equipped module",
    HPEqualizer: "HP Equalizer",
    HPEqualizerDesc: "<b>Equipped module</b> gains +%% HP Multiplier. <b>Adjacent modules</b> also gain +%% HP Multiplier if they are not equipped with an add-on",
    HPMultiplier: "HP Multiplier",
@@ -667,4 +667,5 @@ export const EN = {
    FriendshipWith: "Friendship with %%",
    NeutralStateDescHTML: "<b>%%</b> is a neutral state - you can decide how do engage with them",
    PirateDescHTML: "<b>%%</b> is a pirate - declaring war on them will not result in warmonger penalty",
+   SourceAddon: "Add-on: %%",
 };

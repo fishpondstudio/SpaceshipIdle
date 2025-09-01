@@ -235,7 +235,7 @@ function AddonOpButton({ addon, me }: { addon: Addon; me: Tile }): React.ReactNo
    return (
       <FloatingTip disabled={!inv.tile} label={<RenderHTML html={t(L.AlreadyEquippedTooltipHTML)} />}>
          <button
-            className="btn row g5"
+            className="btn row text-sm"
             onClick={() => {
                G.save.state.addons.forEach((inv) => {
                   if (inv.tile === me) {

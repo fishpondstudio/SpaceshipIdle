@@ -1,6 +1,7 @@
 import { cast, formatNumber, type Tile } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import type { Runtime } from "../logic/Runtime";
+import { AbilityRange, abilityTarget } from "./Ability";
 import type { ShipClass } from "./ShipClass";
 
 export interface IAddonDefinition {
@@ -13,42 +14,52 @@ export interface IAddonDefinition {
 export const Addons = {
    HP1: cast<IAddonDefinition>({
       name: () => t(L.HPCluster),
-      desc: (value: number) => t(L.HPCoreDesc, formatNumber(value), formatNumber(value)),
+      desc: (value: number) => t(L.HPClusterDesc, formatNumber(value), formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
-         throw new Error("Not implemented");
+         const rs = runtime.get(tile);
+         if (!rs) {
+            return;
+         }
+         rs.hpMultiplier.add(value, t(L.SourceAddon, t(L.HPCluster)));
+         const result = runtime.getGameState(tile);
+         if (!result) {
+            return;
+         }
+         const { side, state } = result;
+         abilityTarget(side, AbilityRange.Adjacent, tile, state.tiles).forEach((target) => {
+            if (target === tile) {
+               return;
+            }
+            const targetRs = runtime.get(target);
+            if (targetRs && targetRs.data.type === rs.data.type) {
+               targetRs.hpMultiplier.add(value, t(L.SourceAddon, t(L.HPCluster)));
+            }
+         });
       },
       shipClass: "Skiff",
    }),
    Evasion1: cast<IAddonDefinition>({
       name: () => t(L.EvasionCluster),
       desc: (value: number) => t(L.EvasionCoreDesc, formatNumber(value), formatNumber(value)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
-         throw new Error("Not implemented");
-      },
+      tick: (value: number, tile: Tile, runtime: Runtime) => {},
       shipClass: "Skiff",
    }),
    Damage1: cast<IAddonDefinition>({
       name: () => t(L.DamageCluster),
       desc: (value: number) => t(L.DamageCoreDesc, formatNumber(value), formatNumber(value)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
-         throw new Error("Not implemented");
-      },
+      tick: (value: number, tile: Tile, runtime: Runtime) => {},
       shipClass: "Scout",
    }),
    Damage2: cast<IAddonDefinition>({
       name: () => t(L.DamageDiversifier),
       desc: (value: number) => t(L.DamageDiversifierDesc, formatNumber(value)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
-         throw new Error("Not implemented");
-      },
+      tick: (value: number, tile: Tile, runtime: Runtime) => {},
       shipClass: "Scout",
    }),
    HP2: cast<IAddonDefinition>({
       name: () => t(L.HPEqualizer),
       desc: (value: number) => t(L.HPEqualizerDesc, formatNumber(value)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
-         throw new Error("Not implemented");
-      },
+      tick: (value: number, tile: Tile, runtime: Runtime) => {},
       shipClass: "Scout",
    }),
 } as const satisfies Record<string, IAddonDefinition>;

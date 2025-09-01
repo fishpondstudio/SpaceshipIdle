@@ -12,6 +12,7 @@ import { getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogi
 import { BattleType, BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { findPlanet, getAddonReward } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { calculateRewardValue } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
+import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, getDOMRectCenter, mMapOf, randomAlphaNumeric } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -59,7 +60,9 @@ export function PeaceTreatyModal({
          texture = `Galaxy/${planet.texture}`;
          const addons = getAddonReward(planet.seed, G.save.state);
          addons.forEach((addon) => {
-            battleResult.current.addons.set(addon, 0);
+            if (!battleResult.current.addons.has(addon)) {
+               battleResult.current.addons.set(addon, 0);
+            }
          });
       }
    }
@@ -107,22 +110,24 @@ export function PeaceTreatyModal({
                      }}
                   />
                </div>
-               {mMapOf(battleResult.current.addons, (addon, count) => (
-                  <div key={addon} className="row">
-                     <div className="f1">
-                        <TextureComp name={`Addon/${addon}`} className="inline-middle" /> {Addons[addon].name()}
+               {mMapOf(battleResult.current.addons, (addon, count) => {
+                  return (
+                     <div key={addon} className="row">
+                        <div className="f1">
+                           <TextureComp name={`Addon/${addon}`} className="inline-middle" /> {Addons[addon].name()}
+                        </div>
+                        <NumberSelect
+                           value={count}
+                           canIncrease={(value) => victoryType !== "Defeated" && value < 9}
+                           canDecrease={(value) => victoryType !== "Defeated" && value > 0}
+                           onChange={(value) => {
+                              battleResult.current.addons.set(addon, value);
+                              forceUpdate();
+                           }}
+                        />
                      </div>
-                     <NumberSelect
-                        value={count}
-                        canIncrease={(value) => victoryType !== "Defeated" && value < 9}
-                        canDecrease={(value) => victoryType !== "Defeated" && value > 0}
-                        onChange={(value) => {
-                           battleResult.current.addons.set(addon, value);
-                           forceUpdate();
-                        }}
-                     />
-                  </div>
-               ))}
+                  );
+               })}
                <div className="row">
                   <div className="f1">
                      <TextureComp name="Others/XP" className="inline-middle" /> {t(L.XP)}
@@ -176,6 +181,20 @@ export function PeaceTreatyModal({
                   if (victoryType !== "Defeated") {
                      playBling();
                   }
+
+                  battleResult.current.resources.forEach((value, resource) => {
+                     addResource(resource, value, G.save.state.resources);
+                  });
+
+                  battleResult.current.addons.forEach((count, addon) => {
+                     const data = G.save.state.addons.get(addon);
+                     if (data) {
+                        data.amount += count;
+                     } else {
+                        G.save.state.addons.set(addon, { amount: count, tile: null });
+                     }
+                  });
+
                   const addonTarget = document.getElementById(AddonElementId)?.getBoundingClientRect();
                   if (addonTarget) {
                      battleResult.current.addons.forEach((count, addon) => {

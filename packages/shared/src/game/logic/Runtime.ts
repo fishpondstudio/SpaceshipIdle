@@ -142,12 +142,12 @@ export class Runtime {
       this.delete(tile);
    }
 
-   public getGameState(tile: Tile): GameState | null {
+   public getGameState(tile: Tile): { state: GameState; side: Side } | null {
       if (this.left.tiles.has(tile)) {
-         return this.left;
+         return { state: this.left, side: Side.Left };
       }
       if (this.right.tiles.has(tile)) {
-         return this.right;
+         return { state: this.right, side: Side.Right };
       }
       return null;
    }
@@ -301,10 +301,12 @@ export class Runtime {
          rs.hpMultiplier.clear();
          rs.damageMultiplier.clear();
 
-         const gs = this.getGameState(rs.tile);
-         if (!gs) return;
+         const result = this.getGameState(rs.tile);
+         if (!result) return;
 
-         gs.unlockedTech.forEach((tech) => {
+         const { state, side } = result;
+
+         state.unlockedTech.forEach((tech) => {
             const def = Config.Tech[tech];
             const multipliers = def?.multiplier?.[rs.data.type];
             if (!multipliers) {
@@ -319,7 +321,7 @@ export class Runtime {
          });
          const element = Config.Buildings[rs.data.type].element;
          if (element) {
-            const thisRun = gs.elements.get(element) ?? 0;
+            const thisRun = state.elements.get(element) ?? 0;
             if (thisRun) {
                if (thisRun.hp > 0) {
                   rs.hpMultiplier.add(thisRun.hp, t(L.ElementAmountThisRun, element));
@@ -328,7 +330,7 @@ export class Runtime {
                   rs.damageMultiplier.add(thisRun.damage, t(L.ElementAmountThisRun, element));
                }
             }
-            const permanent = gs.permanentElements.get(element);
+            const permanent = state.permanentElements.get(element);
             if (permanent) {
                if (permanent.hp > 0) {
                   rs.hpMultiplier.add(permanent.hp, t(L.ElementPermanent, element));

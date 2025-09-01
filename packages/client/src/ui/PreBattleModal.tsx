@@ -33,6 +33,7 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
    if (!info.hideEnemyInfo) {
       [enemyScore, enemyHp, enemyDps] = useMemo(() => calcShipScore(enemy), [enemy]);
    }
+   console.log(info);
    return (
       <div className="m10">
          <div className="row">

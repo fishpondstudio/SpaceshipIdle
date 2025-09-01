@@ -1,4 +1,3 @@
-import { CatalystScene } from "./scenes/CatalystScene";
 import { ElementsScene } from "./scenes/ElementsScene";
 import { GalaxyScene } from "./scenes/GalaxyScene";
 import { ShipScene } from "./scenes/ShipScene";
@@ -18,10 +17,6 @@ export function loadGameScene() {
       }
       case "elements": {
          G.scene.loadScene(ElementsScene);
-         break;
-      }
-      case "catalyst": {
-         G.scene.loadScene(CatalystScene);
          break;
       }
       case "addon": {

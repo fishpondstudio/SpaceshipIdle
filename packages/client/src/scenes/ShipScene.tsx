@@ -619,8 +619,8 @@ export class ShipScene extends Scene {
             middleware: [offset(10), flip(), shift()],
             placement: "right-start",
          }).then((data) => {
-            const gs = G.runtime.getGameState(clickedTile);
-            if (gs) {
+            const result = G.runtime.getGameState(clickedTile);
+            if (result) {
                SetPopover.emit({
                   rect: AABB.fromRect({
                      x: data.x,
@@ -628,7 +628,7 @@ export class ShipScene extends Scene {
                      width: floatingEl.width,
                      height: floatingEl.height,
                   }),
-                  content: <BuildingPopover tile={clickedTile} gs={gs} />,
+                  content: <BuildingPopover tile={clickedTile} gs={result.state} />,
                });
             } else {
                SetPopover.emit(undefined);

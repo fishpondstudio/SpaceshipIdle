@@ -1,3 +1,4 @@
+import { Badge } from "@mantine/core";
 import { Addons, getAddonEffect } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { formatNumber, mapOf, reduceOf } from "@spaceship-idle/shared/src/utils/Helper";
@@ -46,16 +47,20 @@ export function AddonPage(): React.ReactNode {
                         <div key={addons} className="panel m10 row">
                            <TextureComp name={`Addon/${addons}`} width={16 * 2} />
                            <div className="f1">
-                              <div>{def.name()}</div>
-                              <div className="f1" />
+                              <div className="row">
+                                 <div>{def.name()}</div>
+                                 <div className="f1" />
+                                 {tile === null ? (
+                                    <Badge color="red" variant="outline">
+                                       <div className="row g5 text-xs">
+                                          <div className="mi xs">error</div>
+                                          <div className="">Unequipped</div>
+                                       </div>
+                                    </Badge>
+                                 ) : null}
+                              </div>
                               {amount > 0 ? (
                                  <>
-                                    {tile === null ? (
-                                       <div className="text-red row g5">
-                                          <div className="mi sm">error</div>
-                                          <div className="text-sm">Unequipped</div>
-                                       </div>
-                                    ) : null}
                                     <div className="row text-sm text-dimmed stretch">
                                        <div>{t(L.Amount)}</div>
                                        <div className="f1" />

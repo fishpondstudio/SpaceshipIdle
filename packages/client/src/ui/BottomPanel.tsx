@@ -10,7 +10,6 @@ import { formatNumber, hasFlag, round } from "@spaceship-idle/shared/src/utils/H
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
 import { getCurrentTutorial } from "../game/Tutorial";
-import { CatalystScene } from "../scenes/CatalystScene";
 import { ElementsScene } from "../scenes/ElementsScene";
 import { GalaxyScene } from "../scenes/GalaxyScene";
 import { ShipScene } from "../scenes/ShipScene";
@@ -21,6 +20,7 @@ import { OnSceneSwitched } from "../utils/SceneManager";
 import { Scenes } from "../utils/Scenes";
 import { showModal } from "../utils/ToggleModal";
 import { AddonPage } from "./AddonPage";
+import { CatalystPage } from "./CatalystPage";
 import { ChooseElementModal } from "./ChooseElementModal";
 import { FloatingTip } from "./components/FloatingTip";
 import { hideLoading, showLoading } from "./components/LoadingComp";
@@ -185,8 +185,8 @@ function SceneSwitcher(): React.ReactNode {
                   case Scenes.TechTreeScene:
                      G.scene.loadScene(TechTreeScene);
                      break;
-                  case Scenes.CatalystScene:
-                     G.scene.loadScene(CatalystScene);
+                  case CatalystPage.name:
+                     setSidebar(<CatalystPage />);
                      break;
                   case Scenes.GalaxyScene:
                      G.scene.loadScene(GalaxyScene);
@@ -222,14 +222,6 @@ function SceneSwitcher(): React.ReactNode {
                },
                {
                   label: (
-                     <FloatingTip position="top" label={t(L.TabResearch)}>
-                        <TextureComp name="Others/Research24" />
-                     </FloatingTip>
-                  ),
-                  value: Scenes.TechTreeScene,
-               },
-               {
-                  label: (
                      <FloatingTip position="top" label={t(L.TabGalaxy)}>
                         <TextureComp name="Others/Galaxy24" />
                      </FloatingTip>
@@ -238,11 +230,19 @@ function SceneSwitcher(): React.ReactNode {
                },
                {
                   label: (
+                     <FloatingTip position="top" label={t(L.TabResearch)}>
+                        <TextureComp name="Others/Research24" />
+                     </FloatingTip>
+                  ),
+                  value: Scenes.TechTreeScene,
+               },
+               {
+                  label: (
                      <FloatingTip position="top" label={t(L.TabCatalyst)}>
                         <TextureComp name="Others/Catalyst24" />
                      </FloatingTip>
                   ),
-                  value: Scenes.CatalystScene,
+                  value: CatalystPage.name,
                },
                {
                   label: (

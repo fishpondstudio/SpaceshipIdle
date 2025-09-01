@@ -123,7 +123,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                      <PreBattleModal
                         enemy={enemy}
                         info={{
-                           hideEnemyInfo: true,
+                           hideEnemyInfo: !planet.revealed,
                            noWarmongerPenalty: planet.type === PlanetType.Pirate,
                            planetId: planet.id,
                         }}
