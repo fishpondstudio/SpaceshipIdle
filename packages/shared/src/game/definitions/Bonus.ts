@@ -1,4 +1,4 @@
-import { cast } from "../../utils/Helper";
+import { cast, noop } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { addResource } from "../logic/ResourceLogic";
 import type { Runtime } from "../logic/Runtime";
@@ -14,19 +14,19 @@ export interface IBonusDefinition {
 export const Bonus = {
    B1: cast<IBonusDefinition>({
       desc: (runtime: Runtime) => t(L.WarmongerPenaltyPerSec, BaseWarmongerChangePerSec),
-      onStart: (runtime: Runtime) => {},
-      onStop: (runtime: Runtime) => {},
+      onStart: noop,
+      onStop: noop,
       onTick: (timeLeft: number, source: string, runtime: Runtime) => {
          runtime.leftStat.warmongerDecrease.add(BaseWarmongerChangePerSec, source);
       },
    }),
    B2: cast<IBonusDefinition>({
       desc: (runtime: Runtime) => t(L.XVictoryPointUponCompletion, 8),
-      onStart: (runtime: Runtime) => {},
+      onStart: noop,
       onStop: (runtime: Runtime) => {
          addResource("VictoryPoint", 8, runtime.left.resources);
       },
-      onTick: (timeLeft: number, source: string, runtime: Runtime) => {},
+      onTick: noop,
    }),
 } as const satisfies Record<string, IBonusDefinition>;
 

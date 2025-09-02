@@ -43,6 +43,8 @@ export function escapeHtml(unsafe: string): string {
       .replace(/'/g, "&#039;");
 }
 
+export function noop(): void {}
+
 function scientificFormat(num: number): string {
    return num.toExponential(2).replace("00e+", "e").replace("0e+", "e").replace("e+", "e");
 }
