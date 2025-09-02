@@ -6,11 +6,11 @@ import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import {
-   calcSpaceshipXP,
    getMinimumQuantumForBattle,
    getMinimumSpaceshipXPForBattle,
    getUsedQuantum,
-} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+} from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
+import { calcSpaceshipXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { enumOf, formatNumber, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";

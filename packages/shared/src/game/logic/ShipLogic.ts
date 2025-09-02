@@ -7,7 +7,7 @@ import { ShipDesigns } from "../definitions/ShipDesign";
 import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
 import type { ITileData } from "../ITileData";
-import { getTotalQuantum, getUsedQuantum } from "./ResourceLogic";
+import { getTotalQuantum, getUsedQuantum } from "./QuantumElementLogic";
 import { Side } from "./Side";
 import { getShipClass } from "./TechLogic";
 

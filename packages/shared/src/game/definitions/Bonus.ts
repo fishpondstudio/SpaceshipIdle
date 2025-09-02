@@ -21,10 +21,20 @@ export const Bonus = {
       },
    }),
    B2: cast<IBonusDefinition>({
-      desc: (runtime: Runtime) => t(L.XVictoryPointUponCompletion, 8),
+      desc: (runtime: Runtime) => t(L.XVictoryPointOnDeclarationHTML, 8),
       onStart: noop,
       onStop: (runtime: Runtime) => {
          addResource("VictoryPoint", 8, runtime.left.resources);
+      },
+      onTick: noop,
+   }),
+   B3: cast<IBonusDefinition>({
+      desc: (runtime: Runtime) => t(L.XVictoryPointOnDeclarationAndExpirationHTML, 3, 3),
+      onStart: (runtime: Runtime) => {
+         addResource("VictoryPoint", 3, runtime.left.resources);
+      },
+      onStop: (runtime: Runtime) => {
+         addResource("VictoryPoint", 3, runtime.left.resources);
       },
       onTick: noop,
    }),

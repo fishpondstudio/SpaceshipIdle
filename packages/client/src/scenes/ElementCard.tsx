@@ -1,6 +1,6 @@
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
-import { hasPermanentElementUpgrade } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
+import { hasPermanentElementUpgrade } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { type ElementSymbol, PeriodicTable } from "@spaceship-idle/shared/src/game/PeriodicTable";
 import { capitalize } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";

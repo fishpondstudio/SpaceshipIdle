@@ -25,6 +25,7 @@ import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import { playError } from "../Sound";
 import { FloatingTip } from "./FloatingTip";
+import { RenderHTML } from "./RenderHTMLComp";
 import { ResourceRequirementComp } from "./ResourceListComp";
 import { TextureComp } from "./TextureComp";
 
@@ -93,7 +94,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
             <div className="divider my10 mx-10" />
             <div className="title">Rewards</div>
             <div className="h5" />
-            <div>{Bonus[planet.friendshipBonus].desc(G.runtime)}</div>
+            <RenderHTML html={Bonus[planet.friendshipBonus].desc(G.runtime)} className="render-html" />
             <div className="divider my10 mx-10" />
             <div className="title">Duration</div>
             <div className="h5" />

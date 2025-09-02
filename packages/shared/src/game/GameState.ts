@@ -41,7 +41,6 @@ export class GameState {
    resources = new Map<Resource, ResourceDataPersisted>();
    stats = new Map<Stat, number>();
    unlockedTech = new Set<Tech>();
-   discoveredElements = 0;
    elements = new Map<ElementSymbol, ElementData>();
    permanentElements = new Map<ElementSymbol, ElementData>();
    selectedCatalysts = new Map<CatalystCat, Catalyst>();
@@ -103,6 +102,7 @@ export function initGameState(state: GameState): GameState {
    state.tiles.set(createTile(x - 1, MaxY / 2), makeTile("AC30", 1));
    state.tiles.set(createTile(x, MaxY / 2 - 1), makeTile("MS1", 1));
    state.tiles.set(createTile(x - 1, MaxY / 2 - 1), makeTile("MS1", 1));
+   state.resources.set("Quantum", { total: 4, used: 4 });
    return state;
 }
 

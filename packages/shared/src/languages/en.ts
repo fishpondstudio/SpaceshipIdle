@@ -669,5 +669,6 @@ export const EN = {
    NeutralStateDescHTML: "<b>%%</b> is a neutral state - you can decide how do engage with them",
    PirateDescHTML: "<b>%%</b> is a pirate - declaring war on them will not result in warmonger penalty",
    SourceAddon: "Add-on: %%",
-   XVictoryPointUponCompletion: "%% Victory Point (upon completion)",
+   XVictoryPointOnDeclarationHTML: "%% Victory Point <b>on declaration</b>",
+   XVictoryPointOnDeclarationAndExpirationHTML: "%% Victory Point <b>on declaration</b> and %% Victory Point <b>on expiration</b>",
 };

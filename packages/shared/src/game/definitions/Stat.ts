@@ -3,6 +3,7 @@ export const Stats = {
    Defeat: {},
    Warmonger: {},
    Backstabber: {},
+   Element: {},
 } as const satisfies Record<string, {}>;
 
 export type Stat = keyof typeof Stats;

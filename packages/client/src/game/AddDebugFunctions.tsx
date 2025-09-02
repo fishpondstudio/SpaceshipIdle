@@ -4,6 +4,7 @@ import { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { rollElementShards } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
+import { changeStat, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { randomColor } from "@spaceship-idle/shared/src/thirdparty/RandomColor";
 import { enumOf, equal, forEach, INT32_MAX, round } from "@spaceship-idle/shared/src/utils/Helper";
@@ -55,7 +56,7 @@ export function addDebugFunctions(): void {
    };
    // @ts-expect-error
    globalThis.chooseElement = () => {
-      G.save.state.discoveredElements--;
+      changeStat("Element", -1, G.save.state.stats);
    };
    // @ts-expect-error
    globalThis.choosePermanentElement = () => {
@@ -110,7 +111,7 @@ export function addDebugFunctions(): void {
    };
    // @ts-expect-error
    globalThis.reroll = async () => {
-      G.save.state.discoveredElements = 0;
+      changeStat("Element", -getStat("Element", G.save.state.stats), G.save.state.stats);
       G.save.data.elementChoices = [];
       G.save.state.elements.clear();
    };

@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { getElementUpgradeCost, getTotalElementUpgradeCost } from "./ElementLogic";
+import { getElementUpgradeCost, getTotalElementUpgradeCost } from "./QuantumElementLogic";
 
 test("getTotalElementUpgradeCost", () => {
    expect(getTotalElementUpgradeCost(1)).toBe(getElementUpgradeCost(1));

@@ -2,7 +2,7 @@ import { shuffle } from "../../utils/Helper";
 import { DefaultElementChoices } from "../definitions/Constant";
 import { GameState, initGameState, type SaveGame } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
-import { getUnlockedElements, shardsFromShipValue } from "./ElementLogic";
+import { getUnlockedElements, shardsFromShipValue } from "./QuantumElementLogic";
 import { addResource, resourceOf } from "./ResourceLogic";
 
 export function prestige(save: SaveGame): void {

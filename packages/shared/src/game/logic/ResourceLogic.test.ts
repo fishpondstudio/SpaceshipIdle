@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { CURRENCY_EPSILON } from "../../utils/Helper";
-import { quantumToXP, xpToQuantum } from "./ResourceLogic";
+import { quantumToXP, xpToQuantum } from "./QuantumElementLogic";
 
 test("spaceshipValueToQuantum", () => {
    for (let q = 10; q <= 10_000; q++) {

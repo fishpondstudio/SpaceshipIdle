@@ -1,11 +1,7 @@
 import { QualifierSpaceshipValuePercent } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
-import {
-   calcSpaceshipXP,
-   getStat,
-   getUsedQuantum,
-   quantumToXP,
-} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
+import { calcSpaceshipXP, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { VideoTutorial } from "@spaceship-idle/shared/src/game/logic/VideoTutorials";
 import { clamp, formatNumber, mReduceOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";

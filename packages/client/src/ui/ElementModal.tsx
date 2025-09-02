@@ -8,7 +8,7 @@ import {
    getElementUpgradeCost,
    revertElementUpgrade,
    tryUpgradeElement,
-} from "@spaceship-idle/shared/src/game/logic/ElementLogic";
+} from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import {
    type ElementSymbol,
    GroupBlockLabel,

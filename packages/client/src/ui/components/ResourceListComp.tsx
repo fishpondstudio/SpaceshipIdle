@@ -1,28 +1,13 @@
 import { type Resource, Resources } from "@spaceship-idle/shared/src/game/definitions/Resource";
-import { getAvailableQuantum, resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { cls, formatDelta, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
-import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { G } from "../../utils/Global";
 import { TextureComp } from "./TextureComp";
 
-export function ResourceListComp({
-   res,
-   quantum = 0,
-}: {
-   res: Partial<Record<Resource, number>>;
-   quantum?: number;
-}): React.ReactNode {
+export function ResourceListComp({ res }: { res: Partial<Record<Resource, number>> }): React.ReactNode {
    return (
       <>
-         {quantum === 0 ? null : (
-            <ResourceRequirementComp
-               name={t(L.Quantum)}
-               required={quantum}
-               current={getAvailableQuantum(G.save.state)}
-               texture="Others/Quantum"
-            />
-         )}
          {mapOf(res, (res, amount) => {
             const def = Resources[res];
             return (

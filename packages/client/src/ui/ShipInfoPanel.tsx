@@ -8,17 +8,16 @@ import {
 } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { elementToXP, xpToElement } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import {
-   calcSpaceshipXP,
+   elementToXP,
    getMinimumQuantumForBattle,
    getMinimumSpaceshipXPForBattle,
-   getStat,
    getUsedQuantum,
    quantumToXP,
-   resourceOf,
+   xpToElement,
    xpToQuantum,
-} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+} from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
+import { calcSpaceshipXP, getStat, resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import {
    clamp,
@@ -64,14 +63,12 @@ export function ShipInfoPanel(): React.ReactNode {
    const options = G.save.options;
    G.runtime.rightStat.averageRawDamage(10, rawDamages);
    G.runtime.rightStat.averageActualDamage(10, actualDamages);
-   const usedQuantum = getUsedQuantum(state);
    const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
+   const { used: usedQuantum, total: quantum } = resourceOf("Quantum", state.resources);
    const highlight =
       usedQuantum >= getMinimumQuantumForBattle(state) &&
       calcSpaceshipXP(state) >= getMinimumSpaceshipXPForBattle(state);
    const { current: currentXP, total: totalXP } = resourceOf("XP", state.resources);
-
-   const quantum = xpToQuantum(totalXP);
    const nextQuantum = quantum + 1;
    const nextQuantumXP = quantumToXP(nextQuantum);
    const prevQuantumXP = quantumToXP(quantum);

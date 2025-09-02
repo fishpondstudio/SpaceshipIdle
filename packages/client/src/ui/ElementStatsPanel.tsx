@@ -1,4 +1,7 @@
-import { getTotalElementLevels, getTotalElementShards } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
+import {
+   getTotalElementLevels,
+   getTotalElementShards,
+} from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
 

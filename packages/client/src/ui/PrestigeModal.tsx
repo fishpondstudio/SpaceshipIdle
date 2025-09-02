@@ -1,5 +1,5 @@
-import { shardsFromShipValue } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import { prestige } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
+import { shardsFromShipValue } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { mReduceOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { saveGame } from "../game/LoadSave";

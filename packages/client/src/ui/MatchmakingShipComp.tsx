@@ -1,7 +1,8 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { calcSpaceshipXP, getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
+import { calcSpaceshipXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { formatNumber, mMapOf, mReduceOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";

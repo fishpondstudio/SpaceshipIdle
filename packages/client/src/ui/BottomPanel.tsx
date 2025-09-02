@@ -5,7 +5,7 @@ import { hasUnequippedAddon } from "@spaceship-idle/shared/src/game/logic/AddonL
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { hasCatalystToChoose } from "@spaceship-idle/shared/src/game/logic/CatalystLogic";
-import { hasUnassignedElements } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
+import { hasUnassignedElements } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, hasFlag, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";

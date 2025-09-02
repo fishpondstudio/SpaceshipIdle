@@ -1,15 +1,15 @@
 import type { CountryCode } from "../utils/CountryCode";
 import type { ValueOf } from "../utils/Helper";
 import { TypedEvent } from "../utils/TypedEvent";
-import type { Languages } from "./Languages";
-import type { IShortcutConfig, Shortcut } from "./Shortcut";
 import type { Building } from "./definitions/Buildings";
+import type { Languages } from "./Languages";
 import type { VideoTutorial } from "./logic/VideoTutorials";
+import type { IShortcutConfig, Shortcut } from "./Shortcut";
 
 export const GameOptionFlag = {
    None: 0,
-   TheoreticalValue: 1 << 0,
-   ShowResources: 1 << 1,
+   _Unused1: 1 << 0,
+   _Unused2: 1 << 1,
    RetroFilter: 1 << 2,
    TutorialDone: 1 << 3,
    HideSteamIcon: 1 << 4,
@@ -121,7 +121,7 @@ export class GameOption {
    chatLanguages: Set<keyof typeof Languages> = new Set(["en"]);
    language: keyof typeof Languages = "en";
    buildingColors: Map<Building, number> = new Map();
-   flag: GameOptionFlag = GameOptionFlag.ShowResources | GameOptionFlag.TheoreticalValue | GameOptionFlag.RetroFilter;
+   flag: GameOptionFlag = GameOptionFlag.RetroFilter;
    nebulaStrength = 0.5;
    volume = 1;
    shortcuts = DefaultShortcuts;

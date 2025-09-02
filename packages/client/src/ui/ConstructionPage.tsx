@@ -9,11 +9,7 @@ import {
    getBuildingName,
    getUnlockedBuildings,
 } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import {
-   canSpendResource,
-   getAvailableQuantum,
-   trySpendResource,
-} from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { canSpendResources, trySpendResources } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { isTileConnected, isWithinShipExtent } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { entriesOf, formatNumber, mapSafeAdd, type Tile } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -99,26 +95,21 @@ function BuildingComp({
 }): React.ReactNode {
    const def = Config.Buildings[building];
    const label = CodeLabel[def.code]();
-   const canBuild = canSpendResource("XP", getBuildingCost(building, 1), gs.resources) && getAvailableQuantum(gs) > 0;
+   const canBuild = canSpendResources({ XP: getBuildingCost(building, 1), Quantum: 1 }, gs.resources);
    return (
       <FloatingTip
          w={250}
-         label={<ResourceListComp res={{ XP: -getBuildingCost(building, 1) }} quantum={-1} />}
+         label={<ResourceListComp res={{ XP: -getBuildingCost(building, 1), Quantum: -1 }} />}
          key={building}
       >
          <div
             className="row p10 m10"
             onClick={() => {
-               if (
-                  !canSpendResource("XP", getBuildingCost(building, 1), gs.resources) ||
-                  getAvailableQuantum(gs) <= 0
-               ) {
-                  playError();
-                  return;
-               }
-               if (trySpendResource("XP", getBuildingCost(building, 1), gs.resources)) {
+               if (trySpendResources({ XP: getBuildingCost(building, 1), Quantum: 1 }, gs.resources)) {
                   gs.tiles.set(tile, makeTile(building, 1));
                   GameStateUpdated.emit();
+               } else {
+                  playError();
                }
             }}
             style={{

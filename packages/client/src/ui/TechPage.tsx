@@ -3,8 +3,8 @@ import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass
 import type { Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { getTotalElementShards } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
-import { getAvailableQuantum } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getTotalElementShards } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
+import { canSpendResource, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import {
    checkTechPrerequisites,
    getTechName,
@@ -70,24 +70,30 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                })}
                <div className="divider my10" />
                <div className="mx10">
-                  <FloatingTip disabled={getAvailableQuantum(G.save.state) > 0} label={t(L.NotEnoughQuantum)}>
+                  <FloatingTip
+                     disabled={canSpendResource("Quantum", 1, G.save.state.resources)}
+                     label={t(L.NotEnoughQuantum)}
+                  >
                      <button
                         className="btn filled w100 row px10 py5"
                         onClick={() => {
                            if (
                               !checkTechPrerequisites(tech, G.save.state) ||
-                              getAvailableQuantum(G.save.state) <= 0 ||
+                              !canSpendResource("Quantum", 1, G.save.state.resources) ||
                               currentShards < requiredShards
                            ) {
                               return;
                            }
+                           trySpendResource("Quantum", 1, G.save.state.resources);
                            playUpgrade();
                            G.save.state.unlockedTech.add(tech);
                            GameStateUpdated.emit();
                            G.scene.enqueue(TechTreeScene, (t) => t.refresh());
                         }}
                         disabled={
-                           !canUnlock || getAvailableQuantum(G.save.state) <= 0 || currentShards < requiredShards
+                           !canUnlock ||
+                           !canSpendResource("Quantum", 1, G.save.state.resources) ||
+                           currentShards < requiredShards
                         }
                      >
                         <div>{t(L.Research)}</div>

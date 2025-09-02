@@ -5,8 +5,8 @@ import { ElementPermanentColor, ElementThisRunColor } from "@spaceship-idle/shar
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { type ElementChoice, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { getElementUpgradeCost } from "@spaceship-idle/shared/src/game/logic/ElementLogic";
 import { addElementShard, addElementThisRun } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
+import { getElementUpgradeCost } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { type ElementSymbol, PeriodicTable } from "@spaceship-idle/shared/src/game/PeriodicTable";
 import { removeFrom } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
