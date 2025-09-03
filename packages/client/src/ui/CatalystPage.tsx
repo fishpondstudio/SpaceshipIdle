@@ -49,28 +49,40 @@ export function CatalystPage(): React.ReactNode {
 
 function CatalystItem({ catalyst, cat }: { catalyst: Catalyst; cat: CatalystCat }): React.ReactNode {
    const def = Catalyst[catalyst];
-   let status: React.ReactNode = null;
+   let header: React.ReactNode = null;
    const selected = G.save.state.selectedCatalysts.get(cat);
    if (selected === catalyst) {
       if (G.runtime.leftStat.isCatalystActivated(catalyst)) {
-         status = (
+         header = (
             <FloatingTip label={t(L.CatalystActivated)}>
-               <div className="mi sm text-green">check_circle</div>
+               <div>
+                  <div className="row g5">
+                     <div className="mi sm text-green">check_circle</div>
+                     <div className="f1">{getRequirement(def)}</div>
+                  </div>
+                  <div className="text-sm text-dimmed">{getEffect(def)}</div>
+               </div>
             </FloatingTip>
          );
       } else {
-         status = (
+         header = (
             <FloatingTip label={t(L.CatalystNotActivated)}>
-               <div className="mi sm text-red">do_not_disturb_on</div>
+               <div>
+                  <div className="row g5">
+                     <div className="mi sm text-red">do_not_disturb_on</div>
+                     <div className="f1">{getRequirement(def)}</div>
+                  </div>
+                  <div className="text-sm text-dimmed">{getEffect(def)}</div>
+               </div>
             </FloatingTip>
          );
       }
    } else {
       if (canChooseCatalystCat(cat, G.runtime)) {
-         status = (
+         header = (
             <FloatingTip label={<RenderHTML html={t(L.SelectCatalystTooltipHTML)} />}>
                <div
-                  className="mi sm pointer"
+                  className="pointer"
                   onClick={() => {
                      if (selected) {
                         playError();
@@ -88,25 +100,31 @@ function CatalystItem({ catalyst, cat }: { catalyst: Catalyst; cat: CatalystCat 
                      GameStateUpdated.emit();
                   }}
                >
-                  {selected === catalyst ? "check_box" : "check_box_outline_blank"}
+                  <div className="row g5">
+                     <div className="mi sm">check_box_outline_blank</div>
+                     <div className="f1">{getRequirement(def)}</div>
+                  </div>
+                  <div className="text-sm text-dimmed">{getEffect(def)}</div>
                </div>
             </FloatingTip>
          );
       } else {
-         status = (
+         header = (
             <FloatingTip label={t(L.YouHaveToActivateThePreviousCatalystFirst)}>
-               <div className="mi sm">lock</div>
+               <div className="pointer">
+                  <div className="row g5">
+                     <div className="mi sm">lock</div>
+                     <div className="f1">{getRequirement(def)}</div>
+                  </div>
+                  <div className="text-sm text-dimmed">{getEffect(def)}</div>
+               </div>
             </FloatingTip>
          );
       }
    }
    return (
       <div className="panel m10" key={catalyst}>
-         <div className="row g5">
-            {status}
-            <div className="f1">{getRequirement(def)}</div>
-         </div>
-         <div className="text-sm text-dimmed">{getEffect(def)}</div>
+         {header}
          <div className="divider dashed mx-10 my10" />
          <ScrollArea scrollbars="x" offsetScrollbars="x" type="auto" styles={{ content: { display: "flex" } }}>
             {keysOf(Config.Buildings)

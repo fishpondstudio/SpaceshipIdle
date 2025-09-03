@@ -16,7 +16,7 @@ import { Generator } from "../../utils/NameGen";
 import { srand } from "../../utils/Random";
 import type { IHaveXY } from "../../utils/Vector2";
 import type { Addon } from "../definitions/Addons";
-import { Bonus } from "../definitions/Bonus";
+import { Boosts } from "../definitions/Boosts";
 import { FriendshipBaseCost, FriendshipDurationSeconds } from "../definitions/Constant";
 import { type Galaxy, type Planet, PlanetFlags, PlanetType, type StarSystem } from "../definitions/Galaxy";
 import { ShipClass, ShipClassList } from "../definitions/ShipClass";
@@ -130,7 +130,7 @@ export function tickGalaxy(rt: Runtime): void {
          if (planet.friendshipTimeLeft > 0) {
             --planet.friendshipTimeLeft;
 
-            const def = Bonus[planet.friendshipBonus];
+            const def = Boosts[planet.friendshipBonus];
             def.onTick(planet.friendshipTimeLeft, t(L.FriendshipWith, planet.name), rt);
             if (planet.friendshipTimeLeft === 0) {
                def.onStop(rt);
@@ -227,7 +227,7 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
             flags: PlanetFlags.None,
             seed: randomAlphaNumeric(16),
             battleResult: null,
-            friendshipBonus: randOne(keysOf(Bonus)),
+            friendshipBonus: randOne(keysOf(Boosts)),
             friendshipTimeLeft: 0,
             revealed: false,
          };

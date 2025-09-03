@@ -24,7 +24,6 @@ export const FriendshipBaseCost = 1;
 export const MaxBuildingCount = 1000;
 export const ElementThisRunColor = 0x94a9cd;
 export const ElementPermanentColor = 0xffeaa7;
-export const QualifierSpaceshipValuePercent = 0.9;
 export const BaseWarmongerChangePerSec = 0.001;
 export const FireBackDuration = 0.1;
 export const FireForwardDuration = 0.4;

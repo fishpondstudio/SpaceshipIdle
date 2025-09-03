@@ -17,6 +17,7 @@ import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { BuildingInfoComp } from "./components/BuildingInfoComp";
 import { FloatingTip } from "./components/FloatingTip";
+import { ResourceListComp } from "./components/ResourceListComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
 import { TitleComp } from "./components/TitleComp";
@@ -70,38 +71,52 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                })}
                <div className="divider my10" />
                <div className="mx10">
-                  <FloatingTip
-                     disabled={canSpendResource("Quantum", 1, G.save.state.resources)}
-                     label={t(L.NotEnoughQuantum)}
-                  >
-                     <button
-                        className="btn filled w100 row px10 py5"
-                        onClick={() => {
-                           if (
-                              !checkTechPrerequisites(tech, G.save.state) ||
-                              !canSpendResource("Quantum", 1, G.save.state.resources) ||
-                              currentShards < requiredShards
-                           ) {
-                              return;
-                           }
-                           trySpendResource("Quantum", 1, G.save.state.resources);
-                           playUpgrade();
-                           G.save.state.unlockedTech.add(tech);
-                           GameStateUpdated.emit();
-                           G.scene.enqueue(TechTreeScene, (t) => t.refresh());
-                        }}
-                        disabled={
-                           !canUnlock ||
+                  <button
+                     className="btn filled w100 px10 py5"
+                     onClick={() => {
+                        if (
+                           !checkTechPrerequisites(tech, G.save.state) ||
                            !canSpendResource("Quantum", 1, G.save.state.resources) ||
                            currentShards < requiredShards
+                        ) {
+                           return;
+                        }
+                        trySpendResource("Quantum", 1, G.save.state.resources);
+                        playUpgrade();
+                        G.save.state.unlockedTech.add(tech);
+                        GameStateUpdated.emit();
+                        G.scene.enqueue(TechTreeScene, (t) => t.refresh());
+                     }}
+                     disabled={
+                        !canUnlock ||
+                        !canSpendResource("Quantum", 1, G.save.state.resources) ||
+                        currentShards < requiredShards
+                     }
+                  >
+                     <FloatingTip
+                        w={300}
+                        label={
+                           <div className="flex-table mx-10">
+                              <div className="row">
+                                 <div className="f1">{t(L.Prerequisites)}</div>
+                                 {canUnlock && currentShards >= requiredShards ? (
+                                    <div className="mi text-green xs">check_circle</div>
+                                 ) : (
+                                    <div className="mi text-red xs">cancel</div>
+                                 )}
+                              </div>
+                              <ResourceListComp res={{ Quantum: -1 }} />
+                           </div>
                         }
                      >
-                        <div>{t(L.Research)}</div>
-                        <div className="f1" />
-                        <div>-1</div>
-                        <div className="mi">orbit</div>
-                     </button>
-                  </FloatingTip>
+                        <div className="row">
+                           <div>{t(L.Research)}</div>
+                           <div className="f1" />
+                           <div>-1</div>
+                           <TextureComp name="Others/Quantum24" className="inline-middle" />
+                        </div>
+                     </FloatingTip>
+                  </button>
                </div>
                <div className="divider mt10 mb10" />
             </>

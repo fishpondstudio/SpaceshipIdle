@@ -1,13 +1,13 @@
 import { computePosition, flip, offset, shift } from "@floating-ui/core";
 import { SmoothGraphics } from "@pixi/graphics-smooth";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { abilityTarget, AbilityTiming } from "@spaceship-idle/shared/src/game/definitions/Ability";
+import { AbilityTiming, abilityTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated, type Tiles } from "@spaceship-idle/shared/src/game/GameState";
 import {
-   getSize,
    GridSize,
+   getSize,
    MaxX,
    MaxY,
    posToTile,
@@ -525,6 +525,7 @@ export class ShipScene extends Scene {
                return;
             }
             G.runtime.delete(clickedTile);
+            refundResource("Quantum", 1, G.save.state.resources);
             refundResource("XP", getTotalBuildingCost(data.type, data.level, 0), G.save.state.resources);
             GameStateUpdated.emit();
          }

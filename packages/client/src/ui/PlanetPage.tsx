@@ -27,7 +27,7 @@ export function PlanetPage({ planet }: { planet: Planet }): React.ReactNode {
          <div className="divider my10" />
          <div className="title g5">
             <div className="mi sm">visibility</div>
-            <div>Gather Intelligence</div>
+            <div>{t(L.GatherIntelligence)}</div>
          </div>
          <div className="divider my10" />
          <div className="mx10">

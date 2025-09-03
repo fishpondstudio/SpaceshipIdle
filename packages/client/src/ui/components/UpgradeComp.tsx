@@ -38,6 +38,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
       if (canRecycle) {
          playClick();
          G.runtime.delete(tile);
+         refundResource("Quantum", 1, gs.resources);
          refundResource("XP", getTotalBuildingCost(data.type, data.level, 0), gs.resources);
          GameStateUpdated.emit();
       } else {
@@ -105,25 +106,25 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          <div className="row mx10">
             {[data.level + 1, getNextLevel(data.level, 5), getNextLevel(data.level, 10)].map((target, idx) => {
                return (
-                  <FloatingTip
-                     w={250}
+                  <button
                      key={idx}
-                     label={<ResourceListComp res={{ XP: -getTotalBuildingCost(data.type, data.level, target) }} />}
+                     className="btn f1"
+                     disabled={
+                        !canSpendResource(
+                           "XP",
+                           getTotalBuildingCost(data.type, data.level, target),
+                           G.save.state.resources,
+                        )
+                     }
+                     onClick={upgrade.bind(null, target)}
                   >
-                     <button
-                        className="btn f1"
-                        disabled={
-                           !canSpendResource(
-                              "XP",
-                              getTotalBuildingCost(data.type, data.level, target),
-                              G.save.state.resources,
-                           )
-                        }
-                        onClick={upgrade.bind(null, target)}
+                     <FloatingTip
+                        w={300}
+                        label={<ResourceListComp res={{ XP: -getTotalBuildingCost(data.type, data.level, target) }} />}
                      >
-                        +{target - data.level}
-                     </button>
-                  </FloatingTip>
+                        <div>+{target - data.level}</div>
+                     </FloatingTip>
+                  </button>
                );
             })}
             <button
@@ -138,34 +139,29 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          <div className="row mx10">
             {[data.level - 1, getNextLevel(data.level, -5), getNextLevel(data.level, -10)].map((target, idx) => {
                return (
-                  <FloatingTip
-                     w={250}
-                     key={idx}
-                     label={<ResourceListComp res={{ XP: getTotalBuildingCost(data.type, data.level, target) }} />}
-                  >
-                     <button className="btn f1" disabled={target <= 0} onClick={downgrade.bind(null, target)}>
-                        {target - data.level}
-                     </button>
-                  </FloatingTip>
+                  <button key={idx} className="btn f1" disabled={target <= 0} onClick={downgrade.bind(null, target)}>
+                     <FloatingTip
+                        w={300}
+                        label={<ResourceListComp res={{ XP: getTotalBuildingCost(data.type, data.level, target) }} />}
+                     >
+                        <div>{target - data.level}</div>
+                     </FloatingTip>
+                  </button>
                );
             })}
-            <FloatingTip
-               w={250}
-               label={
-                  canRecycle ? (
+            <button className="btn f1" disabled={!canRecycle} onClick={recycle}>
+               <FloatingTip
+                  w={300}
+                  label={
                      <>
-                        <div>{t(L.RecycleModule)}</div>
+                        {canRecycle ? null : <div className="text-red mb5">{t(L.CannotRecycle)}</div>}
                         <ResourceListComp res={{ XP: getTotalBuildingCost(data.type, data.level, 0) }} />
                      </>
-                  ) : (
-                     t(L.CannotRecycle)
-                  )
-               }
-            >
-               <button className="btn f1 cc mi" disabled={!canRecycle} onClick={recycle}>
-                  recycling
-               </button>
-            </FloatingTip>
+                  }
+               >
+                  <div className="mi">recycling</div>
+               </FloatingTip>
+            </button>
          </div>
          <div className="divider my10" />
          <div className="title">{t(L.Addon)}</div>

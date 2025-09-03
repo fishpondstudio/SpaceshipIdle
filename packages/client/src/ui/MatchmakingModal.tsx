@@ -1,9 +1,8 @@
 import { getGradient, useMantineTheme } from "@mantine/core";
-import { QualifierSpaceshipValuePercent } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
-import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { calcShipScore, generateShip, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import {
    getMinimumQuantumForBattle,
@@ -14,7 +13,6 @@ import { calcSpaceshipXP } from "@spaceship-idle/shared/src/game/logic/ResourceL
 import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { enumOf, formatNumber, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { findShip } from "../game/Matchmaking";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { hideModal, showModal } from "../utils/ToggleModal";
@@ -32,7 +30,7 @@ export function MatchmakingModal(): React.ReactNode {
    const minQuantum = getMinimumQuantumForBattle(G.save.state);
    const usedQuantum = getUsedQuantum(G.save.state);
    const xp = calcSpaceshipXP(G.save.state);
-   const minXO = getMinimumSpaceshipXPForBattle(G.save.state);
+   const minXP = getMinimumSpaceshipXPForBattle(G.save.state);
    return (
       <div className="m10">
          <div
@@ -54,55 +52,59 @@ export function MatchmakingModal(): React.ReactNode {
          </div>
          <div className="panel mb10 p0">
             <div className="m10">
-               <div className="row">
-                  <div>{t(L.Quantum)}</div>
-                  <div className="f1"></div>
-                  <div>
-                     {usedQuantum}/{minQuantum}
-                  </div>
-                  <FloatingTip label={<RenderHTML html={t(L.QualifierBattleQuantumRequirementHTML, minQuantum)} />}>
+               <FloatingTip label={<RenderHTML html={t(L.QualifierBattleQuantumRequirementHTML, minQuantum)} />}>
+                  <div className="row">
+                     <div>{t(L.Quantum)}</div>
+                     <div className="f1"></div>
+                     <div>
+                        {usedQuantum}/{minQuantum}
+                     </div>
+
                      {usedQuantum >= minQuantum ? (
                         <div className="mi sm text-green">check_circle</div>
                      ) : (
-                        <div className="mi sm text-yellow">info</div>
+                        <div className="mi sm text-red">cancel</div>
                      )}
-                  </FloatingTip>
-               </div>
-               <div className="row">
-                  <div>{t(L.SpaceshipXP)}</div>
-                  <div className="f1"></div>
-                  <div>
-                     {formatNumber(xp)}/{formatNumber(minXO)}
                   </div>
-                  <FloatingTip label={<RenderHTML html={t(L.QualifierBattleXPRequirementHTML, formatNumber(minXO))} />}>
-                     {xp >= QualifierSpaceshipValuePercent * minXO ? (
+               </FloatingTip>
+               <FloatingTip label={<RenderHTML html={t(L.QualifierBattleXPRequirementHTML, formatNumber(minXP))} />}>
+                  <div className="row">
+                     <div>{t(L.SpaceshipXP)}</div>
+                     <div className="f1"></div>
+                     <div>
+                        {formatNumber(xp)}/{formatNumber(minXP)}
+                     </div>
+
+                     {xp >= minXP ? (
                         <div className="mi sm text-green">check_circle</div>
                      ) : (
-                        <div className="mi sm text-yellow">info</div>
+                        <div className="mi sm text-red">cancel</div>
                      )}
-                  </FloatingTip>
-               </div>
+                  </div>
+               </FloatingTip>
             </div>
          </div>
          <button
+            disabled={xp < minXP || usedQuantum < minQuantum}
             className="btn filled w100 py5 px10 text-lg"
             onClick={async () => {
                try {
                   playClick();
                   showLoading();
                   const [score, hp, dps] = calcShipScore(G.save.state);
-                  const ship = await findShip(score, hp, dps);
+                  // const ship = await findShip(score, hp, dps);
+                  const ship = generateShip(getShipClass(G.save.state), Math.random);
                   await resolveIn(1, null);
 
                   if (import.meta.env.DEV) {
-                     const rt = simulateBattle(G.save.state, ship.json);
-                     console.log(`Battle with ${ship.shipId} result: ${enumOf(BattleStatus, rt.battleStatus)}`);
+                     const rt = simulateBattle(G.save.state, ship);
+                     console.log(`Battle with ${ship} result: ${enumOf(BattleStatus, rt.battleStatus)}`);
                   }
 
                   playBling();
                   hideLoading();
                   showModal({
-                     children: <PreBattleModal enemy={ship.json} info={{}} />,
+                     children: <PreBattleModal enemy={ship} info={{ hideEnemyInfo: true }} />,
                      size: "lg",
                      dismiss: true,
                   });
@@ -118,6 +120,7 @@ export function MatchmakingModal(): React.ReactNode {
          </button>
          <div className="h10" />
          <button
+            disabled={xp < minXP || usedQuantum < minQuantum}
             className="btn w100 p5 row text-lg"
             onClick={() => {
                showModal({

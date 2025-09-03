@@ -9,13 +9,12 @@ import {
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import {
+   elementToQuantum,
    elementToXP,
    getMinimumQuantumForBattle,
    getMinimumSpaceshipXPForBattle,
    getUsedQuantum,
    quantumToXP,
-   xpToElement,
-   xpToQuantum,
 } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { calcSpaceshipXP, getStat, resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
@@ -64,16 +63,16 @@ export function ShipInfoPanel(): React.ReactNode {
    G.runtime.rightStat.averageRawDamage(10, rawDamages);
    G.runtime.rightStat.averageActualDamage(10, actualDamages);
    const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
-   const { used: usedQuantum, total: quantum } = resourceOf("Quantum", state.resources);
+   const { used: usedQuantum, total: totalQuantum } = resourceOf("Quantum", state.resources);
    const highlight =
       usedQuantum >= getMinimumQuantumForBattle(state) &&
       calcSpaceshipXP(state) >= getMinimumSpaceshipXPForBattle(state);
    const { current: currentXP, total: totalXP } = resourceOf("XP", state.resources);
-   const nextQuantum = quantum + 1;
+   const nextQuantum = totalQuantum + 1;
    const nextQuantumXP = quantumToXP(nextQuantum);
-   const prevQuantumXP = quantumToXP(quantum);
+   const prevQuantumXP = quantumToXP(totalQuantum);
 
-   const element = xpToElement(totalXP);
+   const element = getStat("Element", state.stats);
    const nextElement = element + 1;
    const nextElementXP = elementToXP(nextElement);
    const prevElementXP = elementToXP(element);
@@ -99,13 +98,17 @@ export function ShipInfoPanel(): React.ReactNode {
                         <TextureComp name="Others/Trophy16" className="inline-middle" /> {formatNumber(vp.current)}
                      </div>
                   </div>
-                  <div className="row">
-                     <div className="f1">{t(L.TotalVictory)}</div>
-                     <div>{formatNumber(victory)}</div>
-                  </div>
-                  <div className="row">
-                     <div className="f1">{t(L.TotalDefeat)}</div>
-                     <div>{formatNumber(defeat)}</div>
+                  <div className="row fstart">
+                     <div className="f1">
+                        <div>{t(L.VictoryRate)}</div>
+                        <div className="text-space text-xs">
+                           - {t(L.TotalVictory)}: {formatNumber(victory)}
+                        </div>
+                        <div className="text-space text-xs">
+                           - {t(L.TotalDefeat)}: {formatNumber(defeat)}
+                        </div>
+                     </div>
+                     <div>{formatPercent(divide(victory, victory + defeat))}</div>
                   </div>
                   <div className="row">
                      <div className="f1">{t(L.MatchmakingQualified)}</div>
@@ -202,7 +205,7 @@ export function ShipInfoPanel(): React.ReactNode {
                <TextureComp name="Others/Quantum24" />
                <div className="f1 text-right">
                   <div>
-                     {formatNumber(usedQuantum)}/{formatNumber(quantum)}
+                     {formatNumber(usedQuantum)}/{formatNumber(totalQuantum)}
                   </div>
                   <div className="xs">{formatHMS(timeUntilNextQuantum)}</div>
                </div>
@@ -318,21 +321,23 @@ export function ProgressComp({
 function ElementTooltip(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const totalXP = resourceOf("XP", G.save.state.resources).total;
-   const element = xpToElement(totalXP);
+   const totalQuantum = resourceOf("Quantum", G.save.state.resources).total;
+   const element = getStat("Element", G.save.state.stats);
    const nextElement = element + 1;
-   const nextElementXP = elementToXP(nextElement);
+   const nextElementQuantum = elementToQuantum(nextElement);
+   const nextElementXP = quantumToXP(nextElementQuantum);
    const prevElementXP = elementToXP(element);
    const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
    return (
       <>
          <div className="flex-table mx-10">
             <div className="row">
-               <div className="f1">{t(L.CurrentTotalXp)}</div>
-               <div>{formatNumber(totalXP)}</div>
+               <div className="f1">{t(L.CurrentTotalQuantum)}</div>
+               <div>{formatNumber(totalQuantum)}</div>
             </div>
             <div className="row">
-               <div className="f1">{t(L.XPRequiredForNextElement)}</div>
-               <div>{formatNumber(nextElementXP)}</div>
+               <div className="f1">{t(L.QuantumRequiredForNextElement)}</div>
+               <div className="text-right">{formatNumber(nextElementQuantum)}</div>
             </div>
             <div className="row">
                <div className="f1">{t(L.ProgressTowardsNextElement)}</div>
@@ -400,7 +405,7 @@ function ElementTooltip(): React.ReactNode {
 function QuantumTooltip(): React.ReactNode {
    const usedQuantum = getUsedQuantum(G.save.state);
    const totalXP = resourceOf("XP", G.save.state.resources).total;
-   const quantum = xpToQuantum(totalXP);
+   const quantum = resourceOf("Quantum", G.save.state.resources).total;
    const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
    const nextQuantum = quantum + 1;
    const nextQuantumXP = quantumToXP(nextQuantum);

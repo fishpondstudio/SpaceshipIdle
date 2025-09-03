@@ -98,8 +98,12 @@ function BuildingComp({
    const canBuild = canSpendResources({ XP: getBuildingCost(building, 1), Quantum: 1 }, gs.resources);
    return (
       <FloatingTip
-         w={250}
-         label={<ResourceListComp res={{ XP: -getBuildingCost(building, 1), Quantum: -1 }} />}
+         w={300}
+         label={
+            <div className="flex-table mx-10">
+               <ResourceListComp res={{ XP: -getBuildingCost(building, 1), Quantum: -1 }} />
+            </div>
+         }
          key={building}
       >
          <div

@@ -1,4 +1,5 @@
-import { Image, Progress } from "@mantine/core";
+import { Progress } from "@mantine/core";
+import { useForceUpdate } from "@mantine/hooks";
 import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import type { BattleInfo } from "@spaceship-idle/shared/src/game/logic/BattleInfo";
 import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
@@ -12,7 +13,6 @@ import { formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/He
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { useMemo } from "react";
-import UnknownShip from "../assets/images/UnknownShip.svg";
 import { AddShipToMatchmakingPool } from "../game/AddShipToMatchmakingPool";
 import { ShipImageComp } from "../game/ShipImageComp";
 import { ShipScene } from "../scenes/ShipScene";
@@ -21,27 +21,29 @@ import { hideModal } from "../utils/ToggleModal";
 import { DeclareWarCostComp } from "./components/DeclareWarCostComp";
 import { FloatingTip } from "./components/FloatingTip";
 import { hideLoading, showLoading } from "./components/LoadingComp";
+import { ResourceListComp } from "./components/ResourceListComp";
 import { MatchmakingShipComp } from "./MatchmakingShipComp";
 import { hideSidebar } from "./Sidebar";
 import { playClick, playError } from "./Sound";
 
 export function PreBattleModal({ enemy, info }: { enemy: GameState; info: BattleInfo }): React.ReactNode {
+   const forceUpdate = useForceUpdate();
    const [score, hp, dps] = useMemo(() => calcShipScore(G.save.state), []);
    let enemyScore = 0;
    let enemyHp = 0;
    let enemyDps = 0;
-   if (!info.hideEnemyInfo) {
-      [enemyScore, enemyHp, enemyDps] = useMemo(() => calcShipScore(enemy), [enemy]);
-   }
-   console.log(info);
+   [enemyScore, enemyHp, enemyDps] = useMemo(
+      () => (info.hideEnemyInfo ? [0, 0, 0] : calcShipScore(enemy)),
+      [enemy, info.hideEnemyInfo],
+   );
    return (
       <div className="m10">
          <div className="row">
             <div className="f1">
-               <ShipHeaderComp gs={G.save.state} side={Side.Left} />
+               <ShipHeaderComp gs={G.save.state} side={Side.Left} info={{}} />
             </div>
             <div className="f1">
-               <ShipHeaderComp gs={enemy} side={Side.Right} disableTooltip={info.hideEnemyInfo} />
+               <ShipHeaderComp gs={enemy} side={Side.Right} info={info} forceUpdate={forceUpdate} />
             </div>
          </div>
          <div className="h10" />
@@ -183,15 +185,17 @@ function ShipStatComp({
 function ShipHeaderComp({
    gs,
    side,
-   disableTooltip,
+   info,
+   forceUpdate,
 }: {
    gs: GameState;
    side: Side;
-   disableTooltip?: boolean;
+   info: BattleInfo;
+   forceUpdate?: () => void;
 }): React.ReactNode {
    return (
       <>
-         <FloatingTip w={300} label={<MatchmakingShipComp ship={gs} />} disabled={disableTooltip}>
+         <FloatingTip w={300} label={<MatchmakingShipComp ship={gs} />} disabled={info.hideEnemyInfo}>
             {side === Side.Left ? (
                <div className="text-xl row">
                   {t(L.SpaceshipPrefix, gs.name)}
@@ -207,17 +211,61 @@ function ShipHeaderComp({
             )}
          </FloatingTip>
          <div className="h5" />
-         {disableTooltip ? (
-            <Image
-               src={UnknownShip}
+         {info.hideEnemyInfo ? (
+            <div
                style={{
                   objectFit: "contain",
                   padding: 5,
                   aspectRatio: "4/3",
                   border: "1px solid var(--mantine-color-default-border)",
                   borderRadius: "var(--mantine-radius-sm)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                }}
-            />
+            >
+               <button
+                  className="btn"
+                  disabled={!canSpendResource("VictoryPoint", 1, G.save.state.resources)}
+                  onClick={() => {
+                     if (!trySpendResource("VictoryPoint", 1, G.save.state.resources)) {
+                        playError();
+                        return;
+                     }
+
+                     playClick();
+                     info.hideEnemyInfo = false;
+
+                     if (info.planetId) {
+                        const planet = findPlanet(info.planetId, G.save.data.galaxy);
+                        if (planet) {
+                           planet.revealed = true;
+                        }
+                     }
+
+                     forceUpdate?.();
+                     GameStateUpdated.emit();
+                  }}
+               >
+                  <FloatingTip
+                     w={300}
+                     label={
+                        <>
+                           <div>{t(L.GatherIntelligenceTooltip)}</div>
+                           <div className="h5" />
+                           <div className="flex-table mx-10">
+                              <ResourceListComp res={{ VictoryPoint: -1 }} />
+                           </div>
+                        </>
+                     }
+                  >
+                     <div className="row g5 px10 py5">
+                        <div className="mi">visibility</div>
+                        <div>{t(L.GatherIntelligence)}</div>
+                     </div>
+                  </FloatingTip>
+               </button>
+            </div>
          ) : (
             <ShipImageComp
                ship={gs}

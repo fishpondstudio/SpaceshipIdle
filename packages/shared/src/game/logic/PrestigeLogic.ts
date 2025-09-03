@@ -2,7 +2,7 @@ import { shuffle } from "../../utils/Helper";
 import { DefaultElementChoices } from "../definitions/Constant";
 import { GameState, initGameState, type SaveGame } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
-import { getUnlockedElements, shardsFromShipValue } from "./QuantumElementLogic";
+import { getUnlockedElements } from "./QuantumElementLogic";
 import { addResource, resourceOf } from "./ResourceLogic";
 
 export function prestige(save: SaveGame): void {
@@ -11,7 +11,6 @@ export function prestige(save: SaveGame): void {
       addElementShard(save.state, element, amount.damage);
       addElementShard(save.state, element, amount.amount);
    }
-   rollElementShards(save, shardsFromShipValue(save.state));
    const oldState = save.state;
    const oldData = save.data;
    save.state = new GameState();

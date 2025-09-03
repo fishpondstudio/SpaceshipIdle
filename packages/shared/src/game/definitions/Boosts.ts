@@ -4,15 +4,15 @@ import { addResource } from "../logic/ResourceLogic";
 import type { Runtime } from "../logic/Runtime";
 import { BaseWarmongerChangePerSec } from "./Constant";
 
-export interface IBonusDefinition {
+export interface IBoostDefinition {
    desc: (runtime: Runtime) => string;
    onStart: (runtime: Runtime) => void;
-   onStop: (runtime: Runtime) => void;
    onTick: (timeLeft: number, source: string, runtime: Runtime) => void;
+   onStop: (runtime: Runtime) => void;
 }
 
-export const Bonus = {
-   B1: cast<IBonusDefinition>({
+export const Boosts = {
+   B1: cast<IBoostDefinition>({
       desc: (runtime: Runtime) => t(L.WarmongerPenaltyPerSec, BaseWarmongerChangePerSec),
       onStart: noop,
       onStop: noop,
@@ -20,7 +20,7 @@ export const Bonus = {
          runtime.leftStat.warmongerDecrease.add(BaseWarmongerChangePerSec, source);
       },
    }),
-   B2: cast<IBonusDefinition>({
+   B2: cast<IBoostDefinition>({
       desc: (runtime: Runtime) => t(L.XVictoryPointOnDeclarationHTML, 8),
       onStart: noop,
       onStop: (runtime: Runtime) => {
@@ -28,7 +28,7 @@ export const Bonus = {
       },
       onTick: noop,
    }),
-   B3: cast<IBonusDefinition>({
+   B3: cast<IBoostDefinition>({
       desc: (runtime: Runtime) => t(L.XVictoryPointOnDeclarationAndExpirationHTML, 3, 3),
       onStart: (runtime: Runtime) => {
          addResource("VictoryPoint", 3, runtime.left.resources);
@@ -38,6 +38,6 @@ export const Bonus = {
       },
       onTick: noop,
    }),
-} as const satisfies Record<string, IBonusDefinition>;
+} as const satisfies Record<string, IBoostDefinition>;
 
-export type Bonus = keyof typeof Bonus;
+export type Boost = keyof typeof Boosts;

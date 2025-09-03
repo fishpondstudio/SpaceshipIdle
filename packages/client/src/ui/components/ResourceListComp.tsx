@@ -37,14 +37,14 @@ export function ResourceRequirementComp({
    texture?: string;
    desc?: React.ReactNode;
 }): React.ReactNode {
-   const hasEnough = current >= Math.abs(required);
+   const hasEnough = current + required >= 0;
    return (
       <div className="row g5 fstart">
          <div className="f1">
             <div>{name}</div>
             {desc ? <div className="text-xs text-space">{desc}</div> : null}
          </div>
-         <div className={cls(hasEnough ? "text-green" : "text-red")}>{formatDelta(required)}</div>
+         <div className={cls(hasEnough ? "text-green" : "text-red")}>{formatDelta(required, "-")}</div>
          {texture ? <TextureComp name={texture} /> : null}
          {hasEnough ? (
             <div className="mi xs text-green" style={{ fontSize: 16 }}>

@@ -133,6 +133,10 @@
    margin-top: 10px;
    margin-bottom: 10px;
 }
+.my-10 {
+   margin-top: -10px;
+   margin-bottom: -10px;
+}
 
 .my15 {
    margin-top: 15px;

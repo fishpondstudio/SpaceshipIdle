@@ -4,7 +4,7 @@ import { DefaultElementChoices, QuantumToElement } from "../definitions/Constant
 import type { ElementData, GameState, SaveGame } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { fib, getUnlockedBuildings } from "./BuildingLogic";
-import { addResource, calcSpaceshipXP, changeStat, getStat, resourceOf, resourceValueOf } from "./ResourceLogic";
+import { addResource, changeStat, getStat, resourceOf } from "./ResourceLogic";
 import { getShipBlueprint } from "./ShipLogic";
 
 export function tickElement(save: SaveGame): void {
@@ -32,12 +32,6 @@ export function tickElement(save: SaveGame): void {
    }
 }
 
-export function shardsFromShipValue(gs: GameState): number {
-   const totalValue = calcSpaceshipXP(gs) + resourceValueOf(gs.resources);
-   const xp = Math.max(0, totalValue - elementToXP(getStat("Element", gs.stats)));
-   return Math.max(0, xpToElement(xp));
-}
-
 export function getUnlockedElements(gs: GameState, result?: ElementSymbol[]): ElementSymbol[] {
    result ??= [];
    const buildings = getUnlockedBuildings(gs);
@@ -52,14 +46,11 @@ export function getUnlockedElements(gs: GameState, result?: ElementSymbol[]): El
 
 export const StartQuantum = 10;
 
-export function getTotalQuantum(gs: GameState): number {
-   return xpToQuantum(resourceOf("XP", gs.resources).total);
-}
-
 export function getMinimumQuantumForBattle(gs: GameState): number {
    const bp = getShipBlueprint(gs);
    return bp.length;
 }
+
 export function getMinimumSpaceshipXPForBattle(gs: GameState): number {
    return quantumToXP(getMinimumQuantumForBattle(gs));
 }
@@ -120,7 +111,7 @@ export function quantumToElement(quantum: number): number {
    return Math.floor((quantum - 5) / QuantumToElement);
 }
 
-export function xpToElement(xp: number): number {
+function xpToElement(xp: number): number {
    return quantumToElement(xpToQuantum(xp));
 }
 

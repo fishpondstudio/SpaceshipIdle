@@ -127,8 +127,8 @@ export function mathSign(n: number, defaultSign = "+", epsilon = Number.EPSILON)
    return defaultSign;
 }
 
-export function formatDelta(delta: number): string {
-   return `${mathSign(delta)}${formatNumber(Math.abs(delta))}`;
+export function formatDelta(delta: number, defaultSign = "+"): string {
+   return `${mathSign(delta, defaultSign)}${formatNumber(Math.abs(delta))}`;
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types

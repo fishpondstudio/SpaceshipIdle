@@ -1,4 +1,3 @@
-import { QualifierSpaceshipValuePercent } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { calcSpaceshipXP, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -58,10 +57,10 @@ export const Tutorial: ITutorial[] = [
       },
    },
    {
-      name: () => t(L.TutorialReachXSpaceshipXP, formatNumber(quantumToXP(30) * QualifierSpaceshipValuePercent)),
+      name: () => t(L.TutorialReachXSpaceshipXP, formatNumber(quantumToXP(30))),
       desc: () => t(L.TutorialReach260SpaceshipXPDescHTML),
       progress: (gs) => {
-         return [calcSpaceshipXP(gs), quantumToXP(30) * QualifierSpaceshipValuePercent];
+         return [calcSpaceshipXP(gs), quantumToXP(30)];
       },
    },
    {

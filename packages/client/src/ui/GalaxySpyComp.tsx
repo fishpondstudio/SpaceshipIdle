@@ -109,7 +109,7 @@ export function GalaxySpyComp({ planet }: { planet: Planet }): React.ReactNode {
             <FloatingTip
                label={
                   <>
-                     <div>{t(L.BuildingSpyNetworkTooltip)}</div>
+                     <div>{t(L.GatherIntelligenceTooltip)}</div>
                      <div className="h5" />
                      <div className="flex-table mx-10">
                         <ResourceListComp res={{ VictoryPoint: -1 }} />
@@ -119,7 +119,7 @@ export function GalaxySpyComp({ planet }: { planet: Planet }): React.ReactNode {
             >
                <div className="row">
                   <div className="mi sm">visibility</div>
-                  <div>{t(L.BuildSpyNetwork)}</div>
+                  <div>{t(L.GatherIntelligence)}</div>
                </div>
             </FloatingTip>
          </button>

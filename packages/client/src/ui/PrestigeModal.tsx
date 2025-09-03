@@ -1,5 +1,4 @@
 import { prestige } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
-import { shardsFromShipValue } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { mReduceOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { saveGame } from "../game/LoadSave";
@@ -10,11 +9,11 @@ import { DefeatedHeaderComp, PrestigeHeaderComp } from "./components/BattleResul
 import { FloatingTip } from "./components/FloatingTip";
 import { showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
+import { TextureComp } from "./components/TextureComp";
 import { PrestigeReason } from "./PrestigeReason";
 
 export function PrestigeModal({ reason }: { reason: PrestigeReason }): React.ReactNode {
    const fromThisRun = mReduceOf(G.save.state.elements, (prev, k, v) => prev + v.hp + v.damage + v.amount, 0);
-   const extraShards = shardsFromShipValue(G.save.state);
    return (
       <div className="m10">
          {reason === PrestigeReason.Defeated ? <DefeatedHeaderComp /> : <PrestigeHeaderComp />}
@@ -32,15 +31,6 @@ export function PrestigeModal({ reason }: { reason: PrestigeReason }): React.Rea
                </FloatingTip>
                <div className="f1" />
                <div className="text-green">+{fromThisRun}</div>
-            </div>
-            <div className="h5" />
-            <div className="row">
-               <div>{t(L.ExtraElementShards)}</div>
-               <FloatingTip label={<RenderHTML html={t(L.ExtraElementShardsTooltipHTMLV2)} />}>
-                  <div className="mi sm">info</div>
-               </FloatingTip>
-               <div className="f1" />
-               <div className="text-green">+{extraShards}</div>
             </div>
          </div>
          {reason === PrestigeReason.Defeated ? (
@@ -62,7 +52,7 @@ export function PrestigeModal({ reason }: { reason: PrestigeReason }): React.Rea
          >
             <div>{t(L.Prestige)}</div>
             <div>
-               +{fromThisRun + extraShards} {t(L.Shards)}
+               +{fromThisRun} <TextureComp name="Others/Element16" className="inline-middle" /> {t(L.Shards)}
             </div>
          </button>
          {reason === PrestigeReason.None ? (

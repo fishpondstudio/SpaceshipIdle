@@ -1,5 +1,5 @@
 import { Progress, Switch } from "@mantine/core";
-import { Bonus } from "@spaceship-idle/shared/src/game/definitions/Bonus";
+import { Boosts } from "@spaceship-idle/shared/src/game/definitions/Boosts";
 import { FriendshipBaseCost, FriendshipDurationSeconds } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { type Planet, PlanetFlags } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
@@ -40,7 +40,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
                <div className="panel green">
                   <div className="title">Rewards</div>
                   <div className="h5" />
-                  <div className="text-sm">{Bonus[planet.friendshipBonus].desc(G.runtime)}</div>
+                  <div className="text-sm">{Boosts[planet.friendshipBonus].desc(G.runtime)}</div>
                </div>
                <div className="h10" />
                <Progress size="lg" value={progress * 100} />
@@ -94,7 +94,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
             <div className="divider my10 mx-10" />
             <div className="title">Rewards</div>
             <div className="h5" />
-            <RenderHTML html={Bonus[planet.friendshipBonus].desc(G.runtime)} className="render-html" />
+            <RenderHTML html={Boosts[planet.friendshipBonus].desc(G.runtime)} className="render-html" />
             <div className="divider my10 mx-10" />
             <div className="title">Duration</div>
             <div className="h5" />
@@ -123,7 +123,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
 
                // TODO: Debug Only!
                planet.friendshipTimeLeft = 5;
-               Bonus[planet.friendshipBonus].onStart(G.runtime);
+               Boosts[planet.friendshipBonus].onStart(G.runtime);
                planet.flags = setFlag(planet.flags, PlanetFlags.WasFriends);
                GameStateUpdated.emit();
             }}
