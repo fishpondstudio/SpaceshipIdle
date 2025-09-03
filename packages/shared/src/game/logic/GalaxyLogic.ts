@@ -130,10 +130,10 @@ export function tickGalaxy(rt: Runtime): void {
          if (planet.friendshipTimeLeft > 0) {
             --planet.friendshipTimeLeft;
 
-            const def = Boosts[planet.friendshipBonus];
-            def.onTick(planet.friendshipTimeLeft, t(L.FriendshipWith, planet.name), rt);
+            const def = Boosts[planet.friendshipBoost];
+            def.onTick?.(planet.friendshipTimeLeft, t(L.FriendshipWith, planet.name), rt);
             if (planet.friendshipTimeLeft === 0) {
-               def.onStop(rt);
+               def.onStop?.(rt);
             }
          }
 
@@ -227,7 +227,7 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
             flags: PlanetFlags.None,
             seed: randomAlphaNumeric(16),
             battleResult: null,
-            friendshipBonus: randOne(keysOf(Boosts)),
+            friendshipBoost: randOne(keysOf(Boosts)),
             friendshipTimeLeft: 0,
             revealed: false,
          };

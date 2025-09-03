@@ -676,4 +676,9 @@ export const EN = {
    VictoryRate: "Victory Rate",
    MatchmakingToken: "Matchmaking Token",
    XClassDirective: "%% Class Directive",
+   GetXXP: "Get <b>%% XP</b>",
+   GetXVictoryPoint: "Get <b>%% Victory Point</b>",
+   GetXWarp: "Get <b>%% Time Warp</b>",
+   YouCanUnlockThisDirectiveWhenYouResearchAllTechsInClass: "You can unlock this directive when you research all techs in %% class",
+   ReduceBackstabberPenaltyToX: "Reduce <b>Backstabber Penalty</b> to <b>%%</b>",
 };

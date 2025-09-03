@@ -30,7 +30,7 @@ export interface Planet extends GalaxyEntity {
    seed: string;
    battleResult: BattleResult | null;
    friendshipTimeLeft: number;
-   friendshipBonus: Boost;
+   friendshipBoost: Boost;
    revealed: boolean;
 }
 
