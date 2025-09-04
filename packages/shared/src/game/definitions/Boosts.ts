@@ -14,19 +14,19 @@ export interface IBoostDefinition {
 }
 
 export const Boosts = {
-   B1: cast<IBoostDefinition>({
+   F1a: cast<IBoostDefinition>({
       desc: (runtime: Runtime) => t(L.WarmongerPenaltyPerSec, BaseWarmongerChangePerSec),
       onTick: (timeLeft: number, source: string, runtime: Runtime) => {
          runtime.leftStat.warmongerDecrease.add(BaseWarmongerChangePerSec, source);
       },
    }),
-   B2: cast<IBoostDefinition>({
+   F1b: cast<IBoostDefinition>({
       desc: (runtime: Runtime) => t(L.XVictoryPointOnDeclarationHTML, 8),
       onStop: (runtime: Runtime) => {
          addResource("VictoryPoint", 8, runtime.left.resources);
       },
    }),
-   B3: cast<IBoostDefinition>({
+   F1c: cast<IBoostDefinition>({
       desc: (runtime: Runtime) => t(L.XVictoryPointOnDeclarationAndExpirationHTML, 3, 3),
       onStart: (runtime: Runtime) => {
          addResource("VictoryPoint", 3, runtime.left.resources);
@@ -66,7 +66,7 @@ export const Boosts = {
       },
    }),
    D1e: cast<IBoostDefinition>({
-      desc: (runtime: Runtime) => t(L.XpMultiplierForAllSkiffClassWeapons, 1),
+      desc: (runtime: Runtime) => t(L.XClassWeaponsGetXXPMultiplier, t(L.TechSkiff), 1),
       onTick: (timeLeft: number, source: string, runtime: Runtime) => {
          runtime.left.tiles.forEach((data, tile) => {
             const rs = runtime.get(tile);

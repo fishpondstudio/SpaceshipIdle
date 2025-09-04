@@ -11,4 +11,4 @@ export const Directives: Record<ShipClass, Boost[]> = {
    Battlecruiser: [],
    Carrier: [],
    Dreadnought: [],
-};
+} as const;

@@ -1,5 +1,5 @@
 import { wyhash_str } from "../thirdparty/wyhash";
-import { createTile, type Tile, uuid4 } from "../utils/Helper";
+import { createTile, randomAlphaNumeric, type Tile, uuid4 } from "../utils/Helper";
 import { jsonEncode } from "../utils/Serialization";
 import { TypedEvent } from "../utils/TypedEvent";
 import type { Addon } from "./definitions/Addons";
@@ -37,6 +37,7 @@ export interface ResourceData extends ResourceDataPersisted {
 
 export class GameState {
    id = uuid4();
+   seed = randomAlphaNumeric(32);
    tiles: Tiles = new Map();
    resources = new Map<Resource, ResourceDataPersisted>();
    stats = new Map<Stat, number>();
