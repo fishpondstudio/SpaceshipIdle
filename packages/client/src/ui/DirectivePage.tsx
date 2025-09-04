@@ -1,16 +1,20 @@
 import { Boosts } from "@spaceship-idle/shared/src/game/definitions/Boosts";
 import { ShipClass, ShipClassList } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
+import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getDirectives } from "@spaceship-idle/shared/src/game/logic/DirectiveLogic";
 import { hasUnlockedDirective } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import React from "react";
 import { G } from "../utils/Global";
+import { refreshOnTypedEvent } from "../utils/Hook";
 import { FloatingTip } from "./components/FloatingTip";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
+import { playUpgrade } from "./Sound";
 
 export function DirectivePage(): React.ReactNode {
+   refreshOnTypedEvent(GameStateUpdated);
    return (
       <SidebarComp
          title={
@@ -22,8 +26,24 @@ export function DirectivePage(): React.ReactNode {
       >
          {ShipClassList.map((shipClass) => {
             const def = ShipClass[shipClass];
+            const selected = G.save.state.selectedDirectives.get(shipClass);
+
+            if (selected) {
+               return (
+                  <div className="panel m10">
+                     <div className="row">
+                        <div className="f1">{t(L.XClassDirective, def.name())}</div>
+                     </div>
+                     <div className="text-sm mt5">
+                        <TextureComp name={"Others/Directive"} className="inline-middle" />{" "}
+                        <RenderHTML element="span" html={Boosts[selected].desc(G.runtime)} className="render-html" />
+                     </div>
+                  </div>
+               );
+            }
+
             const unlocked = hasUnlockedDirective(shipClass, G.save.state);
-            const directives = getDirectives(shipClass, G.save.state);
+            const directives = unlocked ? getDirectives(shipClass, G.save.state) : [];
             return (
                <FloatingTip
                   disabled={unlocked}
@@ -35,7 +55,7 @@ export function DirectivePage(): React.ReactNode {
                         <div className="f1">{t(L.XClassDirective, def.name())}</div>
                         {unlocked ? null : <div className="mi">lock</div>}
                      </div>
-                     <div className="text-sm text-dimmed mt5">
+                     <div className="text-sm mt5">
                         {directives.map((boost) => (
                            <React.Fragment key={boost}>
                               <div className="divider dashed" />
@@ -50,7 +70,17 @@ export function DirectivePage(): React.ReactNode {
                                     />
                                  </div>
                                  <div className="f1" />
-                                 <button className="btn text-sm">Issue</button>
+                                 <button
+                                    className="btn text-sm"
+                                    onClick={() => {
+                                       playUpgrade();
+                                       G.save.state.selectedDirectives.set(shipClass, boost);
+                                       Boosts[boost].onStart?.(G.runtime);
+                                       GameStateUpdated.emit();
+                                    }}
+                                 >
+                                    Issue
+                                 </button>
                               </div>
                            </React.Fragment>
                         ))}

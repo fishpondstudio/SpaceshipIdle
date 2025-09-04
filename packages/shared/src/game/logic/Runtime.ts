@@ -212,7 +212,9 @@ export class Runtime {
    }
 
    private _prepareForTick() {
-      this.tiles.forEach((rs) => rs.prepareForTick());
+      this.tiles.forEach((rs) => {
+         rs.prepareForTick();
+      });
       this.leftStat.prepareForTick();
       this.rightStat.prepareForTick();
    }
