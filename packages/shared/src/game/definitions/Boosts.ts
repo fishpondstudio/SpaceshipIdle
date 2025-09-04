@@ -40,7 +40,7 @@ export const Boosts = {
    D1a: cast<IBoostDefinition>({
       desc: (runtime: Runtime) => {
          const quantum = getMaxQuantumForShipClass("Skiff", runtime.left);
-         return t(L.GetXXP, formatNumber(quantumToXP(quantum + 5) - quantumToXP(quantum)));
+         return t(L.PlusXXP, formatNumber(quantumToXP(quantum + 5) - quantumToXP(quantum)));
       },
       onStart: (runtime: Runtime) => {
          const quantum = getMaxQuantumForShipClass("Skiff", runtime.left);
@@ -48,7 +48,7 @@ export const Boosts = {
       },
    }),
    D1b: cast<IBoostDefinition>({
-      desc: (runtime: Runtime) => t(L.GetXVictoryPoint, 20),
+      desc: (runtime: Runtime) => t(L.PlusXVictoryPoint, 20),
       onStart: (runtime: Runtime) => {
          addResource("VictoryPoint", 20, runtime.left.resources);
       },
@@ -60,7 +60,7 @@ export const Boosts = {
       },
    }),
    D1d: cast<IBoostDefinition>({
-      desc: (runtime: Runtime) => t(L.GetXWarp, formatNumber(6 * 60 * 60)),
+      desc: (runtime: Runtime) => t(L.PlusXWarp, formatNumber(6 * 60 * 60)),
       onStart: (runtime: Runtime) => {
          addResource("Warp", 6 * 60 * 60, runtime.left.resources);
       },
