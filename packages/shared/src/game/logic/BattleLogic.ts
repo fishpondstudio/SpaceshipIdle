@@ -187,12 +187,12 @@ export function tickTiles(
          rs.cooldown = 0;
          rs.target = target;
 
-         const damagePerFire =
+         const xpPerFire =
             getDamagePerFire({ type: data.type, level: data.level }) *
-            (rs.hpMultiplier.value + rs.damageMultiplier.value - 1);
+            (rs.xpMultiplier.value + rs.hpMultiplier.value - 1 + rs.damageMultiplier.value - 1);
 
-         addResource("XP", damagePerFire, from.resources);
-         RequestFloater.emit({ tile, amount: damagePerFire });
+         addResource("XP", xpPerFire, from.resources);
+         RequestFloater.emit({ tile, amount: xpPerFire });
 
          const ability = rs.props.ability;
          if (ability?.timing === AbilityTiming.OnFire) {

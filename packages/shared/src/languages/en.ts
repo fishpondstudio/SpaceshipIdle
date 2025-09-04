@@ -680,5 +680,6 @@ export const EN = {
    GetXVictoryPoint: "Get <b>%% Victory Point</b>",
    GetXWarp: "Get <b>%% Time Warp</b>",
    YouCanUnlockThisDirectiveWhenYouResearchAllTechsInClass: "You can unlock this directive when you research all techs in %% class",
-   ReduceBackstabberPenaltyToX: "Reduce <b>Backstabber Penalty</b> to <b>%%</b>",
+   ResetBackstabberPenaltyToX: "Reset <b>Backstabber Penalty</b> to <b>%%</b>",
+   XpMultiplierForAllSkiffClassWeapons: "+%% XP Multiplier for all Skiff-Class weapons",
 };

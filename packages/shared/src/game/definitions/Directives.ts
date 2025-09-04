@@ -2,7 +2,7 @@ import type { Boost } from "./Boosts";
 import type { ShipClass } from "./ShipClass";
 
 export const Directives: Record<ShipClass, Boost[]> = {
-   Skiff: ["B4", "B5", "B6", "B7"],
+   Skiff: ["D1a", "D1b", "D1c", "D1d"],
    Scout: [],
    Corvette: [],
    Frigate: [],

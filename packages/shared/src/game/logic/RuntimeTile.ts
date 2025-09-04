@@ -71,6 +71,7 @@ export class RuntimeTile {
 
    public readonly hpMultiplier = new TrackedValue(1);
    public readonly damageMultiplier = new TrackedValue(1);
+   public readonly xpMultiplier = new TrackedValue(1);
 
    public readonly criticalDamages: ICriticalDamage[] = [];
 
@@ -256,6 +257,7 @@ export class RuntimeTile {
       this._copyProps();
       this.hpMultiplier.clear();
       this.damageMultiplier.clear();
+      this.xpMultiplier.clear();
    }
 
    public onDestroyed(): void {

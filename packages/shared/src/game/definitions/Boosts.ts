@@ -35,7 +35,9 @@ export const Boosts = {
          addResource("VictoryPoint", 3, runtime.left.resources);
       },
    }),
-   B4: cast<IBoostDefinition>({
+
+   // Directives
+   D1a: cast<IBoostDefinition>({
       desc: (runtime: Runtime) => {
          const quantum = getMaxQuantumForShipClass("Skiff", runtime.left);
          return t(L.GetXXP, formatNumber(quantumToXP(quantum + 5) - quantumToXP(quantum)));
@@ -45,22 +47,33 @@ export const Boosts = {
          addResource("XP", quantumToXP(quantum + 5) - quantumToXP(quantum), runtime.left.resources);
       },
    }),
-   B5: cast<IBoostDefinition>({
+   D1b: cast<IBoostDefinition>({
       desc: (runtime: Runtime) => t(L.GetXVictoryPoint, 20),
       onStart: (runtime: Runtime) => {
          addResource("VictoryPoint", 20, runtime.left.resources);
       },
    }),
-   B6: cast<IBoostDefinition>({
-      desc: (runtime: Runtime) => t(L.ReduceBackstabberPenaltyToX, 0),
+   D1c: cast<IBoostDefinition>({
+      desc: (runtime: Runtime) => t(L.ResetBackstabberPenaltyToX, 0),
       onStart: (runtime: Runtime) => {
          changeStat("Backstabber", 0, runtime.left.stats);
       },
    }),
-   B7: cast<IBoostDefinition>({
+   D1d: cast<IBoostDefinition>({
       desc: (runtime: Runtime) => t(L.GetXWarp, formatNumber(6 * 60 * 60)),
       onStart: (runtime: Runtime) => {
          addResource("Warp", 6 * 60 * 60, runtime.left.resources);
+      },
+   }),
+   D1e: cast<IBoostDefinition>({
+      desc: (runtime: Runtime) => t(L.XpMultiplierForAllSkiffClassWeapons, 1),
+      onTick: (timeLeft: number, source: string, runtime: Runtime) => {
+         runtime.left.tiles.forEach((data, tile) => {
+            const rs = runtime.get(tile);
+            if (rs) {
+               rs.xpMultiplier.add(1, source);
+            }
+         });
       },
    }),
 } as const satisfies Record<string, IBoostDefinition>;

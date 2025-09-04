@@ -123,23 +123,29 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
          <div className="divider my10" />
          <div className="mx10">
             <div className="row g5">
-               <TextureComp name="Others/XP24" />
-               <div>{perSec ? t(L.PerSec) : t(L.PerFire)}</div>
+               <TextureComp name="Others/XP" />
+               <div>
+                  {t(L.XP)} {perSec ? t(L.PerSec) : t(L.PerFire)}
+               </div>
                <div className="f1" />
                <div>
                   <StatComp current={xp * (rs.hpMultiplier.value + rs.damageMultiplier.value - 1)} original={xp} />
                </div>
             </div>
-            {rs.hpMultiplier.value > 1 || rs.damageMultiplier.value > 1 ? (
+            {rs.xpMultiplier.value > 1 || rs.hpMultiplier.value > 1 || rs.damageMultiplier.value > 1 ? (
                <div className="text-sm">
                   <div className="subtitle">
-                     {t(L.XPMultiplier)} x{formatNumber(rs.damageMultiplier.value + rs.hpMultiplier.value - 1)}
+                     {t(L.XPMultiplier)} x
+                     {formatNumber(rs.xpMultiplier.value + rs.damageMultiplier.value - 1 + rs.hpMultiplier.value - 1)}
                   </div>
-                  <div className="row g5">
-                     <div className="f1">{t(L.BaseValue)}</div>
-                     <div className="text-green">+1</div>
-                  </div>
-
+                  {rs.xpMultiplier.detail.map((m) => {
+                     return (
+                        <div className="row g5" key={m.source}>
+                           <div className="f1">{m.source}</div>
+                           <div className="text-green">+{formatNumber(m.value)}</div>
+                        </div>
+                     );
+                  })}
                   {rs.hpMultiplier.value > 1 ? (
                      <div className="row g5">
                         <div className="f1">{t(L.FromExtraHpMultiplier)}</div>
