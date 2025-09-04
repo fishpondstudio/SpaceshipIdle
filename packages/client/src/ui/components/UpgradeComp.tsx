@@ -192,7 +192,10 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   <div className="mi pointer">rule_settings</div>
                </Popover.Target>
                <Popover.Dropdown>
-                  {mMapOf(G.save.state.addons, (addon) => {
+                  {mMapOf(G.save.state.addons, (addon, data) => {
+                     if (data.amount <= 0) {
+                        return null;
+                     }
                      return (
                         <div key={addon} className="row">
                            <TextureComp name={`Addon/${addon}`} />

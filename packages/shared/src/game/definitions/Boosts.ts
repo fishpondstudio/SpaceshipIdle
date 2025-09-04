@@ -14,6 +14,7 @@ export interface IBoostDefinition {
 }
 
 export const Boosts = {
+   // Friendships
    F1a: cast<IBoostDefinition>({
       desc: (runtime: Runtime) => t(L.WarmongerPenaltyPerSec, BaseWarmongerChangePerSec),
       onTick: (timeLeft: number, source: string, runtime: Runtime) => {

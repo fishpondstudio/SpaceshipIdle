@@ -50,11 +50,11 @@ export function AddonPage(): React.ReactNode {
                               <div className="row">
                                  <div>{def.name()}</div>
                                  <div className="f1" />
-                                 {tile === null ? (
+                                 {amount > 0 && tile === null ? (
                                     <Badge color="red" variant="outline">
                                        <div className="row g5 text-xs">
                                           <div className="mi xs">error</div>
-                                          <div className="">Unequipped</div>
+                                          <div className="">{t(L.Unequipped)}</div>
                                        </div>
                                     </Badge>
                                  ) : null}

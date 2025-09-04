@@ -3,7 +3,7 @@ import { createTile, randomAlphaNumeric, type Tile, uuid4 } from "../utils/Helpe
 import { jsonEncode } from "../utils/Serialization";
 import { TypedEvent } from "../utils/TypedEvent";
 import type { Addon } from "./definitions/Addons";
-import { Boost } from "./definitions/Boosts";
+import type { Boost } from "./definitions/Boosts";
 import type { Catalyst, CatalystCat } from "./definitions/Catalyst";
 import type { Galaxy } from "./definitions/Galaxy";
 import type { Resource } from "./definitions/Resource";
@@ -15,7 +15,6 @@ import { GameOption } from "./GameOption";
 import { MaxX, MaxY } from "./Grid";
 import { type ITileData, makeTile } from "./ITileData";
 import type { AlertType } from "./logic/AlertLogic";
-import { rollCatalyst } from "./logic/CatalystLogic";
 import type { ElementSymbol } from "./PeriodicTable";
 
 export type Tiles = Map<Tile, ITileData>;
@@ -59,7 +58,6 @@ export class GameData {
    tick = 0;
    elementChoices: ElementChoice[] = [];
    permanentElementChoices: ElementChoice[] = [];
-   catalystChoices = new Map<CatalystCat, Catalyst[]>([["C1", rollCatalyst("C1")]]);
    galaxy: Galaxy = { starSystems: [] };
    alerts: { message: string; type: AlertType; time: number }[] = [];
 }

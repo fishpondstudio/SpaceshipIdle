@@ -5,9 +5,10 @@ import { hasUnequippedAddon } from "@spaceship-idle/shared/src/game/logic/AddonL
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { hasCatalystToChoose } from "@spaceship-idle/shared/src/game/logic/CatalystLogic";
+import { hasAvailableFriendship, hasAvailablePirates } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { hasUnassignedElements } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { formatNumber, hasFlag, round } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls, formatNumber, hasFlag, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
 import { getCurrentTutorial } from "../game/Tutorial";
@@ -222,11 +223,7 @@ function SceneSwitcher(): React.ReactNode {
                   value: Scenes.ShipScene,
                },
                {
-                  label: (
-                     <FloatingTip position="top" label={t(L.TabGalaxy)}>
-                        <TextureComp name="Others/Galaxy24" />
-                     </FloatingTip>
-                  ),
+                  label: <GalaxyTabLabel />,
                   value: Scenes.GalaxyScene,
                },
                {
@@ -263,9 +260,41 @@ function SceneSwitcher(): React.ReactNode {
    );
 }
 
+function GalaxyTabLabel(): React.ReactNode {
+   refreshOnTypedEvent(GameStateUpdated);
+   const tooltip: string[] = [];
+   if (hasAvailableFriendship(G.save)) {
+      tooltip.push(t(L.YouHaveAvailableFriendshipTooltip));
+   }
+   if (hasAvailablePirates(G.save.data.galaxy)) {
+      tooltip.push(t(L.YouHaveAvailablePiratesTooltip));
+   }
+   if (tooltip.length > 0) {
+      return (
+         <FloatingTip
+            position="top"
+            label={tooltip.map((t, i) => (
+               <div key={i} className={cls(i === 0 ? null : "mt10")}>
+                  {t}
+               </div>
+            ))}
+         >
+            <Indicator color="red" processing>
+               <TextureComp name="Others/Galaxy24" />
+            </Indicator>
+         </FloatingTip>
+      );
+   }
+   return (
+      <FloatingTip position="top" label={t(L.TabGalaxy)}>
+         <TextureComp name="Others/Galaxy24" />
+      </FloatingTip>
+   );
+}
+
 function CatalystTabLabel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
-   if (hasCatalystToChoose(G.save)) {
+   if (hasCatalystToChoose(G.save, G.runtime)) {
       return (
          <FloatingTip position="top" label={t(L.YouHaveCatalystToChooseTooltip)}>
             <Indicator color="red" processing>

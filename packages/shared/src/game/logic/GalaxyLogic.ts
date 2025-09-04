@@ -53,7 +53,9 @@ export function getAddonReward(seed: string, gs: GameState): Addon[] {
    const [addon, ...candidates] = addons;
    const previousShipClass = getPreviousShipClass(shipClass);
    if (previousShipClass) {
-      getAddonsInClass(previousShipClass).forEach((b) => candidates.push(b));
+      getAddonsInClass(previousShipClass).forEach((b) => {
+         candidates.push(b);
+      });
    }
    shuffle(candidates, random);
    const result = candidates.slice(0, 2);
@@ -86,7 +88,24 @@ export function getMaxFriendship(gs: GameState): [number, ValueBreakdown[]] {
    const shipClass = getShipClass(gs);
    const def = ShipClass[shipClass];
    const result = ShipClassList.indexOf(shipClass) + 1;
-   return [result, [{ name: `${def.name()} Ship Class`, value: result }]];
+   return [result, [{ name: t(L.XClass, def.name()), value: result }]];
+}
+
+export function hasAvailableFriendship(save: SaveGame): boolean {
+   return getMaxFriendship(save.state)[0] > getCurrentFriendship(save);
+}
+
+export function hasAvailablePirates(galaxy: Galaxy): boolean {
+   for (const starSystem of galaxy.starSystems) {
+      if (starSystem.discovered) {
+         for (const planet of starSystem.planets) {
+            if (planet.type === PlanetType.Pirate && !planet.battleResult) {
+               return true;
+            }
+         }
+      }
+   }
+   return false;
 }
 
 export function getShipClassByIndex(idx: number): ShipClass {

@@ -1,6 +1,7 @@
 import { keysOf, shuffle } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
-import { Catalyst, CatalystCat, type ICatalystDefinition } from "../definitions/Catalyst";
+import { srand } from "../../utils/Random";
+import { Catalyst, CatalystCat, CatalystCatList, type ICatalystDefinition } from "../definitions/Catalyst";
 import { CatalystPerCat } from "../definitions/Constant";
 import type { GameState, SaveGame } from "../GameState";
 import type { Multipliers } from "./IMultiplier";
@@ -19,6 +20,8 @@ export function getEffect(def: ICatalystDefinition): string {
             return t(L.CatalystDamageMultiplier, value);
          case "hp":
             return t(L.CatalystHPMultiplier, value);
+         default:
+            throw new Error(`Unknown multiplier: ${key}`);
       }
    });
    return `${t(L.CatalystAllXGet, def.trait())} ${multipliers.join(", ")}`;
@@ -33,11 +36,10 @@ export function getNextCatalystCat(cat: CatalystCat): CatalystCat | null {
 }
 
 export function getPreviousCatalystCat(cat: CatalystCat): CatalystCat | null {
-   const keys = keysOf(CatalystCat);
-   const idx = keys.indexOf(cat);
+   const idx = CatalystCatList.indexOf(cat);
    if (idx === -1) return null;
    if (idx === 0) return null;
-   return keys[idx - 1] as CatalystCat;
+   return CatalystCatList[idx - 1] as CatalystCat;
 }
 
 export function canChooseCatalystCat(cat: CatalystCat, rt: Runtime): boolean {
@@ -48,17 +50,17 @@ export function canChooseCatalystCat(cat: CatalystCat, rt: Runtime): boolean {
    return rt.leftStat.isCatalystActivated(selected);
 }
 
-export function hasCatalystToChoose(save: SaveGame): boolean {
-   for (const [cat, choices] of save.data.catalystChoices) {
-      if (!save.state.selectedCatalysts.has(cat)) {
-         return true;
+export function hasCatalystToChoose(save: SaveGame, rt: Runtime): boolean {
+   for (const [cat, choices] of save.state.selectedCatalysts) {
+      if (!rt.leftStat.isCatalystActivated(cat as Catalyst)) {
+         return false;
       }
    }
-   return false;
+   return true;
 }
 
-export function rollCatalyst(cat: CatalystCat): Catalyst[] {
-   return shuffle(CatalystCat[cat].candidates.slice(0)).slice(0, CatalystPerCat);
+export function getCatalystChoices(cat: CatalystCat, gs: GameState): Catalyst[] {
+   return shuffle(CatalystCat[cat].candidates.slice(0), srand(gs.seed)).slice(0, CatalystPerCat);
 }
 
 export function tickCatalyst(gs: GameState, stat: RuntimeStat, runtime: Runtime): void {

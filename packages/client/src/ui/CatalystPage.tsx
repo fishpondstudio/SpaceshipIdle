@@ -1,16 +1,16 @@
 import { ScrollArea } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { Catalyst, CatalystCat } from "@spaceship-idle/shared/src/game/definitions/Catalyst";
-import { CatalystPerCat } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { Catalyst, CatalystCat, CatalystCatList } from "@spaceship-idle/shared/src/game/definitions/Catalyst";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import {
    canChooseCatalystCat,
+   getCatalystChoices,
    getEffect,
-   getNextCatalystCat,
+   getPreviousCatalystCat,
    getRequirement,
 } from "@spaceship-idle/shared/src/game/logic/CatalystLogic";
-import { keysOf, shuffle } from "@spaceship-idle/shared/src/utils/Helper";
+import { keysOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
@@ -26,8 +26,13 @@ export function CatalystPage(): React.ReactNode {
    return (
       <SidebarComp title={t(L.TabCatalyst)}>
          <div className="h10" />
-         {Array.from(G.save.data.catalystChoices).map(([cat, data], idx) => {
+         {CatalystCatList.map((cat, idx) => {
+            const previousCat = getPreviousCatalystCat(cat);
+            const choices = getCatalystChoices(cat, G.save.state);
             const selected = G.save.state.selectedCatalysts.get(cat);
+            if (previousCat && !G.save.state.selectedCatalysts.has(previousCat)) {
+               return null;
+            }
             return (
                <div key={cat}>
                   {idx > 0 ? <div className="divider my10" /> : null}
@@ -36,7 +41,7 @@ export function CatalystPage(): React.ReactNode {
                   {selected ? (
                      <CatalystItem catalyst={selected} cat={cat} />
                   ) : (
-                     data.map((choice) => {
+                     choices.map((choice) => {
                         return <CatalystItem key={choice} catalyst={choice} cat={cat} />;
                      })
                   )}
@@ -90,13 +95,6 @@ function CatalystItem({ catalyst, cat }: { catalyst: Catalyst; cat: CatalystCat 
                      }
                      playClick();
                      G.save.state.selectedCatalysts.set(cat, catalyst);
-                     const next = getNextCatalystCat(cat);
-                     if (next) {
-                        G.save.data.catalystChoices.set(
-                           next,
-                           shuffle(CatalystCat[next].candidates.slice(0)).slice(0, CatalystPerCat),
-                        );
-                     }
                      GameStateUpdated.emit();
                   }}
                >

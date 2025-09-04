@@ -182,6 +182,18 @@ export function PeaceTreatyModal({
                      playBling();
                   }
 
+                  for (const [addon, count] of battleResult.current.addons) {
+                     if (count <= 0) {
+                        battleResult.current.addons.delete(addon);
+                     }
+                  }
+
+                  for (const [resource, value] of battleResult.current.resources) {
+                     if (value <= 0) {
+                        battleResult.current.resources.delete(resource);
+                     }
+                  }
+
                   battleResult.current.resources.forEach((value, resource) => {
                      addResource(resource, value, G.save.state.resources);
                   });

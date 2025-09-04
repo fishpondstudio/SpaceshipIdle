@@ -682,4 +682,7 @@ export const EN = {
    YouCanUnlockThisDirectiveWhenYouResearchAllTechsInClass: "You can unlock this directive when you research all techs in %% class. Choose one of the listed directives.",
    ResetBackstabberPenaltyToX: "Reset <b>Backstabber Penalty</b> to <b>%%</b>",
    XClassWeaponsGetXXPMultiplier: "<b>%%</b> class weapons get <b>+%% XP Multiplier</b>",
+   Unequipped: "Unequipped",
+   YouHaveAvailableFriendshipTooltip: "You have available friendship slot(s). Declare friendship with a neutral state for rewards",
+   YouHaveAvailablePiratesTooltip: "There are pirate(s) in the galaxy. Defeat them in a spaceship battle for rewards",
 };

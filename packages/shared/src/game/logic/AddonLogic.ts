@@ -42,7 +42,7 @@ export function rollAddon(gs: GameState): Addon | null {
 
 export function hasUnequippedAddon(gs: GameState): boolean {
    for (const data of gs.addons.values()) {
-      if (data.tile === null) {
+      if (data.amount > 0 && data.tile === null) {
          return true;
       }
    }

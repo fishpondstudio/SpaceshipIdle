@@ -1,4 +1,4 @@
-import { numberToRoman } from "../../utils/Helper";
+import { keysOf, numberToRoman } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import type { Multipliers } from "../logic/IMultiplier";
@@ -179,5 +179,7 @@ export const CatalystCat = {
       candidates: ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"],
    },
 } as const satisfies Record<string, { name: () => string; candidates: Catalyst[] }>;
+
+export const CatalystCatList = keysOf(CatalystCat);
 
 export type CatalystCat = keyof typeof CatalystCat;
