@@ -1,11 +1,9 @@
-import { ColorInput } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { CodeLabel } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
-import { memo } from "react";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { AttackComp } from "./components/AttackComp";
 import { DefenseComp } from "./components/DefenseComp";
@@ -17,10 +15,6 @@ import { TitleComp } from "./components/TitleComp";
 import { UpgradeComp } from "./components/UpgradeComp";
 import { VideoTutorialComp } from "./components/VideoTutorialComp";
 import type { ITileWithGameState } from "./ITileWithGameState";
-
-const ColorInput_ = memo(ColorInput, (oldProps, newProps) => {
-   return oldProps.value === newProps.value && oldProps.onChangeEnd === newProps.onChangeEnd;
-});
 
 export function BuildingPage({ tile, gs, readonly }: ITileWithGameState & { readonly: boolean }): React.ReactNode {
    refreshOnTypedEvent(GameOptionUpdated);
