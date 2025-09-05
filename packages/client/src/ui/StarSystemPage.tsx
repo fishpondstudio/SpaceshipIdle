@@ -10,6 +10,7 @@ import { playClick } from "./Sound";
 
 export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
+   let canExplore = true;
    return (
       <SidebarComp
          title={
@@ -100,11 +101,15 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
                         return null;
                      }
                      return starSystem.planets.map((planet) => {
+                        const eligible = planet.friendshipTimeLeft > 0 || planet.battleResult;
+                        if (!eligible) {
+                           canExplore = false;
+                        }
                         return (
                            <div key={planet.id} className="row">
                               <TextureComp name={`Galaxy/${planet.texture}`} />
                               <div className="f1">{planet.name}</div>
-                              {planet.friendshipTimeLeft > 0 || planet.battleResult ? (
+                              {eligible ? (
                                  <div className="mi sm text-green">check_circle</div>
                               ) : (
                                  <div className="mi sm text-red">cancel</div>
@@ -113,6 +118,12 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
                         );
                      });
                   })}
+               </div>
+               <div className="mx10">
+                  <button className="btn w100 row g5 py5" disabled={!canExplore}>
+                     <div className="mi">explore</div>
+                     <div>Explore {starSystem.name}</div>
+                  </button>
                </div>
             </>
          )}
