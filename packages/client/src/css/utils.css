@@ -376,6 +376,26 @@
    text-align: center;
 }
 
+.lh-xs {
+   line-height: var(--mantine-line-height-xs);
+}
+
+.lh-sm {
+   line-height: var(--mantine-line-height-sm);
+}
+
+.lh-md {
+   line-height: var(--mantine-line-height-md);
+}
+
+.lh-lg {
+   line-height: var(--mantine-line-height-lg);
+}
+
+.lh-xl {
+   line-height: var(--mantine-line-height-xl);
+}
+
 .text-right {
    text-align: right;
 }

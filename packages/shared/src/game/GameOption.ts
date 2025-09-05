@@ -1,7 +1,6 @@
 import type { CountryCode } from "../utils/CountryCode";
 import type { ValueOf } from "../utils/Helper";
 import { TypedEvent } from "../utils/TypedEvent";
-import type { Building } from "./definitions/Buildings";
 import type { Languages } from "./Languages";
 import type { VideoTutorial } from "./logic/VideoTutorials";
 import type { IShortcutConfig, Shortcut } from "./Shortcut";
@@ -120,7 +119,6 @@ export class GameOption {
    country: keyof typeof CountryCode = "EARTH";
    chatLanguages: Set<keyof typeof Languages> = new Set(["en"]);
    language: keyof typeof Languages = "en";
-   buildingColors: Map<Building, number> = new Map();
    flag: GameOptionFlag = GameOptionFlag.RetroFilter;
    nebulaStrength = 0.5;
    volume = 1;

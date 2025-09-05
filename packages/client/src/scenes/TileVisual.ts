@@ -74,7 +74,6 @@ export class TileVisual extends Container {
       this._sprite.anchor.set(0.5);
       this._sprite.width = 75;
       this._sprite.height = 75;
-      this._sprite.tint = G.save.options.buildingColors.get(data.type) ?? 0xffffff;
 
       if (!hasFlag(this.flag, BuildingFlag.CanRotate)) {
          this._sprite.rotation += hasFlag(flag, TileVisualFlag.FlipHorizontal) ? Math.PI * 1.5 : Math.PI * 0.5;
@@ -151,7 +150,9 @@ export class TileVisual extends Container {
    }
 
    override destroy(options?: IDestroyOptions | boolean): void {
-      this._disposables.forEach((d) => d.dispose());
+      this._disposables.forEach((d) => {
+         d.dispose();
+      });
       this._disposables = [];
       super.destroy(options);
    }
@@ -160,9 +161,7 @@ export class TileVisual extends Container {
       return String(this.data.level);
    }
 
-   private onGameOptionUpdated(): void {
-      this._sprite.tint = G.save.options.buildingColors.get(this.data.type) ?? 0xffffff;
-   }
+   private onGameOptionUpdated(): void {}
 
    public get tint(): ColorSource {
       return this._sprite.tint;

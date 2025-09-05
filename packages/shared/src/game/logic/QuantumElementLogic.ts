@@ -20,7 +20,6 @@ export function tickElement(save: SaveGame): void {
       changeStat("Element", expectedElements - currentElements, save.state.stats);
    }
    for (let i = currentElements; i < expectedElements; i++) {
-      console.log(i);
       const candidates = getUnlockedElements(save.state);
       const choices = shuffle(candidates.slice(0, DefaultElementChoices * 2)).slice(0, DefaultElementChoices);
       if (choices.length >= DefaultElementChoices) {

@@ -685,4 +685,7 @@ export const EN = {
    Unequipped: "Unequipped",
    YouHaveAvailableFriendshipTooltip: "You have available friendship slot(s). Declare friendship with a neutral state for rewards",
    YouHaveAvailablePiratesTooltip: "There are pirate(s) in the galaxy. Defeat them in a spaceship battle for rewards",
+   You: "You",
+   Pirate: "Pirate",
+   NeutralState: "Neutral State",
 };

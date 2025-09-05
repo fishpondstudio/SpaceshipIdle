@@ -34,6 +34,16 @@
    font-weight: bold;
    color: var(--mantine-color-dark-2);
 
+   &.text-green {
+      color: var(--mantine-color-green-5);
+   }
+   &.text-red {
+      color: var(--mantine-color-red-5);
+   }
+   &.text-yellow {
+      color: var(--mantine-color-yellow-5);
+   }
+
    &.mx0 {
       margin-left: 0;
       margin-right: 0;

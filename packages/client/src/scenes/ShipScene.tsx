@@ -389,10 +389,6 @@ export class ShipScene extends Scene {
                      G.textures.get(`Projectile/${Config.Buildings[projectile.building].code}`),
                ),
             );
-            const tv = this._tileVisuals.get(projectile.fromTile);
-            if (tv) {
-               visual.tint = G.save.options.buildingColors.get(projectile.building) ?? 0xffffff;
-            }
             this._projectileVisuals.set(id, visual);
          }
          const pos = projectile.position(projectile.time + timeSinceLastTick);

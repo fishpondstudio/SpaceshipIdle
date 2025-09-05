@@ -30,7 +30,7 @@ export function DirectivePage(): React.ReactNode {
 
             if (selected) {
                return (
-                  <div className="panel m10">
+                  <div key={shipClass} className="panel m10">
                      <div className="row">
                         <div className="f1">{t(L.XClassDirective, def.name())}</div>
                      </div>

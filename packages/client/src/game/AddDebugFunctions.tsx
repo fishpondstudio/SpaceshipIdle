@@ -1,13 +1,11 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { rollElementShards } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
 import { changeStat, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { randomColor } from "@spaceship-idle/shared/src/thirdparty/RandomColor";
-import { enumOf, equal, forEach, INT32_MAX, round } from "@spaceship-idle/shared/src/utils/Helper";
+import { enumOf, equal, INT32_MAX, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { jsonEncode } from "@spaceship-idle/shared/src/utils/Serialization";
 import { RPCClient } from "../rpc/RPCClient";
@@ -30,13 +28,6 @@ export function addDebugFunctions(): void {
    globalThis.G = G;
    // @ts-expect-error
    globalThis.Config = Config;
-   // @ts-expect-error
-   globalThis.randColor = () => {
-      forEach(Config.Buildings, (b, def) => {
-         G.save.options.buildingColors.set(b, randomColor());
-      });
-      GameOptionUpdated.emit();
-   };
    // @ts-expect-error
    globalThis.reset = async () => {
       await idbClear();

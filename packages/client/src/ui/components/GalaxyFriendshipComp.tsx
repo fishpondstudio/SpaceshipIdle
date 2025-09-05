@@ -37,8 +37,8 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
       if (timeLeft > 0) {
          return (
             <>
-               <div className="panel green">
-                  <div className="title">Rewards</div>
+               <div className="panel">
+                  <div className="title text-green">Rewards</div>
                   <div className="h5" />
                   <RenderHTML html={Boosts[planet.friendshipBoost].desc(G.runtime)} className="render-html" />
                </div>

@@ -91,6 +91,22 @@ export function getMaxFriendship(gs: GameState): [number, ValueBreakdown[]] {
    return [result, [{ name: t(L.XClass, def.name()), value: result }]];
 }
 
+export function getPlanetStatusLabel(planet: Planet): string {
+   if (planet.friendshipTimeLeft > 0) {
+      return "Friends";
+   }
+   if (planet.battleResult) {
+      if (planet.battleResult.battleScore > 0) {
+         return "Victory";
+      }
+      return "Defeat";
+   }
+   if (planet.type === PlanetType.Pirate) {
+      return "Pirate";
+   }
+   return "Neutral";
+}
+
 export function hasAvailableFriendship(save: SaveGame): boolean {
    return getMaxFriendship(save.state)[0] > getCurrentFriendship(save);
 }

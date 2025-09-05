@@ -5,8 +5,7 @@ import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
-import { memo, useCallback } from "react";
-import { G } from "../utils/Global";
+import { memo } from "react";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { AttackComp } from "./components/AttackComp";
 import { DefenseComp } from "./components/DefenseComp";
@@ -31,13 +30,6 @@ export function BuildingPage({ tile, gs, readonly }: ITileWithGameState & { read
    }
    const def = Config.Buildings[data?.type];
    const codeLabel = CodeLabel[def.code]();
-   const changeColor = useCallback(
-      (value: string) => {
-         G.save.options.buildingColors.set(data.type, Number.parseInt(value.substring(1), 16));
-         GameOptionUpdated.emit();
-      },
-      [data.type],
-   );
    return (
       <SidebarComp
          title={
@@ -62,13 +54,6 @@ export function BuildingPage({ tile, gs, readonly }: ITileWithGameState & { read
          <DefenseComp tile={tile} gs={gs} />
          <AttackComp tile={tile} gs={gs} />
          <StatusEffectComp tile={tile} gs={gs} />
-         <div className="divider my10" />
-         <div className="mx10">
-            <ColorInput_
-               value={`#${(G.save.options.buildingColors.get(data.type) ?? 0xffffff).toString(16)}`}
-               onChangeEnd={changeColor}
-            />
-         </div>
          <div className="h10" />
       </SidebarComp>
    );
