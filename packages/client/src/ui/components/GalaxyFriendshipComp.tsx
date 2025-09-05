@@ -40,7 +40,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
                <div className="panel green">
                   <div className="title">Rewards</div>
                   <div className="h5" />
-                  <div className="text-sm">{Boosts[planet.friendshipBoost].desc(G.runtime)}</div>
+                  <RenderHTML html={Boosts[planet.friendshipBoost].desc(G.runtime)} className="render-html" />
                </div>
                <div className="h10" />
                <Progress size="lg" value={progress * 100} />
@@ -121,8 +121,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
                   return;
                }
 
-               // TODO: Debug Only!
-               planet.friendshipTimeLeft = 5;
+               planet.friendshipTimeLeft = FriendshipDurationSeconds;
                Boosts[planet.friendshipBoost].onStart?.(G.runtime);
                planet.flags = setFlag(planet.flags, PlanetFlags.WasFriends);
                GameStateUpdated.emit();
@@ -149,7 +148,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
 function FriendshipCostComp(): React.ReactNode {
    const warmongerPenalty = getWarmongerPenalty(G.save.state);
    const backstabberPenalty = getStat("Backstabber", G.save.state.stats);
-   const totalCost = warmongerPenalty + backstabberPenalty + 1;
+   const totalCost = warmongerPenalty + backstabberPenalty + FriendshipBaseCost;
    const victoryPoint = resourceOf("VictoryPoint", G.save.state.resources).current;
    return (
       <>

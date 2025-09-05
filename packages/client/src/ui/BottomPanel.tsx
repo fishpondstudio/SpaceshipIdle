@@ -1,12 +1,14 @@
 import { Indicator, Progress, SegmentedControl } from "@mantine/core";
-import { AddonElementId } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { AddonElementId, FriendshipBaseCost } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameState, GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { hasUnequippedAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { hasCatalystToChoose } from "@spaceship-idle/shared/src/game/logic/CatalystLogic";
 import { hasAvailableFriendship, hasAvailablePirates } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { hasUnassignedElements } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
+import { getStat, resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { cls, formatNumber, hasFlag, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -262,13 +264,19 @@ function SceneSwitcher(): React.ReactNode {
 
 function GalaxyTabLabel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
+
+   const warmongerPenalty = getWarmongerPenalty(G.save.state);
+   const backstabberPenalty = getStat("Backstabber", G.save.state.stats);
+   const victoryPoint = resourceOf("VictoryPoint", G.save.state.resources).current;
+
    const tooltip: string[] = [];
-   if (hasAvailableFriendship(G.save)) {
+   if (hasAvailableFriendship(G.save) && victoryPoint >= warmongerPenalty + backstabberPenalty + FriendshipBaseCost) {
       tooltip.push(t(L.YouHaveAvailableFriendshipTooltip));
    }
-   if (hasAvailablePirates(G.save.data.galaxy)) {
+   if (hasAvailablePirates(G.save.data.galaxy) && victoryPoint >= warmongerPenalty) {
       tooltip.push(t(L.YouHaveAvailablePiratesTooltip));
    }
+
    if (tooltip.length > 0) {
       return (
          <FloatingTip
