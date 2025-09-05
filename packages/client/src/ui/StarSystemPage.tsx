@@ -1,12 +1,15 @@
 import { PlanetTypeLabel, type StarSystem } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
+import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getPlanetStatusLabel } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { GalaxyScene } from "../scenes/GalaxyScene";
 import { G } from "../utils/Global";
+import { refreshOnTypedEvent } from "../utils/Hook";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
 import { playClick } from "./Sound";
 
 export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): React.ReactNode {
+   refreshOnTypedEvent(GameStateUpdated);
    return (
       <SidebarComp
          title={
@@ -54,30 +57,65 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
                </div>
             </div>
          </div>
-         <div className="divider my10" />
-         <div className="title">Planets</div>
-         <div className="divider my10" />
-         <div className="m10">
-            {starSystem.planets.map((planet) => (
-               <div
-                  key={planet.id}
-                  className="pointer"
-                  onClick={() => {
-                     playClick();
-                     G.scene.getCurrent(GalaxyScene)?.select(planet.id);
-                  }}
-               >
-                  <div className="row my10">
-                     <TextureComp name={`Galaxy/${planet.texture}`} />
-                     <div className="f1 lh-xs">
-                        <div>{planet.name}</div>
-                        <div className="text-sm text-dimmed">{PlanetTypeLabel[planet.type]()}</div>
+
+         {starSystem.discovered ? (
+            <>
+               <div className="divider my10" />
+               <div className="title">Planets</div>
+               <div className="divider my10" />
+               <div className="m10">
+                  {starSystem.planets.map((planet) => (
+                     <div
+                        key={planet.id}
+                        className="pointer"
+                        onClick={() => {
+                           playClick();
+                           G.scene.getCurrent(GalaxyScene)?.select(planet.id);
+                        }}
+                     >
+                        <div className="row my10">
+                           <TextureComp name={`Galaxy/${planet.texture}`} />
+                           <div className="f1 lh-xs">
+                              <div>{planet.name}</div>
+                              <div className="text-sm text-dimmed">{PlanetTypeLabel[planet.type]()}</div>
+                           </div>
+                           <div className="text-sm">{getPlanetStatusLabel(planet)}</div>
+                        </div>
                      </div>
-                     <div className="text-sm">{getPlanetStatusLabel(planet)}</div>
-                  </div>
+                  ))}
                </div>
-            ))}
-         </div>
+            </>
+         ) : (
+            <>
+               <div className="divider my10" />
+               <div className="title">Exploration</div>
+               <div className="divider my10" />
+               <div className="mx10 text-sm">
+                  To explore this star system, you need to either be in a friendship, or have battled all discovered
+                  planets
+               </div>
+               <div className="panel m10">
+                  {G.save.data.galaxy.starSystems.map((starSystem) => {
+                     if (!starSystem.discovered) {
+                        return null;
+                     }
+                     return starSystem.planets.map((planet) => {
+                        return (
+                           <div key={planet.id} className="row">
+                              <TextureComp name={`Galaxy/${planet.texture}`} />
+                              <div className="f1">{planet.name}</div>
+                              {planet.friendshipTimeLeft > 0 || planet.battleResult ? (
+                                 <div className="mi sm text-green">check_circle</div>
+                              ) : (
+                                 <div className="mi sm text-red">cancel</div>
+                              )}
+                           </div>
+                        );
+                     });
+                  })}
+               </div>
+            </>
+         )}
       </SidebarComp>
    );
 }
