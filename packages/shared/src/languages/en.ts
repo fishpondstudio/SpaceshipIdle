@@ -690,4 +690,5 @@ export const EN = {
    NeutralState: "Neutral State",
    TimeLeft: "Time Left",
    ExplorationCostDesc: "Exploration cost is determined by the distance from you <b>(%% Victory Point per lyr)</b>",
+   SelectAddOn: "Select Add-on",
 };

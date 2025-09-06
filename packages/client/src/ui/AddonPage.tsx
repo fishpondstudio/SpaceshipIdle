@@ -5,10 +5,13 @@ import { formatNumber, mapOf, reduceOf } from "@spaceship-idle/shared/src/utils/
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import React from "react";
 import { G } from "../utils/Global";
+import { showModal } from "../utils/ToggleModal";
 import { FloatingTip } from "./components/FloatingTip";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
+import { FuseAddonModal } from "./FuseAddonModal";
+import { playClick } from "./Sound";
 
 export function AddonPage(): React.ReactNode {
    return (
@@ -21,9 +24,15 @@ export function AddonPage(): React.ReactNode {
          }
       >
          <div className="m10">
-            <button className="btn filled w100 py5 row">
+            <button
+               className="btn filled w100 py5 row"
+               onClick={() => {
+                  playClick();
+                  showModal({ children: <FuseAddonModal />, size: "lg", title: "Fuse Add-ons", dismiss: true });
+               }}
+            >
                <div className="mi">chart_data</div>
-               <div>Improve Add-ons</div>
+               <div>Fuse Add-ons</div>
             </button>
          </div>
          {mapOf(ShipClass, (k, v) => {

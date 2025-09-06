@@ -1,6 +1,6 @@
 import { forEach, shuffle } from "../../utils/Helper";
 import { type Addon, Addons } from "../definitions/Addons";
-import type { ShipClass } from "../definitions/ShipClass";
+import { type ShipClass, ShipClassList } from "../definitions/ShipClass";
 import type { GameState } from "../GameState";
 import type { Runtime } from "./Runtime";
 import { getShipClass } from "./TechLogic";
@@ -57,4 +57,16 @@ export function getAddonsInClass(shipClass: ShipClass): Addon[] {
       }
    });
    return candidates;
+}
+
+export function getFuseCost(fromAddon: Addon, toAddon: Addon): number {
+   if (fromAddon === toAddon) {
+      return 0;
+   }
+   const fromShipClassIdx = ShipClassList.indexOf(Addons[fromAddon].shipClass);
+   const toShipClassIdx = ShipClassList.indexOf(Addons[toAddon].shipClass);
+   if (fromShipClassIdx > toShipClassIdx) {
+      return 0;
+   }
+   return 2 ** (toShipClassIdx - fromShipClassIdx);
 }
