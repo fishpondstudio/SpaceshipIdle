@@ -18,19 +18,39 @@ export class GalaxyEntityVisual extends Container {
 }
 
 export class StarSystemVisual extends GalaxyEntityVisual {
+   private _discovered = false;
+
    constructor(public data: StarSystem) {
-      const sprite = new Sprite(
-         data.discovered ? G.textures.get(`Galaxy/${data.texture}`)! : G.textures.get("Misc/GalaxyUndiscovered")!,
-      );
-      if (data.discovered) {
-         sprite.scale.set(2);
-      }
+      const sprite = new Sprite();
       const label = new BitmapText(data.name, {
          fontName: Fonts.SpaceshipIdle,
          fontSize: 12,
          tint: 0xffffff,
       });
       super(sprite, label);
+
+      this._discovered = data.discovered;
+      this.updateVisual();
+   }
+
+   public set discovered(value: boolean) {
+      if (this._discovered === value) {
+         return;
+      }
+      this._discovered = value;
+      this.updateVisual();
+   }
+
+   private updateVisual() {
+      this.sprite.texture = this._discovered
+         ? G.textures.get(`Galaxy/${this.data.texture}`)!
+         : G.textures.get("Misc/GalaxyUndiscovered")!;
+      if (this._discovered) {
+         this.sprite.scale.set(2);
+      } else {
+         this.sprite.scale.set(1);
+      }
+      this.label.position.set(0, this.sprite.height / 2);
    }
 }
 

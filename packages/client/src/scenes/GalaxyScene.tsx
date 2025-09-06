@@ -6,6 +6,7 @@ import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
 import { type ColorSource, Container, type FederatedPointerEvent, Sprite } from "pixi.js";
 import { GalaxyPage } from "../ui/GalaxyPage";
 import { hideSidebar, setSidebar } from "../ui/Sidebar";
+import { playClick } from "../ui/Sound";
 import { G } from "../utils/Global";
 import { type ISceneContext, Scene } from "../utils/SceneManager";
 import { type GalaxyEntityVisual, PlanetVisual, StarSystemVisual } from "./GalaxyEntity";
@@ -104,9 +105,10 @@ export class GalaxyScene extends Scene {
          //    })
          //    .drawCircle(solarSystem.x, solarSystem.y, solarSystem.r);
 
-         const star = this._entities.get(starSystem.id);
+         const star = this._entities.get(starSystem.id) as StarSystemVisual;
          if (star) {
             star.position.set(starSystem.x, starSystem.y);
+            star.discovered = starSystem.discovered;
 
             if (this._selectedId === starSystem.id) {
                this._selector.position.set(star.x, star.y);
@@ -119,48 +121,46 @@ export class GalaxyScene extends Scene {
 
          for (const planet of starSystem.planets) {
             const visual = this._entities.get(planet.id);
-            if (visual) {
-               const radian = planet.radian + now * planet.speed;
-               visual.position.set(
-                  starSystem.x + Math.cos(radian) * planet.r,
-                  starSystem.y + Math.sin(radian) * planet.r,
-               );
-               if (planet.type === PlanetType.Me) {
-                  visual.sprite.rotation = planet.speed > 0 ? radian + Math.PI : radian;
-               }
+            if (!visual) {
+               continue;
+            }
+            const radian = planet.radian + now * planet.speed;
+            visual.position.set(starSystem.x + Math.cos(radian) * planet.r, starSystem.y + Math.sin(radian) * planet.r);
+            if (planet.type === PlanetType.Me) {
+               visual.sprite.rotation = planet.speed > 0 ? radian + Math.PI : radian;
+            }
 
-               if (!starSystem.discovered) {
-                  visual.visible = false;
-                  continue;
-               }
+            if (!starSystem.discovered) {
+               visual.visible = false;
+               continue;
+            }
 
-               visual.visible = true;
-               this._graphics.lineStyle({
-                  width: 3,
-                  color: 0xffffff,
-                  alpha: 0.25,
-                  alignment: 0.5,
-                  scaleMode: LINE_SCALE_MODE.NONE,
-               });
+            visual.visible = true;
+            this._graphics.lineStyle({
+               width: 3,
+               color: 0xffffff,
+               alpha: 0.25,
+               alignment: 0.5,
+               scaleMode: LINE_SCALE_MODE.NONE,
+            });
 
-               drawDashedLine(this._graphics, { x: starSystem.x, y: starSystem.y }, { x: visual.x, y: visual.y }, 3, 6);
+            drawDashedLine(this._graphics, { x: starSystem.x, y: starSystem.y }, { x: visual.x, y: visual.y }, 3, 6);
 
-               if (this._selectedId === planet.id) {
-                  this._graphics
-                     .lineStyle({
-                        width: visual.sprite.width,
-                        color: 0xffffff,
-                        alpha: 0.1,
-                        alignment: 0.5,
-                        scaleMode: LINE_SCALE_MODE.NORMAL,
-                     })
-                     .drawCircle(starSystem.x, starSystem.y, planet.r);
-                  this._selector.position.set(visual.x, visual.y);
-                  this._selector.visible = true;
-                  this._selector.scale.set(0.28);
-                  this._selector.alpha = Math.sin(now * Math.PI * 1.5) * 0.5 + 0.5;
-                  selectorRendered = true;
-               }
+            if (this._selectedId === planet.id) {
+               this._graphics
+                  .lineStyle({
+                     width: visual.sprite.width,
+                     color: 0xffffff,
+                     alpha: 0.1,
+                     alignment: 0.5,
+                     scaleMode: LINE_SCALE_MODE.NORMAL,
+                  })
+                  .drawCircle(starSystem.x, starSystem.y, planet.r);
+               this._selector.position.set(visual.x, visual.y);
+               this._selector.visible = true;
+               this._selector.scale.set(0.28);
+               this._selector.alpha = Math.sin(now * Math.PI * 1.5) * 0.5 + 0.5;
+               selectorRendered = true;
             }
          }
       }
@@ -183,6 +183,7 @@ export class GalaxyScene extends Scene {
             pos.y > sprite.y - sprite.height / 2 &&
             pos.y < sprite.y + sprite.height / 2
          ) {
+            playClick();
             this.select(id);
             return;
          }

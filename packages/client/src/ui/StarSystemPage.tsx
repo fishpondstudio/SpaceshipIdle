@@ -1,15 +1,22 @@
+import { ExploreCostPerLightYear } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { PlanetTypeLabel, type StarSystem } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { getPlanetStatusLabel } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import { getExploreCost, getPlanetStatusLabel } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import { canSpendResource, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { GalaxyScene } from "../scenes/GalaxyScene";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
+import { FloatingTip } from "./components/FloatingTip";
+import { RenderHTML } from "./components/RenderHTMLComp";
+import { ResourceListComp } from "./components/ResourceListComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
-import { playClick } from "./Sound";
+import { playClick, playError, playUpgrade } from "./Sound";
 
 export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
+   const exploreCost = getExploreCost(starSystem);
    let canExplore = true;
    return (
       <SidebarComp
@@ -120,9 +127,39 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
                   })}
                </div>
                <div className="mx10">
-                  <button className="btn w100 row g5 py5" disabled={!canExplore}>
-                     <div className="mi">explore</div>
-                     <div>Explore {starSystem.name}</div>
+                  <button
+                     className="btn w100"
+                     disabled={!canExplore || !canSpendResource("VictoryPoint", exploreCost, G.save.state.resources)}
+                     onClick={() => {
+                        if (!trySpendResource("VictoryPoint", exploreCost, G.save.state.resources)) {
+                           playError();
+                           return;
+                        }
+                        playUpgrade();
+                        starSystem.discovered = true;
+                        GameStateUpdated.emit();
+                     }}
+                  >
+                     <FloatingTip
+                        w={300}
+                        label={
+                           <>
+                              <RenderHTML
+                                 html={t(L.ExplorationCostDesc, ExploreCostPerLightYear)}
+                                 className="render-html"
+                              />
+                              <div className="h5" />
+                              <div className="flex-table mx-10">
+                                 <ResourceListComp res={{ VictoryPoint: -exploreCost }} />
+                              </div>
+                           </>
+                        }
+                     >
+                        <div className="row g5 py5">
+                           <div className="mi">explore</div>
+                           <div>Explore {starSystem.name}</div>
+                        </div>
+                     </FloatingTip>
                   </button>
                </div>
             </>

@@ -17,7 +17,7 @@ import { srand } from "../../utils/Random";
 import type { IHaveXY } from "../../utils/Vector2";
 import type { Addon } from "../definitions/Addons";
 import { Boosts } from "../definitions/Boosts";
-import { FriendshipBaseCost, FriendshipDurationSeconds } from "../definitions/Constant";
+import { ExploreCostPerLightYear, FriendshipBaseCost, FriendshipDurationSeconds } from "../definitions/Constant";
 import { type Galaxy, type Planet, PlanetFlags, PlanetType, type StarSystem } from "../definitions/Galaxy";
 import { ShipClass, ShipClassList } from "../definitions/ShipClass";
 import type { GameState, SaveGame } from "../GameState";
@@ -122,6 +122,10 @@ export function hasAvailablePirates(galaxy: Galaxy): boolean {
       }
    }
    return false;
+}
+
+export function getExploreCost(starSystem: StarSystem): number {
+   return starSystem.distance * ExploreCostPerLightYear;
 }
 
 export function getShipClassByIndex(idx: number): ShipClass {
@@ -247,7 +251,7 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
 
       while (r >= 50) {
          const planetId = ++id;
-         const type = randOne([PlanetType.State, PlanetType.Pirate]);
+         const type = Math.random() < 1 / 3 ? PlanetType.Pirate : PlanetType.State;
          const texture =
             type === PlanetType.State
                ? PlanetTextures[planetId % PlanetTextures.length]
