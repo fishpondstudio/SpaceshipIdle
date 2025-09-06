@@ -139,11 +139,12 @@ export function getPlanetShipClass(planetId: number, galaxy: Galaxy): ShipClass 
    return ShipClassList[0];
 }
 
-export function getCurrentFriendship(save: SaveGame): number {
+export function getCurrentFriendship(save: SaveGame, friends?: Planet[]): number {
    let result = 0;
    for (const starSystem of save.data.galaxy.starSystems) {
       for (const planet of starSystem.planets) {
          if (planet.friendshipTimeLeft > 0) {
+            friends?.push(planet);
             ++result;
          }
       }

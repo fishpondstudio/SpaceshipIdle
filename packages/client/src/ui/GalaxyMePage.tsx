@@ -1,23 +1,28 @@
 import type { Planet } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { getCurrentFriendship, getMaxFriendship } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
-import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { formatDelta, formatHMS, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
+import { formatHMS, range, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
+import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { GalaxyScene } from "../scenes/GalaxyScene";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { FloatingTip } from "./components/FloatingTip";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
+import { FriendshipSlotTooltip } from "./FriendshipSlotTooltip";
+import { WarmongerPenaltyTooltip } from "./GalaxyInfoPanel";
 import { playClick } from "./Sound";
 
 export function GalaxyMePage({ planet }: { planet: Planet }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
-   const stat = G.runtime.leftStat;
    const warmongerPenalty = getStat("Warmonger", G.save.state.stats);
    const [maxFriendship, friendshipDetail] = getMaxFriendship(G.save.state);
-   let friendshipCount = 0;
+   const friends: Planet[] = [];
+   const friendCount = getCurrentFriendship(G.save, friends);
+   let warCount = 0;
    return (
       <SidebarComp
          title={
@@ -28,89 +33,127 @@ export function GalaxyMePage({ planet }: { planet: Planet }): React.ReactNode {
          }
       >
          <div className="h10" />
-         <FloatingTip
-            w={350}
-            label={
-               <>
-                  <div>
-                     You can have maximum <b>{maxFriendship}</b> friendships, determined as follows
-                  </div>
-                  <div className="h5" />
-                  <div className="flex-table mx-10">
-                     {friendshipDetail.map((detail) => (
-                        <div className="row" key={detail.name}>
-                           <div className="f1">{detail.name}</div>
-                           <div>{formatDelta(detail.value)}</div>
-                        </div>
-                     ))}
-                  </div>
-               </>
-            }
-         >
+         <FloatingTip w={350} label={<FriendshipSlotTooltip />}>
             <div className="title">
                <div className="f1">Friendship Slot</div>
                <div>
-                  {getCurrentFriendship(G.save)}/{maxFriendship}
+                  {friendCount}/{maxFriendship}
                </div>
             </div>
          </FloatingTip>
          <div className="divider my10" />
-         <div className="mx10">
-            {G.save.data.galaxy.starSystems.map((starSystem) => {
-               if (!starSystem.discovered) {
-                  return null;
-               }
-               return starSystem.planets.map((planet) => {
-                  if (planet.friendshipTimeLeft <= 0) {
-                     return null;
-                  }
-                  ++friendshipCount;
+         <div className="mx10" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "10px" }}>
+            {range(0, maxFriendship).map((i) => {
+               if (i < friendCount) {
                   return (
+                     <FloatingTip
+                        key={i}
+                        w={300}
+                        label={
+                           <>
+                              <div className="row g5">
+                                 <TextureComp name={`Galaxy/${planet.texture}`} />
+                                 <div className="f1 text-md text-space">{planet.name}</div>
+                              </div>
+                              <div className="h5" />
+                              <div className="row">
+                                 <div className="f1">{t(L.TimeLeft)}</div>
+                                 <div>{formatHMS(planet.friendshipTimeLeft * SECOND)}</div>
+                              </div>
+                           </>
+                        }
+                     >
+                        <div
+                           className="cc pointer"
+                           style={{
+                              border: "1px solid var(--mantine-color-dark-4)",
+                              borderRadius: "var(--mantine-radius-default)",
+                              aspectRatio: "1/1",
+                           }}
+                           onClick={() => {
+                              playClick();
+                              G.scene.getCurrent(GalaxyScene)?.select(friends[i].id);
+                           }}
+                        >
+                           <TextureComp width={48} name={`Galaxy/${friends[i].texture}`} />
+                        </div>
+                     </FloatingTip>
+                  );
+               }
+               return (
+                  <FloatingTip key={i} label={t(L.YouHaveAvailableFriendshipTooltip)}>
                      <div
-                        className="row pointer"
-                        key={planet.id}
-                        onClick={() => {
-                           playClick();
-                           G.scene.getCurrent(GalaxyScene)?.select(planet.id);
+                        className="cc"
+                        style={{
+                           border: "1px solid var(--mantine-color-dark-4)",
+                           borderRadius: "var(--mantine-radius-default)",
+                           aspectRatio: "1/1",
                         }}
                      >
-                        <TextureComp name={`Galaxy/${planet.texture}`} />
-                        <div className="f1">{planet.name}</div>
-                        <div>{formatHMS(planet.friendshipTimeLeft * SECOND)}</div>
+                        <div className="mi">question_mark</div>
                      </div>
+                  </FloatingTip>
+               );
+            })}
+         </div>
+         <div className="divider my10" />
+         <div className="title">Past Wars</div>
+         <div className="divider my10" />
+         <div className="mx10" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "10px" }}>
+            {G.save.data.galaxy.starSystems.map((starSystem) => {
+               return starSystem.planets.map((planet) => {
+                  if (!planet.battleResult) {
+                     return null;
+                  }
+                  ++warCount;
+                  return (
+                     <FloatingTip
+                        key={planet.id}
+                        w={300}
+                        label={
+                           <>
+                              <div className="row g5">
+                                 <TextureComp name={`Galaxy/${planet.texture}`} />
+                                 <div className="f1 text-md text-space">{planet.name}</div>
+                              </div>
+                              <div className="h5" />
+                              <div className="row">
+                                 <div className="f1">
+                                    {BattleVictoryTypeLabel[getVictoryType(planet.battleResult.battleScore)]()}
+                                 </div>
+                                 <div>{planet.battleResult.battleScore}%</div>
+                              </div>
+                           </>
+                        }
+                     >
+                        <div
+                           className="cc pointer"
+                           style={{
+                              border: "1px solid var(--mantine-color-dark-4)",
+                              borderRadius: "var(--mantine-radius-default)",
+                              aspectRatio: "1/1",
+                           }}
+                           onClick={() => {
+                              playClick();
+                              G.scene.getCurrent(GalaxyScene)?.select(planet.id);
+                           }}
+                        >
+                           <TextureComp width={48} name={`Galaxy/${planet.texture}`} />
+                        </div>
+                     </FloatingTip>
                   );
                });
             })}
-            {friendshipCount === 0 ? (
-               <div className="text-sm">You don't have any friendship yet - declare friendship for rewards</div>
-            ) : null}
          </div>
+         {warCount === 0 ? (
+            <div className="mx10 text-dimmed text-sm">
+               <div className="mi sm inline mr5">info</div>
+               You haven't declared any war yet
+            </div>
+         ) : null}
          <div className="divider my10" />
-         <FloatingTip
-            label={
-               <>
-                  <div>
-                     Current Warmonger Penalty is <b>{getWarmongerPenalty(G.save.state)}</b> ( rounded up from{" "}
-                     <b className="text-tabular-nums">{warmongerPenalty.toFixed(3)}</b>). It is increased when you
-                     declare war. It makes declaring further wars and declaring friendship more expensive
-                  </div>
-                  <div className="divider mx-10 my5" />
-                  <div>
-                     Warmonger Penalty is decreased by <b>{stat.warmongerDecrease.value}/s</b> until it reaches 0,
-                     detailed as follows
-                  </div>
-                  <div className="flex-table mx-10 mt5">
-                     {stat.warmongerDecrease.detail.map((m) => (
-                        <div className="row" key={m.source}>
-                           <div className="f1">{m.source}</div>
-                           <div>{m.value}</div>
-                        </div>
-                     ))}
-                  </div>
-               </>
-            }
-         >
-            <div className="title">
+         <FloatingTip label={<WarmongerPenaltyTooltip />}>
+            <div className="row mx10">
                <div className="f1">Warmonger Penalty</div>
                <div>
                   {warmongerPenalty > 0 ? (
@@ -121,22 +164,7 @@ export function GalaxyMePage({ planet }: { planet: Planet }): React.ReactNode {
             </div>
          </FloatingTip>
          <div className="divider my10" />
-         <div className="mx10">
-            <div className="text-sm">
-               Warmonger Penalty is decreased by <b>{stat.warmongerDecrease.value}/s</b> until it reaches 0, detailed as
-               follows
-            </div>
-            <div className="panel space text-sm mt5 p5">
-               {stat.warmongerDecrease.detail.map((m) => (
-                  <div className="row" key={m.source}>
-                     <div className="f1">{m.source}</div>
-                     <div>{m.value}</div>
-                  </div>
-               ))}
-            </div>
-         </div>
-         <div className="divider my10" />
-         <div className="title">
+         <div className="row mx10">
             <div className="f1">Backstabber Penalty</div>
             <div>{getStat("Backstabber", G.save.state.stats)}</div>
          </div>

@@ -688,4 +688,5 @@ export const EN = {
    You: "You",
    Pirate: "Pirate",
    NeutralState: "Neutral State",
+   TimeLeft: "Time Left",
 };
