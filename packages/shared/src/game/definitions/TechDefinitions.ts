@@ -224,21 +224,21 @@ export class TechDefinitions {
    D1: ITechDefinition = {
       position: { x: 9, y: 0 },
       name: () => t(L.TechHeavyRailCannon),
-      requires: ["C9"],
+      requires: [],
       unlockBuildings: ["RC150"],
    };
 
    D2: ITechDefinition = {
       position: { x: 9, y: 1 },
       name: () => t(L.TechLaserCorruptor),
-      requires: ["C9", "C10"],
+      requires: [],
       unlockBuildings: ["LA2"],
    };
 
    D3: ITechDefinition = {
       position: { x: 9, y: 2 },
       name: () => t(L.TechFPVDrone),
-      requires: ["C10", "C11"],
+      requires: [],
       unlockBuildings: ["FD1"],
    };
 
@@ -251,27 +251,27 @@ export class TechDefinitions {
    D5: ITechDefinition = {
       position: { x: 10, y: 0 },
       name: () => t(L.TechProactiveRegen),
-      requires: ["D1"],
+      requires: [],
       unlockBuildings: ["RC150A"],
    };
 
    D6: ITechDefinition = {
       position: { x: 10, y: 1 },
       name: () => t(L.TechLaserCorruptor),
-      requires: ["D2"],
+      requires: [],
       unlockBuildings: ["LA2A"],
    };
 
    D7: ITechDefinition = {
       position: { x: 10, y: 2 },
       name: () => t(L.TechExplosiveDrone),
-      requires: ["D3"],
+      requires: [],
       unlockBuildings: ["FD1A"],
    };
 
    D8: ITechDefinition = {
       position: { x: 10, y: 3 },
-      requires: ["D3"],
+      requires: [],
       name: () => t(L.TechFailsafeRegen),
       unlockBuildings: ["MS4"],
    };

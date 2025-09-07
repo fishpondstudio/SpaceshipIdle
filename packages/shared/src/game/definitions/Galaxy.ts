@@ -1,7 +1,7 @@
 import type { ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import type { Addon } from "./Addons";
-import type { Boost } from "./Boosts";
+import type { Bonus } from "./Bonus";
 import type { Resource } from "./Resource";
 
 export interface Galaxy {
@@ -31,7 +31,7 @@ export interface Planet extends GalaxyEntity {
    seed: string;
    battleResult: BattleResult | null;
    friendshipTimeLeft: number;
-   friendshipBoost: Boost;
+   friendshipBonus: Bonus;
    revealed: boolean;
 }
 

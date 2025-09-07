@@ -3,7 +3,7 @@ import { createTile, randomAlphaNumeric, type Tile, uuid4 } from "../utils/Helpe
 import { jsonEncode } from "../utils/Serialization";
 import { TypedEvent } from "../utils/TypedEvent";
 import type { Addon } from "./definitions/Addons";
-import type { Boost } from "./definitions/Boosts";
+import type { Bonus } from "./definitions/Bonus";
 import type { Catalyst, CatalystCat } from "./definitions/Catalyst";
 import type { Galaxy } from "./definitions/Galaxy";
 import type { Resource } from "./definitions/Resource";
@@ -46,7 +46,7 @@ export class GameState {
    elements = new Map<ElementSymbol, ElementData>();
    permanentElements = new Map<ElementSymbol, ElementData>();
    selectedCatalysts = new Map<CatalystCat, Catalyst>();
-   selectedDirectives = new Map<ShipClass, Boost>();
+   selectedDirectives = new Map<ShipClass, Bonus>();
    addons = new Map<Addon, { tile: Tile | null; amount: number }>();
    name = "Unnamed";
    shipDesign: ShipDesign = "Ship1";

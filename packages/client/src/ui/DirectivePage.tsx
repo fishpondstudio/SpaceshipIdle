@@ -1,4 +1,4 @@
-import { Boosts } from "@spaceship-idle/shared/src/game/definitions/Boosts";
+import { Bonus } from "@spaceship-idle/shared/src/game/definitions/Bonus";
 import { ShipClass, ShipClassList } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getDirectives } from "@spaceship-idle/shared/src/game/logic/DirectiveLogic";
@@ -37,7 +37,7 @@ export function DirectivePage(): React.ReactNode {
                      </div>
                      <div className="text-sm mt5">
                         <TextureComp name={"Others/Directive"} className="inline-middle" />{" "}
-                        <RenderHTML element="span" html={Boosts[selected].desc(G.runtime)} className="render-html" />
+                        <RenderHTML element="span" html={Bonus[selected].desc(G.runtime)} className="render-html" />
                      </div>
                   </div>
                );
@@ -66,7 +66,7 @@ export function DirectivePage(): React.ReactNode {
                                     <RenderHTML
                                        element="span"
                                        key={boost}
-                                       html={Boosts[boost].desc(G.runtime)}
+                                       html={Bonus[boost].desc(G.runtime)}
                                        className="render-html"
                                     />
                                  </div>
@@ -76,7 +76,7 @@ export function DirectivePage(): React.ReactNode {
                                     onClick={(e) => {
                                        playUpgrade();
                                        G.save.state.selectedDirectives.set(shipClass, boost);
-                                       const action = Boosts[boost].onStart;
+                                       const action = Bonus[boost].onStart;
                                        if (action) {
                                           playBling();
                                           action(G.runtime, getElementCenter(e.target as HTMLElement));

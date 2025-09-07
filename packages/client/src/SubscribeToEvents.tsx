@@ -111,7 +111,7 @@ export function subscribeToEvents(): void {
             return;
          }
          playParticle(
-            Resources[data.resource].texture,
+            Resources[data.resource].texture24,
             data.from,
             getDOMRectCenter(target),
             clamp(data.amount, 1, MaxParticleCount),
@@ -131,13 +131,12 @@ export function subscribeToEvents(): void {
    });
 }
 
-const ParticleSize = 32;
 const MaxParticleCount = 5;
 
 function playParticle(texture: string, from: IHaveXY, target: IHaveXY, count: number): void {
    for (let i = 0; i < count; i++) {
       const particle = document.body.appendChild(document.createElement("div"));
-      const style = getTextureSpriteStyle(texture, ParticleSize);
+      const style = getTextureSpriteStyle(texture);
 
       if (style) {
          particle.style.backgroundImage = String(style.backgroundImage);
@@ -148,10 +147,12 @@ function playParticle(texture: string, from: IHaveXY, target: IHaveXY, count: nu
          particle.style.imageRendering = String(style.imageRendering);
       }
 
+      const rect = particle.getBoundingClientRect();
+
       particle.style.zIndex = String(getDefaultZIndex("modal") + 2);
       particle.style.position = "fixed";
-      particle.style.top = `${from.y - ParticleSize / 2}px`;
-      particle.style.left = `${from.x - ParticleSize / 2}px`;
+      particle.style.top = `${from.y - rect.height / 2}px`;
+      particle.style.left = `${from.x - rect.width / 2}px`;
       particle.style.pointerEvents = "none";
 
       sequence(
@@ -171,8 +172,8 @@ function playParticle(texture: string, from: IHaveXY, target: IHaveXY, count: nu
                };
             },
             {
-               x: from.x + (Math.random() - 0.5) * 100 - ParticleSize / 2,
-               y: from.y + (Math.random() - 0.5) * 100 - ParticleSize / 2,
+               x: from.x + (Math.random() - 0.5) * 100 - rect.width / 2,
+               y: from.y + (Math.random() - 0.5) * 100 - rect.height / 2,
             },
             0.5 + 0.1 * i,
             Easing.OutQuad,
@@ -193,8 +194,8 @@ function playParticle(texture: string, from: IHaveXY, target: IHaveXY, count: nu
                };
             },
             {
-               x: target.x - ParticleSize / 2,
-               y: target.y - ParticleSize / 2,
+               x: target.x - rect.width / 2,
+               y: target.y - rect.height / 2,
             },
             1 * (1 + Math.random() * 0.25),
             Easing.InOutQuad,

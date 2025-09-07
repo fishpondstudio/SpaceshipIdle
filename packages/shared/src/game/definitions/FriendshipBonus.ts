@@ -1,14 +1,14 @@
 import type { Bonus } from "./Bonus";
 import type { ShipClass } from "./ShipClass";
 
-export const Directives: Record<ShipClass, Bonus[]> = {
-   Skiff: ["D1a", "D1b", "D1c", "D1d", "G1a"],
-   Scout: ["D1a", "D1b", "D1c", "D1d", "G1a"],
-   Corvette: [],
+export const FriendshipBonus: Record<ShipClass, Bonus[]> = {
+   Skiff: ["F1a", "F1b", "F1c", "F1d"],
+   Scout: ["F1a", "F1b", "F1c"],
+   Corvette: ["F1a", "F1b", "F1c"],
    Frigate: [],
    Destroyer: [],
    Cruiser: [],
    Battlecruiser: [],
-   Carrier: [],
    Dreadnought: [],
+   Carrier: [],
 } as const;

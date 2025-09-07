@@ -1,23 +1,14 @@
 import { AABB } from "../../utils/AABB";
 import type { Circle } from "../../utils/Circle";
-import {
-   CURRENCY_EPSILON,
-   capitalize,
-   clamp,
-   hasFlag,
-   keysOf,
-   rand,
-   randOne,
-   randomAlphaNumeric,
-   shuffle,
-} from "../../utils/Helper";
+import { CURRENCY_EPSILON, capitalize, clamp, hasFlag, rand, randomAlphaNumeric, shuffle } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Generator } from "../../utils/NameGen";
 import { srand } from "../../utils/Random";
 import type { IHaveXY } from "../../utils/Vector2";
 import type { Addon } from "../definitions/Addons";
-import { Boosts } from "../definitions/Boosts";
+import { Bonus } from "../definitions/Bonus";
 import { ExploreCostPerLightYear, FriendshipBaseCost, FriendshipDurationSeconds } from "../definitions/Constant";
+import { FriendshipBonus } from "../definitions/FriendshipBonus";
 import { type Galaxy, type Planet, PlanetFlags, PlanetType, type StarSystem } from "../definitions/Galaxy";
 import { ShipClass, ShipClassList } from "../definitions/ShipClass";
 import type { GameState, SaveGame } from "../GameState";
@@ -170,7 +161,7 @@ export function tickGalaxy(rt: Runtime): void {
          if (planet.friendshipTimeLeft > 0) {
             --planet.friendshipTimeLeft;
 
-            const def = Boosts[planet.friendshipBoost];
+            const def = Bonus[planet.friendshipBonus];
             def.onTick?.(planet.friendshipTimeLeft, t(L.FriendshipWith, planet.name), rt);
             if (planet.friendshipTimeLeft === 0) {
                def.onStop?.(rt);
@@ -267,7 +258,7 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
             flags: PlanetFlags.None,
             seed: randomAlphaNumeric(16),
             battleResult: null,
-            friendshipBoost: randOne(keysOf(Boosts)),
+            friendshipBonus: "F1a",
             friendshipTimeLeft: 0,
             revealed: false,
          };
@@ -308,7 +299,11 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
       if (i > 0) {
          starSystem.distance = i;
       }
-      for (const planet of starSystem.planets) {
+      const shipClass = getShipClassByIndex(starSystem.distance);
+      const candidates = shuffle(FriendshipBonus[shipClass].slice(0));
+      for (let j = 0; j < starSystem.planets.length; ++j) {
+         const planet = starSystem.planets[j];
+         planet.friendshipBonus = candidates[j % candidates.length];
          planet.revealed = planet.type !== PlanetType.State;
       }
    }

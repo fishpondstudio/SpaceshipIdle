@@ -21,6 +21,12 @@ export const Ship1: ShipDesignDefinition = {
       5898285, 5898294, 5832749, 5832758, 5832748, 5832759, 5898284, 5898295, 5963820, 5963831, 6029356, 6029367,
       6029357, 6029366, 6094893, 6094902, 5767213, 5767222, 5767215, 5767220, 5767216, 5767219,
    ],
+   Frigate: [],
+   Destroyer: [],
+   Cruiser: [],
+   Battlecruiser: [],
+   Dreadnought: [],
+   Carrier: [],
 } as const;
 
 export const ShipDesigns = {

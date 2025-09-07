@@ -1,5 +1,5 @@
 import { Progress, Switch } from "@mantine/core";
-import { Boosts } from "@spaceship-idle/shared/src/game/definitions/Boosts";
+import { Bonus } from "@spaceship-idle/shared/src/game/definitions/Bonus";
 import { FriendshipBaseCost, FriendshipDurationSeconds } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { type Planet, PlanetFlags } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
@@ -41,7 +41,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
                <div className="panel">
                   <div className="title text-green">Rewards</div>
                   <div className="h5" />
-                  <RenderHTML html={Boosts[planet.friendshipBoost].desc(G.runtime)} className="render-html" />
+                  <RenderHTML html={Bonus[planet.friendshipBonus].desc(G.runtime)} className="render-html" />
                </div>
                <div className="h10" />
                <Progress size="lg" value={progress * 100} />
@@ -95,7 +95,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
             <div className="divider my10 mx-10" />
             <div className="title">Rewards</div>
             <div className="h5" />
-            <RenderHTML html={Boosts[planet.friendshipBoost].desc(G.runtime)} className="render-html" />
+            <RenderHTML html={Bonus[planet.friendshipBonus].desc(G.runtime)} className="render-html" />
             <div className="divider my10 mx-10" />
             <div className="title">Duration</div>
             <div className="h5" />
@@ -123,7 +123,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
                }
 
                planet.friendshipTimeLeft = FriendshipDurationSeconds;
-               const action = Boosts[planet.friendshipBoost].onStart;
+               const action = Bonus[planet.friendshipBonus].onStart;
                if (action) {
                   playBling();
                   action(G.runtime, getElementCenter(e.target as HTMLElement));
