@@ -26,12 +26,7 @@ export function FuseAddonModal(): React.ReactNode {
             <div className="mi">south</div>
          </div>
          <SelectAddonComp value={toAddon} onChange={setToAddon} />
-         {fuseCost === 0 ? (
-            <div className="panel yellow mt10">
-               You can fuse a lower class add-on into a higher (or equal) class add-on. Only discovered add-ons can be
-               fused.
-            </div>
-         ) : null}
+         {fuseCost === 0 ? <div className="panel yellow mt10">{t(L.FuseAddonDesc)}</div> : null}
          {fromAddon && toAddon && fuseCost > 0 ? (
             <div className="panel mt10">
                <div className="title">Consume</div>
@@ -41,7 +36,9 @@ export function FuseAddonModal(): React.ReactNode {
                   <div>{Addons[fromAddon].name()}</div>
                   <div className="text-space">x{fuseCost}</div>
                   <div className="f1" />
-                  <div className="text-dimmed text-sm">You have {G.save.state.addons.get(fromAddon)?.amount ?? 0}</div>
+                  <div className="text-dimmed text-sm">
+                     {t(L.YouHaveX, G.save.state.addons.get(fromAddon)?.amount ?? 0)}
+                  </div>
                   {fuseCost > 0 && (G.save.state.addons.get(fromAddon)?.amount ?? 0) >= fuseCost ? (
                      <div className="mi text-green sm">check_circle</div>
                   ) : (
@@ -66,7 +63,7 @@ export function FuseAddonModal(): React.ReactNode {
                   <div className="text-space">x1</div>
                   <div className="f1" />
                   <div className="text-dimmed text-sm">
-                     You have {resourceOf("VictoryPoint", G.save.state.resources).current}
+                     {t(L.YouHaveX, resourceOf("VictoryPoint", G.save.state.resources).current)}
                   </div>
                   {canSpendResource("VictoryPoint", 1, G.save.state.resources) ? (
                      <div className="mi text-green sm">check_circle</div>
@@ -81,7 +78,7 @@ export function FuseAddonModal(): React.ReactNode {
             w={300}
             label={
                <>
-                  <div>The following resources will be consumed</div>
+                  <div>{t(L.TheFollowingResourcesWillBeConsumed)}</div>
                   <div className="h5" />
                   <div className="flex-table mx-10">
                      {fromAddon && fuseCost > 0 ? (
@@ -139,7 +136,7 @@ export function FuseAddonModal(): React.ReactNode {
                }}
             >
                <div className="mi">chart_data</div>
-               <div>Fuse</div>
+               <div>{t(L.Fuse)}</div>
             </button>
          </FloatingTip>
       </div>

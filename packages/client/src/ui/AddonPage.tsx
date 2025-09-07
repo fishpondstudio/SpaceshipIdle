@@ -28,7 +28,7 @@ export function AddonPage(): React.ReactNode {
       >
          <div className="m10">
             <button
-               className="btn filled w100 py5 row"
+               className="btn filled w100 py5 row g5"
                onClick={() => {
                   playClick();
                   showModal({ children: <FuseAddonModal />, size: "md", title: "Fuse Add-ons", dismiss: true });

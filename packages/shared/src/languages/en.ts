@@ -691,4 +691,8 @@ export const EN = {
    TimeLeft: "Time Left",
    ExplorationCostDesc: "Exploration cost is determined by the distance from you <b>(%% Victory Point per lyr)</b>",
    SelectAddOn: "Select Add-on",
+   YouHaveX: "You have %%",
+   TheFollowingResourcesWillBeConsumed: "The following resources will be consumed",
+   Fuse: "Fuse",
+   FuseAddonDesc: "You can fuse a lower class add-on into a higher (or equal) class add-on. Only discovered add-ons can be fused",
 };
