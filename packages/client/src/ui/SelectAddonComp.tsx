@@ -53,7 +53,15 @@ export function SelectAddonComp({
             </InputBase>
          </Combobox.Target>
          <Combobox.Dropdown>
-            <Combobox.Options>{options}</Combobox.Options>
+            <Combobox.Options>
+               {options}
+               {options.length === 0 ? (
+                  <div className="row p10">
+                     <div className="mi">info</div>
+                     {t(L.NoAvailableAddons)}
+                  </div>
+               ) : null}
+            </Combobox.Options>
          </Combobox.Dropdown>
       </Combobox>
    );
