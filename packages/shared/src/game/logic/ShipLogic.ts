@@ -175,21 +175,6 @@ function _validateShip(gs: GameState): boolean {
    return true;
 }
 
-export function isQualifierBattle(gs: GameState): boolean {
-   const totalQuantum = resourceOf("Quantum", gs.resources).total;
-   const usedQuantum = getUsedQuantum(gs);
-   if (usedQuantum < totalQuantum) {
-      return false;
-   }
-   // FIXME
-   // const sv = calcSpaceshipXP(gs);
-   // const maxSV = getMaxSpaceshipXP(gs);
-   // if (sv < QualifierSpaceshipValuePercent * maxSV) {
-   //    return false;
-   // }
-   return true;
-}
-
 export function getShipBlueprint(gs: GameState): number[] {
    return ShipDesigns[gs.shipDesign][getShipClass(gs)];
 }

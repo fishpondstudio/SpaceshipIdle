@@ -15,6 +15,7 @@ import {
    formatHM,
    formatHMS,
    formatPercent,
+   getElementCenter,
    hasFlag,
    SECOND,
    setFlag,
@@ -23,7 +24,7 @@ import {
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
-import { playError } from "../Sound";
+import { playBling, playError } from "../Sound";
 import { FloatingTip } from "./FloatingTip";
 import { RenderHTML } from "./RenderHTMLComp";
 import { ResourceRequirementComp } from "./ResourceListComp";
@@ -110,7 +111,7 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
                getAvailableFriendship(G.save) <= 0
             }
             className="btn green w100"
-            onClick={() => {
+            onClick={(e) => {
                if (getAvailableFriendship(G.save) <= 0) {
                   playError();
                   return;
@@ -122,7 +123,11 @@ export function GalaxyFriendshipComp({ planet }: { planet: Planet }): React.Reac
                }
 
                planet.friendshipTimeLeft = FriendshipDurationSeconds;
-               Boosts[planet.friendshipBoost].onStart?.(G.runtime);
+               const action = Boosts[planet.friendshipBoost].onStart;
+               if (action) {
+                  playBling();
+                  action(G.runtime, getElementCenter(e.target as HTMLElement));
+               }
                planet.flags = setFlag(planet.flags, PlanetFlags.WasFriends);
                GameStateUpdated.emit();
             }}

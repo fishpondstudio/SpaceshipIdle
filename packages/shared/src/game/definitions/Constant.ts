@@ -39,5 +39,7 @@ export const WarpElementId = "ship-info-warp";
 export const XPElementId = "ship-info-xp";
 export const VictoryPointElementId = "ship-info-victory-point";
 export const AddonElementId = "bottom-panel-addon";
+export const QuantumElementId = "ship-info-quantum";
+
 export const DirectiveChoiceCount = 3;
 export const ExploreCostPerLightYear = 5;

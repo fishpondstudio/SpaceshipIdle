@@ -1,7 +1,9 @@
 import { forEach, shuffle } from "../../utils/Helper";
+import type { IHaveXY } from "../../utils/Vector2";
 import { type Addon, Addons } from "../definitions/Addons";
 import { type ShipClass, ShipClassList } from "../definitions/ShipClass";
 import type { GameState } from "../GameState";
+import { RequestParticle } from "./RequestParticle";
 import type { Runtime } from "./Runtime";
 import { getShipClass } from "./TechLogic";
 
@@ -69,4 +71,37 @@ export function getFuseCost(fromAddon: Addon, toAddon: Addon): number {
       return 0;
    }
    return 2 ** (toShipClassIdx - fromShipClassIdx);
+}
+
+export function addAddon(addon: Addon, amount: number, gs: GameState, from?: IHaveXY): void {
+   if (amount <= 0) {
+      return;
+   }
+   const data = gs.addons.get(addon);
+   if (data) {
+      data.amount += amount;
+   } else {
+      gs.addons.set(addon, { amount: amount, tile: null });
+   }
+   if (from) {
+      RequestParticle.emit({ from, addon, amount });
+   }
+}
+
+export function deductAddon(addon: Addon, amount: number, gs: GameState): void {
+   if (amount <= 0) {
+      return;
+   }
+   const data = gs.addons.get(addon);
+   if (data) {
+      data.amount -= amount;
+      if (data.amount <= 0) {
+         gs.addons.delete(addon);
+      }
+      if (data.amount < 0) {
+         console.error("Negative addon amount, check whether there's enough addons before deducting!");
+      }
+   } else {
+      console.error("Trying to deduct undiscovered addon(s), check whether there's an addon before deducting!");
+   }
 }

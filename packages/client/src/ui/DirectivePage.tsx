@@ -3,6 +3,7 @@ import { ShipClass, ShipClassList } from "@spaceship-idle/shared/src/game/defini
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getDirectives } from "@spaceship-idle/shared/src/game/logic/DirectiveLogic";
 import { hasUnlockedDirective } from "@spaceship-idle/shared/src/game/logic/TechLogic";
+import { getElementCenter } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import React from "react";
 import { G } from "../utils/Global";
@@ -11,7 +12,7 @@ import { FloatingTip } from "./components/FloatingTip";
 import { RenderHTML } from "./components/RenderHTMLComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
-import { playUpgrade } from "./Sound";
+import { playBling, playUpgrade } from "./Sound";
 
 export function DirectivePage(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
@@ -72,10 +73,14 @@ export function DirectivePage(): React.ReactNode {
                                  <div className="f1" />
                                  <button
                                     className="btn text-sm"
-                                    onClick={() => {
+                                    onClick={(e) => {
                                        playUpgrade();
                                        G.save.state.selectedDirectives.set(shipClass, boost);
-                                       Boosts[boost].onStart?.(G.runtime);
+                                       const action = Boosts[boost].onStart;
+                                       if (action) {
+                                          playBling();
+                                          action(G.runtime, getElementCenter(e.target as HTMLElement));
+                                       }
                                        GameStateUpdated.emit();
                                     }}
                                  >

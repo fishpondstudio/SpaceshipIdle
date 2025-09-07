@@ -27,10 +27,14 @@ export function calculateRewardValue(result: BattleResult, gs: GameState): [numb
    }
    let totalAddons = 0;
    let differentAddons = 0;
+   let undiscoveredAddons = 0;
    result.addons.forEach((count, addon) => {
       if (count > 0) {
          totalAddons += Math.round(count * getAddonFactor(addon, gs));
          ++differentAddons;
+         if ((gs.addons.get(addon)?.amount ?? 0) === 0) {
+            ++undiscoveredAddons;
+         }
       }
    });
    if (totalAddons > 0) {
@@ -41,7 +45,12 @@ export function calculateRewardValue(result: BattleResult, gs: GameState): [numb
    if (differentAddons > 1) {
       const fromDifferentAddons = 10 * (differentAddons - 1);
       value += fromDifferentAddons;
-      breakdown.push({ label: `${differentAddons} Different Add-ons`, value: fromDifferentAddons });
+      breakdown.push({ label: t(L.XDifferentAddons, differentAddons), value: fromDifferentAddons });
+   }
+   if (undiscoveredAddons > 0) {
+      const fromUndiscoveredAddons = 10 * undiscoveredAddons;
+      value += fromUndiscoveredAddons;
+      breakdown.push({ label: t(L.XUndiscoveredAddons, undiscoveredAddons), value: fromUndiscoveredAddons });
    }
    return [value, breakdown];
 }

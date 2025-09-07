@@ -1,7 +1,9 @@
+import type { IHaveXY } from "../../utils/Vector2";
 import type { Resource } from "../definitions/Resource";
 import type { Stat } from "../definitions/Stat";
 import type { GameState, ResourceData, ResourceDataPersisted } from "../GameState";
 import { getTotalBuildingCost } from "./BuildingLogic";
+import { RequestParticle } from "./RequestParticle";
 
 export function resourceValueOf(resources: Map<Resource, ResourceDataPersisted>): number {
    let result = 0;
@@ -16,11 +18,19 @@ export function resourceOf(resource: Resource, resources: Map<Resource, Resource
    return { current: result.total - result.used, total: result.total, used: result.used };
 }
 
-export function addResource(resource: Resource, amount: number, resources: Map<Resource, ResourceDataPersisted>): void {
+export function addResource(
+   resource: Resource,
+   amount: number,
+   resources: Map<Resource, ResourceDataPersisted>,
+   from?: IHaveXY,
+): void {
    const result: ResourceDataPersisted = resources.get(resource) ?? { total: 0, used: 0 };
    console.assert(amount >= 0);
    result.total += amount;
    resources.set(resource, result);
+   if (from) {
+      RequestParticle.emit({ from, resource, amount });
+   }
 }
 
 export function spendResource(

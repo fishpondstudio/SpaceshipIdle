@@ -1,8 +1,9 @@
 import { type Addon, Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { getFuseCost } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
+import { addAddon, deductAddon, getFuseCost } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
+import { showSuccess } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { canSpendResource, resourceOf, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { mapSafeSet } from "@spaceship-idle/shared/src/utils/Helper";
+import { getElementCenter } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { useState } from "react";
@@ -12,7 +13,7 @@ import { FloatingTip } from "./components/FloatingTip";
 import { ResourceListComp, ResourceRequirementComp } from "./components/ResourceListComp";
 import { TextureComp } from "./components/TextureComp";
 import { SelectAddonComp } from "./SelectAddonComp";
-import { playError, playUpgrade } from "./Sound";
+import { playBling, playError } from "./Sound";
 
 export function FuseAddonModal(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
@@ -100,10 +101,11 @@ export function FuseAddonModal(): React.ReactNode {
                   fuseCost === 0 ||
                   !fromAddon ||
                   !toAddon ||
-                  (G.save.state.addons.get(fromAddon)?.amount ?? 0) < fuseCost
+                  (G.save.state.addons.get(fromAddon)?.amount ?? 0) < fuseCost ||
+                  !canSpendResource("VictoryPoint", 1, G.save.state.resources)
                }
-               onClick={() => {
-                  if (fuseCost === 0 || !fromAddon) {
+               onClick={(e) => {
+                  if (fuseCost === 0 || !fromAddon || !toAddon) {
                      playError();
                      return;
                   }
@@ -117,22 +119,11 @@ export function FuseAddonModal(): React.ReactNode {
                      return;
                   }
                   trySpendResource("VictoryPoint", 1, G.save.state.resources);
-                  mapSafeSet(G.save.state.addons, fromAddon, (oldValue) => {
-                     if (oldValue) {
-                        oldValue.amount -= fuseCost;
-                        return oldValue;
-                     }
-                     throw new Error("Fuse addon: this should never happen!");
-                  });
-                  mapSafeSet(G.save.state.addons, toAddon, (oldValue) => {
-                     if (oldValue) {
-                        oldValue.amount += 1;
-                        return oldValue;
-                     }
-                     return { amount: 1, tile: null };
-                  });
+                  deductAddon(fromAddon, fuseCost, G.save.state);
+                  addAddon(toAddon, 1, G.save.state, getElementCenter(e.target as HTMLElement));
                   GameStateUpdated.emit();
-                  playUpgrade();
+                  playBling();
+                  showSuccess(t(L.AddOnFusedSuccessfully, Addons[toAddon].name()));
                }}
             >
                <div className="mi">chart_data</div>

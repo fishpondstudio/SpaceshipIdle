@@ -695,4 +695,7 @@ export const EN = {
    TheFollowingResourcesWillBeConsumed: "The following resources will be consumed",
    Fuse: "Fuse",
    FuseAddonDesc: "You can fuse a lower class add-on into a higher (or equal) class add-on. Only discovered add-ons can be fused",
+   XDifferentAddons: "%% Different Add-ons",
+   XUndiscoveredAddons: "%% Undiscovered Add-on(s)",
+   AddOnFusedSuccessfully: "1x %% fused successfully",
 };

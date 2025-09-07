@@ -2,6 +2,7 @@ import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import {
    DiscordUrl,
+   QuantumElementId,
    SteamUrl,
    VictoryPointElementId,
    XPElementId,
@@ -124,7 +125,6 @@ export function ShipInfoPanel(): React.ReactNode {
             }
          >
             <div
-               id={VictoryPointElementId}
                className="block pointer"
                style={{
                   background: highlight
@@ -139,7 +139,7 @@ export function ShipInfoPanel(): React.ReactNode {
                   });
                }}
             >
-               <TextureComp name="Others/Trophy" />
+               <TextureComp id={VictoryPointElementId} name="Others/Trophy" />
                <div className="w10" />
                <div className="f1 text-right">
                   <div>{formatNumber(vp.current)}</div>
@@ -184,8 +184,8 @@ export function ShipInfoPanel(): React.ReactNode {
          </FloatingTip>
          <div className="divider vertical" />
          <FloatingTip label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(currentXP))} />}>
-            <div id={XPElementId} className="block" style={{ width: 90 }}>
-               <TextureComp name="Others/XP24" />
+            <div className="block" style={{ width: 90 }}>
+               <TextureComp id={XPElementId} name="Others/XP24" />
                <div className="f1 text-right">
                   <div>{formatNumber(currentXP)}</div>
                   <div
@@ -202,7 +202,7 @@ export function ShipInfoPanel(): React.ReactNode {
          <div className="divider vertical" />
          <FloatingTip w={300} label={<QuantumTooltip />}>
             <div className="block" style={{ width: 100, position: "relative" }}>
-               <TextureComp name="Others/Quantum24" />
+               <TextureComp id={QuantumElementId} name="Others/Quantum24" />
                <div className="f1 text-right">
                   <div>
                      {formatNumber(usedQuantum)}/{formatNumber(totalQuantum)}

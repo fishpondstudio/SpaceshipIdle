@@ -1,5 +1,6 @@
 import { cast, formatNumber } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
+import type { IHaveXY } from "../../utils/Vector2";
 import { quantumToXP } from "../logic/QuantumElementLogic";
 import { addResource, changeStat } from "../logic/ResourceLogic";
 import type { Runtime } from "../logic/Runtime";
@@ -8,7 +9,7 @@ import { BaseWarmongerChangePerSec } from "./Constant";
 
 export interface IBoostDefinition {
    desc: (runtime: Runtime) => string;
-   onStart?: (runtime: Runtime) => void;
+   onStart?: (runtime: Runtime, from?: IHaveXY) => void;
    onTick?: (timeLeft: number, source: string, runtime: Runtime) => void;
    onStop?: (runtime: Runtime) => void;
 }
@@ -29,8 +30,8 @@ export const Boosts = {
    }),
    F1c: cast<IBoostDefinition>({
       desc: (runtime: Runtime) => t(L.XVictoryPointOnDeclarationAndExpirationHTML, 3, 3),
-      onStart: (runtime: Runtime) => {
-         addResource("VictoryPoint", 3, runtime.left.resources);
+      onStart: (runtime: Runtime, from?: IHaveXY) => {
+         addResource("VictoryPoint", 3, runtime.left.resources, from);
       },
       onStop: (runtime: Runtime) => {
          addResource("VictoryPoint", 3, runtime.left.resources);
@@ -43,27 +44,27 @@ export const Boosts = {
          const quantum = getMaxQuantumForShipClass("Skiff", runtime.left);
          return t(L.PlusXXP, formatNumber(quantumToXP(quantum + 5) - quantumToXP(quantum)));
       },
-      onStart: (runtime: Runtime) => {
+      onStart: (runtime: Runtime, from?: IHaveXY) => {
          const quantum = getMaxQuantumForShipClass("Skiff", runtime.left);
-         addResource("XP", quantumToXP(quantum + 5) - quantumToXP(quantum), runtime.left.resources);
+         addResource("XP", quantumToXP(quantum + 5) - quantumToXP(quantum), runtime.left.resources, from);
       },
    }),
    D1b: cast<IBoostDefinition>({
       desc: (runtime: Runtime) => t(L.PlusXVictoryPoint, 20),
-      onStart: (runtime: Runtime) => {
-         addResource("VictoryPoint", 20, runtime.left.resources);
+      onStart: (runtime: Runtime, from?: IHaveXY) => {
+         addResource("VictoryPoint", 20, runtime.left.resources, from);
       },
    }),
    D1c: cast<IBoostDefinition>({
       desc: (runtime: Runtime) => t(L.ResetBackstabberPenaltyToX, 0),
-      onStart: (runtime: Runtime) => {
+      onStart: (runtime: Runtime, from?: IHaveXY) => {
          changeStat("Backstabber", 0, runtime.left.stats);
       },
    }),
    D1d: cast<IBoostDefinition>({
       desc: (runtime: Runtime) => t(L.PlusXWarp, formatNumber(6 * 60 * 60)),
-      onStart: (runtime: Runtime) => {
-         addResource("Warp", 6 * 60 * 60, runtime.left.resources);
+      onStart: (runtime: Runtime, from?: IHaveXY) => {
+         addResource("Warp", 6 * 60 * 60, runtime.left.resources, from);
       },
    }),
    D1e: cast<IBoostDefinition>({

@@ -171,6 +171,15 @@ export class TechTreeScene extends Scene {
 
       this.drawSelected();
 
+      let maxX = 0;
+      G.save.state.unlockedTech.forEach((t) => {
+         const box = this._techs.get(t);
+         if (box) {
+            maxX = Math.max(maxX, box.center.x);
+         }
+      });
+      this.viewport.center = { x: maxX + app.screen.width / 4, y: this.viewport.center.y };
+
       forEach(Config.Tech, (tech, def) => {
          const from = this._techs.get(tech);
          if (!from) {

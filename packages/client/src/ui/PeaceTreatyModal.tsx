@@ -1,12 +1,8 @@
 import { clamp, useForceUpdate } from "@mantine/hooks";
 import { Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
-import {
-   AddonElementId,
-   VictoryPointElementId,
-   XPElementId,
-} from "@spaceship-idle/shared/src/game/definitions/Constant";
 import type { BattleResult } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { addAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
 import type { BattleInfo } from "@spaceship-idle/shared/src/game/logic/BattleInfo";
 import { getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType, BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
@@ -16,7 +12,6 @@ import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, getDOMRectCenter, mMapOf, randomAlphaNumeric } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { Sprite } from "pixi.js";
 import { useRef } from "react";
 import { GalaxyScene } from "../scenes/GalaxyScene";
 import { G } from "../utils/Global";
@@ -182,82 +177,23 @@ export function PeaceTreatyModal({
                      playBling();
                   }
 
-                  for (const [addon, count] of battleResult.current.addons) {
-                     if (count <= 0) {
-                        battleResult.current.addons.delete(addon);
-                     }
-                  }
-
-                  for (const [resource, value] of battleResult.current.resources) {
-                     if (value <= 0) {
-                        battleResult.current.resources.delete(resource);
-                     }
-                  }
-
                   battleResult.current.resources.forEach((value, resource) => {
-                     addResource(resource, value, G.save.state.resources);
+                     if (value > 0) {
+                        addResource(resource, value, G.save.state.resources, getDOMRectCenter(from));
+                     }
                   });
 
                   battleResult.current.addons.forEach((count, addon) => {
-                     const data = G.save.state.addons.get(addon);
-                     if (data) {
-                        data.amount += count;
-                     } else {
-                        G.save.state.addons.set(addon, { amount: count, tile: null });
+                     if (count > 0) {
+                        addAddon(addon, count, G.save.state, getDOMRectCenter(from));
                      }
                   });
-
-                  const addonTarget = document.getElementById(AddonElementId)?.getBoundingClientRect();
-                  if (addonTarget) {
-                     battleResult.current.addons.forEach((count, addon) => {
-                        G.starfield.playParticle(
-                           () => {
-                              const sprite = new Sprite(G.textures.get(`Addon/${addon}`));
-                              sprite.scale.set(2);
-                              return sprite;
-                           },
-                           getDOMRectCenter(from),
-                           getDOMRectCenter(addonTarget),
-                           count,
-                        );
-                     });
-                  }
-
-                  const xpTarget = document.getElementById(XPElementId)?.getBoundingClientRect();
-                  const xp = battleResult.current.resources.get("XP");
-                  if (xpTarget && xp && xp > 0) {
-                     G.starfield.playParticle(
-                        () => {
-                           const sprite = new Sprite(G.textures.get("Others/XP"));
-                           sprite.scale.set(2);
-                           return sprite;
-                        },
-                        getDOMRectCenter(from),
-                        getDOMRectCenter(xpTarget),
-                        5,
-                     );
-                  }
-
-                  const victoryPointTarget = document.getElementById(VictoryPointElementId)?.getBoundingClientRect();
-                  const victoryPoint = battleResult.current.resources.get("VictoryPoint");
-                  if (victoryPointTarget && victoryPoint && victoryPoint > 0) {
-                     G.starfield.playParticle(
-                        () => {
-                           const sprite = new Sprite(G.textures.get("Others/Trophy"));
-                           sprite.scale.set(2);
-                           return sprite;
-                        },
-                        getDOMRectCenter(from),
-                        getDOMRectCenter(victoryPointTarget),
-                        victoryPoint,
-                     );
-                  }
                }, 1000);
             }}
          >
             <FloatingTip
                disabled={victoryType === "Defeated"}
-               w={400}
+               w={350}
                label={
                   <>
                      <div>

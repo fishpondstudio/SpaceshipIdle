@@ -5,16 +5,16 @@ import { Easing } from "./Easing";
 export class CustomAction<T> extends Action {
    private readonly interpolation: EasingFunction;
 
-   private readonly initialValue: T;
+   private initialValue: T | undefined;
    private readonly targetValue: T;
    private time = 0;
    private readonly seconds: number;
    private readonly setter: (value: T) => void;
-   private readonly getter: () => T;
+   private readonly getInitialValue: () => T;
    private readonly interpolator: (initial: T, target: T, factor: number) => T;
 
    constructor(
-      getter: () => T,
+      getInitialValue: () => T,
       setter: (value: T) => void,
       interpolator: (initial: T, target: T, factor: number) => T,
       targetValue: T,
@@ -23,17 +23,19 @@ export class CustomAction<T> extends Action {
    ) {
       super();
       this.interpolation = interpolation;
-      this.getter = getter;
+      this.getInitialValue = getInitialValue;
       this.setter = setter;
       this.interpolator = interpolator;
       this.targetValue = targetValue;
-      this.initialValue = this.getter();
       this.seconds = seconds;
    }
 
    tick(delta: number): boolean {
       this.time += delta;
       const factor: number = this.interpolation(this.timeDistance);
+      if (!this.initialValue) {
+         this.initialValue = this.getInitialValue();
+      }
       this.setter(this.interpolator(this.initialValue, this.targetValue, factor));
       return this.timeDistance >= 1;
    }
