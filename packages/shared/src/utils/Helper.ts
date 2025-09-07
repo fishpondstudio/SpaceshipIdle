@@ -249,6 +249,11 @@ export function mapSafePush<T, K>(obj: Map<T, K[]>, key: T, valueToPush: K): voi
    }
 }
 
+export function mapSafeSet<T, K>(obj: Map<T, K>, key: T, func: (oldValue: K | undefined) => K): void {
+   const oldValue = obj.get(key);
+   obj.set(key, func(oldValue));
+}
+
 export function clearObject<K extends string | number | symbol>(obj: Record<K, unknown>): void {
    for (const member in obj) delete obj[member];
 }

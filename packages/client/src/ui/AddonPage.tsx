@@ -1,10 +1,12 @@
 import { Badge } from "@mantine/core";
 import { Addons, getAddonEffect } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
+import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { formatNumber, mapOf, reduceOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import React from "react";
 import { G } from "../utils/Global";
+import { refreshOnTypedEvent } from "../utils/Hook";
 import { showModal } from "../utils/ToggleModal";
 import { FloatingTip } from "./components/FloatingTip";
 import { RenderHTML } from "./components/RenderHTMLComp";
@@ -14,6 +16,7 @@ import { FuseAddonModal } from "./FuseAddonModal";
 import { playClick } from "./Sound";
 
 export function AddonPage(): React.ReactNode {
+   refreshOnTypedEvent(GameStateUpdated);
    return (
       <SidebarComp
          title={
@@ -28,7 +31,7 @@ export function AddonPage(): React.ReactNode {
                className="btn filled w100 py5 row"
                onClick={() => {
                   playClick();
-                  showModal({ children: <FuseAddonModal />, size: "lg", title: "Fuse Add-ons", dismiss: true });
+                  showModal({ children: <FuseAddonModal />, size: "md", title: "Fuse Add-ons", dismiss: true });
                }}
             >
                <div className="mi">chart_data</div>
