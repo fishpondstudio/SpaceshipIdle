@@ -258,7 +258,7 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
             flags: PlanetFlags.None,
             seed: randomAlphaNumeric(16),
             battleResult: null,
-            friendshipBonus: "F1a",
+            friendshipBonus: "Reduce1WarmongerPerSec",
             friendshipTimeLeft: 0,
             revealed: false,
          };

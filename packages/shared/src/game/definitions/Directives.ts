@@ -2,8 +2,8 @@ import type { Bonus } from "./Bonus";
 import type { ShipClass } from "./ShipClass";
 
 export const Directives: Record<ShipClass, Bonus[]> = {
-   Skiff: ["D1a", "D1b", "D1c", "D1d", "G1a"],
-   Scout: ["D1a", "D1b", "D1c", "D1d", "G1a"],
+   Skiff: ["GetSkiffClassXPOnDecl", "Get20VictoryPointOnDecl", "ResetBackstabberPenaltyTo0OnDecl", "Get8hWarpOnDecl"],
+   Scout: [],
    Corvette: [],
    Frigate: [],
    Destroyer: [],

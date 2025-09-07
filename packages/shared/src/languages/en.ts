@@ -677,9 +677,9 @@ export const EN = {
    VictoryRate: "Victory Rate",
    MatchmakingToken: "Matchmaking Token",
    XClassDirective: "%% Class Directive",
-   PlusXXP: "<b>+%% XP</b>",
-   PlusXVictoryPoint: "<b>+%% Victory Point</b>",
-   PlusXWarp: "<b>+%% Time Warp</b>",
+   PlusXXP: "+%% XP",
+   PlusXVictoryPoint: "+%% Victory Point",
+   PlusXWarp: "+%% Time Warp",
    YouCanUnlockThisDirectiveWhenYouResearchAllTechsInClass: "You can unlock this directive when you research all techs in %% class. Choose one of the listed directives.",
    ResetBackstabberPenaltyToX: "Reset <b>Backstabber Penalty</b> to <b>%%</b>",
    XClassWeaponsGetXXPMultiplier: "<b>%%</b> class weapons get <b>+%% XP Multiplier</b>",
@@ -699,4 +699,5 @@ export const EN = {
    XDifferentAddons: "%% Different Add-ons",
    XUndiscoveredAddons: "%% Undiscovered Add-on(s)",
    AddOnFusedSuccessfully: "1x %% fused successfully",
+   PlusXWarpOnExpiration: "+%% Time Warp <b>on expiration</b>",
 };
