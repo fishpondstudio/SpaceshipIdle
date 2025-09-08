@@ -57,16 +57,16 @@ export function DirectivePage(): React.ReactNode {
                         {unlocked ? null : <div className="mi">lock</div>}
                      </div>
                      <div className="text-sm mt5">
-                        {directives.map((boost) => (
-                           <React.Fragment key={boost}>
+                        {directives.map((bonus) => (
+                           <React.Fragment key={bonus}>
                               <div className="divider dashed" />
                               <div className="row my5 mx10">
                                  <div>
                                     <TextureComp name={"Others/Directive"} className="inline-middle" />{" "}
                                     <RenderHTML
                                        element="span"
-                                       key={boost}
-                                       html={Bonus[boost].desc(G.runtime)}
+                                       key={bonus}
+                                       html={Bonus[bonus].desc(G.runtime)}
                                        className="render-html"
                                     />
                                  </div>
@@ -75,8 +75,8 @@ export function DirectivePage(): React.ReactNode {
                                     className="btn text-sm"
                                     onClick={(e) => {
                                        playUpgrade();
-                                       G.save.state.selectedDirectives.set(shipClass, boost);
-                                       const action = Bonus[boost].onStart;
+                                       G.save.state.selectedDirectives.set(shipClass, bonus);
+                                       const action = Bonus[bonus].onStart;
                                        if (action) {
                                           playBling();
                                           action(G.runtime, getElementCenter(e.target as HTMLElement));

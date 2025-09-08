@@ -66,8 +66,28 @@ export const Addons = {
    }),
    Damage1: cast<IAddonDefinition>({
       name: () => t(L.DamageCluster),
-      desc: (value: number) => t(L.DamageCoreDesc, formatNumber(value), formatNumber(value)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {},
+      desc: (value: number) => t(L.DamageClusterDesc, formatNumber(value), formatNumber(value)),
+      tick: (value: number, tile: Tile, runtime: Runtime) => {
+         const rs = runtime.get(tile);
+         if (!rs) {
+            return;
+         }
+         rs.damageMultiplier.add(value, t(L.SourceAddon, t(L.DamageCluster)));
+         const result = runtime.getGameState(tile);
+         if (!result) {
+            return;
+         }
+         const { side, state } = result;
+         abilityTarget(side, AbilityRange.Adjacent, tile, state.tiles).forEach((target) => {
+            if (target === tile) {
+               return;
+            }
+            const targetRs = runtime.get(target);
+            if (targetRs && targetRs.data.type === rs.data.type) {
+               targetRs.damageMultiplier.add(value, t(L.SourceAddon, t(L.DamageCluster)));
+            }
+         });
+      },
       shipClass: "Scout",
    }),
    Damage2: cast<IAddonDefinition>({

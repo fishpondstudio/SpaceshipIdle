@@ -22,7 +22,7 @@ import { useShortcut } from "../../utils/ShortcutHook";
 import type { ITileWithGameState } from "../ITileWithGameState";
 import { playClick, playError } from "../Sound";
 import { FloatingTip } from "./FloatingTip";
-import { RenderHTML } from "./RenderHTMLComp";
+import { html, RenderHTML } from "./RenderHTMLComp";
 import { ResourceListComp } from "./ResourceListComp";
 import { TextureComp } from "./TextureComp";
 
@@ -232,7 +232,7 @@ function AddonOpButton({ addon, me }: { addon: Addon; me: Tile }): React.ReactNo
       );
    }
    return (
-      <FloatingTip disabled={!inv.tile} label={<RenderHTML html={t(L.AlreadyEquippedTooltipHTML)} />}>
+      <FloatingTip disabled={!inv.tile} label={html(t(L.AlreadyEquippedTooltipHTML))}>
          <button
             className="btn row text-sm"
             onClick={() => {

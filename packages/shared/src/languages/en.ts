@@ -79,7 +79,7 @@ export const EN = {
    DamageCluster: "Damage Cluster",
    DamageControl: "Damage Control",
    DamageControlDesc: "Recover %% of max HP per second for every 10% of HP missing",
-   DamageCoreDesc: "<b>Equipped module</b> gains +%% Damage Multiplier. <b>Adjacent modules</b> also gain +%% Damage Multiplier if they are the same weapon model as the equipped module",
+   DamageClusterDesc: "<b>Equipped module</b> gains +%% Damage Multiplier. <b>Adjacent modules</b> also gain +%% Damage Multiplier if they are the same weapon model as the equipped module",
    DamageDiversifier: "Damage Diversifier",
    DamageDiversifierDesc: "<b>Equipped module</b> gains +%% Damage Multiplier. <b>Adjacent modules</b> also gain +%% Damage Multiplier if each one is a different weapon model from both the equipped module and from each other",
    DamageMultiplier: "Damage Multiplier",
@@ -700,4 +700,6 @@ export const EN = {
    XUndiscoveredAddons: "%% Undiscovered Add-on(s)",
    AddOnFusedSuccessfully: "1x %% fused successfully",
    PlusXWarpOnExpiration: "+%% Time Warp <b>on expiration</b>",
+   PlusXWarpOnDeclaration: "+%% Time Warp <b>on declaration</b>",
+   RequirePermanentElementLevelsAndYouCurrentlyHave: "Require <b>%%</b> permanent element levels and you currently have <b>%%</b>",
 };

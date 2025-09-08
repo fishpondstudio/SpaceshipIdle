@@ -13,8 +13,8 @@ import { FloatingTip } from "./components/FloatingTip";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
 import { FriendshipSlotTooltip } from "./FriendshipSlotTooltip";
-import { WarmongerPenaltyTooltip } from "./GalaxyInfoPanel";
 import { playClick } from "./Sound";
+import { WarmongerPenaltyTooltip } from "./WarmongerPenaltyTooltip";
 
 export function GalaxyMePage({ planet }: { planet: Planet }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);

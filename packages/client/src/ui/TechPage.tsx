@@ -17,6 +17,7 @@ import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { BuildingInfoComp } from "./components/BuildingInfoComp";
 import { FloatingTip } from "./components/FloatingTip";
+import { html } from "./components/RenderHTMLComp";
 import { ResourceListComp } from "./components/ResourceListComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
@@ -44,16 +45,20 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                <TitleComp>{t(L.Prerequisites)}</TitleComp>
                <div className="divider my10" />
                {elementLevel > 0 ? (
-                  <div className="row mx10 my5">
-                     <div className="f1">
-                        <span className="text-space">{elementLevel}</span> {t(L.PermanentElementLevels)}
+                  <FloatingTip
+                     label={html(t(L.RequirePermanentElementLevelsAndYouCurrentlyHave, elementLevel, currentLevel))}
+                  >
+                     <div className="row mx10 my5">
+                        <div className="f1">
+                           <span className="text-space">{elementLevel}</span> {t(L.PermanentElementLevels)}
+                        </div>
+                        {currentLevel >= elementLevel ? (
+                           <div className="mi text-green">check_circle</div>
+                        ) : (
+                           <div className="mi text-red">cancel</div>
+                        )}
                      </div>
-                     {currentLevel >= elementLevel ? (
-                        <div className="mi text-green">check_circle</div>
-                     ) : (
-                        <div className="mi text-red">cancel</div>
-                     )}
-                  </div>
+                  </FloatingTip>
                ) : null}
                {def.requires.map((req) => {
                   return (

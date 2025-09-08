@@ -11,7 +11,7 @@ import { refreshOnTypedEvent } from "../../utils/Hook";
 import type { ITileWithGameState } from "../ITileWithGameState";
 import { AbilityComp } from "./AbilityComp";
 import { FloatingTip } from "./FloatingTip";
-import { RenderHTML } from "./RenderHTMLComp";
+import { html } from "./RenderHTMLComp";
 import { StatComp } from "./StatComp";
 import { TextureComp } from "./TextureComp";
 import { TitleComp } from "./TitleComp";
@@ -88,7 +88,7 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             {hasFlag(rs.props.projectileFlag, ProjectileFlag.LaserDamage) ? (
                <div className="row">
                   <div className="f1">{t(L.LaserProjectile)}</div>
-                  <FloatingTip label={<RenderHTML html={t(L.LaserProjectileDesc)} />}>
+                  <FloatingTip label={html(t(L.LaserProjectileDesc))}>
                      <div className="mi">info</div>
                   </FloatingTip>
                </div>
@@ -96,7 +96,7 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             {hasFlag(rs.props.projectileFlag, ProjectileFlag.DroneDamage) ? (
                <div className="row">
                   <div className="f1">{t(L.DroneProjectile)}</div>
-                  <FloatingTip label={<RenderHTML html={t(L.DroneProjectileDesc)} />}>
+                  <FloatingTip label={html(t(L.DroneProjectileDesc))}>
                      <div className="mi">info</div>
                   </FloatingTip>
                </div>
