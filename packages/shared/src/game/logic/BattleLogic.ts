@@ -3,7 +3,7 @@ import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
 import { AbilityTiming, abilityTarget } from "../definitions/Ability";
-import { BuildingFlag, ProjectileFlag, WeaponKey } from "../definitions/BuildingProps";
+import { ProjectileFlag, WeaponKey } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import {
    BattleStartAmmoCycles,
@@ -144,15 +144,12 @@ export function tickTiles(
 
    from.tiles.forEach((data, tile) => {
       const def = Config.Buildings[data.type];
-      if (!hasFlag(def.buildingFlag, BuildingFlag.CanTarget)) {
-         return;
-      }
       if (!(WeaponKey in def)) {
          return;
       }
       const rs = rt.get(tile);
       if (!rs) {
-         return null;
+         return;
       }
       if (hasFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire)) {
          return;

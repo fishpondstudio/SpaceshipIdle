@@ -2,13 +2,7 @@ import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { getDamagePerFire } from "../logic/BuildingLogic";
 import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
-import {
-   BuildingFlag,
-   DamageType,
-   type IBuildingDefinition,
-   type IBuildingProp,
-   ProjectileFlag,
-} from "./BuildingProps";
+import { DamageType, type IBuildingDefinition, type IBuildingProp, ProjectileFlag } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 import { DefaultCooldown, LaserArrayDamagePct } from "./Constant";
 
@@ -29,7 +23,6 @@ export const LA1: IBuildingDefinition = {
    ...LaserArrayBaseProps,
    pet: () => t(L.Goby),
    code: CodeNumber.LA,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: LaserArrayDamagePct,
    fireCooldown: 4,
    projectileFlag: ProjectileFlag.LaserDamage,
@@ -40,7 +33,6 @@ export const LA1A: IBuildingDefinition = {
    ...LaserArrayBaseProps,
    pet: () => t(L.Tetra),
    code: CodeNumber.LA,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.1 * LaserArrayDamagePct,
    fireCooldown: 4,
    projectileFlag: ProjectileFlag.LaserDamage,
@@ -63,7 +55,6 @@ export const LA1B: IBuildingDefinition = {
    ...LaserArrayBaseProps,
    pet: () => t(L.Danio),
    code: CodeNumber.LA,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: LaserArrayDamagePct,
    fireCooldown: 4,
    projectileFlag: ProjectileFlag.LaserDamage,
@@ -84,7 +75,6 @@ export const LA2: IBuildingDefinition = {
    ...LaserArrayBaseProps,
    pet: () => t(L.Perch),
    code: CodeNumber.LA,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.5 * LaserArrayDamagePct,
    fireCooldown: 3.5,
    projectileFlag: ProjectileFlag.LaserDamage,
@@ -107,7 +97,6 @@ export const LA2A: IBuildingDefinition = {
    ...LaserArrayBaseProps,
    pet: () => t(L.Pike),
    code: CodeNumber.LA,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.5 * LaserArrayDamagePct,
    fireCooldown: 3.5,
    projectileFlag: ProjectileFlag.LaserDamage,

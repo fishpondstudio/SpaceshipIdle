@@ -114,16 +114,26 @@ export function getTechName(tech: Tech): string {
 export function getTechDesc(tech: Tech): string {
    const def = Config.Tech[tech];
    const desc: string[] = [];
-   def.unlockBuildings?.forEach((b) => desc.push(getBuildingName(b)));
-   def.unlockUpgrades?.forEach((u) => desc.push(u.name()));
+   def.unlockBuildings?.forEach((b) => {
+      desc.push(getBuildingName(b));
+   });
+   def.unlockUpgrades?.forEach((u) => {
+      desc.push(u.name());
+   });
    return desc.join(", ");
 }
 
-export function getTechForBuilding(building: Building): Tech {
+export function getTechForBuilding(building: Building): Tech | undefined {
    for (const [tech, def] of entriesOf(Config.Tech)) {
-      if (def.unlockBuildings?.includes(building)) {
+      if (def.unlockBuildings?.includes(building) && !isPlaceholderTech(tech)) {
          return tech;
       }
    }
-   throw new Error(`No tech unlocks building ${building}`);
+   console.warn(`No tech unlocks building ${building}`);
+   return undefined;
+}
+
+export function isPlaceholderTech(tech: Tech): boolean {
+   const def = Config.Tech[tech];
+   return def.requires.length === 0 && def.position.y > 0;
 }

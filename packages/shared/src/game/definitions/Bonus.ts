@@ -35,7 +35,7 @@ const Get8VictoryPointOnExp: IBonusDefinition = {
    },
 };
 
-export const Get3VictoryPointOnDeclExp: IBonusDefinition = {
+const Get3VictoryPointOnDeclExp: IBonusDefinition = {
    desc: (runtime: Runtime) => t(L.XVictoryPointOnDeclarationAndExpirationHTML, 3, 3),
    onStart: (runtime: Runtime, from?: IHaveXY) => {
       addResource("VictoryPoint", 3, runtime.left.resources, from);
@@ -45,21 +45,21 @@ export const Get3VictoryPointOnDeclExp: IBonusDefinition = {
    },
 };
 
-export const Get4VictoryPointOnDecl: IBonusDefinition = {
+const Get4VictoryPointOnDecl: IBonusDefinition = {
    desc: (runtime: Runtime) => t(L.XVictoryPointOnDeclarationHTML, 4),
    onStop: (runtime: Runtime) => {
       addResource("VictoryPoint", 4, runtime.left.resources);
    },
 };
 
-export const Get2hWarpOnExp: IBonusDefinition = {
+const Get2hWarpOnExp: IBonusDefinition = {
    desc: (runtime: Runtime) => t(L.PlusXWarpOnExpiration, formatNumber(2 * 60 * 60)),
    onStart: (runtime: Runtime, from?: IHaveXY) => {
       addResource("Warp", 2 * 60 * 60, runtime.left.resources, from);
    },
 };
 
-export const GetSkiffClassXPOnDecl: IBonusDefinition = {
+const GetSkiffClassXPOnDecl: IBonusDefinition = {
    desc: (runtime: Runtime) => {
       const quantum = getMaxQuantumForShipClass("Skiff", runtime.left);
       return t(L.PlusXXP, formatNumber(quantumToXP(quantum + 5) - quantumToXP(quantum)));
@@ -70,21 +70,21 @@ export const GetSkiffClassXPOnDecl: IBonusDefinition = {
    },
 };
 
-export const Get20VictoryPointOnDecl: IBonusDefinition = {
+const Get20VictoryPointOnDecl: IBonusDefinition = {
    desc: (runtime: Runtime) => t(L.PlusXVictoryPoint, 20),
    onStart: (runtime: Runtime, from?: IHaveXY) => {
       addResource("VictoryPoint", 20, runtime.left.resources, from);
    },
 };
 
-export const ResetBackstabberPenaltyTo0OnDecl: IBonusDefinition = {
+const ResetBackstabberPenaltyTo0OnDecl: IBonusDefinition = {
    desc: (runtime: Runtime) => t(L.ResetBackstabberPenaltyToX, 0),
    onStart: (runtime: Runtime, from?: IHaveXY) => {
       changeStat("Backstabber", 0, runtime.left.stats);
    },
 };
 
-export const Get8hWarpOnDecl: IBonusDefinition = {
+const Get8hWarpOnDecl: IBonusDefinition = {
    desc: (runtime: Runtime) => t(L.PlusXWarp, formatNumber(8 * 60 * 60)),
    onStart: (runtime: Runtime, from?: IHaveXY) => {
       addResource("Warp", 8 * 60 * 60, runtime.left.resources, from);
@@ -101,6 +101,7 @@ export interface IBonusDefinition {
 export const Bonus = {
    SkiffClass1XPMultiplier,
    Reduce1WarmongerPerSec,
+
    Get8VictoryPointOnExp,
    Get3VictoryPointOnDeclExp,
    Get4VictoryPointOnDecl,

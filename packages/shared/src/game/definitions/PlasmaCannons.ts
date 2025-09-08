@@ -1,12 +1,6 @@
 import { L, t } from "../../utils/i18n";
 import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
-import {
-   BuildingFlag,
-   DamageType,
-   type IBuildingDefinition,
-   type IBuildingProp,
-   ProjectileFlag,
-} from "./BuildingProps";
+import { DamageType, type IBuildingDefinition, type IBuildingProp, ProjectileFlag } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 import { DefaultCooldown } from "./Constant";
 
@@ -27,7 +21,6 @@ export const PC1: IBuildingDefinition = {
    ...PlasmaCannonBaseProps,
    pet: () => t(L.Potoroo),
    code: CodeNumber.PC,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,
    ability: {
       timing: AbilityTiming.OnFire,

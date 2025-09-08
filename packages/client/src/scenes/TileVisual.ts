@@ -1,5 +1,3 @@
-import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { BuildingFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { GridSize, tileToPosCenter } from "@spaceship-idle/shared/src/game/Grid";
@@ -75,9 +73,7 @@ export class TileVisual extends Container {
       this._sprite.width = 75;
       this._sprite.height = 75;
 
-      if (!hasFlag(this.flag, BuildingFlag.CanRotate)) {
-         this._sprite.rotation += hasFlag(flag, TileVisualFlag.FlipHorizontal) ? Math.PI * 1.5 : Math.PI * 0.5;
-      }
+      this._sprite.rotation += hasFlag(flag, TileVisualFlag.FlipHorizontal) ? Math.PI * 1.5 : Math.PI * 0.5;
 
       this._healthBarBg = this.addChild(new Sprite(G.textures.get("Misc/HealthBar")));
       this._healthBarBg.tint = 0x000000;
@@ -194,9 +190,6 @@ export class TileVisual extends Container {
    public update(dt: number) {
       this.progress += dt;
       if (this._isWorking) {
-         if (hasFlag(this.flag, BuildingFlag.CanRotate)) {
-            this._sprite.angle += dt * 50;
-         }
          this._sprite.alpha = clamp(this._sprite.alpha + dt, 0.5, 1);
       } else {
          this._sprite.alpha = clamp(this._sprite.alpha - dt, 0.5, 1);
@@ -290,10 +283,6 @@ export class TileVisual extends Container {
             }),
          ).start();
       }
-   }
-
-   get flag() {
-      return Config.Buildings[this.data.type].buildingFlag;
    }
 
    fire(target: Tile): void {

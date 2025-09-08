@@ -11,18 +11,9 @@ export const DamageType = {
    Energy: 2,
 } as const;
 
-export const BuildingFlag = {
-   None: 0,
-   CanRotate: 1 << 0,
-   CanTarget: 1 << 1,
-} as const;
-
-export type BuildingFlag = ValueOf<typeof BuildingFlag>;
-
 export interface IBuildingDefinition extends IBuildingProp {
    pet: () => string;
    code: CodeNumber;
-   buildingFlag: BuildingFlag;
    element?: ElementSymbol;
 }
 

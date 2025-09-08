@@ -2,13 +2,7 @@ import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { getDamagePerFire } from "../logic/BuildingLogic";
 import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
-import {
-   BuildingFlag,
-   DamageType,
-   type IBuildingDefinition,
-   type IBuildingProp,
-   ProjectileFlag,
-} from "./BuildingProps";
+import { DamageType, type IBuildingDefinition, type IBuildingProp, ProjectileFlag } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 import { DefaultCooldown } from "./Constant";
 
@@ -29,14 +23,12 @@ export const AC30: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Kodkod),
    code: CodeNumber.AC,
-   buildingFlag: BuildingFlag.CanTarget,
    element: "Li",
 };
 export const AC30A: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Margay),
    code: CodeNumber.AC,
-   buildingFlag: BuildingFlag.CanTarget,
    element: "Mg",
    damagePct: 0.8,
    ability: {
@@ -54,7 +46,6 @@ export const AC30B: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Oncilla),
    code: CodeNumber.AC,
-   buildingFlag: BuildingFlag.CanTarget,
    element: "Cr",
    damagePct: 0.8,
    ability: {
@@ -72,7 +63,6 @@ export const AC30x3: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Serval),
    code: CodeNumber.AC,
-   buildingFlag: BuildingFlag.CanTarget,
    projectiles: 3,
    element: "Be",
 };
@@ -80,14 +70,12 @@ export const AC76: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Caracal),
    code: CodeNumber.AC,
-   buildingFlag: BuildingFlag.CanTarget,
    element: "B",
 };
 export const AC76x2: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Ocelot),
    code: CodeNumber.AC,
-   buildingFlag: BuildingFlag.CanTarget,
    element: "Al",
    projectiles: 2,
    damagePct: 0.8,
@@ -106,7 +94,6 @@ export const AC76A: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Caracal),
    code: CodeNumber.AC,
-   buildingFlag: BuildingFlag.CanTarget,
    element: "Cl",
    damagePct: 0.5,
    fireCooldown: 2.5,
@@ -127,7 +114,6 @@ export const AC130: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Bobcat),
    code: CodeNumber.AC,
-   buildingFlag: BuildingFlag.CanTarget,
    element: "C",
 };
 // export const AC130A: IBuildingDefinition = {
@@ -152,7 +138,6 @@ export const AC130A: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Leopard),
    code: CodeNumber.AC,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.8,
    ability: {
       timing: AbilityTiming.OnHit,
@@ -170,7 +155,6 @@ export const AC130B: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Jaguar),
    code: CodeNumber.AC,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,
    ability: {
       timing: AbilityTiming.OnFire,

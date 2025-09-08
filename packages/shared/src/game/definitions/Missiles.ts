@@ -3,13 +3,7 @@ import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { getDamagePerFire } from "../logic/BuildingLogic";
 import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
-import {
-   BuildingFlag,
-   DamageType,
-   type IBuildingDefinition,
-   type IBuildingProp,
-   ProjectileFlag,
-} from "./BuildingProps";
+import { DamageType, type IBuildingDefinition, type IBuildingProp, ProjectileFlag } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 import { DamageToHPMultiplier, DefaultCooldown } from "./Constant";
 
@@ -30,7 +24,6 @@ export const MS1: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Wren),
    code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.5,
    damageType: DamageType.Explosive,
    fireCooldown: 5,
@@ -52,7 +45,6 @@ export const MS1A: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Lark),
    code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.5,
    damageType: DamageType.Explosive,
    fireCooldown: 5,
@@ -75,7 +67,6 @@ export const MS1B: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Shrike),
    code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
    damageType: DamageType.Explosive,
    fireCooldown: 5,
@@ -97,7 +88,6 @@ export const MS1C: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Robin),
    code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -115,7 +105,6 @@ export const MS2: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Pipit),
    code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.8,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -133,7 +122,6 @@ export const MS2A: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Warbler),
    code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -153,7 +141,6 @@ export const MS2B: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Tanager),
    code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -171,7 +158,6 @@ export const MS3: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Gull),
    code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -189,7 +175,6 @@ export const MS3A: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Jay),
    code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -208,7 +193,6 @@ export const MS3B: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Dove),
    code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -229,7 +213,6 @@ export const MS4: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Dove),
    code: CodeNumber.MS,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,

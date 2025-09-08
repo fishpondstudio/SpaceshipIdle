@@ -3,7 +3,7 @@ import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass
 import type { Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { getTotalElementShards } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
+import { getTotalElementLevels } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { canSpendResource, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import {
    checkTechPrerequisites,
@@ -28,8 +28,8 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
    const def = Config.Tech[tech];
    const canUnlock = checkTechPrerequisites(tech, G.save.state);
    const shipClass = techColumnToShipClass(def.position.x);
-   const requiredShards = ShipClass[shipClass].shards;
-   const currentShards = getTotalElementShards(G.save.state);
+   const elementLevel = ShipClass[shipClass].elementLevels;
+   const currentLevel = getTotalElementLevels(G.save.state);
    return (
       <SidebarComp
          title={
@@ -43,12 +43,12 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
             <>
                <TitleComp>{t(L.Prerequisites)}</TitleComp>
                <div className="divider my10" />
-               {requiredShards > 0 ? (
+               {elementLevel > 0 ? (
                   <div className="row mx10 my5">
                      <div className="f1">
-                        <span className="text-space">{requiredShards}</span> {t(L.PermanentElementShards)}
+                        <span className="text-space">{elementLevel}</span> {t(L.PermanentElementLevels)}
                      </div>
-                     {currentShards >= requiredShards ? (
+                     {currentLevel >= elementLevel ? (
                         <div className="mi text-green">check_circle</div>
                      ) : (
                         <div className="mi text-red">cancel</div>
@@ -77,7 +77,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                         if (
                            !checkTechPrerequisites(tech, G.save.state) ||
                            !canSpendResource("Quantum", 1, G.save.state.resources) ||
-                           currentShards < requiredShards
+                           currentLevel < elementLevel
                         ) {
                            return;
                         }
@@ -90,7 +90,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                      disabled={
                         !canUnlock ||
                         !canSpendResource("Quantum", 1, G.save.state.resources) ||
-                        currentShards < requiredShards
+                        currentLevel < elementLevel
                      }
                   >
                      <FloatingTip
@@ -99,7 +99,7 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                            <div className="flex-table mx-10">
                               <div className="row">
                                  <div className="f1">{t(L.Prerequisites)}</div>
-                                 {canUnlock && currentShards >= requiredShards ? (
+                                 {canUnlock && currentLevel >= elementLevel ? (
                                     <div className="mi text-green xs">check_circle</div>
                                  ) : (
                                     <div className="mi text-red xs">cancel</div>

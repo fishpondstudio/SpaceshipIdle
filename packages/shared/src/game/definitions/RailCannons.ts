@@ -2,13 +2,7 @@ import { clamp } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { getHP } from "../logic/BuildingLogic";
 import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
-import {
-   BuildingFlag,
-   DamageType,
-   type IBuildingDefinition,
-   type IBuildingProp,
-   ProjectileFlag,
-} from "./BuildingProps";
+import { DamageType, type IBuildingDefinition, type IBuildingProp, ProjectileFlag } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 import { DefaultCooldown } from "./Constant";
 
@@ -29,7 +23,6 @@ export const RC50: IBuildingDefinition = {
    ...RailCannonBaseProps,
    pet: () => t(L.Fennec),
    code: CodeNumber.RC,
-   buildingFlag: BuildingFlag.CanTarget,
    fireCooldown: 1,
    element: "Sc",
 };
@@ -38,7 +31,6 @@ export const RC50A: IBuildingDefinition = {
    ...RailCannonBaseProps,
    pet: () => t(L.Culpeo),
    code: CodeNumber.RC,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
    fireCooldown: 1.5,
    ability: {
@@ -58,7 +50,6 @@ export const RC50B: IBuildingDefinition = {
    ...RailCannonBaseProps,
    pet: () => t(L.Dhole),
    code: CodeNumber.RC,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.9,
    fireCooldown: 1.5,
    ability: {
@@ -78,7 +69,6 @@ export const RC100: IBuildingDefinition = {
    ...RailCannonBaseProps,
    pet: () => t(L.Corsac),
    code: CodeNumber.RC,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
    fireCooldown: 1.5,
    // ability: {
@@ -100,7 +90,6 @@ export const RC100A: IBuildingDefinition = {
    ...RailCannonBaseProps,
    pet: () => t(L.Sechuran),
    code: CodeNumber.RC,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
    fireCooldown: 1.5,
    ability: {
@@ -120,7 +109,6 @@ export const RC150: IBuildingDefinition = {
    ...RailCannonBaseProps,
    pet: () => t(L.Grayfox),
    code: CodeNumber.RC,
-   buildingFlag: BuildingFlag.CanTarget,
    fireCooldown: 1.5,
    element: "Ge",
 };
@@ -129,7 +117,6 @@ export const RC150A: IBuildingDefinition = {
    ...RailCannonBaseProps,
    pet: () => t(L.Grayfox),
    code: CodeNumber.RC,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
    fireCooldown: 1.5,
    ability: {
@@ -167,7 +154,6 @@ export const RC150B: IBuildingDefinition = {
    ...RailCannonBaseProps,
    pet: () => t(L.Bushdog),
    code: CodeNumber.RC,
-   buildingFlag: BuildingFlag.CanTarget,
    damagePct: 0.75,
    fireCooldown: 1.5,
    ability: {

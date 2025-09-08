@@ -293,21 +293,3 @@ table {
       color: var(--mantine-color-red-6);
    }
 }
-
-.data-table {
-   width: 100%;
-   font-size: var(--mantine-font-size-sm);
-   line-height: 1.25;
-   border: 1px solid var(--mantine-color-dark-2);
-
-   th {
-      font-weight: bold;
-      text-transform: uppercase;
-      color: var(--mantine-color-space-text);
-      text-align: left;
-   }
-
-   td {
-      border-top: 1px solid var(--mantine-color-dark-2);
-   }
-}

@@ -2,13 +2,7 @@ import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { getDamagePerFire } from "../logic/BuildingLogic";
 import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
-import {
-   BuildingFlag,
-   DamageType,
-   type IBuildingDefinition,
-   type IBuildingProp,
-   ProjectileFlag,
-} from "./BuildingProps";
+import { DamageType, type IBuildingDefinition, type IBuildingProp, ProjectileFlag } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 import { DefaultCooldown } from "./Constant";
 
@@ -29,7 +23,6 @@ export const FD1: IBuildingDefinition = {
    ...DroneBaseProps,
    pet: () => t(L.Eoraptor),
    code: CodeNumber.FD,
-   buildingFlag: BuildingFlag.CanTarget,
    damageType: DamageType.Explosive,
    projectileFlag: ProjectileFlag.DroneDamage,
    projectileSpeed: 150,
@@ -41,7 +34,6 @@ export const FD1A: IBuildingDefinition = {
    ...DroneBaseProps,
    pet: () => t(L.Eoraptor),
    code: CodeNumber.FD,
-   buildingFlag: BuildingFlag.CanTarget,
    damageType: DamageType.Explosive,
    projectileFlag: ProjectileFlag.DroneDamage,
    projectileSpeed: 150,
