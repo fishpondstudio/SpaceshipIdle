@@ -2,6 +2,7 @@ import { cast, formatNumber, type Tile } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import type { Runtime } from "../logic/Runtime";
 import { AbilityRange, abilityTarget } from "./Ability";
+import type { Building } from "./Buildings";
 import type { ShipClass } from "./ShipClass";
 
 export interface IAddonDefinition {
@@ -93,7 +94,38 @@ export const Addons = {
    Damage2: cast<IAddonDefinition>({
       name: () => t(L.DamageDiversifier),
       desc: (value: number) => t(L.DamageDiversifierDesc, formatNumber(value)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {},
+      tick: (value: number, tile: Tile, runtime: Runtime) => {
+         const rs = runtime.get(tile);
+         if (!rs) {
+            return;
+         }
+         rs.damageMultiplier.add(value, t(L.SourceAddon, t(L.DamageDiversifier)));
+         const result = runtime.getGameState(tile);
+         if (!result) {
+            return;
+         }
+         const { side, state } = result;
+         const targetTiles = abilityTarget(side, AbilityRange.Adjacent, tile, state.tiles);
+         const uniqueBuildingTypes = new Set<Building>();
+         targetTiles.forEach((target) => {
+            const targetRs = runtime.get(target);
+            if (targetRs) {
+               uniqueBuildingTypes.add(targetRs.data.type);
+            }
+         });
+         if (uniqueBuildingTypes.size !== targetTiles.length) {
+            return;
+         }
+         targetTiles.forEach((target) => {
+            if (target === tile) {
+               return;
+            }
+            const targetRs = runtime.get(target);
+            if (targetRs) {
+               targetRs.damageMultiplier.add(value, t(L.SourceAddon, t(L.DamageDiversifier)));
+            }
+         });
+      },
       shipClass: "Scout",
    }),
    HP2: cast<IAddonDefinition>({
