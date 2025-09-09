@@ -342,7 +342,7 @@ function AddonTabLabel(): React.ReactNode {
       return (
          <FloatingTip position="top" label={t(L.YouHaveUnequippedAddonTooltip)}>
             <Indicator color="red" processing>
-               <TextureComp id={AddonElementId} name="Others/Addon24" />
+               <TextureComp id={AddonElementId} name="Others/Addon1" />
             </Indicator>
          </FloatingTip>
       );

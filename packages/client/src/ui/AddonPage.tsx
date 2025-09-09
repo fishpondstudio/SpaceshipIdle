@@ -9,7 +9,7 @@ import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { showModal } from "../utils/ToggleModal";
 import { FloatingTip } from "./components/FloatingTip";
-import { RenderHTML } from "./components/RenderHTMLComp";
+import { html } from "./components/RenderHTMLComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
 import { FuseAddonModal } from "./FuseAddonModal";
@@ -60,7 +60,13 @@ export function AddonPage(): React.ReactNode {
                            <TextureComp name={`Addon/${addons}`} width={16 * 2} />
                            <div className="f1">
                               <div className="row">
-                                 <div>{def.name()}</div>
+                                 <div>
+                                    {import.meta.env.DEV || amount > 0 ? (
+                                       def.name()
+                                    ) : (
+                                       <div className="mi">indeterminate_question_box</div>
+                                    )}
+                                 </div>
                                  <div className="f1" />
                                  {amount > 0 && tile === null ? (
                                     <Badge color="red" variant="outline">
@@ -71,7 +77,7 @@ export function AddonPage(): React.ReactNode {
                                     </Badge>
                                  ) : null}
                               </div>
-                              {amount > 0 ? (
+                              {import.meta.env.DEV || amount > 0 ? (
                                  <>
                                     <div className="row text-sm text-dimmed stretch">
                                        <div>{t(L.Amount)}</div>
@@ -80,7 +86,7 @@ export function AddonPage(): React.ReactNode {
                                     </div>
                                     <div className="row text-sm text-dimmed stretch g5">
                                        <div>{t(L.Effect)}</div>
-                                       <FloatingTip label={<RenderHTML html={def.desc(effect)} />}>
+                                       <FloatingTip label={html(def.desc(effect))}>
                                           <div className="mi sm">info</div>
                                        </FloatingTip>
                                        <div className="f1" />
@@ -90,7 +96,6 @@ export function AddonPage(): React.ReactNode {
                               ) : (
                                  <div className="row text-sm text-dimmed">
                                     <div className="f1">{t(L.NotDiscovered)}</div>
-                                    <div className="mi">indeterminate_question_box</div>
                                  </div>
                               )}
                            </div>

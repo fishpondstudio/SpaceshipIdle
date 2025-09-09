@@ -28,7 +28,7 @@
       "react-dom": "^19.1.0"
    },
    "devDependencies": {
-      "@assetpack/core": "^1.5.0",
+      "@assetpack/core": "^1.5.3",
       "@types/node": "^22.10.2",
       "@types/react": "^19.1.0",
       "@types/react-dom": "^19.1.0",
