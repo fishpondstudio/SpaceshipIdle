@@ -15,6 +15,7 @@ import { OfflineTimeModal } from "../ui/OfflineTimeModal";
 import { PreBattleModal } from "../ui/PreBattleModal";
 import { PrestigeModal } from "../ui/PrestigeModal";
 import { PrestigeReason } from "../ui/PrestigeReason";
+import { ShipBlueprintModal } from "../ui/ShipBlueprintModal";
 import { ViewShipModal } from "../ui/ViewShipModal";
 import { idbClear } from "../utils/BrowserStorage";
 import { G } from "../utils/Global";
@@ -64,6 +65,14 @@ export function addDebugFunctions(): void {
    // @ts-expect-error
    globalThis.printLayout = async () => {
       console.log(JSON.stringify(Array.from(G.save.state.tiles.keys())));
+   };
+   // @ts-expect-error
+   globalThis.blueprint = async () => {
+      showModal({
+         children: <ShipBlueprintModal />,
+         size: "lg",
+         title: "Ship Blueprint",
+      });
    };
    // @ts-expect-error
    globalThis.loadGameState = async () => {

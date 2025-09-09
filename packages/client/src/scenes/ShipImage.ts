@@ -11,7 +11,7 @@ export class ShipImage extends Container {
    constructor(ship: GameState, side: Side) {
       super();
       const tiles = side === Side.Right ? flipHorizontal(ship.tiles) : ship.tiles;
-      const aabb = calculateAABB(tiles);
+      const aabb = calculateAABB(tiles.keys());
       tiles.forEach((data, tile) => {
          const { x, y } = tileToPoint(tile);
          const pos = tileToPos(createTile(x - aabb.min.x, y - aabb.min.y));

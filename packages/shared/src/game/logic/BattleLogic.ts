@@ -1,4 +1,4 @@
-import { hasFlag, randOne, reduceOf, tileToPoint, type Tile } from "../../utils/Helper";
+import { hasFlag, randOne, reduceOf, type Tile, tileToPoint } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -46,7 +46,7 @@ export function tickProjectiles(
    targets: GameState,
    runtime: Runtime,
 ): void {
-   const aabb = calculateAABB(targets.tiles);
+   const aabb = calculateAABB(targets.tiles.keys());
    projectiles.forEach((projectile, id) => {
       const pos = projectile.position();
       const tile = posToTile(pos);

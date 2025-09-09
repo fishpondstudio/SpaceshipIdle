@@ -276,6 +276,14 @@ export function mapOf<K extends string | number | symbol, V, T>(
    return result;
 }
 
+export function iMapOf<T, K>(iterable: Iterable<T>, func: (value: T) => K): K[] {
+   const result: K[] = [];
+   for (const value of iterable) {
+      result.push(func(value));
+   }
+   return result;
+}
+
 export function flatMapOf<K extends string | number | symbol, V, T>(
    obj: Partial<Record<K, V>> | undefined | null,
    func: (key: K, value: V) => T[],

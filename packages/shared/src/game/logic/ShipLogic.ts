@@ -12,19 +12,19 @@ import { resourceOf } from "./ResourceLogic";
 import { Side } from "./Side";
 import { getShipClass } from "./TechLogic";
 
-export function calculateAABB(tiles: Tiles): AABB {
+export function calculateAABB(tiles: Iterable<Tile>): AABB {
    let minX = Number.POSITIVE_INFINITY;
    let minY = Number.POSITIVE_INFINITY;
    let maxX = Number.NEGATIVE_INFINITY;
    let maxY = Number.NEGATIVE_INFINITY;
 
-   tiles.forEach((_data, tile) => {
+   for (const tile of tiles) {
       const { x, y } = tileToPoint(tile);
       minX = Math.min(minX, x);
       minY = Math.min(minY, y);
       maxX = Math.max(maxX, x);
       maxY = Math.max(maxY, y);
-   });
+   }
 
    return new AABB({ x: minX, y: minY }, { x: maxX, y: maxY });
 }
@@ -144,7 +144,7 @@ export function validateForMatchmaking(gs: GameState): boolean {
 
 function _validateShip(gs: GameState): boolean {
    const buildings = new Set<Building>();
-   gs.unlockedTech.forEach((tech) => {
+   for (const tech of gs.unlockedTech) {
       const def = Config.Tech[tech];
       def.unlockBuildings?.forEach((b) => {
          buildings.add(b);
@@ -154,7 +154,7 @@ function _validateShip(gs: GameState): boolean {
             return false;
          }
       }
-   });
+   }
 
    for (const [_tile, data] of gs.tiles) {
       if (!buildings.has(data.type)) {
