@@ -71,7 +71,8 @@ export function addDebugFunctions(): void {
       showModal({
          children: <ShipBlueprintModal />,
          size: "lg",
-         title: "Ship Blueprint",
+         title: t(L.ShipBlueprint),
+         dismiss: true,
       });
    };
    // @ts-expect-error

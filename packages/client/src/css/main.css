@@ -293,3 +293,28 @@ table {
       color: var(--mantine-color-red-6);
    }
 }
+
+.ship-blueprint {
+   position: relative;
+
+   & > div {
+      position: absolute;
+      border-radius: 5px;
+      border: 1px solid #fff;
+   }
+}
+
+.ship-blueprint-tabs {
+   margin: 0 0 0 1px;
+   > div {
+      padding: 5px 10px;
+      cursor: pointer;
+      &.active {
+         color: var(--mantine-color-space-5);
+         border-right: 3px solid var(--mantine-color-space-5);
+      }
+      &:hover {
+         background-color: var(--mantine-color-dark-6);
+      }
+   }
+}

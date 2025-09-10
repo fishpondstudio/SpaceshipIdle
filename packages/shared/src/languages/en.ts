@@ -714,4 +714,6 @@ export const EN = {
    HPEqualizerDesc: "<b>Equipped module</b> gains +%% HP Multiplier. <b>Adjacent modules</b> also gain +%% HP Multiplier if they have lower level than the equipped module",
    DamageEqualizer: "Damage Equalizer",
    DamageEqualizerDesc: "<b>Equipped module</b> gains +%% Damage Multiplier. <b>Adjacent modules</b> also gain +%% Damage Multiplier if they have lower level than the equipped module",
+   UnderDevelopment: "Under Development",
+   ShipBlueprint: "Ship Blueprint",
 };
