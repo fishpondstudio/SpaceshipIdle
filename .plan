@@ -1,6 +1,6 @@
 # Mechanism
 - [x] Fuse add-ons
-- [ ] Ship layout select
+- [x] Ship layout select
 
 # Content
 - [x] Tech Tree up to Corvette-class
@@ -8,6 +8,10 @@
 - [x] Directives up to Corvette-class (Scout/Corvette class missing)
 - [x] Add-ons up to Corvette-class (4 missing)
 - [ ] Better ship procedural generation / difficulty
+
+# Balancing
+- [ ] Check Tech Tree
+- [ ] Check Weapons/Abilities
 
 # FTUE
 - [ ] Rework tutorial

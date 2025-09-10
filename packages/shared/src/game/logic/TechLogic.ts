@@ -135,5 +135,8 @@ export function getTechForBuilding(building: Building): Tech | undefined {
 
 export function isPlaceholderTech(tech: Tech): boolean {
    const def = Config.Tech[tech];
-   return def.requires.length === 0 && def.position.y > 0;
+   if (def.position.x === 0) {
+      return false;
+   }
+   return def.requires.length === 0;
 }
