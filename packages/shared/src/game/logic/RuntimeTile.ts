@@ -9,11 +9,10 @@ import {
    type IBuildingProp,
    ProjectileFlag,
    type Property,
-   WeaponKey,
 } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { StatusEffectTickInterval } from "../definitions/Constant";
-import { type StatusEffect, StatusEffectFlag, statusEffectOf, StatusEffects } from "../definitions/StatusEffect";
+import { type StatusEffect, StatusEffectFlag, StatusEffects, statusEffectOf } from "../definitions/StatusEffect";
 import type { GameState } from "../GameState";
 import { GridSize } from "../Grid";
 import type { ITileData } from "../ITileData";
@@ -304,10 +303,8 @@ export class RuntimeTile {
          }
       });
       this.props.hp = getHP(this.data) * this.hpMultiplier.value;
-      if (WeaponKey in def) {
-         const damagePerFire = getDamagePerFire(this.data) * this.damageMultiplier.value;
-         this.props.damagePerProjectile = (def.damagePct * damagePerFire) / def.projectiles;
-      }
+      const damagePerFire = getDamagePerFire(this.data) * this.damageMultiplier.value;
+      this.props.damagePerProjectile = (def.damagePct * damagePerFire) / def.projectiles;
       Object.assign(this.originalProps, this.props);
       this.props.runtimeFlag = RuntimeFlag.None;
    }

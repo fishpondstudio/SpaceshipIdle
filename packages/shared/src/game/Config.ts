@@ -1,9 +1,9 @@
-import { forEach, keysOf, sizeOf, tileToPoint } from "../utils/Helper";
+import { forEach, keysOf, sizeOf, tileToString } from "../utils/Helper";
+import { Blueprints } from "./definitions/Blueprints";
 import { type Building, Buildings } from "./definitions/Buildings";
 import { MaxBattleTick } from "./definitions/Constant";
 import { Resources } from "./definitions/Resource";
 import type { ShipClass } from "./definitions/ShipClass";
-import { ShipDesigns } from "./definitions/ShipDesign";
 import { type StatusEffect, StatusEffects } from "./definitions/StatusEffect";
 import { type Tech, TechDefinitions } from "./definitions/TechDefinitions";
 import { techColumnToShipClass } from "./logic/TechLogic";
@@ -47,16 +47,19 @@ function initConfig(): void {
       }
    });
 
-   forEach(ShipDesigns, (key, design) => {
+   forEach(Blueprints, (key, def) => {
       let previousLayout: number[] | undefined;
-      forEach(design, (shipClass, layout) => {
+      forEach(def.blueprint, (shipClass, layout) => {
+         if (layout.length === 0) {
+            return;
+         }
          if (!previousLayout) {
             previousLayout = layout;
             return;
          }
          previousLayout.forEach((tile, i) => {
             if (!layout.includes(tile)) {
-               console.error(`Design ${key}: tile ${tileToPoint(tile)} required in ${shipClass} class`);
+               console.error(`Design ${key}: tile ${tile} (${tileToString(tile)}) required in ${shipClass} class`);
             }
          });
          previousLayout = layout;

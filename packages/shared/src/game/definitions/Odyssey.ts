@@ -1,18 +1,19 @@
-import type { ShipClass } from "./ShipClass";
+import type { BlueprintDefinition } from "./Blueprints";
 
-type ShipDesignDefinition = Record<ShipClass, number[]>;
-
-export const Ship1: ShipDesignDefinition = {
+export const Odyssey: BlueprintDefinition = {
+   // 20
    Skiff: [
       6357041, 6357042, 6422577, 6422578, 6357040, 6357043, 6291503, 6291508, 6291504, 6291507, 6094896, 6094899,
       6225969, 6225970, 6291505, 6291506, 6160433, 6160434, 6094897, 6094898,
    ],
+   // 40
    Scout: [
       6357041, 6357042, 6422577, 6422578, 6357040, 6357043, 6291503, 6291508, 6291504, 6291507, 6094896, 6094899,
       6225969, 6225970, 6291505, 6291506, 6160433, 6160434, 6094897, 6094898, 6225966, 6225973, 6225967, 6225972,
       6160431, 6160436, 6094895, 6094900, 6029360, 6029363, 5963824, 5963827, 5963825, 5963826, 5898287, 5898292,
       5898288, 5898291, 6160432, 6160435,
    ],
+   // 70
    Corvette: [
       6357041, 6357042, 6422577, 6422578, 6357040, 6357043, 6291503, 6291508, 6291504, 6291507, 6094896, 6094899,
       6225969, 6225970, 6291505, 6291506, 6160433, 6160434, 6094897, 6094898, 6225966, 6225973, 6225967, 6225972,
@@ -28,9 +29,3 @@ export const Ship1: ShipDesignDefinition = {
    Dreadnought: [],
    Carrier: [],
 } as const;
-
-export const ShipDesigns = {
-   Ship1: Ship1,
-} as const;
-
-export type ShipDesign = keyof typeof ShipDesigns;

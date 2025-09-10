@@ -1,8 +1,8 @@
 import { camelToHuman, entriesOf, forEach } from "../../utils/Helper";
 import { Config } from "../Config";
+import { Blueprints } from "../definitions/Blueprints";
 import type { Building } from "../definitions/Buildings";
 import { ShipClass, ShipClassList } from "../definitions/ShipClass";
-import { ShipDesigns } from "../definitions/ShipDesign";
 import type { Tech } from "../definitions/TechDefinitions";
 import type { GameState } from "../GameState";
 import { getBuildingName } from "./BuildingLogic";
@@ -91,7 +91,7 @@ export function getTechInShipClass(shipClass: ShipClass): Tech[] {
 }
 
 export function getMaxQuantumForShipClass(shipClass: ShipClass, gs: GameState): number {
-   return getTechInShipClass(shipClass).length + ShipDesigns[gs.shipDesign][shipClass].length;
+   return getTechInShipClass(shipClass).length + Blueprints[gs.blueprint].blueprint[shipClass].length;
 }
 
 export function getBuildingsInShipClass(shipClass: ShipClass): Building[] {

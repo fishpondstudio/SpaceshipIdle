@@ -3,6 +3,7 @@ import { L, t } from "../../utils/i18n";
 import type { Runtime } from "../logic/Runtime";
 import type { RuntimeTile } from "../logic/RuntimeTile";
 import { AbilityRange, abilityTarget } from "./Ability";
+import type { Blueprint } from "./Blueprints";
 import type { Building } from "./Buildings";
 import type { ShipClass } from "./ShipClass";
 
@@ -11,6 +12,7 @@ export interface IAddonDefinition {
    desc: (value: number) => string;
    tick: (value: number, tile: Tile, runtime: Runtime) => void;
    shipClass: ShipClass;
+   blueprint?: Blueprint;
 }
 
 export const Addons = {

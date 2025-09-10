@@ -27,7 +27,7 @@ export const LA1: IBuildingDefinition = {
    fireCooldown: 4,
    projectileFlag: ProjectileFlag.LaserDamage,
    damageType: DamageType.Energy,
-   element: "V",
+   element: "La",
 };
 export const LA1A: IBuildingDefinition = {
    ...LaserArrayBaseProps,
@@ -37,7 +37,7 @@ export const LA1A: IBuildingDefinition = {
    fireCooldown: 4,
    projectileFlag: ProjectileFlag.LaserDamage,
    damageType: DamageType.Energy,
-   element: "As",
+   element: "Ce",
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
@@ -59,7 +59,7 @@ export const LA1B: IBuildingDefinition = {
    fireCooldown: 4,
    projectileFlag: ProjectileFlag.LaserDamage,
    damageType: DamageType.Energy,
-   element: "Mo",
+   element: "Pr",
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
@@ -79,7 +79,7 @@ export const LA2: IBuildingDefinition = {
    fireCooldown: 3.5,
    projectileFlag: ProjectileFlag.LaserDamage,
    damageType: DamageType.Energy,
-   element: "Rh",
+   element: "Nd",
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
@@ -101,7 +101,7 @@ export const LA2A: IBuildingDefinition = {
    fireCooldown: 3.5,
    projectileFlag: ProjectileFlag.LaserDamage,
    damageType: DamageType.Energy,
-   element: "Pd",
+   element: "Pm",
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,

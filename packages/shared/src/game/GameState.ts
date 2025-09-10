@@ -3,12 +3,12 @@ import { createTile, randomAlphaNumeric, type Tile, uuid4 } from "../utils/Helpe
 import { jsonEncode } from "../utils/Serialization";
 import { TypedEvent } from "../utils/TypedEvent";
 import type { Addon } from "./definitions/Addons";
+import type { Blueprint } from "./definitions/Blueprints";
 import type { Bonus } from "./definitions/Bonus";
 import type { Catalyst, CatalystCat } from "./definitions/Catalyst";
 import type { Galaxy } from "./definitions/Galaxy";
 import type { Resource } from "./definitions/Resource";
 import type { ShipClass } from "./definitions/ShipClass";
-import type { ShipDesign } from "./definitions/ShipDesign";
 import type { Stat } from "./definitions/Stat";
 import type { Tech } from "./definitions/TechDefinitions";
 import { GameOption } from "./GameOption";
@@ -49,7 +49,7 @@ export class GameState {
    selectedDirectives = new Map<ShipClass, Bonus>();
    addons = new Map<Addon, { tile: Tile | null; amount: number }>();
    name = "Unnamed";
-   shipDesign: ShipDesign = "Ship1";
+   blueprint: Blueprint = "Odyssey";
    flags: GameStateFlags = GameStateFlags.None;
    offlineTime = 0;
 }

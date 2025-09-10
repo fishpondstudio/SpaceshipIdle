@@ -1,6 +1,6 @@
 import { Badge, Switch } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { DamageTypeLabel, ProjectileFlag, WeaponKey } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import { DamageTypeLabel, ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { getDamagePerFire } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { formatNumber, hasFlag } from "@spaceship-idle/shared/src/utils/Helper";
@@ -24,9 +24,6 @@ export function AttackComp({ tile, gs }: ITileWithGameState): React.ReactNode {
       return null;
    }
    const def = Config.Buildings[data?.type];
-   if (!(WeaponKey in def)) {
-      return null;
-   }
    const rs = G.runtime.get(tile);
    if (!rs) {
       return null;

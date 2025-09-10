@@ -1,9 +1,11 @@
+import { Blueprints } from "@spaceship-idle/shared/src/game/definitions/Blueprints";
 import { ShipClass, ShipClassList } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
-import { Ship1 } from "@spaceship-idle/shared/src/game/definitions/ShipDesign";
-import { calculateAABB } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
+import { calculateAABB, getFullShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { cls, iMapOf, type Tile, tileToPoint } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useState } from "react";
+import { G } from "../utils/Global";
+import { TextureComp } from "./components/TextureComp";
 import { playClick } from "./Sound";
 
 export function ShipBlueprintModal() {
@@ -26,7 +28,11 @@ export function ShipBlueprintModal() {
          </div>
          <div className="divider vertical"></div>
          <div className="m20">
-            <ShipBlueprintComp layout={Ship1.Corvette} highlight={new Set(Ship1[shipClass])} width={400} />
+            <ShipBlueprintComp
+               layout={getFullShipBlueprint(Blueprints[G.save.state.blueprint].blueprint)}
+               highlight={new Set(Blueprints[G.save.state.blueprint].blueprint[shipClass])}
+               width={400}
+            />
          </div>
       </div>
    );
@@ -61,9 +67,7 @@ export function ShipBlueprintComp({
    if (highlight.size === 0) {
       return (
          <div className="col g5 text-dimmed" style={{ width, height }}>
-            <div className="mi" style={{ fontSize: "72px" }}>
-               lock
-            </div>
+            <TextureComp name="Others/Drill" width={24 * 3} />
             <div>{t(L.UnderDevelopment)}</div>
             <div className="h20" />
          </div>

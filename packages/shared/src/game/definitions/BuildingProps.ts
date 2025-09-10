@@ -48,8 +48,6 @@ export const DamageTypeLabel: Record<DamageType, () => string> = {
 
 export type Property = [number, number];
 
-export const WeaponKey = "damagePct" as const;
-
 export type BuildingProp = {
    [P in keyof IBuildingProp]: IBuildingProp[P] extends Property ? number : IBuildingProp[P];
 };

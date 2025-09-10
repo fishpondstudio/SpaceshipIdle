@@ -2,8 +2,9 @@ import { AABB } from "../../utils/AABB";
 import { createTile, type Tile, tileToPoint } from "../../utils/Helper";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
+import { type BlueprintDefinition, Blueprints } from "../definitions/Blueprints";
 import type { Building } from "../definitions/Buildings";
-import { ShipDesigns } from "../definitions/ShipDesign";
+import type { ShipClass } from "../definitions/ShipClass";
 import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
 import type { ITileData } from "../ITileData";
@@ -176,7 +177,7 @@ function _validateShip(gs: GameState): boolean {
 }
 
 export function getShipBlueprint(gs: GameState): number[] {
-   return ShipDesigns[gs.shipDesign][getShipClass(gs)];
+   return Blueprints[gs.blueprint].blueprint[getShipClass(gs)];
 }
 
 export function migrateShipForServer(ship: GameState): boolean {
@@ -185,4 +186,17 @@ export function migrateShipForServer(ship: GameState): boolean {
 
 export function migrateBuildingsAndResources(gs: GameState): boolean {
    return false;
+}
+
+export function getFullShipBlueprint(data: BlueprintDefinition): number[] {
+   let prev: ShipClass | undefined;
+   let shipClass: ShipClass;
+   for (shipClass in data) {
+      if (data[shipClass].length === 0 && prev) {
+         return data[prev];
+      }
+      prev = shipClass;
+   }
+   console.error("No full ship blueprint found, data:", data);
+   return [];
 }

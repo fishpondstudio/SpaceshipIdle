@@ -1,6 +1,7 @@
 import { forEach, shuffle } from "../../utils/Helper";
 import type { IHaveXY } from "../../utils/Vector2";
 import { type Addon, Addons } from "../definitions/Addons";
+import type { Blueprint } from "../definitions/Blueprints";
 import { type ShipClass, ShipClassList } from "../definitions/ShipClass";
 import type { GameState } from "../GameState";
 import { RequestParticle } from "./RequestParticle";
@@ -51,10 +52,10 @@ export function hasUnequippedAddon(gs: GameState): boolean {
    return false;
 }
 
-export function getAddonsInClass(shipClass: ShipClass): Addon[] {
+export function getAddonsInClass(shipClass: ShipClass, blueprint: Blueprint): Addon[] {
    const candidates: Addon[] = [];
    forEach(Addons, (addon, def) => {
-      if (def.shipClass === shipClass) {
+      if (def.shipClass === shipClass && (!def.blueprint || def.blueprint === blueprint)) {
          candidates.push(addon);
       }
    });

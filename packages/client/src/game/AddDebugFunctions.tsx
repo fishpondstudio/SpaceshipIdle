@@ -1,11 +1,14 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { type Blueprint, Blueprints } from "@spaceship-idle/shared/src/game/definitions/Blueprints";
+import type { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { rollElementShards } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
 import { changeStat, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { enumOf, equal, INT32_MAX, round } from "@spaceship-idle/shared/src/utils/Helper";
+import { getBuildingsInShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
+import { enumOf, equal, INT32_MAX, randOne, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { jsonEncode } from "@spaceship-idle/shared/src/utils/Serialization";
 import { RPCClient } from "../rpc/RPCClient";
@@ -15,7 +18,6 @@ import { OfflineTimeModal } from "../ui/OfflineTimeModal";
 import { PreBattleModal } from "../ui/PreBattleModal";
 import { PrestigeModal } from "../ui/PrestigeModal";
 import { PrestigeReason } from "../ui/PrestigeReason";
-import { ShipBlueprintModal } from "../ui/ShipBlueprintModal";
 import { ViewShipModal } from "../ui/ViewShipModal";
 import { idbClear } from "../utils/BrowserStorage";
 import { G } from "../utils/Global";
@@ -67,14 +69,14 @@ export function addDebugFunctions(): void {
       console.log(JSON.stringify(Array.from(G.save.state.tiles.keys())));
    };
    // @ts-expect-error
-   globalThis.blueprint = async () => {
-      showModal({
-         children: <ShipBlueprintModal />,
-         size: "lg",
-         title: t(L.ShipBlueprint),
-         dismiss: true,
+   globalThis.loadLayout = async (blueprint: Blueprint, shipClass: ShipClass) => {
+      G.save.state.tiles.clear();
+      const buildings = getBuildingsInShipClass(shipClass);
+      Blueprints[blueprint].blueprint[shipClass].forEach((tile) => {
+         G.save.state.tiles.set(tile, { type: randOne(buildings), level: 1 });
       });
    };
+
    // @ts-expect-error
    globalThis.loadGameState = async () => {
       G.save.state = await loadGameStateFromFile();

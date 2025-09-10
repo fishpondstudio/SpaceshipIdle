@@ -24,7 +24,7 @@ export const RC50: IBuildingDefinition = {
    pet: () => t(L.Fennec),
    code: CodeNumber.RC,
    fireCooldown: 1,
-   element: "Sc",
+   element: "Li",
 };
 
 export const RC50A: IBuildingDefinition = {
@@ -43,7 +43,7 @@ export const RC50A: IBuildingDefinition = {
       },
       duration: (building, level) => 2,
    },
-   element: "Zn",
+   element: "Be",
 };
 
 export const RC50B: IBuildingDefinition = {
@@ -62,7 +62,7 @@ export const RC50B: IBuildingDefinition = {
       },
       duration: (building, level) => 1,
    },
-   element: "Zr",
+   element: "Na",
 };
 
 export const RC100: IBuildingDefinition = {
@@ -83,7 +83,7 @@ export const RC100: IBuildingDefinition = {
    //    },
    //    duration: (building, level) => 1,
    // },
-   element: "Ni",
+   element: "Mg",
 };
 
 export const RC100A: IBuildingDefinition = {
@@ -102,7 +102,7 @@ export const RC100A: IBuildingDefinition = {
       },
       duration: (building, level) => 1,
    },
-   element: "Ga",
+   element: "K",
 };
 
 export const RC150: IBuildingDefinition = {
@@ -110,7 +110,7 @@ export const RC150: IBuildingDefinition = {
    pet: () => t(L.Grayfox),
    code: CodeNumber.RC,
    fireCooldown: 1.5,
-   element: "Ge",
+   element: "Ca",
 };
 
 export const RC150A: IBuildingDefinition = {
@@ -129,7 +129,7 @@ export const RC150A: IBuildingDefinition = {
       },
       duration: (building, level) => 1,
    },
-   element: "Ge",
+   element: "Rb",
 };
 
 // export const RC100C: IBuildingDefinition = {
@@ -167,5 +167,5 @@ export const RC150B: IBuildingDefinition = {
       },
       duration: (building, level) => 1,
    },
-   element: "Ru",
+   element: "Sr",
 };

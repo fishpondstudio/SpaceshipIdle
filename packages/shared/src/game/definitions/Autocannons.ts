@@ -23,13 +23,13 @@ export const AC30: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Kodkod),
    code: CodeNumber.AC,
-   element: "Li",
+   element: "C",
 };
 export const AC30A: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Margay),
    code: CodeNumber.AC,
-   element: "Mg",
+   element: "N",
    damagePct: 0.8,
    ability: {
       timing: AbilityTiming.OnFire,
@@ -46,7 +46,7 @@ export const AC30B: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Oncilla),
    code: CodeNumber.AC,
-   element: "Cr",
+   element: "O",
    damagePct: 0.8,
    ability: {
       timing: AbilityTiming.OnFire,
@@ -64,19 +64,19 @@ export const AC30x3: IBuildingDefinition = {
    pet: () => t(L.Serval),
    code: CodeNumber.AC,
    projectiles: 3,
-   element: "Be",
+   element: "F",
 };
 export const AC76: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Caracal),
    code: CodeNumber.AC,
-   element: "B",
+   element: "P",
 };
 export const AC76x2: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Ocelot),
    code: CodeNumber.AC,
-   element: "Al",
+   element: "S",
    projectiles: 2,
    damagePct: 0.8,
    ability: {
@@ -114,7 +114,7 @@ export const AC130: IBuildingDefinition = {
    ...AutocannonBaseProps,
    pet: () => t(L.Bobcat),
    code: CodeNumber.AC,
-   element: "C",
+   element: "Se",
 };
 // export const AC130A: IBuildingDefinition = {
 //    ...AutocannonBaseProps,
@@ -149,7 +149,7 @@ export const AC130A: IBuildingDefinition = {
       },
       duration: (self, level) => 2,
    },
-   element: "Mn",
+   element: "Br",
 };
 export const AC130B: IBuildingDefinition = {
    ...AutocannonBaseProps,
@@ -166,5 +166,5 @@ export const AC130B: IBuildingDefinition = {
       },
       duration: (self, level) => 2,
    },
-   element: "Rb",
+   element: "I",
 };

@@ -1,11 +1,12 @@
 import { shuffle } from "../../utils/Helper";
+import type { Blueprint } from "../definitions/Blueprints";
 import { DefaultElementChoices } from "../definitions/Constant";
 import { GameState, initGameState, type SaveGame } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { getUnlockedElements } from "./QuantumElementLogic";
 import { addResource, resourceOf } from "./ResourceLogic";
 
-export function prestige(save: SaveGame): void {
+export function prestige(save: SaveGame, blueprint: Blueprint): void {
    for (const [element, amount] of save.state.elements) {
       addElementShard(save.state, element, amount.hp);
       addElementShard(save.state, element, amount.damage);
@@ -18,7 +19,7 @@ export function prestige(save: SaveGame): void {
    addResource("Warp", resourceOf("Warp", oldState.resources).current, save.state.resources);
    save.state.permanentElements = oldState.permanentElements;
    save.data.permanentElementChoices = oldData.permanentElementChoices;
-
+   save.state.blueprint = blueprint;
    initGameState(save.state);
 }
 

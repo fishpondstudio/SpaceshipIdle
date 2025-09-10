@@ -1,19 +1,21 @@
 import { Menu } from "@mantine/core";
+import { Blueprints } from "@spaceship-idle/shared/src/game/definitions/Blueprints";
 import { PatchNotesUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
-import type { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
 import { openUrl } from "../../rpc/SteamClient";
-import { OnLanguageChanged } from "../../utils/Global";
+import { G, OnLanguageChanged } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import { showModal } from "../../utils/ToggleModal";
 import { GameSettingsModal } from "../GameSettingsModal";
 import { PlayerProfileModal } from "../PlayerProfileModal";
-import { ShipGalleryModal } from "../ShipGalleryModal";
+import { PrestigeModal } from "../PrestigeModal";
+import { PrestigeReason } from "../PrestigeReason";
+import { ShipBlueprintModal } from "../ShipBlueprintModal";
 import { WeaponListModal } from "../WeaponListModal";
 import { TextureComp } from "./TextureComp";
 
-export function _HamburgerMenuComp({ flag }: { flag: GameOptionFlag }): React.ReactNode {
+export function _HamburgerMenuComp(): React.ReactNode {
    refreshOnTypedEvent(OnLanguageChanged);
    return (
       <Menu position="bottom-start">
@@ -24,30 +26,37 @@ export function _HamburgerMenuComp({ flag }: { flag: GameOptionFlag }): React.Re
          </Menu.Target>
          <Menu.Dropdown className="sf-frame">
             <Menu.Item
-               leftSection={<div className="mi">person</div>}
+               leftSection={<div className="mi">published_with_changes</div>}
                onClick={() => {
                   showModal({
-                     children: <PlayerProfileModal />,
-                     title: t(L.PlayerProfile),
-                     size: "md",
+                     title: t(L.Prestige),
+                     children: <PrestigeModal reason={PrestigeReason.None} />,
+                     size: "sm",
                      dismiss: true,
                   });
                }}
             >
-               {t(L.PlayerProfile)}
+               {t(L.Prestige)}
             </Menu.Item>
             <Menu.Item
                leftSection={<div className="mi">grid_view</div>}
                onClick={() => {
                   showModal({
-                     children: <ShipGalleryModal />,
-                     title: t(L.ShipRanking),
-                     size: "xl",
+                     children: <ShipBlueprintModal />,
+                     title: (
+                        <>
+                           {t(L.ShipBlueprint)}{" "}
+                           <span className="text-space">
+                              ({t(L.SpaceshipPrefix, Blueprints[G.save.state.blueprint].name())})
+                           </span>
+                        </>
+                     ),
+                     size: "lg",
                      dismiss: true,
                   });
                }}
             >
-               {t(L.ShipRanking)}
+               {t(L.ShipBlueprint)}
             </Menu.Item>
             <Menu.Item
                leftSection={<div className="mi">menu_book</div>}
@@ -61,6 +70,19 @@ export function _HamburgerMenuComp({ flag }: { flag: GameOptionFlag }): React.Re
                }}
             >
                {t(L.WeaponList)}
+            </Menu.Item>
+            <Menu.Item
+               leftSection={<div className="mi">person</div>}
+               onClick={() => {
+                  showModal({
+                     children: <PlayerProfileModal />,
+                     title: t(L.PlayerProfile),
+                     size: "md",
+                     dismiss: true,
+                  });
+               }}
+            >
+               {t(L.PlayerProfile)}
             </Menu.Item>
             <Menu.Item
                leftSection={<div className="mi">settings</div>}
@@ -88,6 +110,4 @@ export function _HamburgerMenuComp({ flag }: { flag: GameOptionFlag }): React.Re
    );
 }
 
-export const HamburgerMenuComp = memo(_HamburgerMenuComp, (prev, next) => {
-   return prev.flag === next.flag;
-});
+export const HamburgerMenuComp = memo(_HamburgerMenuComp);

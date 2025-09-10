@@ -3,7 +3,8 @@ import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
 import { AbilityTiming, abilityTarget } from "../definitions/Ability";
-import { ProjectileFlag, WeaponKey } from "../definitions/BuildingProps";
+import { Blueprints } from "../definitions/Blueprints";
+import { ProjectileFlag } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import {
    BattleStartAmmoCycles,
@@ -12,7 +13,6 @@ import {
    MaxBattleTick as MaxBattleSeconds,
 } from "../definitions/Constant";
 import type { ShipClass } from "../definitions/ShipClass";
-import { ShipDesigns } from "../definitions/ShipDesign";
 import { GameOption } from "../GameOption";
 import { GameData, GameState } from "../GameState";
 import { posToTile } from "../Grid";
@@ -144,9 +144,6 @@ export function tickTiles(
 
    from.tiles.forEach((data, tile) => {
       const def = Config.Buildings[data.type];
-      if (!(WeaponKey in def)) {
-         return;
-      }
       const rs = rt.get(tile);
       if (!rs) {
          return;
@@ -281,7 +278,7 @@ export function evasionChance(value: number): number {
 
 export function generateShip(shipClass: ShipClass, random: () => number): GameState {
    const ship = new GameState();
-   const design = ShipDesigns[ship.shipDesign][shipClass];
+   const design = Blueprints[ship.blueprint].blueprint[shipClass];
    const buildings = getBuildingsInShipClass(shipClass);
    for (const tile of design) {
       ship.tiles.set(tile, { type: randOne(buildings, random), level: 10 });

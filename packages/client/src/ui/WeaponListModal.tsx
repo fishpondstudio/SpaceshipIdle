@@ -1,10 +1,6 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { AbilityRangeLabel, AbilityTimingLabel } from "@spaceship-idle/shared/src/game/definitions/Ability";
-import {
-   DamageTypeLabel,
-   type IBuildingDefinition,
-   WeaponKey,
-} from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import { DamageTypeLabel, type IBuildingDefinition } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { StatusEffects } from "@spaceship-idle/shared/src/game/definitions/StatusEffect";
@@ -37,9 +33,6 @@ export function WeaponListModal(): React.ReactNode {
             </thead>
             <tbody>
                {mapOf(Config.Buildings as Record<Building, IBuildingDefinition>, (building, _def) => {
-                  if (!(WeaponKey in _def)) {
-                     return null;
-                  }
                   const def = _def as IBuildingDefinition;
                   const dmgPerFire = getDamagePerFire({ type: building, level: 1 });
                   const tech = getTechForBuilding(building);
@@ -50,7 +43,7 @@ export function WeaponListModal(): React.ReactNode {
                      <tr key={building}>
                         <td className="condensed">
                            <FloatingTip w={350} label={<BuildingInfoComp building={building} />}>
-                              <TextureComp style={{ margin: 2 }} name={`Building/${building}`} width={40} />
+                              <TextureComp style={{ margin: 2 }} name={`Building/${building}`} width={32} />
                            </FloatingTip>
                         </td>
                         <td>

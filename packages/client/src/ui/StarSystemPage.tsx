@@ -22,7 +22,11 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
       <SidebarComp
          title={
             <div className="row">
-               <TextureComp name={`Galaxy/${starSystem.texture}`} />
+               {starSystem.discovered ? (
+                  <TextureComp name={`Galaxy/${starSystem.texture}`} />
+               ) : (
+                  <div className="mi">indeterminate_question_box</div>
+               )}
                <div className="f1">{starSystem.name} System</div>
             </div>
          }

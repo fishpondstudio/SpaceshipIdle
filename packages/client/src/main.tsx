@@ -1,4 +1,4 @@
-import { createTheme, MantineProvider, Portal } from "@mantine/core";
+import { createTheme, MantineProvider, Portal, Tooltip } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
@@ -61,6 +61,13 @@ const theme = createTheme({
       Portal: Portal.extend({
          defaultProps: {
             reuseTargetNode: true,
+         },
+      }),
+      Tooltip: Tooltip.extend({
+         defaultProps: {
+            color: "gray",
+            maw: "350px",
+            multiline: true,
          },
       }),
    },

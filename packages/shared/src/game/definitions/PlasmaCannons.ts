@@ -32,5 +32,5 @@ export const PC1: IBuildingDefinition = {
       },
       duration: (self, level) => 2,
    },
-   element: "Y",
+   element: "Al",
 };

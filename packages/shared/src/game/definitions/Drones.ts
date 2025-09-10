@@ -27,7 +27,7 @@ export const FD1: IBuildingDefinition = {
    projectileFlag: ProjectileFlag.DroneDamage,
    projectileSpeed: 150,
    fireCooldown: 5,
-   element: "Ag",
+   element: "B",
 };
 
 export const FD1A: IBuildingDefinition = {
@@ -38,7 +38,7 @@ export const FD1A: IBuildingDefinition = {
    projectileFlag: ProjectileFlag.DroneDamage,
    projectileSpeed: 150,
    fireCooldown: 5,
-   element: "Ag",
+   element: "Si",
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Adjacent,

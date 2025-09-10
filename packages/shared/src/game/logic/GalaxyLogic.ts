@@ -38,13 +38,13 @@ export function findPlanet(id: number, galaxy: Galaxy): Planet | undefined {
 
 export function getAddonReward(seed: string, gs: GameState): Addon[] {
    const shipClass = getShipClass(gs);
-   const addons = getAddonsInClass(shipClass);
+   const addons = getAddonsInClass(shipClass, gs.blueprint);
    const random = srand(seed);
    shuffle(addons, random);
    const [addon, ...candidates] = addons;
    const previousShipClass = getPreviousShipClass(shipClass);
    if (previousShipClass) {
-      getAddonsInClass(previousShipClass).forEach((b) => {
+      getAddonsInClass(previousShipClass, gs.blueprint).forEach((b) => {
          candidates.push(b);
       });
    }
@@ -200,6 +200,9 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
       [{ x: 0, y: 0, r: 300 }].concat(
          shuffle(
             [
+               { x: 0, y: 0, r: 600 },
+               { x: 0, y: 0, r: 600 },
+               { x: 0, y: 0, r: 500 },
                { x: 0, y: 0, r: 500 },
                { x: 0, y: 0, r: 400 },
                { x: 0, y: 0, r: 400 },

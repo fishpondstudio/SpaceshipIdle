@@ -87,7 +87,7 @@ export function ShipInfoPanel(): React.ReactNode {
    const defeat = getStat("Defeat", G.save.state.stats);
    return (
       <div className="sf-frame top ship-info">
-         <HamburgerMenuComp flag={options.flag} />
+         <HamburgerMenuComp />
          <div className="divider vertical" />
          <FloatingTip
             w={300}

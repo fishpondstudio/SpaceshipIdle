@@ -39,7 +39,7 @@ export const MS1: IBuildingDefinition = {
       },
       duration: (building, level) => 5,
    },
-   element: "Na",
+   element: "Sc",
 };
 export const MS1A: IBuildingDefinition = {
    ...MissileBaseProps,
@@ -60,7 +60,7 @@ export const MS1A: IBuildingDefinition = {
       },
       duration: (building, level) => 1,
    },
-   element: "S",
+   element: "Ti",
 };
 
 export const MS1B: IBuildingDefinition = {
@@ -82,7 +82,7 @@ export const MS1B: IBuildingDefinition = {
       },
       duration: (building, level) => 5,
    },
-   element: "Ca",
+   element: "V",
 };
 export const MS1C: IBuildingDefinition = {
    ...MissileBaseProps,
@@ -99,7 +99,7 @@ export const MS1C: IBuildingDefinition = {
       value: (building, level) => 0.2,
       duration: (building, level) => 5,
    },
-   element: "Ar",
+   element: "Cr",
 };
 export const MS2: IBuildingDefinition = {
    ...MissileBaseProps,
@@ -116,7 +116,7 @@ export const MS2: IBuildingDefinition = {
       value: (building, level) => 0.01,
       duration: (building, level) => 4,
    },
-   element: "Fe",
+   element: "Mn",
 };
 export const MS2A: IBuildingDefinition = {
    ...MissileBaseProps,
@@ -135,7 +135,7 @@ export const MS2A: IBuildingDefinition = {
       },
       duration: (building, level) => 5,
    },
-   element: "Co",
+   element: "Fe",
 };
 export const MS2B: IBuildingDefinition = {
    ...MissileBaseProps,
@@ -152,7 +152,7 @@ export const MS2B: IBuildingDefinition = {
       value: (building, level) => 0,
       duration: (building, level) => 0,
    },
-   element: "Nb",
+   element: "Co",
 };
 export const MS3: IBuildingDefinition = {
    ...MissileBaseProps,
@@ -169,7 +169,7 @@ export const MS3: IBuildingDefinition = {
       value: (building, level) => 0,
       duration: (building, level) => 0,
    },
-   element: "Kr",
+   element: "Ni",
 };
 export const MS3A: IBuildingDefinition = {
    ...MissileBaseProps,
@@ -186,7 +186,7 @@ export const MS3A: IBuildingDefinition = {
       value: (building, level) => 0.25,
       duration: (building, level) => 4,
    },
-   element: "K",
+   element: "Cu",
 };
 
 export const MS3B: IBuildingDefinition = {
@@ -206,7 +206,7 @@ export const MS3B: IBuildingDefinition = {
       },
       duration: (building, level) => 2,
    },
-   element: "Sr",
+   element: "Zn",
 };
 
 export const MS4: IBuildingDefinition = {
@@ -216,7 +216,7 @@ export const MS4: IBuildingDefinition = {
    damagePct: 0.9,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
-   element: "Sr",
+   element: "Y",
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,

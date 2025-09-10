@@ -120,10 +120,11 @@ export function MatchmakingModal(): React.ReactNode {
          </button>
          <div className="h10" />
          <button
-            disabled={xp < minXP || usedQuantum < minQuantum}
             className="btn w100 p5 row text-lg"
             onClick={() => {
+               playClick();
                showModal({
+                  title: t(L.Prestige),
                   children: <PrestigeModal reason={PrestigeReason.None} />,
                   size: "sm",
                   dismiss: true,
