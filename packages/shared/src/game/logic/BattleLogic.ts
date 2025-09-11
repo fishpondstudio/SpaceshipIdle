@@ -1,4 +1,4 @@
-import { hasFlag, randOne, reduceOf, type Tile, tileToPoint } from "../../utils/Helper";
+import { hasFlag, keysOf, rand, randOne, reduceOf, shuffle, tileToPoint, type Tile } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -16,6 +16,7 @@ import type { ShipClass } from "../definitions/ShipClass";
 import { GameOption } from "../GameOption";
 import { GameData, GameState } from "../GameState";
 import { posToTile } from "../Grid";
+import { addAddon, getAddonsInClass } from "./AddonLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType, type BattleVictoryType } from "./BattleType";
 import { getDamagePerFire } from "./BuildingLogic";
@@ -278,11 +279,20 @@ export function evasionChance(value: number): number {
 
 export function generateShip(shipClass: ShipClass, random: () => number): GameState {
    const ship = new GameState();
+   ship.blueprint = randOne(keysOf(Blueprints), random);
    const design = Blueprints[ship.blueprint].blueprint[shipClass];
    const buildings = getBuildingsInShipClass(shipClass);
    for (const tile of design) {
-      ship.tiles.set(tile, { type: randOne(buildings, random), level: 10 });
+      ship.tiles.set(tile, { type: randOne(buildings, random), level: 10 + Math.round(rand(5, 15, random)) });
    }
+   const addons = getAddonsInClass(shipClass, ship.blueprint);
+   shuffle(Array.from(ship.tiles.keys()), random).forEach((tile) => {
+      const addon = addons.pop();
+      if (addon) {
+         addAddon(addon, Math.round(rand(1, 5, random)), ship);
+         ship.addons.get(addon)!.tile = tile;
+      }
+   });
    return ship;
 }
 

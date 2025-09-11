@@ -40,14 +40,26 @@ export function shiftTiles(tiles: Tiles, dir: IHaveXY): Map<Tile, ITileData> {
    return newTiles;
 }
 
-export function flipHorizontal(tiles: Tiles): Map<Tile, ITileData> {
+/**
+ * Note this method will make a copy instead of mutating the original ship
+ * It might seem inefficient, but not doing so has caused so many bugs so it's worth it
+ */
+export function flipHorizontalCopy(ship: GameState): GameState {
+   const newShip = structuredClone(ship);
    const newTiles = new Map<Tile, ITileData>();
-   tiles.forEach((data, tile) => {
+   newShip.tiles.forEach((data, tile) => {
       const { x, y } = tileToPoint(tile);
       const newTile = createTile(MaxX - 1 - x, y);
       newTiles.set(newTile, data);
    });
-   return newTiles;
+   newShip.tiles = newTiles;
+   newShip.addons.forEach((data, addon) => {
+      if (data.tile) {
+         const {x, y} = tileToPoint(data.tile);
+         data.tile = createTile(MaxX - 1 - x, y);
+      }
+   });
+   return newShip;
 }
 
 export function isTileConnected(tile: Tile, gs: GameState): boolean {

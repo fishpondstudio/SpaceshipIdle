@@ -24,7 +24,7 @@ import { tickElement } from "./QuantumElementLogic";
 import { changeStat, getStat, trySpendResource } from "./ResourceLogic";
 import { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag, RuntimeTile } from "./RuntimeTile";
-import { flipHorizontal, isEnemy, shipAABB } from "./ShipLogic";
+import { flipHorizontalCopy, isEnemy, shipAABB } from "./ShipLogic";
 import { Side } from "./Side";
 import { getTechName } from "./TechLogic";
 
@@ -66,10 +66,7 @@ export class Runtime {
    constructor(left: SaveGame, right: GameState) {
       this.leftSave = left;
       this.left = left.state;
-      // We clone the right because we will mutate it!
-      this.right = structuredClone(right);
-      this.right.tiles = flipHorizontal(this.right.tiles);
-
+      this.right = flipHorizontalCopy(right);
       this.original = { left: structuredClone(this.left), right: structuredClone(this.right) };
 
       const hash = hashGameStatePair(this.left, this.right);
@@ -105,7 +102,7 @@ export class Runtime {
             this.right.tiles.set(tile, makeTile("AC30", this.wave + 1));
          }
       }
-      this.right.tiles = flipHorizontal(this.right.tiles);
+      this.right.tiles = flipHorizontalCopy(this.right).tiles;
       this.rightStat = new RuntimeStat();
       this.right.tiles.forEach((_data, tile) => {
          const rs = this.get(tile);

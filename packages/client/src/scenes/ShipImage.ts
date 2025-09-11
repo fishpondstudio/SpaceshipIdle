@@ -1,6 +1,6 @@
 import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { GridSize, tileToPos } from "@spaceship-idle/shared/src/game/Grid";
-import { calculateAABB, flipHorizontal } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
+import { calculateAABB, flipHorizontalCopy } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { createTile, tileToPoint } from "@spaceship-idle/shared/src/utils/Helper";
 import { Container, Sprite } from "pixi.js";
@@ -10,7 +10,7 @@ import { TileVisual, TileVisualFlag } from "./TileVisual";
 export class ShipImage extends Container {
    constructor(ship: GameState, side: Side) {
       super();
-      const tiles = side === Side.Right ? flipHorizontal(ship.tiles) : ship.tiles;
+      const tiles = side === Side.Right ? flipHorizontalCopy(ship).tiles : ship.tiles;
       const aabb = calculateAABB(tiles.keys());
       tiles.forEach((data, tile) => {
          const { x, y } = tileToPoint(tile);
