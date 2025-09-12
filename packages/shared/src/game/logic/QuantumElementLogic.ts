@@ -136,6 +136,15 @@ export function hasUnassignedElements(gs: GameState): boolean {
    return false;
 }
 
+export function hasUpgradeableElements(gs: GameState): boolean {
+   for (const [symbol, data] of gs.permanentElements) {
+      if (canUpgradeElement(symbol, "hp", gs) || canUpgradeElement(symbol, "damage", gs)) {
+         return true;
+      }
+   }
+   return false;
+}
+
 export function getElementUpgradeCost(upgradeTo: number): number {
    return fib(upgradeTo);
 }

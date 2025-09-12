@@ -265,6 +265,7 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
             friendshipTimeLeft: 0,
             revealed: false,
          };
+
          starSystem.planets.push(planet);
          r -= rand(30, 70);
       }

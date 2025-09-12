@@ -1,8 +1,12 @@
-import { createTile, type Tile, tileToPoint, type ValueOf } from "../../utils/Helper";
+import { clamp, createTile, hasFlag, type Tile, tileToPoint, type ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
-import { Multipliers } from "../logic/IMultiplier";
+import { Config } from "../Config";
+import { getDamagePerFire } from "../logic/BuildingLogic";
+import type { Multipliers } from "../logic/IMultiplier";
 import { Side } from "../logic/Side";
+import { ProjectileFlag } from "./BuildingProps";
 import type { Building } from "./Buildings";
+import { LaserArrayDamagePct } from "./Constant";
 import type { StatusEffect } from "./StatusEffect";
 
 export const AbilityTiming = {
@@ -202,4 +206,97 @@ export function abilityTarget<T>(
       }
    }
    return result;
+}
+
+function abilityTargetCount(range: AbilityRange): number {
+   switch (range) {
+      case AbilityRange.Single:
+         return 1;
+      case AbilityRange.Adjacent:
+         return 1 + 4;
+      case AbilityRange.Rear:
+      case AbilityRange.Front:
+         return 1 + 1;
+      case AbilityRange.RearTrio:
+      case AbilityRange.FrontTrio:
+         return 1 + 3;
+      case AbilityRange.Range1:
+         return 1 + 8;
+      case AbilityRange.Range2:
+         return 1 + 24;
+      case AbilityRange.Range3:
+         return 1 + 48;
+      case AbilityRange.Row:
+         return 1 + 10;
+      case AbilityRange.Column:
+         return 1 + 10;
+      default:
+         throw new Error(`Unknown ability range: ${range}`);
+   }
+}
+
+export function abilityDurationFactor(duration: number): number {
+   if (duration <= 1) {
+      return 1;
+   }
+   return (1 * (1 + duration / 10)) / duration;
+}
+
+export function abilityRangeFactor(range: AbilityRange): number {
+   const count = abilityTargetCount(range);
+   return 1 / Math.sqrt(count);
+}
+
+export function abilityDamage(building: Building, level: number, multipliers: Required<Multipliers>): number {
+   const def = Config.Buildings[building];
+   if (!def.ability) {
+      return 0;
+   }
+   let damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
+
+   if (hasFlag(def.projectileFlag, ProjectileFlag.LaserDamage)) {
+      damage = damage * (LaserArrayDamagePct - def.damagePct);
+   } else {
+      damage = damage * (1 - def.damagePct);
+   }
+
+   if (def.projectiles > 1) {
+      console.error("Weapons with multiple projectiles are not supported!");
+   }
+   const duration = def.ability.duration(building, level, multipliers);
+   damage = damage * abilityDurationFactor(duration) * abilityRangeFactor(def.ability.range);
+   return damage;
+}
+
+export function criticalDamagePct(chance: number, multiplier: number): number {
+   return 1 / (chance * multiplier + (1 - chance));
+}
+
+export const AbilityStatDamagePct = 0.8;
+
+export function abilityStat(building: Building, level: number): number {
+   const def = Config.Buildings[building];
+   if (!def.ability) {
+      return 0;
+   }
+   console.assert(
+      def.damagePct === AbilityStatDamagePct,
+      `Expected damage pct to be ${AbilityStatDamagePct} but got ${def.damagePct}`,
+   );
+   let result = level * 0.5;
+
+   if (hasFlag(def.projectileFlag, ProjectileFlag.LaserDamage)) {
+      // Laser stat ability is not as effective as damage - so we give a discount
+      result = result * Math.sqrt(LaserArrayDamagePct);
+   }
+
+   if (def.projectiles > 1) {
+      console.error("Weapons with multiple projectiles are not supported!");
+   }
+   result = result * abilityRangeFactor(def.ability.range);
+   return result;
+}
+
+export function abilityChance(_: Building, level: number): number {
+   return clamp(0.05 + (level - 1) * 0.005, 0, 0.5);
 }

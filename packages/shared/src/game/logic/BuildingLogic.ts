@@ -1,3 +1,4 @@
+import { entriesOf } from "../../utils/Helper";
 import { Config } from "../Config";
 import type { Building } from "../definitions/Buildings";
 import { DamageToHPMultiplier, MaxBuildingCount } from "../definitions/Constant";
@@ -6,6 +7,7 @@ import type { GameState, Tiles } from "../GameState";
 import type { ITileData } from "../ITileData";
 import { getCooldownMultiplier } from "./BattleLogic";
 import { trySpendResource } from "./ResourceLogic";
+import { isPlaceholderTech } from "./TechLogic";
 
 export function getNextLevel(currentLevel: number, x: number): number {
    return (Math.floor(currentLevel / x) + 1) * x;
@@ -63,6 +65,18 @@ export function getHP({ type, level }: { type: Building; level: number }): numbe
 
 export function getDamagePerFire({ type, level }: { type: Building; level: number }): number {
    return getBaseValue(type) * level * getCooldownMultiplier({ type });
+}
+
+export function getUnlockableBuildings(): Building[] {
+   const result: Building[] = [];
+   for (const [tech, def] of entriesOf(Config.Tech)) {
+      if (!isPlaceholderTech(tech)) {
+         def.unlockBuildings?.forEach((building) => {
+            result.push(building);
+         });
+      }
+   }
+   return result;
 }
 
 export function upgradeMax(tile: ITileData, gs: GameState): void {

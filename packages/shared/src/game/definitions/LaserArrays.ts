@@ -1,7 +1,7 @@
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { getDamagePerFire } from "../logic/BuildingLogic";
-import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
+import { AbilityFlag, AbilityRange, AbilityStatDamagePct, AbilityTiming, abilityDamage, abilityStat } from "./Ability";
 import { DamageType, type IBuildingDefinition, type IBuildingProp, ProjectileFlag } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 import { DefaultCooldown, LaserArrayDamagePct } from "./Constant";
@@ -11,7 +11,7 @@ export const LaserArrayBaseProps: IBuildingProp = {
    shield: [0, 1],
    deflection: [0, 0.5],
    evasion: [0, 0],
-   damagePct: 1,
+   damagePct: LaserArrayDamagePct,
    fireCooldown: DefaultCooldown,
    projectiles: 1,
    projectileSpeed: 300,
@@ -29,6 +29,7 @@ export const LA1: IBuildingDefinition = {
    damageType: DamageType.Energy,
    element: "La",
 };
+
 export const LA1A: IBuildingDefinition = {
    ...LaserArrayBaseProps,
    pet: () => t(L.Tetra),
@@ -41,13 +42,9 @@ export const LA1A: IBuildingDefinition = {
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
-      effect: "TickExplosiveDamage",
+      effect: "TickEnergyDamage",
       flag: AbilityFlag.AffectedByDamageMultiplier,
-      value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IBuildingDefinition;
-         const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
-         return (damage * (1 - def.damagePct) * LaserArrayDamagePct) / 2;
-      },
+      value: abilityDamage,
       duration: (building, level) => 2,
    },
 };
@@ -55,7 +52,7 @@ export const LA1B: IBuildingDefinition = {
    ...LaserArrayBaseProps,
    pet: () => t(L.Danio),
    code: CodeNumber.LA,
-   damagePct: LaserArrayDamagePct,
+   damagePct: LaserArrayDamagePct * AbilityStatDamagePct,
    fireCooldown: 4,
    projectileFlag: ProjectileFlag.LaserDamage,
    damageType: DamageType.Energy,
@@ -65,9 +62,7 @@ export const LA1B: IBuildingDefinition = {
       range: AbilityRange.Single,
       effect: "ReduceArmorAndDeflection",
       flag: AbilityFlag.None,
-      value: (self, level) => {
-         return level / 2;
-      },
+      value: abilityStat,
       duration: (self, level) => 2,
    },
 };

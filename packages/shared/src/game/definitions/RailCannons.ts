@@ -1,7 +1,6 @@
-import { clamp } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { getHP } from "../logic/BuildingLogic";
-import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
+import { AbilityFlag, AbilityRange, AbilityStatDamagePct, AbilityTiming, abilityChance, abilityStat } from "./Ability";
 import { DamageType, type IBuildingDefinition, type IBuildingProp, ProjectileFlag } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 import { DefaultCooldown } from "./Constant";
@@ -14,7 +13,7 @@ export const RailCannonBaseProps: IBuildingProp = {
    damagePct: 1,
    fireCooldown: DefaultCooldown,
    projectiles: 1,
-   projectileSpeed: 300,
+   projectileSpeed: 350,
    damageType: DamageType.Kinetic,
    projectileFlag: ProjectileFlag.None,
 } as const;
@@ -23,7 +22,7 @@ export const RC50: IBuildingDefinition = {
    ...RailCannonBaseProps,
    pet: () => t(L.Fennec),
    code: CodeNumber.RC,
-   fireCooldown: 1,
+   fireCooldown: 1.5,
    element: "Li",
 };
 
@@ -31,17 +30,15 @@ export const RC50A: IBuildingDefinition = {
    ...RailCannonBaseProps,
    pet: () => t(L.Culpeo),
    code: CodeNumber.RC,
-   damagePct: 0.75,
+   damagePct: AbilityStatDamagePct,
    fireCooldown: 1.5,
    ability: {
-      timing: AbilityTiming.OnFire,
-      range: AbilityRange.Front,
-      effect: "IncreaseEvasion",
+      timing: AbilityTiming.OnHit,
+      range: AbilityRange.Single,
+      effect: "ReduceArmor",
       flag: AbilityFlag.None,
-      value: (building, level) => {
-         return 0.1;
-      },
-      duration: (building, level) => 2,
+      value: abilityStat,
+      duration: (self, level) => 2,
    },
    element: "Be",
 };
@@ -50,17 +47,15 @@ export const RC50B: IBuildingDefinition = {
    ...RailCannonBaseProps,
    pet: () => t(L.Dhole),
    code: CodeNumber.RC,
-   damagePct: 0.9,
+   damagePct: AbilityStatDamagePct,
    fireCooldown: 1.5,
    ability: {
-      timing: AbilityTiming.OnFire,
+      timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
-      effect: "IgnoreEvasion",
+      effect: "ReduceShield",
       flag: AbilityFlag.None,
-      value: (building, level) => {
-         return 0;
-      },
-      duration: (building, level) => 1,
+      value: abilityStat,
+      duration: (self, level) => 2,
    },
    element: "Na",
 };
@@ -71,18 +66,6 @@ export const RC100: IBuildingDefinition = {
    code: CodeNumber.RC,
    damagePct: 0.75,
    fireCooldown: 1.5,
-   // ability: {
-   //    timing: AbilityTiming.OnHit,
-   //    range: AbilityRange.Single,
-   //    effect: "ReduceDamage",
-   //    flag: AbilityFlag.AffectedByDamageMultiplier,
-   //    value: (building, level, multipliers) => {
-   //       const def = Config.Buildings[building] as IBuildingDefinition;
-   //       const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
-   //       return (damage * (1 - def.damagePct)) / 1;
-   //    },
-   //    duration: (building, level) => 1,
-   // },
    element: "Mg",
 };
 
@@ -97,9 +80,7 @@ export const RC100A: IBuildingDefinition = {
       range: AbilityRange.Single,
       effect: "RecoverHpOnTakingDamage2x",
       flag: AbilityFlag.None,
-      value: (building, level) => {
-         return clamp(0.05 + (level - 1) * 0.005, 0, 0.5);
-      },
+      value: abilityChance,
       duration: (building, level) => 1,
    },
    element: "K",
@@ -124,31 +105,11 @@ export const RC150A: IBuildingDefinition = {
       range: AbilityRange.Single,
       effect: "RecoverHpOnDealingDamage10",
       flag: AbilityFlag.None,
-      value: (building, level) => {
-         return clamp(0.05 + (level - 1) * 0.005, 0, 0.5);
-      },
+      value: abilityChance,
       duration: (building, level) => 1,
    },
    element: "Rb",
 };
-
-// export const RC100C: IBuildingDefinition = {
-//    ...RailCannonBaseProps,
-//    pet: () => t(L.Redfox),
-//    code: CodeNumber.RC,
-//    buildingFlag: BuildingFlag.CanTarget,
-//    damagePct: 0.5,
-//    fireCooldown: 1.5,
-//    ability: {
-//       timing: AbilityTiming.OnFire,
-//       range: AbilityRange.Single,
-//       effect: "FailsafeRegen",
-//       flag: AbilityFlag.None,
-//       value: (building, level) => 0,
-//       duration: (building, level) => 1,
-//    },
-//    element: "Tc",
-// };
 
 export const RC150B: IBuildingDefinition = {
    ...RailCannonBaseProps,

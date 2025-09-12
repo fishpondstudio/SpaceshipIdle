@@ -9,10 +9,11 @@
 - [x] Add-ons up to Corvette-class (4 missing)
 
 # Balancing
-- [ ] Check Tech Tree
-- [ ] Check Weapons/Abilities
+- [x] Check Tech Tree
+- [x] Check Weapons/Abilities
 - [ ] Check Quantum/Element progress
-- [ ] Better ship procedural generation / difficulty
+- [x] Better ship procedural generation / difficulty
 
 # FTUE
 - [ ] Rework tutorial
+- [ ] Add play test info

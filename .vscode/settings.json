@@ -9,7 +9,7 @@
    "editor.codeActionsOnSave": {
       "source.fixAll.ts": "explicit",
       "source.fixAll.biome": "explicit",
-      "source.sortImports": "explicit",
+      "source.sortImports": "never",
       "source.addMissingImports.ts": "explicit",
       "source.organizeImports": "never",
       "source.organizeImports.biome": "explicit",

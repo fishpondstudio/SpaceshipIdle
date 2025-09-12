@@ -7,11 +7,12 @@ import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus
 import { rollElementShards } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
 import { changeStat, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { getBuildingsInShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
+import { getBuildingsWithinShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { enumOf, equal, INT32_MAX, randOne, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { jsonEncode } from "@spaceship-idle/shared/src/utils/Serialization";
 import { RPCClient } from "../rpc/RPCClient";
+import { BalancingModal } from "../ui/BalancingModal";
 import { ChooseElementModal } from "../ui/ChooseElementModal";
 import { NewPlayerModal } from "../ui/NewPlayerModal";
 import { OfflineTimeModal } from "../ui/OfflineTimeModal";
@@ -71,12 +72,20 @@ export function addDebugFunctions(): void {
    // @ts-expect-error
    globalThis.loadLayout = async (blueprint: Blueprint, shipClass: ShipClass) => {
       G.save.state.tiles.clear();
-      const buildings = getBuildingsInShipClass(shipClass);
+      const buildings = getBuildingsWithinShipClass(shipClass);
       Blueprints[blueprint].blueprint[shipClass].forEach((tile) => {
          G.save.state.tiles.set(tile, { type: randOne(buildings), level: 1 });
       });
    };
-
+   // @ts-expect-error
+   globalThis.balancing = async () => {
+      showModal({
+         children: <BalancingModal />,
+         size: "lg",
+         title: "Balancing",
+         dismiss: true,
+      });
+   };
    // @ts-expect-error
    globalThis.loadGameState = async () => {
       G.save.state = await loadGameStateFromFile();

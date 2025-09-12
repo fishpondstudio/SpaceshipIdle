@@ -120,7 +120,7 @@ export class TechDefinitions {
    B7: ITechDefinition = {
       position: { x: 4, y: 1 },
       requires: ["B2"],
-      name: () => t(L.TechEvasionMatrix),
+      name: () => t(L.TechArmorPiercing),
       unlockBuildings: ["RC50A"],
    };
    B8: ITechDefinition = {
@@ -132,12 +132,12 @@ export class TechDefinitions {
    B9: ITechDefinition = {
       position: { x: 5, y: 0 },
       requires: ["B6"],
-      name: () => t(L.TechRocketArtillery),
+      name: () => t(L.TechDeflectionDisruption),
       unlockBuildings: ["AC76A"],
    };
    B10: ITechDefinition = {
       position: { x: 5, y: 1 },
-      name: () => t(L.TechPrecisionStrike),
+      name: () => t(L.TechShieldBreaking),
       requires: ["B6", "B7"],
       unlockBuildings: ["RC50B"],
    };
@@ -180,7 +180,7 @@ export class TechDefinitions {
 
    C5: ITechDefinition = {
       position: { x: 7, y: 0 },
-      name: () => t(L.TechDefenseBreaker),
+      name: () => t(L.TechDefenseOverload),
       requires: ["C1"],
       unlockBuildings: ["AC130A"],
    };
@@ -192,7 +192,7 @@ export class TechDefinitions {
    };
    C7: ITechDefinition = {
       position: { x: 7, y: 2 },
-      name: () => t(L.TechLaserExplosive),
+      name: () => t(L.TechSlowBurn),
       requires: ["C3", "C4"],
       unlockBuildings: ["LA1A"],
    };

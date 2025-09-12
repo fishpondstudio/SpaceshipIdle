@@ -1,4 +1,14 @@
-import { hasFlag, keysOf, rand, randOne, reduceOf, shuffle, tileToPoint, type Tile } from "../../utils/Helper";
+import {
+   clamp,
+   hasFlag,
+   keysOf,
+   randInt,
+   randOne,
+   reduceOf,
+   shuffle,
+   type Tile,
+   tileToPoint,
+} from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -12,7 +22,7 @@ import {
    DefaultCooldown,
    MaxBattleTick as MaxBattleSeconds,
 } from "../definitions/Constant";
-import type { ShipClass } from "../definitions/ShipClass";
+import { type ShipClass, ShipClassList } from "../definitions/ShipClass";
 import { GameOption } from "../GameOption";
 import { GameData, GameState } from "../GameState";
 import { posToTile } from "../Grid";
@@ -27,7 +37,7 @@ import type { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag, type RuntimeTile } from "./RuntimeTile";
 import { calculateAABB } from "./ShipLogic";
 import { Side } from "./Side";
-import { getBuildingsInShipClass } from "./TechLogic";
+import { getBuildingsWithinShipClass } from "./TechLogic";
 
 interface IProjectileHit {
    position: IHaveXY;
@@ -281,15 +291,19 @@ export function generateShip(shipClass: ShipClass, random: () => number): GameSt
    const ship = new GameState();
    ship.blueprint = randOne(keysOf(Blueprints), random);
    const design = Blueprints[ship.blueprint].blueprint[shipClass];
-   const buildings = getBuildingsInShipClass(shipClass);
+   const buildings = getBuildingsWithinShipClass(shipClass);
+   const difficulty = ShipClassList.indexOf(shipClass);
    for (const tile of design) {
-      ship.tiles.set(tile, { type: randOne(buildings, random), level: 10 + Math.round(rand(5, 15, random)) });
+      ship.tiles.set(tile, {
+         type: randOne(buildings, random),
+         level: 10 + clamp(0, 35, randInt(difficulty + 1, (difficulty + 1) * 5, random)),
+      });
    }
    const addons = getAddonsInClass(shipClass, ship.blueprint);
    shuffle(Array.from(ship.tiles.keys()), random).forEach((tile) => {
       const addon = addons.pop();
       if (addon) {
-         addAddon(addon, Math.round(rand(1, 5, random)), ship);
+         addAddon(addon, 1 + clamp(0, 15, randInt(difficulty, difficulty * 3, random)), ship);
          ship.addons.get(addon)!.tile = tile;
       }
    });

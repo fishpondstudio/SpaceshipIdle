@@ -94,10 +94,14 @@ export function getMaxQuantumForShipClass(shipClass: ShipClass, gs: GameState): 
    return getTechInShipClass(shipClass).length + Blueprints[gs.blueprint].blueprint[shipClass].length;
 }
 
-export function getBuildingsInShipClass(shipClass: ShipClass): Building[] {
+/**
+ * Get all buildings **in or below** the given ship class
+ */
+export function getBuildingsWithinShipClass(shipClass: ShipClass): Building[] {
    const result: Building[] = [];
+   const maxX = ShipClass[shipClass].range[1];
    forEach(Config.Tech, (_, def) => {
-      if (techColumnToShipClass(def.position.x) === shipClass) {
+      if (def.position.x <= maxX) {
          def.unlockBuildings?.forEach((b) => {
             result.push(b);
          });

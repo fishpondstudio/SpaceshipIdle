@@ -1,8 +1,13 @@
-import { clamp } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
-import { Config } from "../Config";
-import { getDamagePerFire } from "../logic/BuildingLogic";
-import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
+import {
+   AbilityFlag,
+   AbilityRange,
+   AbilityStatDamagePct,
+   AbilityTiming,
+   abilityChance,
+   abilityDamage,
+   criticalDamagePct,
+} from "./Ability";
 import { DamageType, type IBuildingDefinition, type IBuildingProp, ProjectileFlag } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 import { DamageToHPMultiplier, DefaultCooldown } from "./Constant";
@@ -29,14 +34,10 @@ export const MS1: IBuildingDefinition = {
    fireCooldown: 5,
    ability: {
       timing: AbilityTiming.OnHit,
-      range: AbilityRange.Adjacent,
-      effect: "TickEnergyDamage",
+      range: AbilityRange.Single,
+      effect: "TickExplosiveDamage",
       flag: AbilityFlag.AffectedByDamageMultiplier,
-      value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IBuildingDefinition;
-         const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
-         return (damage * (1 - def.damagePct)) / 5 / 3;
-      },
+      value: abilityDamage,
       duration: (building, level) => 5,
    },
    element: "Sc",
@@ -50,15 +51,11 @@ export const MS1A: IBuildingDefinition = {
    fireCooldown: 5,
    ability: {
       timing: AbilityTiming.OnFire,
-      range: AbilityRange.Adjacent,
+      range: AbilityRange.Single,
       effect: "RecoverHp",
       flag: AbilityFlag.AffectedByDamageMultiplier,
-      value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IBuildingDefinition;
-         const damage = getDamagePerFire({ type: building, level }) * multipliers.damage;
-         return (damage * (1 - def.damagePct)) / 3;
-      },
-      duration: (building, level) => 1,
+      value: abilityDamage,
+      duration: (building, level) => 2,
    },
    element: "Ti",
 };
@@ -67,18 +64,16 @@ export const MS1B: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Shrike),
    code: CodeNumber.MS,
-   damagePct: 0.75,
+   damagePct: 0.5,
    damageType: DamageType.Explosive,
    fireCooldown: 5,
    ability: {
       timing: AbilityTiming.OnFire,
-      range: AbilityRange.Adjacent,
+      range: AbilityRange.Single,
       effect: "IncreaseMaxHp",
       flag: AbilityFlag.AffectedByDamageMultiplier,
       value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IBuildingDefinition;
-         const hp = getDamagePerFire({ type: building, level }) * multipliers.damage * DamageToHPMultiplier;
-         return (hp * (1 - def.damagePct)) / 3;
+         return abilityDamage(building, level, multipliers) * DamageToHPMultiplier;
       },
       duration: (building, level) => 5,
    },
@@ -88,7 +83,7 @@ export const MS1C: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Robin),
    code: CodeNumber.MS,
-   damagePct: 0.9,
+   damagePct: criticalDamagePct(0.2, 2),
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
    ability: {
@@ -130,9 +125,7 @@ export const MS2A: IBuildingDefinition = {
       range: AbilityRange.Single,
       effect: "ReflectDamage",
       flag: AbilityFlag.None,
-      value: (building, level) => {
-         return clamp(0.05 + (level - 1) * 0.005, 0, 0.5);
-      },
+      value: abilityChance,
       duration: (building, level) => 5,
    },
    element: "Fe",
@@ -141,16 +134,16 @@ export const MS2B: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Tanager),
    code: CodeNumber.MS,
-   damagePct: 0.75,
+   damagePct: AbilityStatDamagePct,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
    ability: {
       timing: AbilityTiming.OnFire,
-      range: AbilityRange.Adjacent,
+      range: AbilityRange.FrontTrio,
       effect: "DispelDebuff",
       flag: AbilityFlag.None,
       value: (building, level) => 0,
-      duration: (building, level) => 0,
+      duration: (building, level) => 1,
    },
    element: "Co",
 };
@@ -158,7 +151,7 @@ export const MS3: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Gull),
    code: CodeNumber.MS,
-   damagePct: 0.9,
+   damagePct: AbilityStatDamagePct,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
    ability: {
@@ -167,7 +160,7 @@ export const MS3: IBuildingDefinition = {
       effect: "DispelBuff",
       flag: AbilityFlag.None,
       value: (building, level) => 0,
-      duration: (building, level) => 0,
+      duration: (building, level) => 1,
    },
    element: "Ni",
 };
@@ -175,7 +168,7 @@ export const MS3A: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Jay),
    code: CodeNumber.MS,
-   damagePct: 0.9,
+   damagePct: 0.8,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
    ability: {
@@ -193,7 +186,7 @@ export const MS3B: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Dove),
    code: CodeNumber.MS,
-   damagePct: 0.9,
+   damagePct: 0.5,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
    ability: {

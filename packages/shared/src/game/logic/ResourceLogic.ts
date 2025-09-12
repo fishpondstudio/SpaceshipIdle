@@ -25,7 +25,7 @@ export function addResource(
    from?: IHaveXY,
 ): void {
    const result: ResourceDataPersisted = resources.get(resource) ?? { total: 0, used: 0 };
-   console.assert(amount >= 0);
+   console.assert(amount >= 0, `addResource: amount is negative. resource: ${resource}, amount: ${amount}`);
    result.total += amount;
    resources.set(resource, result);
    if (from) {
