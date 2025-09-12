@@ -51,8 +51,8 @@ export function canChooseCatalystCat(cat: CatalystCat, rt: Runtime): boolean {
 }
 
 export function hasCatalystToChoose(save: SaveGame, rt: Runtime): boolean {
-   for (const [cat, choices] of save.state.selectedCatalysts) {
-      if (!rt.leftStat.isCatalystActivated(cat as Catalyst)) {
+   for (const [_, catalyst] of save.state.selectedCatalysts) {
+      if (!rt.leftStat.isCatalystActivated(catalyst)) {
          return false;
       }
    }

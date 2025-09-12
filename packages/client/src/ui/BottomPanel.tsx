@@ -5,6 +5,7 @@ import { hasUnequippedAddon } from "@spaceship-idle/shared/src/game/logic/AddonL
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { hasCatalystToChoose } from "@spaceship-idle/shared/src/game/logic/CatalystLogic";
+import { hasSelectableDirectives } from "@spaceship-idle/shared/src/game/logic/DirectiveLogic";
 import { hasAvailableFriendship, hasAvailablePirates } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import {
@@ -244,11 +245,7 @@ function SceneSwitcher(): React.ReactNode {
                   value: CatalystPage.name,
                },
                {
-                  label: (
-                     <FloatingTip position="top" label={t(L.TabDirective)}>
-                        <TextureComp name="Others/Directive24" />
-                     </FloatingTip>
-                  ),
+                  label: <DirectiveTabLabel />,
                   value: DirectivePage.name,
                },
                {
@@ -262,6 +259,24 @@ function SceneSwitcher(): React.ReactNode {
             ]}
          />
       </>
+   );
+}
+
+function DirectiveTabLabel(): React.ReactNode {
+   refreshOnTypedEvent(GameStateUpdated);
+   if (hasSelectableDirectives(G.save.state)) {
+      return (
+         <FloatingTip position="top" label={t(L.YouCanIssueDirectivesTooltip)}>
+            <Indicator color="red" processing>
+               <TextureComp name="Others/Directive24" />
+            </Indicator>
+         </FloatingTip>
+      );
+   }
+   return (
+      <FloatingTip position="top" label={t(L.TabDirective)}>
+         <TextureComp name="Others/Directive24" />
+      </FloatingTip>
    );
 }
 
@@ -354,7 +369,7 @@ function AddonTabLabel(): React.ReactNode {
       return (
          <FloatingTip position="top" label={t(L.YouHaveUnequippedAddonTooltip)}>
             <Indicator color="red" processing>
-               <TextureComp id={AddonElementId} name="Others/Addon1" />
+               <TextureComp id={AddonElementId} name="Others/Addon24" />
             </Indicator>
          </FloatingTip>
       );

@@ -101,6 +101,12 @@ export const FloatingTip = factory<
       setOpened(false);
    };
 
+   useEffect(() => {
+      return () => {
+         setOpened(false);
+      };
+   }, [setOpened]);
+
    return (
       <>
          <Portal>

@@ -1,8 +1,7 @@
 import { Bonus } from "@spaceship-idle/shared/src/game/definitions/Bonus";
 import { ShipClass, ShipClassList } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { getDirectives } from "@spaceship-idle/shared/src/game/logic/DirectiveLogic";
-import { hasUnlockedDirective } from "@spaceship-idle/shared/src/game/logic/TechLogic";
+import { getDirectives, hasUnlockedDirective } from "@spaceship-idle/shared/src/game/logic/DirectiveLogic";
 import { getElementCenter } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import React from "react";

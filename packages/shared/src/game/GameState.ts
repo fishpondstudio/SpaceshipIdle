@@ -56,6 +56,7 @@ export class GameState {
 
 export class GameData {
    tick = 0;
+   seconds = 0;
    elementChoices: ElementChoice[] = [];
    permanentElementChoices: ElementChoice[] = [];
    galaxy: Galaxy = { starSystems: [] };

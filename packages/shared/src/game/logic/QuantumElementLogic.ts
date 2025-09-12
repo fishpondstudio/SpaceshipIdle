@@ -84,12 +84,12 @@ export function quantumToXP(quantum: number): number {
    return qToSVLookup.get(quantum - 10) ?? 0;
 }
 
-export function svToQ(sv: number): number {
+function svToQ(sv: number): number {
    return inverse(qToSV, sv, 0, 1e30);
 }
 
-export function qToSV(quantum: number): number {
-   const t = Math.log(clamp(quantum, 30, Number.POSITIVE_INFINITY));
+function qToSV(quantum: number): number {
+   const t = 2 + Math.log(clamp(quantum, 30, Number.POSITIVE_INFINITY)) ** 0.4;
    return quantum ** t * 10;
 }
 

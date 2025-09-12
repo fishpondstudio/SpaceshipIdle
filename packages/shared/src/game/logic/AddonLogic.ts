@@ -1,6 +1,6 @@
 import { forEach, shuffle } from "../../utils/Helper";
 import type { IHaveXY } from "../../utils/Vector2";
-import { type Addon, Addons } from "../definitions/Addons";
+import { type Addon, Addons, getAddonEffect } from "../definitions/Addons";
 import type { Blueprint } from "../definitions/Blueprints";
 import { type ShipClass, ShipClassList } from "../definitions/ShipClass";
 import type { GameState } from "../GameState";
@@ -23,7 +23,7 @@ export function tickAddon(gs: GameState, rt: Runtime): void {
             rs.addon = addon;
          }
          const def = Addons[addon];
-         def.tick(data.amount, data.tile, rt);
+         def.tick(getAddonEffect(data.amount), data.tile, rt);
       }
    });
 }

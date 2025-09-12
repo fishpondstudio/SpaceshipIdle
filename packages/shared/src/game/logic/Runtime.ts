@@ -1,8 +1,9 @@
-import { clamp, createTile, setFlag, type Tile } from "../../utils/Helper";
+import { clamp, divide, entriesOf, randOne, setFlag, type Tile } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { srand } from "../../utils/Random";
 import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
+import { Blueprints } from "../definitions/Blueprints";
 import { DamageType, ProjectileFlag } from "../definitions/BuildingProps";
 import {
    BattleTickInterval,
@@ -24,9 +25,9 @@ import { tickElement } from "./QuantumElementLogic";
 import { changeStat, getStat, trySpendResource } from "./ResourceLogic";
 import { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag, RuntimeTile } from "./RuntimeTile";
-import { flipHorizontalCopy, isEnemy, shipAABB } from "./ShipLogic";
+import { flipHorizontalCopy, isEnemy } from "./ShipLogic";
 import { Side } from "./Side";
-import { getTechName } from "./TechLogic";
+import { getBuildingsWithinShipClass, getShipClass, getTechName } from "./TechLogic";
 
 interface IBattleStatusChanged {
    prevStatus: BattleStatus;
@@ -92,16 +93,27 @@ export class Runtime {
          console.error("createEnemy called when there are still enemy tiles left");
          return;
       }
-      const aabb = shipAABB(1, Side.Left);
       this.tiles.forEach((tile) => {
          tile.target = undefined;
-      });
-      for (let y = aabb.min.y; y <= aabb.max.y; ++y) {
-         for (let x = aabb.min.x; x <= aabb.max.x; ++x) {
-            const tile = createTile(x, y);
-            this.right.tiles.set(tile, makeTile("AC30", this.wave + 1));
+         if (!this.left.tiles.has(tile.tile)) {
+            this.expire(tile.tile);
          }
-      }
+      });
+
+      const [_, blueprint] = randOne(entriesOf(Blueprints));
+      const shipClass = getShipClass(this.left);
+      const design = blueprint.blueprint[shipClass];
+      const buildings = getBuildingsWithinShipClass(shipClass);
+
+      let totalLevels = 0;
+      this.left.tiles.forEach((data) => {
+         totalLevels += data.level;
+      });
+      const level = clamp(Math.floor(divide(totalLevels, this.left.tiles.size)), 10, Number.POSITIVE_INFINITY);
+      design.forEach((tile) => {
+         this.right.tiles.set(tile, makeTile(randOne(buildings), level));
+      });
+
       this.right.tiles = flipHorizontalCopy(this.right).tiles;
       this.rightStat = new RuntimeStat();
       this.right.tiles.forEach((_data, tile) => {
@@ -187,6 +199,7 @@ export class Runtime {
 
          if (this.battleType === BattleType.Peace) {
             ++this.leftSave.data.tick;
+            this.leftSave.data.seconds += 1 / g.speed;
          } else {
             ++this.battleSeconds;
             const prevStatus = this.battleStatus;

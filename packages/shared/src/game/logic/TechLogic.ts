@@ -35,19 +35,6 @@ export function hasUnlockedShipClass(shipClass: ShipClass, gs: GameState): boole
    return ShipClassList.indexOf(shipClass) <= ShipClassList.indexOf(currentShipClass);
 }
 
-export function hasUnlockedDirective(shipClass: ShipClass, gs: GameState): boolean {
-   const techs = getTechInShipClass(shipClass);
-   if (techs.length === 0) {
-      return false;
-   }
-   for (const tech of techs) {
-      if (!gs.unlockedTech.has(tech)) {
-         return false;
-      }
-   }
-   return true;
-}
-
 export function getPreviousShipClass(shipClass: ShipClass): ShipClass | undefined {
    const idx = ShipClassList.indexOf(shipClass) - 1;
    if (idx >= 0 && idx < ShipClassList.length) {

@@ -81,7 +81,7 @@ export function addDebugFunctions(): void {
    globalThis.balancing = async () => {
       showModal({
          children: <BalancingModal />,
-         size: "lg",
+         size: "xl",
          title: "Balancing",
          dismiss: true,
       });
