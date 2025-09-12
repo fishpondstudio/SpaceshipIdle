@@ -1,6 +1,7 @@
 # Mechanism
 - [x] Fuse add-ons
 - [x] Ship layout select
+- [ ] Message Center (Optional)
 
 # Content
 - [x] Tech Tree up to Corvette-class
@@ -11,7 +12,7 @@
 # Balancing
 - [x] Check Tech Tree
 - [x] Check Weapons/Abilities
-- [ ] Check Quantum/Element progress
+- [x] Check Quantum/Element progress
 - [x] Better ship procedural generation / difficulty
 
 # FTUE
