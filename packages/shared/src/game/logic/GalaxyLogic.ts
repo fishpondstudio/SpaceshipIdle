@@ -195,7 +195,7 @@ export const PirateTextures = ["Pirate"];
 
 export const StarTextures = ["Star1"];
 
-export function generateGalaxy(random: () => number): [Galaxy, AABB] {
+export function generateGalaxy(random: () => number): Galaxy {
    const circles = packCircles(
       [{ x: 0, y: 0, r: 300 }].concat(
          shuffle(
@@ -312,7 +312,7 @@ export function generateGalaxy(random: () => number): [Galaxy, AABB] {
       }
    }
 
-   return [galaxy, aabb];
+   return galaxy;
 }
 
 // This function packs circles using the following algorithm:

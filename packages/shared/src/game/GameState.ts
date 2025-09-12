@@ -15,6 +15,7 @@ import { GameOption } from "./GameOption";
 import { MaxX, MaxY } from "./Grid";
 import { type ITileData, makeTile } from "./ITileData";
 import type { AlertType } from "./logic/AlertLogic";
+import { generateGalaxy } from "./logic/GalaxyLogic";
 import type { ElementSymbol } from "./PeriodicTable";
 
 export type Tiles = Map<Tile, ITileData>;
@@ -97,7 +98,8 @@ export interface ElementChoice {
    stackSize: number;
 }
 
-export function initGameState(state: GameState): GameState {
+export function initSaveGame(save: SaveGame): SaveGame {
+   const state = save.state;
    state.unlockedTech.add("A1");
    state.unlockedTech.add("A2");
    const x = MaxX / 2 - 2;
@@ -106,7 +108,9 @@ export function initGameState(state: GameState): GameState {
    state.tiles.set(createTile(x, MaxY / 2 - 1), makeTile("MS1", 1));
    state.tiles.set(createTile(x - 1, MaxY / 2 - 1), makeTile("MS1", 1));
    state.resources.set("Quantum", { total: 6, used: 6 });
-   return state;
+
+   save.data.galaxy = generateGalaxy(Math.random);
+   return save;
 }
 
 export class SaveGame {

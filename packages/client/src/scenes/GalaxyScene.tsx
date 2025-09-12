@@ -1,6 +1,6 @@
 import { LINE_SCALE_MODE, SmoothGraphics } from "@pixi/graphics-smooth";
 import { PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
-import { generateGalaxy } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import { AABB } from "@spaceship-idle/shared/src/utils/AABB";
 import { drawDashedLine, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
 import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
 import { type ColorSource, Container, type FederatedPointerEvent, Sprite } from "pixi.js";
@@ -43,9 +43,8 @@ export class GalaxyScene extends Scene {
       this._selector.anchor.set(0.5);
       this._selector.visible = false;
 
-      const [galaxy, aabb] = generateGalaxy(Math.random);
-      G.save.data.galaxy = galaxy;
-
+      const aabb = AABB.fromCircles(G.save.data.galaxy.starSystems);
+      aabb.extendBy({ x: aabb.width * 0.2, y: aabb.height * 0.2 });
       this._width = aabb.width;
       this._height = aabb.height;
 
@@ -57,7 +56,7 @@ export class GalaxyScene extends Scene {
 
       let me: IHaveXY | null = null;
 
-      for (const starSystem of galaxy.starSystems) {
+      for (const starSystem of G.save.data.galaxy.starSystems) {
          const star = this.viewport.addChild(new StarSystemVisual(starSystem));
          star.position.set(starSystem.x, starSystem.y);
          this._entities.set(starSystem.id, star);

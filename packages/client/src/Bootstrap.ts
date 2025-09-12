@@ -1,23 +1,23 @@
 import * as Sentry from "@sentry/browser";
 import { SentryDSN } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
-import { GameStateFlags, initGameState, SaveGame } from "@spaceship-idle/shared/src/game/GameState";
+import { GameStateFlags, initSaveGame, SaveGame } from "@spaceship-idle/shared/src/game/GameState";
 import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { forEach, rejectIn, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { Assets, BitmapFont, SCALE_MODES, type Spritesheet, type TextStyleFontWeight, type Texture } from "pixi.js";
 import { FontFaces, Fonts } from "./assets";
 import { checkBuildingTextures } from "./CheckBuildingTextures";
+import { startGameLoop } from "./GameLoop";
 import { addDebugFunctions } from "./game/AddDebugFunctions";
 import { loadGame, saveGame } from "./game/LoadSave";
 import { showBootstrapModal } from "./game/ShowBootstrapModal";
 import { getVersion } from "./game/Version";
-import { startGameLoop } from "./GameLoop";
 import { loadGameScene } from "./LoadGameScene";
 import { migrateSave } from "./MigrateSave";
 import { OnConnectionChanged } from "./rpc/HandleMessage";
 import { connectWebSocket } from "./rpc/RPCClient";
-import { Starfield } from "./scenes/Starfield";
 import { subscribeToEvents } from "./SubscribeToEvents";
+import { Starfield } from "./scenes/Starfield";
 import { hideLoading } from "./ui/components/LoadingComp";
 import { loadSounds } from "./ui/Sound";
 import { G, setLanguage } from "./utils/Global";
@@ -27,7 +27,9 @@ import { isSteam } from "./utils/Steam";
 export async function bootstrap(): Promise<void> {
    initErrorTracking();
    console.time("Load Assets");
-   FontFaces.forEach((f) => document.fonts.add(f));
+   FontFaces.forEach((f) => {
+      document.fonts.add(f);
+   });
    await Promise.all([Assets.init({ manifest: "./manifest.json" }), ...FontFaces.map((f) => f.load())]);
    console.timeEnd("Load Assets");
    console.time("Load Font");
@@ -88,7 +90,7 @@ export async function bootstrap(): Promise<void> {
    } catch (error) {
       isNewPlayer = true;
       G.save = new SaveGame();
-      initGameState(G.save.state);
+      initSaveGame(G.save);
       G.save.state.flags = setFlag(G.save.state.flags, GameStateFlags.ShowTutorial);
    }
    migrateSave(G.save);
