@@ -61,7 +61,7 @@ export class GameData {
    elementChoices: ElementChoice[] = [];
    permanentElementChoices: ElementChoice[] = [];
    galaxy: Galaxy = { starSystems: [] };
-   alerts: { message: string; type: AlertType; time: number }[] = [];
+   alerts: { message: string; type: AlertType; time: number; tick: number }[] = [];
 }
 
 export interface ElementData {

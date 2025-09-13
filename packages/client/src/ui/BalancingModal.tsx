@@ -80,6 +80,7 @@ export function BalancingModal(): React.ReactNode {
                <thead>
                   <tr>
                      <th>Element</th>
+                     <th>Quantum</th>
                      <th>Modules</th>
                      <th>XP</th>
                      <th>Level</th>
@@ -91,7 +92,8 @@ export function BalancingModal(): React.ReactNode {
                <tbody>
                   {range(1, 51).map((i) => {
                      const totalXP = elementToXP(i);
-                     const modules = Math.min(Math.round(xpToQuantum(totalXP)), totalModules);
+                     const quantum = Math.round(xpToQuantum(totalXP));
+                     const modules = Math.min(quantum, totalModules);
                      const level = getBuildingLevelForXP(building, totalXP / modules);
                      const xpPerSec =
                         (modules * getDamagePerFire({ type: building, level: level })) /
@@ -105,6 +107,7 @@ export function BalancingModal(): React.ReactNode {
                      return (
                         <tr key={i}>
                            <td>{i}</td>
+                           <td>{quantum}</td>
                            <td>{modules}</td>
                            <td>{formatNumber(totalXP)}</td>
                            <td>{level}</td>

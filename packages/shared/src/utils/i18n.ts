@@ -27,4 +27,4 @@ function interpolate(phase: string, subs: (string | number)[]): string {
       .join("");
 }
 
-export const L = structuredClone(EN);
+export const L = EN;

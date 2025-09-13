@@ -57,34 +57,36 @@ export function subscribeToEvents(): void {
       }
    });
 
-   OnAlert.on(({ message, type, persist }) => {
-      let color: MantineColor;
-      switch (type) {
-         case "info":
-            color = "blue";
-            break;
-         case "success":
-            color = "green";
-            break;
-         case "warning":
-            color = "yellow";
-            break;
-         case "error":
-            color = "red";
-            break;
-         default:
-            color = "blue";
-            break;
-      }
+   OnAlert.on(({ message, type, persist, silent }) => {
+      if (!silent) {
+         let color: MantineColor;
+         switch (type) {
+            case "info":
+               color = "blue";
+               break;
+            case "success":
+               color = "green";
+               break;
+            case "warning":
+               color = "yellow";
+               break;
+            case "error":
+               color = "red";
+               break;
+            default:
+               color = "blue";
+               break;
+         }
 
-      notifications.show({
-         message,
-         position: "top-center",
-         color,
-         withBorder: true,
-      });
+         notifications.show({
+            message,
+            position: "top-center",
+            color,
+            withBorder: true,
+         });
+      }
       if (persist) {
-         G.save.data.alerts.unshift({ message, type, time: Date.now() });
+         G.save.data.alerts.unshift({ message, type, time: Date.now(), tick: G.save.data.tick });
          while (G.save.data.alerts.length > 100) {
             G.save.data.alerts.pop();
          }

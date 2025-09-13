@@ -1,8 +1,10 @@
 import { clamp, inverse, shuffle } from "../../utils/Helper";
+import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { DefaultElementChoices, QuantumToElement } from "../definitions/Constant";
 import type { ElementData, GameState, SaveGame } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
+import { showInfo } from "./AlertLogic";
 import { fib, getUnlockedBuildings } from "./BuildingLogic";
 import { addResource, changeStat, getStat, resourceOf } from "./ResourceLogic";
 import { getShipBlueprint } from "./ShipLogic";
@@ -17,7 +19,9 @@ export function tickElement(save: SaveGame): void {
    const expectedElements = xpToElement(totalXP);
    const currentElements = getStat("Element", save.state.stats);
    if (currentElements < expectedElements) {
-      changeStat("Element", expectedElements - currentElements, save.state.stats);
+      const elementsToAdd = expectedElements - currentElements;
+      changeStat("Element", elementsToAdd, save.state.stats);
+      showInfo(t(L.AlertDiscoveredElements, elementsToAdd, expectedElements), true, true);
    }
    for (let i = currentElements; i < expectedElements; i++) {
       const candidates = getUnlockedElements(save.state);

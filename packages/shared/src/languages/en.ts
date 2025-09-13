@@ -729,4 +729,5 @@ export const EN = {
    ReduceDeflectionDesc: "Reduce %% Deflection",
    YouHaveUpgradeableElementTooltip: "You have upgradeable permanent element(s). Upgrade them to boost a multiplier of your choice",
    YouCanIssueDirectivesTooltip: "You can issue directive(s). Choose one of the directives to gain boost for this run",
+   AlertDiscoveredElements: "Discovered %% element(s) (%% total element(s) this run)",
 };
