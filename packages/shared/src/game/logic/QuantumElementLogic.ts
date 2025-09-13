@@ -9,7 +9,7 @@ import { fib, getUnlockedBuildings } from "./BuildingLogic";
 import { addResource, changeStat, getStat, resourceOf } from "./ResourceLogic";
 import { getShipBlueprint } from "./ShipLogic";
 
-export function tickElement(save: SaveGame): void {
+export function tickQuantumElementProgress(save: SaveGame, silent?: boolean): void {
    const totalXP = resourceOf("XP", save.state.resources).total;
    const expectedQuantum = xpToQuantum(totalXP);
    const currentQuantum = resourceOf("Quantum", save.state.resources).total;
@@ -21,7 +21,9 @@ export function tickElement(save: SaveGame): void {
    if (currentElements < expectedElements) {
       const elementsToAdd = expectedElements - currentElements;
       changeStat("Element", elementsToAdd, save.state.stats);
-      showInfo(t(L.AlertDiscoveredElements, elementsToAdd, expectedElements), true, true);
+      if (!silent) {
+         showInfo(t(L.AlertDiscoveredElements, elementsToAdd, expectedElements), true, true);
+      }
    }
    for (let i = currentElements; i < expectedElements; i++) {
       const candidates = getUnlockedElements(save.state);
@@ -93,7 +95,7 @@ function svToQ(sv: number): number {
 }
 
 function qToSV(quantum: number): number {
-   const t = 2 + Math.log(clamp(quantum, 30, Number.POSITIVE_INFINITY)) ** 0.4;
+   const t = 2 + Math.log(clamp(quantum, 30, Number.POSITIVE_INFINITY)) ** 0.5;
    return quantum ** t * 10;
 }
 

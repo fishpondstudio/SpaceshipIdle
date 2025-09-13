@@ -332,10 +332,6 @@
    color: var(--mantine-color-red-5);
 }
 
-.text-lh1 {
-   line-height: 1;
-}
-
 .text-blue {
    color: var(--mantine-color-blue-5);
 }

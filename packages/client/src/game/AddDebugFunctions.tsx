@@ -114,10 +114,10 @@ export function addDebugFunctions(): void {
       });
    };
    // @ts-expect-error
-   globalThis.offline = async () => {
+   globalThis.offline = async (time?: number) => {
       showModal({
          title: t(L.OfflineTime),
-         children: <OfflineTimeModal offlineTime={G.save.state.offlineTime} />,
+         children: <OfflineTimeModal offlineTime={time ?? G.save.state.offlineTime} />,
          size: "sm",
       });
    };

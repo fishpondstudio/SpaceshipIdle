@@ -108,7 +108,7 @@ function Tutorial(): React.ReactNode {
    if (!tutorial) {
       return null;
    }
-   const [progress, total] = tutorial.progress(G.save.state);
+   const [progress, total] = tutorial.progress(G.save.state, G.runtime);
    return (
       <div
          className="row panel g5"

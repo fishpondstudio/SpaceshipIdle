@@ -83,6 +83,9 @@ export function getMaxFriendship(gs: GameState): [number, ValueBreakdown[]] {
 }
 
 export function getPlanetStatusLabel(planet: Planet): string {
+   if (planet.type === PlanetType.Me) {
+      return "You";
+   }
    if (planet.friendshipTimeLeft > 0) {
       return "Friends";
    }

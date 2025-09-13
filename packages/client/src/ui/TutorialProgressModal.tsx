@@ -14,7 +14,7 @@ export function TutorialProgressModal(): React.ReactNode {
       <div className="m10">
          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {Tutorial.map((step, i) => {
-               const [progress, total] = step.progress(G.save.state);
+               const [progress, total] = step.progress(G.save.state, G.runtime);
                let active = false;
                if (!unfinished && progress < total) {
                   unfinished = true;

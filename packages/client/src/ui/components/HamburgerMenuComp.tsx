@@ -7,11 +7,13 @@ import { openUrl } from "../../rpc/SteamClient";
 import { G, OnLanguageChanged } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import { showModal } from "../../utils/ToggleModal";
+import { AlertPage } from "../AlertPage";
 import { GameSettingsModal } from "../GameSettingsModal";
 import { PlayerProfileModal } from "../PlayerProfileModal";
 import { PrestigeModal } from "../PrestigeModal";
 import { PrestigeReason } from "../PrestigeReason";
 import { ShipBlueprintModal } from "../ShipBlueprintModal";
+import { setSidebar } from "../Sidebar";
 import { WeaponListModal } from "../WeaponListModal";
 import { TextureComp } from "./TextureComp";
 
@@ -57,6 +59,14 @@ export function _HamburgerMenuComp(): React.ReactNode {
                }}
             >
                {t(L.ShipBlueprint)}
+            </Menu.Item>
+            <Menu.Item
+               leftSection={<div className="mi">event_note</div>}
+               onClick={() => {
+                  setSidebar(<AlertPage />);
+               }}
+            >
+               {t(L.EventLog)}
             </Menu.Item>
             <Menu.Item
                leftSection={<div className="mi">menu_book</div>}

@@ -35,7 +35,6 @@ export function ChooseElementModal({
          playUpgrade();
       }
    }, [sound]);
-   console.log(choice);
    return (
       <div className="m10">
          <div className="text-center text-xl">

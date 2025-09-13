@@ -6,7 +6,7 @@ import { type ShipClass, ShipClassList } from "@spaceship-idle/shared/src/game/d
 import type { Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { getDamagePerFire, getTotalBuildingCost } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { elementToXP, xpToQuantum } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
-import { getTechShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
+import { getTechInShipClass, getTechShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { formatHMS, formatNumber, range, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
 import { useState } from "react";
 
@@ -37,34 +37,38 @@ export function BalancingModal(): React.ReactNode {
             <NumberInput
                label="Element"
                flex={1}
-               value={elementFactor}
+               defaultValue={elementFactor}
                min={0}
                max={100}
-               onChange={(value) => setElementFactor(Number.parseFloat(value as string))}
+               onBlur={(e) => setElementFactor(Number.parseFloat(e.target.value))}
+               onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
             />
             <NumberInput
                label="P. Element"
                flex={1}
-               value={permanentElementFactor}
+               defaultValue={permanentElementFactor}
                min={0}
                max={100}
-               onChange={(value) => setPermanentElementFactor(Number.parseFloat(value as string))}
+               onBlur={(e) => setPermanentElementFactor(Number.parseFloat(e.target.value))}
+               onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
             />
             <NumberInput
                label="Catalyst"
                flex={1}
-               value={catalystFactor}
+               defaultValue={catalystFactor}
                min={0}
                max={100}
-               onChange={(value) => setCatalystFactor(Number.parseFloat(value as string))}
+               onBlur={(e) => setCatalystFactor(Number.parseFloat(e.target.value))}
+               onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
             />
             <NumberInput
                label="Addon"
                flex={1}
-               value={addonFactor}
+               defaultValue={addonFactor}
                min={0}
                max={100}
-               onChange={(value) => setAddonFactor(Number.parseFloat(value as string))}
+               onBlur={(e) => setAddonFactor(Number.parseFloat(e.target.value))}
+               onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
             />
          </div>
          <div className="h10" />
@@ -72,6 +76,10 @@ export function BalancingModal(): React.ReactNode {
             <div className="row">
                <div className="f1">Total Modules</div>
                <div>{totalModules}</div>
+            </div>
+            <div className="row">
+               <div className="f1">Max Usable Quantum</div>
+               <div>{totalModules + getTechInShipClass(shipClass).length}</div>
             </div>
          </div>
          <div className="h10" />

@@ -21,7 +21,7 @@ import { BattleType } from "./BattleType";
 import { tickCatalyst } from "./CatalystLogic";
 import { tickGalaxy } from "./GalaxyLogic";
 import type { Projectile } from "./Projectile";
-import { tickElement } from "./QuantumElementLogic";
+import { tickQuantumElementProgress } from "./QuantumElementLogic";
 import { changeStat, getStat, trySpendResource } from "./ResourceLogic";
 import { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag, RuntimeTile } from "./RuntimeTile";
@@ -187,12 +187,11 @@ export class Runtime {
          this._tickMultipliers();
          if (this.battleType === BattleType.Peace) {
             tickGalaxy(this);
+            tickQuantumElementProgress(this.leftSave, this.battleInfo.silent);
          }
          this._tickStatusEffect();
          this._checkSuddenDeath();
          this._tickPenalty();
-
-         tickElement(this.leftSave);
 
          this.leftStat.tabulate(this.tabulateHp(this.left.tiles), this.left);
          this.rightStat.tabulate(this.tabulateHp(this.right.tiles), this.right);

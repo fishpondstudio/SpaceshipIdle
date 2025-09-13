@@ -1,5 +1,5 @@
 import { ExploreCostPerLightYear } from "@spaceship-idle/shared/src/game/definitions/Constant";
-import { PlanetTypeLabel, type StarSystem } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
+import { PlanetType, PlanetTypeLabel, type StarSystem } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getExploreCost, getPlanetStatusLabel } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { canSpendResource, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -112,7 +112,8 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
                         return null;
                      }
                      return starSystem.planets.map((planet) => {
-                        const eligible = planet.friendshipTimeLeft > 0 || planet.battleResult;
+                        const eligible =
+                           planet.type === PlanetType.Me || planet.friendshipTimeLeft > 0 || planet.battleResult;
                         if (!eligible) {
                            canExplore = false;
                         }
@@ -135,6 +136,10 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
                      className="btn w100"
                      disabled={!canExplore || !canSpendResource("VictoryPoint", exploreCost, G.save.state.resources)}
                      onClick={() => {
+                        if (!canExplore) {
+                           playError();
+                           return;
+                        }
                         if (!trySpendResource("VictoryPoint", exploreCost, G.save.state.resources)) {
                            playError();
                            return;

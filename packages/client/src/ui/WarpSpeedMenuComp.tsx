@@ -19,10 +19,8 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
    const warp = resourceOf("Warp", gs.resources).current;
    return (
       <Menu position="bottom-start">
-         <Menu.Target>
-            <FloatingTip
-               label={<RenderHTML html={t(L.TimeWarpTooltipHTML, formatNumber(G.speed), formatNumber(warp))} />}
-            >
+         <FloatingTip label={<RenderHTML html={t(L.TimeWarpTooltipHTML, formatNumber(G.speed), formatNumber(warp))} />}>
+            <Menu.Target>
                <div className="block pointer" style={{ width: 85 }}>
                   <TextureComp
                      id={WarpElementId}
@@ -36,8 +34,8 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
                      <div className="xs">{formatNumber(warp)}</div>
                   </div>
                </div>
-            </FloatingTip>
-         </Menu.Target>
+            </Menu.Target>
+         </FloatingTip>
          <WarpMenu speed={G.speed} onSpeedChange={onSpeedChange} />
       </Menu>
    );

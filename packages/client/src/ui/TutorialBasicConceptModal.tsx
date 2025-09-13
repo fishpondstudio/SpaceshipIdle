@@ -1,8 +1,7 @@
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { showModal } from "../utils/ToggleModal";
+import { hideModal } from "../utils/ToggleModal";
+import { ChangePlayerHandleComp } from "./ChangePlayerHandleComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
-import { TextureComp } from "./components/TextureComp";
-import { TutorialQuantumModal } from "./TutorialQuantumModal";
 
 export function TutorialBasicConceptModal(): React.ReactNode {
    return (
@@ -13,47 +12,39 @@ export function TutorialBasicConceptModal(): React.ReactNode {
          <div className="h10" />
          <div className="row">
             <div className="fstart">
-               <TextureComp name={"Building/SolarPower"} width={50} />
+               <div className="mi" style={{ fontSize: 50 }}>
+                  web_traffic
+               </div>
             </div>
             <div className="f1">
-               <div className="text-lg text-space">{t(L.Power)}</div>
-               <RenderHTML className="render-html" html={t(L.TutorialPower)} />
+               <div className="text-lg text-space">{t(L.TutorialGameControl)}</div>
+               <RenderHTML className="render-html" html={t(L.TutorialGameControlContent)} />
+               <div className="h5" />
+               <div className="text-dimmed panel p5 text-sm row g5 bg-dark">
+                  <div className="mi lg fstart">mouse</div>
+                  <RenderHTML className="render-html" html={t(L.TutorialAdvancedGameControlContent)} />
+               </div>
             </div>
          </div>
          <div className="h10" />
          <div className="row">
             <div className="fstart">
                <div className="mi" style={{ fontSize: 50 }}>
-                  view_in_ar
+                  chat
                </div>
             </div>
             <div className="f1">
-               <div className="text-lg text-space">{t(L.XP)}</div>
-               <RenderHTML className="render-html" html={t(L.TutorialXP)} />
+               <div className="text-lg text-space">{t(L.TutorialChat)}</div>
+               <RenderHTML className="render-html" html={t(L.TutorialChatContent)} />
+               <div className="h10" />
+               <div className="panel bg-dark">
+                  <ChangePlayerHandleComp />
+               </div>
+               <div className="h10" />
             </div>
          </div>
-         <div className="h10" />
-         <div className="row">
-            <div className="fstart">
-               <TextureComp name={"Building/AC30"} width={50} />
-            </div>
-            <div className="f1">
-               <div className="text-lg text-space">{t(L.TutorialWeapon)}</div>
-               <RenderHTML className="render-html" html={t(L.TutorialWeaponContent)} />
-            </div>
-         </div>
-         <div className="h10" />
-         <button
-            className="btn filled text-lg w100 py5 row"
-            onClick={() =>
-               showModal({
-                  title: t(L.TutorialQuantum),
-                  children: <TutorialQuantumModal />,
-                  size: "lg",
-               })
-            }
-         >
-            {t(L.Next)}
+         <button className="btn filled text-lg w100 py5 row" onClick={hideModal}>
+            {t(L.StartPlaying)}
          </button>
       </div>
    );

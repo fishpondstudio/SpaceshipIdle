@@ -60,7 +60,7 @@ export class Starfield extends Container {
 
    public update(): void {
       this.fps.push(G.pixi.ticker.FPS);
-      this.watermark.text = `${G.save.data.tick}    FPS: ${Math.round(this.fps.reduce(sum, 0) / this.fps.size)}    VERSION: ${this.version}    ${navigator.onLine ? "ONLINE" : "OFFLINE"}`;
+      this.watermark.text = `TICK: ${G.save.data.tick}    FPS: ${Math.round(this.fps.reduce(sum, 0) / this.fps.size)}    VERSION: ${this.version}    ${navigator.onLine ? "ONLINE" : "OFFLINE"}`;
       this.shader.uniforms.iTime += G.pixi.ticker.elapsedMS / 1000;
    }
 }
