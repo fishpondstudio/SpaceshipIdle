@@ -761,4 +761,5 @@ export const EN = {
    Raw: "Raw",
    Reduced: "Reduced",
    ReducedDamageTooltip: "Percentage of raw damage reduced by enemy's Armor (Kinetic), Shield (Explosive), Deflection (Energy) and Evasion (All) reduction",
+   SuddenDeath: "Sudden Death",
 };

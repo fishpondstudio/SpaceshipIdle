@@ -101,7 +101,7 @@ function DamageComponent({ side }: { side: Side }): React.ReactNode {
                }
             >
                <div className="row text-red mb10">
-                  <div>Sudden Death</div>
+                  <div>{t(L.SuddenDeath)}</div>
                   <div>{formatNumber(suddenDeathDamage)}</div>
                   <div className="mi sm">skull</div>
                   <div className="f1" />
