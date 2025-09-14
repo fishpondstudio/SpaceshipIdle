@@ -132,15 +132,19 @@
    top: 70px;
    font-size: var(--mantine-font-size-sm);
    line-height: 1.25;
-   .row > div:nth-child(1) {
-      width: 100px;
+   .row {
+      gap: 5px;
    }
-   .row > div:nth-child(2) {
+   .row > div:nth-child(even) {
       width: 60px;
-   }
-   .row > div:nth-child(3) {
       text-align: right;
+   }
+   .row > div:nth-child(odd) {
       width: 50px;
+      text-align: left;
+   }
+   .row > div:first-child {
+      width: 100px;
    }
 }
 

@@ -14,7 +14,7 @@ export const DamageType = {
 export interface IBuildingDefinition extends IBuildingProp {
    pet: () => string;
    code: CodeNumber;
-   element?: ElementSymbol;
+   element: ElementSymbol;
 }
 
 export interface IBuildingProp {

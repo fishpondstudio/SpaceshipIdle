@@ -192,7 +192,9 @@ export function tickTiles(
             (rs.xpMultiplier.value + rs.hpMultiplier.value - 1 + rs.damageMultiplier.value - 1);
 
          addResource("XP", xpPerFire, from.resources);
-         RequestFloater.emit({ tile, amount: xpPerFire });
+         if (rt.battleType === BattleType.Peace) {
+            RequestFloater.emit({ tile, amount: xpPerFire });
+         }
 
          const ability = rs.props.ability;
          if (ability?.timing === AbilityTiming.OnFire) {
@@ -307,7 +309,7 @@ export function generateShip(shipClass: ShipClass, random: () => number): GameSt
 
 export function generateMatchmakingShip(
    shipClass: ShipClass,
-   targetScore: number,
+   averageLevel: number,
    targetHp: number,
    targetDps: number,
    random: () => number,
@@ -317,45 +319,45 @@ export function generateMatchmakingShip(
    const design = Blueprints[ship.blueprint].blueprint[shipClass];
    const buildings = getBuildingsWithinShipClass(shipClass);
 
-   let low = 1;
-   let high = 100;
+   for (const tile of design) {
+      const building = randOne(buildings, random);
+      ship.tiles.set(tile, {
+         type: building,
+         level: averageLevel,
+      });
+      ship.elements.set(Config.Buildings[building].element, { amount: 0, hp: 0, damage: 0 });
+   }
 
-   let score = 0;
-   let hp = 0;
-   let dps = 0;
-
-   while (low < high) {
-      ship.tiles.clear();
-      for (const tile of design) {
-         ship.tiles.set(tile, {
-            type: randOne(buildings, random),
-            level: Math.floor((low + high) / 2),
+   while (true) {
+      const [_, hp, dps] = calcShipScore(ship);
+      let breakLoop = true;
+      if (hp < targetHp) {
+         ship.elements.forEach((data, element) => {
+            ++data.hp;
          });
+         breakLoop = false;
       }
-
-      [score, hp, dps] = calcShipScore(ship);
-
-      if (score <= targetScore && score >= targetScore / 1.25) {
+      if (dps < targetDps) {
+         ship.elements.forEach((data, element) => {
+            ++data.damage;
+         });
+         breakLoop = false;
+      }
+      if (breakLoop) {
          break;
       }
+   }
 
-      if (score < targetScore) {
-         low = Math.floor((low + high) / 2);
+   while (true) {
+      const [_, hp, dps] = calcShipScore(ship);
+      if (hp > targetHp || dps > targetDps) {
+         ship.tiles.forEach((data, tile) => {
+            --data.level;
+         });
       } else {
-         high = Math.floor((low + high) / 2);
+         break;
       }
    }
-
-   while (hp > 1.25 * targetHp || dps > 1.25 * targetDps) {
-      ship.tiles.forEach((data, tile) => {
-         --data.level;
-      });
-      [score, hp, dps] = calcShipScore(ship);
-   }
-
-   console.log(
-      `Generated ship with score ${score} (target: ${targetScore}), hp: ${hp} (target: ${targetHp}), dps: ${dps} (target: ${targetDps})`,
-   );
 
    return ship;
 }

@@ -15,8 +15,9 @@ import {
 } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { calcSpaceshipXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
-import { enumOf, formatNumber, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
+import { capitalize, enumOf, formatNumber, iReduceOf, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { Generator } from "@spaceship-idle/shared/src/utils/NameGen";
 import { findShip } from "../game/Matchmaking";
 import { RPCClient } from "../rpc/RPCClient";
 import { G } from "../utils/Global";
@@ -103,7 +104,17 @@ export function MatchmakingModal(): React.ReactNode {
                   }
                   let ship = (await findShip(score, hp, dps))?.json;
                   if (!ship) {
-                     ship = generateMatchmakingShip(getShipClass(G.save.state), score, hp, dps, Math.random);
+                     ship = generateMatchmakingShip(
+                        getShipClass(G.save.state),
+                        Math.ceil(
+                           iReduceOf(G.save.state.tiles, (prev, [_, data]) => prev + data.level, 0) /
+                              G.save.state.tiles.size,
+                        ),
+                        hp,
+                        dps,
+                        Math.random,
+                     );
+                     ship.name = capitalize(new Generator("ssV").toString());
                   }
                   await resolveIn(1, null);
 

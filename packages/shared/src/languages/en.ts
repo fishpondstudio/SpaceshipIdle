@@ -756,4 +756,9 @@ export const EN = {
    TutorialUseTimeWarp: "Use Time Warp",
    TutorialUseTimeWarpDescHTML: "Time Warp can be used to speed up game. It is usually generated when you are <b>offline</b>, but for this tutorial you are given 10 minutes worth of time warp. Click on the <b>Warp Speed</b> (hourglass icon) on the top panel to use it.",
    WelcomeToSpaceshipIdle2ndPlaytest: "Welcome to Spaceship Idle 2nd playtest. Select a language to continue and remember to report bugs on Discord!",
+   Actual: "Actual",
+   ActualDamageTooltip: "Actual Damage = Raw Damage after Armor (Kinetic), Shield (Explosive), Deflection (Energy) and Evasion (All) reduction",
+   Raw: "Raw",
+   Reduced: "Reduced",
+   ReducedDamageTooltip: "Percentage of raw damage reduced by enemy's Armor (Kinetic), Shield (Explosive), Deflection (Energy) and Evasion (All) reduction",
 };

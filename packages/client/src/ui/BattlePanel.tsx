@@ -4,7 +4,7 @@ import { SuddenDeathSeconds, SuddenDeathUndamagedSec } from "@spaceship-idle/sha
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
-import { cls, formatHMS, formatNumber, formatPercent, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls, divide, formatHMS, formatNumber, formatPercent, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
 import { FloatingTip } from "./components/FloatingTip";
@@ -102,19 +102,39 @@ function DamageComponent({ side }: { side: Side }): React.ReactNode {
             >
                <div className="row text-red mb10">
                   <div>Sudden Death</div>
-                  <div className="text-right">{formatNumber(suddenDeathDamage)}</div>
-                  <div className="mi sm text-right">skull</div>
+                  <div>{formatNumber(suddenDeathDamage)}</div>
+                  <div className="mi sm">skull</div>
+                  <div className="f1" />
                </div>
             </FloatingTip>
          ) : null}
+         <div className="row text-xs text-space text-uppercase">
+            <div />
+            <FloatingTip label={t(L.ActualDamageTooltip)}>
+               <div>{t(L.Actual)}</div>
+            </FloatingTip>
+            <div />
+            <div>{t(L.Raw)}</div>
+            <div />
+            <FloatingTip label={t(L.ReducedDamageTooltip)}>
+               <div>{t(L.Reduced)}</div>
+            </FloatingTip>
+         </div>
          {mapOf(DamageType, (key, value) => {
+            const actualDamage = damageStat.actualDamage[value];
+            const rawDamage = damageStat.rawDamage[value];
             return (
                <div key={key} className="row">
                   <div>{DamageTypeLabel[value]()}</div>
-                  <div className="text-right">{formatNumber(damageStat.actualDamage[value])}</div>
-                  <div className={cls("text-right", side === Side.Left ? "text-green" : "text-red")}>
+                  <div>{formatNumber(actualDamage)}</div>
+                  <div className={cls(side === Side.Left ? "text-green" : "text-red")}>
                      +{formatNumber(damageStat.actualDamages.get(-1)?.[value] ?? 0)}
                   </div>
+                  <div>{formatNumber(rawDamage)}</div>
+                  <div className={cls(side === Side.Left ? "text-green" : "text-red")}>
+                     +{formatNumber(damageStat.rawDamages.get(-1)?.[value] ?? 0)}
+                  </div>
+                  <div>{formatPercent(divide(rawDamage - actualDamage, rawDamage))}</div>
                </div>
             );
          })}
@@ -126,7 +146,7 @@ function DamageComponent({ side }: { side: Side }): React.ReactNode {
                   <div key={building} className="row">
                      <div>{getBuildingName(building)}</div>
                      <div className="text-right">{formatNumber(damage)}</div>
-                     <div />
+                     <div className="f1" />
                   </div>
                );
             })}

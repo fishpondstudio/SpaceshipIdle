@@ -217,6 +217,20 @@ export function mReduceOf<T, V, K>(obj: Map<T, V>, func: (prev: K, k: T, v: V) =
    return result;
 }
 
+export function iReduceOf<T, K>(
+   obj: Iterable<T>,
+   func: (prev: K, current: T, index: number, array: Iterable<T>) => K,
+   initial: K,
+): K {
+   let result = initial;
+   let index = 0;
+   for (const item of obj) {
+      result = func(result, item, index, obj);
+      ++index;
+   }
+   return result;
+}
+
 export function safeAdd<T extends string | number>(obj: Partial<Record<T, number>>, key: T, valueToAdd: number): void {
    if (!obj[key]) {
       obj[key] = 0;
