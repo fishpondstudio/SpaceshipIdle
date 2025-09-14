@@ -61,7 +61,7 @@ export const OnStatusEffectsChanged = new TypedEvent<{ tile: Tile; buff: number;
 
 export class RuntimeTile {
    public target: Tile | undefined;
-   public cooldown = Number.POSITIVE_INFINITY;
+   public cooldown = 0;
    public readonly statusEffects = new Map<Tile, IRuntimeEffect>();
    public buff = 0;
    public debuff = 0;

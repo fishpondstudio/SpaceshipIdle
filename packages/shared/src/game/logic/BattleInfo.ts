@@ -3,4 +3,5 @@ export interface BattleInfo {
    planetId?: number;
    noWarmongerPenalty?: boolean;
    hideEnemyInfo?: boolean;
+   noSuddenDeath?: boolean;
 }

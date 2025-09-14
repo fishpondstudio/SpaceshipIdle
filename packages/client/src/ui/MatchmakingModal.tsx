@@ -2,7 +2,11 @@ import { getGradient, useMantineTheme } from "@mantine/core";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
-import { calcShipScore, generateShip, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import {
+   calcShipScore,
+   generateMatchmakingShip,
+   simulateBattle,
+} from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import {
    getMinimumQuantumForBattle,
@@ -13,6 +17,8 @@ import { calcSpaceshipXP } from "@spaceship-idle/shared/src/game/logic/ResourceL
 import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { enumOf, formatNumber, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { findShip } from "../game/Matchmaking";
+import { RPCClient } from "../rpc/RPCClient";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { hideModal, showModal } from "../utils/ToggleModal";
@@ -92,8 +98,13 @@ export function MatchmakingModal(): React.ReactNode {
                   playClick();
                   showLoading();
                   const [score, hp, dps] = calcShipScore(G.save.state);
-                  // const ship = await findShip(score, hp, dps);
-                  const ship = generateShip(getShipClass(G.save.state), Math.random);
+                  if (score > 0) {
+                     RPCClient.saveShipV2(G.save.state).catch(console.error);
+                  }
+                  let ship = (await findShip(score, hp, dps))?.json;
+                  if (!ship) {
+                     ship = generateMatchmakingShip(getShipClass(G.save.state), score, hp, dps, Math.random);
+                  }
                   await resolveIn(1, null);
 
                   if (import.meta.env.DEV) {

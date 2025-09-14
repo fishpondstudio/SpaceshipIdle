@@ -1,6 +1,7 @@
 import type { CountryCode } from "../utils/CountryCode";
 import type { ValueOf } from "../utils/Helper";
 import { TypedEvent } from "../utils/TypedEvent";
+import { SaveFileVersion } from "./definitions/Constant";
 import type { Languages } from "./Languages";
 import type { VideoTutorial } from "./logic/VideoTutorials";
 import type { IShortcutConfig, Shortcut } from "./Shortcut";
@@ -124,6 +125,7 @@ export class GameOption {
    volume = 1;
    shortcuts = DefaultShortcuts;
    videoTutorials: Set<VideoTutorial> = new Set();
+   version = SaveFileVersion;
 }
 
 export const GameOptionUpdated = new TypedEvent<void>();

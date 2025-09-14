@@ -24,6 +24,7 @@ export const GameStateFlags = {
    None: 0,
    Incompatible: 1 << 0,
    ShowTutorial: 1 << 1,
+   UsedWarp: 1 << 2,
 } as const;
 
 export type GameStateFlags = (typeof GameStateFlags)[keyof typeof GameStateFlags];
@@ -40,17 +41,19 @@ export interface ResourceData extends ResourceDataPersisted {
 export class GameState {
    id = uuid4();
    seed = randomAlphaNumeric(32);
-   tiles: Tiles = new Map();
    resources = new Map<Resource, ResourceDataPersisted>();
    stats = new Map<Stat, number>();
+
+   tiles: Tiles = new Map();
    unlockedTech = new Set<Tech>();
    elements = new Map<ElementSymbol, ElementData>();
    permanentElements = new Map<ElementSymbol, ElementData>();
    selectedCatalysts = new Map<CatalystCat, Catalyst>();
    selectedDirectives = new Map<ShipClass, Bonus>();
    addons = new Map<Addon, { tile: Tile | null; amount: number }>();
-   name = "Unnamed";
    blueprint: Blueprint = "Odyssey";
+
+   name = "Unnamed";
    flags: GameStateFlags = GameStateFlags.None;
    offlineTime = 0;
 }
@@ -77,6 +80,11 @@ function toHashString(gs: GameState): string {
       tiles: Array.from(gs.tiles.entries()).sort((a, b) => a[0] - b[0]),
       unlockedTech: Array.from(gs.unlockedTech.values()).sort(),
       elements: Array.from(gs.elements.entries()).sort((a, b) => a[0].localeCompare(b[0])),
+      permanentElements: Array.from(gs.permanentElements.entries()).sort((a, b) => a[0].localeCompare(b[0])),
+      selectedCatalysts: Array.from(gs.selectedCatalysts.entries()).sort((a, b) => a[0].localeCompare(b[0])),
+      selectedDirectives: Array.from(gs.selectedDirectives.entries()).sort((a, b) => a[0].localeCompare(b[0])),
+      addons: Array.from(gs.addons.entries()).sort((a, b) => a[0].localeCompare(b[0])),
+      blueprint: gs.blueprint,
    });
 }
 

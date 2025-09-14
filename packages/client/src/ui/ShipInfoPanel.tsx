@@ -60,7 +60,6 @@ const actualDamages: Record<DamageType, number> = {
 
 export function ShipInfoPanel(): React.ReactNode {
    const state = G.save.state;
-   const options = G.save.options;
    G.runtime.rightStat.averageRawDamage(10, rawDamages);
    G.runtime.rightStat.averageActualDamage(10, actualDamages);
    const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);

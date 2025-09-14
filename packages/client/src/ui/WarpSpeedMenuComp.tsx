@@ -1,8 +1,8 @@
 import { Menu } from "@mantine/core";
 import { WarpElementId } from "@spaceship-idle/shared/src/game/definitions/Constant";
-import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { type GameState, GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { cls, formatNumber, range } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls, formatNumber, range, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo, useCallback } from "react";
 import { G } from "../utils/Global";
@@ -12,10 +12,16 @@ import { TextureComp } from "./components/TextureComp";
 import { playClick } from "./Sound";
 
 export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
-   const onSpeedChange = useCallback((speed: number) => {
-      G.speed = speed;
-      GameStateUpdated.emit();
-   }, []);
+   const onSpeedChange = useCallback(
+      (speed: number) => {
+         if (speed > 1) {
+            gs.flags = setFlag(gs.flags, GameStateFlags.UsedWarp);
+         }
+         G.speed = speed;
+         GameStateUpdated.emit();
+      },
+      [gs],
+   );
    const warp = resourceOf("Warp", gs.resources).current;
    return (
       <Menu position="bottom-start">

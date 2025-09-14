@@ -4,7 +4,7 @@ import { INT32_MAX } from "@spaceship-idle/shared/src/utils/Helper";
 import { RPCClient } from "../rpc/RPCClient";
 import { G } from "../utils/Global";
 
-export async function findShip(score: number, hp: number, dps: number): Promise<IShip> {
+export async function findShip(score: number, hp: number, dps: number): Promise<IShip | undefined> {
    let range = 0.05;
    while (true) {
       try {
@@ -17,10 +17,10 @@ export async function findShip(score: number, hp: number, dps: number): Promise<
          );
          return ship;
       } catch (e) {
-         if (range > 1) {
-            throw new Error("Failed to find an opponent");
-         }
          range *= 2;
+         if (range > 0.5) {
+            return undefined;
+         }
       }
    }
 }

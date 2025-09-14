@@ -167,6 +167,9 @@ export function addDebugFunctions(): void {
       const me = await RPCClient.findShipV3(0n, [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX]);
       const [score, hp, dps] = calcShipScore(me.json);
       const enemy = await findShip(score * 0.8, hp * 0.8, dps * 0.8);
+      if (!enemy) {
+         throw new Error("Cannot find an enemy");
+      }
       const [enemyScore, enemyHp, enemyDps] = calcShipScore(enemy.json);
       const now = performance.now();
       const rt = simulateBattle(me.json, enemy.json);

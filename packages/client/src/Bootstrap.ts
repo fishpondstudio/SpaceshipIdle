@@ -1,8 +1,9 @@
 import * as Sentry from "@sentry/browser";
-import { SentryDSN } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { SaveFileVersion, SentryDSN } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateFlags, initSaveGame, SaveGame } from "@spaceship-idle/shared/src/game/GameState";
 import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
+import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { forEach, rejectIn, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { Assets, BitmapFont, SCALE_MODES, type Spritesheet, type TextStyleFontWeight, type Texture } from "pixi.js";
 import { FontFaces, Fonts } from "./assets";
@@ -87,13 +88,21 @@ export async function bootstrap(): Promise<void> {
 
    try {
       G.save = await loadGame();
+      migrateSave(G.save);
+      if (G.save.options.version !== SaveFileVersion) {
+         isNewPlayer = true;
+      }
    } catch (error) {
       isNewPlayer = true;
+   }
+
+   if (isNewPlayer) {
       G.save = new SaveGame();
       initSaveGame(G.save);
       G.save.state.flags = setFlag(G.save.state.flags, GameStateFlags.ShowTutorial);
+      addResource("Warp", 60 * 5, G.save.state.resources);
    }
-   migrateSave(G.save);
+
    setLanguage(G.save.options.language);
    subscribeToEvents();
    loadSounds();

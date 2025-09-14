@@ -13,7 +13,6 @@ import { formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/He
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { useMemo } from "react";
-import { AddShipToMatchmakingPool } from "../game/AddShipToMatchmakingPool";
 import { ShipImageComp } from "../game/ShipImageComp";
 import { ShipScene } from "../scenes/ShipScene";
 import { G } from "../utils/Global";
@@ -97,8 +96,6 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
                      if (!info.noWarmongerPenalty) {
                         changeStat("Warmonger", 1, G.save.state.stats);
                      }
-
-                     AddShipToMatchmakingPool(me);
 
                      hideSidebar();
                      hideModal();

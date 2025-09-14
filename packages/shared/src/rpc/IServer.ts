@@ -9,8 +9,6 @@ export interface IServer {
    listShips: (limit: number, offset: number) => Promise<{ total: number; ships: IShip[] }>;
    viewShip: (id: string) => Promise<IShip>;
    deleteShip: (id: string) => Promise<void>;
-   findShip: (quantum: number) => Promise<IShip>;
-   findShipV2: (quantum: number, score: number) => Promise<IShip>;
    findShipV3: (
       hash: bigint,
       quantum: [number, number],

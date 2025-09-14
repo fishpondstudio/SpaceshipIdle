@@ -38,7 +38,6 @@ export const OnBattleStatusChanged = new TypedEvent<IBattleStatusChanged>();
 
 export class Runtime {
    id = 0;
-   wave = 0;
    battleSeconds = 0;
    battleTimer = BattleTickInterval;
    productionTimer = ProductionTickInterval;
@@ -90,7 +89,7 @@ export class Runtime {
 
    public createXPTarget(): void {
       if (this.right.tiles.size > 0) {
-         console.error("createEnemy called when there are still enemy tiles left");
+         console.error("createXPTarget called when there are still enemy tiles left");
          return;
       }
       this.tiles.forEach((tile) => {
@@ -110,19 +109,23 @@ export class Runtime {
          totalLevels += data.level;
       });
       const level = clamp(Math.floor(divide(totalLevels, this.left.tiles.size)), 10, Number.POSITIVE_INFINITY);
-      design.forEach((tile) => {
-         this.right.tiles.set(tile, makeTile(randOne(buildings), level));
+      design.forEach((tile, idx) => {
+         this.right.tiles.set(tile, makeTile(buildings[idx % buildings.length], level));
       });
 
       this.right.tiles = flipHorizontalCopy(this.right).tiles;
       this.rightStat = new RuntimeStat();
-      this.right.tiles.forEach((_data, tile) => {
+      this.disarm(this.right.tiles.keys());
+   }
+
+   public disarm(tiles: Iterable<Tile>): void {
+      for (const tile of tiles) {
          const rs = this.get(tile);
          if (rs) {
             rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire);
             rs.addStatusEffect("Disarm", tile, rs.data.type, 1, Number.POSITIVE_INFINITY);
          }
-      });
+      }
    }
 
    public has(tile: Tile): boolean {
@@ -266,7 +269,6 @@ export class Runtime {
 
       if (this.battleType === BattleType.Peace) {
          if (this.right.tiles.size === 0) {
-            ++this.wave;
             this.createXPTarget();
          }
          return;
@@ -364,6 +366,10 @@ export class Runtime {
 
    private _checkSuddenDeath(): void {
       if (this.battleType === BattleType.Peace) {
+         return;
+      }
+
+      if (this.battleInfo.noSuddenDeath) {
          return;
       }
 

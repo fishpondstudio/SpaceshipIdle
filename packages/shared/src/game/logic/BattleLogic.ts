@@ -16,12 +16,7 @@ import { AbilityTiming, abilityTarget } from "../definitions/Ability";
 import { Blueprints } from "../definitions/Blueprints";
 import { ProjectileFlag } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
-import {
-   BattleStartAmmoCycles,
-   BattleTickInterval,
-   DefaultCooldown,
-   MaxBattleTick as MaxBattleSeconds,
-} from "../definitions/Constant";
+import { BattleTickInterval, DefaultCooldown, MaxBattleTick as MaxBattleSeconds } from "../definitions/Constant";
 import { type ShipClass, ShipClassList } from "../definitions/ShipClass";
 import { GameOption } from "../GameOption";
 import { GameData, GameState } from "../GameState";
@@ -29,7 +24,7 @@ import { posToTile } from "../Grid";
 import { addAddon, getAddonsInClass } from "./AddonLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType, type BattleVictoryType } from "./BattleType";
-import { getDamagePerFire } from "./BuildingLogic";
+import { getDamagePerFire, getUnlockableBuildings } from "./BuildingLogic";
 import { Projectile } from "./Projectile";
 import { addResource } from "./ResourceLogic";
 import { Runtime } from "./Runtime";
@@ -310,6 +305,61 @@ export function generateShip(shipClass: ShipClass, random: () => number): GameSt
    return ship;
 }
 
+export function generateMatchmakingShip(
+   shipClass: ShipClass,
+   targetScore: number,
+   targetHp: number,
+   targetDps: number,
+   random: () => number,
+): GameState {
+   const ship = new GameState();
+   ship.blueprint = randOne(keysOf(Blueprints), random);
+   const design = Blueprints[ship.blueprint].blueprint[shipClass];
+   const buildings = getBuildingsWithinShipClass(shipClass);
+
+   let low = 1;
+   let high = 100;
+
+   let score = 0;
+   let hp = 0;
+   let dps = 0;
+
+   while (low < high) {
+      ship.tiles.clear();
+      for (const tile of design) {
+         ship.tiles.set(tile, {
+            type: randOne(buildings, random),
+            level: Math.floor((low + high) / 2),
+         });
+      }
+
+      [score, hp, dps] = calcShipScore(ship);
+
+      if (score <= targetScore && score >= targetScore / 1.25) {
+         break;
+      }
+
+      if (score < targetScore) {
+         low = Math.floor((low + high) / 2);
+      } else {
+         high = Math.floor((low + high) / 2);
+      }
+   }
+
+   while (hp > 1.25 * targetHp || dps > 1.25 * targetDps) {
+      ship.tiles.forEach((data, tile) => {
+         --data.level;
+      });
+      [score, hp, dps] = calcShipScore(ship);
+   }
+
+   console.log(
+      `Generated ship with score ${score} (target: ${targetScore}), hp: ${hp} (target: ${targetHp}), dps: ${dps} (target: ${targetDps})`,
+   );
+
+   return ship;
+}
+
 export function simulateBattle(ship: GameState, reference: GameState): Runtime {
    const me = structuredClone(ship);
    me.resources.clear();
@@ -329,21 +379,27 @@ export function simulateBattle(ship: GameState, reference: GameState): Runtime {
    return rt;
 }
 
-const CalcShipScoreTicks = 50;
+const CalcShipScoreTicks = 100;
 
 export function calcShipScore(ship: GameState): [number, number, number, Runtime] {
    const me = structuredClone(ship);
    me.resources.clear();
-   const rt = new Runtime({ state: me, options: new GameOption(), data: new GameData() }, new GameState());
-   rt.wave = Number.POSITIVE_INFINITY;
-   rt.createXPTarget();
-   rt.battleType = BattleType.Peace;
-   rt.battleInfo = { silent: true };
+
+   const enemy = new GameState();
+   const buildings = getUnlockableBuildings();
+   Blueprints.Odyssey.blueprint.Corvette.forEach((tile, idx) => {
+      enemy.tiles.set(tile, { type: buildings[idx % buildings.length], level: Number.POSITIVE_INFINITY });
+   });
+
+   const rt = new Runtime({ state: me, options: new GameOption(), data: new GameData() }, enemy);
+   rt.disarm(rt.right.tiles.keys());
+   rt.battleType = BattleType.Battle;
+   rt.battleInfo = { silent: true, noSuddenDeath: true };
    const speed = { speed: 1 };
-   for (let i = 0; i < (CalcShipScoreTicks + BattleStartAmmoCycles * 10) / BattleTickInterval; i++) {
+   for (let i = 0; i < CalcShipScoreTicks / BattleTickInterval; i++) {
       rt.tick(BattleTickInterval, speed);
    }
-   const dps = reduceOf(rt.rightStat.averageRawDamage(CalcShipScoreTicks), (prev, k, v) => prev + v, 0);
+   const dps = reduceOf(rt.rightStat.averageRawDamage(CalcShipScoreTicks / 2), (prev, k, v) => prev + v, 0);
 
    // 68.9%
    // rt.left.tiles.forEach((data, tile) => {
@@ -377,7 +433,7 @@ export function calcShipScore(ship: GameState): [number, number, number, Runtime
 
    // 69.35%
    const hp = rt.leftStat.maxHp;
-   return [Math.sqrt((hp * dps) / 1000), hp / 100, dps / 10, rt];
+   return [Math.sqrt((hp / 10) * dps), hp / 10, dps, rt];
 }
 
 // const data: number[][] = Array(100);

@@ -279,15 +279,21 @@ export function abilityStat(building: Building, level: number): number {
    if (!def.ability) {
       return 0;
    }
-   console.assert(
-      def.damagePct === AbilityStatDamagePct,
-      `Expected damage pct to be ${AbilityStatDamagePct} but got ${def.damagePct}`,
-   );
+
    let result = level * 0.5;
 
    if (hasFlag(def.projectileFlag, ProjectileFlag.LaserDamage)) {
+      console.assert(
+         def.damagePct === AbilityStatDamagePct * LaserArrayDamagePct,
+         `Building ${building}: expected damage pct to be ${AbilityStatDamagePct * LaserArrayDamagePct} but got ${def.damagePct}`,
+      );
       // Laser stat ability is not as effective as damage - so we give a discount
       result = result * Math.sqrt(LaserArrayDamagePct);
+   } else {
+      console.assert(
+         def.damagePct === AbilityStatDamagePct,
+         `Building ${building}: expected damage pct to be ${AbilityStatDamagePct} but got ${def.damagePct}`,
+      );
    }
 
    if (def.projectiles > 1) {

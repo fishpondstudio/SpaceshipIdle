@@ -8,8 +8,6 @@ import type { ShipClass } from "../definitions/ShipClass";
 import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
 import type { ITileData } from "../ITileData";
-import { getUsedQuantum } from "./QuantumElementLogic";
-import { resourceOf } from "./ResourceLogic";
 import { Side } from "./Side";
 import { getShipClass } from "./TechLogic";
 
@@ -55,7 +53,7 @@ export function flipHorizontalCopy(ship: GameState): GameState {
    newShip.tiles = newTiles;
    newShip.addons.forEach((data, addon) => {
       if (data.tile) {
-         const {x, y} = tileToPoint(data.tile);
+         const { x, y } = tileToPoint(data.tile);
          data.tile = createTile(MaxX - 1 - x, y);
       }
    });
@@ -127,36 +125,20 @@ export function isWithinShipExtent(tile: Tile, gs: GameState): boolean {
    return blueprint.includes(tile);
 }
 
-export function validateForClient(gs: GameState): boolean {
-   try {
-      const totalQuantum = resourceOf("Quantum", gs.resources).total;
-      const usedQuantum = getUsedQuantum(gs);
-      if (usedQuantum > totalQuantum) {
-         return false;
-      }
-      return _validateShip(gs);
-   } catch (e) {
-      console.error(e);
-      return false;
-   }
-}
-
-export function validateForMatchmaking(gs: GameState): boolean {
-   try {
-      const totalQuantum = resourceOf("Quantum", gs.resources).total;
-      const usedQuantum = getUsedQuantum(gs);
-      if (totalQuantum !== usedQuantum) {
-         return false;
-      }
-      return _validateShip(gs);
-   } catch (e) {
-      console.error(e);
-      return false;
-   }
-}
-
-function _validateShip(gs: GameState): boolean {
+export function validateShip(gs: GameState): boolean {
    const buildings = new Set<Building>();
+   const blueprint = new Set(getShipBlueprint(gs));
+
+   for (const [tile, _] of gs.tiles) {
+      if (!blueprint.has(tile)) {
+         return false;
+      }
+   }
+
+   if (!isShipConnected(gs.tiles.keys())) {
+      return false;
+   }
+
    for (const tech of gs.unlockedTech) {
       const def = Config.Tech[tech];
       def.unlockBuildings?.forEach((b) => {

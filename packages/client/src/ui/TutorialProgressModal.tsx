@@ -5,7 +5,7 @@ import { Tutorial } from "../game/Tutorial";
 import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
 import { FloatingTip } from "./components/FloatingTip";
-import { RenderHTML } from "./components/RenderHTMLComp";
+import { html, RenderHTML } from "./components/RenderHTMLComp";
 import { playClick } from "./Sound";
 
 export function TutorialProgressModal(): React.ReactNode {
@@ -31,11 +31,7 @@ export function TutorialProgressModal(): React.ReactNode {
                         <FloatingTip label={<RenderHTML html={step.desc()} />}>
                            <div className={cls(active ? "text-space" : null)}>{step.name()}</div>
                         </FloatingTip>
-                        {active ? (
-                           <div className="text-sm text-dimmed">
-                              <RenderHTML html={step.desc()} />
-                           </div>
-                        ) : null}
+                        {active ? html(step.desc(), "text-sm text-dimmed") : null}
                      </div>
                      {!unfinished || active ? (
                         <div className={cls(progress >= total ? "text-dimmed" : null)}>
@@ -58,7 +54,7 @@ export function TutorialProgressModal(): React.ReactNode {
                   GameStateUpdated.emit();
                }}
             >
-               {t(L.HideTutorial)}
+               {t(L.SkipTutorial)}
             </button>
          </div>
       </div>

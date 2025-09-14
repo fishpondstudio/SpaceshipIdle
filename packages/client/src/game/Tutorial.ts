@@ -1,5 +1,5 @@
 import { PlanetFlags, PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
-import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
+import { type GameState, GameStateFlags } from "@spaceship-idle/shared/src/game/GameState";
 import { getStat, resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import type { VideoTutorial } from "@spaceship-idle/shared/src/game/logic/VideoTutorials";
@@ -19,10 +19,10 @@ export interface ITutorial {
 
 export const Tutorial: ITutorial[] = [
    {
-      name: () => t(L.TutorialBuildXModules, 4),
+      name: () => t(L.TutorialBuildXModules, 6),
       desc: () => t(L.TutorialBuild6ModulesDescHTML),
       progress: (gs) => {
-         return [gs.tiles.size, 4];
+         return [gs.tiles.size, 6];
       },
    },
    {
@@ -75,6 +75,13 @@ export const Tutorial: ITutorial[] = [
       },
    },
    {
+      name: () => t(L.TutorialUseTimeWarp),
+      desc: () => t(L.TutorialUseTimeWarpDescHTML),
+      progress: (gs) => {
+         return [hasFlag(gs.flags, GameStateFlags.UsedWarp) ? 1 : 0, 1];
+      },
+   },
+   {
       name: () => t(L.TutorialBuildXModules, 20),
       desc: () => t(L.TutorialBuild20ModulesDescHTML),
       progress: (gs) => {
@@ -112,6 +119,18 @@ export const Tutorial: ITutorial[] = [
       },
    },
    {
+      name: () => t(L.TutorialEquipAddon),
+      desc: () => t(L.TutorialEquipAddonDescHTML),
+      progress: (gs, rt) => {
+         for (const [addon, data] of gs.addons) {
+            if (data.tile) {
+               return [1, 1];
+            }
+         }
+         return [0, 1];
+      },
+   },
+   {
       name: () => t(L.TutorialDeclareFriendship),
       desc: () => t(L.TutorialDeclareFriendshipDescHTML),
       progress: (gs, rt) => {
@@ -140,14 +159,6 @@ export const Tutorial: ITutorial[] = [
       name: () => t(L.TutorialPrestigeAndUpgradePermanentElement),
       desc: () => t(L.TutorialPrestigeAndUpgradePermanentElementDescHTML),
       progress: (gs, rt) => {
-         const galaxy = rt.leftSave.data.galaxy;
-         for (const starSystem of galaxy.starSystems) {
-            for (const planet of starSystem.planets) {
-               if (hasFlag(planet.flags, PlanetFlags.WasFriends)) {
-                  return [1, 1];
-               }
-            }
-         }
          return [0, 1];
       },
    },
