@@ -286,43 +286,49 @@ function ShortcutTab(): React.ReactNode {
                <RenderHTML className="render-html" html={t(L.AdvancedGameControlContent)} />
             </div>
          </div>
-         {mapOf(G.save.options.shortcuts, (shortcut, config) => (
-            <div className="row my10" key={shortcut}>
-               <div className="f1">{Shortcut[shortcut]()}</div>
-               <Input
-                  classNames={{ wrapper: "f1", input: "text-right" }}
-                  value={getShortcutKey(config)}
-                  onChange={noop}
-                  onKeyDown={(e) => {
-                     e.preventDefault();
-                     if (
-                        (e.ctrlKey && e.key === "Control") ||
-                        (e.shiftKey && e.key === "Shift") ||
-                        (e.altKey && e.key === "Alt") ||
-                        (e.metaKey && e.key === "Meta")
-                     ) {
-                        return;
-                     }
-                     const config = makeShortcut(e);
-                     forEach(G.save.options.shortcuts, (k, cfg) => {
-                        if (isShortcutEqual(cfg, config)) {
-                           G.save.options.shortcuts[k] = {
-                              ctrl: false,
-                              shift: false,
-                              alt: false,
-                              meta: false,
-                              key: "",
-                           };
+         {mapOf(G.save.options.shortcuts, (shortcut, config) => {
+            if (!Shortcut[shortcut]) {
+               delete G.save.options.shortcuts[shortcut];
+               return null;
+            }
+            return (
+               <div className="row my10" key={shortcut}>
+                  <div className="f1">{Shortcut[shortcut]()}</div>
+                  <Input
+                     classNames={{ wrapper: "f1", input: "text-right" }}
+                     value={getShortcutKey(config)}
+                     onChange={noop}
+                     onKeyDown={(e) => {
+                        e.preventDefault();
+                        if (
+                           (e.ctrlKey && e.key === "Control") ||
+                           (e.shiftKey && e.key === "Shift") ||
+                           (e.altKey && e.key === "Alt") ||
+                           (e.metaKey && e.key === "Meta")
+                        ) {
+                           return;
                         }
-                     });
-                     G.save.options.shortcuts[shortcut] = config;
-                     (e.target as HTMLInputElement).value = getShortcutKey(config);
-                     GameOptionUpdated.emit();
-                     forceUpdate();
-                  }}
-               />
-            </div>
-         ))}
+                        const config = makeShortcut(e);
+                        forEach(G.save.options.shortcuts, (k, cfg) => {
+                           if (isShortcutEqual(cfg, config)) {
+                              G.save.options.shortcuts[k] = {
+                                 ctrl: false,
+                                 shift: false,
+                                 alt: false,
+                                 meta: false,
+                                 key: "",
+                              };
+                           }
+                        });
+                        G.save.options.shortcuts[shortcut] = config;
+                        (e.target as HTMLInputElement).value = getShortcutKey(config);
+                        GameOptionUpdated.emit();
+                        forceUpdate();
+                     }}
+                  />
+               </div>
+            );
+         })}
       </>
    );
 }
