@@ -161,6 +161,131 @@ export const Catalyst = {
          hp: 2,
       },
    },
+   B10: {
+      trait: () => t(L.RC),
+      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.RC,
+      amount: 3,
+      multipliers: {
+         damage: 1,
+      },
+   },
+   B11: {
+      trait: () => t(L.RC),
+      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.RC,
+      amount: 3,
+      multipliers: {
+         hp: 1,
+      },
+   },
+   C1: {
+      trait: () => t(L.XClassWeapon, t(L.TechCorvette)),
+      filter: (b: Building) => Config.BuildingToShipClass[b] === "Corvette",
+      amount: 6,
+      multipliers: {
+         hp: 1,
+         damage: 1,
+      },
+   },
+   C2: {
+      trait: () => t(L.XClassWeapon, t(L.TechCorvette)),
+      filter: (b: Building) => Config.BuildingToShipClass[b] === "Corvette",
+      amount: 6,
+      multipliers: {
+         hp: 2,
+      },
+   },
+   C3: {
+      trait: () => t(L.XClassWeapon, t(L.TechCorvette)),
+      filter: (b: Building) => Config.BuildingToShipClass[b] === "Corvette",
+      amount: 6,
+      multipliers: {
+         damage: 2,
+      },
+   },
+   C4: {
+      trait: () => t(L.MS),
+      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      amount: 9,
+      multipliers: {
+         damage: 3,
+      },
+   },
+   C5: {
+      trait: () => t(L.MS),
+      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      amount: 9,
+      multipliers: {
+         hp: 3,
+      },
+   },
+   C6: {
+      trait: () => t(L.MS),
+      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      amount: 9,
+      multipliers: {
+         damage: 1,
+         hp: 2,
+      },
+   },
+   C7: {
+      trait: () => t(L.MS),
+      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      amount: 9,
+      multipliers: {
+         damage: 2,
+         hp: 1,
+      },
+   },
+   C8: {
+      trait: () => t(L.AC),
+      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
+      amount: 9,
+      multipliers: {
+         damage: 3,
+      },
+   },
+   C9: {
+      trait: () => t(L.AC),
+      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
+      amount: 9,
+      multipliers: {
+         hp: 3,
+      },
+   },
+   C10: {
+      trait: () => t(L.AC),
+      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
+      amount: 9,
+      multipliers: {
+         damage: 1,
+         hp: 2,
+      },
+   },
+   C11: {
+      trait: () => t(L.AC),
+      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
+      amount: 9,
+      multipliers: {
+         damage: 2,
+         hp: 1,
+      },
+   },
+   C12: {
+      trait: () => t(L.LA),
+      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.LA,
+      amount: 3,
+      multipliers: {
+         damage: 1,
+      },
+   },
+   C13: {
+      trait: () => t(L.LA),
+      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.LA,
+      amount: 3,
+      multipliers: {
+         hp: 1,
+      },
+   },
 } as const satisfies Record<string, ICatalystDefinition>;
 
 export type Catalyst = keyof typeof Catalyst;
@@ -176,7 +301,7 @@ export const CatalystCat = {
    },
    C3: {
       name: () => t(L.CatalystCatX, numberToRoman(3)!),
-      candidates: ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"],
+      candidates: ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10", "C11", "C12", "C13"],
    },
 } as const satisfies Record<string, { name: () => string; candidates: Catalyst[] }>;
 

@@ -70,11 +70,6 @@ export const Shortcut = {
    Downgrade10: () => t(L.ShortcutDowngrade10),
    UpgradeMax: () => t(L.ShortcutUpgradeMax),
    Recycle: () => t(L.ShortcutRecycle),
-   Priority0: () => t(L.ShortcutPriority0),
-   Priority10: () => t(L.ShortcutPriority10),
-   Capacity0: () => t(L.ShortcutCapacity0),
-   Capacity100: () => t(L.ShortcutCapacity10),
-   MatchCapacityToAmmoProduction: () => t(L.ShortcutMatchCapacityToAmmoProduction),
 } as const satisfies Record<string, () => string>;
 
 export type Shortcut = keyof typeof Shortcut;

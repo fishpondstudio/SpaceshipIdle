@@ -405,6 +405,10 @@ export class ShipScene extends Scene {
       });
    }
 
+   public markBlueprintDirty(): void {
+      this._blueprintDirty = true;
+   }
+
    override onClicked(e: FederatedPointerEvent): void {
       playClick();
       const pos = this.viewport.screenToWorld(e.screen);

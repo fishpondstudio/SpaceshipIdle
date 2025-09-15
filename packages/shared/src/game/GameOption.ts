@@ -16,8 +16,6 @@ export const GameOptionFlag = {
    HideDiscordIcon: 1 << 5,
    CooldownIndicatorOutsideBattle: 1 << 6,
    LinearCooldownIndicator: 1 << 7,
-   HideInactiveResources: 1 << 8,
-   ShowAmmoPerSec: 1 << 9,
 };
 
 export type GameOptionFlag = ValueOf<typeof GameOptionFlag>;
@@ -74,41 +72,6 @@ export const DefaultShortcuts: Record<Shortcut, IShortcutConfig> = {
    },
    Recycle: {
       key: "r",
-      ctrl: false,
-      alt: false,
-      shift: false,
-      meta: false,
-   },
-   Priority0: {
-      key: "a",
-      ctrl: false,
-      alt: false,
-      shift: false,
-      meta: false,
-   },
-   Priority10: {
-      key: "s",
-      ctrl: false,
-      alt: false,
-      shift: false,
-      meta: false,
-   },
-   Capacity0: {
-      key: "d",
-      ctrl: false,
-      alt: false,
-      shift: false,
-      meta: false,
-   },
-   Capacity100: {
-      key: "f",
-      ctrl: false,
-      alt: false,
-      shift: false,
-      meta: false,
-   },
-   MatchCapacityToAmmoProduction: {
-      key: "g",
       ctrl: false,
       alt: false,
       shift: false,

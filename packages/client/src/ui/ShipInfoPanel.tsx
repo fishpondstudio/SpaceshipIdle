@@ -1,9 +1,7 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import {
-   DiscordUrl,
    QuantumElementId,
-   SteamUrl,
    VictoryPointElementId,
    XPElementId,
 } from "@spaceship-idle/shared/src/game/definitions/Constant";
@@ -20,7 +18,6 @@ import {
 import { calcSpaceshipXP, getStat, resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import {
-   clamp,
    cls,
    divide,
    formatDelta,
@@ -33,10 +30,6 @@ import {
    reduceOf,
 } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { memo } from "react";
-import Discord from "../../src/assets/images/Discord.svg";
-import Steam from "../../src/assets/images/Steam.svg";
-import { openUrl } from "../rpc/SteamClient";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { showModal } from "../utils/ToggleModal";
@@ -262,57 +255,6 @@ export function ShipInfoPanel(): React.ReactNode {
          </FloatingTip>
          <div className="divider vertical" />
          <WarpSpeedMenuComp gs={state} />
-      </div>
-   );
-}
-
-function _DiscordComp({ show }: { show: boolean }): React.ReactNode {
-   if (!show) return null;
-   return (
-      <FloatingTip label={t(L.JoinDiscord)}>
-         <img src={Discord} style={{ display: "block", height: 20 }} onClick={() => openUrl(DiscordUrl)} />
-      </FloatingTip>
-   );
-}
-
-export const DiscordComp = memo(_DiscordComp, (prev, next) => prev.show === next.show);
-
-function _SteamComp({ show }: { show: boolean }): React.ReactNode {
-   if (!show) return null;
-   return (
-      <FloatingTip label={t(L.WishlistFullGame)}>
-         <img src={Steam} style={{ display: "block", height: 20 }} onClick={() => openUrl(SteamUrl)} />
-      </FloatingTip>
-   );
-}
-
-export const SteamComp = memo(_SteamComp, (prev, next) => prev.show === next.show);
-
-export function ProgressComp({
-   height,
-   progress,
-}: {
-   height: number;
-   progress: { color: string; value: number }[];
-}): React.ReactNode {
-   return (
-      <div
-         style={{ background: "var(--mantine-color-dark-4)", height, borderRadius: height / 2, position: "relative" }}
-      >
-         {progress.map((p, i) => (
-            <div
-               key={i}
-               style={{
-                  background: p.color,
-                  height,
-                  borderRadius: height / 2,
-                  position: "absolute",
-                  left: 0,
-                  top: 0,
-                  width: `${clamp(100 * p.value, 0, 100)}%`,
-               }}
-            />
-         ))}
       </div>
    );
 }

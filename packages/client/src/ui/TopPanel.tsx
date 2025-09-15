@@ -20,13 +20,19 @@ export function TopPanel(): React.ReactNode {
    refreshOnTypedEvent(OnSceneSwitched);
    if (!G.save) return null;
    if (G.scene.isCurrent(TechTreeScene)) {
-      return <ShipInfoPanel />;
+      return (
+         <>
+            <TopRightPanel />
+            <ShipInfoPanel />
+         </>
+      );
    }
    if (G.scene.isCurrent(ElementsScene)) {
       return (
          <>
             <ElementStatsPanel />
             <ShipInfoPanel />
+            <TopRightPanel />
          </>
       );
    }
@@ -35,14 +41,15 @@ export function TopPanel(): React.ReactNode {
          <>
             <GalaxyInfoPanel />
             <ShipInfoPanel />
+            <TopRightPanel />
          </>
       );
    }
    if (G.runtime.battleType === BattleType.Peace) {
       return (
          <>
-            <TopRightPanel />
             <ShipInfoPanel />
+            <TopRightPanel />
          </>
       );
    }

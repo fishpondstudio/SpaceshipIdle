@@ -64,23 +64,6 @@ function GeneralTab(): React.ReactNode {
          </div>
          <div className="divider my10 mx-10" />
          <div className="row">
-            <div>{t(L.HideInactiveResources)}</div>
-            <FloatingTip label={t(L.HideInactiveResourcesTooltip)}>
-               <div className="mi sm text-space">info</div>
-            </FloatingTip>
-            <div className="f1" />
-            <Switch
-               checked={hasFlag(G.save.options.flag, GameOptionFlag.HideInactiveResources)}
-               onChange={(e) => {
-                  G.save.options.flag = e.target.checked
-                     ? setFlag(G.save.options.flag, GameOptionFlag.HideInactiveResources)
-                     : clearFlag(G.save.options.flag, GameOptionFlag.HideInactiveResources);
-                  GameOptionUpdated.emit();
-               }}
-            />
-         </div>
-         <div className="h10" />
-         <div className="row">
             <div>{t(L.CooldownIndicatorOutsideBattle)}</div>
             <FloatingTip label={t(L.CooldownIndicatorOutsideBattleTooltip)}>
                <div className="mi sm text-space">info</div>

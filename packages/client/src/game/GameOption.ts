@@ -1,7 +1,7 @@
-import type { Languages } from "@spaceship-idle/shared/src/game/Languages";
-import type { IShortcutConfig, Shortcut } from "@spaceship-idle/shared/src/game/Shortcut";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
+import type { Languages } from "@spaceship-idle/shared/src/game/Languages";
 import type { VideoTutorial } from "@spaceship-idle/shared/src/game/logic/VideoTutorials";
+import type { IShortcutConfig, Shortcut } from "@spaceship-idle/shared/src/game/Shortcut";
 import type { CountryCode } from "@spaceship-idle/shared/src/utils/CountryCode";
 import type { ValueOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { TypedEvent } from "@spaceship-idle/shared/src/utils/TypedEvent";
@@ -74,41 +74,6 @@ export const DefaultShortcuts: Record<Shortcut, IShortcutConfig> = {
    },
    Recycle: {
       key: "r",
-      ctrl: false,
-      alt: false,
-      shift: false,
-      meta: false,
-   },
-   Priority0: {
-      key: "a",
-      ctrl: false,
-      alt: false,
-      shift: false,
-      meta: false,
-   },
-   Priority10: {
-      key: "s",
-      ctrl: false,
-      alt: false,
-      shift: false,
-      meta: false,
-   },
-   Capacity0: {
-      key: "d",
-      ctrl: false,
-      alt: false,
-      shift: false,
-      meta: false,
-   },
-   Capacity100: {
-      key: "f",
-      ctrl: false,
-      alt: false,
-      shift: false,
-      meta: false,
-   },
-   MatchCapacityToAmmoProduction: {
-      key: "g",
       ctrl: false,
       alt: false,
       shift: false,

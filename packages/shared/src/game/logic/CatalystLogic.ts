@@ -56,7 +56,7 @@ export function hasCatalystToChoose(save: SaveGame, rt: Runtime): boolean {
          return false;
       }
    }
-   return true;
+   return save.state.selectedCatalysts.size < CatalystCatList.length;
 }
 
 export function getCatalystChoices(cat: CatalystCat, gs: GameState): Catalyst[] {
@@ -65,8 +65,8 @@ export function getCatalystChoices(cat: CatalystCat, gs: GameState): Catalyst[] 
 
 export function tickCatalyst(gs: GameState, stat: RuntimeStat, runtime: Runtime): void {
    stat.catalysts.clear();
-   gs.selectedCatalysts.forEach((data, cat) => {
-      stat.catalysts.set(data, { cat, buildings: new Set(), tiles: new Set() });
+   gs.selectedCatalysts.forEach((data) => {
+      stat.catalysts.set(data, { buildings: new Set(), tiles: new Set() });
    });
    gs.tiles.forEach((tileData, tile) => {
       stat.catalysts.forEach((set, catalyst) => {
@@ -77,20 +77,21 @@ export function tickCatalyst(gs: GameState, stat: RuntimeStat, runtime: Runtime)
          }
       });
    });
-   stat.catalysts.forEach((data, catalyst) => {
+   gs.selectedCatalysts.forEach((catalyst, cat) => {
       const def = Catalyst[catalyst];
+      const data = stat.catalysts.get(catalyst);
+      if (!data) {
+         return;
+      }
       if (data.buildings.size >= def.amount) {
          data.tiles.forEach((tile) => {
             const rs = runtime.get(tile);
             if (rs) {
                if ("hp" in def.multipliers) {
-                  rs.hpMultiplier.add(def.multipliers.hp, t(L.CatXCatalystSource, CatalystCat[data.cat].name()));
+                  rs.hpMultiplier.add(def.multipliers.hp, t(L.CatXCatalystSource, CatalystCat[cat].name()));
                }
                if ("damage" in def.multipliers) {
-                  rs.damageMultiplier.add(
-                     def.multipliers.damage,
-                     t(L.CatXCatalystSource, CatalystCat[data.cat].name()),
-                  );
+                  rs.damageMultiplier.add(def.multipliers.damage, t(L.CatXCatalystSource, CatalystCat[cat].name()));
                }
             }
          });

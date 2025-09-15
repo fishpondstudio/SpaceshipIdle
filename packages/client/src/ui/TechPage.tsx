@@ -7,11 +7,13 @@ import { getTotalElementLevels } from "@spaceship-idle/shared/src/game/logic/Qua
 import { canSpendResource, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import {
    checkTechPrerequisites,
+   getShipClass,
    getTechName,
    techColumnToShipClass,
 } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { formatNumber, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { ShipScene } from "../scenes/ShipScene";
 import { TechTreeScene } from "../scenes/TechTreeScene";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
@@ -88,7 +90,12 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                         }
                         trySpendResource("Quantum", 1, G.save.state.resources);
                         playUpgrade();
+                        const oldShipClass = getShipClass(G.save.state);
                         G.save.state.unlockedTech.add(tech);
+                        const newShipClass = getShipClass(G.save.state);
+                        if (oldShipClass !== newShipClass) {
+                           G.scene.enqueue(ShipScene, (s) => s.markBlueprintDirty());
+                        }
                         GameStateUpdated.emit();
                         G.scene.enqueue(TechTreeScene, (t) => t.refresh());
                      }}
