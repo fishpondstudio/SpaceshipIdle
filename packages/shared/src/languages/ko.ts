@@ -693,7 +693,7 @@ export const KO = {
    WeaponType: "Type",
    WeaponWithoutAbility: "Weapon Without Ability",
    WelcomeToSpaceshipIdle: "Welcome to Spaceship Idle",
-   WelcomeToSpaceshipIdle2ndPlaytest: "Welcome to Spaceship Idle 2nd playtest. Select a language to continue and remember to report bugs on Discord!",
+   WelcomeToSpaceshipIdle2ndPlaytest: "Welcome to Spaceship Idle Playtest #2. Select a language to continue and remember to report bugs on Discord!",
    WishlistFullGame: "Wishlist the Full Game on Steam!",
    Wren: "Wren",
    XClass: "%% Class",

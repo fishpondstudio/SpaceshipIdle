@@ -27,4 +27,5 @@ function interpolate(phase: string, subs: (string | number)[]): string {
       .join("");
 }
 
-export const L = EN;
+// We need to clone it because when switching languages, we will mutate the object!
+export const L = structuredClone(EN);
