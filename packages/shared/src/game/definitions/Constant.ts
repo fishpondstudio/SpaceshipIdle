@@ -43,3 +43,5 @@ export const QuantumElementId = "ship-info-quantum";
 
 export const DirectiveChoiceCount = 3;
 export const ExploreCostPerLightYear = 5;
+
+export const MaxShipClass = "Corvette";

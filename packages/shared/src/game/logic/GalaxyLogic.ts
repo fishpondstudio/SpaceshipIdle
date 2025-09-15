@@ -7,7 +7,12 @@ import { srand } from "../../utils/Random";
 import type { IHaveXY } from "../../utils/Vector2";
 import type { Addon } from "../definitions/Addons";
 import { Bonus } from "../definitions/Bonus";
-import { ExploreCostPerLightYear, FriendshipBaseCost, FriendshipDurationSeconds } from "../definitions/Constant";
+import {
+   ExploreCostPerLightYear,
+   FriendshipBaseCost,
+   FriendshipDurationSeconds,
+   MaxShipClass,
+} from "../definitions/Constant";
 import { FriendshipBonus } from "../definitions/FriendshipBonus";
 import { type Galaxy, type Planet, PlanetFlags, PlanetType, type StarSystem } from "../definitions/Galaxy";
 import { ShipClass, ShipClassList } from "../definitions/ShipClass";
@@ -122,8 +127,8 @@ export function getExploreCost(starSystem: StarSystem): number {
    return starSystem.distance * ExploreCostPerLightYear;
 }
 
-export function getShipClassByIndex(idx: number): ShipClass {
-   return ShipClassList[clamp(idx, 0, ShipClassList.length - 1)];
+function getShipClassByIndex(idx: number): ShipClass {
+   return ShipClassList[clamp(idx, 0, ShipClassList.indexOf(MaxShipClass))];
 }
 
 export function getPlanetShipClass(planetId: number, galaxy: Galaxy): ShipClass {
