@@ -4,14 +4,16 @@ import type { ShipClass } from "@spaceship-idle/shared/src/game/definitions/Ship
 import { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
+import { generateGalaxy } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { rollElementShards } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
 import { changeStat, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { getBuildingsWithinShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
-import { enumOf, equal, INT32_MAX, randOne, round } from "@spaceship-idle/shared/src/utils/Helper";
+import { getBuildingsWithinShipClass, isPlaceholderTech } from "@spaceship-idle/shared/src/game/logic/TechLogic";
+import { enumOf, equal, forEach, INT32_MAX, randOne, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { jsonEncode } from "@spaceship-idle/shared/src/utils/Serialization";
 import { RPCClient } from "../rpc/RPCClient";
+import { ShipScene } from "../scenes/ShipScene";
 import { BalancingModal } from "../ui/BalancingModal";
 import { ChooseElementModal } from "../ui/ChooseElementModal";
 import { NewPlayerModal } from "../ui/NewPlayerModal";
@@ -132,6 +134,25 @@ export function addDebugFunctions(): void {
       G.save.state.tiles.forEach((t) => {
          t.level = level;
       });
+   };
+   // @ts-expect-error
+   globalThis.regenerate = () => {
+      G.save.data.galaxy = generateGalaxy(Math.random);
+      G.save.data.galaxy.starSystems.forEach((starSystem) => {
+         starSystem.discovered = true;
+      });
+   };
+   // @ts-expect-error
+   globalThis.researchAll = () => {
+      forEach(Config.Tech, (tech) => {
+         if (!isPlaceholderTech(tech)) {
+            G.save.state.unlockedTech.add(tech);
+         }
+      });
+   };
+   // @ts-expect-error
+   globalThis.focusShip = () => {
+      G.scene.loadScene(ShipScene)?.requestFocus();
    };
    // @ts-expect-error
    globalThis.newPlayer = async () => {

@@ -108,48 +108,83 @@ function DamageComponent({ side }: { side: Side }): React.ReactNode {
                </div>
             </FloatingTip>
          ) : null}
-         <div className="row text-xs text-space text-uppercase">
-            <div />
-            <FloatingTip label={t(L.ActualDamageTooltip)}>
-               <div>{t(L.Actual)}</div>
-            </FloatingTip>
-            <div />
-            <div>{t(L.Raw)}</div>
-            <div />
-            <FloatingTip label={t(L.ReducedDamageTooltip)}>
-               <div>{t(L.Reduced)}</div>
-            </FloatingTip>
-         </div>
-         {mapOf(DamageType, (key, value) => {
-            const actualDamage = damageStat.actualDamage[value];
-            const rawDamage = damageStat.rawDamage[value];
-            return (
-               <div key={key} className="row">
-                  <div>{DamageTypeLabel[value]()}</div>
-                  <div>{formatNumber(actualDamage)}</div>
-                  <div className={cls(side === Side.Left ? "text-green" : "text-red")}>
-                     +{formatNumber(damageStat.actualDamages.get(-1)?.[value] ?? 0)}
-                  </div>
-                  <div>{formatNumber(rawDamage)}</div>
-                  <div className={cls(side === Side.Left ? "text-green" : "text-red")}>
-                     +{formatNumber(damageStat.rawDamages.get(-1)?.[value] ?? 0)}
-                  </div>
-                  <div>{formatPercent(divide(rawDamage - actualDamage, rawDamage))}</div>
-               </div>
-            );
-         })}
+         <table style={{ tableLayout: "fixed" }}>
+            <thead>
+               <tr className="text-xs text-space text-uppercase">
+                  <th style={{ width: 100 }} />
+                  <th className="text-right" style={{ width: 60 }}>
+                     <FloatingTip label={t(L.ActualDamageTooltip)}>
+                        <div>{t(L.Actual)}</div>
+                     </FloatingTip>
+                  </th>
+                  <th style={{ width: 50 }} />
+                  <th className="text-right" style={{ width: 60 }}>
+                     {t(L.Raw)}
+                  </th>
+                  <th style={{ width: 50 }} />
+                  <th style={{ width: 50 }}>
+                     <FloatingTip label={t(L.ReducedDamageTooltip)}>
+                        <div>{t(L.Reduced)}</div>
+                     </FloatingTip>
+                  </th>
+               </tr>
+            </thead>
+            <tbody>
+               {mapOf(DamageType, (key, value) => {
+                  const actualDamage = damageStat.actualDamage[value];
+                  const rawDamage = damageStat.rawDamage[value];
+                  return (
+                     <tr key={key}>
+                        <td style={{ width: 100 }}>{DamageTypeLabel[value]()}</td>
+                        <td className="text-right" style={{ width: 60 }}>
+                           {formatNumber(actualDamage)}
+                        </td>
+                        <td style={{ width: 60 }} className={cls(side === Side.Left ? "text-green" : "text-red")}>
+                           +{formatNumber(damageStat.actualDamages.get(-1)?.[value] ?? 0)}
+                        </td>
+                        <td className="text-right" style={{ width: 60 }}>
+                           {formatNumber(rawDamage)}
+                        </td>
+                        <td style={{ width: 60 }} className={cls(side === Side.Left ? "text-green" : "text-red")}>
+                           +{formatNumber(damageStat.rawDamages.get(-1)?.[value] ?? 0)}
+                        </td>
+                        <td className="text-right" style={{ width: 60 }}>
+                           {formatPercent(divide(rawDamage - actualDamage, rawDamage))}
+                        </td>
+                     </tr>
+                  );
+               })}
+            </tbody>
+         </table>
          <div className="h10" />
-         {Array.from(damageStat.actualDamageByBuilding.entries())
-            .sort((a, b) => b[1] - a[1])
-            .map(([building, damage]) => {
-               return (
-                  <div key={building} className="row">
-                     <div>{getBuildingName(building)}</div>
-                     <div className="text-right">{formatNumber(damage)}</div>
-                     <div className="f1" />
-                  </div>
-               );
-            })}
+         <div className="row">
+            {side === Side.Right ? <div className="f1" /> : null}
+            <table style={{ tableLayout: "fixed" }}>
+               <thead>
+                  <tr className="text-xs text-space text-uppercase">
+                     <th style={{ width: 100 }} />
+                     <th className="text-right" style={{ width: 60 }}>
+                        <FloatingTip label={t(L.ActualDamageTooltip)}>
+                           <div>{t(L.Actual)}</div>
+                        </FloatingTip>
+                     </th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {Array.from(damageStat.actualDamageByBuilding.entries())
+                     .sort((a, b) => b[1] - a[1])
+                     .map(([building, damage]) => {
+                        return (
+                           <tr key={building}>
+                              <td>{getBuildingName(building)}</td>
+                              <td className="text-right">{formatNumber(damage)}</td>
+                           </tr>
+                        );
+                     })}
+               </tbody>
+            </table>
+            {side === Side.Left ? <div className="f1" /> : null}
+         </div>
       </div>
    );
 }

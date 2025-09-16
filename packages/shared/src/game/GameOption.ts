@@ -89,6 +89,7 @@ export class GameOption {
    shortcuts = DefaultShortcuts;
    videoTutorials: Set<VideoTutorial> = new Set();
    version = SaveFileVersion;
+   build = 0;
 }
 
 export const GameOptionUpdated = new TypedEvent<void>();

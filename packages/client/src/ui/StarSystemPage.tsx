@@ -27,12 +27,12 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
                ) : (
                   <div className="mi">indeterminate_question_box</div>
                )}
-               <div className="f1">{starSystem.name} System</div>
+               <div className="f1">{t(L.XSystem, starSystem.name)}</div>
             </div>
          }
       >
          <div className="h10" />
-         <div className="title">Basic Info</div>
+         <div className="title">{t(L.BasicInfo)}</div>
          <div className="divider my10" />
          <div className="mx10">
             <div className="row">
@@ -41,15 +41,15 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
             </div>
          </div>
          <div className="divider my10" />
-         <div className="title">Relationship With You</div>
+         <div className="title">{t(L.RelationshipWithYou)}</div>
          <div className="divider my10" />
          <div className="mx10">
             <div className="row">
-               <div className="f1">Distance</div>
-               <div className="text-space">{starSystem.distance} lyr</div>
+               <div className="f1">{t(L.Distance)}</div>
+               <div className="text-space">{t(L.XLyr, starSystem.distance)}</div>
             </div>
             <div className="row">
-               <div className="f1">Home System</div>
+               <div className="f1">{t(L.HomeSystem)}</div>
                <div className="text-space">
                   {starSystem.distance === 0 ? (
                      <div className="text-green mi sm">check_circle</div>
@@ -59,7 +59,7 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
                </div>
             </div>
             <div className="row">
-               <div className="f1">Discovered</div>
+               <div className="f1">{t(L.Discovered)}</div>
                <div>
                   {starSystem.discovered ? (
                      <div className="text-green mi sm">check_circle</div>
@@ -100,12 +100,9 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
          ) : (
             <>
                <div className="divider my10" />
-               <div className="title">Exploration</div>
+               <div className="title">{t(L.Exploration)}</div>
                <div className="divider my10" />
-               <div className="mx10 text-sm">
-                  To explore this star system, you need to either be in a friendship, or have battled all discovered
-                  planets
-               </div>
+               <div className="mx10 text-sm">{t(L.ExplorationDesc)}</div>
                <div className="panel m10">
                   {G.save.data.galaxy.starSystems.map((starSystem) => {
                      if (!starSystem.discovered) {
@@ -166,7 +163,7 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
                      >
                         <div className="row g5 py5">
                            <div className="mi">explore</div>
-                           <div>Explore {starSystem.name}</div>
+                           <div>{t(L.ExploreX, starSystem.name)}</div>
                         </div>
                      </FloatingTip>
                   </button>

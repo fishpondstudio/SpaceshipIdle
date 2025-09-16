@@ -1,4 +1,4 @@
-import { type ValueOf, clamp, lerp, sizeOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { clamp, lerp, sizeOf, type ValueOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { type IHaveXY, Vector2, v2 } from "@spaceship-idle/shared/src/utils/Vector2";
 import type { Application, FederatedPointerEvent, IDestroyOptions } from "pixi.js";
 import { Container, Rectangle } from "pixi.js";
@@ -137,6 +137,14 @@ export class Camera extends Container implements SceneLifecycle {
 
    public get screenHeight() {
       return this.app.screen.height;
+   }
+
+   public get worldWidth() {
+      return this._worldWidth;
+   }
+
+   public get worldHeight() {
+      return this._worldHeight;
    }
 
    private _worldWidth = 0;

@@ -1,5 +1,4 @@
 import { computePosition, flip, offset, shift } from "@floating-ui/core";
-import { SmoothGraphics } from "@pixi/graphics-smooth";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { AbilityTiming, abilityTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
@@ -89,9 +88,9 @@ export class ShipScene extends Scene {
    public static Selector: ObjectPool<Sprite>;
    private _selectedTiles: Set<Tile> = new Set();
    private _highlightedTiles: Set<Tile> = new Set();
-   private _graphics: SmoothGraphics;
 
    private _blueprintDirty = true;
+   private _focusRequested = true;
 
    backgroundColor(): ColorSource {
       return 0x000000;
@@ -170,7 +169,6 @@ export class ShipScene extends Scene {
 
       this._grid = this.viewport.addChild(new Container());
       this._tileContainer = this.viewport.addChild(new Container());
-      this._graphics = this.viewport.addChild(new SmoothGraphics());
       this._projectileContainer = this.viewport.addChild(
          new ParticleContainer(10000, {
             position: true,
@@ -179,8 +177,6 @@ export class ShipScene extends Scene {
          }),
       );
       this.viewport.addChild(new TilingSprite(textures.get("Misc/Frame")!, width, height)).alpha = 0.15;
-      this._selectedTiles.add(createTile(MaxX / 2 - 2, MaxY / 2));
-      this.updateSelection();
       this._targetIndicator = this.viewport.addChild(new Sprite(G.textures.get("Misc/TargetIndicator")));
       this._targetIndicator.anchor.set(0.5, 0.5);
       this._targetIndicator.tint = 0xe74c3c;
@@ -313,6 +309,23 @@ export class ShipScene extends Scene {
             this._projectileVisuals.delete(id);
          }
       });
+
+      if (this._focusRequested) {
+         this._focusRequested = false;
+         this.viewport.center = { x: this.viewport.worldWidth / 2, y: this.viewport.worldHeight / 2 };
+         const aabb = AABB.fromPoints(
+            Array.from(rt.left.tiles.keys()).concat(Array.from(rt.right.tiles.keys())).map(tileToPosCenter),
+         );
+         aabb.extendBy({ x: aabb.width * 0.25, y: aabb.height * 0.25 }, aabb);
+         this.viewport.zoom = Math.min(
+            this.viewport.screenWidth / aabb.width,
+            this.viewport.screenHeight / aabb.height,
+            1,
+         );
+         this._selectedTiles.clear();
+         this._selectedTiles.add(createTile(MaxX / 2 - 2, MaxY / 2));
+         this.updateSelection();
+      }
    }
 
    private renderTiles(tiles: Tiles, rt: Runtime, dt: number, timeSinceLastTick: number): void {
@@ -405,8 +418,12 @@ export class ShipScene extends Scene {
       });
    }
 
-   public markBlueprintDirty(): void {
+   public requestBlueprintUpdate(): void {
       this._blueprintDirty = true;
+   }
+
+   public requestFocus(): void {
+      this._focusRequested = true;
    }
 
    override onClicked(e: FederatedPointerEvent): void {

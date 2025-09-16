@@ -2,6 +2,7 @@ import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import type { Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { showInfo } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { getTotalElementLevels } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { canSpendResource, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -94,7 +95,8 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                         G.save.state.unlockedTech.add(tech);
                         const newShipClass = getShipClass(G.save.state);
                         if (oldShipClass !== newShipClass) {
-                           G.scene.enqueue(ShipScene, (s) => s.markBlueprintDirty());
+                           G.scene.enqueue(ShipScene, (s) => s.requestBlueprintUpdate());
+                           showInfo(t(L.YouHaveUnlockedClassSpaceship, ShipClass[newShipClass].name()));
                         }
                         GameStateUpdated.emit();
                         G.scene.enqueue(TechTreeScene, (t) => t.refresh());

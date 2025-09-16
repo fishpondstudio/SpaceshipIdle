@@ -3,20 +3,20 @@ import "@mantine/core/styles.css";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 import { initDevtools } from "@pixi/devtools";
-import { PixelPerfect } from "@spaceship-idle/shared/src/game/definitions/Constant.ts";
+import { PixelPerfect } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { Application } from "pixi.js";
 import { createRoot } from "react-dom/client";
-import { bootstrap } from "./Bootstrap.ts";
+import { bootstrap } from "./Bootstrap";
 import "./css/main.css";
-import { BottomPanel } from "./ui/BottomPanel.tsx";
-import { ChatPanel } from "./ui/ChatPanel.tsx";
-import { LoadingComp } from "./ui/components/LoadingComp.tsx";
-import { FullScreen } from "./ui/FullScreen.tsx";
-import { Popover } from "./ui/Popover.tsx";
-import { Sidebar } from "./ui/Sidebar.tsx";
-import { TopPanel } from "./ui/TopPanel.tsx";
-import { G } from "./utils/Global.tsx";
-import { ModalManager } from "./utils/ModalManager.tsx";
+import { BottomPanel } from "./ui/BottomPanel";
+import { ChatPanel } from "./ui/ChatPanel";
+import { LoadingComp } from "./ui/components/LoadingComp";
+import { FullScreen } from "./ui/FullScreen";
+import { Popover } from "./ui/Popover";
+import { Sidebar } from "./ui/Sidebar";
+import { TopPanel } from "./ui/TopPanel";
+import { G } from "./utils/Global";
+import { ModalManager } from "./utils/ModalManager";
 
 const spaceColors = [
    "#f0f4fa",

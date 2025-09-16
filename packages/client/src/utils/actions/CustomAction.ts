@@ -2,6 +2,17 @@ import { Action } from "./Action";
 import type { EasingFunction } from "./Easing";
 import { Easing } from "./Easing";
 
+const PointInterpolator = <T extends { x: number; y: number }>(initial: T, target: T, factor: number): T => {
+   return {
+      x: initial.x + (target.x - initial.x) * factor,
+      y: initial.y + (target.y - initial.y) * factor,
+   } as T;
+};
+
+const NumberInterpolator = <T extends number>(initial: T, target: T, factor: number) => {
+   return initial + (target - initial) * factor;
+};
+
 export class CustomAction<T> extends Action {
    private readonly interpolation: EasingFunction;
 
@@ -28,6 +39,16 @@ export class CustomAction<T> extends Action {
       this.interpolator = interpolator;
       this.targetValue = targetValue;
       this.seconds = seconds;
+   }
+
+   public static createPoint<T extends { x: number; y: number }>(
+      getInitialValue: () => T,
+      setter: (value: T) => void,
+      targetValue: T,
+      seconds: number,
+      interpolation: EasingFunction = Easing.Linear,
+   ): CustomAction<T> {
+      return new CustomAction(getInitialValue, setter, PointInterpolator, targetValue, seconds, interpolation);
    }
 
    tick(delta: number): boolean {

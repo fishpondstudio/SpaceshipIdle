@@ -7,6 +7,8 @@ import { type ColorSource, Container, type FederatedPointerEvent, Sprite } from 
 import { GalaxyPage } from "../ui/GalaxyPage";
 import { hideSidebar, setSidebar } from "../ui/Sidebar";
 import { playClick } from "../ui/Sound";
+import { CustomAction } from "../utils/actions/CustomAction";
+import { Easing } from "../utils/actions/Easing";
 import { G } from "../utils/Global";
 import { type ISceneContext, Scene } from "../utils/SceneManager";
 import { type GalaxyEntityVisual, PlanetVisual, StarSystemVisual } from "./GalaxyEntity";
@@ -194,7 +196,15 @@ export class GalaxyScene extends Scene {
    lookAt(planetId: number): GalaxyScene {
       const entity = this._entities.get(planetId);
       if (entity) {
-         this.viewport.center = { x: entity.x, y: entity.y };
+         CustomAction.createPoint(
+            () => this.viewport.center,
+            ({ x, y }) => {
+               this.viewport.center = { x, y };
+            },
+            { x: entity.x, y: entity.y },
+            0.25,
+            Easing.InOutQuad,
+         ).start();
       }
       return this;
    }

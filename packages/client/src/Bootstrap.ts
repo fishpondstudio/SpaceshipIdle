@@ -19,6 +19,7 @@ import { OnConnectionChanged } from "./rpc/HandleMessage";
 import { connectWebSocket } from "./rpc/RPCClient";
 import { subscribeToEvents } from "./SubscribeToEvents";
 import { Starfield } from "./scenes/Starfield";
+import { checkPatchNotes } from "./ui/CheckPatchNotes";
 import { hideLoading } from "./ui/components/LoadingComp";
 import { loadSounds } from "./ui/Sound";
 import { G, setLanguage } from "./utils/Global";
@@ -103,6 +104,7 @@ export async function bootstrap(): Promise<void> {
       addResource("Warp", 60 * 5, G.save.state.resources);
    }
 
+   checkPatchNotes(G.save.options);
    setLanguage(G.save.options.language);
    subscribeToEvents();
    loadSounds();

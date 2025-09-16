@@ -12,7 +12,6 @@ import {
    elementToXP,
    getMinimumQuantumForBattle,
    getMinimumSpaceshipXPForBattle,
-   getUsedQuantum,
    quantumToXP,
 } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { calcSpaceshipXP, getStat, resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -344,13 +343,12 @@ function ElementTooltip(): React.ReactNode {
 }
 
 function QuantumTooltip(): React.ReactNode {
-   const usedQuantum = getUsedQuantum(G.save.state);
    const totalXP = resourceOf("XP", G.save.state.resources).total;
-   const quantum = resourceOf("Quantum", G.save.state.resources).total;
+   const { total: totalQuantum, used: usedQuantum } = resourceOf("Quantum", G.save.state.resources);
    const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
-   const nextQuantum = quantum + 1;
+   const nextQuantum = totalQuantum + 1;
    const nextQuantumXP = quantumToXP(nextQuantum);
-   const prevQuantumXP = quantumToXP(quantum);
+   const prevQuantumXP = quantumToXP(totalQuantum);
    const progressTowardsNextQuantum = (totalXP - prevQuantumXP) / (nextQuantumXP - prevQuantumXP);
    const timeUntilNextQuantum = (1000 * (nextQuantumXP - totalXP)) / xpDelta;
    return (
@@ -358,7 +356,7 @@ function QuantumTooltip(): React.ReactNode {
          <div className="row">
             <div className="f1">Used/Total Quantum</div>
             <div>
-               {formatNumber(usedQuantum)}/{formatNumber(quantum)}
+               {formatNumber(usedQuantum)}/{formatNumber(totalQuantum)}
             </div>
          </div>
          <div className="divider mx-10 mt5"></div>

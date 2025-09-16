@@ -159,6 +159,41 @@ export function getAvailableFriendship(gs: SaveGame): number {
    return getMaxFriendship(gs.state)[0] - getCurrentFriendship(gs);
 }
 
+interface IGalaxyLocation {
+   name: string;
+   texture: string | null;
+   id: number;
+   tooltip: string;
+}
+
+export function getGalaxyLocations(galaxy: Galaxy): IGalaxyLocation[] {
+   const result: IGalaxyLocation[] = [];
+   let pirateFound = false;
+   for (const starSystem of galaxy.starSystems) {
+      result.push({
+         name: starSystem.name,
+         texture: starSystem.discovered ? starSystem.texture : null,
+         id: starSystem.id,
+         tooltip: starSystem.distance === 0 ? t(L.HomeSystem) : t(L.DistanceXLyr, starSystem.distance),
+      });
+      for (const planet of starSystem.planets) {
+         if (planet.type === PlanetType.Me) {
+            result.push({ name: t(L.You), texture: planet.texture, id: planet.id, tooltip: t(L.You) });
+         }
+         if (!pirateFound && planet.type === PlanetType.Pirate && !planet.battleResult) {
+            pirateFound = true;
+            result.push({
+               name: planet.name,
+               texture: planet.texture,
+               id: planet.id,
+               tooltip: t(L.ClosestUndefeatedPirate),
+            });
+         }
+      }
+   }
+   return result;
+}
+
 export function tickGalaxy(rt: Runtime): void {
    for (const starSystem of rt.leftSave.data.galaxy.starSystems) {
       for (const planet of starSystem.planets) {
@@ -201,7 +236,7 @@ export const PlanetTextures = [
 
 export const PirateTextures = ["Pirate"];
 
-export const StarTextures = ["Star1"];
+export const StarTextures = ["Star1", "Star2", "Star3", "Star4", "Star5", "Star6", "Star7", "Star8", "Star9"];
 
 export function generateGalaxy(random: () => number): Galaxy {
    const circles = packCircles(
@@ -240,7 +275,7 @@ export function generateGalaxy(random: () => number): Galaxy {
       const starSystem: StarSystem = {
          id: starId,
          name: capitalize(new Generator("ssV").toString()),
-         texture: StarTextures[starId % StarTextures.length],
+         texture: StarTextures[i % StarTextures.length],
          x: circle.x,
          y: circle.y,
          r: circle.r,

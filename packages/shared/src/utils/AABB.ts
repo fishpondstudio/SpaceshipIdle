@@ -62,4 +62,16 @@ export class AABB {
       }
       return new AABB(min, max);
    }
+
+   public static fromPoints(points: IHaveXY[]): AABB {
+      const min = { x: Number.POSITIVE_INFINITY, y: Number.POSITIVE_INFINITY };
+      const max = { x: Number.NEGATIVE_INFINITY, y: Number.NEGATIVE_INFINITY };
+      for (const point of points) {
+         min.x = Math.min(min.x, point.x);
+         min.y = Math.min(min.y, point.y);
+         max.x = Math.max(max.x, point.x);
+         max.y = Math.max(max.y, point.y);
+      }
+      return new AABB(min, max);
+   }
 }

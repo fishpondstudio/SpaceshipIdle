@@ -91,7 +91,7 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
                      G.runtime.battleType = BattleType.Battle;
                      G.runtime.battleInfo = info;
 
-                     G.scene.loadScene(ShipScene);
+                     G.scene.loadScene(ShipScene).requestFocus();
 
                      if (!info.noWarmongerPenalty) {
                         changeStat("Warmonger", 1, G.save.state.stats);
