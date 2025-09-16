@@ -10,7 +10,7 @@ import { findPlanet, getAddonReward } from "@spaceship-idle/shared/src/game/logi
 import { calculateRewardValue } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { formatNumber, getDOMRectCenter, mMapOf, randomAlphaNumeric } from "@spaceship-idle/shared/src/utils/Helper";
+import { formatNumber, getDOMRectCenter, mMapOf, shuffle } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useRef } from "react";
 import { GalaxyScene } from "../scenes/GalaxyScene";
@@ -63,10 +63,11 @@ export function PeaceTreatyModal({
    }
 
    if (battleResult.current.addons.size === 0) {
-      const addons = getAddonReward(randomAlphaNumeric(16), G.save.state);
-      addons.forEach((addon) => {
-         battleResult.current.addons.set(addon, 0);
-      });
+      shuffle(Array.from(G.save.state.addons).filter(([_, data]) => data.amount > 0))
+         .slice(0, 3)
+         .forEach(([addon]) => {
+            battleResult.current.addons.set(addon, 0);
+         });
    }
 
    return (
