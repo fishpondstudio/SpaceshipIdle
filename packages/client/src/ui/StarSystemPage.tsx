@@ -1,21 +1,30 @@
-import { ExploreCostPerLightYear } from "@spaceship-idle/shared/src/game/definitions/Constant";
-import { PlanetType, PlanetTypeLabel, type StarSystem } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
+import { DefaultElementChoices, ExploreCostPerLightYear } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import {
+   PlanetType,
+   PlanetTypeLabel,
+   type StarSystem,
+   StarSystemFlags,
+} from "@spaceship-idle/shared/src/game/definitions/Galaxy";
+import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
+   getConquestRewardBattleScore,
    getExploreCost,
    getPlanetStatusLabel,
    getShipClassByIndex,
 } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
-import { quantumToXP } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
+import { getElementsInShipClass, quantumToXP } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { addResource, canSpendResource, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getMaxQuantumForShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
-import { formatNumber, getElementCenter } from "@spaceship-idle/shared/src/utils/Helper";
+import { formatNumber, getElementCenter, hasFlag, setFlag, shuffle } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { GalaxyScene } from "../scenes/GalaxyScene";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
+import { showModal } from "../utils/ToggleModal";
+import { ChooseElementModal } from "./ChooseElementModal";
 import { FloatingTip } from "./components/FloatingTip";
-import { RenderHTML } from "./components/RenderHTMLComp";
+import { html, RenderHTML } from "./components/RenderHTMLComp";
 import { ResourceListComp } from "./components/ResourceListComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
@@ -74,37 +83,102 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
                </div>
             </div>
          </div>
-         {starSystem.discovered ? (
-            <>
-               <div className="divider my10" />
-               <div className="title">{t(L.Planets)}</div>
-               <div className="divider my10" />
-               <div className="m10">
-                  {starSystem.planets.map((planet) => (
-                     <div
-                        key={planet.id}
-                        className="pointer"
-                        onClick={() => {
-                           playClick();
-                           G.scene.getCurrent(GalaxyScene)?.select(planet.id);
-                        }}
-                     >
-                        <div className="row my10">
-                           <TextureComp name={`Galaxy/${planet.texture}`} />
-                           <div className="f1 lh-xs">
-                              <div>{planet.name}</div>
-                              <div className="text-sm text-dimmed">{PlanetTypeLabel[planet.type]()}</div>
-                           </div>
-                           <div className="text-sm">{getPlanetStatusLabel(planet)}</div>
-                        </div>
-                     </div>
-                  ))}
-               </div>
-            </>
-         ) : (
-            <ExplorationComp starSystem={starSystem} />
-         )}
+         {starSystem.discovered ? <PlanetsComp starSystem={starSystem} /> : <ExplorationComp starSystem={starSystem} />}
+         <div className="h10" />
       </SidebarComp>
+   );
+}
+
+function ConquestRewardsComp({ starSystem }: { starSystem: StarSystem }): React.ReactNode {
+   const { required, current, allBattled } = getConquestRewardBattleScore(starSystem);
+   return (
+      <>
+         <div className="divider my10" />
+         <div className="title">Conquest Rewards</div>
+         <div className="divider my10" />
+         <div className="mx10 text-sm">{html(t(L.ConquestRewardDescHTML, required, current), "render-html")}</div>
+         <div className="m10">
+            {hasFlag(starSystem.flags, StarSystemFlags.ConquestRewardClaimed) ? (
+               <div className="panel green row py5">
+                  <div className="f1">Conquest reward claimed</div>
+                  <div className="mi sm text-green">check_circle</div>
+               </div>
+            ) : (
+               <button
+                  className="btn w100 row g5 py5"
+                  disabled={
+                     !allBattled ||
+                     current < required ||
+                     hasFlag(starSystem.flags, StarSystemFlags.ConquestRewardClaimed)
+                  }
+                  onClick={() => {
+                     if (
+                        !allBattled ||
+                        current < required ||
+                        hasFlag(starSystem.flags, StarSystemFlags.ConquestRewardClaimed)
+                     ) {
+                        playError();
+                        return;
+                     }
+                     playUpgrade();
+                     const candidates = getElementsInShipClass(getShipClassByIndex(starSystem.distance));
+                     const choices = shuffle(candidates.slice(0, DefaultElementChoices * 2)).slice(
+                        0,
+                        DefaultElementChoices,
+                     );
+                     if (choices.length >= DefaultElementChoices) {
+                        const elementChoice = {
+                           choices: choices,
+                           stackSize: 1,
+                        };
+                        G.save.data.elementChoices.push(elementChoice);
+                        starSystem.flags = setFlag(starSystem.flags, StarSystemFlags.ConquestRewardClaimed);
+                        GameStateUpdated.emit();
+                        showModal({
+                           children: <ChooseElementModal choice={elementChoice} permanent={false} />,
+                           size: "xl",
+                        });
+                     }
+                  }}
+               >
+                  {t(L.PlusXXClassElement, 1, ShipClass[getShipClassByIndex(starSystem.distance)].name())}
+                  <TextureComp name={"Others/Element24"} />
+               </button>
+            )}
+         </div>
+      </>
+   );
+}
+
+function PlanetsComp({ starSystem }: { starSystem: StarSystem }): React.ReactNode {
+   return (
+      <>
+         <div className="divider my10" />
+         <div className="title">{t(L.Planets)}</div>
+         <div className="divider my10" />
+         <div className="m10">
+            {starSystem.planets.map((planet) => (
+               <div
+                  key={planet.id}
+                  className="pointer"
+                  onClick={() => {
+                     playClick();
+                     G.scene.getCurrent(GalaxyScene)?.select(planet.id);
+                  }}
+               >
+                  <div className="row my10">
+                     <TextureComp name={`Galaxy/${planet.texture}`} />
+                     <div className="f1 lh-xs">
+                        <div>{planet.name}</div>
+                        <div className="text-sm text-dimmed">{PlanetTypeLabel[planet.type]()}</div>
+                     </div>
+                     <div className="text-sm">{getPlanetStatusLabel(planet)}</div>
+                  </div>
+               </div>
+            ))}
+         </div>
+         <ConquestRewardsComp starSystem={starSystem} />
+      </>
    );
 }
 
@@ -119,7 +193,8 @@ function ExplorationComp({ starSystem }: { starSystem: StarSystem }): React.Reac
          <div className="title">{t(L.Exploration)}</div>
          <div className="divider my10" />
          <div className="mx10 text-sm">{t(L.ExplorationDesc)}</div>
-         <div className="panel m10">
+         <div className="h5" />
+         <div className="mx10">
             {G.save.data.galaxy.starSystems.map((starSystem) => {
                if (!starSystem.discovered) {
                   return null;
@@ -144,14 +219,17 @@ function ExplorationComp({ starSystem }: { starSystem: StarSystem }): React.Reac
                });
             })}
          </div>
+         <div className="divider my10 dashed" />
          <div className="mx10 text-sm">Exploring this star system will give the following rewards</div>
-         <div className="panel m10">
+         <div className="h5" />
+         <div className="mx10">
             <div className="row g5">
                <TextureComp name={"Others/XP"} />
                <div className="f1">{t(L.XP)}</div>
                <div>+{formatNumber(xp)}</div>
             </div>
          </div>
+         <div className="h10" />
          <div className="mx10">
             <button
                className="btn w100"

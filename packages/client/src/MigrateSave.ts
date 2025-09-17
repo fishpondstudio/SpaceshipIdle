@@ -1,4 +1,5 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { StarSystemFlags } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { DefaultShortcuts, GameOption } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameState, type SaveGame } from "@spaceship-idle/shared/src/game/GameState";
 import { migrateBuildingsAndResources } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
@@ -37,6 +38,11 @@ export function migrateSave(save: SaveGame): void {
    save.state.unlockedTech.forEach((tech) => {
       if (!Config.Tech[tech]) {
          save.state.unlockedTech.delete(tech);
+      }
+   });
+   save.data.galaxy.starSystems.forEach((starSystem) => {
+      if (!starSystem.flags) {
+         starSystem.flags = StarSystemFlags.None;
       }
    });
 }

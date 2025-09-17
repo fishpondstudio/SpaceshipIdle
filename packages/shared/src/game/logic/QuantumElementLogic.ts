@@ -2,12 +2,14 @@ import { clamp, inverse, shuffle } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { DefaultElementChoices, QuantumToElement } from "../definitions/Constant";
+import type { ShipClass } from "../definitions/ShipClass";
 import type { ElementData, GameState, SaveGame } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { showInfo } from "./AlertLogic";
 import { fib, getUnlockedBuildings } from "./BuildingLogic";
 import { addResource, changeStat, getStat, resourceOf } from "./ResourceLogic";
 import { getShipBlueprint } from "./ShipLogic";
+import { getBuildingsWithinShipClass } from "./TechLogic";
 
 export function tickQuantumElementProgress(save: SaveGame, silent?: boolean): void {
    const totalXP = resourceOf("XP", save.state.resources).total;
@@ -44,6 +46,17 @@ export function getUnlockedElements(gs: GameState, result?: ElementSymbol[]): El
    result ??= [];
    const buildings = getUnlockedBuildings(gs);
    for (const building of buildings) {
+      const def = Config.Buildings[building];
+      if (def.element) {
+         result.push(def.element);
+      }
+   }
+   return result;
+}
+
+export function getElementsInShipClass(shipClass: ShipClass, result?: ElementSymbol[]): ElementSymbol[] {
+   result ??= [];
+   for (const building of getBuildingsWithinShipClass(shipClass)) {
       const def = Config.Buildings[building];
       if (def.element) {
          result.push(def.element);

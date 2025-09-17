@@ -18,6 +18,8 @@ import { type Galaxy, type Planet, PlanetFlags, PlanetType, type StarSystem } fr
 import { ShipClass, ShipClassList } from "../definitions/ShipClass";
 import type { GameState, SaveGame } from "../GameState";
 import { getAddonsInClass } from "./AddonLogic";
+import { getVictoryType } from "./BattleLogic";
+import { BattleVictoryTypeLabel } from "./BattleType";
 import { getWarmongerPenalty } from "./PeaceTreatyLogic";
 import { getStat, trySpendResource } from "./ResourceLogic";
 import type { Runtime } from "./Runtime";
@@ -89,21 +91,19 @@ export function getMaxFriendship(gs: GameState): [number, ValueBreakdown[]] {
 
 export function getPlanetStatusLabel(planet: Planet): string {
    if (planet.type === PlanetType.Me) {
-      return "You";
+      return t(L.You);
    }
    if (planet.friendshipTimeLeft > 0) {
-      return "Friends";
+      return t(L.Friend);
    }
    if (planet.battleResult) {
-      if (planet.battleResult.battleScore > 0) {
-         return "Victory";
-      }
-      return "Defeat";
+      const victoryType = getVictoryType(planet.battleResult.battleScore);
+      return `${BattleVictoryTypeLabel[victoryType]()} (${planet.battleResult.battleScore}%)`;
    }
    if (planet.type === PlanetType.Pirate) {
-      return "Pirate";
+      return t(L.Pirate);
    }
-   return "Neutral";
+   return t(L.Neutral);
 }
 
 export function hasAvailableFriendship(save: SaveGame): boolean {
@@ -129,6 +129,27 @@ export function getExploreCost(starSystem: StarSystem): number {
 
 export function getShipClassByIndex(idx: number): ShipClass {
    return ShipClassList[clamp(idx, 0, ShipClassList.indexOf(MaxShipClass))];
+}
+
+export function getConquestRewardBattleScore(starSystem: StarSystem): {
+   required: number;
+   current: number;
+   allBattled: boolean;
+} {
+   let required = 0;
+   let current = 0;
+   let allBattled = true;
+   for (const planet of starSystem.planets) {
+      if (planet.type !== PlanetType.Me) {
+         required += 50;
+         if (planet.battleResult) {
+            current += planet.battleResult.battleScore;
+         } else {
+            allBattled = false;
+         }
+      }
+   }
+   return { required, current, allBattled };
 }
 
 export function getPlanetShipClass(planetId: number, galaxy: Galaxy): ShipClass {
@@ -180,7 +201,7 @@ export function getGalaxyLocations(galaxy: Galaxy): IGalaxyLocation[] {
          if (planet.type === PlanetType.Me) {
             result.push({ name: t(L.You), texture: planet.texture, id: planet.id, tooltip: t(L.You) });
          }
-         if (!pirateFound && planet.type === PlanetType.Pirate && !planet.battleResult) {
+         if (!pirateFound && starSystem.discovered && planet.type === PlanetType.Pirate && !planet.battleResult) {
             pirateFound = true;
             result.push({
                name: planet.name,

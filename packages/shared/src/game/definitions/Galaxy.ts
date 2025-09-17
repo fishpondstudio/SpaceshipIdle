@@ -21,7 +21,15 @@ export interface StarSystem extends GalaxyEntity {
    discovered: boolean;
    distance: number;
    planets: Planet[];
+   flags: StarSystemFlags;
 }
+
+export const StarSystemFlags = {
+   None: 0,
+   ConquestRewardClaimed: 1 << 0,
+} as const;
+
+export type StarSystemFlags = ValueOf<typeof StarSystemFlags>;
 
 export interface Planet extends GalaxyEntity {
    radian: number;

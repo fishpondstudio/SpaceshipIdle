@@ -91,9 +91,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                   className="btn w100"
                   style={{ flex: 2 }}
                   onClick={() => {
-                     const resources = G.save.state.resources;
-                     G.save.state.resources = new Map();
-
+                     const resources = new Map();
                      for (const tile of tiles) {
                         const data = G.save.state.tiles.get(tile);
                         if (data) {
@@ -111,13 +109,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                         for (const tile of tiles) {
                            const data = G.save.state.tiles.get(tile);
                            if (data) {
-                              if (
-                                 trySpendResource(
-                                    "XP",
-                                    getBuildingCost(data.type, data.level + 1),
-                                    G.save.state.resources,
-                                 )
-                              ) {
+                              if (trySpendResource("XP", getBuildingCost(data.type, data.level + 1), resources)) {
                                  ++data.level;
                                  shouldContinue = true;
                               }
@@ -125,13 +117,11 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                         }
                      }
 
-                     const leftOver = resourceOf("XP", G.save.state.resources).current;
-                     refundResource("XP", leftOver, resources);
-                     G.save.state.resources = resources;
+                     refundResource("XP", resourceOf("XP", resources).current, resources);
                      GameStateUpdated.emit();
                   }}
                >
-                  Distribute Existing Upgrades Evenly
+                  {t(L.DistributeExistingUpgradesEvenly)}
                </button>
             </FloatingTip>
          </div>
@@ -171,7 +161,7 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
                   GameStateUpdated.emit();
                }}
             >
-               Invest All XP and Redistribute Evenly
+               {t(L.InvestAllXpAndRedistributeEvenly)}
             </button>
          </div>
       </SidebarComp>
