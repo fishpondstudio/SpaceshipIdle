@@ -172,6 +172,16 @@ export class RuntimeTile {
       return isEnemy(this.tile) ? Side.Right : Side.Left;
    }
 
+   public get xpPerFire(): number {
+      const damagePerFire = getDamagePerFire({ type: this.data.type, level: this.data.level });
+      const totalMultiplier = this.xpMultiplier.value + this.hpMultiplier.value - 1 + this.damageMultiplier.value - 1;
+      return damagePerFire * totalMultiplier;
+   }
+
+   public get xpPerSecond(): number {
+      return this.xpPerFire / this.originalProps.fireCooldown;
+   }
+
    public get parent(): GameState | null {
       if (this.runtime.left.tiles.has(this.tile)) {
          return this.runtime.left;

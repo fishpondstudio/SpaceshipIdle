@@ -11,7 +11,7 @@ import { TrackedValue } from "./TrackedValue";
 export class RuntimeStat {
    rawDamages: RingBuffer<Record<DamageType, number>> = new RingBuffer(100);
    actualDamages: RingBuffer<Record<DamageType, number>> = new RingBuffer(100);
-   previousResources: RingBuffer<Map<Resource, number>> = new RingBuffer(100);
+   // previousResources: RingBuffer<Map<Resource, number>> = new RingBuffer(100);
    catalysts = new Map<Catalyst, { buildings: Set<Building>; tiles: Set<Tile> }>();
 
    currentHp = 0;
@@ -99,14 +99,14 @@ export class RuntimeStat {
       return result;
    }
 
-   public averageResourceDelta(res: Resource, n: number): number {
-      const prev = this.previousResources.get(-(n + 1)) ?? this.previousResources.get(0);
-      const curr = this.previousResources.get(-1) ?? this.previousResources.get(0);
-      if (!prev || !curr || n <= 0) {
-         return 0;
-      }
-      return ((curr.get(res) ?? 0) - (prev.get(res) ?? 0)) / Math.min(n, this.previousResources.size);
-   }
+   // public averageResourceDelta(res: Resource, n: number): number {
+   //    const prev = this.previousResources.get(-(n + 1)) ?? this.previousResources.get(0);
+   //    const curr = this.previousResources.get(-1) ?? this.previousResources.get(0);
+   //    if (!prev || !curr || n <= 0) {
+   //       return 0;
+   //    }
+   //    return ((curr.get(res) ?? 0) - (prev.get(res) ?? 0)) / Math.min(n, this.previousResources.size);
+   // }
 
    public tabulate([hp, maxHp]: [number, number], gs: GameState): void {
       forEach(this.rawDamagePerSec, (k, v) => {
@@ -120,7 +120,7 @@ export class RuntimeStat {
       for (const [res, data] of gs.resources) {
          resources.set(res, data.total);
       }
-      this.previousResources.push(resources);
+      // this.previousResources.push(resources);
 
       this.rawDamages.push(this.rawDamagePerSec);
       this.actualDamages.push(this.actualDamagePerSec);

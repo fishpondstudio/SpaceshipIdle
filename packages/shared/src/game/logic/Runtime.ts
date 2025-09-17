@@ -288,6 +288,17 @@ export class Runtime {
       return [hp, totalHp];
    }
 
+   public totalXpPerSecond(tiles: Tiles): number {
+      let total = 0;
+      tiles.forEach((_data, tile) => {
+         const rs = this.get(tile);
+         if (rs) {
+            total += rs.xpPerSecond;
+         }
+      });
+      return total;
+   }
+
    public totalDealtDamage(): [number, number] {
       let left = 0;
       let right = 0;

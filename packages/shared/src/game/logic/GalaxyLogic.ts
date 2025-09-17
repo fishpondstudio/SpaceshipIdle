@@ -14,7 +14,14 @@ import {
    MaxShipClass,
 } from "../definitions/Constant";
 import { FriendshipBonus } from "../definitions/FriendshipBonus";
-import { type Galaxy, type Planet, PlanetFlags, PlanetType, type StarSystem } from "../definitions/Galaxy";
+import {
+   type Galaxy,
+   type Planet,
+   PlanetFlags,
+   PlanetType,
+   type StarSystem,
+   StarSystemFlags,
+} from "../definitions/Galaxy";
 import { ShipClass, ShipClassList } from "../definitions/ShipClass";
 import type { GameState, SaveGame } from "../GameState";
 import { getAddonsInClass } from "./AddonLogic";
@@ -303,6 +310,7 @@ export function generateGalaxy(random: () => number): Galaxy {
          discovered: initial,
          distance: 0,
          planets: [],
+         flags: StarSystemFlags.None,
       };
 
       let r = circle.r - rand(25, 50);

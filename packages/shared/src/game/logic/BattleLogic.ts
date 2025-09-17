@@ -24,7 +24,7 @@ import { posToTile } from "../Grid";
 import { addAddon, getAddonsInClass } from "./AddonLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType, type BattleVictoryType } from "./BattleType";
-import { getDamagePerFire, getUnlockableBuildings } from "./BuildingLogic";
+import { getUnlockableBuildings } from "./BuildingLogic";
 import { Projectile } from "./Projectile";
 import { addResource } from "./ResourceLogic";
 import { Runtime } from "./Runtime";
@@ -187,9 +187,7 @@ export function tickTiles(
          rs.cooldown = 0;
          rs.target = target;
 
-         const xpPerFire =
-            getDamagePerFire({ type: data.type, level: data.level }) *
-            (rs.xpMultiplier.value + rs.hpMultiplier.value - 1 + rs.damageMultiplier.value - 1);
+         const xpPerFire = rs.xpPerFire;
 
          addResource("XP", xpPerFire, from.resources);
          if (rt.battleType === BattleType.Peace) {

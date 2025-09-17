@@ -27,6 +27,7 @@ import { G } from "../utils/Global";
 import { hideModal, showModal } from "../utils/ToggleModal";
 import { loadGameStateFromFile, loadSaveGameFromFile, saveGame } from "./LoadSave";
 import { findShip } from "./Matchmaking";
+import { PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 
 export function addDebugFunctions(): void {
    if (!import.meta.env.DEV) return;
@@ -140,6 +141,22 @@ export function addDebugFunctions(): void {
       G.save.data.galaxy = generateGalaxy(Math.random);
       G.save.data.galaxy.starSystems.forEach((starSystem) => {
          starSystem.discovered = true;
+      });
+   };
+   // @ts-expect-error
+   globalThis.battleAll = (score: number) => {
+      G.save.data.galaxy.starSystems.forEach((starSystem) => {
+         if (starSystem.discovered) {
+            starSystem.planets.forEach((planet) => {
+               if (planet.type !== PlanetType.Me) {
+                  planet.battleResult = {
+                     battleScore: score,
+                     addons: new Map(),
+                     resources: new Map(),
+                  };
+               }
+            });
+         }
       });
    };
    // @ts-expect-error

@@ -54,7 +54,7 @@ export function ShipInfoPanel(): React.ReactNode {
    const state = G.save.state;
    G.runtime.rightStat.averageRawDamage(10, rawDamages);
    G.runtime.rightStat.averageActualDamage(10, actualDamages);
-   const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
+   const xpDelta = G.runtime.totalXpPerSecond(state.tiles);
    const { used: usedQuantum, total: totalQuantum } = resourceOf("Quantum", state.resources);
    const highlight =
       usedQuantum >= getMinimumQuantumForBattle(state) &&
@@ -267,7 +267,7 @@ function ElementTooltip(): React.ReactNode {
    const nextElementQuantum = elementToQuantum(nextElement);
    const nextElementXP = quantumToXP(nextElementQuantum);
    const prevElementXP = elementToXP(element);
-   const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
+   const xpDelta = G.runtime.totalXpPerSecond(G.save.state.tiles);
    return (
       <>
          <div className="flex-table mx-10">
@@ -345,7 +345,7 @@ function ElementTooltip(): React.ReactNode {
 function QuantumTooltip(): React.ReactNode {
    const totalXP = resourceOf("XP", G.save.state.resources).total;
    const { total: totalQuantum, used: usedQuantum } = resourceOf("Quantum", G.save.state.resources);
-   const xpDelta = G.runtime.leftStat.averageResourceDelta("XP", 60);
+   const xpDelta = G.runtime.totalXpPerSecond(G.save.state.tiles);
    const nextQuantum = totalQuantum + 1;
    const nextQuantumXP = quantumToXP(nextQuantum);
    const prevQuantumXP = quantumToXP(totalQuantum);
