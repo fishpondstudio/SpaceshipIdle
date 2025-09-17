@@ -2,7 +2,7 @@ import { entriesOf } from "../../utils/Helper";
 import { Config } from "../Config";
 import type { Building } from "../definitions/Buildings";
 import { DamageToHPMultiplier, MaxBuildingCount } from "../definitions/Constant";
-import { ShipClassList } from "../definitions/ShipClass";
+import { ShipClass, ShipClassList } from "../definitions/ShipClass";
 import type { GameState, Tiles } from "../GameState";
 import type { ITileData } from "../ITileData";
 import { getCooldownMultiplier } from "./BattleLogic";
@@ -52,7 +52,10 @@ export function getTotalBuildingCost(building: Building, currentLevel: number, t
 
 function getBaseValue(building: Building): number {
    const shipClass = Config.BuildingToShipClass[building];
-   return ShipClassList.indexOf(shipClass) + 1;
+   const tech = Config.BuildingToTech[building];
+   const shipClassCol = ShipClass[shipClass].range[0];
+   const techCol = Config.Tech[tech].position.x;
+   return 1 + ShipClassList.indexOf(shipClass) + (techCol - shipClassCol) * 0.1;
 }
 
 export function getBuildingName(building: Building): string {

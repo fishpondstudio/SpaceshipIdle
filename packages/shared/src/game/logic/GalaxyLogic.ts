@@ -127,7 +127,7 @@ export function getExploreCost(starSystem: StarSystem): number {
    return starSystem.distance * ExploreCostPerLightYear;
 }
 
-function getShipClassByIndex(idx: number): ShipClass {
+export function getShipClassByIndex(idx: number): ShipClass {
    return ShipClassList[clamp(idx, 0, ShipClassList.indexOf(MaxShipClass))];
 }
 

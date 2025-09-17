@@ -8,7 +8,7 @@ import React from "react";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { FloatingTip } from "./components/FloatingTip";
-import { RenderHTML } from "./components/RenderHTMLComp";
+import { html, RenderHTML } from "./components/RenderHTMLComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
 import { playBling, playUpgrade } from "./Sound";
@@ -48,7 +48,7 @@ export function DirectivePage(): React.ReactNode {
                <FloatingTip
                   disabled={unlocked}
                   key={shipClass}
-                  label={t(L.YouCanUnlockThisDirectiveWhenYouResearchAllTechsInClass, def.name())}
+                  label={html(t(L.UnlockDirectiveDescHTML, def.name()), "render-html")}
                >
                   <div className="panel m10 p0">
                      <div className="row m10">

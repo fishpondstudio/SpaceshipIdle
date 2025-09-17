@@ -97,6 +97,10 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
                         changeStat("Warmonger", 1, G.save.state.stats);
                      }
 
+                     if (info.backstabberPenalty) {
+                        changeStat("Backstabber", 1, G.save.state.stats);
+                     }
+
                      hideSidebar();
                      hideModal();
                      GameStateUpdated.emit();

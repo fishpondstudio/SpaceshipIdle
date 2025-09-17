@@ -12,9 +12,12 @@ import { getShipBlueprint } from "./ShipLogic";
 export function tickQuantumElementProgress(save: SaveGame, silent?: boolean): void {
    const totalXP = resourceOf("XP", save.state.resources).total;
    const expectedQuantum = xpToQuantum(totalXP);
-   const currentQuantum = resourceOf("Quantum", save.state.resources).total;
-   if (currentQuantum < expectedQuantum) {
-      addResource("Quantum", expectedQuantum - currentQuantum, save.state.resources);
+   const quantum = resourceOf("Quantum", save.state.resources);
+   if (quantum.total < expectedQuantum) {
+      addResource("Quantum", expectedQuantum - quantum.total, save.state.resources);
+   }
+   if (quantum.used !== getUsedQuantum(save.state)) {
+      console.error(`Used quantum mismatch: Resource: ${quantum.used}, Actual: ${getUsedQuantum(save.state)}`);
    }
    const expectedElements = xpToElement(totalXP);
    const currentElements = getStat("Element", save.state.stats);

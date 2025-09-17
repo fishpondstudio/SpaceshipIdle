@@ -146,11 +146,11 @@ function shipClassOneTimeXP(shipClass: ShipClass): IBonusDefinition {
    return {
       desc: (runtime: Runtime) => {
          const quantum = getMaxQuantumForShipClass(shipClass, runtime.left);
-         return t(L.PlusXXP, formatNumber(quantumToXP(quantum + 5) - quantumToXP(quantum)));
+         return t(L.PlusXXP, formatNumber(quantumToXP(quantum + 1) - quantumToXP(quantum)));
       },
       onStart: (runtime: Runtime, from?: IHaveXY) => {
          const quantum = getMaxQuantumForShipClass(shipClass, runtime.left);
-         addResource("XP", quantumToXP(quantum + 5) - quantumToXP(quantum), runtime.left.resources, from);
+         addResource("XP", quantumToXP(quantum + 1) - quantumToXP(quantum), runtime.left.resources, from);
       },
    };
 }

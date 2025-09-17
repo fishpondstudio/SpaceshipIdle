@@ -12,7 +12,7 @@ import { FloatingTip } from "./components/FloatingTip";
 import { html } from "./components/RenderHTMLComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
-import { FuseAddonModal } from "./FuseAddonModal";
+import { ReforgeAddonModal } from "./ReforgeAddonModal";
 import { playClick } from "./Sound";
 
 export function AddonPage(): React.ReactNode {
@@ -31,11 +31,11 @@ export function AddonPage(): React.ReactNode {
                className="btn filled w100 py5 row g5"
                onClick={() => {
                   playClick();
-                  showModal({ children: <FuseAddonModal />, size: "md", title: "Fuse Add-ons", dismiss: true });
+                  showModal({ children: <ReforgeAddonModal />, size: "md", title: t(L.ReforgeAddOns), dismiss: true });
                }}
             >
-               <div className="mi">chart_data</div>
-               <div>Fuse Add-ons</div>
+               <div className="mi">settings_b_roll</div>
+               <div>{t(L.ReforgeAddOns)}</div>
             </button>
          </div>
          {mapOf(ShipClass, (k, v) => {

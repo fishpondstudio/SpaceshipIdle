@@ -1,6 +1,7 @@
 import { shuffle } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { srand } from "../../utils/Random";
+import { Blueprints } from "../definitions/Blueprints";
 import { Bonus } from "../definitions/Bonus";
 import { DirectiveChoiceCount } from "../definitions/Constant";
 import { Directives } from "../definitions/Directives";
@@ -29,6 +30,13 @@ export function hasUnlockedDirective(shipClass: ShipClass, gs: GameState): boole
       if (!gs.unlockedTech.has(tech)) {
          return false;
       }
+   }
+   const blueprint = Blueprints[gs.blueprint].blueprint[shipClass];
+   if (blueprint.length === 0) {
+      return false;
+   }
+   if (gs.tiles.size < blueprint.length) {
+      return false;
    }
    return true;
 }

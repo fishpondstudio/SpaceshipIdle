@@ -1,21 +1,7 @@
-# Mechanism
-- [x] Fuse add-ons
-- [x] Ship layout select
-- [x] Message Center (Optional)
-- [ ] Fix matchmaking
 
-# Content
-- [x] Tech Tree up to Corvette-class
-- [x] Friendship Bonus up to Corvette-class
-- [x] Directives up to Corvette-class (Scout/Corvette class missing)
-- [x] Add-ons up to Corvette-class (4 missing)
-
-# Balancing
-- [x] Check Tech Tree
-- [x] Check Weapons/Abilities
-- [x] Check Quantum/Element progress
-- [x] Better ship procedural generation / difficulty
-
-# FTUE
-- [x] Rework tutorial
-- [x] Add play test info
+- Fix a bug where matchmaking battles can unlock undiscovered add-ons. Add-ons can only be discovered via galaxy battles. Matchmaking battle rewards only offer already discovered add-ons
+- Now directives require completing the ship blueprint and researching all tech - previously only researching all tech is required
+- XP granted by directives has been reduced
+- Fuse add-ons is renamed to "Reforge add-ons"
+- Fix a bug where backstabber penalty is not corrected added when backstabbing a friend
+- Weapons unlocked later in the tech tree within a ship class now have a slightly higher base stats

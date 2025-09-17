@@ -1,6 +1,6 @@
 import { type Addon, Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { addAddon, deductAddon, getFuseCost } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
+import { addAddon, deductAddon, getReforgeCost } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
 import { showSuccess } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { canSpendResource, resourceOf, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getElementCenter } from "@spaceship-idle/shared/src/utils/Helper";
@@ -15,11 +15,11 @@ import { TextureComp } from "./components/TextureComp";
 import { SelectAddonComp } from "./SelectAddonComp";
 import { playBling, playError } from "./Sound";
 
-export function FuseAddonModal(): React.ReactNode {
+export function ReforgeAddonModal(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const [fromAddon, setFromAddon] = useState<Addon | null>(null);
    const [toAddon, setToAddon] = useState<Addon | null>(null);
-   const fuseCost = fromAddon && toAddon ? getFuseCost(fromAddon, toAddon) : 0;
+   const reforgeCost = fromAddon && toAddon ? getReforgeCost(fromAddon, toAddon) : 0;
    return (
       <div className="m10">
          <SelectAddonComp value={fromAddon} onChange={setFromAddon} />
@@ -27,27 +27,27 @@ export function FuseAddonModal(): React.ReactNode {
             <div className="mi">south</div>
          </div>
          <SelectAddonComp value={toAddon} onChange={setToAddon} />
-         {fuseCost === 0 ? <div className="panel yellow mt10">{t(L.FuseAddonDesc)}</div> : null}
-         {fromAddon && toAddon && fuseCost > 0 ? (
+         {reforgeCost === 0 ? <div className="panel yellow mt10">{t(L.ReforgeAddonDesc)}</div> : null}
+         {fromAddon && toAddon && reforgeCost > 0 ? (
             <div className="panel mt10">
-               <div className="title">Consume</div>
+               <div className="title">{t(L.Consume)}</div>
                <div className="h5" />
                <div className="row g5">
                   <TextureComp name={`Addon/${fromAddon}`} />
                   <div>{Addons[fromAddon].name()}</div>
-                  <div className="text-space">x{fuseCost}</div>
+                  <div className="text-space">x{reforgeCost}</div>
                   <div className="f1" />
                   <div className="text-dimmed text-sm">
                      {t(L.YouHaveX, G.save.state.addons.get(fromAddon)?.amount ?? 0)}
                   </div>
-                  {fuseCost > 0 && (G.save.state.addons.get(fromAddon)?.amount ?? 0) >= fuseCost ? (
+                  {reforgeCost > 0 && (G.save.state.addons.get(fromAddon)?.amount ?? 0) >= reforgeCost ? (
                      <div className="mi text-green sm">check_circle</div>
                   ) : (
                      <div className="mi text-red sm">cancel</div>
                   )}
                </div>
                <div className="divider my10 mx-10" />
-               <div className="title">Produce</div>
+               <div className="title">{t(L.Produce)}</div>
                <div className="h5" />
                <div className="row g5">
                   <TextureComp name={`Addon/${toAddon}`} />
@@ -56,7 +56,7 @@ export function FuseAddonModal(): React.ReactNode {
                   <div className="f1" />
                </div>
                <div className="divider my10 mx-10" />
-               <div className="title">Fuse Cost</div>
+               <div className="title">{t(L.ReforgeCost)}</div>
                <div className="h5" />
                <div className="row g5">
                   <TextureComp name={"Others/Trophy16"} />
@@ -82,10 +82,10 @@ export function FuseAddonModal(): React.ReactNode {
                   <div>{t(L.TheFollowingResourcesWillBeConsumed)}</div>
                   <div className="h5" />
                   <div className="flex-table mx-10">
-                     {fromAddon && fuseCost > 0 ? (
+                     {fromAddon && reforgeCost > 0 ? (
                         <ResourceRequirementComp
                            name={Addons[fromAddon].name()}
-                           required={-fuseCost}
+                           required={-reforgeCost}
                            current={G.save.state.addons.get(fromAddon)?.amount ?? 0}
                            texture={`Addon/${fromAddon}`}
                         />
@@ -98,19 +98,19 @@ export function FuseAddonModal(): React.ReactNode {
             <button
                className="btn w100 filled row py5"
                disabled={
-                  fuseCost === 0 ||
+                  reforgeCost === 0 ||
                   !fromAddon ||
                   !toAddon ||
-                  (G.save.state.addons.get(fromAddon)?.amount ?? 0) < fuseCost ||
+                  (G.save.state.addons.get(fromAddon)?.amount ?? 0) < reforgeCost ||
                   !canSpendResource("VictoryPoint", 1, G.save.state.resources)
                }
                onClick={(e) => {
-                  if (fuseCost === 0 || !fromAddon || !toAddon) {
+                  if (reforgeCost === 0 || !fromAddon || !toAddon) {
                      playError();
                      return;
                   }
                   const currentAmount = G.save.state.addons.get(fromAddon)?.amount ?? 0;
-                  if (currentAmount < fuseCost) {
+                  if (currentAmount < reforgeCost) {
                      playError();
                      return;
                   }
@@ -119,15 +119,15 @@ export function FuseAddonModal(): React.ReactNode {
                      return;
                   }
                   trySpendResource("VictoryPoint", 1, G.save.state.resources);
-                  deductAddon(fromAddon, fuseCost, G.save.state);
+                  deductAddon(fromAddon, reforgeCost, G.save.state);
                   addAddon(toAddon, 1, G.save.state, getElementCenter(e.target as HTMLElement));
                   GameStateUpdated.emit();
                   playBling();
-                  showSuccess(t(L.AddOnFusedSuccessfully, Addons[toAddon].name()));
+                  showSuccess(t(L.AddOnReforgedSuccessfully, Addons[toAddon].name()));
                }}
             >
                <div className="mi">chart_data</div>
-               <div>{t(L.Fuse)}</div>
+               <div>{t(L.Reforge)}</div>
             </button>
          </FloatingTip>
       </div>

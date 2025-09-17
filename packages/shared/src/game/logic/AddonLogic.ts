@@ -62,7 +62,7 @@ export function getAddonsInClass(shipClass: ShipClass, blueprint: Blueprint): Ad
    return candidates;
 }
 
-export function getFuseCost(fromAddon: Addon, toAddon: Addon): number {
+export function getReforgeCost(fromAddon: Addon, toAddon: Addon): number {
    if (fromAddon === toAddon) {
       return 0;
    }

@@ -1,5 +1,5 @@
 import { Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
-import { type Planet, PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
+import { type Planet, PlanetFlags, PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { Resources } from "@spaceship-idle/shared/src/game/definitions/Resource";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { generateShip, getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
@@ -7,7 +7,7 @@ import { BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/Ba
 import { getAddonReward, getPlanetShipClass, getWarPenalty } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { canSpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { cls, formatNumber, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls, formatNumber, hasFlag, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { srand } from "@spaceship-idle/shared/src/utils/Random";
 import { G } from "../../utils/Global";
@@ -125,6 +125,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                         info={{
                            hideEnemyInfo: !planet.revealed,
                            noWarmongerPenalty: planet.type === PlanetType.Pirate,
+                           backstabberPenalty: planet.type === PlanetType.State && hasFlag(planet.flags, PlanetFlags.WasFriends),
                            planetId: planet.id,
                         }}
                      />
