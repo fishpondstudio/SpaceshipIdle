@@ -180,6 +180,31 @@ export function canClaimAnyConquestReward(galaxy: Galaxy): boolean {
    return false;
 }
 
+export function canExploreAnyPlanet(galaxy: Galaxy): boolean {
+   let hasUndiscoveredStarSystem = false;
+   for (const starSystem of galaxy.starSystems) {
+      if (!starSystem.discovered) {
+         hasUndiscoveredStarSystem = true;
+         continue;
+      }
+      for (const planet of starSystem.planets) {
+         if (planet.type !== PlanetType.Me && planet.friendshipTimeLeft <= 0 && !planet.battleResult) {
+            return false;
+         }
+      }
+   }
+   return hasUndiscoveredStarSystem;
+}
+
+export function findClosestUndiscoveredStarSystem(galaxy: Galaxy): StarSystem | undefined {
+   for (const starSystem of galaxy.starSystems) {
+      if (!starSystem.discovered) {
+         return starSystem;
+      }
+   }
+   return undefined;
+}
+
 export function getPlanetShipClass(planetId: number, galaxy: Galaxy): ShipClass {
    for (const starSystem of galaxy.starSystems) {
       for (const planet of starSystem.planets) {

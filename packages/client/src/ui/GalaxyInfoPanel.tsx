@@ -2,6 +2,8 @@ import { Indicator } from "@mantine/core";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
    canClaimConquestReward,
+   canExploreAnyPlanet,
+   findClosestUndiscoveredStarSystem,
    findStarSystem,
    getCurrentFriendship,
    getGalaxyLocations,
@@ -23,6 +25,8 @@ export function GalaxyInfoPanel(): React.ReactNode {
    const warmongerPenalty = getStat("Warmonger", G.save.state.stats);
    const [maxFriendship] = getMaxFriendship(G.save.state);
    const locations = getGalaxyLocations(G.save.data.galaxy);
+   const canExplorePlanet = canExploreAnyPlanet(G.save.data.galaxy);
+   const closestUndiscoveredStarSystem = findClosestUndiscoveredStarSystem(G.save.data.galaxy);
    return (
       <div className="top-left-panel text-sm">
          <div className="flex-table g50">
@@ -54,6 +58,7 @@ export function GalaxyInfoPanel(): React.ReactNode {
          {locations.map((location) => {
             const starSystem = findStarSystem(location.id, G.save.data.galaxy);
             const canClaimReward = starSystem && canClaimConquestReward(starSystem);
+            const canExplore = canExplorePlanet && closestUndiscoveredStarSystem === starSystem;
             return (
                <FloatingTip
                   key={location.id}
@@ -62,6 +67,9 @@ export function GalaxyInfoPanel(): React.ReactNode {
                         <div>{location.tooltip}</div>
                         {canClaimReward ? (
                            <div className="text-green">{t(L.YouHaveAvailableConquestRewardTooltip)}</div>
+                        ) : null}
+                        {canExplore ? (
+                           <div className="text-green">{t(L.YouCanExploreANewStarSystemTooltip)}</div>
                         ) : null}
                      </>
                   }
@@ -75,7 +83,7 @@ export function GalaxyInfoPanel(): React.ReactNode {
                   >
                      <div />
                      <div>{location.name}</div>
-                     {canClaimReward ? <Indicator color="red" processing /> : null}
+                     {canClaimReward || canExplore ? <Indicator color="red" processing /> : null}
                      <div className="f1" />
                      {location.texture ? (
                         <TextureComp name={`Galaxy/${location.texture}`} />

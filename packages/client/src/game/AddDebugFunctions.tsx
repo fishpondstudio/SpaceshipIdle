@@ -1,5 +1,6 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { type Blueprint, Blueprints } from "@spaceship-idle/shared/src/game/definitions/Blueprints";
+import { PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import type { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
@@ -27,7 +28,6 @@ import { G } from "../utils/Global";
 import { hideModal, showModal } from "../utils/ToggleModal";
 import { loadGameStateFromFile, loadSaveGameFromFile, saveGame } from "./LoadSave";
 import { findShip } from "./Matchmaking";
-import { PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 
 export function addDebugFunctions(): void {
    if (!import.meta.env.DEV) return;
@@ -144,7 +144,7 @@ export function addDebugFunctions(): void {
       });
    };
    // @ts-expect-error
-   globalThis.battleAll = (score: number) => {
+   globalThis.battleAll = (score = 50) => {
       G.save.data.galaxy.starSystems.forEach((starSystem) => {
          if (starSystem.discovered) {
             starSystem.planets.forEach((planet) => {

@@ -8,6 +8,7 @@ import { hasCatalystToChoose } from "@spaceship-idle/shared/src/game/logic/Catal
 import { hasSelectableDirectives } from "@spaceship-idle/shared/src/game/logic/DirectiveLogic";
 import {
    canClaimAnyConquestReward,
+   canExploreAnyPlanet,
    hasAvailableFriendship,
    hasAvailablePirates,
 } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
@@ -300,6 +301,9 @@ function GalaxyTabLabel(): React.ReactNode {
    }
    if (canClaimAnyConquestReward(G.save.data.galaxy)) {
       tooltip.push(t(L.YouHaveAvailableConquestRewardTooltip));
+   }
+   if (canExploreAnyPlanet(G.save.data.galaxy)) {
+      tooltip.push(t(L.YouCanExploreANewStarSystemTooltip));
    }
 
    if (tooltip.length > 0) {

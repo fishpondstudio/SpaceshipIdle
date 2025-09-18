@@ -749,4 +749,5 @@ export const EN = {
    PlusXXClassElement: "+%% %% Class Element",
    ConquestRewardDescHTML: "You can claim conquest rewards when you have <b>battled all planets</b> and get at least <b>%%</b> total battle score - you currently have <b>%%</b> battle score",
    YouHaveAvailableConquestRewardTooltip: "You have available conquest rewards to claim",
+   YouCanExploreANewStarSystemTooltip: "You can explore a new star system - make sure you have enough Victory Points for exploration",
 };
