@@ -1,9 +1,8 @@
-Patch Notes:
-- Add a reward when exploring a star system
-- Add a conquest reward (1 element) after having battled all planets in a star system and have reached a battle score threshold
-- Now directives require completing the ship blueprint and researching all tech - previously only researching all tech is required
-- XP granted by directives has been reduced
-- Fuse add-ons is renamed to "Reforge add-ons"
-- Weapons unlocked later in the tech tree within a ship class now have a slightly higher base stats
-- Fix a bug where matchmaking battles can unlock undiscovered add-ons. Add-ons can only be discovered via galaxy battles. Matchmaking battle rewards only offer already discovered add-ons
-- Fix a bug where backstabber penalty is not corrected added when backstabbing a friend
+Add a reward when exploring a star system
+Add a conquest reward (1 element) after having battled all planets in a star system and have reached a battle score threshold
+Now directives require completing the ship blueprint and researching all tech previously only researching all tech is required
+XP granted by directives has been reduced
+Fuse add-ons is renamed to "Reforge add-ons"
+Weapons unlocked later in the tech tree within a ship class now have a slightly higher base stats
+Fix a bug where matchmaking battles can unlock undiscovered add-ons. Add-ons can only be discovered via galaxy battles. Matchmaking battle rewards only offer already discovered add-ons
+Fix a bug where backstabber penalty is not corrected added when backstabbing a friend
