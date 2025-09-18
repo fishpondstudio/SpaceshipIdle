@@ -6,7 +6,6 @@ import { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { generateGalaxy } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
-import { rollElementShards } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
 import { changeStat, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { getBuildingsWithinShipClass, isPlaceholderTech } from "@spaceship-idle/shared/src/game/logic/TechLogic";
@@ -16,7 +15,6 @@ import { jsonEncode } from "@spaceship-idle/shared/src/utils/Serialization";
 import { RPCClient } from "../rpc/RPCClient";
 import { ShipScene } from "../scenes/ShipScene";
 import { BalancingModal } from "../ui/BalancingModal";
-import { ChooseElementModal } from "../ui/ChooseElementModal";
 import { NewPlayerModal } from "../ui/NewPlayerModal";
 import { OfflineTimeModal } from "../ui/OfflineTimeModal";
 import { PreBattleModal } from "../ui/PreBattleModal";
@@ -56,14 +54,14 @@ export function addDebugFunctions(): void {
    globalThis.chooseElement = () => {
       changeStat("Element", -1, G.save.state.stats);
    };
-   // @ts-expect-error
-   globalThis.choosePermanentElement = () => {
-      rollElementShards(G.save, 1);
-      showModal({
-         children: <ChooseElementModal permanent={true} choice={G.save.data.permanentElementChoices[0]} />,
-         size: "xl",
-      });
-   };
+   // // @ts-expect-error
+   // globalThis.choosePermanentElement = () => {
+   //    rollElementShards(G.save, 1);
+   //    showModal({
+   //       children: <ChooseElementModal permanent={true} choice={G.save.data.permanentElementChoices[0]} />,
+   //       size: "xl",
+   //    });
+   // };
    // @ts-expect-error
    globalThis.printFromFile = async () => {
       console.log(jsonEncode(await loadGameStateFromFile()));

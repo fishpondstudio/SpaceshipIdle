@@ -1,4 +1,5 @@
-import { forEach, keysOf, sizeOf, tileToString } from "../utils/Helper";
+import { forEach, formatNumber, keysOf, sizeOf, tileToString } from "../utils/Helper";
+import { L, t } from "../utils/i18n";
 import { Blueprints } from "./definitions/Blueprints";
 import { type Building, Buildings } from "./definitions/Buildings";
 import { MaxBattleTick } from "./definitions/Constant";
@@ -17,7 +18,9 @@ export const Config = {
    BuildingId,
    Resources,
    Tech: new TechDefinitions(),
-   Elements: {} as Record<ElementSymbol, Building>,
+   Elements: new Map<ElementSymbol, Building | ((value: number) => string)>([
+      ["H", (val) => t(L.HourSOfTimeWarpStorage, formatNumber(val))],
+   ]),
    BuildingToTech: {} as Record<Building, Tech>,
    BuildingToShipClass: {} as Record<Building, ShipClass>,
 };
@@ -38,12 +41,12 @@ function initConfig(): void {
          statusEffects.delete(def.ability.effect);
       }
       if (def.element) {
-         if (Config.Elements[def.element]) {
+         if (Config.Elements.get(def.element)) {
             console.error(
-               `Element ${def.element} are used by multiple buildings: ${Config.Elements[def.element]} and ${building}`,
+               `Element ${def.element} are used by multiple buildings: ${Config.Elements.get(def.element)} and ${building}`,
             );
          }
-         Config.Elements[def.element] = building;
+         Config.Elements.set(def.element, building);
       }
    });
 
@@ -74,7 +77,7 @@ function initConfig(): void {
       );
       console.log(
          "Unused Elements",
-         keysOf(PeriodicTable).filter((e) => !Config.Elements[e]),
+         keysOf(PeriodicTable).filter((e) => !Config.Elements.has(e)),
       );
    }
 }

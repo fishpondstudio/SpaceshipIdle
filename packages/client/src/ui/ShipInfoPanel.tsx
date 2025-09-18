@@ -10,6 +10,7 @@ import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingL
 import {
    elementToQuantum,
    elementToXP,
+   getElementDesc,
    getMinimumQuantumForBattle,
    getMinimumSpaceshipXPForBattle,
    quantumToXP,
@@ -299,17 +300,36 @@ function ElementTooltip(): React.ReactNode {
             </thead>
             <tbody>
                {mMapOf(G.save.state.elements, (element, data) => {
-                  return (
-                     <tr key={element}>
-                        <td className="row g5">
-                           <div>{t(element)}</div>
-                           <div className="text-space text-sm">({getBuildingName(Config.Elements[element])})</div>
-                           <div className="f1" />
-                        </td>
-                        <td className="text-right">+{formatNumber(data.hp)}</td>
-                        <td className="text-right">+{formatNumber(data.damage)}</td>
-                     </tr>
-                  );
+                  const effect = Config.Elements.get(element);
+                  if (typeof effect === "function") {
+                     return (
+                        <tr key={element}>
+                           <td colSpan={2}>
+                              <div className="row g5">
+                                 <div>{t(element)}</div>
+                                 <div className="text-space text-xs">({getElementDesc(element, 1)})</div>
+                                 <div className="f1" />
+                              </div>
+                           </td>
+                           <td className="text-right">+{formatNumber(data.amount)}</td>
+                        </tr>
+                     );
+                  }
+                  if (typeof effect === "string") {
+                     return (
+                        <tr key={element}>
+                           <td>
+                              <div className="row g5">
+                                 <div>{t(element)}</div>
+                                 <div className="text-space text-xs">({getBuildingName(effect)})</div>
+                                 <div className="f1" />
+                              </div>
+                           </td>
+                           <td className="text-right">+{formatNumber(data.hp)}</td>
+                           <td className="text-right">+{formatNumber(data.damage)}</td>
+                        </tr>
+                     );
+                  }
                })}
             </tbody>
          </table>
@@ -324,17 +344,34 @@ function ElementTooltip(): React.ReactNode {
             </thead>
             <tbody>
                {mMapOf(G.save.state.permanentElements, (element, data) => {
-                  return (
-                     <tr key={element}>
-                        <td className="row g5">
-                           <div>{t(element)}</div>
-                           <div className="text-space text-sm">({getBuildingName(Config.Elements[element])})</div>
-                           <div className="f1" />
-                        </td>
-                        <td className="text-right">+{formatNumber(data.hp)}</td>
-                        <td className="text-right">+{formatNumber(data.damage)}</td>
-                     </tr>
-                  );
+                  const effect = Config.Elements.get(element);
+                  if (typeof effect === "function") {
+                     return (
+                        <tr key={element}>
+                           <td colSpan={2}>
+                              <div className="row g5">
+                                 <div>{t(element)}</div>
+                                 <div className="text-space text-xs">({getElementDesc(element, 1)})</div>
+                                 <div className="f1" />
+                              </div>
+                           </td>
+                           <td className="text-right">+{formatNumber(data.hp)}</td>
+                        </tr>
+                     );
+                  }
+                  if (typeof effect === "string") {
+                     return (
+                        <tr key={element}>
+                           <td className="row g5">
+                              <div>{t(element)}</div>
+                              <div className="text-space text-xs">({getBuildingName(effect)})</div>
+                              <div className="f1" />
+                           </td>
+                           <td className="text-right">+{formatNumber(data.hp)}</td>
+                           <td className="text-right">+{formatNumber(data.damage)}</td>
+                        </tr>
+                     );
+                  }
                })}
             </tbody>
          </table>

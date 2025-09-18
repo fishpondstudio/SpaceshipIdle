@@ -1,9 +1,6 @@
-import { shuffle } from "../../utils/Helper";
 import type { Blueprint } from "../definitions/Blueprints";
-import { DefaultElementChoices } from "../definitions/Constant";
 import { GameState, initSaveGame, type SaveGame } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
-import { getUnlockedElements } from "./QuantumElementLogic";
 import { addResource, resourceOf } from "./ResourceLogic";
 
 export function prestige(save: SaveGame, blueprint: Blueprint): void {
@@ -41,26 +38,26 @@ export function addElementThisRun(gs: GameState, element: ElementSymbol, amount:
    }
 }
 
-export function rollElementShards(save: SaveGame, amount: number) {
-   const candidates: ElementSymbol[] = [];
+// export function rollElementShards(save: SaveGame, amount: number) {
+//    const candidates: ElementSymbol[] = [];
 
-   for (let i = 0; i < amount; i++) {
-      if (candidates.length < DefaultElementChoices) {
-         getUnlockedElements(save.state, candidates);
-         shuffle(candidates);
-      }
+//    for (let i = 0; i < amount; i++) {
+//       if (candidates.length < DefaultElementChoices) {
+//          getUnlockedElements(save.state, candidates);
+//          shuffle(candidates);
+//       }
 
-      const choices: ElementSymbol[] = [];
-      for (let j = 0; j < DefaultElementChoices; j++) {
-         const element = candidates.pop();
-         if (element) {
-            choices.push(element);
-         }
-      }
+//       const choices: ElementSymbol[] = [];
+//       for (let j = 0; j < DefaultElementChoices; j++) {
+//          const element = candidates.pop();
+//          if (element) {
+//             choices.push(element);
+//          }
+//       }
 
-      save.data.permanentElementChoices.push({
-         choices,
-         stackSize: 1,
-      });
-   }
-}
+//       save.data.permanentElementChoices.push({
+//          choices,
+//          stackSize: 1,
+//       });
+//    }
+// }

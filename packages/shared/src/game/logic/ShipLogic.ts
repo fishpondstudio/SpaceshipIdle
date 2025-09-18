@@ -157,16 +157,6 @@ export function validateShip(gs: GameState): boolean {
       }
    }
 
-   for (const [element, _amount] of gs.elements) {
-      const building = Config.Elements[element];
-      if (!building) {
-         return false;
-      }
-      if (!buildings.has(building)) {
-         return false;
-      }
-   }
-
    return true;
 }
 

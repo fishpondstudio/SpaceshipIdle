@@ -109,7 +109,7 @@ export const FloatingTip = factory<
 
    return (
       <>
-         <Portal>
+         <Portal reuseTargetNode>
             <div
                className="floating-tip"
                style={{

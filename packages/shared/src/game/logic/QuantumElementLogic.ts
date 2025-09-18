@@ -6,10 +6,10 @@ import type { ShipClass } from "../definitions/ShipClass";
 import type { ElementData, GameState, SaveGame } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { showInfo } from "./AlertLogic";
-import { fib, getUnlockedBuildings } from "./BuildingLogic";
+import { fib, getBuildingName } from "./BuildingLogic";
 import { addResource, changeStat, getStat, resourceOf } from "./ResourceLogic";
 import { getShipBlueprint } from "./ShipLogic";
-import { getBuildingsWithinShipClass } from "./TechLogic";
+import { getBuildingsInShipClass, getShipClass } from "./TechLogic";
 
 export function tickQuantumElementProgress(save: SaveGame, silent?: boolean): void {
    const totalXP = resourceOf("XP", save.state.resources).total;
@@ -31,37 +31,29 @@ export function tickQuantumElementProgress(save: SaveGame, silent?: boolean): vo
       }
    }
    for (let i = currentElements; i < expectedElements; i++) {
-      const candidates = getUnlockedElements(save.state);
-      const choices = shuffle(candidates.slice(0, DefaultElementChoices * 2)).slice(0, DefaultElementChoices);
-      if (choices.length >= DefaultElementChoices) {
+      const candidates = shuffle(getElementsInShipClass(getShipClass(save.state))).slice(0, DefaultElementChoices);
+      if (candidates.length >= DefaultElementChoices) {
          save.data.elementChoices.push({
-            choices: choices,
+            choices: candidates,
             stackSize: 1,
          });
       }
    }
 }
 
-export function getUnlockedElements(gs: GameState, result?: ElementSymbol[]): ElementSymbol[] {
-   result ??= [];
-   const buildings = getUnlockedBuildings(gs);
-   for (const building of buildings) {
-      const def = Config.Buildings[building];
-      if (def.element) {
-         result.push(def.element);
-      }
-   }
-   return result;
-}
-
 export function getElementsInShipClass(shipClass: ShipClass, result?: ElementSymbol[]): ElementSymbol[] {
    result ??= [];
-   for (const building of getBuildingsWithinShipClass(shipClass)) {
+   for (const building of getBuildingsInShipClass(shipClass)) {
       const def = Config.Buildings[building];
       if (def.element) {
          result.push(def.element);
       }
    }
+   Config.Elements.forEach((effect, element) => {
+      if (typeof effect === "function") {
+         result.push(element);
+      }
+   });
    return result;
 }
 
@@ -151,7 +143,7 @@ export function totalDiscoveredElements(save: SaveGame): number {
 
 export function hasUnassignedElements(gs: GameState): boolean {
    for (const [symbol, data] of gs.elements) {
-      if (data.amount > 0) {
+      if (typeof Config.Elements.get(symbol) === "string" && data.amount > 0) {
          return true;
       }
    }
@@ -160,7 +152,7 @@ export function hasUnassignedElements(gs: GameState): boolean {
 
 export function hasUpgradeableElements(gs: GameState): boolean {
    for (const [symbol, data] of gs.permanentElements) {
-      if (canUpgradeElement(symbol, "hp", gs) || canUpgradeElement(symbol, "damage", gs)) {
+      if (hasPermanentElementUpgrade(symbol, gs)) {
          return true;
       }
    }
@@ -207,8 +199,16 @@ export function tryUpgradeElement(symbol: ElementSymbol, type: keyof ElementData
    return true;
 }
 
-export function hasPermanentElementUpgrade(data: ElementData): boolean {
-   return data.amount >= getElementUpgradeCost(data.hp + 1) || data.amount >= getElementUpgradeCost(data.damage + 1);
+export function hasPermanentElementUpgrade(symbol: ElementSymbol, gs: GameState): boolean {
+   const data = gs.permanentElements.get(symbol);
+   if (!data) {
+      return false;
+   }
+   const effect = Config.Elements.get(symbol);
+   if (typeof effect === "string") {
+      return data.amount >= getElementUpgradeCost(data.hp + 1) || data.amount >= getElementUpgradeCost(data.damage + 1);
+   }
+   return data.amount >= getElementUpgradeCost(data.hp + 1);
 }
 
 export function revertElementUpgrade(
@@ -257,4 +257,15 @@ export function getTotalElementLevels(gs: GameState): number {
       total += amount.damage;
    }
    return total;
+}
+
+export function getElementDesc(symbol: ElementSymbol, value: number): string {
+   const elementEffect = Config.Elements.get(symbol);
+   if (!elementEffect) {
+      return "";
+   }
+   if (typeof elementEffect === "function") {
+      return elementEffect(value);
+   }
+   return t(L.HpOrDamageMultiplierForX, getBuildingName(elementEffect));
 }

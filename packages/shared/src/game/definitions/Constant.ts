@@ -45,3 +45,4 @@ export const DirectiveChoiceCount = 3;
 export const ExploreCostPerLightYear = 5;
 
 export const MaxShipClass = "Corvette";
+export const BaseTimeWarpHour = 8;

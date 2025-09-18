@@ -1,3 +1,4 @@
+import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { hasPermanentElementUpgrade } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
@@ -104,9 +105,9 @@ export class ElementCard extends Container {
    update() {
       const permanent = G.save.state.permanentElements.get(this._elementSymbol);
       const thisRun = G.save.state.elements.get(this._elementSymbol);
-      if (permanent && hasPermanentElementUpgrade(permanent)) {
+      if (permanent && hasPermanentElementUpgrade(this._elementSymbol, G.save.state)) {
          this._redCircle?.toggle(true);
-      } else if (thisRun && thisRun.amount > 0) {
+      } else if (thisRun && typeof Config.Elements.get(this._elementSymbol) === "string" && thisRun.amount > 0) {
          this._redCircle?.toggle(true);
       } else {
          this._redCircle?.toggle(false);

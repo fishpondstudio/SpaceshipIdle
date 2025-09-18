@@ -97,6 +97,22 @@ export function getBuildingsWithinShipClass(shipClass: ShipClass): Building[] {
    return result;
 }
 
+/**
+ * Get all buildings **in** the given ship class
+ */
+export function getBuildingsInShipClass(shipClass: ShipClass): Building[] {
+   const result: Building[] = [];
+   const [minX, maxX] = ShipClass[shipClass].range;
+   forEach(Config.Tech, (_, def) => {
+      if (def.position.x >= minX && def.position.x <= maxX) {
+         def.unlockBuildings?.forEach((b) => {
+            result.push(b);
+         });
+      }
+   });
+   return result;
+}
+
 export function getTechName(tech: Tech): string {
    const def = Config.Tech[tech];
    return def.name?.() ?? camelToHuman(tech);

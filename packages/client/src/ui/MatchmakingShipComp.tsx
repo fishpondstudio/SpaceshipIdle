@@ -1,7 +1,6 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import type { GameState } from "@spaceship-idle/shared/src/game/GameState";
-import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
-import { getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
+import { getElementDesc, getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { calcSpaceshipXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getTechName } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { formatNumber, mMapOf, mReduceOf } from "@spaceship-idle/shared/src/utils/Helper";
@@ -43,18 +42,22 @@ export function MatchmakingShipComp({ ship }: { ship: GameState }): React.ReactN
          <div className="f1">{t(L.ElementThisRun)}</div>
          <div className="text-sm">
             {mMapOf(ship.elements, (element, data) => {
-               const building = Config.Elements[element];
-               if (!building) {
+               const effect = Config.Elements.get(element);
+               if (!effect) {
                   return null;
                }
                return (
                   <div className="row" key={element}>
                      <div>
-                        {element} <span className="text-dimmed">({getBuildingName(building)})</span>
+                        {element} <span className="text-dimmed">({getElementDesc(element, 1)})</span>
                      </div>
-                     <div className="f1 text-right">
-                        {data.hp} + {data.damage} ({data.amount})
-                     </div>
+                     {typeof effect === "string" ? (
+                        <div className="f1 text-right">
+                           {data.hp} + {data.damage} ({data.amount})
+                        </div>
+                     ) : (
+                        <div className="f1 text-right">{data.amount}</div>
+                     )}
                   </div>
                );
             })}

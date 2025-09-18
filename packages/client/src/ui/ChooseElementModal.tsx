@@ -1,12 +1,10 @@
 import { getDefaultZIndex, type PaperProps, Progress, Transition } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { ElementPermanentColor, ElementThisRunColor } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { type ElementChoice, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { addElementShard, addElementThisRun } from "@spaceship-idle/shared/src/game/logic/PrestigeLogic";
-import { getElementUpgradeCost } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
+import { getElementDesc, getElementUpgradeCost } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { type ElementSymbol, PeriodicTable } from "@spaceship-idle/shared/src/game/PeriodicTable";
 import { removeFrom } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -18,6 +16,7 @@ import { Easing } from "../utils/actions/Easing";
 import { G } from "../utils/Global";
 import { hideModal, showModal } from "../utils/ToggleModal";
 import "./ChooseElementModal.css";
+import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { FloatingTip } from "./components/FloatingTip";
 import { playUpgrade } from "./Sound";
 
@@ -82,8 +81,7 @@ function ElementOption({
    ...props
 }: { symbol: ElementSymbol; permanent: boolean; onClick: () => void } & PaperProps): React.ReactNode {
    const data = PeriodicTable[symbol];
-   const b = Config.Elements[symbol];
-   if (!data || !b) {
+   if (!data) {
       return null;
    }
    const [opened, { open }] = useDisclosure(false);
@@ -92,6 +90,7 @@ function ElementOption({
    const currentDamageMultiplier = G.save.state.permanentElements.get(symbol)?.damage ?? 0;
    const currentAmount = G.save.state.permanentElements.get(symbol)?.amount ?? 0;
    const thisRun = G.save.state.elements.get(symbol);
+   const effect = Config.Elements.get(symbol);
    return (
       <Transition mounted={opened} transition="pop" duration={1000} timingFunction="ease" keepMounted>
          {(transitionStyle) => (
@@ -146,64 +145,78 @@ function ElementOption({
             >
                <ElementImageComp symbol={symbol} color={permanent ? ElementPermanentColor : ElementThisRunColor} />
                <div className="h10" />
-               <div className="text-center">{t(L.HpOrDamageMultiplierForX, getBuildingName(b))}</div>
+               <div className="f1 text-center">{getElementDesc(symbol, 1)}</div>
                <div className="h10" />
                <div className="divider mx-15 mb5" />
                {permanent ? null : (
                   <>
-                     <FloatingTip
-                        w={300}
-                        label={
-                           <>
-                              <div className="text-space">{t(L.ElementThisRun)}</div>
-                              <div className="row">
-                                 <div className="f1">{t(L.HPMultiplier)}</div>
-                                 <div>{thisRun?.hp ?? 0}</div>
+                     {typeof effect === "string" ? (
+                        <FloatingTip
+                           w={300}
+                           label={
+                              <>
+                                 <div className="text-space">{t(L.ElementThisRun)}</div>
+                                 <div className="row">
+                                    <div className="f1">{t(L.HPMultiplier)}</div>
+                                    <div>{thisRun?.hp ?? 0}</div>
+                                 </div>
+                                 <div className="row">
+                                    <div className="f1">{t(L.DamageMultiplier)}</div>
+                                    <div>{thisRun?.damage ?? 0}</div>
+                                 </div>
+                                 <div className="row">
+                                    <div className="f1">{t(L.Unassigned)}</div>
+                                    <div>{thisRun?.amount ?? 0}</div>
+                                 </div>
+                              </>
+                           }
+                        >
+                           <div className="row">
+                              <div className="f1">{t(L.ThisRun)}</div>
+                              <div>
+                                 {thisRun?.hp ?? 0} + {thisRun?.damage ?? 0} ({thisRun?.amount ?? 0})
                               </div>
-                              <div className="row">
-                                 <div className="f1">{t(L.DamageMultiplier)}</div>
-                                 <div>{thisRun?.damage ?? 0}</div>
-                              </div>
-                              <div className="row">
-                                 <div className="f1">{t(L.Unassigned)}</div>
-                                 <div>{thisRun?.amount ?? 0}</div>
-                              </div>
-                           </>
-                        }
-                     >
+                           </div>
+                        </FloatingTip>
+                     ) : (
                         <div className="row">
                            <div className="f1">{t(L.ThisRun)}</div>
-                           <div>
-                              {thisRun?.hp ?? 0} + {thisRun?.damage ?? 0} ({thisRun?.amount ?? 0})
-                           </div>
+                           <div>{thisRun?.amount ?? 0}</div>
                         </div>
-                     </FloatingTip>
+                     )}
                      <div className="divider mx-15 my5" />
                   </>
                )}
-               <FloatingTip
-                  w={300}
-                  label={
-                     <>
-                        <div className="text-space">{t(L.PermanentElement)}</div>
-                        <div className="row">
-                           <div className="f1">{t(L.HPMultiplier)}</div>
-                           <div>{currentHPMultiplier}</div>
+               {typeof effect === "string" ? (
+                  <FloatingTip
+                     w={300}
+                     label={
+                        <>
+                           <div className="text-space">{t(L.PermanentElement)}</div>
+                           <div className="row">
+                              <div className="f1">{t(L.HPMultiplier)}</div>
+                              <div>{currentHPMultiplier}</div>
+                           </div>
+                           <div className="row">
+                              <div className="f1">{t(L.DamageMultiplier)}</div>
+                              <div>{currentHPMultiplier}</div>
+                           </div>
+                        </>
+                     }
+                  >
+                     <div className="row">
+                        <div className="f1">{t(L.Permanent)}</div>
+                        <div>
+                           {currentHPMultiplier} + {currentDamageMultiplier}
                         </div>
-                        <div className="row">
-                           <div className="f1">{t(L.DamageMultiplier)}</div>
-                           <div>{currentHPMultiplier}</div>
-                        </div>
-                     </>
-                  }
-               >
+                     </div>
+                  </FloatingTip>
+               ) : (
                   <div className="row">
                      <div className="f1">{t(L.Permanent)}</div>
-                     <div>
-                        {currentHPMultiplier} + {currentDamageMultiplier}
-                     </div>
+                     <div>{currentHPMultiplier}</div>
                   </div>
-               </FloatingTip>
+               )}
                <div className="row">
                   <div className="f1">{t(L.Shards)}</div>
                   <div>

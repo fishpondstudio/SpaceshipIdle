@@ -1,8 +1,11 @@
+import { L, t } from "../../utils/i18n";
 import type { IHaveXY } from "../../utils/Vector2";
+import { BaseTimeWarpHour } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
 import type { Stat } from "../definitions/Stat";
 import type { GameState, ResourceData, ResourceDataPersisted } from "../GameState";
 import { getTotalBuildingCost } from "./BuildingLogic";
+import type { Breakdown } from "./PeaceTreatyLogic";
 import { RequestParticle } from "./RequestParticle";
 
 export function resourceValueOf(resources: Map<Resource, ResourceDataPersisted>): number {
@@ -123,4 +126,17 @@ export function calcSpaceshipXP(gs: GameState): number {
       result += getTotalBuildingCost(data.type, 0, data.level);
    }
    return result;
+}
+
+export function getMaxTimeWarp(gs: GameState): [number, Breakdown[]] {
+   const result: Breakdown[] = [{ label: t(L.BaseValue), value: BaseTimeWarpHour }];
+   const element = gs.elements.get("H");
+   if (element) {
+      result.push({ label: t(L.ElementAmountThisRun, "H"), value: element.amount });
+   }
+   const permanent = gs.permanentElements.get("H");
+   if (permanent) {
+      result.push({ label: t(L.ElementPermanent, "H"), value: permanent.amount });
+   }
+   return [result.reduce((a, b) => a + b.value, 0), result];
 }
