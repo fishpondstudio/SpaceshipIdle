@@ -1,17 +1,24 @@
 import { Combobox, Input, InputBase, useCombobox } from "@mantine/core";
 import { type Addon, Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
-import { mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { ShipClass, ShipClassList } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { G } from "../utils/Global";
+import { FloatingTip } from "./components/FloatingTip";
+import { html } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
 
 function AddonRow({ addon }: { addon: Addon }): React.ReactNode {
    return (
-      <div className="row">
-         <TextureComp name={`Addon/${addon}`} />
-         <div className="f1">{Addons[addon].name()}</div>
-      </div>
+      <FloatingTip label={html(Addons[addon].desc(1))}>
+         <div className="row g5">
+            <TextureComp name={`Addon/${addon}`} />
+            <div>{Addons[addon].name()}</div>
+            <div className="text-dimmed">({G.save.state.addons.get(addon)?.amount ?? 0})</div>
+            <div className="f1" />
+            <div className="text-dimmed text-xs text-uppercase">{ShipClass[Addons[addon].shipClass].name()}</div>
+         </div>
+      </FloatingTip>
    );
 }
 
@@ -26,11 +33,15 @@ export function SelectAddonComp({
       onDropdownClose: () => combobox.resetSelectedOption(),
    });
 
-   const options = mMapOf(G.save.state.addons, (item) => (
-      <Combobox.Option value={item} key={item}>
-         <AddonRow addon={item} />
-      </Combobox.Option>
-   ));
+   const options = Array.from(G.save.state.addons)
+      .sort(([a], [b]) => {
+         return ShipClassList.indexOf(Addons[a].shipClass) - ShipClassList.indexOf(Addons[b].shipClass);
+      })
+      .map(([item]) => (
+         <Combobox.Option value={item} key={item}>
+            <AddonRow addon={item} />
+         </Combobox.Option>
+      ));
 
    return (
       <Combobox

@@ -391,7 +391,7 @@ export const EN = {
    PlusXWarp: "+%% Time Warp",
    PlusXWarpOnDeclaration: "+%% Time Warp <b>on declaration</b>",
    PlusXWarpOnExpiration: "+%% Time Warp <b>on expiration</b>",
-   PlusXXP: "+%% XP",
+   PlusXXPOnDeclaration: "+%% XP <b>on declaration</b>",
    PlusXXPMultiplierForX: "+%% XP Multiplier for %%",
    Potoroo: "Potoroo",
    PracticeBattle: "Practice Battle",

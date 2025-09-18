@@ -1,14 +1,18 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { type Blueprint, Blueprints } from "@spaceship-idle/shared/src/game/definitions/Blueprints";
 import { PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import type { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameState } from "@spaceship-idle/shared/src/game/GameState";
+import { addAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { generateGalaxy } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
-import { changeStat, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
+import { calcSpaceshipXP, changeStat, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { getBuildingsWithinShipClass, isPlaceholderTech } from "@spaceship-idle/shared/src/game/logic/TechLogic";
+import { getShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
+import { getBuildingsWithinShipClass, getTechWithinShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { enumOf, equal, forEach, INT32_MAX, randOne, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { jsonEncode } from "@spaceship-idle/shared/src/utils/Serialization";
@@ -158,16 +162,30 @@ export function addDebugFunctions(): void {
       });
    };
    // @ts-expect-error
-   globalThis.researchAll = () => {
-      forEach(Config.Tech, (tech) => {
-         if (!isPlaceholderTech(tech)) {
-            G.save.state.unlockedTech.add(tech);
-         }
+   globalThis.getShip = (shipClass: ShipClass) => {
+      getTechWithinShipClass(shipClass).forEach((tech) => {
+         G.save.state.unlockedTech.add(tech);
       });
+      getShipBlueprint(G.save.state).forEach((tile) => {
+         const ships = getBuildingsWithinShipClass(shipClass);
+         G.save.state.tiles.set(tile, { type: randOne(ships), level: 20 });
+      });
+      const quantum = getUsedQuantum(G.save.state);
+      G.save.state.resources.set("XP", {
+         used: calcSpaceshipXP(G.save.state),
+         total: Math.max(calcSpaceshipXP(G.save.state), quantumToXP(quantum)),
+      });
+      G.save.state.resources.set("Quantum", { used: quantum, total: quantum });
    };
    // @ts-expect-error
    globalThis.focusShip = () => {
       G.scene.loadScene(ShipScene)?.requestFocus();
+   };
+   // @ts-expect-error
+   globalThis.getAddons = (count: number) => {
+      forEach(Addons, (addon) => {
+         addAddon(addon, count, G.save.state);
+      });
    };
    // @ts-expect-error
    globalThis.newPlayer = async () => {

@@ -69,8 +69,20 @@ export function getTechShipClass(tech: Tech): ShipClass {
 
 export function getTechInShipClass(shipClass: ShipClass): Tech[] {
    const result: Tech[] = [];
+   const [minX, maxX] = ShipClass[shipClass].range;
    forEach(Config.Tech, (tech, def) => {
-      if (techColumnToShipClass(def.position.x) === shipClass) {
+      if (def.position.x >= minX && def.position.x <= maxX) {
+         result.push(tech);
+      }
+   });
+   return result;
+}
+
+export function getTechWithinShipClass(shipClass: ShipClass): Tech[] {
+   const result: Tech[] = [];
+   const [_, maxX] = ShipClass[shipClass].range;
+   forEach(Config.Tech, (tech, def) => {
+      if (def.position.x <= maxX) {
          result.push(tech);
       }
    });

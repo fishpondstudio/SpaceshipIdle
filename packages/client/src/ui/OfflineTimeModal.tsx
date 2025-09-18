@@ -4,7 +4,7 @@ import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
 import { FloatingTip } from "./components/FloatingTip";
-import { playBling } from "./Sound";
+import { playBling, playClick } from "./Sound";
 import { MaxTimeWarpComp } from "./WarpSpeedMenuComp";
 
 export function OfflineTimeModal({ offlineTime }: { offlineTime: number }): React.ReactNode {
@@ -45,10 +45,12 @@ export function OfflineTimeModal({ offlineTime }: { offlineTime: number }): Reac
                className="btn w100 p5 filled"
                onClick={(e) => {
                   if (warpToAdd > 0) {
+                     playBling();
                      addResource("Warp", warp, G.save.state.resources, getElementCenter(e.target as HTMLButtonElement));
+                  } else {
+                     playClick();
                   }
                   hideModal();
-                  playBling();
                }}
             >
                {t(L.TimeWarp)} +{formatNumber(warpToAdd)}

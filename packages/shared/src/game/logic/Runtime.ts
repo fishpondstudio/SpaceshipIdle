@@ -4,6 +4,7 @@ import { srand } from "../../utils/Random";
 import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
 import { Blueprints } from "../definitions/Blueprints";
+import { Bonus } from "../definitions/Bonus";
 import { DamageType, ProjectileFlag } from "../definitions/BuildingProps";
 import {
    BattleTickInterval,
@@ -11,6 +12,7 @@ import {
    SuddenDeathSeconds,
    SuddenDeathUndamagedSec,
 } from "../definitions/Constant";
+import { ShipClass } from "../definitions/ShipClass";
 import { type GameState, GameStateUpdated, hashGameStatePair, type SaveGame, type Tiles } from "../GameState";
 import { makeTile } from "../ITileData";
 import { tickAddon } from "./AddonLogic";
@@ -188,6 +190,7 @@ export class Runtime {
          this._checkSpeed(g);
          this._prepareForTick();
          this._tickMultipliers();
+         this._tickDirectives();
          if (this.battleType === BattleType.Peace) {
             tickGalaxy(this);
             tickQuantumElementProgress(this.leftSave, this.battleInfo.silent);
@@ -237,6 +240,12 @@ export class Runtime {
       if (current > 0) {
          changeStat("Warmonger", -Math.min(current, change), this.left.stats);
       }
+   }
+
+   private _tickDirectives(): void {
+      this.left.selectedDirectives.forEach((boost, shipClass) => {
+         Bonus[boost].onTick?.(Number.POSITIVE_INFINITY, t(L.XClassDirective, ShipClass[shipClass].name()), this);
+      });
    }
 
    private _checkSpeed(g: { speed: number }) {

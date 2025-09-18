@@ -3,7 +3,6 @@ import "@mantine/core/styles.css";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 import { initDevtools } from "@pixi/devtools";
-import { PixelPerfect } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { Application } from "pixi.js";
 import { createRoot } from "react-dom/client";
 import { bootstrap } from "./Bootstrap";
@@ -103,14 +102,10 @@ const app = new Application({
 
 app.ticker.maxFPS = 60;
 
-if (PixelPerfect) {
-   // (app.view as HTMLCanvasElement).style.imageRendering = "pixelated";
-}
-
 if (import.meta.env.DEV) {
    initDevtools({ app });
 }
 
 G.pixi = app;
-document.body.appendChild(app.view as any);
+document.body.appendChild(app.view as HTMLCanvasElement);
 bootstrap();
