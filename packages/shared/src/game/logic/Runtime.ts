@@ -24,7 +24,7 @@ import { tickCatalyst } from "./CatalystLogic";
 import { tickGalaxy } from "./GalaxyLogic";
 import type { Projectile } from "./Projectile";
 import { tickQuantumElementProgress } from "./QuantumElementLogic";
-import { changeStat, getStat, trySpendResource } from "./ResourceLogic";
+import { addResource, changeStat, getStat, trySpendResource } from "./ResourceLogic";
 import { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag, RuntimeTile } from "./RuntimeTile";
 import { flipHorizontalCopy, isEnemy } from "./ShipLogic";
@@ -190,14 +190,15 @@ export class Runtime {
          this._checkSpeed(g);
          this._prepareForTick();
          this._tickMultipliers();
-         this._tickDirectives();
          if (this.battleType === BattleType.Peace) {
             tickGalaxy(this);
             tickQuantumElementProgress(this.leftSave, this.battleInfo.silent);
          }
+         this._tickDirectives();
          this._tickStatusEffect();
          this._checkSuddenDeath();
          this._tickPenalty();
+         this._tickExtraXP();
 
          this.leftStat.tabulate(this.tabulateHp(this.left.tiles), this.left);
          this.rightStat.tabulate(this.tabulateHp(this.right.tiles), this.right);
@@ -284,6 +285,14 @@ export class Runtime {
       }
    }
 
+   private _tickExtraXP(): void {
+      addResource(
+         "XP",
+         this.leftStat.extraXPPerSecond.value * this.totalXPPerSecond(this.left.tiles),
+         this.left.resources,
+      );
+   }
+
    public tabulateHp(tiles: Tiles): [number, number] {
       let hp = 0;
       let totalHp = 0;
@@ -297,7 +306,7 @@ export class Runtime {
       return [hp, totalHp];
    }
 
-   public totalXpPerSecond(tiles: Tiles): number {
+   public totalXPPerSecond(tiles: Tiles): number {
       let total = 0;
       tiles.forEach((_data, tile) => {
          const rs = this.get(tile);

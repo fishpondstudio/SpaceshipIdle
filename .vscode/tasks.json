@@ -14,14 +14,30 @@
       },
       {
          "type": "npm",
+         "script": "start",
+         "path": "packages/server",
+         "problemMatcher": [],
+         "label": "npm: start - packages/server",
+         "isBackground": true,
+         "runOptions": {
+            "runOn": "folderOpen"
+         }
+      },
+      {
+         "type": "npm",
          "script": "watch",
          "path": "packages/server",
          "problemMatcher": [],
          "label": "npm: watch - packages/server",
          "isBackground": true,
-         "runOptions": {
-            "runOn": "folderOpen"
-         }
+      },
+      {
+         "type": "npm",
+         "script": "test",
+         "path": "packages/shared",
+         "problemMatcher": [],
+         "label": "npm: test - packages/shared",
+         "isBackground": true,
       }
    ]
 }
