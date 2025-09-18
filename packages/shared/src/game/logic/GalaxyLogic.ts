@@ -50,6 +50,13 @@ export function findPlanet(id: number, galaxy: Galaxy): Planet | undefined {
    return undefined;
 }
 
+export function findStarSystem(id: number, galaxy: Galaxy): StarSystem | undefined {
+   for (const starSystem of galaxy.starSystems) {
+      if (starSystem.id === id) return starSystem;
+   }
+   return undefined;
+}
+
 export function getAddonReward(seed: string, gs: GameState): Addon[] {
    const shipClass = getShipClass(gs);
    const addons = getAddonsInClass(shipClass, gs.blueprint);
@@ -157,6 +164,20 @@ export function getConquestRewardBattleScore(starSystem: StarSystem): {
       }
    }
    return { required, current, allBattled };
+}
+
+export function canClaimConquestReward(starSystem: StarSystem): boolean {
+   const { required, current, allBattled } = getConquestRewardBattleScore(starSystem);
+   return !hasFlag(starSystem.flags, StarSystemFlags.ConquestRewardClaimed) && allBattled && current >= required;
+}
+
+export function canClaimAnyConquestReward(galaxy: Galaxy): boolean {
+   for (const starSystem of galaxy.starSystems) {
+      if (canClaimConquestReward(starSystem)) {
+         return true;
+      }
+   }
+   return false;
 }
 
 export function getPlanetShipClass(planetId: number, galaxy: Galaxy): ShipClass {

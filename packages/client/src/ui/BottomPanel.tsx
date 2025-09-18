@@ -6,7 +6,11 @@ import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { hasCatalystToChoose } from "@spaceship-idle/shared/src/game/logic/CatalystLogic";
 import { hasSelectableDirectives } from "@spaceship-idle/shared/src/game/logic/DirectiveLogic";
-import { hasAvailableFriendship, hasAvailablePirates } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import {
+   canClaimAnyConquestReward,
+   hasAvailableFriendship,
+   hasAvailablePirates,
+} from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import {
    hasUnassignedElements,
@@ -293,6 +297,9 @@ function GalaxyTabLabel(): React.ReactNode {
    }
    if (hasAvailablePirates(G.save.data.galaxy) && victoryPoint >= warmongerPenalty) {
       tooltip.push(t(L.YouHaveAvailablePiratesTooltip));
+   }
+   if (canClaimAnyConquestReward(G.save.data.galaxy)) {
+      tooltip.push(t(L.YouHaveAvailableConquestRewardTooltip));
    }
 
    if (tooltip.length > 0) {

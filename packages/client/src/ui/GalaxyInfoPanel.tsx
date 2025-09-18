@@ -1,5 +1,8 @@
+import { Indicator } from "@mantine/core";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import {
+   canClaimConquestReward,
+   findStarSystem,
    getCurrentFriendship,
    getGalaxyLocations,
    getMaxFriendship,
@@ -48,25 +51,41 @@ export function GalaxyInfoPanel(): React.ReactNode {
             </div>
          </div>
          <div className="h10" />
-         {locations.map((location) => (
-            <FloatingTip key={location.id} label={location.tooltip}>
-               <div
-                  className="row hover-highlight pointer"
-                  onClick={() => {
-                     playClick();
-                     G.scene.getCurrent(GalaxyScene)?.select(location.id).lookAt(location.id);
-                  }}
+         {locations.map((location) => {
+            const starSystem = findStarSystem(location.id, G.save.data.galaxy);
+            const canClaimReward = starSystem && canClaimConquestReward(starSystem);
+            return (
+               <FloatingTip
+                  key={location.id}
+                  label={
+                     <>
+                        <div>{location.tooltip}</div>
+                        {canClaimReward ? (
+                           <div className="text-green">{t(L.YouHaveAvailableConquestRewardTooltip)}</div>
+                        ) : null}
+                     </>
+                  }
                >
-                  <div />
-                  <div className="f1">{location.name}</div>
-                  {location.texture ? (
-                     <TextureComp name={`Galaxy/${location.texture}`} />
-                  ) : (
-                     <div className="mi">indeterminate_question_box</div>
-                  )}
-               </div>
-            </FloatingTip>
-         ))}
+                  <div
+                     className="row hover-highlight pointer"
+                     onClick={() => {
+                        playClick();
+                        G.scene.getCurrent(GalaxyScene)?.select(location.id).lookAt(location.id);
+                     }}
+                  >
+                     <div />
+                     <div>{location.name}</div>
+                     {canClaimReward ? <Indicator color="red" processing /> : null}
+                     <div className="f1" />
+                     {location.texture ? (
+                        <TextureComp name={`Galaxy/${location.texture}`} />
+                     ) : (
+                        <div className="mi">indeterminate_question_box</div>
+                     )}
+                  </div>
+               </FloatingTip>
+            );
+         })}
       </div>
    );
 }

@@ -9,4 +9,4 @@ Patch Notes:
 - Fix a bug where backstabber penalty is not corrected added when backstabbing a friend
 - Weapons unlocked later in the tech tree within a ship class now have a slightly higher base stats
 - Add a reward when exploring a star system
-- Add a conquest reward after having battled all planets in a star system and have reached a battle score threshold
+- Add a conquest reward (1 element) after having battled all planets in a star system and have reached a battle score threshold
