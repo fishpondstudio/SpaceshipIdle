@@ -1,5 +1,6 @@
 import { DefaultElementChoices, ExploreCostPerLightYear } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import {
+   PlanetFlags,
    PlanetType,
    PlanetTypeLabel,
    type StarSystem,
@@ -83,7 +84,14 @@ export function StarSystemPage({ starSystem }: { starSystem: StarSystem }): Reac
                </div>
             </div>
          </div>
-         {starSystem.discovered ? <PlanetsComp starSystem={starSystem} /> : <ExplorationComp starSystem={starSystem} />}
+         {starSystem.discovered ? (
+            <>
+               <PlanetsComp starSystem={starSystem} />
+               <ConquestRewardsComp starSystem={starSystem} />
+            </>
+         ) : (
+            <ExplorationComp starSystem={starSystem} />
+         )}
          <div className="h10" />
       </SidebarComp>
    );
@@ -177,7 +185,6 @@ function PlanetsComp({ starSystem }: { starSystem: StarSystem }): React.ReactNod
                </div>
             ))}
          </div>
-         <ConquestRewardsComp starSystem={starSystem} />
       </>
    );
 }
@@ -201,7 +208,9 @@ function ExplorationComp({ starSystem }: { starSystem: StarSystem }): React.Reac
                }
                return starSystem.planets.map((planet) => {
                   const eligible =
-                     planet.type === PlanetType.Me || planet.friendshipTimeLeft > 0 || planet.battleResult;
+                     planet.type === PlanetType.Me ||
+                     hasFlag(planet.flags, PlanetFlags.WasFriends) ||
+                     planet.battleResult;
                   if (!eligible) {
                      canExplore = false;
                   }

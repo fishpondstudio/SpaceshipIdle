@@ -87,8 +87,9 @@ export function PeaceTreatyModal({
          <div className="h10" />
          <div className="row">
             <div className="f1 panel stretch">
-               <div>
-                  {BattleVictoryTypeLabel[victoryType]()} ({battleScore}%)
+               <div className="row">
+                  <div className="f1">{BattleVictoryTypeLabel[victoryType]()}</div>
+                  <div>{battleScore}</div>
                </div>
             </div>
             <div className="f1 panel stretch">

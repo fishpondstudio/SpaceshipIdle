@@ -1,6 +1,8 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { DamageType } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import {
+   MatchmakingMinimumQuantum,
+   MatchmakingMinimumXP,
    QuantumElementId,
    VictoryPointElementId,
    XPElementId,
@@ -11,8 +13,6 @@ import {
    elementToQuantum,
    elementToXP,
    getElementDesc,
-   getMinimumQuantumForBattle,
-   getMinimumSpaceshipXPForBattle,
    quantumToXP,
 } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { calcSpaceshipXP, getStat, resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -38,6 +38,7 @@ import { HamburgerMenuComp } from "./components/HamburgerMenuComp";
 import { html, RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
 import { MatchmakingModal } from "./MatchmakingModal";
+import { WarmongerPenaltyRowComp } from "./WarmongerPenaltyRowComp";
 import { WarpSpeedMenuComp } from "./WarpSpeedMenuComp";
 
 const rawDamages: Record<DamageType, number> = {
@@ -58,9 +59,7 @@ export function ShipInfoPanel(): React.ReactNode {
    const xpPecSec = G.runtime.totalXPPerSecond(state.tiles);
    const xpDelta = xpPecSec * (1 + G.runtime.leftStat.extraXPPerSecond.value);
    const { used: usedQuantum, total: totalQuantum } = resourceOf("Quantum", state.resources);
-   const highlight =
-      usedQuantum >= getMinimumQuantumForBattle(state) &&
-      calcSpaceshipXP(state) >= getMinimumSpaceshipXPForBattle(state);
+   const highlight = usedQuantum >= MatchmakingMinimumQuantum && calcSpaceshipXP(state) >= MatchmakingMinimumXP;
    const { current: currentXP, total: totalXP } = resourceOf("XP", state.resources);
    const nextQuantum = totalQuantum + 1;
    const nextQuantumXP = quantumToXP(nextQuantum);
@@ -113,6 +112,13 @@ export function ShipInfoPanel(): React.ReactNode {
                            <div className="mi sm text-red">cancel</div>
                         )}
                      </div>
+                  </div>
+                  <div className="row fstart">
+                     <WarmongerPenaltyRowComp />
+                  </div>
+                  <div className="row">
+                     <div className="f1">{t(L.BackstabberPenalty)}</div>
+                     <div>{getStat("Backstabber", G.save.state.stats)}</div>
                   </div>
                </div>
             }

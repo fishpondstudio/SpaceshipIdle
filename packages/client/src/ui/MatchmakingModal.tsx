@@ -1,4 +1,5 @@
 import { getGradient, useMantineTheme } from "@mantine/core";
+import { MatchmakingMinimumQuantum, MatchmakingMinimumXP } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
@@ -8,11 +9,7 @@ import {
    simulateBattle,
 } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
-import {
-   getMinimumQuantumForBattle,
-   getMinimumSpaceshipXPForBattle,
-   getUsedQuantum,
-} from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
+import { getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { calcSpaceshipXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { capitalize, enumOf, formatNumber, iReduceOf, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
@@ -34,10 +31,8 @@ import { playBling, playClick, playError } from "./Sound";
 export function MatchmakingModal(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const theme = useMantineTheme();
-   const minQuantum = getMinimumQuantumForBattle(G.save.state);
    const usedQuantum = getUsedQuantum(G.save.state);
    const xp = calcSpaceshipXP(G.save.state);
-   const minXP = getMinimumSpaceshipXPForBattle(G.save.state);
    return (
       <div className="m10">
          <div
@@ -59,30 +54,36 @@ export function MatchmakingModal(): React.ReactNode {
          </div>
          <div className="panel mb10 p0">
             <div className="m10">
-               <FloatingTip label={<RenderHTML html={t(L.QualifierBattleQuantumRequirementHTML, minQuantum)} />}>
+               <FloatingTip
+                  label={<RenderHTML html={t(L.QualifierBattleQuantumRequirementHTML, MatchmakingMinimumQuantum)} />}
+               >
                   <div className="row">
                      <div>{t(L.Quantum)}</div>
                      <div className="f1"></div>
                      <div>
-                        {usedQuantum}/{minQuantum}
+                        {usedQuantum}/{MatchmakingMinimumQuantum}
                      </div>
 
-                     {usedQuantum >= minQuantum ? (
+                     {usedQuantum >= MatchmakingMinimumQuantum ? (
                         <div className="mi sm text-green">check_circle</div>
                      ) : (
                         <div className="mi sm text-red">cancel</div>
                      )}
                   </div>
                </FloatingTip>
-               <FloatingTip label={<RenderHTML html={t(L.QualifierBattleXPRequirementHTML, formatNumber(minXP))} />}>
+               <FloatingTip
+                  label={
+                     <RenderHTML html={t(L.QualifierBattleXPRequirementHTML, formatNumber(MatchmakingMinimumXP))} />
+                  }
+               >
                   <div className="row">
                      <div>{t(L.SpaceshipXP)}</div>
                      <div className="f1"></div>
                      <div>
-                        {formatNumber(xp)}/{formatNumber(minXP)}
+                        {formatNumber(xp)}/{formatNumber(MatchmakingMinimumXP)}
                      </div>
 
-                     {xp >= minXP ? (
+                     {xp >= MatchmakingMinimumXP ? (
                         <div className="mi sm text-green">check_circle</div>
                      ) : (
                         <div className="mi sm text-red">cancel</div>
@@ -92,7 +93,7 @@ export function MatchmakingModal(): React.ReactNode {
             </div>
          </div>
          <button
-            disabled={xp < minXP || usedQuantum < minQuantum}
+            disabled={xp < MatchmakingMinimumXP || usedQuantum < MatchmakingMinimumQuantum}
             className="btn filled w100 py5 px10 text-lg"
             onClick={async () => {
                try {

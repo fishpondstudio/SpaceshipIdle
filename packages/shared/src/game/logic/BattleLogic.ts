@@ -1,14 +1,4 @@
-import {
-   clamp,
-   hasFlag,
-   keysOf,
-   randInt,
-   randOne,
-   reduceOf,
-   shuffle,
-   type Tile,
-   tileToPoint,
-} from "../../utils/Helper";
+import { hasFlag, keysOf, randInt, randOne, reduceOf, shuffle, type Tile, tileToPoint } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -21,18 +11,19 @@ import { type ShipClass, ShipClassList } from "../definitions/ShipClass";
 import { GameOption } from "../GameOption";
 import { GameData, GameState } from "../GameState";
 import { posToTile } from "../Grid";
-import { addAddon, getAddonsInClass } from "./AddonLogic";
+import { getAddonsInClass } from "./AddonLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType, type BattleVictoryType } from "./BattleType";
 import { getUnlockableBuildings } from "./BuildingLogic";
 import { Projectile } from "./Projectile";
-import { addResource } from "./ResourceLogic";
+import { quantumToXP } from "./QuantumElementLogic";
+import { addResource, calcSpaceshipXP } from "./ResourceLogic";
 import { Runtime } from "./Runtime";
 import type { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag, type RuntimeTile } from "./RuntimeTile";
 import { calculateAABB } from "./ShipLogic";
 import { Side } from "./Side";
-import { getBuildingsWithinShipClass } from "./TechLogic";
+import { getBuildingsWithinShipClass, getMaxQuantumForShipClass } from "./TechLogic";
 
 interface IProjectileHit {
    position: IHaveXY;
@@ -289,17 +280,25 @@ export function generateShip(shipClass: ShipClass, random: () => number): GameSt
    const buildings = getBuildingsWithinShipClass(shipClass);
    const difficulty = ShipClassList.indexOf(shipClass);
    for (const tile of design) {
+      const building = randOne(buildings, random);
       ship.tiles.set(tile, {
-         type: randOne(buildings, random),
-         level: 10 + clamp(0, 35, randInt(difficulty + 1, (difficulty + 1) * 5, random)),
+         type: building,
+         level: 1,
+      });
+      ship.elements.set(Config.Buildings[building].element, { amount: 0, hp: difficulty, damage: difficulty });
+   }
+   const quantum = getMaxQuantumForShipClass(shipClass, ship);
+   const xp = quantumToXP(quantum) * (0.75 + random() * 0.5);
+   while (calcSpaceshipXP(ship) < xp) {
+      ship.tiles.forEach((data) => {
+         ++data.level;
       });
    }
    const addons = getAddonsInClass(shipClass, ship.blueprint);
    shuffle(Array.from(ship.tiles.keys()), random).forEach((tile) => {
       const addon = addons.pop();
       if (addon) {
-         addAddon(addon, 1 + clamp(0, 15, randInt(difficulty, difficulty * 3, random)), ship);
-         ship.addons.get(addon)!.tile = tile;
+         ship.addons.set(addon, { tile, amount: 1 + randInt(difficulty, difficulty * 5, random) });
       }
    });
    return ship;

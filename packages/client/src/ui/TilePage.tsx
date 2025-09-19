@@ -1,6 +1,6 @@
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { isEnemy } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
+import { getShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import type { Tile } from "@spaceship-idle/shared/src/utils/Helper";
 import { useEffect } from "react";
 import { G } from "../utils/Global";
@@ -20,6 +20,8 @@ export function TilePage({ selectedTiles }: { selectedTiles: Set<Tile> }): React
       }
    }, []);
 
+   const blueprint = getShipBlueprint(G.save.state);
+
    if (selectedTiles.size === 1) {
       for (const tile of selectedTiles) {
          const data = G.save.state.tiles.get(tile);
@@ -30,10 +32,10 @@ export function TilePage({ selectedTiles }: { selectedTiles: Set<Tile> }): React
          if (enemy) {
             return <BuildingPage tile={tile} gs={G.runtime.right} readonly={true} />;
          }
-         if (isEnemy(tile)) {
-            return <HideSidebar key={tile} />;
+         if (blueprint.includes(tile)) {
+            return <ConstructionPage tile={tile} gs={G.save.state} />;
          }
-         return <ConstructionPage tile={tile} gs={G.save.state} />;
+         return <HideSidebar key={tile} />;
       }
    }
 

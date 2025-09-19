@@ -8,7 +8,6 @@ import type { ElementSymbol } from "../PeriodicTable";
 import { showInfo } from "./AlertLogic";
 import { fib, getBuildingName } from "./BuildingLogic";
 import { addResource, changeStat, getStat, resourceOf } from "./ResourceLogic";
-import { getShipBlueprint } from "./ShipLogic";
 import { getBuildingsInShipClass, getShipClass } from "./TechLogic";
 
 export function tickQuantumElementProgress(save: SaveGame, silent?: boolean): void {
@@ -58,16 +57,6 @@ export function getElementsInShipClass(shipClass: ShipClass, result?: ElementSym
 }
 
 export const StartQuantum = 10;
-
-export function getMinimumQuantumForBattle(gs: GameState): number {
-   const bp = getShipBlueprint(gs);
-   return bp.length;
-}
-
-export function getMinimumSpaceshipXPForBattle(gs: GameState): number {
-   return quantumToXP(getMinimumQuantumForBattle(gs));
-}
-
 const qToSVLookup = new Map<number, number>();
 
 function populateQuantumLookup() {

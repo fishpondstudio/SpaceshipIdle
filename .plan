@@ -1,8 +1,16 @@
 TODO:
-- Extra XP Per Sec
+- Winning streak
+- Ship unique bonus
+
 
 Patch Notes:
-- Max amount of time warp now starts at 8h, and can be upgraded by element Hydrogen (H)
+- Matchmaking required is now fixed at 20 Quantum + 100K XP, regardless of ship class
+- Add a friendship reward / directive that gives extra percentage of XP/s
+- PvE ships has been rebalanced - they are now more challenging
+- Minimum warmonger penalty can now be negative - add a friendship reward / directive reduces minimum warmonger penalty
+- Add Warmonger Penalty Decrease countdown timer
+- Max amount of time warp now starts at 8h, and can be upgraded by element Hydrogen (H). The limit only applies when offline time is converted to time warp
 - Elements are rolled from current ship class (previously it was rolled from unlocked tech)
 - Fix a bug where Conquest reward are not correctly awarded
 - Improve UX of Reforge Add-on
+- When exploring a new star system, expired friendships now count

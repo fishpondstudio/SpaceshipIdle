@@ -3,7 +3,7 @@ import { L, t } from "../../utils/i18n";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
 import { quantumToXP } from "../logic/QuantumElementLogic";
-import { addResource, changeStat } from "../logic/ResourceLogic";
+import { addResource } from "../logic/ResourceLogic";
 import type { Runtime } from "../logic/Runtime";
 import { getMaxQuantumForShipClass } from "../logic/TechLogic";
 import { BaseWarmongerChangePerSec } from "./Constant";
@@ -28,6 +28,8 @@ export const Bonus = {
    Reduce15WarmongerPerSec: reduceWarmongerPerSec(1.5),
 
    Reduce1MinWarmonger: reduceMinWarmonger(1),
+   Reduce2MinWarmonger: reduceMinWarmonger(2),
+   Reduce3MinWarmonger: reduceMinWarmonger(3),
 
    Get5ExtraXPPerSec: getExtraXPPerSec(0.05),
    Get10ExtraXPPerSec: getExtraXPPerSec(0.1),
@@ -153,7 +155,7 @@ function resetBackstabberOnDeclaration(): IBonusDefinition {
    return {
       desc: (runtime: Runtime) => t(L.ResetBackstabberPenaltyToX, 0),
       onStart: (runtime: Runtime, from?: IHaveXY) => {
-         changeStat("Backstabber", 0, runtime.left.stats);
+         runtime.left.stats.set("Backstabber", 0);
       },
    };
 }

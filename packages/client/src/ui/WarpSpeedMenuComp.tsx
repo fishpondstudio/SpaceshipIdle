@@ -70,6 +70,7 @@ export function MaxTimeWarpComp({ gs }: { gs: GameState }): React.ReactNode {
                </div>
             ))}
          </div>
+         {html(t(L.MaxTimeWarpDescHTML), "text-sm text-dimmed")}
       </>
    );
 }
