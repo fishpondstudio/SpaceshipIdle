@@ -7,7 +7,7 @@ import type { ElementData, GameState, SaveGame } from "../GameState";
 import type { ElementSymbol } from "../PeriodicTable";
 import { showInfo } from "./AlertLogic";
 import { fib, getBuildingName } from "./BuildingLogic";
-import { addResource, changeStat, getStat, resourceOf } from "./ResourceLogic";
+import { addResource, addStat, getStat, resourceOf } from "./ResourceLogic";
 import { getBuildingsInShipClass, getShipClass } from "./TechLogic";
 
 export function tickQuantumElementProgress(save: SaveGame, silent?: boolean): void {
@@ -24,7 +24,7 @@ export function tickQuantumElementProgress(save: SaveGame, silent?: boolean): vo
    const currentElements = getStat("Element", save.state.stats);
    if (currentElements < expectedElements) {
       const elementsToAdd = expectedElements - currentElements;
-      changeStat("Element", elementsToAdd, save.state.stats);
+      addStat("Element", elementsToAdd, save.state.stats);
       if (!silent) {
          showInfo(t(L.AlertDiscoveredElements, elementsToAdd, expectedElements), true, true);
       }

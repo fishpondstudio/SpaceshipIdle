@@ -9,7 +9,7 @@ import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/l
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { generateGalaxy } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
-import { calcSpaceshipXP, changeStat, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { calcSpaceshipXP, addStat, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { getShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { getBuildingsWithinShipClass, getTechWithinShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
@@ -56,7 +56,7 @@ export function addDebugFunctions(): void {
    };
    // @ts-expect-error
    globalThis.chooseElement = () => {
-      changeStat("Element", -1, G.save.state.stats);
+      addStat("Element", -1, G.save.state.stats);
    };
    // // @ts-expect-error
    // globalThis.choosePermanentElement = () => {
@@ -128,7 +128,7 @@ export function addDebugFunctions(): void {
    };
    // @ts-expect-error
    globalThis.reroll = async () => {
-      changeStat("Element", -getStat("Element", G.save.state.stats), G.save.state.stats);
+      addStat("Element", -getStat("Element", G.save.state.stats), G.save.state.stats);
       G.save.data.elementChoices = [];
       G.save.state.elements.clear();
    };

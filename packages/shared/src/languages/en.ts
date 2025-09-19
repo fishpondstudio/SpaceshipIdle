@@ -764,4 +764,6 @@ export const EN = {
    WarmongerPenaltyDecrease: "Decrease",
    TimeToZero: "Time To Zero:",
    TimeToMin: "Time To Min:",
+   WinningStreak: "Winning Streak",
+   WinningStreakTooltipHTML: "You get <b>5</b> peace treaty score for each winning streak <b>above one</b> (i.e. 4 winning streaks = 5 x 3 = 15). Maximum <b>50</b> peace treaty score are awarded from winning streak",
 };

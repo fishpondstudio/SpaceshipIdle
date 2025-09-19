@@ -24,7 +24,7 @@ import { tickCatalyst } from "./CatalystLogic";
 import { tickGalaxy } from "./GalaxyLogic";
 import type { Projectile } from "./Projectile";
 import { tickQuantumElementProgress } from "./QuantumElementLogic";
-import { addResource, changeStat, getStat, trySpendResource } from "./ResourceLogic";
+import { addResource, addStat, getStat, trySpendResource } from "./ResourceLogic";
 import { RuntimeStat } from "./RuntimeStat";
 import { RuntimeFlag, RuntimeTile } from "./RuntimeTile";
 import { flipHorizontalCopy, isEnemy } from "./ShipLogic";
@@ -240,7 +240,7 @@ export class Runtime {
       const current = getStat("Warmonger", this.left.stats);
       const min = this.leftStat.warmongerMin.value;
       if (current > min) {
-         changeStat("Warmonger", -Math.min(current - min, change), this.left.stats);
+         addStat("Warmonger", -Math.min(current - min, change), this.left.stats);
       }
    }
 

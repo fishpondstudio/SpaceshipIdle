@@ -7,8 +7,8 @@ import type { BattleInfo } from "@spaceship-idle/shared/src/game/logic/BattleInf
 import { getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType, BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { findPlanet, getAddonReward } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
-import { calculateRewardValue } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
-import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { calculateRewardValue, getWinningStreakScore } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
+import { addResource, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, getDOMRectCenter, mMapOf, shuffle } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -20,6 +20,7 @@ import { DefeatedHeaderComp, VictoryHeaderComp } from "./components/BattleResult
 import { FloatingTip } from "./components/FloatingTip";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { NumberSelect } from "./components/NumberInput";
+import { html } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
 import { playBling } from "./Sound";
 
@@ -44,8 +45,10 @@ export function PeaceTreatyModal({
          ["XP", 0],
       ]),
    });
+   const winningStreak = getStat("WinningStreak", G.save.state.stats);
+   const peaceTreatyScore = battleScore + getWinningStreakScore(winningStreak);
    const [value, breakdown] = calculateRewardValue(battleResult.current, G.save.state);
-   const leftOver = clamp(battleScore - value, 0, Number.POSITIVE_INFINITY);
+   const leftOver = clamp(peaceTreatyScore - value, 0, Number.POSITIVE_INFINITY);
    battleResult.current.resources.set("XP", (leftOver / 100) * enemyXP);
    let texture = "Others/SpaceshipEnemy24";
 
@@ -91,6 +94,16 @@ export function PeaceTreatyModal({
                   <div className="f1">{BattleVictoryTypeLabel[victoryType]()}</div>
                   <div>{battleScore}</div>
                </div>
+               {getWinningStreakScore(winningStreak) > 0 ? (
+                  <FloatingTip label={html(t(L.WinningStreakTooltipHTML))}>
+                     <div className="row">
+                        <div className="f1">
+                           {t(L.WinningStreak)} (x{winningStreak})
+                        </div>
+                        <div>{getWinningStreakScore(winningStreak)}</div>
+                     </div>
+                  </FloatingTip>
+               ) : null}
             </div>
             <div className="f1 panel stretch">
                <div className="row">
@@ -134,8 +147,8 @@ export function PeaceTreatyModal({
             </div>
          </div>
          <div className="row my10" style={{ fontSize: 30 }}>
-            <div className="f1 text-center">{battleScore}</div>
-            {battleScore >= value ? (
+            <div className="f1 text-center">{peaceTreatyScore}</div>
+            {peaceTreatyScore >= value ? (
                <div className="mi text-green" style={{ fontSize: 30 }}>
                   sentiment_satisfied
                </div>
@@ -148,7 +161,7 @@ export function PeaceTreatyModal({
          </div>
          <button
             className="btn w100 filled p5"
-            disabled={battleScore < value}
+            disabled={peaceTreatyScore < value}
             onClick={(e) => {
                showLoading();
                hideModal();
@@ -199,9 +212,9 @@ export function PeaceTreatyModal({
                label={
                   <>
                      <div>
-                        You have <b>{battleScore}</b> battle score and the war reparation cannot exceed this. Your first
-                        Victory Point and Add-on are free. Your remaining <b>{leftOver}</b> battle score is converted to{" "}
-                        <b>{formatNumber(battleResult.current.resources.get("XP") ?? 0)}</b> XP
+                        You have <b>{peaceTreatyScore}</b> peace treaty score and the war reparation cannot exceed this.
+                        Your first Victory Point and Add-on are free. Your remaining <b>{leftOver}</b> peace treaty
+                        score is converted to <b>{formatNumber(battleResult.current.resources.get("XP") ?? 0)}</b> XP
                      </div>
                      <div className="h5" />
                      <div className="flex-table mx-10">

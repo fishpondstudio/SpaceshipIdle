@@ -79,3 +79,7 @@ export function grantRewards(result: BattleResult, gs: GameState): void {
       addResource("Warp", warp, gs.resources);
    }
 }
+
+export function getWinningStreakScore(ws: number): number {
+   return Math.min((ws - 1) * 5, 50);
+}

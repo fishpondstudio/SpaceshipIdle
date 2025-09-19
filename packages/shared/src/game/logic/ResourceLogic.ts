@@ -110,7 +110,7 @@ export function refundResource(
    resources.set(resource, result);
 }
 
-export function changeStat(stat: Stat, amount: number, stats: Map<Stat, number>): number {
+export function addStat(stat: Stat, amount: number, stats: Map<Stat, number>): number {
    const result = (stats.get(stat) ?? 0) + amount;
    stats.set(stat, result);
    return result;

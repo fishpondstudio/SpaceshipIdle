@@ -86,6 +86,16 @@ export function ShipInfoPanel(): React.ReactNode {
             label={
                <div className="flex-table mx-10">
                   <div className="row">
+                     <div className="f1">{t(L.MatchmakingQualified)}</div>
+                     <div>
+                        {highlight ? (
+                           <div className="mi sm text-green">check_circle</div>
+                        ) : (
+                           <div className="mi sm text-red">cancel</div>
+                        )}
+                     </div>
+                  </div>
+                  <div className="row">
                      <div className="f1">{t(L.VictoryPoint)}</div>
                      <div>
                         <TextureComp name="Others/Trophy16" className="inline-middle" /> {formatNumber(vp.current)}
@@ -104,14 +114,8 @@ export function ShipInfoPanel(): React.ReactNode {
                      <div>{formatPercent(divide(victory, victory + defeat))}</div>
                   </div>
                   <div className="row">
-                     <div className="f1">{t(L.MatchmakingQualified)}</div>
-                     <div>
-                        {highlight ? (
-                           <div className="mi sm text-green">check_circle</div>
-                        ) : (
-                           <div className="mi sm text-red">cancel</div>
-                        )}
-                     </div>
+                     <div className="f1">{t(L.WinningStreak)}</div>
+                     <div>{formatNumber(getStat("WinningStreak", G.save.state.stats))}</div>
                   </div>
                   <div className="row fstart">
                      <WarmongerPenaltyRowComp />

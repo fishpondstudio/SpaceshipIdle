@@ -6,7 +6,7 @@ import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { findPlanet } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
-import { canSpendResource, changeStat, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { canSpendResource, addStat, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import { formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/Helper";
@@ -94,11 +94,11 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
                      G.scene.loadScene(ShipScene).requestFocus();
 
                      if (!info.noWarmongerPenalty) {
-                        changeStat("Warmonger", 1, G.save.state.stats);
+                        addStat("Warmonger", 1, G.save.state.stats);
                      }
 
                      if (info.backstabberPenalty) {
-                        changeStat("Backstabber", 1, G.save.state.stats);
+                        addStat("Backstabber", 1, G.save.state.stats);
                      }
 
                      hideSidebar();

@@ -7,7 +7,7 @@ import { OnAlert, showError } from "@spaceship-idle/shared/src/game/logic/AlertL
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { RequestParticle } from "@spaceship-idle/shared/src/game/logic/RequestParticle";
-import { calcSpaceshipXP, changeStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { addStat, calcSpaceshipXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { OnBattleStatusChanged } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { getDOMRectCenter } from "@spaceship-idle/shared/src/utils/Helper";
 import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
@@ -39,9 +39,11 @@ export function subscribeToEvents(): void {
                   />
                );
                if (G.runtime.battleStatus === BattleStatus.RightWin) {
-                  changeStat("Defeat", 1, G.save.state.stats);
+                  addStat("Defeat", 1, G.save.state.stats);
+                  G.save.state.stats.set("WinningStreak", 0);
                } else {
-                  changeStat("Victory", 1, G.save.state.stats);
+                  addStat("Victory", 1, G.save.state.stats);
+                  addStat("WinningStreak", 1, G.save.state.stats);
                }
                break;
             }
