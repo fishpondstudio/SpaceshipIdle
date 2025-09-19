@@ -81,7 +81,7 @@ interface ValueBreakdown {
    value: number;
 }
 
-export function getWarPenalty(gs: GameState, planet?: Planet): ValueBreakdown[] {
+export function getWarConsequences(gs: GameState, planet?: Planet): ValueBreakdown[] {
    if (!planet) return [{ name: t(L.WarmongerPenalty), value: 1 }];
    if (planet.type === PlanetType.Pirate) {
       return [{ name: t(L.WarmongerPenalty), desc: t(L.BecauseTheyArePirates), value: 0 }];

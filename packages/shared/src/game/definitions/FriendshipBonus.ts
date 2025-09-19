@@ -5,6 +5,7 @@ export const FriendshipBonus: Record<ShipClass, Bonus[]> = {
    Skiff: [
       "SkiffClass1XPMultiplier",
       "Reduce10WarmongerPerSec",
+      "Reduce1MinWarmonger",
       "Get8VictoryPointOnExp",
       "Get3VictoryPointOnDeclExp",
       "Get4VictoryPointOnDecl",

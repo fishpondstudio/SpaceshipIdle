@@ -27,6 +27,8 @@ export const Bonus = {
    Reduce10WarmongerPerSec: reduceWarmongerPerSec(1),
    Reduce15WarmongerPerSec: reduceWarmongerPerSec(1.5),
 
+   Reduce1MinWarmonger: reduceMinWarmonger(1),
+
    Get5ExtraXPPerSec: getExtraXPPerSec(0.05),
    Get10ExtraXPPerSec: getExtraXPPerSec(0.1),
    Get15ExtraXPPerSec: getExtraXPPerSec(0.15),
@@ -134,6 +136,15 @@ function reduceWarmongerPerSec(value: number): IBonusDefinition {
       desc: (runtime: Runtime) => t(L.WarmongerPenaltyPerSec, BaseWarmongerChangePerSec * value),
       onTick: (timeLeft: number, source: string, runtime: Runtime) => {
          runtime.leftStat.warmongerDecrease.add(BaseWarmongerChangePerSec * value, source);
+      },
+   };
+}
+
+function reduceMinWarmonger(value: number): IBonusDefinition {
+   return {
+      desc: (runtime: Runtime) => t(L.ReduceMinWarmonger, formatNumber(value)),
+      onTick: (timeLeft: number, source: string, runtime: Runtime) => {
+         runtime.leftStat.warmongerMin.add(-value, source);
       },
    };
 }

@@ -1,6 +1,9 @@
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
+import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { G } from "../utils/Global";
+import { html } from "./components/RenderHTMLComp";
 
 export function WarmongerPenaltyTooltip(): React.ReactNode {
    const stat = G.runtime.leftStat;
@@ -8,22 +11,43 @@ export function WarmongerPenaltyTooltip(): React.ReactNode {
    return (
       <>
          <div>
-            Current Warmonger Penalty is <b>{getWarmongerPenalty(G.save.state)}</b> ( rounded up from{" "}
-            <b className="text-tabular-nums">{warmongerPenalty.toFixed(3)}</b>). It is increased when you declare war.
-            It makes declaring further wars and declaring friendship more expensive
+            {html(
+               t(L.WarmongerPenaltyDesc, getWarmongerPenalty(G.save.state), warmongerPenalty.toFixed(3)),
+               "render-html",
+            )}
          </div>
          <div className="divider mx-10 my5" />
          <div>
-            Warmonger Penalty is decreased by <b>{stat.warmongerDecrease.value}/s</b> until it reaches 0, detailed as
-            follows
+            Warmonger Penalty is decreased by <b>{stat.warmongerDecrease.value}</b> until it reaches{" "}
+            <b>{stat.warmongerMin.value}</b>, detailed as follows
          </div>
          <div className="flex-table mx-10 mt5">
-            {stat.warmongerDecrease.detail.map((m) => (
-               <div className="row" key={m.source}>
-                  <div className="f1">{m.source}</div>
-                  <div>{m.value}</div>
+            <div className="row fstart">
+               <div className="f1">
+                  <div>Warmonger Penalty Decrease</div>
+                  <div className="text-xs text-space">
+                     {stat.warmongerDecrease.detail.map((m) => (
+                        <div key={m.source}>
+                           - {m.source}: {formatNumber(m.value)}
+                        </div>
+                     ))}
+                  </div>
                </div>
-            ))}
+               <div>{stat.warmongerDecrease.value}/s</div>
+            </div>
+            <div className="row fstart">
+               <div className="f1">
+                  <div>Minimum Warmonger Penalty</div>
+                  <div className="text-xs text-space">
+                     {stat.warmongerMin.detail.map((m) => (
+                        <div key={m.source}>
+                           - {m.source}: {formatNumber(m.value)}
+                        </div>
+                     ))}
+                  </div>
+               </div>
+               <div>{formatNumber(stat.warmongerMin.value)}</div>
+            </div>
          </div>
       </>
    );

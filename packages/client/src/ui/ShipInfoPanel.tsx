@@ -177,6 +177,7 @@ export function ShipInfoPanel(): React.ReactNode {
          </FloatingTip>
          <div className="divider vertical" />
          <FloatingTip
+            w={300}
             label={
                <>
                   {html(t(L.XPTooltipHTMLV2, formatNumber(currentXP)))}

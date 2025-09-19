@@ -686,6 +686,7 @@ export const EN = {
    Warbler: "Warbler",
    WarmongerPenalty: "Warmonger Penalty",
    WarmongerPenaltyPerSec: "-%% Warmonger Penalty/s",
+   ReduceMinWarmonger: "-%% Minimum Warmonger Penalty",
    WarpPerSec: "warp/s",
    WarpSpeed: "Warp Speed",
    WeaponList: "Weapon Wiki",
@@ -758,4 +759,5 @@ export const EN = {
    XpSFromWeapons: "XP/s from Weapons",
    ExtraXpS: "Extra XP/s",
    TotalXpS: "Total XP/s",
+   WarmongerPenaltyDesc: "Current Warmonger Penalty is <b>%%</b> (rounded up from<b>%%</b>). It is increased when you declare war and makes declaring wars and friendship more costly. Negative Warmonger Penalty are rounded up to 0 when determining war and friendship cost",
 };

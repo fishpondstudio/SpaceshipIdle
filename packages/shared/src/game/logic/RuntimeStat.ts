@@ -20,6 +20,7 @@ export class RuntimeStat {
    zeroProjectileSec = 0;
 
    warmongerDecrease = new TrackedValue(BaseWarmongerChangePerSec);
+   warmongerMin = new TrackedValue(0);
    extraXPPerSecond = new TrackedValue(0);
 
    rawDamage: Record<DamageType, number> = {
@@ -141,5 +142,6 @@ export class RuntimeStat {
    public prepareForTick(): void {
       this.warmongerDecrease.clear();
       this.extraXPPerSecond.clear();
+      this.warmongerMin.clear();
    }
 }

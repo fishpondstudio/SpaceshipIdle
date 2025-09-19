@@ -238,8 +238,9 @@ export class Runtime {
    private _tickPenalty() {
       const change = this.leftStat.warmongerDecrease.value;
       const current = getStat("Warmonger", this.left.stats);
-      if (current > 0) {
-         changeStat("Warmonger", -Math.min(current, change), this.left.stats);
+      const min = this.leftStat.warmongerMin.value;
+      if (current > min) {
+         changeStat("Warmonger", -Math.min(current - min, change), this.left.stats);
       }
    }
 

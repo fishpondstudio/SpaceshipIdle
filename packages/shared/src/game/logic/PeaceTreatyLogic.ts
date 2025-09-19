@@ -62,7 +62,7 @@ function getAddonFactor(Addon: Addon, gs: GameState): number {
 }
 
 export function getWarmongerPenalty(gs: GameState): number {
-   return Math.ceil(getStat("Warmonger", gs.stats));
+   return Math.ceil(clamp(getStat("Warmonger", gs.stats), 0, Number.POSITIVE_INFINITY));
 }
 
 export function grantRewards(result: BattleResult, gs: GameState): void {

@@ -9,6 +9,7 @@ import {
    getGalaxyLocations,
    getMaxFriendship,
 } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { GalaxyScene } from "../scenes/GalaxyScene";
@@ -22,7 +23,7 @@ import { WarmongerPenaltyTooltip } from "./WarmongerPenaltyTooltip";
 
 export function GalaxyInfoPanel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
-   const warmongerPenalty = getStat("Warmonger", G.save.state.stats);
+   const warmongerPenalty = getWarmongerPenalty(G.save.state);
    const [maxFriendship] = getMaxFriendship(G.save.state);
    const locations = getGalaxyLocations(G.save.data.galaxy);
    const canExplorePlanet = canExploreAnyPlanet(G.save.data.galaxy);
@@ -42,10 +43,10 @@ export function GalaxyInfoPanel(): React.ReactNode {
                <div className="row">
                   <div className="f1">{t(L.WarmongerPenalty)}</div>
                   <div>
-                     {warmongerPenalty > 0 ? (
+                     {getStat("Warmonger", G.save.state.stats) > G.runtime.leftStat.warmongerMin.value ? (
                         <span className="text-xs text-green">({-G.runtime.leftStat.warmongerDecrease.value}/s) </span>
                      ) : null}
-                     {Math.ceil(warmongerPenalty)}
+                     {warmongerPenalty}
                   </div>
                </div>
             </FloatingTip>

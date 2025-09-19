@@ -4,7 +4,11 @@ import { Resources } from "@spaceship-idle/shared/src/game/definitions/Resource"
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { generateShip, getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
-import { getAddonReward, getPlanetShipClass, getWarPenalty } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import {
+   getAddonReward,
+   getPlanetShipClass,
+   getWarConsequences,
+} from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { canSpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { cls, formatNumber, hasFlag, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
@@ -67,7 +71,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
       cannotDeclareWarReason = "You cannot declare war because you currently have a friendship with them";
    }
 
-   const penalties = getWarPenalty(G.save.state, planet);
+   const consequences = getWarConsequences(G.save.state, planet);
    const warmonger = getWarmongerPenalty(G.save.state);
    return (
       <>
@@ -79,7 +83,7 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                   <div>
                      {warmonger} <TextureComp name="Others/Trophy16" className="inline-middle" /> {t(L.VictoryPoint)}
                   </div>
-                  {penalties.map((penalty) => {
+                  {consequences.map((penalty) => {
                      if (penalty.value === 0) return null;
                      return (
                         <div key={penalty.name} className="text-red text-sm">
@@ -125,7 +129,8 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
                         info={{
                            hideEnemyInfo: !planet.revealed,
                            noWarmongerPenalty: planet.type === PlanetType.Pirate,
-                           backstabberPenalty: planet.type === PlanetType.State && hasFlag(planet.flags, PlanetFlags.WasFriends),
+                           backstabberPenalty:
+                              planet.type === PlanetType.State && hasFlag(planet.flags, PlanetFlags.WasFriends),
                            planetId: planet.id,
                         }}
                      />

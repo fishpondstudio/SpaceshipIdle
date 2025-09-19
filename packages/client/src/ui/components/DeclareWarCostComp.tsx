@@ -1,5 +1,5 @@
 import type { Planet } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
-import { getWarPenalty } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import { getWarConsequences } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { cls } from "@spaceship-idle/shared/src/utils/Helper";
@@ -8,7 +8,7 @@ import { G } from "../../utils/Global";
 import { ResourceRequirementComp } from "./ResourceListComp";
 
 export function DeclareWarCostComp({ planet }: { planet?: Planet }): React.ReactNode {
-   const penalties = getWarPenalty(G.save.state, planet);
+   const penalties = getWarConsequences(G.save.state, planet);
    const warmonger = getWarmongerPenalty(G.save.state);
    return (
       <>
