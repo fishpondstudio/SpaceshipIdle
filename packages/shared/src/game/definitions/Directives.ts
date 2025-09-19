@@ -3,15 +3,28 @@ import { Bonus } from "./Bonus";
 import type { ShipClass } from "./ShipClass";
 
 export const Directives: Record<ShipClass, Bonus[]> = {
-   Skiff: ["GetSkiffClassXPOnDecl", "Get20VictoryPointOnDecl", "ResetBackstabberOnDecl", "Get8hWarpOnDecl"],
+   Skiff: [
+      "GetSkiffClassXPOnDecl",
+      "Get20VictoryPointOnDecl",
+      "ResetBackstabberOnDecl",
+      "Get8hWarpOnDecl",
+      "Get5ExtraXPPerSec",
+   ],
    Scout: [
       "GetScoutClassXPOnDecl",
       "Get30VictoryPointOnDecl",
       "ResetBackstabberOnDecl",
       "Reduce10WarmongerPerSec",
       "Get12hWarpOnDecl",
+      "Get10ExtraXPPerSec",
    ],
-   Corvette: ["GetCorvetteClassXPOnDecl", "Get40VictoryPointOnDecl", "ResetBackstabberOnDecl", "Get16hWarpOnDecl"],
+   Corvette: [
+      "GetCorvetteClassXPOnDecl",
+      "Get40VictoryPointOnDecl",
+      "ResetBackstabberOnDecl",
+      "Get16hWarpOnDecl",
+      "Get15ExtraXPPerSec",
+   ],
    Frigate: [],
    Destroyer: [],
    Cruiser: [],

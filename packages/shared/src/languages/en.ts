@@ -754,4 +754,8 @@ export const EN = {
    MaxTimeWarp: "Max Time Warp",
    XHourShort: "%%h",
    MaxTimeWarpReachedDesc: "Max Time Warp reached - get more elements this run or upgrade permanent elements",
+   PlusXExtraXPPerSec: "+%% Extra XP/s",
+   XpSFromWeapons: "XP/s from Weapons",
+   ExtraXpS: "Extra XP/s",
+   TotalXpS: "Total XP/s",
 };

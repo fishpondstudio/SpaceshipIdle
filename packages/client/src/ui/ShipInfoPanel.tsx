@@ -35,7 +35,7 @@ import { refreshOnTypedEvent } from "../utils/Hook";
 import { showModal } from "../utils/ToggleModal";
 import { FloatingTip } from "./components/FloatingTip";
 import { HamburgerMenuComp } from "./components/HamburgerMenuComp";
-import { RenderHTML } from "./components/RenderHTMLComp";
+import { html, RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
 import { MatchmakingModal } from "./MatchmakingModal";
 import { WarpSpeedMenuComp } from "./WarpSpeedMenuComp";
@@ -55,7 +55,8 @@ export function ShipInfoPanel(): React.ReactNode {
    const state = G.save.state;
    G.runtime.rightStat.averageRawDamage(10, rawDamages);
    G.runtime.rightStat.averageActualDamage(10, actualDamages);
-   const xpDelta = G.runtime.totalXPPerSecond(state.tiles);
+   const xpPecSec = G.runtime.totalXPPerSecond(state.tiles);
+   const xpDelta = xpPecSec * (1 + G.runtime.leftStat.extraXPPerSecond.value);
    const { used: usedQuantum, total: totalQuantum } = resourceOf("Quantum", state.resources);
    const highlight =
       usedQuantum >= getMinimumQuantumForBattle(state) &&
@@ -175,7 +176,37 @@ export function ShipInfoPanel(): React.ReactNode {
             </div>
          </FloatingTip>
          <div className="divider vertical" />
-         <FloatingTip label={<RenderHTML html={t(L.XPTooltipHTMLV2, formatNumber(currentXP))} />}>
+         <FloatingTip
+            label={
+               <>
+                  {html(t(L.XPTooltipHTMLV2, formatNumber(currentXP)))}
+                  <div className="flex-table mx-10 mt5">
+                     <div className="row">
+                        <div className="f1">{t(L.XpSFromWeapons)}</div>
+                        <div>{formatDelta(xpPecSec)}</div>
+                     </div>
+                     <div className="row fstart">
+                        <div className="f1">
+                           <div>{t(L.ExtraXpS)}</div>
+                           {G.runtime.leftStat.extraXPPerSecond.detail.map((m) => {
+                              if (m.value === 0) return null;
+                              return (
+                                 <div className="text-xs text-space" key={m.source}>
+                                    - {m.source}: +{formatPercent(m.value)}
+                                 </div>
+                              );
+                           })}
+                        </div>
+                        <div className="text-green">+{formatPercent(G.runtime.leftStat.extraXPPerSecond.value)}</div>
+                     </div>
+                     <div className="row">
+                        <div className="f1">{t(L.TotalXpS)}</div>
+                        <div>{formatDelta(xpDelta)}</div>
+                     </div>
+                  </div>
+               </>
+            }
+         >
             <div className="block" style={{ width: 90 }}>
                <TextureComp id={XPElementId} name="Others/XP24" />
                <div className="f1 text-right">

@@ -1,0 +1,15 @@
+// Project tasks configuration. See https://zed.dev/docs/tasks for documentation.
+//
+// Example:
+[
+   {
+      "label": "Run Server",
+      "command": "pnpm run start",
+      "cwd": "packages/server"
+   },
+   {
+      "label": "Run Client",
+      "command": "pnpm run dev",
+      "cwd": "packages/client"
+   }
+]

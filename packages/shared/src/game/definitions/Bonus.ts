@@ -1,4 +1,4 @@
-import { formatNumber } from "../../utils/Helper";
+import { formatNumber, formatPercent } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -26,6 +26,11 @@ export const Bonus = {
 
    Reduce10WarmongerPerSec: reduceWarmongerPerSec(1),
    Reduce15WarmongerPerSec: reduceWarmongerPerSec(1.5),
+
+   Get5ExtraXPPerSec: getExtraXPPerSec(0.05),
+   Get10ExtraXPPerSec: getExtraXPPerSec(0.1),
+   Get15ExtraXPPerSec: getExtraXPPerSec(0.15),
+   Get20ExtraXPPerSec: getExtraXPPerSec(0.2),
 
    Get8VictoryPointOnExp: victoryPointOnExpiration(8),
    Get10VictoryPointOnExp: victoryPointOnExpiration(10),
@@ -151,6 +156,15 @@ function shipClassOneTimeXP(shipClass: ShipClass): IBonusDefinition {
       onStart: (runtime: Runtime, from?: IHaveXY) => {
          const quantum = getMaxQuantumForShipClass(shipClass, runtime.left);
          addResource("XP", quantumToXP(quantum + 1) - quantumToXP(quantum), runtime.left.resources, from);
+      },
+   };
+}
+
+function getExtraXPPerSec(pct: number): IBonusDefinition {
+   return {
+      desc: (runtime: Runtime) => t(L.PlusXExtraXPPerSec, formatPercent(pct)),
+      onTick: (timeLeft: number, source: string, runtime: Runtime) => {
+         runtime.leftStat.extraXPPerSecond.add(pct, source);
       },
    };
 }
