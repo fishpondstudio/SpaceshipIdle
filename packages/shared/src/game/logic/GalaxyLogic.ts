@@ -320,17 +320,17 @@ export const StarTextures = ["Star1", "Star2", "Star3", "Star4", "Star5", "Star6
 
 export function generateGalaxy(random: () => number): Galaxy {
    const circles = packCircles(
-      [{ x: 0, y: 0, r: 300 }].concat(
+      [{ x: 0, y: 0, r: 400 }].concat(
          shuffle(
             [
                { x: 0, y: 0, r: 600 },
                { x: 0, y: 0, r: 600 },
-               { x: 0, y: 0, r: 600 },
                { x: 0, y: 0, r: 550 },
                { x: 0, y: 0, r: 550 },
                { x: 0, y: 0, r: 500 },
                { x: 0, y: 0, r: 500 },
-               { x: 0, y: 0, r: 400 },
+               { x: 0, y: 0, r: 450 },
+               { x: 0, y: 0, r: 450 },
                { x: 0, y: 0, r: 400 },
             ],
             random,
