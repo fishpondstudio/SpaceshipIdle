@@ -43,7 +43,7 @@ export function calculateRewardValue(result: BattleResult, gs: GameState): [numb
    if (totalAddons > 0) {
       const valueFromAddons = getBaseValue(totalAddons);
       value += valueFromAddons;
-      breakdown.push({ label: "Add-ons", value: valueFromAddons });
+      breakdown.push({ label: t(L.Addons), value: valueFromAddons });
    }
    if (differentAddons > 1) {
       const fromDifferentAddons = 10 * (differentAddons - 1);

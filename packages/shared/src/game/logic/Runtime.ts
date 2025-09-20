@@ -16,6 +16,7 @@ import { ShipClass } from "../definitions/ShipClass";
 import { type GameState, GameStateUpdated, hashGameStatePair, type SaveGame, type Tiles } from "../GameState";
 import { makeTile } from "../ITileData";
 import { tickAddon } from "./AddonLogic";
+import { showInfo } from "./AlertLogic";
 import type { BattleInfo } from "./BattleInfo";
 import { tickProjectiles, tickTiles } from "./BattleLogic";
 import { BattleStatus } from "./BattleStatus";
@@ -199,6 +200,7 @@ export class Runtime {
          this._checkSuddenDeath();
          this._tickPenalty();
          this._tickExtraXP();
+         this._tickVictoryPointTimer();
 
          this.leftStat.tabulate(this.tabulateHp(this.left.tiles), this.left);
          this.rightStat.tabulate(this.tabulateHp(this.right.tiles), this.right);
@@ -293,6 +295,20 @@ export class Runtime {
          this.leftStat.extraXPPerSecond.value * this.totalXPPerSecond(this.left.tiles),
          this.left.resources,
       );
+   }
+
+   private _tickVictoryPointTimer(): void {
+      const vp = this.leftStat.victoryPointPerHour.value;
+      if (vp > 0) {
+         while (getStat("VictoryPointTimer", this.left.stats) >= 60 * 60) {
+            addStat("VictoryPointTimer", -60 * 60, this.left.stats);
+            addResource("VictoryPoint", vp, this.left.resources);
+            showInfo(t(L.VictoryPointHasBeenAddToYourShip, vp), true);
+         }
+         addStat("VictoryPointTimer", 1, this.left.stats);
+      } else {
+         this.left.stats.set("VictoryPointTimer", 0);
+      }
    }
 
    public tabulateHp(tiles: Tiles): [number, number] {

@@ -38,6 +38,7 @@ import { HamburgerMenuComp } from "./components/HamburgerMenuComp";
 import { html, RenderHTML } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
 import { MatchmakingModal } from "./MatchmakingModal";
+import { VictoryPointPerHourRowComp } from "./VictoryPointPerHourRowComp";
 import { WarmongerPenaltyRowComp } from "./WarmongerPenaltyRowComp";
 import { WarpSpeedMenuComp } from "./WarpSpeedMenuComp";
 
@@ -124,6 +125,7 @@ export function ShipInfoPanel(): React.ReactNode {
                      <div className="f1">{t(L.BackstabberPenalty)}</div>
                      <div>{getStat("Backstabber", G.save.state.stats)}</div>
                   </div>
+                  <VictoryPointPerHourRowComp />
                </div>
             }
          >

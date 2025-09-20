@@ -36,6 +36,12 @@ export const Bonus = {
    Get15ExtraXPPerSec: getExtraXPPerSec(0.15),
    Get20ExtraXPPerSec: getExtraXPPerSec(0.2),
 
+   Get1VictoryPointPerHour: victoryPointPerHour(1),
+   Get2VictoryPointPerHour: victoryPointPerHour(2),
+   Get3VictoryPointPerHour: victoryPointPerHour(3),
+   Get4VictoryPointPerHour: victoryPointPerHour(4),
+   Get5VictoryPointPerHour: victoryPointPerHour(5),
+
    Get8VictoryPointOnExp: victoryPointOnExpiration(8),
    Get10VictoryPointOnExp: victoryPointOnExpiration(10),
    Get12VictoryPointOnExp: victoryPointOnExpiration(12),
@@ -188,6 +194,15 @@ function getExtraXPPerSec(pct: number): IBonusDefinition {
       desc: (runtime: Runtime) => t(L.PlusXExtraXPPerSec, formatPercent(pct)),
       onTick: (timeLeft: number, source: string, runtime: Runtime) => {
          runtime.leftStat.extraXPPerSecond.add(pct, source);
+      },
+   };
+}
+
+function victoryPointPerHour(value: number): IBonusDefinition {
+   return {
+      desc: (runtime: Runtime) => t(L.PlusXVictoryPointPerHour, formatNumber(value)),
+      onTick: (timeLeft: number, source: string, runtime: Runtime) => {
+         runtime.leftStat.victoryPointPerHour.add(value, source);
       },
    };
 }

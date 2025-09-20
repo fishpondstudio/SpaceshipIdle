@@ -96,7 +96,11 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                         const newShipClass = getShipClass(G.save.state);
                         if (oldShipClass !== newShipClass) {
                            G.scene.enqueue(ShipScene, (s) => s.requestBlueprintUpdate());
-                           showInfo(t(L.YouHaveUnlockedClassSpaceship, ShipClass[newShipClass].name()));
+                           showInfo(t(L.YouHaveUnlockedClassSpaceship, ShipClass[newShipClass].name()), true);
+                           if (G.save.state.blueprint === "Majestic") {
+                              G.save.state.stats.set("Warmonger", 0);
+                              G.save.state.stats.set("Backstabber", 0);
+                           }
                         }
                         GameStateUpdated.emit();
                         G.scene.enqueue(TechTreeScene, (t) => t.refresh());

@@ -22,6 +22,7 @@ export class RuntimeStat {
    warmongerDecrease = new TrackedValue(BaseWarmongerChangePerSec);
    warmongerMin = new TrackedValue(0);
    extraXPPerSecond = new TrackedValue(0);
+   victoryPointPerHour = new TrackedValue(0);
 
    rawDamage: Record<DamageType, number> = {
       [DamageType.Kinetic]: 0,
@@ -140,8 +141,11 @@ export class RuntimeStat {
    }
 
    public prepareForTick(): void {
-      this.warmongerDecrease.clear();
-      this.extraXPPerSecond.clear();
-      this.warmongerMin.clear();
+      for (const key in this) {
+         const value = this[key];
+         if (value instanceof TrackedValue) {
+            value.clear();
+         }
+      }
    }
 }

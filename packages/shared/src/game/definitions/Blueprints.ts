@@ -7,6 +7,7 @@ import { Bonus } from "./Bonus";
 import { CodeNumber } from "./CodeNumber";
 import { Horizon } from "./Horizon";
 import { Intrepid } from "./Intrepid";
+import { Majestic } from "./Majestic";
 import { Odyssey } from "./Odyssey";
 import { Orion } from "./Orion";
 import { Pioneer } from "./Pioneer";
@@ -64,6 +65,12 @@ export const Blueprints = {
       blueprint: Orion,
       elementLevel: 25,
       desc: () => t(L.OrionDesc),
+   }),
+   Majestic: cast<IBlueprint>({
+      name: () => t(L.Majestic),
+      blueprint: Majestic,
+      elementLevel: 30,
+      desc: () => t(L.MajesticDesc),
    }),
 } as const satisfies Record<string, IBlueprint>;
 

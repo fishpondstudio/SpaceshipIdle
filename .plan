@@ -1,3 +1,14 @@
-TODO:
-- Blueprint editor
-- Ship unique bonus
+Several new ship blueprints have been added, and now each ship blueprint has a unique bonus. 
+
+- SS Voyager: +10% Extra XP/s
+- SS Pioneer: +1 Friendship Slot
+- SS Horizon: All autocannons get +1 XP Multiplier
+- SS Intrepid: +10 Peace Treaty Score when negotiating war reparation
+- SS Orion: 10% more modules for each ship class
+- SS Majestic: Reset Warmonger Penalty and Backstabber Penalty to 0 when unlocking a new ship class
+
+The following friendship bonus / directives have been added:
+- -N Minimum Warmonger Penalty
+- Reset Warmonger Penalty to 0
+- Get N% of extra XP/s
+- Get N Victory Point/h

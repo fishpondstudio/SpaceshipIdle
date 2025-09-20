@@ -775,4 +775,11 @@ export const EN = {
    Intrepid: "Intrepid",
    IntrepidDesc: "+10 Peace Treaty Score when negotiating war reparation",
    ResetWarmongerPenaltyToX: "Reset <b>Warmonger Penalty</b> to <b>%%</b>",
+   Majestic: "Majestic",
+   MajesticDesc: "Reset Warmonger Penalty and Backstabber Penalty to 0 when unlocking a new ship class",
+   FriendshipEndedAlert: "Your friendship with %% has ended - rewards has been granted if any",
+   VictoryPointHasBeenAddToYourShip: "%% Victory Point has been add to your ship",
+   VictoryPointPerHour: "Victory Point Per Hour",
+   TimeUntilNextReward: "Time Until Next Reward: %%",
+   PlusXVictoryPointPerHour: "+%% Victory Point/h",
 };

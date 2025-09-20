@@ -10,6 +10,7 @@ export const Directives: Record<ShipClass, Bonus[]> = {
       "ResetWarmongerOnDecl",
       "Get8hWarpOnDecl",
       "Get5ExtraXPPerSec",
+      "Get1VictoryPointPerHour",
    ],
    Scout: [
       "GetScoutClassXPOnDecl",
@@ -19,6 +20,7 @@ export const Directives: Record<ShipClass, Bonus[]> = {
       "Reduce10WarmongerPerSec",
       "Get12hWarpOnDecl",
       "Get10ExtraXPPerSec",
+      "Get2VictoryPointPerHour",
    ],
    Corvette: [
       "GetCorvetteClassXPOnDecl",
@@ -28,6 +30,7 @@ export const Directives: Record<ShipClass, Bonus[]> = {
       "Reduce1MinWarmonger",
       "Get16hWarpOnDecl",
       "Get15ExtraXPPerSec",
+      "Get3VictoryPointPerHour",
    ],
    Frigate: [],
    Destroyer: [],

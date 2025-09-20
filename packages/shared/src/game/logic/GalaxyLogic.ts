@@ -25,6 +25,7 @@ import {
 import { ShipClass, ShipClassList } from "../definitions/ShipClass";
 import type { GameState, SaveGame } from "../GameState";
 import { getAddonsInClass } from "./AddonLogic";
+import { showInfo } from "./AlertLogic";
 import { getVictoryType } from "./BattleLogic";
 import { BattleVictoryTypeLabel } from "./BattleType";
 import { getWarmongerPenalty } from "./PeaceTreatyLogic";
@@ -286,6 +287,7 @@ export function tickGalaxy(rt: Runtime): void {
             def.onTick?.(planet.friendshipTimeLeft, t(L.FriendshipWith, planet.name), rt);
             if (planet.friendshipTimeLeft === 0) {
                def.onStop?.(rt);
+               showInfo(t(L.FriendshipEndedAlert, planet.name), true);
             }
          }
 

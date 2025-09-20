@@ -1,8 +1,10 @@
+import { Progress } from "@mantine/core";
 import { Bonus } from "@spaceship-idle/shared/src/game/definitions/Bonus";
 import { ShipClass, ShipClassList } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getDirectives, hasUnlockedDirective } from "@spaceship-idle/shared/src/game/logic/DirectiveLogic";
-import { getElementCenter } from "@spaceship-idle/shared/src/utils/Helper";
+import { getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { formatHMS, formatNumber, getElementCenter, HOUR, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import React from "react";
 import { G } from "../utils/Global";
@@ -12,6 +14,7 @@ import { html, RenderHTML } from "./components/RenderHTMLComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
 import { playBling, playUpgrade } from "./Sound";
+import { VictoryPointPerHourRowComp } from "./VictoryPointPerHourRowComp";
 
 export function DirectivePage(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
@@ -24,6 +27,7 @@ export function DirectivePage(): React.ReactNode {
             </div>
          }
       >
+         <VictoryPointPerHourComp />
          {ShipClassList.map((shipClass) => {
             const def = ShipClass[shipClass];
             const selected = G.save.state.selectedDirectives.get(shipClass);
@@ -94,5 +98,27 @@ export function DirectivePage(): React.ReactNode {
             );
          })}
       </SidebarComp>
+   );
+}
+
+function VictoryPointPerHourComp(): React.ReactNode {
+   const vpPerHour = G.runtime.leftStat.victoryPointPerHour.value;
+   const timeLeft = HOUR - getStat("VictoryPointTimer", G.save.state.stats) * SECOND;
+   if (vpPerHour === 0) return null;
+   return (
+      <FloatingTip w={300} label={<VictoryPointPerHourRowComp />}>
+         <div className="panel m10 row">
+            <TextureComp name="Others/Trophy" />
+            <div className="f1">
+               <Progress value={(100 * getStat("VictoryPointTimer", G.save.state.stats) * SECOND) / HOUR} />
+               <div className="row text-sm mt5">
+                  <div className="f1">
+                     +{formatNumber(vpPerHour)} {t(L.VictoryPoint)}
+                  </div>
+                  <div className="text-space">{formatHMS(timeLeft)}</div>
+               </div>
+            </div>
+         </div>
+      </FloatingTip>
    );
 }
