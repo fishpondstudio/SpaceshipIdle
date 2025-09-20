@@ -31,10 +31,10 @@ export const Bonus = {
    Reduce2MinWarmonger: reduceMinWarmonger(2),
    Reduce3MinWarmonger: reduceMinWarmonger(3),
 
-   Get5ExtraXPPerSec: getExtraXPPerSec(0.05),
-   Get10ExtraXPPerSec: getExtraXPPerSec(0.1),
-   Get15ExtraXPPerSec: getExtraXPPerSec(0.15),
-   Get20ExtraXPPerSec: getExtraXPPerSec(0.2),
+   Get5ExtraXPPerSec: extraXPPerSec(0.05),
+   Get10ExtraXPPerSec: extraXPPerSec(0.1),
+   Get15ExtraXPPerSec: extraXPPerSec(0.15),
+   Get20ExtraXPPerSec: extraXPPerSec(0.2),
 
    Get1VictoryPointPerHour: victoryPointPerHour(1),
    Get2VictoryPointPerHour: victoryPointPerHour(2),
@@ -189,7 +189,7 @@ function shipClassOneTimeXP(shipClass: ShipClass): IBonusDefinition {
    };
 }
 
-function getExtraXPPerSec(pct: number): IBonusDefinition {
+function extraXPPerSec(pct: number): IBonusDefinition {
    return {
       desc: (runtime: Runtime) => t(L.PlusXExtraXPPerSec, formatPercent(pct)),
       onTick: (timeLeft: number, source: string, runtime: Runtime) => {

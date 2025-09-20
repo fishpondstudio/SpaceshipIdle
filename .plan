@@ -1,5 +1,4 @@
-Several new ship blueprints have been added, and now each ship blueprint has a unique bonus. 
-
+Several new ship blueprints have been added, and now each ship blueprint has a unique bonus.
 - SS Voyager: +10% Extra XP/s
 - SS Pioneer: +1 Friendship Slot
 - SS Horizon: All autocannons get +1 XP Multiplier
@@ -12,3 +11,6 @@ The following friendship bonus / directives have been added:
 - Reset Warmonger Penalty to 0
 - Get N% of extra XP/s
 - Get N Victory Point/h
+
+Other changes:
+- Star systems in the galaxy are now slightly bigger
