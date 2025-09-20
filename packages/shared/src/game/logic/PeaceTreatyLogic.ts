@@ -100,6 +100,12 @@ export function getPeaceTreatyScore(battleScore: number, gs: GameState): [number
          tooltip: t(L.WinningStreakTooltipHTML),
       });
    }
+   if (gs.blueprint === "Intrepid") {
+      breakdown.push({
+         label: t(L.SpaceshipPrefix, t(L.Intrepid)),
+         value: 10,
+      });
+   }
 
    return [breakdown.reduce((acc, b) => acc + b.value, 0), breakdown];
 }

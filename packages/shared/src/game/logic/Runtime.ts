@@ -248,6 +248,7 @@ export class Runtime {
       this.left.selectedDirectives.forEach((boost, shipClass) => {
          Bonus[boost].onTick?.(Number.POSITIVE_INFINITY, t(L.XClassDirective, ShipClass[shipClass].name()), this);
       });
+      Blueprints[this.left.blueprint].tick?.(this);
    }
 
    private _checkSpeed(g: { speed: number }) {

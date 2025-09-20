@@ -61,6 +61,7 @@ export const Bonus = {
    Get40VictoryPointOnDecl: victoryPointOnDeclaration(40),
 
    ResetBackstabberOnDecl: resetBackstabberOnDeclaration(),
+   ResetWarmongerOnDecl: resetWarmongerOnDeclaration(),
 
    Get8hWarpOnDecl: hoursOfWarpOnDeclaration(8),
    Get12hWarpOnDecl: hoursOfWarpOnDeclaration(12),
@@ -160,11 +161,20 @@ function resetBackstabberOnDeclaration(): IBonusDefinition {
    };
 }
 
+function resetWarmongerOnDeclaration(): IBonusDefinition {
+   return {
+      desc: (runtime: Runtime) => t(L.ResetWarmongerPenaltyToX, 0),
+      onStart: (runtime: Runtime, from?: IHaveXY) => {
+         runtime.left.stats.set("Warmonger", 0);
+      },
+   };
+}
+
 function shipClassOneTimeXP(shipClass: ShipClass): IBonusDefinition {
    return {
       desc: (runtime: Runtime) => {
          const quantum = getMaxQuantumForShipClass(shipClass, runtime.left);
-         return t(L.PlusXXPOnDeclaration, formatNumber(quantumToXP(quantum + 1) - quantumToXP(quantum)));
+         return t(L.PlusXXPOnDeclaration, formatNumber(quantumToXP(quantum + 1) - quantumToXP(quantum - 1)));
       },
       onStart: (runtime: Runtime, from?: IHaveXY) => {
          const quantum = getMaxQuantumForShipClass(shipClass, runtime.left);

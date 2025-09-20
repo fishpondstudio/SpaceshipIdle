@@ -99,8 +99,12 @@ export function getWarConsequences(gs: GameState, planet?: Planet): ValueBreakdo
 export function getMaxFriendship(gs: GameState): [number, ValueBreakdown[]] {
    const shipClass = getShipClass(gs);
    const def = ShipClass[shipClass];
-   const result = ShipClassList.indexOf(shipClass) + 1;
-   return [result, [{ name: t(L.XClass, def.name()), value: result }]];
+   const fromShipClass = ShipClassList.indexOf(shipClass) + 1;
+   const result: ValueBreakdown[] = [{ name: t(L.XClass, def.name()), value: fromShipClass }];
+   if (gs.blueprint === "Pioneer") {
+      result.push({ name: t(L.SpaceshipPrefix, t(L.Pioneer)), value: 1 });
+   }
+   return [result.reduce((a, b) => a + b.value, 0), result];
 }
 
 export function getPlanetStatusLabel(planet: Planet): string {

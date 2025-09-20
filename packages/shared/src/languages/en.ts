@@ -766,4 +766,13 @@ export const EN = {
    TimeToMin: "Time To Min:",
    WinningStreak: "Winning Streak",
    WinningStreakTooltipHTML: "You get <b>5</b> peace treaty score for each winning streak <b>above one</b> (i.e. 4 winning streaks = 5 x 3 = 15). Maximum <b>50</b> peace treaty score are awarded from winning streak",
+   VoyagerDesc: "+10% Extra XP/s",
+   UniqueBonus: "Unique Bonus",
+   PioneerDesc: "+1 Friendship Slot",
+   HorizonDesc: "All autocannons get +1 XP Multiplier",
+   Orion: "Orion",
+   OrionDesc: "10% more modules for each ship class",
+   Intrepid: "Intrepid",
+   IntrepidDesc: "+10 Peace Treaty Score when negotiating war reparation",
+   ResetWarmongerPenaltyToX: "Reset <b>Warmonger Penalty</b> to <b>%%</b>",
 };

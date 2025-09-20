@@ -25,6 +25,7 @@ export function PrestigeModal({ reason }: { reason: PrestigeReason }): React.Rea
    const [shipClass, setShipClass] = useState<ShipClass>(ShipClassList[0]);
    const requiredElementLevel = Blueprints[blueprint].elementLevel;
    const currentElementLevel = getTotalElementLevels(G.save.state);
+   const desc = Blueprints[blueprint].desc;
    return (
       <>
          {reason === PrestigeReason.Incompatible ? (
@@ -81,6 +82,14 @@ export function PrestigeModal({ reason }: { reason: PrestigeReason }): React.Rea
             value={blueprint}
             onChange={(value) => setBlueprint(value as Blueprint)}
          />
+         {desc ? (
+            <div className="panel m10 py5">
+               <div className="h5" />
+               <div className="title my5">{t(L.UniqueBonus)}</div>
+               <div className="h5" />
+               {html(desc(), "render-html")}
+            </div>
+         ) : null}
          <div className="panel p0 m10">
             <div className="row g0">
                <div className="f1 stretch ship-blueprint-tabs sm">
