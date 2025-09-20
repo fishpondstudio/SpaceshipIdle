@@ -7,8 +7,8 @@ import type { BattleInfo } from "@spaceship-idle/shared/src/game/logic/BattleInf
 import { getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType, BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { findPlanet, getAddonReward } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
-import { calculateRewardValue, getWinningStreakScore } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
-import { addResource, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { calculateRewardValue, getPeaceTreatyScore } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
+import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { formatNumber, getDOMRectCenter, mMapOf, shuffle } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -45,10 +45,9 @@ export function PeaceTreatyModal({
          ["XP", 0],
       ]),
    });
-   const winningStreak = getStat("WinningStreak", G.save.state.stats);
-   const peaceTreatyScore = battleScore + getWinningStreakScore(winningStreak);
-   const [value, breakdown] = calculateRewardValue(battleResult.current, G.save.state);
-   const leftOver = clamp(peaceTreatyScore - value, 0, Number.POSITIVE_INFINITY);
+   const [peaceTreatyScore, peaceTreatyBreakdown] = getPeaceTreatyScore(battleScore, G.save.state);
+   const [rewardValue, rewardBreakdown] = calculateRewardValue(battleResult.current, G.save.state);
+   const leftOver = clamp(peaceTreatyScore - rewardValue, 0, Number.POSITIVE_INFINITY);
    battleResult.current.resources.set("XP", (leftOver / 100) * enemyXP);
    let texture = "Others/SpaceshipEnemy24";
 
@@ -90,20 +89,14 @@ export function PeaceTreatyModal({
          <div className="h10" />
          <div className="row">
             <div className="f1 panel stretch">
-               <div className="row">
-                  <div className="f1">{BattleVictoryTypeLabel[victoryType]()}</div>
-                  <div>{battleScore}</div>
-               </div>
-               {getWinningStreakScore(winningStreak) > 0 ? (
-                  <FloatingTip label={html(t(L.WinningStreakTooltipHTML))}>
+               {peaceTreatyBreakdown.map((b) => (
+                  <FloatingTip disabled={!b.tooltip} label={b.tooltip ? html(b.tooltip) : null} key={b.label}>
                      <div className="row">
-                        <div className="f1">
-                           {t(L.WinningStreak)} (x{winningStreak})
-                        </div>
-                        <div>{getWinningStreakScore(winningStreak)}</div>
+                        <div className="f1">{b.label}</div>
+                        <div>{b.value}</div>
                      </div>
                   </FloatingTip>
-               ) : null}
+               ))}
             </div>
             <div className="f1 panel stretch">
                <div className="row">
@@ -148,7 +141,7 @@ export function PeaceTreatyModal({
          </div>
          <div className="row my10" style={{ fontSize: 30 }}>
             <div className="f1 text-center">{peaceTreatyScore}</div>
-            {peaceTreatyScore >= value ? (
+            {peaceTreatyScore >= rewardValue ? (
                <div className="mi text-green" style={{ fontSize: 30 }}>
                   sentiment_satisfied
                </div>
@@ -157,11 +150,11 @@ export function PeaceTreatyModal({
                   sentiment_dissatisfied
                </div>
             )}
-            <div className="f1 text-center">{value}</div>
+            <div className="f1 text-center">{rewardValue}</div>
          </div>
          <button
             className="btn w100 filled p5"
-            disabled={peaceTreatyScore < value}
+            disabled={peaceTreatyScore < rewardValue}
             onClick={(e) => {
                showLoading();
                hideModal();
@@ -218,7 +211,7 @@ export function PeaceTreatyModal({
                      </div>
                      <div className="h5" />
                      <div className="flex-table mx-10">
-                        {breakdown.map((b) => (
+                        {rewardBreakdown.map((b) => (
                            <div className="row" key={b.label}>
                               <div className="f1">{b.label}</div>
                               <div>{b.value}</div>

@@ -4,6 +4,8 @@ import { type Addon, Addons } from "../definitions/Addons";
 import type { BattleResult } from "../definitions/Galaxy";
 import { ShipClassList } from "../definitions/ShipClass";
 import type { GameState } from "../GameState";
+import { getVictoryType } from "./BattleLogic";
+import { BattleVictoryTypeLabel } from "./BattleType";
 import { addResource, getStat } from "./ResourceLogic";
 import { getShipClass } from "./TechLogic";
 
@@ -14,6 +16,7 @@ export function getBaseValue(amount: number): number {
 export interface Breakdown {
    label: string;
    value: number;
+   tooltip?: string;
 }
 
 export function calculateRewardValue(result: BattleResult, gs: GameState): [number, Breakdown[]] {
@@ -80,6 +83,27 @@ export function grantRewards(result: BattleResult, gs: GameState): void {
    }
 }
 
-export function getWinningStreakScore(ws: number): number {
+export function getPeaceTreatyScore(battleScore: number, gs: GameState): [number, Breakdown[]] {
+   if (battleScore <= 0) {
+      return [0, [{ label: BattleVictoryTypeLabel[getVictoryType(battleScore)](), value: 0 }]];
+   }
+
+   const breakdown: Breakdown[] = [];
+   breakdown.push({ label: BattleVictoryTypeLabel[getVictoryType(battleScore)](), value: battleScore });
+
+   const winningStreak = getStat("WinningStreak", gs.stats);
+   const winningStreakScore = getWinningStreakScore(winningStreak);
+   if (winningStreakScore > 0) {
+      breakdown.push({
+         label: `${t(L.WinningStreak)} (x${winningStreak})`,
+         value: winningStreakScore,
+         tooltip: t(L.WinningStreakTooltipHTML),
+      });
+   }
+
+   return [breakdown.reduce((acc, b) => acc + b.value, 0), breakdown];
+}
+
+function getWinningStreakScore(ws: number): number {
    return Math.min((ws - 1) * 5, 50);
 }
