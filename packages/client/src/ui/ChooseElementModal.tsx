@@ -17,7 +17,10 @@ import { G } from "../utils/Global";
 import { hideModal, showModal } from "../utils/ToggleModal";
 import "./ChooseElementModal.css";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
+import { BuildingInfoComp } from "./components/BuildingInfoComp";
 import { FloatingTip } from "./components/FloatingTip";
+import { TextureComp } from "./components/TextureComp";
 import { playUpgrade } from "./Sound";
 
 export function ChooseElementModal({
@@ -81,11 +84,11 @@ function ElementOption({
    ...props
 }: { symbol: ElementSymbol; permanent: boolean; onClick: () => void } & PaperProps): React.ReactNode {
    const data = PeriodicTable[symbol];
+   const [opened, { open }] = useDisclosure(false);
+   useEffect(() => open(), [open]);
    if (!data) {
       return null;
    }
-   const [opened, { open }] = useDisclosure(false);
-   useEffect(() => open(), [open]);
    const currentHPMultiplier = G.save.state.permanentElements.get(symbol)?.hp ?? 0;
    const currentDamageMultiplier = G.save.state.permanentElements.get(symbol)?.damage ?? 0;
    const currentAmount = G.save.state.permanentElements.get(symbol)?.amount ?? 0;
@@ -145,7 +148,24 @@ function ElementOption({
             >
                <ElementImageComp symbol={symbol} color={permanent ? ElementPermanentColor : ElementThisRunColor} />
                <div className="h10" />
-               <div className="f1 text-center">{getElementDesc(symbol, 1)}</div>
+               {typeof effect === "string" ? (
+                  <FloatingTip
+                     w={350}
+                     label={
+                        <>
+                           <div className="row g5">
+                              <TextureComp name={`Building/${effect}`} />
+                              <div className="text-lg">{getBuildingName(effect)}</div>
+                           </div>
+                           <BuildingInfoComp building={effect} />
+                        </>
+                     }
+                  >
+                     <div className="f1 text-center">{getElementDesc(symbol, 1)}</div>
+                  </FloatingTip>
+               ) : (
+                  <div className="f1 text-center">{getElementDesc(symbol, 1)}</div>
+               )}
                <div className="h10" />
                <div className="divider mx-15 mb5" />
                {permanent ? null : (
