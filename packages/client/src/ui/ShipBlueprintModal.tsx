@@ -1,4 +1,5 @@
-import { Blueprints } from "@spaceship-idle/shared/src/game/definitions/Blueprints";
+import { Select } from "@mantine/core";
+import { type Blueprint, Blueprints } from "@spaceship-idle/shared/src/game/definitions/Blueprints";
 import { ShipClass, ShipClassList } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { calculateAABB, getFullShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { cls, iMapOf, type Tile, tileToPoint } from "@spaceship-idle/shared/src/utils/Helper";
@@ -7,34 +8,59 @@ import { useState } from "react";
 import { G } from "../utils/Global";
 import { TextureComp } from "./components/TextureComp";
 import { playClick } from "./Sound";
+import { html } from "./components/RenderHTMLComp";
 
 export function ShipBlueprintModal() {
    const [shipClass, setShipClass] = useState<ShipClass>(ShipClassList[0]);
+   const [blueprint, setBlueprint] = useState<Blueprint>(G.save.state.blueprint);
+   const desc = Blueprints[blueprint].desc;
    return (
-      <div className="row g0">
-         <div className="f1 stretch ship-blueprint-tabs">
-            {ShipClassList.map((shipClass_) => (
-               <div
-                  className={cls(shipClass_ === shipClass ? "active" : null)}
-                  key={shipClass_}
-                  onClick={() => {
-                     playClick();
-                     setShipClass(shipClass_);
-                  }}
-               >
-                  {ShipClass[shipClass_].name()}
-               </div>
-            ))}
+      <>
+         <Select
+            className="m10"
+            checkIconPosition="right"
+            allowDeselect={false}
+            data={Object.entries(Blueprints).map(([key, def]) => ({
+               label: t(L.SpaceshipPrefix, def.name()),
+               value: key,
+            }))}
+            value={blueprint}
+            onChange={(value) => setBlueprint(value as Blueprint)}
+         />
+         {desc ? (
+            <div className="panel m10 py5">
+               <div className="h5" />
+               <div className="title my5">{t(L.UniqueBonus)}</div>
+               <div className="h5" />
+               {html(desc(), "render-html")}
+            </div>
+         ) : null}
+         <div className="divider" />
+         <div className="row g0">
+            <div className="f1 stretch ship-blueprint-tabs">
+               {ShipClassList.map((shipClass_) => (
+                  <div
+                     className={cls(shipClass_ === shipClass ? "active" : null)}
+                     key={shipClass_}
+                     onClick={() => {
+                        playClick();
+                        setShipClass(shipClass_);
+                     }}
+                  >
+                     {ShipClass[shipClass_].name()}
+                  </div>
+               ))}
+            </div>
+            <div className="divider vertical"></div>
+            <div className="m20">
+               <ShipBlueprintComp
+                  layout={getFullShipBlueprint(Blueprints[G.save.state.blueprint].blueprint)}
+                  highlight={new Set(Blueprints[G.save.state.blueprint].blueprint[shipClass])}
+                  width={400}
+               />
+            </div>
          </div>
-         <div className="divider vertical"></div>
-         <div className="m20">
-            <ShipBlueprintComp
-               layout={getFullShipBlueprint(Blueprints[G.save.state.blueprint].blueprint)}
-               highlight={new Set(Blueprints[G.save.state.blueprint].blueprint[shipClass])}
-               width={400}
-            />
-         </div>
-      </div>
+      </>
    );
 }
 

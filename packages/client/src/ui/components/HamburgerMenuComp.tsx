@@ -1,10 +1,9 @@
 import { Menu } from "@mantine/core";
-import { Blueprints } from "@spaceship-idle/shared/src/game/definitions/Blueprints";
 import { PatchNotesUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
 import { openUrl } from "../../rpc/SteamClient";
-import { G, OnLanguageChanged } from "../../utils/Global";
+import { OnLanguageChanged } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
 import { showModal } from "../../utils/ToggleModal";
 import { AlertPage } from "../AlertPage";
@@ -45,14 +44,7 @@ export function _HamburgerMenuComp(): React.ReactNode {
                onClick={() => {
                   showModal({
                      children: <ShipBlueprintModal />,
-                     title: (
-                        <>
-                           {t(L.ShipBlueprint)}{" "}
-                           <span className="text-space">
-                              ({t(L.SpaceshipPrefix, Blueprints[G.save.state.blueprint].name())})
-                           </span>
-                        </>
-                     ),
+                     title: t(L.ShipBlueprint),
                      size: "lg",
                      dismiss: true,
                   });
