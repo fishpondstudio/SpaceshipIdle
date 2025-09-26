@@ -782,4 +782,5 @@ export const EN = {
    VictoryPointPerHour: "Victory Point Per Hour",
    TimeUntilNextReward: "Time Until Next Reward: %%",
    PlusXVictoryPointPerHour: "+%% Victory Point/h",
+   HowToGetMorePermanentElementLevelsHTML: "To get more permanent element levels, you need to <b>prestige</b> first and your elements this run will become <b>permanent element shards</b>, which can be used to upgrade the level of permanent elements",
 };

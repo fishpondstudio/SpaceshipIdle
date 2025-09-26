@@ -49,7 +49,13 @@ export function TechPage({ tech }: { tech: Tech }): React.ReactNode {
                <div className="divider my10" />
                {elementLevel > 0 ? (
                   <FloatingTip
-                     label={html(t(L.RequirePermanentElementLevelsAndYouCurrentlyHave, elementLevel, currentLevel))}
+                     label={
+                        <>
+                           {html(t(L.RequirePermanentElementLevelsAndYouCurrentlyHave, elementLevel, currentLevel))}
+                           <div className="h5" />
+                           {html(t(L.HowToGetMorePermanentElementLevelsHTML))}
+                        </>
+                     }
                   >
                      <div className="row mx10 my5">
                         <div className="f1">

@@ -1,6 +1,6 @@
-import fs from "fs-extra";
 import { execSync } from "node:child_process";
 import path from "node:path";
+import fs from "fs-extra";
 
 const rootPath = path.resolve(path.join("../../"));
 const versionFile = path.join(rootPath, "packages", "client", "src", "version.json");
@@ -20,30 +20,27 @@ if (!process.env.STEAMWORKS_PATH) {
    process.exit();
 }
 
-fs.copyFileSync(
-   path.join(rootPath, "packages", "electron", "scripts", "demo.vdf"),
-   path.join(process.env.STEAMWORKS_PATH, "spaceship_idle", "demo.vdf"),
-);
-replaceVersion(path.join(process.env.STEAMWORKS_PATH, "spaceship_idle", "demo.vdf"));
+const copyVdf = (filename) => {
+   fs.copyFileSync(
+      path.join(rootPath, "packages", "electron", "scripts", filename),
+      path.join(process.env.STEAMWORKS_PATH, "spaceship_idle", filename),
+   );
+   replaceVersion(path.join(process.env.STEAMWORKS_PATH, "spaceship_idle", filename));
+};
 
-fs.copyFileSync(
-   path.join(rootPath, "packages", "electron", "scripts", "retail.vdf"),
-   path.join(process.env.STEAMWORKS_PATH, "spaceship_idle", "retail.vdf"),
-);
-replaceVersion(path.join(process.env.STEAMWORKS_PATH, "spaceship_idle", "retail.vdf"));
+const copyBuild = (folder) => {
+   fs.removeSync(path.join(process.env.STEAMWORKS_PATH, folder));
+   fs.copySync(
+      path.join(rootPath, "packages", "electron", "out", folder),
+      path.join(process.env.STEAMWORKS_PATH, folder),
+   );
+};
 
-fs.removeSync(path.join(process.env.STEAMWORKS_PATH, "SpaceshipIdle-win32-x64"));
-fs.removeSync(path.join(process.env.STEAMWORKS_PATH, "SpaceshipIdle-linux-x64"));
+copyVdf("win32.vdf");
+copyVdf("linux.vdf");
 
-fs.copySync(
-   path.join(rootPath, "packages", "electron", "out", "SpaceshipIdle-win32-x64"),
-   path.join(process.env.STEAMWORKS_PATH, "SpaceshipIdle-win32-x64"),
-);
-
-fs.copySync(
-   path.join(rootPath, "packages", "electron", "out", "SpaceshipIdle-linux-x64"),
-   path.join(process.env.STEAMWORKS_PATH, "SpaceshipIdle-linux-x64"),
-);
+copyBuild("SpaceshipIdle-win32-x64");
+copyBuild("SpaceshipIdle-linux-x64");
 
 cmd(
    `${path.join(process.env.STEAMWORKS_PATH, "builder_linux", "steamcmd.sh")} +runscript ../spaceship_idle.txt`,
