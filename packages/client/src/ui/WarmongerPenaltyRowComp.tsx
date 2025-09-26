@@ -14,7 +14,8 @@ export function WarmongerPenaltyRowComp(): React.ReactNode {
             {rawWarmongerPenalty > G.runtime.leftStat.warmongerMin.value ? (
                <div className="text-xs text-space">
                   <div>
-                     - {t(L.WarmongerPenaltyDecrease)}: {G.runtime.leftStat.warmongerDecrease.value}/s
+                     - {t(L.WarmongerPenaltyDecrease)}: {G.runtime.leftStat.warmongerDecrease.value}/s (
+                     {formatHMS(SECOND / G.runtime.leftStat.warmongerDecrease.value)})
                   </div>
                   <div>
                      - {t(L.TimeToZero)}{" "}
