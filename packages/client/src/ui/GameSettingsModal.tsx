@@ -78,7 +78,7 @@ function GeneralTab(): React.ReactNode {
                   GameOptionUpdated.emit();
                }}
             />
-         </div>{" "}
+         </div>
          <div className="h10" />
          <div className="row">
             <div>{t(L.LinearCooldownIndicator)}</div>
@@ -149,6 +149,23 @@ function GeneralTab(): React.ReactNode {
             />
          </div>
          <div className="h10"></div>
+         <div className="row">
+            <div>{t(L.AlwaysShowChat)}</div>
+            <FloatingTip label={t(L.AlwaysShowChatDesc)}>
+               <div className="mi sm text-space">info</div>
+            </FloatingTip>
+            <div className="f1" />
+            <Switch
+               checked={hasFlag(G.save.options.flag, GameOptionFlag.AlwaysShowChat)}
+               onChange={(e) => {
+                  G.save.options.flag = e.target.checked
+                     ? setFlag(G.save.options.flag, GameOptionFlag.AlwaysShowChat)
+                     : clearFlag(G.save.options.flag, GameOptionFlag.AlwaysShowChat);
+                  GameOptionUpdated.emit();
+               }}
+            />
+         </div>
+         <div className="h10" />
          <div className="row">
             <div className="f1">{t(L.ShowTutorial)}</div>
             <Switch

@@ -784,4 +784,6 @@ export const EN = {
    TimeUntilNextReward: "Time Until Next Reward: %%",
    PlusXVictoryPointPerHour: "+%% Victory Point/h",
    HowToGetMorePermanentElementLevelsHTML: "To get more permanent element levels, you need to <b>prestige</b> first and your elements this run will become <b>permanent element shards</b>, which can be used to upgrade the level of permanent elements",
+   AlwaysShowChat: "Always Show Chat",
+   AlwaysShowChatDesc: "Turning this off will only show chat messages when hovering over the chat input",
 };

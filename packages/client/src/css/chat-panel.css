@@ -4,7 +4,6 @@
    left: 10px;
    width: 300px;
    opacity: 0.5;
-   transition: opacity 0.2s ease-in-out;
    &.off {
       width: auto;
       border: 2px solid rgba(255, 255, 255, 0.2);
@@ -26,6 +25,7 @@
    border: 2px solid rgba(255, 255, 255, 0.2);
    border-radius: 5px;
    background-color: transparent;
+   backdrop-filter: blur(5px);
    padding: 5px;
    width: calc(100% - 2px);
    input {
@@ -53,6 +53,7 @@
    font-size: var(--mantine-font-size-sm);
    mask-image: linear-gradient(rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 100%);
    mask-mode: alpha;
+   backdrop-filter: blur(5px);
    .message {
       padding: 5px 0;
       user-select: text;

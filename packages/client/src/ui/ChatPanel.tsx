@@ -1,5 +1,5 @@
 import { Menu, ScrollArea } from "@mantine/core";
-import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
+import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { type Language, Languages, LanguagesImage } from "@spaceship-idle/shared/src/game/Languages";
 import { ChatFlag, type IChat } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
 import { cls, hasFlag, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
@@ -54,6 +54,8 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
    const handle = refreshOnTypedEvent(OnChatMessage);
    const messages = useRef<IChat[]>([]);
    const [isFocused, setIsFocused] = useState(false);
+   const [isHover, setIsHover] = useState(false);
+   refreshOnTypedEvent(GameOptionUpdated);
 
    useEffect(() => {
       RPCClient.getChatByChannel(channel).then((messages) => {
@@ -86,10 +88,22 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
    // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
    useEffect(scrollToBottom, [handle]);
    useTypedEvent(OnImageLoaded, scrollToBottom);
+   const latestMessage = messages.current[messages.current.length - 1];
 
    return (
-      <div className={cls("chat-panel", isFocused ? "active" : null)} style={{ left }}>
+      <div
+         className={cls("chat-panel", isFocused ? "active" : null)}
+         style={{ left }}
+         onMouseEnter={() => setIsHover(true)}
+         onMouseLeave={() => setIsHover(false)}
+      >
          <ScrollArea
+            style={{
+               contentVisibility:
+                  isHover || isFocused || hasFlag(G.save.options.flag, GameOptionFlag.AlwaysShowChat)
+                     ? "visible"
+                     : "hidden",
+            }}
             onMouseEnter={() => {
                isMouseOver.current = true;
             }}
@@ -123,7 +137,11 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
                );
             })}
          </ScrollArea>
-         <ChatInput channel={channel} onFocusChanged={setIsFocused} />
+         <ChatInput
+            channel={channel}
+            onFocusChanged={setIsFocused}
+            placeholder={latestMessage ? `${latestMessage.name}: ${latestMessage.message}` : ""}
+         />
       </div>
    );
 }
@@ -133,14 +151,17 @@ const ChatPanelSingle = memo(_ChatPanelSingle, (prev, next) => {
 });
 
 function _ChatInput({
+   placeholder,
    channel,
    onFocusChanged,
 }: {
+   placeholder: string;
    channel: Language;
    onFocusChanged: (focus: boolean) => void;
 }): React.ReactNode {
    const [message, setMessage] = useState("");
    const isCommand = message.startsWith("/");
+   const [isFocused, setIsFocused] = useState(false);
    useTypedEvent(SetChatInput, (func) => {
       setMessage(func);
    });
@@ -156,6 +177,7 @@ function _ChatInput({
             }
          />
          <input
+            placeholder={isFocused ? "" : placeholder}
             type="text"
             className={cls("f1", isCommand ? "command" : null)}
             value={message}
@@ -163,9 +185,11 @@ function _ChatInput({
                setMessage(e.target.value);
             }}
             onFocus={() => {
+               setIsFocused(true);
                onFocusChanged(true);
             }}
             onBlur={() => {
+               setIsFocused(false);
                onFocusChanged(false);
             }}
             onKeyDown={(e) => {
@@ -191,7 +215,11 @@ function _ChatInput({
 }
 
 const ChatInput = memo(_ChatInput, (prev, next) => {
-   return prev.channel === next.channel && prev.onFocusChanged === next.onFocusChanged;
+   return (
+      prev.channel === next.channel &&
+      prev.onFocusChanged === next.onFocusChanged &&
+      prev.placeholder === next.placeholder
+   );
 });
 
 function _LanguageMenu({ icon }: { icon: React.ReactNode }): React.ReactNode {

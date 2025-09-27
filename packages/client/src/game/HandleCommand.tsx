@@ -1,4 +1,5 @@
-import { showError, showSuccess } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
+import { notifications } from "@mantine/notifications";
+import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { RPCClient } from "../rpc/RPCClient";
 import { RenderHTML } from "../ui/components/RenderHTMLComp";
 import { playBling, playError } from "../ui/Sound";
@@ -7,7 +8,13 @@ export function handleCommand(command: string): void {
    RPCClient.sendCommand(command)
       .then(async (message) => {
          playBling();
-         showSuccess(message);
+         notifications.show({
+            message,
+            position: "top-center",
+            color: "blue",
+            withBorder: true,
+            autoClose: false,
+         });
       })
       .catch((e) => {
          playError();

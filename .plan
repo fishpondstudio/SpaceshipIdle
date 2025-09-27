@@ -1,5 +1,2 @@
-Evasion is now better reflected in the ship stat. Previously, evasion was not included when calculating ship defense stat. This caused ships with high evasions are underrated in defense stat - and they are harder to beat when you are matched with them. This patch should correct this bias and hopefully make matchmaking more fair.
-
-Bugfix:
-- Fix a bug where friendship bonus are not granted when a friendship is auto renewed
-- Fix a bug where SS Majestic's blueprint has disconnected modules
+Done:
+- Add an option to only show chat messages on hover - this will be the default option and free up lots of space on the bottom left corner.
