@@ -273,6 +273,10 @@ export function evasionChance(value: number): number {
    return 1 - 1 / (1 + value);
 }
 
+export function evasionEffectiveMultiplier(value: number): number {
+   return 1 + value;
+}
+
 export function generateShip(shipClass: ShipClass, random: () => number): GameState {
    const ship = new GameState();
    ship.blueprint = randOne(keysOf(Blueprints), random);
@@ -431,7 +435,9 @@ export function calcShipScore(ship: GameState): [number, number, number, Runtime
    // const hp = reduceOf(rt.leftStat.rawDamage, (prev, k, v) => prev + v, 0);
 
    // 69.35%
-   const hp = rt.leftStat.maxHp;
+   rt.leftStat.tabulate(rt.left, rt);
+   const hp = rt.leftStat.effectiveMaxHp;
+   // const hp = rt.leftStat.maxHp;
    return [Math.sqrt((hp / 10) * dps), hp / 10, dps, rt];
 }
 

@@ -6,6 +6,8 @@ import { Catalyst } from "../definitions/Catalyst";
 import { BaseWarmongerChangePerSec } from "../definitions/Constant";
 import type { Resource } from "../definitions/Resource";
 import type { GameState } from "../GameState";
+import { evasionEffectiveMultiplier } from "./BattleLogic";
+import type { Runtime } from "./Runtime";
 import { TrackedValue } from "./TrackedValue";
 
 export class RuntimeStat {
@@ -16,6 +18,7 @@ export class RuntimeStat {
 
    currentHp = 0;
    maxHp = 0;
+   effectiveMaxHp = 0;
    destroyedHp = 0;
    zeroProjectileSec = 0;
 
@@ -111,7 +114,7 @@ export class RuntimeStat {
    //    return ((curr.get(res) ?? 0) - (prev.get(res) ?? 0)) / Math.min(n, this.previousResources.size);
    // }
 
-   public tabulate([hp, maxHp]: [number, number], gs: GameState): void {
+   public tabulate(gs: GameState, runtime: Runtime): void {
       forEach(this.rawDamagePerSec, (k, v) => {
          safeAdd(this.rawDamage, k, v);
       });
@@ -130,10 +133,21 @@ export class RuntimeStat {
       this.rawDamagePerSec = { [DamageType.Kinetic]: 0, [DamageType.Explosive]: 0, [DamageType.Energy]: 0 };
       this.actualDamagePerSec = { [DamageType.Kinetic]: 0, [DamageType.Explosive]: 0, [DamageType.Energy]: 0 };
 
+      let hp = 0;
+      let maxHp = 0;
+      let effectiveMaxHp = 0;
+      gs.tiles.forEach((_data, tile) => {
+         const rs = runtime.get(tile);
+         if (rs) {
+            hp += rs.props.hp - rs.damageTaken;
+            maxHp += rs.props.hp;
+            effectiveMaxHp += rs.props.hp * evasionEffectiveMultiplier(rs.props.evasion);
+         }
+      });
       this.currentHp = hp;
       this.maxHp = maxHp + this.destroyedHp;
+      this.effectiveMaxHp = effectiveMaxHp + this.destroyedHp;
    }
-
    public isCatalystActivated(catalyst: Catalyst): boolean {
       const data = this.catalysts.get(catalyst);
       if (!data) return false;

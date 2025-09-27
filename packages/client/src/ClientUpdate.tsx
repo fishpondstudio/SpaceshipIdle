@@ -1,4 +1,5 @@
 import { ClientTickInterval } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { MINUTE } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { ChooseElementModal } from "./ui/ChooseElementModal";
@@ -22,6 +23,9 @@ export function clientUpdate(dt: number): void {
 }
 
 function update(): void {
+   if (G.runtime.battleType !== BattleType.Peace) {
+      return;
+   }
    const choice = G.save.data.elementChoices[0];
    if (!hasModalOpen() && !isLoading() && choice) {
       showModal({

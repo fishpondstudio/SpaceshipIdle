@@ -10,7 +10,7 @@ export interface IServer {
    viewShip: (id: string) => Promise<IShip>;
    deleteShip: (id: string) => Promise<void>;
    findShipV3: (
-      hash: bigint,
+      excludedHash: bigint[],
       quantum: [number, number],
       score: [number, number],
       hp: [number, number],

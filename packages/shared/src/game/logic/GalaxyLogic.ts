@@ -294,6 +294,8 @@ export function tickGalaxy(rt: Runtime): void {
          if (planet.friendshipTimeLeft === 0 && hasFlag(planet.flags, PlanetFlags.AutoRenewFriendship)) {
             const totalCost = getWarmongerPenalty(rt.left) + getStat("Backstabber", rt.left.stats) + FriendshipBaseCost;
             if (trySpendResource("VictoryPoint", totalCost, rt.left.resources)) {
+               Bonus[planet.friendshipBonus].onStart?.(rt);
+               showInfo(t(L.FriendshipAutoRenewAlert, planet.name), true);
                planet.friendshipTimeLeft = FriendshipDurationSeconds;
             }
          }

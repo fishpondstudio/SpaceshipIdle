@@ -778,6 +778,7 @@ export const EN = {
    Majestic: "Majestic",
    MajesticDesc: "Reset Warmonger Penalty and Backstabber Penalty to 0 when unlocking a new ship class",
    FriendshipEndedAlert: "Your friendship with %% has ended - rewards has been granted if any",
+   FriendshipAutoRenewAlert: "Your friendship with %% has been auto renewed - rewards has been granted if any",
    VictoryPointHasBeenAddToYourShip: "%% Victory Point has been add to your ship",
    VictoryPointPerHour: "Victory Point Per Hour",
    TimeUntilNextReward: "Time Until Next Reward: %%",

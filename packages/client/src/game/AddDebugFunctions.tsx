@@ -2,14 +2,14 @@ import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { type Blueprint, Blueprints } from "@spaceship-idle/shared/src/game/definitions/Blueprints";
 import { PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
-import type { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
+import { type ShipClass, ShipClassList } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { addAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { generateGalaxy } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
-import { calcSpaceshipXP, addStat, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { addStat, calcSpaceshipXP, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { getShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { getBuildingsWithinShipClass, getTechWithinShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
@@ -176,6 +176,11 @@ export function addDebugFunctions(): void {
          total: Math.max(calcSpaceshipXP(G.save.state), quantumToXP(quantum)),
       });
       G.save.state.resources.set("Quantum", { used: quantum, total: quantum });
+      forEach(Addons, (addon, def) => {
+         if (ShipClassList.indexOf(shipClass) >= ShipClassList.indexOf(def.shipClass)) {
+            addAddon(addon, 10, G.save.state);
+         }
+      });
    };
    // @ts-expect-error
    globalThis.focusShip = () => {
@@ -218,7 +223,7 @@ export function addDebugFunctions(): void {
    };
 
    const matchmake = async (): Promise<Runtime> => {
-      const me = await RPCClient.findShipV3(0n, [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX]);
+      const me = await RPCClient.findShipV3([], [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX]);
       const [score, hp, dps] = calcShipScore(me.json);
       const enemy = await findShip(score * 0.8, hp * 0.8, dps * 0.8);
       if (!enemy) {

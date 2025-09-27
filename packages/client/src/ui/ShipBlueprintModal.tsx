@@ -6,9 +6,9 @@ import { cls, iMapOf, type Tile, tileToPoint } from "@spaceship-idle/shared/src/
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useState } from "react";
 import { G } from "../utils/Global";
+import { html } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
 import { playClick } from "./Sound";
-import { html } from "./components/RenderHTMLComp";
 
 export function ShipBlueprintModal() {
    const [shipClass, setShipClass] = useState<ShipClass>(ShipClassList[0]);
@@ -54,8 +54,8 @@ export function ShipBlueprintModal() {
             <div className="divider vertical"></div>
             <div className="m20">
                <ShipBlueprintComp
-                  layout={getFullShipBlueprint(Blueprints[G.save.state.blueprint].blueprint)}
-                  highlight={new Set(Blueprints[G.save.state.blueprint].blueprint[shipClass])}
+                  layout={getFullShipBlueprint(Blueprints[blueprint].blueprint)}
+                  highlight={new Set(Blueprints[blueprint].blueprint[shipClass])}
                   width={400}
                />
             </div>

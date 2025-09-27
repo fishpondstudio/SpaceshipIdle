@@ -22,7 +22,7 @@ test("totalBuildingValue", () => {
 test("upgradeMax", () => {
    const rt = new Runtime(new SaveGame(), new GameState());
    addResource("XP", 1000, rt.left.resources);
-   rt.leftStat.tabulate(rt.tabulateHp(rt.left.tiles), rt.left);
+   rt.leftStat.tabulate(rt.left, rt);
 
    const tile: ITileData = { type: "AC30", level: 5 };
    upgradeMax(tile, rt.left);

@@ -202,8 +202,8 @@ export class Runtime {
          this._tickExtraXP();
          this._tickVictoryPointTimer();
 
-         this.leftStat.tabulate(this.tabulateHp(this.left.tiles), this.left);
-         this.rightStat.tabulate(this.tabulateHp(this.right.tiles), this.right);
+         this.leftStat.tabulate(this.left, this);
+         this.rightStat.tabulate(this.right, this);
 
          if (this.battleType === BattleType.Peace) {
             ++this.leftSave.data.tick;
@@ -309,19 +309,6 @@ export class Runtime {
       } else {
          this.left.stats.set("VictoryPointTimer", 0);
       }
-   }
-
-   public tabulateHp(tiles: Tiles): [number, number] {
-      let hp = 0;
-      let totalHp = 0;
-      tiles.forEach((_data, tile) => {
-         const rs = this.get(tile);
-         if (rs) {
-            hp += rs.props.hp - rs.damageTaken;
-            totalHp += rs.props.hp;
-         }
-      });
-      return [hp, totalHp];
    }
 
    public totalXPPerSecond(tiles: Tiles): number {

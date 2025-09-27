@@ -33,6 +33,14 @@
       },
       {
          "type": "npm",
+         "script": "sync",
+         "path": "packages/server",
+         "problemMatcher": [],
+         "label": "npm: sync - packages/server",
+         "isBackground": true,
+      },
+      {
+         "type": "npm",
          "script": "test",
          "path": "packages/shared",
          "problemMatcher": [],
