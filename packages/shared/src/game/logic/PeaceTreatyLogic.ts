@@ -1,4 +1,4 @@
-import { clamp } from "../../utils/Helper";
+import { clamp, rollDice } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { type Addon, Addons } from "../definitions/Addons";
 import type { BattleResult } from "../definitions/Galaxy";
@@ -83,12 +83,22 @@ export function grantRewards(result: BattleResult, gs: GameState): void {
    }
 }
 
-export function getPeaceTreatyScore(battleScore: number, gs: GameState): [number, Breakdown[]] {
+export interface PeaceTreatyScoreBreakdown {
+   label: string;
+   value: number | number[];
+   tooltip?: string;
+}
+
+export function getPeaceTreatyScore(
+   battleScore: number,
+   gs: GameState,
+   random: () => number,
+): [number, PeaceTreatyScoreBreakdown[]] {
    if (battleScore <= 0) {
       return [0, [{ label: BattleVictoryTypeLabel[getVictoryType(battleScore)](), value: 0 }]];
    }
 
-   const breakdown: Breakdown[] = [];
+   const breakdown: PeaceTreatyScoreBreakdown[] = [];
    breakdown.push({ label: BattleVictoryTypeLabel[getVictoryType(battleScore)](), value: battleScore });
 
    const winningStreak = getStat("WinningStreak", gs.stats);
@@ -103,11 +113,16 @@ export function getPeaceTreatyScore(battleScore: number, gs: GameState): [number
    if (gs.blueprint === "Intrepid") {
       breakdown.push({
          label: t(L.SpaceshipPrefix, t(L.Intrepid)),
-         value: 10,
+         value: [rollDice(6, random), rollDice(6, random)],
       });
    }
 
-   return [breakdown.reduce((acc, b) => acc + b.value, 0), breakdown];
+   return [
+      breakdown.reduce((acc, b) => {
+         return acc + (typeof b.value === "number" ? b.value : b.value.reduce((acc, v) => acc + v, 0));
+      }, 0),
+      breakdown,
+   ];
 }
 
 function getWinningStreakScore(ws: number): number {

@@ -773,7 +773,7 @@ export const EN = {
    Orion: "Orion",
    OrionDesc: "10% more modules for each ship class",
    Intrepid: "Intrepid",
-   IntrepidDesc: "+10 Peace Treaty Score when negotiating war reparation",
+   IntrepidDesc: "Add two D6 dice rolls to Peace Treaty Score when negotiating war reparation",
    ResetWarmongerPenaltyToX: "Reset <b>Warmonger Penalty</b> to <b>%%</b>",
    Majestic: "Majestic",
    MajesticDesc: "Reset Warmonger Penalty and Backstabber Penalty to 0 when unlocking a new ship class",
@@ -786,4 +786,6 @@ export const EN = {
    HowToGetMorePermanentElementLevelsHTML: "To get more permanent element levels, you need to <b>prestige</b> first and your elements this run will become <b>permanent element shards</b>, which can be used to upgrade the level of permanent elements",
    AlwaysShowChat: "Always Show Chat",
    AlwaysShowChatDesc: "Turning this off will only show chat messages when hovering over the chat input",
+   HideXpProductionPerCycle: "Hide XP Production Per Cycle",
+   HideXpProductionPerCycleDesc: "Hide XP production per cycle popup text from each module",
 };

@@ -10,9 +10,9 @@ import { findPlanet, getAddonReward } from "@spaceship-idle/shared/src/game/logi
 import { calculateRewardValue, getPeaceTreatyScore } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { formatNumber, getDOMRectCenter, mMapOf, shuffle } from "@spaceship-idle/shared/src/utils/Helper";
+import { formatNumber, getDOMRectCenter, mMapOf, rollDice, shuffle } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { useRef } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { GalaxyScene } from "../scenes/GalaxyScene";
 import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
@@ -45,7 +45,10 @@ export function PeaceTreatyModal({
          ["XP", 0],
       ]),
    });
-   const [peaceTreatyScore, peaceTreatyBreakdown] = getPeaceTreatyScore(battleScore, G.save.state);
+   const [peaceTreatyScore, peaceTreatyBreakdown] = useMemo(
+      () => getPeaceTreatyScore(battleScore, G.save.state, G.runtime.random),
+      [battleScore],
+   );
    const [rewardValue, rewardBreakdown] = calculateRewardValue(battleResult.current, G.save.state);
    const leftOver = clamp(peaceTreatyScore - rewardValue, 0, Number.POSITIVE_INFINITY);
    battleResult.current.resources.set("XP", (leftOver / 100) * enemyXP);
@@ -91,9 +94,13 @@ export function PeaceTreatyModal({
             <div className="f1 panel stretch">
                {peaceTreatyBreakdown.map((b) => (
                   <FloatingTip disabled={!b.tooltip} label={b.tooltip ? html(b.tooltip) : null} key={b.label}>
-                     <div className="row">
+                     <div className="row g5">
                         <div className="f1">{b.label}</div>
-                        <div>{b.value}</div>
+                        {typeof b.value === "number" ? (
+                           <div>{b.value}</div>
+                        ) : (
+                           b.value.map((v, i) => <Dice key={i} value={v} />)
+                        )}
                      </div>
                   </FloatingTip>
                ))}
@@ -230,3 +237,26 @@ export function PeaceTreatyModal({
       </div>
    );
 }
+
+function _Dice({ value }: { value: number }): React.ReactNode {
+   const forceUpdate = useForceUpdate();
+   const [dice, setDice] = useState(rollDice(6));
+   useEffect(() => {
+      for (let i = 0; i < 10; i++) {
+         setTimeout(
+            () => {
+               if (i === 9) {
+                  setDice(value);
+               } else {
+                  setDice(rollDice(6));
+               }
+               forceUpdate();
+            },
+            (i + 1) * 100,
+         );
+      }
+   }, [forceUpdate, value]);
+   return <TextureComp name={`Others/Dice${dice}`} />;
+}
+
+const Dice = memo(_Dice, (prev, next) => prev.value === next.value);

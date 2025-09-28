@@ -184,6 +184,9 @@ export class ShipScene extends Scene {
       this._targetIndicator.name = "TargetIndicator";
 
       RequestFloater.on(({ tile, amount }) => {
+         if (hasFlag(G.save.options.flag, GameOptionFlag.HideXPText)) {
+            return;
+         }
          this._tileVisuals.get(tile)?.addFloater(amount);
       });
 

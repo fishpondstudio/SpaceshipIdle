@@ -9,7 +9,7 @@ import type { IShortcutConfig, Shortcut } from "./Shortcut";
 export const GameOptionFlag = {
    None: 0,
    AlwaysShowChat: 1 << 0,
-   _Unused2: 1 << 1,
+   HideXPText: 1 << 1,
    RetroFilter: 1 << 2,
    TutorialDone: 1 << 3,
    HideSteamIcon: 1 << 4,

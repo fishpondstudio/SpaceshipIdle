@@ -528,6 +528,10 @@ export function randInt(min: number, max: number, random = Math.random): number 
    return Math.floor(rand(min, max, random));
 }
 
+export function rollDice(n: number, random = Math.random): number {
+   return Math.floor(random() * n) + 1;
+}
+
 export function randOne<T>(list: T[], random = Math.random): T {
    return list[Math.floor(random() * list.length)];
 }

@@ -21,6 +21,7 @@ import { ShipScene } from "../scenes/ShipScene";
 import { BalancingModal } from "../ui/BalancingModal";
 import { NewPlayerModal } from "../ui/NewPlayerModal";
 import { OfflineTimeModal } from "../ui/OfflineTimeModal";
+import { PeaceTreatyModal } from "../ui/PeaceTreatyModal";
 import { PreBattleModal } from "../ui/PreBattleModal";
 import { PrestigeModal } from "../ui/PrestigeModal";
 import { PrestigeReason } from "../ui/PrestigeReason";
@@ -89,6 +90,14 @@ export function addDebugFunctions(): void {
          size: "xl",
          title: "Balancing",
          dismiss: true,
+      });
+   };
+   // @ts-expect-error
+   globalThis.peaceTreaty = (score: number) => {
+      showModal({
+         children: <PeaceTreatyModal battleScore={score} name="Enemy" enemyXP={100_000} battleInfo={{}} />,
+         size: "lg",
+         dismiss: false,
       });
    };
    // @ts-expect-error
