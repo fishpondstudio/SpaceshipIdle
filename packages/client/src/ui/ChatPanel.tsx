@@ -89,21 +89,25 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
    useEffect(scrollToBottom, [handle]);
    useTypedEvent(OnImageLoaded, scrollToBottom);
    const latestMessage = messages.current[messages.current.length - 1];
+   const showChatMessages = isHover || isFocused || hasFlag(G.save.options.flag, GameOptionFlag.AlwaysShowChat);
 
    return (
       <div
          className={cls("chat-panel", isFocused ? "active" : null)}
          style={{ left }}
-         onMouseEnter={() => setIsHover(true)}
-         onMouseLeave={() => setIsHover(false)}
+         onMouseEnter={() => {
+            setIsHover(true);
+         }}
+         onMouseLeave={() => {
+            setIsHover(false);
+         }}
+         onTransitionStart={() => {
+            if (showChatMessages) {
+               scrollToBottom();
+            }
+         }}
       >
          <ScrollArea
-            style={{
-               contentVisibility:
-                  isHover || isFocused || hasFlag(G.save.options.flag, GameOptionFlag.AlwaysShowChat)
-                     ? "visible"
-                     : "hidden",
-            }}
             onMouseEnter={() => {
                isMouseOver.current = true;
             }}
@@ -111,7 +115,7 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
                isMouseOver.current = false;
             }}
             viewportRef={scrollArea}
-            classNames={{ viewport: "chat-message-viewport" }}
+            classNames={{ viewport: cls("chat-message-viewport", showChatMessages ? "show" : "hide") }}
          >
             {messages.current.map((message) => {
                return (
@@ -140,7 +144,7 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
          <ChatInput
             channel={channel}
             onFocusChanged={setIsFocused}
-            placeholder={latestMessage ? `${latestMessage.name}: ${latestMessage.message}` : ""}
+            placeholder={!showChatMessages && latestMessage ? `${latestMessage.name}: ${latestMessage.message}` : ""}
          />
       </div>
    );

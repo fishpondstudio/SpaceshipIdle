@@ -3,7 +3,6 @@
    bottom: 10px;
    left: 10px;
    width: 300px;
-   opacity: 0.5;
    &.off {
       width: auto;
       border: 2px solid rgba(255, 255, 255, 0.2);
@@ -48,18 +47,31 @@
 }
 
 .chat-message-viewport {
-   max-height: 33vh;
+   max-height: 50vh;
    text-shadow: 1px 1px 0 #000;
    font-size: var(--mantine-font-size-sm);
    mask-image: linear-gradient(rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 100%);
    mask-mode: alpha;
    backdrop-filter: blur(5px);
+   transition:
+      opacity 0.25s ease-in-out,
+      content-visibility 0.25s ease-in-out;
+   transition-behavior: allow-discrete;
+   &.show {
+      content-visibility: visible;
+      opacity: 1;
+   }
+   &.hide {
+      content-visibility: hidden;
+      opacity: 0;
+   }
    .message {
       padding: 5px 0;
       user-select: text;
       -webkit-user-select: text;
       word-break: break-word;
       white-space: pre-wrap;
+      content-visibility: auto;
       .name {
          display: flex;
          align-items: center;
