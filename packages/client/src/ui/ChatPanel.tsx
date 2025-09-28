@@ -101,10 +101,12 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
          onMouseLeave={() => {
             setIsHover(false);
          }}
-         onTransitionStart={() => {
-            if (showChatMessages) {
-               scrollToBottom();
-            }
+         onTransitionStart={(e) => {
+            requestAnimationFrame(() => {
+               if (showChatMessages) {
+                  scrollToBottom();
+               }
+            });
          }}
       >
          <ScrollArea
@@ -119,7 +121,7 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
          >
             {messages.current.map((message) => {
                return (
-                  <div className="message" key={message.time}>
+                  <div className="message" key={`${message.name}.${message.time}`}>
                      <div className="name">
                         <div
                            className="pointer"
