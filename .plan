@@ -1,2 +1,3 @@
 Done:
-- Add an option to only show chat messages on hover - this will be the default option and free up lots of space on the bottom left corner.
+- Add an option to only show chat messages on hover - this will be the default option and free up lots of space on the bottom left corner
+- Evasion Cluster / Recovery Cluster / Damage Cluster / HP Cluster now only require the same type of weapon (i.e. autocannons, missiles, etc), no longer need to be the exact same model

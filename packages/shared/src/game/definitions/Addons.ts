@@ -141,7 +141,7 @@ function clusterEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile) =
          return;
       }
       const targetRs = runtime.get(target);
-      if (targetRs && targetRs.data.type === rs.data.type) {
+      if (targetRs && targetRs.def.code === rs.def.code) {
          effect(targetRs);
       }
    });
