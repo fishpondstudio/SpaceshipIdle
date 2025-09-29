@@ -4,7 +4,7 @@ import type { Ability } from "../definitions/Ability";
 import type { DamageType, ProjectileFlag } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { tileToPosCenter } from "../Grid";
-import { Multipliers } from "./IMultiplier";
+import type { Multipliers } from "./IMultiplier";
 
 export class Projectile {
    private length: number;

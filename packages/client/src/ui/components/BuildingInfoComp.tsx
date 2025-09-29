@@ -4,6 +4,7 @@ import type { Building } from "@spaceship-idle/shared/src/game/definitions/Build
 import { getDamagePerFire, getHP } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { WeaponTypeSeriesVariantComp } from "../WeaponTypeSeriesVariantComp";
 import { AbilityComp } from "./AbilityComp";
 
 export function BuildingInfoComp({ building }: { building: Building }): React.ReactNode {
@@ -11,6 +12,7 @@ export function BuildingInfoComp({ building }: { building: Building }): React.Re
    const dmgPerFire = getDamagePerFire({ type: building, level: 1 });
    return (
       <>
+         <WeaponTypeSeriesVariantComp building={building} />
          <div className="subtitle">{t(L.Defense)}</div>
          <div className="row">
             <div className="f1">{t(L.HP)}</div>

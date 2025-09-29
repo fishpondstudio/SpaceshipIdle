@@ -1,8 +1,11 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { FriendshipBonus } from "@spaceship-idle/shared/src/game/definitions/FriendshipBonus";
 import { StarSystemFlags } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { DefaultShortcuts, GameOption } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameState, type SaveGame } from "@spaceship-idle/shared/src/game/GameState";
+import { getShipClassByIndex } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { migrateBuildingsAndResources } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
+import { randOne } from "@spaceship-idle/shared/src/utils/Helper";
 
 export function migrateSave(save: SaveGame): void {
    if ("elementChoices" in save.options) {
@@ -44,5 +47,12 @@ export function migrateSave(save: SaveGame): void {
       if (!starSystem.flags) {
          starSystem.flags = StarSystemFlags.None;
       }
+      const shipClass = getShipClassByIndex(starSystem.distance);
+      const candidates = FriendshipBonus[shipClass];
+      starSystem.planets.forEach((planet) => {
+         if (!candidates.includes(planet.friendshipBonus)) {
+            planet.friendshipBonus = randOne(candidates);
+         }
+      });
    });
 }

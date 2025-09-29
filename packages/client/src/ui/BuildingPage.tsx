@@ -15,6 +15,7 @@ import { TitleComp } from "./components/TitleComp";
 import { UpgradeComp } from "./components/UpgradeComp";
 import { VideoTutorialComp } from "./components/VideoTutorialComp";
 import type { ITileWithGameState } from "./ITileWithGameState";
+import { WeaponTypeSeriesVariantComp } from "./WeaponTypeSeriesVariantComp";
 
 export function BuildingPage({ tile, gs, readonly }: ITileWithGameState & { readonly: boolean }): React.ReactNode {
    refreshOnTypedEvent(GameOptionUpdated);
@@ -27,7 +28,12 @@ export function BuildingPage({ tile, gs, readonly }: ITileWithGameState & { read
    return (
       <SidebarComp
          title={
-            <FloatingTip label={codeLabel} disabled={codeLabel.length <= 0} position="left">
+            <FloatingTip
+               w={300}
+               label={<WeaponTypeSeriesVariantComp building={data.type} />}
+               disabled={codeLabel.length <= 0}
+               position="left"
+            >
                <div className="row g5">
                   <TextureComp name={`Building/${data.type}`} style={{ margin: "-10px -5px" }} />
                   <div className="f1">{getBuildingName(data.type)}</div>

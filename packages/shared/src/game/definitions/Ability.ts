@@ -33,11 +33,13 @@ export const AbilityRange = {
    FrontTrio: 3,
    Rear: 4,
    RearTrio: 5,
-   Range1: 6,
-   Range2: 7,
-   Range3: 8,
-   Row: 9,
-   Column: 10,
+   FrontAndRear: 6,
+   Flanks: 7,
+   Range1: 8,
+   Range2: 9,
+   Range3: 10,
+   Row: 11,
+   Column: 12,
 } as const;
 
 export type AbilityRange = ValueOf<typeof AbilityRange>;
@@ -57,6 +59,8 @@ export const AbilityRangeLabel: Record<AbilityRange, () => string> = {
    [AbilityRange.FrontTrio]: () => t(L.AbilityRangeFrontTrio),
    [AbilityRange.Rear]: () => t(L.AbilityRangeRear),
    [AbilityRange.RearTrio]: () => t(L.AbilityRangeRearTrio),
+   [AbilityRange.FrontAndRear]: () => t(L.AbilityRangeFrontAndRear),
+   [AbilityRange.Flanks]: () => t(L.AbilityRangeFlanks),
    [AbilityRange.Range1]: () => t(L.AbilityRangeRange1),
    [AbilityRange.Range2]: () => t(L.AbilityRangeRange2),
    [AbilityRange.Range3]: () => t(L.AbilityRangeRange3),
@@ -128,6 +132,28 @@ export function abilityTarget<T>(
          }
          if (tiles.has(createTile(x + forward, y - 1))) {
             result.push(createTile(x + forward, y - 1));
+         }
+         break;
+      }
+      case AbilityRange.FrontAndRear: {
+         const { x, y } = tileToPoint(tile);
+         result.push(tile);
+         if (tiles.has(createTile(x + forward, y))) {
+            result.push(createTile(x + forward, y));
+         }
+         if (tiles.has(createTile(x - forward, y))) {
+            result.push(createTile(x - forward, y));
+         }
+         break;
+      }
+      case AbilityRange.Flanks: {
+         const { x, y } = tileToPoint(tile);
+         result.push(tile);
+         if (tiles.has(createTile(x, y + 1))) {
+            result.push(createTile(x, y + 1));
+         }
+         if (tiles.has(createTile(x, y - 1))) {
+            result.push(createTile(x, y - 1));
          }
          break;
       }

@@ -78,21 +78,18 @@ export function AddonPage(): React.ReactNode {
                                  ) : null}
                               </div>
                               {import.meta.env.DEV || amount > 0 ? (
-                                 <>
-                                    <div className="row text-sm text-dimmed stretch">
-                                       <div>{t(L.Amount)}</div>
-                                       <div className="f1" />
-                                       <div>{amount}</div>
+                                 <div className="row g5 text-sm text-dimmed stretch">
+                                    <div>
+                                       {t(L.Amount)} / {t(L.Effect)}
                                     </div>
-                                    <div className="row text-sm text-dimmed stretch g5">
-                                       <div>{t(L.Effect)}</div>
-                                       <FloatingTip label={html(def.desc(effect))}>
-                                          <div className="mi sm">info</div>
-                                       </FloatingTip>
-                                       <div className="f1" />
-                                       <div>+{formatNumber(effect)}</div>
+                                    <div className="f1" />
+                                    <div>
+                                       {amount} / +{formatNumber(effect)}
                                     </div>
-                                 </>
+                                    <FloatingTip label={html(def.desc(effect || 1))}>
+                                       <div className="mi sm">info</div>
+                                    </FloatingTip>
+                                 </div>
                               ) : (
                                  <div className="row text-sm text-dimmed">
                                     <div className="f1">{t(L.NotDiscovered)}</div>
