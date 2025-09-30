@@ -6,8 +6,8 @@ import type { Runtime } from "../logic/Runtime";
 import type { RuntimeTile } from "../logic/RuntimeTile";
 import { AbilityRange, abilityTarget } from "./Ability";
 import type { Blueprint } from "./Blueprints";
-import { ProjectileFlag } from "./BuildingProps";
 import type { Building } from "./Buildings";
+import { ProjectileFlag } from "./ProjectileFlag";
 import type { ShipClass } from "./ShipClass";
 
 export interface IAddonDefinition {
@@ -91,11 +91,12 @@ export const Addons = {
       shipClass: "Corvette",
    }),
    Damage4: cast<IAddonDefinition>({
-      name: () => t(L.DamageArray),
-      desc: (value: number) => t(L.DamageArrayDesc, formatNumber(value), formatNumber(value)),
+      name: () => t(L.TrueStrikeArray),
+      desc: (value: number) => t(L.TrueStrikeArrayDesc, formatNumber(value / 2), formatNumber(value / 2)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
          arrayEffect(tile, runtime, (rs) => {
-            rs.damageMultiplier.add(value, t(L.SourceAddon, t(L.DamageArray)));
+            rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.TrueDamage);
+            rs.damageMultiplier.add(value / 2, t(L.SourceAddon, t(L.TrueStrikeArray)));
          });
       },
       shipClass: "Corvette",

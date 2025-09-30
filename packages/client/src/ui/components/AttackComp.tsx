@@ -1,6 +1,7 @@
 import { Badge, Switch } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { DamageTypeLabel, ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import { DamageTypeLabel } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/ProjectileFlag";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { getDamagePerFire } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { formatNumber, hasFlag } from "@spaceship-idle/shared/src/utils/Helper";

@@ -88,8 +88,9 @@ export const EN = {
    DamageControlDesc: "Recover %% of max HP per second for every 10% of HP missing",
    DamageDiversity: "Damage Diversity",
    DamageDiversityDesc: "<b>Equipped module</b> gains +%% Damage Multiplier. <b>Adjacent modules</b> also gain +%% Damage Multiplier if each one is a different weapon model from both the equipped module and from each other",
-   DamageArray: "Damage Array",
-   DamageArrayDesc: "<b>Equipped module</b> gains +%% Damage Multiplier. <b>Adjacent modules</b> also gain +%% Damage Multiplier if they have different series from the equipped module<br><small>e.g. AC76A: Series = 76; MS2B: Series = 2</small>",
+   TrueStrikeArray: "True Strike Array",
+   TrueStrikeArrayDesc:
+      "<b>Equipped module</b> gains True Strike and +%% Damage Multiplier. <b>Adjacent modules</b> also gain True Strike and +%% Damage Multiplier if they have different series from the equipped module<br><small>e.g. AC76A: Series = 76; MS2B: Series = 2</small><br><small>True Strike: Projectile damage ignores target's armor, shield and deflection</small>",
    DamageMultiplier: "Damage Multiplier",
    Danio: "Danio",
    DecisiveVictory: "Decisive Victory",

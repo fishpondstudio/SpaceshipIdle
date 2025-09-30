@@ -1,8 +1,9 @@
 import { L, t } from "../../utils/i18n";
 import { AbilityFlag, AbilityRange, AbilityStatDamagePct, AbilityTiming, abilityStat } from "./Ability";
-import { DamageType, type IBuildingDefinition, type IBuildingProp, ProjectileFlag } from "./BuildingProps";
+import { DamageType, type IBuildingDefinition, type IBuildingProp } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 import { DefaultCooldown } from "./Constant";
+import { ProjectileFlag } from "./ProjectileFlag";
 
 export const AutocannonBaseProps: IBuildingProp = {
    armor: [0, 0.5],

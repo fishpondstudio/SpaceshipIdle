@@ -1,10 +1,12 @@
 import { clamp, formatNumber, formatPercent, hasFlag, setFlag, type ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
-import { type IRuntimeEffect, RuntimeFlag, type RuntimeTile } from "../logic/RuntimeTile";
+import { RuntimeFlag } from "../logic/RuntimeFlag";
+import type { IRuntimeEffect, RuntimeTile } from "../logic/RuntimeTile";
 import { AbilityRange, abilityTarget } from "./Ability";
-import { DamageType, ProjectileFlag } from "./BuildingProps";
+import { DamageType } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
+import { ProjectileFlag } from "./ProjectileFlag";
 
 export const StatusEffectFlag = {
    None: 0,

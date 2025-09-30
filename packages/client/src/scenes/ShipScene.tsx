@@ -1,12 +1,12 @@
 import { computePosition, flip, offset, shift } from "@floating-ui/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { AbilityTiming, abilityTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
-import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
+import { abilityTarget, AbilityTiming } from "@spaceship-idle/shared/src/game/definitions/Ability";
+import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/ProjectileFlag";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated, type Tiles } from "@spaceship-idle/shared/src/game/GameState";
 import {
-   GridSize,
    getSize,
+   GridSize,
    MaxX,
    MaxY,
    posToTile,

@@ -8,9 +8,10 @@ import {
    abilityDamage,
    criticalDamagePct,
 } from "./Ability";
-import { DamageType, type IBuildingDefinition, type IBuildingProp, ProjectileFlag } from "./BuildingProps";
+import { DamageType, type IBuildingDefinition, type IBuildingProp } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 import { DamageToHPMultiplier, DefaultCooldown } from "./Constant";
+import { ProjectileFlag } from "./ProjectileFlag";
 
 export const MissileBaseProps: IBuildingProp = {
    armor: [0, 1],

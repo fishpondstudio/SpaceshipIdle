@@ -2,7 +2,7 @@ import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/ga
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { GridSize, tileToPosCenter } from "@spaceship-idle/shared/src/game/Grid";
 import type { ITileData } from "@spaceship-idle/shared/src/game/ITileData";
-import { RuntimeFlag } from "@spaceship-idle/shared/src/game/logic/RuntimeTile";
+import { RuntimeFlag } from "@spaceship-idle/shared/src/game/logic/RuntimeFlag";
 import { clamp, formatNumber, hasFlag, lookAt, type Tile, type ValueOf } from "@spaceship-idle/shared/src/utils/Helper";
 import type { Disposable } from "@spaceship-idle/shared/src/utils/TypedEvent";
 import {

@@ -1,4 +1,4 @@
-import { forEach, hasFlag, mapSafeAdd, safeAdd, type Tile, type ValueOf } from "../../utils/Helper";
+import { forEach, hasFlag, mapSafeAdd, safeAdd, type Tile } from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
 import type { Addon } from "../definitions/Addons";
@@ -7,12 +7,12 @@ import {
    DamageType,
    type IBuildingDefinition,
    type IBuildingProp,
-   ProjectileFlag,
    type Property,
 } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
 import { StatusEffectTickInterval } from "../definitions/Constant";
-import { type StatusEffect, StatusEffectFlag, StatusEffects, statusEffectOf } from "../definitions/StatusEffect";
+import { ProjectileFlag } from "../definitions/ProjectileFlag";
+import { type StatusEffect, StatusEffectFlag, statusEffectOf, StatusEffects } from "../definitions/StatusEffect";
 import type { GameState } from "../GameState";
 import { GridSize } from "../Grid";
 import type { ITileData } from "../ITileData";
@@ -27,17 +27,10 @@ import {
 import { getDamagePerFire, getHP } from "./BuildingLogic";
 import type { Multipliers } from "./IMultiplier";
 import type { Runtime } from "./Runtime";
+import { RuntimeFlag } from "./RuntimeFlag";
 import { isEnemy } from "./ShipLogic";
 import { Side } from "./Side";
 import { TrackedValue } from "./TrackedValue";
-
-export const RuntimeFlag = {
-   None: 0,
-   NoFire: 1 << 0,
-   BlockLaser: 1 << 1,
-} as const;
-
-export type RuntimeFlag = ValueOf<typeof RuntimeFlag>;
 
 export interface IRuntimeEffect {
    statusEffect: StatusEffect;
@@ -135,14 +128,17 @@ export class RuntimeTile {
       }
 
       safeAdd(stat.rawDamagePerSec, damageType, damage);
-      if (damageType === DamageType.Kinetic) {
-         damage = damage * damageAfterArmor(this.props.armor);
-      }
-      if (damageType === DamageType.Explosive) {
-         damage = damage * damageAfterShield(this.props.armor);
-      }
-      if (damageType === DamageType.Energy) {
-         damage = damage * damageAfterDeflection(this.props.deflection);
+
+      if (!hasFlag(projectileFlag, ProjectileFlag.TrueDamage)) {
+         if (damageType === DamageType.Kinetic) {
+            damage = damage * damageAfterArmor(this.props.armor);
+         }
+         if (damageType === DamageType.Explosive) {
+            damage = damage * damageAfterShield(this.props.armor);
+         }
+         if (damageType === DamageType.Energy) {
+            damage = damage * damageAfterDeflection(this.props.deflection);
+         }
       }
 
       safeAdd(stat.actualDamagePerSec, damageType, damage);

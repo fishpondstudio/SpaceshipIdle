@@ -4,9 +4,9 @@ import { Config } from "../Config";
 import { getDamagePerFire } from "../logic/BuildingLogic";
 import type { Multipliers } from "../logic/IMultiplier";
 import { Side } from "../logic/Side";
-import { ProjectileFlag } from "./BuildingProps";
 import type { Building } from "./Buildings";
 import { LaserArrayDamagePct } from "./Constant";
+import { ProjectileFlag } from "./ProjectileFlag";
 import type { StatusEffect } from "./StatusEffect";
 
 export const AbilityTiming = {

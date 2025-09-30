@@ -3,6 +3,7 @@ import { L, t } from "../../utils/i18n";
 import type { ElementSymbol } from "../PeriodicTable";
 import type { Ability } from "./Ability";
 import type { CodeNumber } from "./CodeNumber";
+import type { ProjectileFlag } from "./ProjectileFlag";
 
 export type DamageType = ValueOf<typeof DamageType>;
 export const DamageType = {
@@ -30,15 +31,6 @@ export interface IBuildingProp {
    projectileFlag: ProjectileFlag;
    ability?: Ability;
 }
-
-export const ProjectileFlag = {
-   None: 0,
-   NoEvasion: 1 << 0,
-   LaserDamage: 1 << 1,
-   DroneDamage: 1 << 2,
-} as const;
-
-export type ProjectileFlag = ValueOf<typeof ProjectileFlag>;
 
 export const DamageTypeLabel: Record<DamageType, () => string> = {
    [DamageType.Kinetic]: () => t(L.Kinetic),

@@ -1,8 +1,9 @@
 import type { Tile } from "../../utils/Helper";
 import { type IHaveXY, Vector2 } from "../../utils/Vector2";
 import type { Ability } from "../definitions/Ability";
-import type { DamageType, ProjectileFlag } from "../definitions/BuildingProps";
+import type { DamageType } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
+import type { ProjectileFlag } from "../definitions/ProjectileFlag";
 import { tileToPosCenter } from "../Grid";
 import type { Multipliers } from "./IMultiplier";
 

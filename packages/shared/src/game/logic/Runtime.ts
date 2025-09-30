@@ -5,13 +5,14 @@ import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
 import { Blueprints } from "../definitions/Blueprints";
 import { Bonus } from "../definitions/Bonus";
-import { DamageType, ProjectileFlag } from "../definitions/BuildingProps";
+import { DamageType } from "../definitions/BuildingProps";
 import {
    BattleTickInterval,
    ProductionTickInterval,
    SuddenDeathSeconds,
    SuddenDeathUndamagedSec,
 } from "../definitions/Constant";
+import { ProjectileFlag } from "../definitions/ProjectileFlag";
 import { ShipClass } from "../definitions/ShipClass";
 import { type GameState, GameStateUpdated, hashGameStatePair, type SaveGame, type Tiles } from "../GameState";
 import { makeTile } from "../ITileData";
@@ -26,8 +27,9 @@ import { tickGalaxy } from "./GalaxyLogic";
 import type { Projectile } from "./Projectile";
 import { tickQuantumElementProgress } from "./QuantumElementLogic";
 import { addResource, addStat, getStat, trySpendResource } from "./ResourceLogic";
+import { RuntimeFlag } from "./RuntimeFlag";
 import { RuntimeStat } from "./RuntimeStat";
-import { RuntimeFlag, RuntimeTile } from "./RuntimeTile";
+import { RuntimeTile } from "./RuntimeTile";
 import { flipHorizontalCopy, isEnemy } from "./ShipLogic";
 import { Side } from "./Side";
 import { getBuildingsWithinShipClass, getShipClass, getTechName } from "./TechLogic";

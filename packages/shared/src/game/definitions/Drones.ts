@@ -2,9 +2,10 @@ import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { getDamagePerFire } from "../logic/BuildingLogic";
 import { AbilityFlag, AbilityRange, AbilityTiming } from "./Ability";
-import { DamageType, type IBuildingDefinition, type IBuildingProp, ProjectileFlag } from "./BuildingProps";
+import { DamageType, type IBuildingDefinition, type IBuildingProp } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
 import { DefaultCooldown } from "./Constant";
+import { ProjectileFlag } from "./ProjectileFlag";
 
 export const DroneBaseProps: IBuildingProp = {
    armor: [0, 0.5],
