@@ -795,4 +795,5 @@ export const EN = {
    Type: "Type",
    Series: "Series",
    Variant: "Variant",
+   ScoreCappedAt100: "* Score Capped At 100",
 };

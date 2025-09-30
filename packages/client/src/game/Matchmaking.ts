@@ -6,7 +6,7 @@ import { G } from "../utils/Global";
 import { BattledShips } from "./BattledShips";
 
 export async function findShip(score: number, hp: number, dps: number): Promise<IShip | undefined> {
-   let range = 0.05;
+   let range = 0.01;
    const excludedHash = Array.from(BattledShips);
    excludedHash.push(hashGameState(G.save.state));
    while (true) {
@@ -19,9 +19,9 @@ export async function findShip(score: number, hp: number, dps: number): Promise<
             [0, dps * (1 + range)],
          );
          return ship;
-      } catch (e) {
+      } catch {
          range *= 2;
-         if (range > 0.5) {
+         if (range > 0.1) {
             return undefined;
          }
       }
