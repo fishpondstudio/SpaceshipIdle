@@ -33,7 +33,7 @@ export function calculateRewardValue(result: BattleResult, gs: GameState): [numb
    let undiscoveredAddons = 0;
    result.addons.forEach((count, addon) => {
       if (count > 0) {
-         totalAddons += Math.round(count * getAddonFactor(addon, gs));
+         totalAddons += count * getAddonFactor(addon, gs);
          ++differentAddons;
          if ((gs.addons.get(addon)?.amount ?? 0) === 0) {
             ++undiscoveredAddons;
@@ -41,7 +41,7 @@ export function calculateRewardValue(result: BattleResult, gs: GameState): [numb
       }
    });
    if (totalAddons > 0) {
-      const valueFromAddons = getBaseValue(totalAddons);
+      const valueFromAddons = Math.round(getBaseValue(totalAddons));
       value += valueFromAddons;
       breakdown.push({ label: t(L.Addons), value: valueFromAddons });
    }
@@ -87,6 +87,7 @@ export interface PeaceTreatyScoreBreakdown {
    label: string;
    value: number | number[];
    tooltip?: string;
+   className?: string;
 }
 
 export function getPeaceTreatyScore(
@@ -117,12 +118,19 @@ export function getPeaceTreatyScore(
       });
    }
 
-   return [
-      breakdown.reduce((acc, b) => {
-         return acc + (typeof b.value === "number" ? b.value : b.value.reduce((acc, v) => acc + v, 0));
-      }, 0),
-      breakdown,
-   ];
+   const peaceTreatyScore = breakdown.reduce((acc, b) => {
+      return acc + (typeof b.value === "number" ? b.value : b.value.reduce((acc, v) => acc + v, 0));
+   }, 0);
+
+   if (peaceTreatyScore > 100) {
+      breakdown.push({
+         label: t(L.ScoreCappedAt100),
+         value: [],
+         className: "text-red",
+      });
+   }
+
+   return [Math.min(peaceTreatyScore, 100), breakdown];
 }
 
 function getWinningStreakScore(ws: number): number {

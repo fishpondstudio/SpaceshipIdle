@@ -10,7 +10,14 @@ import { findPlanet, getAddonReward } from "@spaceship-idle/shared/src/game/logi
 import { calculateRewardValue, getPeaceTreatyScore } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { formatNumber, getDOMRectCenter, mMapOf, rollDice, shuffle } from "@spaceship-idle/shared/src/utils/Helper";
+import {
+   cls,
+   formatNumber,
+   getDOMRectCenter,
+   mMapOf,
+   rollDice,
+   shuffle,
+} from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { GalaxyScene } from "../scenes/GalaxyScene";
@@ -84,9 +91,9 @@ export function PeaceTreatyModal({
          )}
          <div className="row text-lg">
             <TextureComp name="Others/Spaceship24" width={48} />
-            <div>SS {G.save.state.name}</div>
+            <div>{t(L.SpaceshipPrefix, G.save.state.name)}</div>
             <div className="f1" />
-            <div>{name}</div>
+            <div>{t(L.SpaceshipPrefix, name)}</div>
             <TextureComp name={texture} width={48} />
          </div>
          <div className="h10" />
@@ -94,7 +101,7 @@ export function PeaceTreatyModal({
             <div className="f1 panel stretch">
                {peaceTreatyBreakdown.map((b) => (
                   <FloatingTip disabled={!b.tooltip} label={b.tooltip ? html(b.tooltip) : null} key={b.label}>
-                     <div className="row g5">
+                     <div className={cls("row g5", b.className)}>
                         <div className="f1">{b.label}</div>
                         {typeof b.value === "number" ? (
                            <div>{b.value}</div>
