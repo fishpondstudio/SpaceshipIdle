@@ -13,7 +13,6 @@ import { formatNumber, formatPercent } from "@spaceship-idle/shared/src/utils/He
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { useMemo } from "react";
-import { BattledShips } from "../game/BattledShips";
 import { ShipImageComp } from "../game/ShipImageComp";
 import { ShipScene } from "../scenes/ShipScene";
 import { G } from "../utils/Global";
@@ -87,7 +86,7 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
                      me.resources.clear();
                      enemy.resources.clear();
 
-                     BattledShips.add(hashGameState(enemy));
+                     G.save.state.battledShips.add(hashGameState(enemy));
 
                      G.speed = 0;
                      G.runtime = new Runtime({ state: me, options: G.save.options, data: G.save.data }, enemy);

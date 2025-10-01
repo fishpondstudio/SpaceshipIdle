@@ -3,11 +3,10 @@ import type { IShip } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
 import { INT32_MAX } from "@spaceship-idle/shared/src/utils/Helper";
 import { RPCClient } from "../rpc/RPCClient";
 import { G } from "../utils/Global";
-import { BattledShips } from "./BattledShips";
 
 export async function findShip(score: number, hp: number, dps: number): Promise<IShip | undefined> {
    let range = 0.01;
-   const excludedHash = Array.from(BattledShips);
+   const excludedHash = Array.from(G.save.state.battledShips);
    excludedHash.push(hashGameState(G.save.state));
    while (true) {
       try {

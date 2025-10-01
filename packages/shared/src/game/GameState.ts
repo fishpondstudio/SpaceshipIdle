@@ -52,6 +52,7 @@ export class GameState {
    selectedDirectives = new Map<ShipClass, Bonus>();
    addons = new Map<Addon, { tile: Tile | null; amount: number }>();
    blueprint: Blueprint = "Odyssey";
+   battledShips = new Set<bigint>();
 
    name = "Unnamed";
    flags: GameStateFlags = GameStateFlags.None;
