@@ -2,8 +2,10 @@ import type { Planet } from "@spaceship-idle/shared/src/game/definitions/Galaxy"
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { calcShipScore, generateShip } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { getPlanetShipClass } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
+import { getShipClassElementLevel } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { canSpendResource, trySpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
+import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { cls, formatDelta, formatNumber, formatPercent, mathSign } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { srand } from "@spaceship-idle/shared/src/utils/Random";
@@ -20,7 +22,12 @@ import { playClick, playError } from "./Sound";
 export function GalaxySpyComp({ planet }: { planet: Planet }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    const ship = useMemo(
-      () => generateShip(getPlanetShipClass(planet.id, G.save.data.galaxy), srand(planet.seed)),
+      () =>
+         generateShip(
+            getPlanetShipClass(planet.id, G.save.data.galaxy),
+            getShipClassElementLevel(getShipClass(G.save.state), G.save.state),
+            srand(planet.seed),
+         ),
       [planet.seed, planet.id],
    );
    const [score, hp, dps] = useMemo(() => calcShipScore(G.save.state), []);

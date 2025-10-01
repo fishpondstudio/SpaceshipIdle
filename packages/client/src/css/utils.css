@@ -322,6 +322,12 @@
    font-family: "SpaceshipIdleMono", monospace;
 }
 
+.nowrap {
+   white-space: nowrap;
+   word-wrap: nowrap;
+   word-break: keep-all;
+}
+
 .text-dimmed {
    color: var(--mantine-color-dark-2);
 }

@@ -14,7 +14,7 @@ export async function findShip(score: number, hp: number, dps: number): Promise<
          const ship = await RPCClient.findShipV3(
             excludedHash,
             [0, INT32_MAX],
-            [score / (1 + range * 2), score * (1 + range)],
+            [score / (1 + range), score * (1 + range)],
             [0, hp * (1 + range)],
             [0, dps * (1 + range)],
          );

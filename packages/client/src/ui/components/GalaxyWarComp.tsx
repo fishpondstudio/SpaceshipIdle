@@ -10,7 +10,9 @@ import {
    getWarConsequences,
 } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
+import { getShipClassElementLevel } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { canSpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { cls, formatNumber, hasFlag, mMapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { srand } from "@spaceship-idle/shared/src/utils/Random";
@@ -120,7 +122,11 @@ export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
             className="btn red w100"
             onClick={() => {
                playClick();
-               const enemy = generateShip(getPlanetShipClass(planet.id, G.save.data.galaxy), srand(planet.seed));
+               const enemy = generateShip(
+                  getPlanetShipClass(planet.id, G.save.data.galaxy),
+                  getShipClassElementLevel(getShipClass(G.save.state), G.save.state),
+                  srand(planet.seed),
+               );
                enemy.name = planet.name;
                showModal({
                   children: (

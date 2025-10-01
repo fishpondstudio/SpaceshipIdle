@@ -1,4 +1,4 @@
-import { clamp, inverse, shuffle } from "../../utils/Helper";
+import { clamp, divide, inverse, shuffle } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { DefaultElementChoices, QuantumToElement } from "../definitions/Constant";
@@ -257,4 +257,36 @@ export function getElementDesc(symbol: ElementSymbol, value: number): string {
       return elementEffect(value);
    }
    return t(L.HpOrDamageMultiplierForX, getBuildingName(elementEffect));
+}
+
+export function getElementEffectiveLevel(amount: number): number {
+   let level = 0;
+   while (true) {
+      const cost = getElementUpgradeCost(level + 1);
+      if (amount >= cost) {
+         amount -= cost;
+         level++;
+      } else {
+         break;
+      }
+   }
+   return level;
+}
+
+export function getShipClassElementLevel(shipClass: ShipClass, gs: GameState): number {
+   let total = 0;
+   let count = 0;
+   for (const [symbol, inv] of gs.permanentElements) {
+      const effect = Config.Elements.get(symbol);
+      if (typeof effect === "function") {
+         continue;
+      }
+      if (typeof effect === "string" && Config.BuildingToShipClass[effect] !== shipClass) {
+         continue;
+      }
+      const amount = getTotalElementUpgradeCost(inv.hp) + getTotalElementUpgradeCost(inv.damage) + inv.amount;
+      total += getElementEffectiveLevel(amount / 2);
+      ++count;
+   }
+   return Math.round(divide(total, count));
 }

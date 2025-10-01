@@ -111,11 +111,13 @@ export function MatchmakingModal(): React.ReactNode {
                            iReduceOf(G.save.state.tiles, (prev, [_, data]) => prev + data.level, 0) /
                               G.save.state.tiles.size,
                         ),
+                        score,
                         hp,
                         dps,
                         Math.random,
                      );
                      ship.name = capitalize(new Generator("ssV").toString());
+                     console.log("Matchmaking: generate enemy ship", ship);
                   }
                   await resolveIn(1, null);
 

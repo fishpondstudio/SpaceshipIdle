@@ -52,7 +52,7 @@ export function MatchmakingShipComp({ ship }: { ship: GameState }): React.ReactN
                         {element} <span className="text-dimmed">({getElementDesc(element, 1)})</span>
                      </div>
                      {typeof effect === "string" ? (
-                        <div className="f1 text-right">
+                        <div className="f1 text-right nowrap">
                            {data.hp} + {data.damage} ({data.amount})
                         </div>
                      ) : (

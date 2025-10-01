@@ -278,12 +278,12 @@ export function evasionEffectiveMultiplier(value: number): number {
    return 1 + value;
 }
 
-export function generateShip(shipClass: ShipClass, random: () => number): GameState {
+export function generateShip(shipClass: ShipClass, baseElementLevel: number, random: () => number): GameState {
    const ship = new GameState();
    ship.blueprint = randOne(keysOf(Blueprints), random);
    const design = Blueprints[ship.blueprint].blueprint[shipClass];
    const buildings = getBuildingsWithinShipClass(shipClass);
-   const difficulty = ShipClassList.indexOf(shipClass);
+   const difficulty = baseElementLevel + ShipClassList.indexOf(shipClass);
    for (const tile of design) {
       const building = randOne(buildings, random);
       ship.tiles.set(tile, {
@@ -312,6 +312,7 @@ export function generateShip(shipClass: ShipClass, random: () => number): GameSt
 export function generateMatchmakingShip(
    shipClass: ShipClass,
    averageLevel: number,
+   targetScore: number,
    targetHp: number,
    targetDps: number,
    random: () => number,
@@ -351,9 +352,9 @@ export function generateMatchmakingShip(
    }
 
    while (true) {
-      const [_, hp, dps] = calcShipScore(ship);
-      if (hp > targetHp || dps > targetDps) {
-         ship.tiles.forEach((data, tile) => {
+      const [score, _hp, _dps] = calcShipScore(ship);
+      if (score > targetScore) {
+         ship.tiles.forEach((data, _tile) => {
             --data.level;
          });
       } else {

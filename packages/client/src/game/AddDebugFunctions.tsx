@@ -8,11 +8,19 @@ import { addAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
 import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { generateGalaxy } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
-import { getUsedQuantum, quantumToXP } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
+import {
+   getElementsInShipClass,
+   getUsedQuantum,
+   quantumToXP,
+} from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { addStat, calcSpaceshipXP, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { getShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
-import { getBuildingsWithinShipClass, getTechWithinShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
+import {
+   getBuildingsWithinShipClass,
+   getShipClass,
+   getTechWithinShipClass,
+} from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { enumOf, equal, forEach, INT32_MAX, randOne, round } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { jsonEncode } from "@spaceship-idle/shared/src/utils/Serialization";
@@ -59,14 +67,12 @@ export function addDebugFunctions(): void {
    globalThis.chooseElement = () => {
       addStat("Element", -1, G.save.state.stats);
    };
-   // // @ts-expect-error
-   // globalThis.choosePermanentElement = () => {
-   //    rollElementShards(G.save, 1);
-   //    showModal({
-   //       children: <ChooseElementModal permanent={true} choice={G.save.data.permanentElementChoices[0]} />,
-   //       size: "xl",
-   //    });
-   // };
+   // @ts-expect-error
+   globalThis.addPermanentElement = (level: number) => {
+      getElementsInShipClass(getShipClass(G.save.state)).forEach((symbol) => {
+         G.save.state.permanentElements.set(symbol, { amount: 0, hp: level, damage: level });
+      });
+   };
    // @ts-expect-error
    globalThis.printFromFile = async () => {
       console.log(jsonEncode(await loadGameStateFromFile()));
