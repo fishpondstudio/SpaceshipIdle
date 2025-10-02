@@ -316,15 +316,17 @@ export function flatMapOf<K extends string | number | symbol, V, T>(
 
 export function mMapOf<K, V, T>(
    obj: Map<K, V> | undefined | null,
-   func: (key: K, value: V) => T,
+   func: (key: K, value: V, index: number, map: Map<K, V>) => T,
    ifEmpty: () => T[] = () => [],
 ): T[] {
    const result: T[] = [];
    if (!obj) {
       return result;
    }
+   let index = 0;
    obj.forEach((v, k) => {
-      result.push(func(k, v));
+      result.push(func(k, v, index, obj));
+      ++index;
    });
    if (result.length === 0) {
       return ifEmpty();

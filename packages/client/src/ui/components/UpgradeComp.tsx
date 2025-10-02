@@ -16,7 +16,7 @@ import {
 import { isShipConnected } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { mMapOf, type Tile } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { useCallback } from "react";
+import { Fragment, useCallback } from "react";
 import { G } from "../../utils/Global";
 import { useShortcut } from "../../utils/ShortcutHook";
 import type { ITileWithGameState } from "../ITileWithGameState";
@@ -187,22 +187,25 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             ) : (
                <div className="f1 text-dimmed">{t(L.NoEquippedAddon)}</div>
             )}
-            <Popover width={300} position="bottom-end" shadow="md" classNames={{ dropdown: "col stretch p10 g5" }}>
+            <Popover width={300} position="bottom-end" shadow="md" classNames={{ dropdown: "col stretch p0" }}>
                <Popover.Target>
                   <div className="mi pointer">rule_settings</div>
                </Popover.Target>
                <Popover.Dropdown>
-                  {mMapOf(G.save.state.addons, (addon, data) => {
+                  {mMapOf(G.save.state.addons, (addon, data, idx) => {
                      if (data.amount <= 0) {
                         return null;
                      }
                      return (
-                        <div key={addon} className="row">
-                           <TextureComp name={`Addon/${addon}`} />
-                           <div>{Addons[addon].name()}</div>
-                           <div className="f1" />
-                           <AddonOpButton addon={addon} me={tile} />
-                        </div>
+                        <Fragment key={addon}>
+                           {idx > 0 ? <div className="divider" /> : null}
+                           <div className="row p10">
+                              <TextureComp name={`Addon/${addon}`} />
+                              <div>{Addons[addon].name()}</div>
+                              <div className="f1" />
+                              <AddonOpButton addon={addon} me={tile} />
+                           </div>
+                        </Fragment>
                      );
                   })}
                   {G.save.state.addons.size === 0 ? <div className="f1">{t(L.NoAvailableAddons)}</div> : null}
