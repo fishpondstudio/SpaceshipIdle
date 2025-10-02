@@ -44,13 +44,7 @@ export function shiftTiles(tiles: Tiles, dir: IHaveXY): Map<Tile, ITileData> {
  */
 export function flipHorizontalCopy(ship: GameState): GameState {
    const newShip = structuredClone(ship);
-   const newTiles = new Map<Tile, ITileData>();
-   newShip.tiles.forEach((data, tile) => {
-      const { x, y } = tileToPoint(tile);
-      const newTile = createTile(MaxX - 1 - x, y);
-      newTiles.set(newTile, data);
-   });
-   newShip.tiles = newTiles;
+   newShip.tiles = flipTilesHorizontal(newShip.tiles);
    newShip.addons.forEach((data, addon) => {
       if (data.tile) {
          const { x, y } = tileToPoint(data.tile);
@@ -58,6 +52,15 @@ export function flipHorizontalCopy(ship: GameState): GameState {
       }
    });
    return newShip;
+}
+
+export function flipTilesHorizontal<T>(tiles: Map<Tile, T>): Map<Tile, T> {
+   const newTiles = new Map<Tile, T>();
+   tiles.forEach((data, tile) => {
+      const { x, y } = tileToPoint(tile);
+      newTiles.set(createTile(MaxX - 1 - x, y), data);
+   });
+   return newTiles;
 }
 
 export function isTileConnected(tile: Tile, gs: GameState): boolean {
@@ -164,11 +167,7 @@ export function getShipBlueprint(gs: GameState): number[] {
    return Blueprints[gs.blueprint].blueprint[getShipClass(gs)];
 }
 
-export function migrateShipForServer(ship: GameState): boolean {
-   return false;
-}
-
-export function migrateBuildingsAndResources(gs: GameState): boolean {
+export function migrateShipForServer(gs: GameState): boolean {
    return false;
 }
 

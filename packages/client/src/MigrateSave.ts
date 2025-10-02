@@ -4,7 +4,7 @@ import { StarSystemFlags } from "@spaceship-idle/shared/src/game/definitions/Gal
 import { DefaultShortcuts, GameOption } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameState, type SaveGame } from "@spaceship-idle/shared/src/game/GameState";
 import { getShipClassByIndex } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
-import { migrateBuildingsAndResources } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
+import { migrateShipForServer } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { randOne } from "@spaceship-idle/shared/src/utils/Helper";
 
 export function migrateSave(save: SaveGame): void {
@@ -23,10 +23,11 @@ export function migrateSave(save: SaveGame): void {
       save.state.loss = save.state.trialCount;
       delete save.state.trialCount;
    }
-   migrateBuildingsAndResources(save.state);
    save.state = Object.assign(new GameState(), save.state);
    save.options = Object.assign(new GameOption(), save.options);
    save.options.shortcuts = Object.assign({}, DefaultShortcuts, save.options.shortcuts);
+
+   migrateShipForServer(save.state);
 
    save.state.tiles.forEach((data, tile) => {
       if (!Config.Buildings[data.type]) {

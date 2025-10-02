@@ -44,6 +44,7 @@ export class GameState {
    resources = new Map<Resource, ResourceDataPersisted>();
    stats = new Map<Stat, number>();
 
+   // Start of hashed properties
    tiles: Tiles = new Map();
    unlockedTech = new Set<Tech>();
    elements = new Map<ElementSymbol, ElementData>();
@@ -52,8 +53,9 @@ export class GameState {
    selectedDirectives = new Map<ShipClass, Bonus>();
    addons = new Map<Addon, { tile: Tile | null; amount: number }>();
    blueprint: Blueprint = "Odyssey";
-   battledShips = new Set<bigint>();
+   // End of hashed properties
 
+   battledShips = new Set<bigint>();
    name = "Unnamed";
    flags: GameStateFlags = GameStateFlags.None;
    offlineTime = 0;
