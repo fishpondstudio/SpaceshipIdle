@@ -14,12 +14,14 @@ import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { GalaxyScene } from "../scenes/GalaxyScene";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
+import { showModal } from "../utils/ToggleModal";
 import { FloatingTip } from "./components/FloatingTip";
 import { TextureComp } from "./components/TextureComp";
 import { FriendshipSlotTooltip } from "./FriendshipSlotTooltip";
 import { playClick } from "./Sound";
 import { WarmongerPenaltyRowComp } from "./WarmongerPenaltyRowComp";
 import { WarmongerPenaltyTooltip } from "./WarmongerPenaltyTooltip";
+import { WarpPenaltyModal } from "./WarpPenaltyModal";
 
 export function GalaxyInfoPanel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
@@ -27,6 +29,8 @@ export function GalaxyInfoPanel(): React.ReactNode {
    const locations = getGalaxyLocations(G.save.data.galaxy);
    const canExplorePlanet = canExploreAnyPlanet(G.save.data.galaxy);
    const closestUndiscoveredStarSystem = findClosestUndiscoveredStarSystem(G.save.data.galaxy);
+   const rawWarmongerPenalty = getStat("Warmonger", G.save.state.stats);
+
    return (
       <div className="top-left-panel text-sm">
          <div className="flex-table g50">
@@ -43,6 +47,17 @@ export function GalaxyInfoPanel(): React.ReactNode {
                   <WarmongerPenaltyRowComp />
                </div>
             </FloatingTip>
+            {rawWarmongerPenalty > G.runtime.leftStat.warmongerMin.value ? (
+               <div
+                  className="row pointer"
+                  onClick={() =>
+                     showModal({ title: "Warp Penalty", children: <WarpPenaltyModal />, size: "sm", dismiss: true })
+                  }
+               >
+                  <div className="f1">Warp Penalty</div>
+                  <TextureComp name="Others/Warp16" className="mx-5" />
+               </div>
+            ) : null}
             <div className="row">
                <div className="f1">{t(L.BackstabberPenalty)}</div>
                <div>{getStat("Backstabber", G.save.state.stats)}</div>

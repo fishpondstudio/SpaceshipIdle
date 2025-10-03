@@ -796,4 +796,5 @@ export const EN = {
    Series: "Series",
    Variant: "Variant",
    ScoreCappedAt100: "* Score Capped At 100",
+   WarpPenaltyHTML: "You can spend Time Warp to <b>speed up Warmonger Penalty reduction</b> (1 warp = 2 seconds). This only affects Warmonger Penalty reduction - game speed is not affected",
 };
