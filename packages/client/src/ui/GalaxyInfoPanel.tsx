@@ -1,5 +1,6 @@
 import { Indicator } from "@mantine/core";
 import { GameStateFlags, GameStateUpdated, StopWarpCondition } from "@spaceship-idle/shared/src/game/GameState";
+import { showSuccess } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import {
    canClaimConquestReward,
    canExploreAnyPlanet,
@@ -61,6 +62,7 @@ export function GalaxyInfoPanel(): React.ReactNode {
                                  G.save.state.flags = setFlag(G.save.state.flags, GameStateFlags.UsedWarp);
                                  G.save.state.stopWarpCondition = StopWarpCondition.Zero;
                                  G.speed = 8;
+                                 showSuccess(t(L.Set8xWarpSpeedUntilWarmongerPenaltyReaches0));
                                  GameStateUpdated.emit();
                               }}
                            >
@@ -78,6 +80,7 @@ export function GalaxyInfoPanel(): React.ReactNode {
                                  G.save.state.flags = setFlag(G.save.state.flags, GameStateFlags.UsedWarp);
                                  G.save.state.stopWarpCondition = StopWarpCondition.Minimum;
                                  G.speed = 8;
+                                 showSuccess(t(L.Set8xWarpSpeedUntilWarmongerPenaltyReachesMin));
                                  GameStateUpdated.emit();
                               }}
                            >
