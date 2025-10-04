@@ -802,4 +802,6 @@ export const EN = {
    Never: "Never",
    ReachesZero: "Reaches Zero",
    ReachesMinimum: "Reaches Minimum",
+   Set8xWarpSpeedUntilWarmongerPenaltyReaches0: "Set 8x Warp Speed until Warmonger Penalty reaches 0",
+   Set8xWarpSpeedUntilWarmongerPenaltyReachesMin: "Set 8x Warp Speed until Warmonger Penalty reaches minimum",
 };

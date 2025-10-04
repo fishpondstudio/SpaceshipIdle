@@ -198,8 +198,16 @@
    margin-left: 5px;
 }
 
+.ml-5 {
+   margin-left: -5px;
+}
+
 .mr5 {
    margin-right: 5px;
+}
+
+.mr10 {
+   margin-right: 10px;
 }
 
 .mb10 {

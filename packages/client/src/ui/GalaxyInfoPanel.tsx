@@ -1,5 +1,5 @@
 import { Indicator } from "@mantine/core";
-import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { GameStateFlags, GameStateUpdated, StopWarpCondition } from "@spaceship-idle/shared/src/game/GameState";
 import {
    canClaimConquestReward,
    canExploreAnyPlanet,
@@ -9,19 +9,18 @@ import {
    getGalaxyLocations,
    getMaxFriendship,
 } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
-import { getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { getStat, resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { GalaxyScene } from "../scenes/GalaxyScene";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
-import { showModal } from "../utils/ToggleModal";
 import { FloatingTip } from "./components/FloatingTip";
 import { TextureComp } from "./components/TextureComp";
 import { FriendshipSlotTooltip } from "./FriendshipSlotTooltip";
 import { playClick } from "./Sound";
 import { WarmongerPenaltyRowComp } from "./WarmongerPenaltyRowComp";
 import { WarmongerPenaltyTooltip } from "./WarmongerPenaltyTooltip";
-import { WarpPenaltyModal } from "./WarpPenaltyModal";
 
 export function GalaxyInfoPanel(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
@@ -47,15 +46,46 @@ export function GalaxyInfoPanel(): React.ReactNode {
                   <WarmongerPenaltyRowComp />
                </div>
             </FloatingTip>
-            {rawWarmongerPenalty > G.runtime.leftStat.warmongerMin.value ? (
-               <div
-                  className="row pointer"
-                  onClick={() =>
-                     showModal({ title: "Warp Penalty", children: <WarpPenaltyModal />, size: "sm", dismiss: true })
-                  }
-               >
-                  <div className="f1">Warp Penalty</div>
-                  <TextureComp name="Others/Warp16" className="mx-5" />
+            {rawWarmongerPenalty > G.runtime.leftStat.warmongerMin.value &&
+            resourceOf("Warp", G.save.state.resources).current > 0 ? (
+               <div className="row" onClick={() => {}}>
+                  <div className="f1">
+                     <div>8x Warp Speed Until</div>
+                     <div className="h5" />
+                     <div>
+                        <FloatingTip label={t(L.Set8xWarpSpeedUntilWarmongerPenaltyReaches0)}>
+                           <button
+                              className="btn w100 text-left"
+                              onClick={() => {
+                                 playClick();
+                                 G.save.state.flags = setFlag(G.save.state.flags, GameStateFlags.UsedWarp);
+                                 G.save.state.stopWarpCondition = StopWarpCondition.Zero;
+                                 G.speed = 8;
+                                 GameStateUpdated.emit();
+                              }}
+                           >
+                              <div className="mi sm inline">play_circle</div> Warmonger Penalty = 0
+                           </button>
+                        </FloatingTip>
+                     </div>
+                     <div className="h5" />
+                     <div>
+                        <FloatingTip label={t(L.Set8xWarpSpeedUntilWarmongerPenaltyReachesMin)}>
+                           <button
+                              className="btn w100 text-left"
+                              onClick={() => {
+                                 playClick();
+                                 G.save.state.flags = setFlag(G.save.state.flags, GameStateFlags.UsedWarp);
+                                 G.save.state.stopWarpCondition = StopWarpCondition.Minimum;
+                                 G.speed = 8;
+                                 GameStateUpdated.emit();
+                              }}
+                           >
+                              <div className="mi sm inline">play_circle</div> Warmonger Penalty = Min
+                           </button>
+                        </FloatingTip>
+                     </div>
+                  </div>
                </div>
             ) : null}
             <div className="row">

@@ -9,7 +9,7 @@ export const FriendshipBonus: Record<ShipClass, Bonus[]> = {
       "Get8VictoryPointOnExp",
       "Get3VictoryPointOnDeclExp",
       "Get4VictoryPointOnDecl",
-      "Get10hWarpOnExp",
+      "Get100hWarpOnExp",
       "Get5ExtraXPPerSec",
    ],
    Scout: [
@@ -20,7 +20,7 @@ export const FriendshipBonus: Record<ShipClass, Bonus[]> = {
       "Get10VictoryPointOnExp",
       "Get4VictoryPointOnDeclExp",
       "Get5VictoryPointOnDecl",
-      "Get15hWarpOnExp",
+      "Get125hWarpOnExp",
       "Get10ExtraXPPerSec",
    ],
    Corvette: [
@@ -31,7 +31,7 @@ export const FriendshipBonus: Record<ShipClass, Bonus[]> = {
       "Get12VictoryPointOnExp",
       "Get5VictoryPointOnDeclExp",
       "Get6VictoryPointOnDecl",
-      "Get20hWarpOnExp",
+      "Get150hWarpOnExp",
       "Get15ExtraXPPerSec",
    ],
    Frigate: [],

@@ -54,11 +54,11 @@ export const Bonus = {
    Get5VictoryPointOnDecl: victoryPointOnDeclaration(5),
    Get6VictoryPointOnDecl: victoryPointOnDeclaration(6),
 
-   Get10hWarpOnExp: hoursOfWarpOnExpiration(1),
-   Get15hWarpOnExp: hoursOfWarpOnExpiration(1.5),
-   Get20hWarpOnExp: hoursOfWarpOnExpiration(2),
-   Get25hWarpOnExp: hoursOfWarpOnExpiration(2.5),
-   Get30hWarpOnExp: hoursOfWarpOnExpiration(3),
+   Get100hWarpOnExp: hoursOfWarpOnExpiration(1),
+   Get125hWarpOnExp: hoursOfWarpOnExpiration(1.25),
+   Get150hWarpOnExp: hoursOfWarpOnExpiration(1.5),
+   Get175hWarpOnExp: hoursOfWarpOnExpiration(1.75),
+   Get200hWarpOnExp: hoursOfWarpOnExpiration(2),
 
    GetSkiffClassXPOnDecl: shipClassOneTimeXP("Skiff"),
    GetScoutClassXPOnDecl: shipClassOneTimeXP("Scout"),
