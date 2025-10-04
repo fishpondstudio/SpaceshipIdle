@@ -1,11 +1,17 @@
 import { Menu } from "@mantine/core";
 import { WarpElementId } from "@spaceship-idle/shared/src/game/definitions/Constant";
-import { type GameState, GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import {
+   type GameState,
+   GameStateFlags,
+   GameStateUpdated,
+   StopWarpCondition,
+} from "@spaceship-idle/shared/src/game/GameState";
 import { getMaxTimeWarp, resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { cls, formatNumber, range, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo, useCallback } from "react";
 import { G } from "../utils/Global";
+import { refreshOnTypedEvent } from "../utils/Hook";
 import { FloatingTip } from "./components/FloatingTip";
 import { html } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
@@ -24,7 +30,7 @@ export function WarpSpeedMenuComp({ gs }: { gs: GameState }): React.ReactNode {
    );
    const warp = resourceOf("Warp", gs.resources).current;
    return (
-      <Menu position="bottom-start">
+      <Menu position="bottom-end">
          <FloatingTip
             label={
                <>
@@ -110,7 +116,63 @@ function _WarpMenu({
                </Menu.Item>
             );
          })}
+         <WarpStopConditionComp />
       </Menu.Dropdown>
+   );
+}
+
+function WarpStopConditionComp(): React.ReactNode {
+   refreshOnTypedEvent(GameStateUpdated);
+   return (
+      <>
+         <Menu.Divider />
+         <Menu.Label>{t(L.StopWhenWarmongerPenalty)}</Menu.Label>
+         <Menu.Item
+            onClick={() => {
+               playClick();
+               G.save.state.stopWarpCondition = StopWarpCondition.Never;
+            }}
+            leftSection={
+               G.save.state.stopWarpCondition === StopWarpCondition.Never ? (
+                  <div className="mi">check_box</div>
+               ) : (
+                  <div className="mi">check_box_outline_blank</div>
+               )
+            }
+         >
+            {t(L.Never)}
+         </Menu.Item>
+         <Menu.Item
+            onClick={() => {
+               playClick();
+               G.save.state.stopWarpCondition = StopWarpCondition.Zero;
+            }}
+            leftSection={
+               G.save.state.stopWarpCondition === StopWarpCondition.Zero ? (
+                  <div className="mi">check_box</div>
+               ) : (
+                  <div className="mi">check_box_outline_blank</div>
+               )
+            }
+         >
+            {t(L.ReachesZero)}
+         </Menu.Item>
+         <Menu.Item
+            onClick={() => {
+               playClick();
+               G.save.state.stopWarpCondition = StopWarpCondition.Minimum;
+            }}
+            leftSection={
+               G.save.state.stopWarpCondition === StopWarpCondition.Minimum ? (
+                  <div className="mi">check_box</div>
+               ) : (
+                  <div className="mi">check_box_outline_blank</div>
+               )
+            }
+         >
+            {t(L.ReachesMinimum)}
+         </Menu.Item>
+      </>
    );
 }
 

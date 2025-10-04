@@ -29,6 +29,14 @@ export const GameStateFlags = {
 
 export type GameStateFlags = (typeof GameStateFlags)[keyof typeof GameStateFlags];
 
+export const StopWarpCondition = {
+   Never: 0,
+   Zero: 1,
+   Minimum: 2,
+} as const;
+
+export type StopWarpCondition = (typeof StopWarpCondition)[keyof typeof StopWarpCondition];
+
 export interface ResourceDataPersisted {
    total: number;
    used: number;
@@ -58,6 +66,7 @@ export class GameState {
    battledShips = new Set<bigint>();
    name = "Unnamed";
    flags: GameStateFlags = GameStateFlags.None;
+   stopWarpCondition: StopWarpCondition = StopWarpCondition.Never;
    offlineTime = 0;
 }
 

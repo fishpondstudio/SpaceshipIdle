@@ -5,10 +5,12 @@ import { refundResource, resourceOf, trySpendResource } from "@spaceship-idle/sh
 import type { Tile } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { type ReactNode, useCallback } from "react";
+import { ShipScene } from "../scenes/ShipScene";
 import { G } from "../utils/Global";
 import { useShortcut } from "../utils/ShortcutHook";
 import { FloatingTip } from "./components/FloatingTip";
 import { SidebarComp } from "./components/SidebarComp";
+import { playClick } from "./Sound";
 
 export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile> }): ReactNode {
    const tiles = new Set<Tile>();
@@ -74,6 +76,20 @@ export function BatchOperationPage({ selectedTiles }: { selectedTiles: Set<Tile>
    return (
       <SidebarComp title={t(L.SelectedXModules, tiles.size)}>
          <div className="h10" />
+         <div className="title">Select</div>
+         <div className="divider my10" />
+         <div className="mx10">
+            <button
+               className="btn w100"
+               onClick={() => {
+                  playClick();
+                  G.scene.getCurrent(ShipScene)?.selectTiles(G.save.state.tiles.keys());
+               }}
+            >
+               {t(L.SelectAllModules)}
+            </button>
+         </div>
+         <div className="divider my10" />
          <div className="title">{t(L.Upgrade)}</div>
          <div className="divider my10" />
          <div className="mx10 row">

@@ -14,7 +14,14 @@ import {
 } from "../definitions/Constant";
 import { ProjectileFlag } from "../definitions/ProjectileFlag";
 import { ShipClass } from "../definitions/ShipClass";
-import { type GameState, GameStateUpdated, hashGameStatePair, type SaveGame, type Tiles } from "../GameState";
+import {
+   type GameState,
+   GameStateUpdated,
+   hashGameStatePair,
+   type SaveGame,
+   StopWarpCondition,
+   type Tiles,
+} from "../GameState";
 import { makeTile } from "../ITileData";
 import { tickAddon } from "./AddonLogic";
 import { showInfo } from "./AlertLogic";
@@ -257,6 +264,19 @@ export class Runtime {
 
    private _checkSpeed(g: { speed: number }) {
       if (this.battleType !== BattleType.Peace) {
+         return;
+      }
+      if (this.left.stopWarpCondition === StopWarpCondition.Zero && getStat("Warmonger", this.left.stats) <= 0) {
+         this.left.stopWarpCondition = StopWarpCondition.Never;
+         g.speed = 1;
+         return;
+      }
+      if (
+         this.left.stopWarpCondition === StopWarpCondition.Minimum &&
+         getStat("Warmonger", this.left.stats) <= this.leftStat.warmongerMin.value
+      ) {
+         this.left.stopWarpCondition = StopWarpCondition.Never;
+         g.speed = 1;
          return;
       }
       const cost = (g.speed - 1) / g.speed;
