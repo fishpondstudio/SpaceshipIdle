@@ -36,7 +36,7 @@ export function startGameLoop(): void {
 
       G.runtime.tick(dt, G);
       G.scene.getCurrent(ShipScene)?.render(G.runtime, dt, G.runtime.battleTimer);
-      G.scene.getCurrent(GalaxyScene)?.render();
+      G.scene.getCurrent(GalaxyScene)?.render(dt, unscaled);
       G.starfield.update();
       clientUpdate(unscaled);
       if (filter) {

@@ -3,7 +3,7 @@ import { PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { AABB } from "@spaceship-idle/shared/src/utils/AABB";
 import { drawDashedLine, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
 import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
-import { type ColorSource, Container, type FederatedPointerEvent, Sprite } from "pixi.js";
+import { type ColorSource, Container, type FederatedPointerEvent, LINE_CAP, Sprite } from "pixi.js";
 import { GalaxyPage } from "../ui/GalaxyPage";
 import { hideSidebar, setSidebar } from "../ui/Sidebar";
 import { playClick } from "../ui/Sound";
@@ -89,23 +89,14 @@ export class GalaxyScene extends Scene {
       }
    }
 
-   render(): void {
+   render(dt: number, unscaled: number): void {
       this._graphics.clear();
       const now = Date.now() / SECOND;
 
       let selectorRendered = false;
 
-      for (const starSystem of G.save.data.galaxy.starSystems) {
-         // this._graphics
-         //    .lineStyle({
-         //       width: 2,
-         //       color: 0xffffff,
-         //       alpha: 0.25,
-         //       alignment: 0.5,
-         //       scaleMode: LINE_SCALE_MODE.NONE,
-         //    })
-         //    .drawCircle(solarSystem.x, solarSystem.y, solarSystem.r);
-
+      for (let i = 0; i < G.save.data.galaxy.starSystems.length; ++i) {
+         const starSystem = G.save.data.galaxy.starSystems[i];
          const star = this._entities.get(starSystem.id) as StarSystemVisual;
          if (star) {
             star.position.set(starSystem.x, starSystem.y);
@@ -115,8 +106,28 @@ export class GalaxyScene extends Scene {
                this._selector.position.set(star.x, star.y);
                this._selector.visible = true;
                this._selector.scale.set(0.48);
-               this._selector.alpha = Math.sin(now * Math.PI * 1.5) * 0.5 + 0.5;
+               const alpha = Math.sin(now * Math.PI * 1.5) * 0.5 + 0.5;
+               this._selector.alpha = alpha;
                selectorRendered = true;
+
+               this._graphics.lineStyle({
+                  width: 32,
+                  color: 0xffffff,
+                  alpha: 0.1 * alpha,
+                  alignment: 0.5,
+                  scaleMode: LINE_SCALE_MODE.NORMAL,
+                  cap: LINE_CAP.ROUND,
+               });
+               const next = G.save.data.galaxy.starSystems[i + 1];
+               if (next) {
+                  this._graphics.moveTo(starSystem.x, starSystem.y);
+                  this._graphics.lineTo(next.x, next.y);
+               }
+               const prev = G.save.data.galaxy.starSystems[i - 1];
+               if (prev) {
+                  this._graphics.moveTo(starSystem.x, starSystem.y);
+                  this._graphics.lineTo(prev.x, prev.y);
+               }
             }
          }
 
