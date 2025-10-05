@@ -81,7 +81,7 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
          return;
       }
       G.pixi.ticker.addOnce(() => {
-         scrollArea.current?.scrollTo({ top: scrollArea.current.scrollHeight });
+         scrollArea.current?.lastElementChild?.lastElementChild?.scrollIntoView({ behavior: "smooth" });
       });
    }, []);
 
@@ -101,13 +101,6 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
          onMouseLeave={() => {
             setIsHover(false);
          }}
-         onTransitionStart={(e) => {
-            requestAnimationFrame(() => {
-               if (showChatMessages) {
-                  scrollToBottom();
-               }
-            });
-         }}
       >
          <ScrollArea
             onMouseEnter={() => {
@@ -118,6 +111,9 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
             }}
             viewportRef={scrollArea}
             classNames={{ viewport: cls("chat-message-viewport", showChatMessages ? "show" : "hide") }}
+            onTransitionStart={(e) => {
+               scrollToBottom();
+            }}
          >
             {messages.current.map((message) => {
                return (

@@ -1,7 +1,7 @@
-import { init, type Client } from "@fishpondstudio/steamworks.js";
-import { BrowserWindow, Menu, app, dialog, ipcMain } from "electron";
-import { ensureDirSync, existsSync, renameSync } from "fs-extra";
 import path from "node:path";
+import { type Client, init, shutdown } from "@fishpondstudio/steamworks.js";
+import { app, BrowserWindow, dialog, ipcMain, Menu } from "electron";
+import { ensureDirSync, existsSync, renameSync } from "fs-extra";
 import { IPCService } from "./IPCService";
 
 export type SteamClient = Omit<Client, "init" | "runCallbacks">;
@@ -57,7 +57,7 @@ const createWindow = async () => {
       if (app.isPackaged) {
          mainWindow.loadFile(path.join(__dirname, "..", "dist", "index.html"));
       } else {
-         mainWindow.loadURL("http://localhost:4173/");
+         mainWindow.loadURL("http://localhost:5173/");
          mainWindow.webContents.openDevTools();
       }
 
@@ -95,5 +95,6 @@ app.on("window-all-closed", () => {
 });
 
 function quit() {
+   shutdown();
    app.quit();
 }

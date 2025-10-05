@@ -11,7 +11,7 @@
       "source.fixAll.biome": "explicit",
       "source.sortImports": "never",
       "source.addMissingImports.ts": "explicit",
-      "source.organizeImports": "explicit",
+      "source.organizeImports": "never",
       "source.organizeImports.biome": "explicit",
       "source.removeUnusedImports": "explicit"
    },
