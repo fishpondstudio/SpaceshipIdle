@@ -804,4 +804,6 @@ export const EN = {
    ReachesMinimum: "Reaches Minimum",
    Set8xWarpSpeedUntilWarmongerPenaltyReaches0: "Set 8x Warp Speed until Warmonger Penalty reaches 0",
    Set8xWarpSpeedUntilWarmongerPenaltyReachesMin: "Set 8x Warp Speed until Warmonger Penalty reaches minimum",
+   Wreckage: "Wreckage",
+   WreckageDesc: "This is a ship wreckage: weapons are permanently disabled",
 };

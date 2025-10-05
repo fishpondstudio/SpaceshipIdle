@@ -2,7 +2,7 @@ import { hasFlag, keysOf, randInt, randOne, reduceOf, shuffle, type Tile, tileTo
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
-import { abilityTarget, AbilityTiming } from "../definitions/Ability";
+import { AbilityTiming, abilityTarget } from "../definitions/Ability";
 import { Blueprints } from "../definitions/Blueprints";
 import type { Building } from "../definitions/Buildings";
 import { BattleTickInterval, DefaultCooldown, MaxBattleTick as MaxBattleSeconds } from "../definitions/Constant";
@@ -397,7 +397,7 @@ export function calcShipScore(ship: GameState): [number, number, number, Runtime
    });
 
    const rt = new Runtime({ state: me, options: new GameOption(), data: new GameData() }, enemy);
-   rt.disarm(rt.right.tiles.keys());
+   rt.markWreckage(rt.right.tiles.keys());
    rt.battleType = BattleType.Battle;
    rt.battleInfo = { silent: true, noSuddenDeath: true };
    const speed = { speed: 1 };

@@ -118,15 +118,15 @@ export class Runtime {
 
       Object.assign(this.right, flipHorizontalCopy(ship));
       this.rightStat = new RuntimeStat();
-      this.disarm(this.right.tiles.keys());
+      this.markWreckage(this.right.tiles.keys());
    }
 
-   public disarm(tiles: Iterable<Tile>): void {
+   public markWreckage(tiles: Iterable<Tile>): void {
       for (const tile of tiles) {
          const rs = this.get(tile);
          if (rs) {
             rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire);
-            rs.addStatusEffect("Disarm", tile, rs.data.type, 1, Number.POSITIVE_INFINITY);
+            rs.addStatusEffect("Wreckage", tile, rs.data.type, 1, Number.POSITIVE_INFINITY);
          }
       }
    }

@@ -332,6 +332,15 @@ export const StatusEffects = {
          rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire);
       },
    },
+   Wreckage: {
+      name: () => t(L.Wreckage),
+      desc: (value) => t(L.WreckageDesc),
+      flag: StatusEffectFlag.Negative,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire);
+      },
+   },
    LaserBlocker: {
       name: () => t(L.LaserBlocker),
       desc: (value) => t(L.LaserBlockerDesc),
