@@ -1,6 +1,6 @@
 import { range } from "../../utils/Helper";
 
-export const Version = "0.7";
+export const Version = "0.8";
 export const PixelPerfect = true;
 export const BattleTickInterval = 0.05;
 export const ProductionTickInterval = 1;
