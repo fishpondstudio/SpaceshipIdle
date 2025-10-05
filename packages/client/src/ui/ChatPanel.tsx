@@ -80,8 +80,8 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
       if (!isLastMessageByMe(messages.current) && isMouseOver.current) {
          return;
       }
-      G.pixi.ticker.addOnce(() => {
-         scrollArea.current?.lastElementChild?.lastElementChild?.scrollIntoView({ behavior: "smooth" });
+      requestAnimationFrame(() => {
+         scrollArea.current?.lastElementChild?.lastElementChild?.scrollIntoView();
       });
    }, []);
 
@@ -111,9 +111,7 @@ function _ChatPanelSingle({ left, channel }: { left: number; channel: Language }
             }}
             viewportRef={scrollArea}
             classNames={{ viewport: cls("chat-message-viewport", showChatMessages ? "show" : "hide") }}
-            onTransitionStart={(e) => {
-               scrollToBottom();
-            }}
+            onTransitionStart={scrollToBottom}
          >
             {messages.current.map((message) => {
                return (
