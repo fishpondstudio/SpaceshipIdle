@@ -1,4 +1,4 @@
-import { clamp, divide, entriesOf, randOne, setFlag, type Tile } from "../../utils/Helper";
+import { clamp, setFlag, type Tile } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { srand } from "../../utils/Random";
 import { TypedEvent } from "../../utils/TypedEvent";
@@ -22,24 +22,23 @@ import {
    StopWarpCondition,
    type Tiles,
 } from "../GameState";
-import { makeTile } from "../ITileData";
 import { tickAddon } from "./AddonLogic";
 import { showInfo } from "./AlertLogic";
 import type { BattleInfo } from "./BattleInfo";
-import { tickProjectiles, tickTiles } from "./BattleLogic";
+import { generateShip, tickProjectiles, tickTiles } from "./BattleLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType } from "./BattleType";
 import { tickCatalyst } from "./CatalystLogic";
 import { tickGalaxy } from "./GalaxyLogic";
 import type { Projectile } from "./Projectile";
-import { tickQuantumElementProgress } from "./QuantumElementLogic";
+import { getShipClassElementLevel, tickQuantumElementProgress } from "./QuantumElementLogic";
 import { addResource, addStat, getStat, trySpendResource } from "./ResourceLogic";
 import { RuntimeFlag } from "./RuntimeFlag";
 import { RuntimeStat } from "./RuntimeStat";
 import { RuntimeTile } from "./RuntimeTile";
 import { flipHorizontalCopy, isEnemy } from "./ShipLogic";
 import { Side } from "./Side";
-import { getBuildingsWithinShipClass, getShipClass, getTechName } from "./TechLogic";
+import { getShipClass, getTechName } from "./TechLogic";
 
 interface IBattleStatusChanged {
    prevStatus: BattleStatus;
@@ -111,21 +110,13 @@ export class Runtime {
          }
       });
 
-      const [_, blueprint] = randOne(entriesOf(Blueprints));
-      const shipClass = getShipClass(this.left);
-      const design = blueprint.blueprint[shipClass];
-      const buildings = getBuildingsWithinShipClass(shipClass);
+      const ship = generateShip(
+         getShipClass(this.left),
+         getShipClassElementLevel(getShipClass(this.left), this.left),
+         Math.random,
+      );
 
-      let totalLevels = 0;
-      this.left.tiles.forEach((data) => {
-         totalLevels += data.level;
-      });
-      const level = clamp(Math.floor(divide(totalLevels, this.left.tiles.size)), 10, Number.POSITIVE_INFINITY);
-      design.forEach((tile, idx) => {
-         this.right.tiles.set(tile, makeTile(buildings[idx % buildings.length], level));
-      });
-
-      this.right.tiles = flipHorizontalCopy(this.right).tiles;
+      Object.assign(this.right, flipHorizontalCopy(ship));
       this.rightStat = new RuntimeStat();
       this.disarm(this.right.tiles.keys());
    }
