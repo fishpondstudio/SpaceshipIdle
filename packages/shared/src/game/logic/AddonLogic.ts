@@ -74,6 +74,12 @@ export function getReforgeCost(fromAddon: Addon, toAddon: Addon): number {
    return 2 ** (toShipClassIdx - fromShipClassIdx);
 }
 
+export function getReforgeVictoryPoint(fromAddon: Addon, gs: GameState): number {
+   const fromShipClassIdx = ShipClassList.indexOf(Addons[fromAddon].shipClass);
+   const toShipClassIdx = ShipClassList.indexOf(getShipClass(gs));
+   return 2 ** (toShipClassIdx - fromShipClassIdx);
+}
+
 export function addAddon(addon: Addon, amount: number, gs: GameState, from?: IHaveXY): void {
    if (amount <= 0) {
       return;

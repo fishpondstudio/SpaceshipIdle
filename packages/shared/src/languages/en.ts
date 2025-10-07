@@ -807,4 +807,5 @@ export const EN = {
    Wreckage: "Wreckage",
    WreckageDesc: "This is a ship wreckage: weapons are permanently disabled",
    DisableWeaponFireAnimation: "Disable Weapon Fire Animation",
+   ReforgeAddonVictoryPointDesc: "You can reforge an add-on to victory points",
 };
