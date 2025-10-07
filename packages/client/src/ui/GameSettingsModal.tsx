@@ -113,6 +113,20 @@ function GeneralTab(): React.ReactNode {
                }}
             />
          </div>
+         <div className="h10" />
+         <div className="row">
+            <div>{t(L.DisableWeaponFireAnimation)}</div>
+            <div className="f1" />
+            <Switch
+               checked={hasFlag(G.save.options.flag, GameOptionFlag.DisableWeaponFireAnimation)}
+               onChange={(e) => {
+                  G.save.options.flag = e.target.checked
+                     ? setFlag(G.save.options.flag, GameOptionFlag.DisableWeaponFireAnimation)
+                     : clearFlag(G.save.options.flag, GameOptionFlag.DisableWeaponFireAnimation);
+                  GameOptionUpdated.emit();
+               }}
+            />
+         </div>
          <div className="divider my10 mx-10" />
          <div className="row">
             <div>{t(L.RetroFilter)}</div>

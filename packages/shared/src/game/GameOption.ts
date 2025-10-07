@@ -16,6 +16,7 @@ export const GameOptionFlag = {
    HideDiscordIcon: 1 << 5,
    CooldownIndicatorOutsideBattle: 1 << 6,
    LinearCooldownIndicator: 1 << 7,
+   DisableWeaponFireAnimation: 1 << 8,
 };
 
 export type GameOptionFlag = ValueOf<typeof GameOptionFlag>;

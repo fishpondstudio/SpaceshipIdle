@@ -31,6 +31,7 @@ export type TileVisualFlag = ValueOf<typeof TileVisualFlag>;
 
 const AlphaNormal = 0.5;
 const AlphaHighlight = 1;
+const SpriteSize = 75;
 
 export class TileVisual extends Container {
    private _sprite: Sprite;
@@ -70,8 +71,8 @@ export class TileVisual extends Container {
       this._sprite = this.addChild(new Sprite(texture));
       this._sprite.position.set(0, 0);
       this._sprite.anchor.set(0.5);
-      this._sprite.width = 75;
-      this._sprite.height = 75;
+      this._sprite.width = SpriteSize;
+      this._sprite.height = SpriteSize;
 
       this._sprite.rotation += hasFlag(flag, TileVisualFlag.FlipHorizontal) ? Math.PI * 1.5 : Math.PI * 0.5;
 
@@ -291,25 +292,50 @@ export class TileVisual extends Container {
       this._transform.y = this.y;
       lookAt(this._transform, targetPos);
       this._sprite.rotation = this._transform.rotation;
+      this._sprite.width = SpriteSize;
+      this._sprite.height = SpriteSize;
 
-      // if (!this._fireAction) {
-      //    this._fireAction = sequence(
-      //       to(
-      //          this._sprite,
-      //          {
-      //             x: -getForward(this._sprite.rotation).x * 5,
-      //             y: -getForward(this._sprite.rotation).y * 5,
-      //          },
-      //          FireBackDuration,
-      //          Easing.OutQuad,
-      //       ),
-      //       to(this._sprite, { x: 0, y: 0 }, FireForwardDuration, Easing.InOutQuad),
-      //    );
-      // } else {
-      //    this._fireAction.reset();
-      // }
-      // this._sprite.position.set(0, 0);
-      // this._fireAction.start();
+      if (hasFlag(G.save.options.flag, GameOptionFlag.DisableWeaponFireAnimation)) {
+         return;
+      }
+
+      if (!this._fireAction) {
+         // this._fireAction = sequence(
+         //    to(
+         //       this._sprite,
+         //       {
+         //          x: -getForward(this._sprite.rotation).x * 5,
+         //          y: -getForward(this._sprite.rotation).y * 5,
+         //       },
+         //       FireBackDuration,
+         //       Easing.OutQuad,
+         //    ),
+         //    to(this._sprite, { x: 0, y: 0 }, FireForwardDuration, Easing.InOutQuad),
+         // );
+         this._fireAction = sequence(
+            to(
+               this._sprite,
+               {
+                  width: SpriteSize * 1.2,
+                  height: SpriteSize * 1.2,
+               },
+               0.2,
+               Easing.InQuad,
+            ),
+            to(
+               this._sprite,
+               {
+                  width: SpriteSize,
+                  height: SpriteSize,
+               },
+               0.2,
+               Easing.OutQuad,
+            ),
+         );
+      } else {
+         this._fireAction.reset();
+      }
+      this._fireAction.start();
    }
 
    public set progress(value: number) {
