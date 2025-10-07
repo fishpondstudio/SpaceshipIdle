@@ -1,12 +1,12 @@
 import { computePosition, flip, offset, shift } from "@floating-ui/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { abilityTarget, AbilityTiming } from "@spaceship-idle/shared/src/game/definitions/Ability";
+import { AbilityTiming, abilityTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/ProjectileFlag";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated, type Tiles } from "@spaceship-idle/shared/src/game/GameState";
 import {
-   getSize,
    GridSize,
+   getSize,
    MaxX,
    MaxY,
    posToTile,
@@ -600,57 +600,7 @@ export class ShipScene extends Scene {
          this._selectedTiles.add(clickedTile);
       }
 
-      if (
-         this._selectedTiles.size === 1 &&
-         this._selectedTiles.has(clickedTile) &&
-         G.runtime.has(clickedTile) &&
-         G.runtime.battleType !== BattleType.Peace
-      ) {
-         const posTopLeft = tileToPos(clickedTile);
-         const posBottomRight = { x: posTopLeft.x + GridSize, y: posTopLeft.y + GridSize };
-         const posTopLeftScreen = this.viewport.worldToScreen(posTopLeft);
-         const posBottomRightScreen = this.viewport.worldToScreen(posBottomRight);
-         const referenceEl = {
-            x: posTopLeftScreen.x,
-            y: posTopLeftScreen.y,
-            width: posBottomRightScreen.x - posTopLeftScreen.x,
-            height: posBottomRightScreen.y - posTopLeftScreen.y,
-         };
-         const floatingEl = { x: 0, y: 0, width: 300, height: 400 };
-         computePosition(referenceEl, floatingEl, {
-            platform: {
-               getElementRects: (data) => data,
-               getClippingRect: () => ({
-                  x: 50,
-                  y: 50,
-                  width: window.innerWidth - 100,
-                  height: window.innerHeight - 100,
-               }),
-               getDimensions: (element) => element,
-            },
-            middleware: [offset(10), flip(), shift()],
-            placement: "right-start",
-         }).then((data) => {
-            const result = G.runtime.getGameState(clickedTile);
-            if (result) {
-               SetPopover.emit({
-                  rect: AABB.fromRect({
-                     x: data.x,
-                     y: data.y,
-                     width: floatingEl.width,
-                     height: floatingEl.height,
-                  }),
-                  content: <BuildingPopover tile={clickedTile} gs={result.state} />,
-               });
-            } else {
-               SetPopover.emit(undefined);
-            }
-         });
-      } else {
-         SetPopover.emit(undefined);
-      }
-
-      this.updateSelection();
+      this.updateSelection(clickedTile);
    }
 
    public selectTiles(tiles: Iterable<Tile>): void {
@@ -661,7 +611,7 @@ export class ShipScene extends Scene {
       this.updateSelection();
    }
 
-   private updateSelection(): void {
+   private updateSelection(clickedTile?: Tile): void {
       this._highlightedTiles.clear();
       this._selectedTiles.forEach((tile) => {
          if (!this._selectors.has(tile)) {
@@ -702,6 +652,58 @@ export class ShipScene extends Scene {
          }
       });
 
-      setSidebar(<TilePage selectedTiles={this._selectedTiles} />);
+      if (G.runtime.battleType === BattleType.Peace) {
+         setSidebar(<TilePage selectedTiles={this._selectedTiles} />);
+      } else {
+         if (
+            clickedTile &&
+            this._selectedTiles.size === 1 &&
+            this._selectedTiles.has(clickedTile) &&
+            G.runtime.has(clickedTile)
+         ) {
+            const posTopLeft = tileToPos(clickedTile);
+            const posBottomRight = { x: posTopLeft.x + GridSize, y: posTopLeft.y + GridSize };
+            const posTopLeftScreen = this.viewport.worldToScreen(posTopLeft);
+            const posBottomRightScreen = this.viewport.worldToScreen(posBottomRight);
+            const referenceEl = {
+               x: posTopLeftScreen.x,
+               y: posTopLeftScreen.y,
+               width: posBottomRightScreen.x - posTopLeftScreen.x,
+               height: posBottomRightScreen.y - posTopLeftScreen.y,
+            };
+            const floatingEl = { x: 0, y: 0, width: 300, height: 400 };
+            computePosition(referenceEl, floatingEl, {
+               platform: {
+                  getElementRects: (data) => data,
+                  getClippingRect: () => ({
+                     x: 50,
+                     y: 50,
+                     width: window.innerWidth - 100,
+                     height: window.innerHeight - 100,
+                  }),
+                  getDimensions: (element) => element,
+               },
+               middleware: [offset(10), flip(), shift()],
+               placement: "right-start",
+            }).then((data) => {
+               const result = G.runtime.getGameState(clickedTile);
+               if (result) {
+                  SetPopover.emit({
+                     rect: AABB.fromRect({
+                        x: data.x,
+                        y: data.y,
+                        width: floatingEl.width,
+                        height: floatingEl.height,
+                     }),
+                     content: <BuildingPopover tile={clickedTile} gs={result.state} />,
+                  });
+               } else {
+                  SetPopover.emit(undefined);
+               }
+            });
+         } else {
+            SetPopover.emit(undefined);
+         }
+      }
    }
 }

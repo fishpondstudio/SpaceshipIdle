@@ -18,7 +18,7 @@ export function TilePage({ selectedTiles }: { selectedTiles: Set<Tile> }): React
       if (!G.runtime || G.runtime.battleType !== BattleType.Peace) {
          hideSidebar();
       }
-   }, []);
+   });
 
    const blueprint = getShipBlueprint(G.save.state);
 

@@ -183,6 +183,13 @@ export function firstValueOf<T extends {}>(obj: T | undefined) {
    return undefined;
 }
 
+export function iFirstOf<T>(iterable: Iterable<T>): T | undefined {
+   for (const item of iterable) {
+      return item;
+   }
+   return undefined;
+}
+
 export function anyOf<T extends {}>(
    obj: T | undefined,
    func: (k: keyof T, v: NonNullable<T[keyof T]>) => boolean,

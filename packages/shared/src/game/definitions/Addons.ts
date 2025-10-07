@@ -103,10 +103,10 @@ export const Addons = {
    }),
    Evasion1: cast<IAddonDefinition>({
       name: () => t(L.EvasionDiversity),
-      desc: (value: number) => t(L.EvasionDiversityDesc, formatNumber(value), formatNumber(value)),
+      desc: (value: number) => t(L.EvasionDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
          diversityEffect(tile, runtime, (rs) => {
-            rs.props.evasion += value;
+            rs.props.evasion += value / 2;
          });
       },
       shipClass: "Skiff",

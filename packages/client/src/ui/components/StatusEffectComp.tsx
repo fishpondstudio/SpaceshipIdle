@@ -36,7 +36,11 @@ export function StatusEffectComp({ tile, gs }: ITileWithGameState): React.ReactN
                            {sd.desc(se.value)} ({getBuildingName(se.sourceType)})
                         </div>
                      </div>
-                     <div>{Math.ceil(se.timeLeft) + 1}s</div>
+                     {Number.isFinite(se.timeLeft) ? (
+                        <div>{Math.ceil(se.timeLeft) + 1}s</div>
+                     ) : (
+                        <div className="mi">all_inclusive</div>
+                     )}
                   </div>
                );
             })}
