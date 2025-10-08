@@ -33,6 +33,7 @@ import { OnSceneSwitched } from "../utils/SceneManager";
 import { Scenes } from "../utils/Scenes";
 import { showModal } from "../utils/ToggleModal";
 import { AddonPage } from "./AddonPage";
+import { AugmentPage } from "./AugmentPage";
 import { CatalystPage } from "./CatalystPage";
 import { ChooseElementModal } from "./ChooseElementModal";
 import { FloatingTip } from "./components/FloatingTip";
@@ -207,6 +208,9 @@ function SceneSwitcher(): React.ReactNode {
                   case AddonPage.name:
                      setSidebar(<AddonPage />);
                      break;
+                  case AugmentPage.name:
+                     setSidebar(<AugmentPage />);
+                     break;
                   case DirectivePage.name:
                      setSidebar(<DirectivePage />);
                      break;
@@ -248,6 +252,10 @@ function SceneSwitcher(): React.ReactNode {
                {
                   label: <CatalystTabLabel />,
                   value: CatalystPage.name,
+               },
+               {
+                  label: <TextureComp name="Others/Propeller" />,
+                  value: AugmentPage.name,
                },
                {
                   label: <DirectiveTabLabel />,
