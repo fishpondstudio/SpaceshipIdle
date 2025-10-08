@@ -130,10 +130,10 @@ function WarpStopConditionComp(): React.ReactNode {
          <Menu.Item
             onClick={() => {
                playClick();
-               G.save.state.stopWarpCondition = StopWarpCondition.Never;
+               G.save.data.stopWarpCondition = StopWarpCondition.Never;
             }}
             leftSection={
-               G.save.state.stopWarpCondition === StopWarpCondition.Never ? (
+               G.save.data.stopWarpCondition === StopWarpCondition.Never ? (
                   <div className="mi">check_box</div>
                ) : (
                   <div className="mi">check_box_outline_blank</div>
@@ -145,10 +145,10 @@ function WarpStopConditionComp(): React.ReactNode {
          <Menu.Item
             onClick={() => {
                playClick();
-               G.save.state.stopWarpCondition = StopWarpCondition.Zero;
+               G.save.data.stopWarpCondition = StopWarpCondition.Zero;
             }}
             leftSection={
-               G.save.state.stopWarpCondition === StopWarpCondition.Zero ? (
+               G.save.data.stopWarpCondition === StopWarpCondition.Zero ? (
                   <div className="mi">check_box</div>
                ) : (
                   <div className="mi">check_box_outline_blank</div>
@@ -160,10 +160,10 @@ function WarpStopConditionComp(): React.ReactNode {
          <Menu.Item
             onClick={() => {
                playClick();
-               G.save.state.stopWarpCondition = StopWarpCondition.Minimum;
+               G.save.data.stopWarpCondition = StopWarpCondition.Minimum;
             }}
             leftSection={
-               G.save.state.stopWarpCondition === StopWarpCondition.Minimum ? (
+               G.save.data.stopWarpCondition === StopWarpCondition.Minimum ? (
                   <div className="mi">check_box</div>
                ) : (
                   <div className="mi">check_box_outline_blank</div>

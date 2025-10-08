@@ -3,6 +3,7 @@ import { createTile, randomAlphaNumeric, type Tile, uuid4 } from "../utils/Helpe
 import { jsonEncode } from "../utils/Serialization";
 import { TypedEvent } from "../utils/TypedEvent";
 import type { Addon } from "./definitions/Addons";
+import type { Augment } from "./definitions/Augments";
 import type { Blueprint } from "./definitions/Blueprints";
 import type { Bonus } from "./definitions/Bonus";
 import type { Catalyst, CatalystCat } from "./definitions/Catalyst";
@@ -59,14 +60,13 @@ export class GameState {
    permanentElements = new Map<ElementSymbol, ElementData>();
    selectedCatalysts = new Map<CatalystCat, Catalyst>();
    selectedDirectives = new Map<ShipClass, Bonus>();
+   augments = new Map<Augment, number>();
    addons = new Map<Addon, { tile: Tile | null; amount: number }>();
    blueprint: Blueprint = "Odyssey";
    // End of hashed properties
 
-   battledShips = new Set<bigint>();
    name = "Unnamed";
    flags: GameStateFlags = GameStateFlags.None;
-   stopWarpCondition: StopWarpCondition = StopWarpCondition.Never;
    offlineTime = 0;
 }
 
@@ -75,6 +75,8 @@ export class GameData {
    seconds = 0;
    elementChoices: ElementChoice[] = [];
    permanentElementChoices: ElementChoice[] = [];
+   stopWarpCondition: StopWarpCondition = StopWarpCondition.Never;
+   battledShips = new Set<bigint>();
    galaxy: Galaxy = { starSystems: [] };
    alerts: { message: string; type: AlertType; time: number; tick: number }[] = [];
 }

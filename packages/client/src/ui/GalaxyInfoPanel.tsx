@@ -60,7 +60,7 @@ export function GalaxyInfoPanel(): React.ReactNode {
                               onClick={() => {
                                  playClick();
                                  G.save.state.flags = setFlag(G.save.state.flags, GameStateFlags.UsedWarp);
-                                 G.save.state.stopWarpCondition = StopWarpCondition.Zero;
+                                 G.save.data.stopWarpCondition = StopWarpCondition.Zero;
                                  G.speed = 8;
                                  showSuccess(t(L.Set8xWarpSpeedUntilWarmongerPenaltyReaches0));
                                  GameStateUpdated.emit();
@@ -78,7 +78,7 @@ export function GalaxyInfoPanel(): React.ReactNode {
                               onClick={() => {
                                  playClick();
                                  G.save.state.flags = setFlag(G.save.state.flags, GameStateFlags.UsedWarp);
-                                 G.save.state.stopWarpCondition = StopWarpCondition.Minimum;
+                                 G.save.data.stopWarpCondition = StopWarpCondition.Minimum;
                                  G.speed = 8;
                                  showSuccess(t(L.Set8xWarpSpeedUntilWarmongerPenaltyReachesMin));
                                  GameStateUpdated.emit();

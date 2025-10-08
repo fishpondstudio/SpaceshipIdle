@@ -6,7 +6,7 @@ import { G } from "../utils/Global";
 
 export async function findShip(score: number, hp: number, dps: number): Promise<IShip | undefined> {
    let range = 0.01;
-   const excludedHash = Array.from(G.save.state.battledShips);
+   const excludedHash = Array.from(G.save.data.battledShips);
    excludedHash.push(hashGameState(G.save.state));
    while (true) {
       try {

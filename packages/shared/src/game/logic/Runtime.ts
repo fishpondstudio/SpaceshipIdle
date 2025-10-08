@@ -257,16 +257,19 @@ export class Runtime {
       if (this.battleType !== BattleType.Peace) {
          return;
       }
-      if (this.left.stopWarpCondition === StopWarpCondition.Zero && getStat("Warmonger", this.left.stats) <= 0) {
-         this.left.stopWarpCondition = StopWarpCondition.Never;
+      if (
+         this.leftSave.data.stopWarpCondition === StopWarpCondition.Zero &&
+         getStat("Warmonger", this.left.stats) <= 0
+      ) {
+         this.leftSave.data.stopWarpCondition = StopWarpCondition.Never;
          g.speed = 1;
          return;
       }
       if (
-         this.left.stopWarpCondition === StopWarpCondition.Minimum &&
+         this.leftSave.data.stopWarpCondition === StopWarpCondition.Minimum &&
          getStat("Warmonger", this.left.stats) <= this.leftStat.warmongerMin.value
       ) {
-         this.left.stopWarpCondition = StopWarpCondition.Never;
+         this.leftSave.data.stopWarpCondition = StopWarpCondition.Never;
          g.speed = 1;
          return;
       }

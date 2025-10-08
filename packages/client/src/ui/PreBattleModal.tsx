@@ -86,7 +86,7 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
                      me.resources.clear();
                      enemy.resources.clear();
 
-                     G.save.state.battledShips.add(hashGameState(enemy));
+                     G.save.data.battledShips.add(hashGameState(enemy));
 
                      G.speed = 0;
                      G.runtime = new Runtime({ state: me, options: G.save.options, data: G.save.data }, enemy);
