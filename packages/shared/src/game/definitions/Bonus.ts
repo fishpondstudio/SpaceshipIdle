@@ -36,11 +36,11 @@ export const Bonus = {
    Get15ExtraXPPerSec: extraXPPerSec(0.15),
    Get20ExtraXPPerSec: extraXPPerSec(0.2),
 
-   Get1VictoryPointPerHour: victoryPointPerHour(1),
    Get2VictoryPointPerHour: victoryPointPerHour(2),
-   Get3VictoryPointPerHour: victoryPointPerHour(3),
    Get4VictoryPointPerHour: victoryPointPerHour(4),
-   Get5VictoryPointPerHour: victoryPointPerHour(5),
+   Get6VictoryPointPerHour: victoryPointPerHour(6),
+   Get8VictoryPointPerHour: victoryPointPerHour(8),
+   Get10VictoryPointPerHour: victoryPointPerHour(10),
 
    Get8VictoryPointOnExp: victoryPointOnExpiration(8),
    Get10VictoryPointOnExp: victoryPointOnExpiration(10),

@@ -1,4 +1,5 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { Directives } from "@spaceship-idle/shared/src/game/definitions/Directives";
 import { FriendshipBonus } from "@spaceship-idle/shared/src/game/definitions/FriendshipBonus";
 import { StarSystemFlags } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { DefaultShortcuts, GameOption } from "@spaceship-idle/shared/src/game/GameOption";
@@ -56,4 +57,10 @@ export function migrateSave(save: SaveGame): void {
          }
       });
    });
+   save.state.selectedDirectives.forEach((bonus, shipClass) => {
+      if (!Directives[shipClass].includes(bonus)) {
+         save.state.selectedDirectives.delete(shipClass);
+      }
+   });
+   console.assert(save.data.galaxy.starSystems.length);
 }

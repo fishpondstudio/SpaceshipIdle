@@ -35,11 +35,11 @@ export function ReforgeAddonModal(): React.ReactNode {
             data={[
                {
                   value: "addon",
-                  label: "Add-on",
+                  label: t(L.Addon),
                },
                {
                   value: "victorypoint",
-                  label: "Victory Point",
+                  label: t(L.VictoryPoint),
                },
             ]}
             className="p5 w100"
