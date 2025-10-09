@@ -1,11 +1,11 @@
 import type { ElementSymbol } from "@spaceship-idle/shared/src/game/PeriodicTable";
-import { AABB } from "@spaceship-idle/shared/src/utils/AABB";
+import { AABB, type IAABB } from "@spaceship-idle/shared/src/utils/AABB";
 import type { ColorSource, FederatedPointerEvent } from "pixi.js";
 import { type ISceneContext, Scene } from "../utils/SceneManager";
 import { ElementCard } from "./ElementCard";
 
 export class ElementsScene extends Scene {
-   private _elementAABB: Map<ElementSymbol, { aabb: AABB; container: ElementCard }> = new Map();
+   private _elementAABB: Map<ElementSymbol, { aabb: IAABB; container: ElementCard }> = new Map();
 
    backgroundColor(): ColorSource {
       return 0x000000;

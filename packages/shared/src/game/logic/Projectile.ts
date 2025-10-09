@@ -1,5 +1,5 @@
 import type { Tile } from "../../utils/Helper";
-import { type IHaveXY, Vector2 } from "../../utils/Vector2";
+import { type IHaveXY, lengthVector2 } from "../../utils/Vector2";
 import type { Ability } from "../definitions/Ability";
 import type { DamageType } from "../definitions/BuildingProps";
 import type { Building } from "../definitions/Buildings";
@@ -34,7 +34,7 @@ export class Projectile {
       this.to = tileToPosCenter(toTile);
       const dx = this.to.x - this.from.x;
       const dy = this.to.y - this.from.y;
-      this.length = Vector2.length({ x: dx, y: dy });
+      this.length = lengthVector2({ x: dx, y: dy });
       this.dir = { x: 0, y: 0 };
       this.pos = { x: 0, y: 0 };
    }

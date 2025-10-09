@@ -3,7 +3,7 @@ import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import type { Tech } from "@spaceship-idle/shared/src/game/definitions/TechDefinitions";
 import { getTechDesc, getTechName, isTechUnderDevelopment } from "@spaceship-idle/shared/src/game/logic/TechLogic";
-import { AABB } from "@spaceship-idle/shared/src/utils/AABB";
+import { AABB, type IAABB } from "@spaceship-idle/shared/src/utils/AABB";
 import { equal, forEach, layoutSpaceBetween } from "@spaceship-idle/shared/src/utils/Helper";
 import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
 import {
@@ -37,7 +37,7 @@ const Gap = 20;
 export class TechTreeScene extends Scene {
    private _graphics: SmoothGraphics;
    private _selectedGraphics: SmoothGraphics;
-   private _techs = new Map<Tech, AABB>();
+   private _techs = new Map<Tech, IAABB>();
    private _boxContainer: Container;
    private _selectedBoxContainer: Container;
 
@@ -281,7 +281,7 @@ export class TechTreeScene extends Scene {
       }
    }
 
-   private drawConnection(g: SmoothGraphics, from: AABB, to: AABB): void {
+   private drawConnection(g: SmoothGraphics, from: IAABB, to: IAABB): void {
       const fromCenter = from.center;
       const toCenter = to.center;
       const dx = toCenter.x - fromCenter.x;

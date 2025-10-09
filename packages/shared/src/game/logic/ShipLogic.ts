@@ -1,4 +1,4 @@
-import { AABB } from "../../utils/AABB";
+import { AABB, type IAABB } from "../../utils/AABB";
 import { createTile, type Tile, tileToPoint } from "../../utils/Helper";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -11,7 +11,7 @@ import type { ITileData } from "../ITileData";
 import { Side } from "./Side";
 import { getShipClass } from "./TechLogic";
 
-export function calculateAABB(tiles: Iterable<Tile>): AABB {
+export function calculateAABB(tiles: Iterable<Tile>): IAABB {
    let minX = Number.POSITIVE_INFINITY;
    let minY = Number.POSITIVE_INFINITY;
    let maxX = Number.NEGATIVE_INFINITY;
@@ -102,7 +102,7 @@ export function isShipConnected(t: Iterable<Tile>): boolean {
    return visited.size === tiles.size;
 }
 
-export function shipAABB(ext: number, side: Side): AABB {
+export function shipAABB(ext: number, side: Side): IAABB {
    const min = { x: MaxX / 2 - 2 * ext - 1, y: MaxY / 2 - ext };
    const max = { x: MaxX / 2 - 2, y: MaxY / 2 + ext - 1 };
    if (side === Side.Right) {

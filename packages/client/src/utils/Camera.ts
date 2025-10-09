@@ -1,5 +1,5 @@
 import { clamp, lerp, sizeOf, type ValueOf } from "@spaceship-idle/shared/src/utils/Helper";
-import { type IHaveXY, Vector2, v2 } from "@spaceship-idle/shared/src/utils/Vector2";
+import { type IHaveXY, lerpVector2, v2 } from "@spaceship-idle/shared/src/utils/Vector2";
 import type { Application, FederatedPointerEvent, IDestroyOptions } from "pixi.js";
 import { Container, Rectangle } from "pixi.js";
 import type { SceneLifecycle } from "./SceneLifecycle";
@@ -210,7 +210,7 @@ export class Camera extends Container implements SceneLifecycle {
          }
       }
       if (this.targetOrigin) {
-         const target = Vector2.lerp(this.pivot, this.targetOrigin, Math.min(0.01 * this.app.ticker.deltaMS, 1 / 3));
+         const target = lerpVector2(this.pivot, this.targetOrigin, Math.min(0.01 * this.app.ticker.deltaMS, 1 / 3));
          this.moveOrigin(target);
          if ((this.targetOrigin.x - target.x) ** 2 + (this.targetOrigin.y - target.y) ** 2 < 0.1 ** 2) {
             this.targetOrigin = null;
