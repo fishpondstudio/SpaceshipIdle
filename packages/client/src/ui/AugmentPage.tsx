@@ -49,7 +49,10 @@ export function AugmentPage(): React.ReactNode {
                <div className="panel m10" key={augment}>
                   {starSystem.discovered ? (
                      <>
-                        <div>{Augments[augment].desc(1, G.runtime)}</div>
+                        <div className="row">
+                           <TextureComp name={`Galaxy/${starSystem.texture}`} />
+                           <div className="f1">{Augments[augment].desc(1, G.runtime)}</div>
+                        </div>
                         <div className="divider dashed mx-10 my10" />
                         <div className="row">
                            <FloatingTip label={Augments[augment].desc(level, G.runtime)}>
