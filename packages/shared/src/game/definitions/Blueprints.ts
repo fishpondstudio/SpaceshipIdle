@@ -1,4 +1,4 @@
-import { cast, createTile, forEach } from "../../utils/Helper";
+import { createTile, forEach } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { MaxX, MaxY } from "../Grid";
@@ -24,9 +24,9 @@ export interface IBlueprint {
    tick?: (runtime: Runtime) => void;
 }
 
-export const Blueprints = {
-   Odyssey: cast<IBlueprint>({ name: () => t(L.Odyssey), blueprint: Odyssey, elementLevel: 0 }),
-   Voyager: cast<IBlueprint>({
+export const _Blueprints = {
+   Odyssey: { name: () => t(L.Odyssey), blueprint: Odyssey, elementLevel: 0 },
+   Voyager: {
       name: () => t(L.Voyager),
       blueprint: Voyager,
       elementLevel: 5,
@@ -34,14 +34,14 @@ export const Blueprints = {
       tick: (runtime: Runtime) => {
          Bonus.Get10ExtraXPPerSec.onTick?.(Number.POSITIVE_INFINITY, t(L.SpaceshipPrefix, t(L.Voyager)), runtime);
       },
-   }),
-   Pioneer: cast<IBlueprint>({
+   },
+   Pioneer: {
       name: () => t(L.Pioneer),
       blueprint: Pioneer,
       elementLevel: 10,
       desc: () => t(L.PioneerDesc),
-   }),
-   Horizon: cast<IBlueprint>({
+   },
+   Horizon: {
       name: () => t(L.Horizon),
       blueprint: Horizon,
       elementLevel: 15,
@@ -53,28 +53,29 @@ export const Blueprints = {
             }
          });
       },
-   }),
-   Intrepid: cast<IBlueprint>({
+   },
+   Intrepid: {
       name: () => t(L.Intrepid),
       blueprint: Intrepid,
       elementLevel: 20,
       desc: () => t(L.IntrepidDesc),
-   }),
-   Orion: cast<IBlueprint>({
+   },
+   Orion: {
       name: () => t(L.Orion),
       blueprint: Orion,
       elementLevel: 25,
       desc: () => t(L.OrionDesc),
-   }),
-   Majestic: cast<IBlueprint>({
+   },
+   Majestic: {
       name: () => t(L.Majestic),
       blueprint: Majestic,
       elementLevel: 30,
       desc: () => t(L.MajesticDesc),
-   }),
+   },
 } as const satisfies Record<string, IBlueprint>;
 
-export type Blueprint = keyof typeof Blueprints;
+export type Blueprint = keyof typeof _Blueprints;
+export const Blueprints: Record<Blueprint, IBlueprint> = _Blueprints;
 
 forEach(Blueprints, (key, def) => {
    const design = def.blueprint;

@@ -1,12 +1,13 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
+import { Augments } from "@spaceship-idle/shared/src/game/definitions/Augments";
 import { Directives } from "@spaceship-idle/shared/src/game/definitions/Directives";
 import { FriendshipBonus } from "@spaceship-idle/shared/src/game/definitions/FriendshipBonus";
 import { StarSystemFlags } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { DefaultShortcuts, GameOption } from "@spaceship-idle/shared/src/game/GameOption";
-import { GameState, type SaveGame } from "@spaceship-idle/shared/src/game/GameState";
+import { GameData, GameState, type SaveGame } from "@spaceship-idle/shared/src/game/GameState";
 import { getShipClassByIndex } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { migrateShipForServer } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
-import { randOne } from "@spaceship-idle/shared/src/utils/Helper";
+import { randOne, sizeOf } from "@spaceship-idle/shared/src/utils/Helper";
 
 export function migrateSave(save: SaveGame): void {
    if ("elementChoices" in save.options) {
@@ -26,6 +27,7 @@ export function migrateSave(save: SaveGame): void {
    }
    save.state = Object.assign(new GameState(), save.state);
    save.options = Object.assign(new GameOption(), save.options);
+   save.data = Object.assign(new GameData(), save.data);
    save.options.shortcuts = Object.assign({}, DefaultShortcuts, save.options.shortcuts);
 
    migrateShipForServer(save.state);
@@ -62,5 +64,8 @@ export function migrateSave(save: SaveGame): void {
          save.state.selectedDirectives.delete(shipClass);
       }
    });
-   console.assert(save.data.galaxy.starSystems.length);
+   console.assert(
+      save.data.galaxy.starSystems.length === sizeOf(Augments),
+      `Augment Size = ${sizeOf(Augments)}, Galaxy Size = ${save.data.galaxy.starSystems.length}`,
+   );
 }

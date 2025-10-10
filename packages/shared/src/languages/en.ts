@@ -815,4 +815,7 @@ export const EN = {
    AndConsumeTheFollowingResources: "And consume the following resources:",
    ResettingToLevel0AndRefundAllTheQuantum: "Resetting to Level 0 and refund all the quantum: <b>%%</b> in total",
    UnlockAugmentTooltipHTML: "To unlock this augment, you need to discover the <b>%%</b> star system in the Galaxy. You can see the list of all star systems on the left side of the Galaxy Tab",
+   AllSeriesXWeaponsGetXPMultiplier: "+%% XP Multiplier for Series %% Weapons",
+   AllVariantXWeaponsGetXPMultiplier: "+%% XP Multiplier for %% Variant Weapons",
+   BaseVariant: "Base",
 };

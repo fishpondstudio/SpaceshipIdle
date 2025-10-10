@@ -35,7 +35,7 @@ export const SteamUrl = "https://store.steampowered.com/app/3454630?utm_source=I
 export const TranslationUrl = "https://github.com/fishpondstudio/SpaceshipIdle/tree/main/packages/shared/src/languages";
 export const PatchNotesUrl =
    "https://store.steampowered.com/news/app/3454630?utm_source=InGame&utm_campaign=PatchNotes";
-export const SentryDSN = "https://d058468cef1c457db4234eb76c98ff57@bugreport.fishpondstudio.com/3";
+export const SentryDSN = "https://6f5a13f4c1574079879b80b722f6a26a@bugreport.fishpondstudio.com/3";
 
 export const WarpElementId = "ship-info-warp";
 export const XPElementId = "ship-info-xp";

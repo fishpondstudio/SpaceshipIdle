@@ -23,7 +23,7 @@ export function WeaponTypeSeriesVariantComp({ building }: { building: Building }
          </div>
          <div className="row">
             <div className="f1">{t(L.Variant)}</div>
-            <div>{variant}</div>
+            <div>{variant ?? t(L.BaseVariant)}</div>
          </div>
       </>
    );

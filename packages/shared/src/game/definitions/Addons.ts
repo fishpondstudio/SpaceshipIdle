@@ -1,4 +1,4 @@
-import { cast, formatNumber, setFlag, type Tile } from "../../utils/Helper";
+import { formatNumber, setFlag, type Tile } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { parseBuildingCode } from "../logic/BuildingLogic";
@@ -18,8 +18,8 @@ export interface IAddonDefinition {
    blueprint?: Blueprint;
 }
 
-export const Addons = {
-   HP1: cast<IAddonDefinition>({
+export const _Addons = {
+   HP1: {
       name: () => t(L.HPArray),
       desc: (value: number) => t(L.HPArrayDesc, formatNumber(value), formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -28,8 +28,8 @@ export const Addons = {
          });
       },
       shipClass: "Scout",
-   }),
-   HP2: cast<IAddonDefinition>({
+   },
+   HP2: {
       name: () => t(L.RecoveryDiversity),
       desc: (value: number) => t(L.RecoveryDiversityDesc, formatNumber(value * 10), formatNumber(value * 10)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -38,8 +38,8 @@ export const Addons = {
          });
       },
       shipClass: "Scout",
-   }),
-   HP3: cast<IAddonDefinition>({
+   },
+   HP3: {
       name: () => t(L.LaserBlockMatrix),
       desc: (value: number) => t(L.LaserBlockMatrixDesc, formatNumber(value / 2), formatNumber(value / 2)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -48,8 +48,8 @@ export const Addons = {
          });
       },
       shipClass: "Corvette",
-   }),
-   HP4: cast<IAddonDefinition>({
+   },
+   HP4: {
       name: () => t(L.HPDiversity),
       desc: (value: number) => t(L.HPDiversityDesc, formatNumber(value), formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -58,8 +58,8 @@ export const Addons = {
          });
       },
       shipClass: "Corvette",
-   }),
-   Damage1: cast<IAddonDefinition>({
+   },
+   Damage1: {
       name: () => t(L.DamageContrast),
       desc: (value: number) => t(L.DamageContrastDesc, formatNumber(value), formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -68,8 +68,8 @@ export const Addons = {
          });
       },
       shipClass: "Skiff",
-   }),
-   Damage2: cast<IAddonDefinition>({
+   },
+   Damage2: {
       name: () => t(L.PrecisionDiversity),
       desc: (value: number) => t(L.PrecisionDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -79,8 +79,8 @@ export const Addons = {
          });
       },
       shipClass: "Scout",
-   }),
-   Damage3: cast<IAddonDefinition>({
+   },
+   Damage3: {
       name: () => t(L.DamageDiversity),
       desc: (value: number) => t(L.DamageDiversityDesc, formatNumber(value), formatNumber(value)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -89,8 +89,8 @@ export const Addons = {
          });
       },
       shipClass: "Corvette",
-   }),
-   Damage4: cast<IAddonDefinition>({
+   },
+   Damage4: {
       name: () => t(L.TrueStrikeArray),
       desc: (value: number) => t(L.TrueStrikeArrayDesc, formatNumber(value / 2), formatNumber(value / 2)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -100,8 +100,8 @@ export const Addons = {
          });
       },
       shipClass: "Corvette",
-   }),
-   Evasion1: cast<IAddonDefinition>({
+   },
+   Evasion1: {
       name: () => t(L.EvasionDiversity),
       desc: (value: number) => t(L.EvasionDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
       tick: (value: number, tile: Tile, runtime: Runtime) => {
@@ -110,10 +110,11 @@ export const Addons = {
          });
       },
       shipClass: "Skiff",
-   }),
+   },
 } as const satisfies Record<string, IAddonDefinition>;
 
-export type Addon = keyof typeof Addons;
+export type Addon = keyof typeof _Addons;
+export const Addons: Record<Addon, IAddonDefinition> = _Addons;
 
 export function getAddonEffect(amount: number): number {
    if (amount <= 0) {
