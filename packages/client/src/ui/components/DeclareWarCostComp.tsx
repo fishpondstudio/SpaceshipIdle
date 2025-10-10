@@ -24,9 +24,7 @@ export function DeclareWarCostComp({ planet }: { planet?: Planet }): React.React
             />
          </div>
          <div className="divider my10 mx-10 dashed"></div>
-         <div>
-            You can only declare war on them <b>once</b> and declaring war will result in the following consequences:
-         </div>
+         <div>Declaring war will result in the following consequences:</div>
          <div className="h5" />
          <div className="flex-table mx-10">
             {penalties.map((penalty) => {

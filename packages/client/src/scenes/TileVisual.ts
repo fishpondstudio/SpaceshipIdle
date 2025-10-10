@@ -275,10 +275,10 @@ export class TileVisual extends Container {
          t.alpha = 0;
          t.anchor.set(0.5, 0.5);
          t.x = this.x;
-         t.y = this.y - 50;
+         t.y = this.y - 30;
          sequence(
-            to(t, { y: t.y + 10, alpha: 1 }, 0.25, Easing.OutQuad),
-            to(t, { y: t.y + 40, alpha: 0 }, 1.25, Easing.InQuad),
+            to(t, { y: t.y - 10, alpha: 1 }, 0.25, Easing.OutQuad),
+            to(t, { y: t.y - 50, alpha: 0 }, 1.25, Easing.InQuad),
             runFunc(() => {
                ShipScene.TooltipPool.release(t);
             }),

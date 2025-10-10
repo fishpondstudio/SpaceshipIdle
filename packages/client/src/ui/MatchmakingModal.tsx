@@ -1,4 +1,5 @@
 import { getGradient, useMantineTheme } from "@mantine/core";
+import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { MatchmakingMinimumQuantum, MatchmakingMinimumXP } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
@@ -9,8 +10,9 @@ import {
    simulateBattle,
 } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
+import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
-import { calcSpaceshipXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { calcSpaceshipXP, canSpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { capitalize, enumOf, formatNumber, iReduceOf, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -20,9 +22,11 @@ import { RPCClient } from "../rpc/RPCClient";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { hideModal, showModal } from "../utils/ToggleModal";
+import { DeclareWarCostComp } from "./components/DeclareWarCostComp";
 import { FloatingTip } from "./components/FloatingTip";
 import { hideLoading, showLoading } from "./components/LoadingComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
+import { TextureComp } from "./components/TextureComp";
 import { PreBattleModal } from "./PreBattleModal";
 import { PrestigeModal } from "./PrestigeModal";
 import { PrestigeReason } from "./PrestigeReason";
@@ -57,13 +61,13 @@ export function MatchmakingModal(): React.ReactNode {
                <FloatingTip
                   label={<RenderHTML html={t(L.QualifierBattleQuantumRequirementHTML, MatchmakingMinimumQuantum)} />}
                >
-                  <div className="row">
+                  <div className="row g5">
+                     <TextureComp name={Config.Resources.Quantum.texture} />
                      <div>{t(L.Quantum)}</div>
                      <div className="f1"></div>
                      <div>
                         {usedQuantum}/{MatchmakingMinimumQuantum}
                      </div>
-
                      {usedQuantum >= MatchmakingMinimumQuantum ? (
                         <div className="mi sm text-green">check_circle</div>
                      ) : (
@@ -76,7 +80,8 @@ export function MatchmakingModal(): React.ReactNode {
                      <RenderHTML html={t(L.QualifierBattleXPRequirementHTML, formatNumber(MatchmakingMinimumXP))} />
                   }
                >
-                  <div className="row">
+                  <div className="row g5">
+                     <TextureComp name={Config.Resources.XP.texture} />
                      <div>{t(L.SpaceshipXP)}</div>
                      <div className="f1"></div>
                      <div>
@@ -90,10 +95,27 @@ export function MatchmakingModal(): React.ReactNode {
                      )}
                   </div>
                </FloatingTip>
+               <FloatingTip label={<DeclareWarCostComp />}>
+                  <div className="row g5">
+                     <TextureComp name={Config.Resources.VictoryPoint.texture} />
+                     <div>{t(L.VictoryPoint)}</div>
+                     <div className="f1"></div>
+                     <div>{formatNumber(getWarmongerPenalty(G.save.state))}</div>
+                     {canSpendResource("VictoryPoint", getWarmongerPenalty(G.save.state), G.save.state.resources) ? (
+                        <div className="mi sm text-green">check_circle</div>
+                     ) : (
+                        <div className="mi sm text-red">cancel</div>
+                     )}
+                  </div>
+               </FloatingTip>
             </div>
          </div>
          <button
-            disabled={xp < MatchmakingMinimumXP || usedQuantum < MatchmakingMinimumQuantum}
+            disabled={
+               xp < MatchmakingMinimumXP ||
+               usedQuantum < MatchmakingMinimumQuantum ||
+               !canSpendResource("VictoryPoint", getWarmongerPenalty(G.save.state), G.save.state.resources)
+            }
             className="btn filled w100 py5 px10 text-lg"
             onClick={async () => {
                try {

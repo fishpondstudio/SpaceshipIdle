@@ -15,4 +15,5 @@
       "source.organizeImports.biome": "explicit",
       "source.removeUnusedImports": "explicit"
    },
+   "editor.formatOnSave": true,
 }

@@ -60,63 +60,64 @@ export function PreBattleModal({ enemy, info }: { enemy: GameState; info: Battle
             >
                {t(L.Decline)}
             </button>
-            <FloatingTip
-               w={300}
-               label={
-                  <DeclareWarCostComp
-                     planet={info.planetId ? findPlanet(info.planetId, G.save.data.galaxy) : undefined}
-                  />
-               }
-            >
-               <button
-                  className="btn filled w100 row g5 py5"
-                  disabled={
-                     !canSpendResource("VictoryPoint", getWarmongerPenalty(G.save.state), G.save.state.resources)
+
+            <button
+               className="btn filled w100"
+               disabled={!canSpendResource("VictoryPoint", getWarmongerPenalty(G.save.state), G.save.state.resources)}
+               onClick={() => {
+                  if (!trySpendResource("VictoryPoint", getWarmongerPenalty(G.save.state), G.save.state.resources)) {
+                     playError();
+                     return;
                   }
-                  onClick={() => {
-                     if (!trySpendResource("VictoryPoint", getWarmongerPenalty(G.save.state), G.save.state.resources)) {
-                        playError();
-                        return;
-                     }
 
-                     playClick();
-                     showLoading();
+                  playClick();
+                  showLoading();
 
-                     const me = structuredClone(G.save.state);
-                     me.resources.clear();
-                     enemy.resources.clear();
+                  const me = structuredClone(G.save.state);
+                  me.resources.clear();
+                  enemy.resources.clear();
 
-                     G.save.data.battledShips.add(hashGameState(enemy));
+                  G.save.data.battledShips.add(hashGameState(enemy));
 
-                     G.speed = 0;
-                     G.runtime = new Runtime({ state: me, options: G.save.options, data: G.save.data }, enemy);
-                     G.runtime.battleType = BattleType.Battle;
-                     G.runtime.battleInfo = info;
+                  G.speed = 0;
+                  G.runtime = new Runtime({ state: me, options: G.save.options, data: G.save.data }, enemy);
+                  G.runtime.battleType = BattleType.Battle;
+                  G.runtime.battleInfo = info;
 
-                     G.scene.loadScene(ShipScene).requestFocus();
+                  G.scene.loadScene(ShipScene).requestFocus();
 
-                     if (!info.noWarmongerPenalty) {
-                        addStat("Warmonger", 1, G.save.state.stats);
-                     }
+                  if (!info.noWarmongerPenalty) {
+                     addStat("Warmonger", 1, G.save.state.stats);
+                  }
 
-                     if (info.backstabberPenalty) {
-                        addStat("Backstabber", 1, G.save.state.stats);
-                     }
+                  if (info.backstabberPenalty) {
+                     addStat("Backstabber", 1, G.save.state.stats);
+                  }
 
-                     hideSidebar();
-                     hideModal();
+                  hideSidebar();
+                  hideModal();
+                  GameStateUpdated.emit();
+                  setTimeout(() => {
+                     G.speed = 1;
+                     hideLoading();
                      GameStateUpdated.emit();
-                     setTimeout(() => {
-                        G.speed = 1;
-                        hideLoading();
-                        GameStateUpdated.emit();
-                     }, 1000);
-                  }}
+                  }, 1000);
+               }}
+            >
+               <FloatingTip
+                  w={300}
+                  label={
+                     <DeclareWarCostComp
+                        planet={info.planetId ? findPlanet(info.planetId, G.save.data.galaxy) : undefined}
+                     />
+                  }
                >
-                  <div className="mi">swords</div>
-                  <div>{t(L.StartBattle)}</div>
-               </button>
-            </FloatingTip>
+                  <div className="row g5 py5">
+                     <div className="mi">swords</div>
+                     <div>{t(L.StartBattle)}</div>
+                  </div>
+               </FloatingTip>
+            </button>
          </div>
       </div>
    );
