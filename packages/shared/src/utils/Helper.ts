@@ -238,6 +238,14 @@ export function iReduceOf<T, K>(
    return result;
 }
 
+export function iSumOf<T>(obj: Iterable<T>, func: (value: T) => number): number {
+   let result = 0;
+   for (const item of obj) {
+      result += func(item);
+   }
+   return result;
+}
+
 export function safeAdd<T extends string | number>(obj: Partial<Record<T, number>>, key: T, valueToAdd: number): void {
    if (!obj[key]) {
       obj[key] = 0;

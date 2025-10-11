@@ -14,7 +14,7 @@ import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/Peace
 import { getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { calcSpaceshipXP, canSpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
-import { capitalize, enumOf, formatNumber, iReduceOf, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
+import { capitalize, enumOf, formatNumber, iSumOf, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { Generator } from "@spaceship-idle/shared/src/utils/NameGen";
 import { findShip } from "../game/Matchmaking";
@@ -129,10 +129,7 @@ export function MatchmakingModal(): React.ReactNode {
                   if (!ship) {
                      ship = generateMatchmakingShip(
                         getShipClass(G.save.state),
-                        Math.ceil(
-                           iReduceOf(G.save.state.tiles, (prev, [_, data]) => prev + data.level, 0) /
-                              G.save.state.tiles.size,
-                        ),
+                        Math.ceil(iSumOf(G.save.state.tiles, ([_, data]) => data.level) / G.save.state.tiles.size),
                         score,
                         hp,
                         dps,
