@@ -87,10 +87,10 @@ export function tickCatalyst(gs: GameState, stat: RuntimeStat, runtime: Runtime)
          data.tiles.forEach((tile) => {
             const rs = runtime.get(tile);
             if (rs) {
-               if ("hp" in def.multipliers) {
+               if (def.multipliers.hp) {
                   rs.hpMultiplier.add(def.multipliers.hp, t(L.CatXCatalystSource, CatalystCat[cat].name()));
                }
-               if ("damage" in def.multipliers) {
+               if (def.multipliers.damage) {
                   rs.damageMultiplier.add(def.multipliers.damage, t(L.CatXCatalystSource, CatalystCat[cat].name()));
                }
             }

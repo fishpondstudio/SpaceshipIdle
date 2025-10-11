@@ -6,7 +6,7 @@ import { StarSystemFlags } from "@spaceship-idle/shared/src/game/definitions/Gal
 import { DefaultShortcuts, GameOption } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameData, GameState, type SaveGame } from "@spaceship-idle/shared/src/game/GameState";
 import { getShipClassByIndex } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
-import { migrateShipForServer } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
+import { migrateShipForServer } from "@spaceship-idle/shared/src/game/logic/MigrateShip";
 import { randOne, sizeOf } from "@spaceship-idle/shared/src/utils/Helper";
 
 export function migrateSave(save: SaveGame): void {

@@ -1,5 +1,6 @@
 import { clamp, useForceUpdate } from "@mantine/hooks";
 import { Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
+import { BaseWarmongerChangePerSec } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import type { BattleResult } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { addAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
@@ -8,7 +9,7 @@ import { getVictoryType } from "@spaceship-idle/shared/src/game/logic/BattleLogi
 import { BattleType, BattleVictoryTypeLabel } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { findPlanet, getAddonReward } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import { calculateRewardValue, getPeaceTreatyScore } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
-import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { addResource, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import {
    cls,
@@ -34,12 +35,10 @@ import { playBling } from "./Sound";
 export function PeaceTreatyModal({
    battleScore,
    name,
-   enemyXP,
    battleInfo,
 }: {
    battleScore: number;
    name: string;
-   enemyXP: number;
    battleInfo: BattleInfo;
 }): React.ReactNode {
    const forceUpdate = useForceUpdate();
@@ -58,7 +57,8 @@ export function PeaceTreatyModal({
    );
    const [rewardValue, rewardBreakdown] = calculateRewardValue(battleResult.current, G.save.state);
    const leftOver = clamp(peaceTreatyScore - rewardValue, 0, Number.POSITIVE_INFINITY);
-   battleResult.current.resources.set("XP", (leftOver / 100) * enemyXP);
+   const xpReward = getStat("XPPerSecond", G.save.state.stats) * (1 / BaseWarmongerChangePerSec) * (battleScore / 100);
+   battleResult.current.resources.set("XP", (leftOver / 100) * xpReward);
    let texture = "Others/SpaceshipEnemy24";
 
    if (battleInfo.planetId) {

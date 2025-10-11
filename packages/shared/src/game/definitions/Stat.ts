@@ -6,6 +6,7 @@ export const Stats = {
    Element: {},
    WinningStreak: {},
    VictoryPointTimer: {},
+   XPPerSecond: {},
 } as const satisfies Record<string, {}>;
 
 export type Stat = keyof typeof Stats;

@@ -101,7 +101,7 @@ export function addDebugFunctions(): void {
    // @ts-expect-error
    globalThis.peaceTreaty = (score: number) => {
       showModal({
-         children: <PeaceTreatyModal battleScore={score} name="Enemy" enemyXP={100_000} battleInfo={{}} />,
+         children: <PeaceTreatyModal battleScore={score} name="Enemy" battleInfo={{}} />,
          size: "lg",
          dismiss: false,
       });

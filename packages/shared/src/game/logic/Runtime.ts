@@ -306,11 +306,9 @@ export class Runtime {
    }
 
    private _tickExtraXP(): void {
-      addResource(
-         "XP",
-         this.leftStat.extraXPPerSecond.value * this.totalXPPerSecond(this.left.tiles),
-         this.left.resources,
-      );
+      const xpPerSecond = this._totalXPPerSecond(this.left.tiles);
+      this.left.stats.set("XPPerSecond", xpPerSecond);
+      addResource("XP", this.leftStat.extraXPPerSecond.value * xpPerSecond, this.left.resources);
    }
 
    private _tickVictoryPointTimer(): void {
@@ -325,17 +323,6 @@ export class Runtime {
       } else {
          this.left.stats.set("VictoryPointTimer", 0);
       }
-   }
-
-   public totalXPPerSecond(tiles: Tiles): number {
-      let total = 0;
-      tiles.forEach((_data, tile) => {
-         const rs = this.get(tile);
-         if (rs) {
-            total += rs.xpPerSecond;
-         }
-      });
-      return total;
    }
 
    public totalDealtDamage(): [number, number] {
@@ -364,6 +351,17 @@ export class Runtime {
             this.destroy(key);
          }
       }
+   }
+
+   private _totalXPPerSecond(tiles: Tiles): number {
+      let total = 0;
+      tiles.forEach((_data, tile) => {
+         const rs = this.get(tile);
+         if (rs) {
+            total += rs.xpPerSecond;
+         }
+      });
+      return total;
    }
 
    private _tickMultipliers(): void {

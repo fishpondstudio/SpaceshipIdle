@@ -1,7 +1,7 @@
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameState, GameStateFlags } from "@spaceship-idle/shared/src/game/GameState";
 import { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
-import { validateShip } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
+import { validateShip } from "@spaceship-idle/shared/src/game/logic/ValidateShip";
 import { hasFlag, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { CRTFilter } from "pixi-filters";
 import { clientUpdate } from "./ClientUpdate";

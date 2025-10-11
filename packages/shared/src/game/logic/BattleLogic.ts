@@ -11,7 +11,7 @@ import { type ShipClass, ShipClassList } from "../definitions/ShipClass";
 import { GameOption } from "../GameOption";
 import { GameData, GameState } from "../GameState";
 import { posToTile } from "../Grid";
-import { getAddonsInClass } from "./AddonLogic";
+import { getAddonsWithinClass } from "./AddonLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType, type BattleVictoryType } from "./BattleType";
 import { getUnlockableBuildings } from "./BuildingLogic";
@@ -299,7 +299,7 @@ export function generateShip(shipClass: ShipClass, baseElementLevel: number, ran
          ++data.level;
       });
    }
-   const addons = getAddonsInClass(shipClass, ship.blueprint);
+   const addons = getAddonsWithinClass(shipClass, ship.blueprint);
    shuffle(Array.from(ship.tiles.keys()), random).forEach((tile) => {
       const addon = addons.pop();
       if (addon) {
@@ -330,6 +330,15 @@ export function generateMatchmakingShip(
       });
       ship.elements.set(Config.Buildings[building].element, { amount: 0, hp: 0, damage: 0 });
    }
+
+   const addons = getAddonsWithinClass(shipClass, ship.blueprint);
+   const targetAddonAmount = Math.max(1, ShipClassList.indexOf(shipClass) ** 2);
+   shuffle(Array.from(ship.tiles.keys()), random).forEach((tile) => {
+      const addon = addons.pop();
+      if (addon && targetAddonAmount > 0) {
+         ship.addons.set(addon, { tile, amount: targetAddonAmount });
+      }
+   });
 
    while (true) {
       const [_, hp, dps] = calcShipScore(ship);

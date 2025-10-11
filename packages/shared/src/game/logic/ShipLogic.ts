@@ -1,9 +1,7 @@
 import { AABB, type IAABB } from "../../utils/AABB";
 import { createTile, type Tile, tileToPoint } from "../../utils/Helper";
 import type { IHaveXY } from "../../utils/Vector2";
-import { Config } from "../Config";
 import { type BlueprintDefinition, Blueprints } from "../definitions/Blueprints";
-import type { Building } from "../definitions/Buildings";
 import type { ShipClass } from "../definitions/ShipClass";
 import type { GameState, Tiles } from "../GameState";
 import { MaxX, MaxY } from "../Grid";
@@ -128,47 +126,8 @@ export function isWithinShipExtent(tile: Tile, gs: GameState): boolean {
    return blueprint.includes(tile);
 }
 
-export function validateShip(gs: GameState): boolean {
-   const buildings = new Set<Building>();
-   const blueprint = new Set(getShipBlueprint(gs));
-
-   for (const [tile, _] of gs.tiles) {
-      if (!blueprint.has(tile)) {
-         return false;
-      }
-   }
-
-   if (!isShipConnected(gs.tiles.keys())) {
-      return false;
-   }
-
-   for (const tech of gs.unlockedTech) {
-      const def = Config.Tech[tech];
-      def.unlockBuildings?.forEach((b) => {
-         buildings.add(b);
-      });
-      for (const r of def.requires) {
-         if (!gs.unlockedTech.has(r)) {
-            return false;
-         }
-      }
-   }
-
-   for (const [_tile, data] of gs.tiles) {
-      if (!buildings.has(data.type)) {
-         return false;
-      }
-   }
-
-   return true;
-}
-
 export function getShipBlueprint(gs: GameState): number[] {
    return Blueprints[gs.blueprint].blueprint[getShipClass(gs)];
-}
-
-export function migrateShipForServer(gs: GameState): boolean {
-   return false;
 }
 
 export function getFullShipBlueprint(data: BlueprintDefinition): number[] {

@@ -134,5 +134,5 @@ export function getPeaceTreatyScore(
 }
 
 function getWinningStreakScore(ws: number): number {
-   return Math.min((ws - 1) * 5, 50);
+   return Math.min((ws - 1) * 1, 10);
 }

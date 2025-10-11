@@ -62,6 +62,19 @@ export function getAddonsInClass(shipClass: ShipClass, blueprint: Blueprint): Ad
    return candidates;
 }
 
+export function getAddonsWithinClass(shipClass: ShipClass, blueprint: Blueprint): Addon[] {
+   const candidates: Addon[] = [];
+   forEach(Addons, (addon, def) => {
+      if (
+         ShipClassList.indexOf(def.shipClass) <= ShipClassList.indexOf(shipClass) &&
+         (!def.blueprint || def.blueprint === blueprint)
+      ) {
+         candidates.push(addon);
+      }
+   });
+   return candidates;
+}
+
 export function getReforgeCost(fromAddon: Addon, toAddon: Addon): number {
    if (fromAddon === toAddon) {
       return 0;

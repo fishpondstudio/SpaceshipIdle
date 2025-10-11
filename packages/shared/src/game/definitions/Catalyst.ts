@@ -12,7 +12,7 @@ export interface ICatalystDefinition {
    multipliers: Multipliers;
 }
 
-export const Catalyst = {
+export const _Catalyst = {
    A1: {
       trait: () => t(L.AC),
       filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
@@ -288,7 +288,8 @@ export const Catalyst = {
    },
 } as const satisfies Record<string, ICatalystDefinition>;
 
-export type Catalyst = keyof typeof Catalyst;
+export type Catalyst = keyof typeof _Catalyst;
+export const Catalyst: Record<Catalyst, ICatalystDefinition> = _Catalyst;
 
 export const CatalystCat = {
    C1: {

@@ -7,7 +7,7 @@ import { OnAlert, showError } from "@spaceship-idle/shared/src/game/logic/AlertL
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { RequestParticle } from "@spaceship-idle/shared/src/game/logic/RequestParticle";
-import { addStat, calcSpaceshipXP } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { addStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { OnBattleStatusChanged } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { getDOMRectCenter } from "@spaceship-idle/shared/src/utils/Helper";
 import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
@@ -32,9 +32,8 @@ export function subscribeToEvents(): void {
                const stat = G.runtime.leftStat;
                modal = (
                   <PeaceTreatyModal
-                     battleScore={Math.round((100 * stat.currentHp) / stat.maxHp)}
+                     battleScore={Math.floor((100 * stat.currentHp) / stat.maxHp)}
                      name={G.runtime.right.name}
-                     enemyXP={calcSpaceshipXP(G.runtime.original.right)}
                      battleInfo={G.runtime.battleInfo}
                   />
                );
