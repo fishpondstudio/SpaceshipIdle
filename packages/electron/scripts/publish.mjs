@@ -11,6 +11,7 @@ fs.writeFileSync(versionFile, JSON.stringify(version));
 console.log(`🔔 Build Number: ${build}`);
 
 cmd("pnpm run build", path.join(rootPath, "packages", "client"));
+cmd("npx wrangler pages deploy ./dist --project-name spaceshipidle", path.join(rootPath, "packages", "client"));
 fs.removeSync("./node_modules");
 cmd("npm install", path.join(rootPath, "packages", "electron"));
 cmd("npm run package -- --platform=win32,linux", path.join(rootPath, "packages", "electron"));
