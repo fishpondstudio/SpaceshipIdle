@@ -34,9 +34,9 @@ export function migrateShipForServer(gs: GameState): boolean {
       }
    }
 
-   for (const [_, catalyst] of gs.selectedCatalysts) {
+   for (const [cat, catalyst] of gs.selectedCatalysts) {
       if (!Catalyst[catalyst]) {
-         gs.selectedCatalysts.delete(catalyst);
+         gs.selectedCatalysts.delete(cat);
          migrated = true;
       }
    }
