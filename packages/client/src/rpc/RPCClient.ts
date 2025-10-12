@@ -4,6 +4,7 @@ import { removeTrailingUndefs, rpcClient } from "@spaceship-idle/shared/src/thir
 import { SECOND } from "@spaceship-idle/shared/src/utils/Helper";
 import { msgpackEncode } from "@spaceship-idle/shared/src/utils/Serialization";
 import { getBuildNumber, getVersion } from "../game/Version";
+import { G } from "../utils/Global";
 import { handleMessage, onDisconnected } from "./HandleMessage";
 import { isSteam, SteamClient } from "./SteamClient";
 
@@ -55,7 +56,7 @@ export async function connectWebSocket(): Promise<void> {
          `appId=${await SteamClient.getAppId()}`,
       );
    } else {
-      params.push("ticket=none", "platform=web");
+      params.push(`ticket=web:${G.save.options.id}`, "platform=web");
    }
 
    const url = `${getServerAddress()}/?${params.join("&")}`;
@@ -81,6 +82,6 @@ export async function connectWebSocket(): Promise<void> {
       reconnect++;
       console.log("[WebSocket] OnClose", e);
       onDisconnected();
-      setTimeout(connectWebSocket, Math.min(Math.pow(2, reconnect++) * SECOND, 16 * SECOND));
+      setTimeout(connectWebSocket, Math.min(2 ** reconnect++ * SECOND, 16 * SECOND));
    };
 }

@@ -84,6 +84,7 @@ export function subscribeToEvents(): void {
             position: "top-center",
             color,
             withBorder: true,
+            autoClose: 10_000,
          });
       }
       if (persist) {

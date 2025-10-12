@@ -1,5 +1,5 @@
 import type { CountryCode } from "../utils/CountryCode";
-import type { ValueOf } from "../utils/Helper";
+import { uuid4, type ValueOf } from "../utils/Helper";
 import { TypedEvent } from "../utils/TypedEvent";
 import { SaveFileVersion } from "./definitions/Constant";
 import type { Languages } from "./Languages";
@@ -91,6 +91,7 @@ export class GameOption {
    videoTutorials: Set<VideoTutorial> = new Set();
    version = SaveFileVersion;
    build = 0;
+   id = uuid4();
 }
 
 export const GameOptionUpdated = new TypedEvent<void>();

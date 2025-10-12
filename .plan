@@ -1,7 +1,10 @@
 DONE:
 - Augment: they are unlocked when you discover a new star system. You can spend quantum to upgrade its level and these upgrade can be reset, which costs Victory Point and refund all quantum spent.
+- Add-ons can now be reforged into Victory Point
 - XP Reward from battle now scales with your own ship (instead of your enemy)
-- 
+- 1 Winning Steak now adds 1 peace treaty score (max. 10)
+- Banace the "Victory Point / Hour" directive
+- Add a weapon firing animation (can be turned off in Settings)
 
 TODO:
 - Rework Conquest Reward?

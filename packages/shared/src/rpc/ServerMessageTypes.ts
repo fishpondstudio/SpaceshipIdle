@@ -50,10 +50,10 @@ export interface IShip {
    json: GameState;
 }
 
-// biome-ignore lint/suspicious/noEmptyInterface: <explanation>
 export interface IUserJson {
    flags: UserFlags;
    lastDisconnectedAt: number;
+   createdAt: number;
 }
 
 export const UserFlags = {
