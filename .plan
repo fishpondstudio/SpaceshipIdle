@@ -1,5 +1,7 @@
 DONE:
-- Augment
+- Augment: they are unlocked when you discover a new star system. You can spend quantum to upgrade its level and these upgrade can be reset, which costs Victory Point and refund all quantum spent.
+- XP Reward from battle now scales with your own ship (instead of your enemy)
+- 
 
 TODO:
 - Rework Conquest Reward?
