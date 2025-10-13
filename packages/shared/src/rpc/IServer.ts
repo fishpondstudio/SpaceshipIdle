@@ -16,7 +16,6 @@ export interface IServer {
       hp: [number, number],
       dps: [number, number],
    ) => Promise<IShip>;
-   rankShips: (quantum: number, count: number) => Promise<IShip[]>;
    sendChat: (message: string, channel: Language, country: keyof typeof CountryCode) => Promise<void>;
    sendCommand: (command: string) => Promise<string>;
    getChatByChannel: (channel: Language) => Promise<IChat[]>;

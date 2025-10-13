@@ -2,9 +2,8 @@ import { Side } from "@spaceship-idle/shared/src/game/logic/Side";
 import type { IShip } from "@spaceship-idle/shared/src/rpc/ServerMessageTypes";
 import { cls, formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ShipImageComp } from "../game/ShipImageComp";
-import { RPCClient } from "../rpc/RPCClient";
 import { showModal } from "../utils/ToggleModal";
 import { DevOrAdminOnly } from "./components/DevOnly";
 import { ViewShipModal } from "./ViewShipModal";
@@ -12,11 +11,11 @@ import { ViewShipModal } from "./ViewShipModal";
 export function ShipGalleryModal(): React.ReactNode {
    const [result, setResult] = useState<{ total: number; ships: IShip[] } | null>(null);
    const [quantum, setQuantum] = useState(30);
-   useEffect(() => {
-      RPCClient.rankShips(quantum, 9).then((ships) => {
-         setResult({ total: 9, ships });
-      });
-   }, [quantum]);
+   // useEffect(() => {
+   //    RPCClient.rankShips(quantum, 9).then((ships) => {
+   //       setResult({ total: 9, ships });
+   //    });
+   // }, [quantum]);
    return (
       <div className="m10">
          <div className="row mb10 fstart wrap">
