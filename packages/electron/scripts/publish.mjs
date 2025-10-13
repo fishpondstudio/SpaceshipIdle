@@ -43,10 +43,10 @@ copyVdf("linux.vdf");
 copyBuild("SpaceshipIdle-win32-x64");
 copyBuild("SpaceshipIdle-linux-x64");
 
-cmd(
-   `${path.join(process.env.STEAMWORKS_PATH, "builder_linux", "steamcmd.sh")} +runscript ../spaceship_idle.txt`,
-   process.env.STEAMWORKS_PATH,
-);
+// cmd(
+//    `${path.join(process.env.STEAMWORKS_PATH, "builder_linux", "steamcmd.sh")} +runscript ../spaceship_idle.txt`,
+//    process.env.STEAMWORKS_PATH,
+// );
 
 function cmd(command, cwd = null) {
    console.log(`>> Command: ${command} (CWD: ${cwd})`);
