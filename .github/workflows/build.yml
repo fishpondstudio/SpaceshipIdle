@@ -28,6 +28,8 @@ jobs:
         working-directory: /home/insraq/SpaceshipIdle/packages/electron
         env:
           STEAMWORKS_PATH: /home/insraq/steamworks/tools/ContentBuilder/
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       - run: |
           git add packages/client/src/version.json
           git commit -m "[skip ci] New Build" || echo "There's nothing to commit"
