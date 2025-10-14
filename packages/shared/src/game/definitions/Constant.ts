@@ -32,6 +32,7 @@ export const FireBackDuration = 0.1;
 export const FireForwardDuration = 0.4;
 export const DiscordUrl = "https://discord.com/invite/Z3kFpawyts";
 export const SteamUrl = "https://store.steampowered.com/app/3454630?utm_source=InGame";
+export const SteamUrlWebFTUE = "https://store.steampowered.com/app/3454630?utm_source=WebFTUE";
 export const TranslationUrl = "https://github.com/fishpondstudio/SpaceshipIdle/tree/main/packages/shared/src/languages";
 export const PatchNotesUrl =
    "https://store.steampowered.com/news/app/3454630?utm_source=InGame&utm_campaign=PatchNotes";

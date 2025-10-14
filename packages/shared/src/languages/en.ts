@@ -818,4 +818,5 @@ export const EN = {
    AllSeriesXWeaponsGetXPMultiplier: "+%% XP Multiplier for Series %% Weapons",
    AllVariantXWeaponsGetXPMultiplier: "+%% XP Multiplier for %% Variant Weapons",
    BaseVariant: "Base",
+   GuestWebAccountWarning: "Guest web accounts have a 48-hour probation before online features unlock. Play on Steam to skip probation and unlock background running",
 };

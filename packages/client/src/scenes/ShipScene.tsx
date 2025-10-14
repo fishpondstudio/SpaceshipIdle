@@ -313,6 +313,19 @@ export class ShipScene extends Scene {
          }
       });
 
+      this._targetIndicator.visible = false;
+      if (this._selectedTiles.size === 1) {
+         for (const tile of this._selectedTiles) {
+            const rs = rt.get(tile);
+            if (rs?.target && rt.has(rs.target)) {
+               const pos = tileToPosCenter(rs.target);
+               this._targetIndicator.position.set(pos.x, pos.y);
+               this._targetIndicator.visible = true;
+               break;
+            }
+         }
+      }
+
       if (this._focusRequested) {
          this._focusRequested = false;
          this.viewport.center = { x: this.viewport.worldWidth / 2, y: this.viewport.worldHeight / 2 };
