@@ -12,9 +12,9 @@ import {
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { getWarmongerPenalty } from "@spaceship-idle/shared/src/game/logic/PeaceTreatyLogic";
 import { getUsedQuantum } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
-import { calcSpaceshipXP, canSpendResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
+import { calcSpaceshipXP, canSpendResource, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
-import { capitalize, enumOf, formatNumber, iSumOf, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
+import { capitalize, divide, enumOf, formatNumber, iSumOf, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { Generator } from "@spaceship-idle/shared/src/utils/NameGen";
 import { findShip } from "../game/Matchmaking";
@@ -125,16 +125,16 @@ export function MatchmakingModal(): React.ReactNode {
                   if (score > 0) {
                      RPCClient.saveShipV2(G.save.state).catch(console.error);
                   }
-                  let ship = (await findShip(score, hp, dps))?.json;
+                  const victory = getStat("Victory", G.save.state.stats);
+                  const defeat = getStat("Defeat", G.save.state.stats);
+                  const victoryRate = divide(victory, victory + defeat);
+                  let ship = (await findShip(score, hp, dps, victoryRate))?.json;
                   if (!ship) {
-                     ship = generateMatchmakingShip(
-                        getShipClass(G.save.state),
-                        Math.ceil(iSumOf(G.save.state.tiles, ([_, data]) => data.level) / G.save.state.tiles.size),
-                        score,
-                        hp,
-                        dps,
-                        Math.random,
+                     const level = Math.ceil(
+                        iSumOf(G.save.state.tiles, ([_, data]) => data.level) / G.save.state.tiles.size,
                      );
+                     const shipClass = getShipClass(G.save.state);
+                     ship = generateMatchmakingShip(shipClass, level, score, hp, dps, victoryRate, Math.random);
                      ship.name = capitalize(new Generator("ssV").toString());
                      console.log("Matchmaking: generate enemy ship", ship);
                   }

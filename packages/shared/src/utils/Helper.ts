@@ -1031,3 +1031,7 @@ export function getElementCenter(ele: Element): IPointData {
    const rect = ele.getBoundingClientRect();
    return getDOMRectCenter(rect);
 }
+
+export function quadratic(x: number): number {
+   return Math.sign(x) * x * x;
+}

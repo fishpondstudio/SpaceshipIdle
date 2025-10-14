@@ -1,4 +1,14 @@
-import { hasFlag, keysOf, randInt, randOne, reduceOf, shuffle, type Tile, tileToPoint } from "../../utils/Helper";
+import {
+   hasFlag,
+   keysOf,
+   quadratic,
+   randInt,
+   randOne,
+   reduceOf,
+   shuffle,
+   type Tile,
+   tileToPoint,
+} from "../../utils/Helper";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -315,12 +325,18 @@ export function generateMatchmakingShip(
    targetScore: number,
    targetHp: number,
    targetDps: number,
+   victoryRate: number,
    random: () => number,
 ): GameState {
    const ship = new GameState();
    ship.blueprint = randOne(keysOf(Blueprints), random);
    const design = Blueprints[ship.blueprint].blueprint[shipClass];
    const buildings = getBuildingsWithinShipClass(shipClass);
+   const factor = 1 + quadratic((victoryRate - 0.5) * 2) * 0.2;
+   console.log(`generateMatchmakingShip: factor = ${factor}`);
+   targetScore *= factor;
+   targetHp *= factor;
+   targetDps *= factor;
 
    for (const tile of design) {
       const building = randOne(buildings, random);
