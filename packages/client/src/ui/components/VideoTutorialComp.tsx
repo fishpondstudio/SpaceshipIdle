@@ -27,7 +27,7 @@ export function VideoTutorialComp({
    return (
       <FloatingTip
          position="left"
-         w="50vw"
+         w="33vw"
          label={<video src={video} autoPlay loop muted style={{ width: "100%", display: "block" }} />}
       >
          <div className={cls("video-tutorial", className)} style={style}>

@@ -276,6 +276,7 @@ table {
    border: 1px solid var(--mantine-color-space-4);
 
    video {
+      max-height: 57px;
       width: 100px;
       display: block;
       border-radius: 5px;
