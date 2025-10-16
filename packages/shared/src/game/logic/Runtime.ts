@@ -3,6 +3,7 @@ import { L, t } from "../../utils/i18n";
 import { srand } from "../../utils/Random";
 import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
+import { Augments } from "../definitions/Augments";
 import { Blueprints } from "../definitions/Blueprints";
 import { Bonus } from "../definitions/Bonus";
 import { DamageType } from "../definitions/BuildingProps";
@@ -193,6 +194,9 @@ export class Runtime {
          this._tickMultipliers();
          if (this.battleType === BattleType.Peace) {
             tickGalaxy(this);
+            this.leftSave.state.augments.forEach((value, augment) => {
+               Augments[augment].onTick(value, this);
+            });
             tickQuantumElementProgress(this.leftSave, this.battleInfo.silent);
          }
          this._tickDirectives();
