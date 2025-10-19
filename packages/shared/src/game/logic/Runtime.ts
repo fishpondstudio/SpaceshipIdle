@@ -126,7 +126,7 @@ export class Runtime {
       for (const tile of tiles) {
          const rs = this.get(tile);
          if (rs) {
-            rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire);
+            rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.Blackout);
             rs.addStatusEffect("Wreckage", tile, rs.data.type, 1, Number.POSITIVE_INFINITY);
          }
       }

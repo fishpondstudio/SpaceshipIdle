@@ -209,6 +209,16 @@ export const MS4: IBuildingDefinition = {
    code: CodeNumber.MS,
    damagePct: 0.9,
    damageType: DamageType.Explosive,
-   fireCooldown: 4.5,
+   fireCooldown: 6,
    element: "Y",
+   ability: {
+      timing: AbilityTiming.OnFire,
+      range: AbilityRange.Flanks,
+      effect: "KineticImmune",
+      flag: AbilityFlag.None,
+      value: (building, level) => {
+         return 0;
+      },
+      duration: (building, level) => 3,
+   },
 };

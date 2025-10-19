@@ -329,7 +329,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Electrical,
       onTick: (se, rs) => {
-         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire);
+         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.Blackout);
       },
    },
    Wreckage: {
@@ -338,7 +338,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Electrical,
       onTick: (se, rs) => {
-         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire);
+         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.Blackout);
       },
    },
    LaserBlocker: {
@@ -348,6 +348,15 @@ export const StatusEffects = {
       type: StatusEffectType.Electrical,
       onTick: (se, rs) => {
          rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.BlockLaser);
+      },
+   },
+   KineticImmune: {
+      name: () => t(L.KineticImmune),
+      desc: (value) => t(L.KineticImmuneDesc),
+      flag: StatusEffectFlag.Positive,
+      type: StatusEffectType.Electrical,
+      onTick: (se, rs) => {
+         rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.KineticImmune);
       },
    },
    IgnoreEvasion: {

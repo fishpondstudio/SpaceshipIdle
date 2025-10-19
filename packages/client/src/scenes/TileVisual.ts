@@ -172,7 +172,7 @@ export class TileVisual extends Container {
       this._bottomRightText.text = this.levelLabel;
       const rs = G.runtime.get(this._tile);
       if (rs) {
-         this._isWorking = !hasFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire);
+         this._isWorking = !hasFlag(rs.props.runtimeFlag, RuntimeFlag.Blackout);
       } else {
          this._isWorking = false;
       }

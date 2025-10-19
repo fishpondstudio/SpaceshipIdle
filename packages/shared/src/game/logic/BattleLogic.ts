@@ -75,16 +75,16 @@ export function tickProjectiles(
          target = undefined;
       }
       if (target && !projectile.hit.has(tile)) {
-         if (hasFlag(projectile.flag, ProjectileFlag.LaserDamage)) {
-            projectile.hit.add(tile);
-         } else {
-            projectiles.delete(id);
-         }
-
          const damageTarget = runtime.get(tile);
          if (!damageTarget) return;
 
-         if (hasFlag(damageTarget.props.runtimeFlag, RuntimeFlag.BlockLaser)) {
+         if (hasFlag(projectile.flag, ProjectileFlag.LaserDamage)) {
+            if (hasFlag(damageTarget.props.runtimeFlag, RuntimeFlag.BlockLaser)) {
+               projectiles.delete(id);
+            } else {
+               projectile.hit.add(tile);
+            }
+         } else {
             projectiles.delete(id);
          }
 
@@ -156,7 +156,7 @@ export function tickTiles(
       if (!rs) {
          return;
       }
-      if (hasFlag(rs.props.runtimeFlag, RuntimeFlag.NoFire)) {
+      if (hasFlag(rs.props.runtimeFlag, RuntimeFlag.Blackout)) {
          return;
       }
       rs.cooldown += BattleTickInterval;

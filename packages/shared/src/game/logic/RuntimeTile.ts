@@ -127,6 +127,16 @@ export class RuntimeTile {
          return 0;
       }
 
+      if (hasFlag(this.props.runtimeFlag, RuntimeFlag.KineticImmune) && damageType === DamageType.Kinetic) {
+         return 0;
+      }
+      if (hasFlag(this.props.runtimeFlag, RuntimeFlag.ExplosiveImmune) && damageType === DamageType.Explosive) {
+         return 0;
+      }
+      if (hasFlag(this.props.runtimeFlag, RuntimeFlag.EnergyImmune) && damageType === DamageType.Energy) {
+         return 0;
+      }
+
       safeAdd(stat.rawDamagePerSec, damageType, damage);
 
       if (!hasFlag(projectileFlag, ProjectileFlag.TrueDamage)) {

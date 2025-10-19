@@ -820,4 +820,7 @@ export const EN = {
    BaseVariant: "Base",
    GuestWebAccountWarning: "Guest web accounts have a 48-hour probation before online features unlock. Play on Steam to skip probation and unlock background running",
    TechLaserArrayII: "Laser Array II",
+   TechKineticBarrier: "Kinetic Barrier",
+   KineticImmune: "Kinetic Immune",
+   KineticImmuneDesc: "Immune to all Kinetic Damage",
 };
