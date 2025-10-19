@@ -54,6 +54,7 @@ export class GameState {
    stats = new Map<Stat, number>();
 
    // Start of hashed properties
+   // !IMPORTANT: If you change hashed properties, you must also change `toHashString` below!
    tiles: Tiles = new Map();
    unlockedTech = new Set<Tech>();
    elements = new Map<ElementSymbol, ElementData>();
@@ -68,6 +69,20 @@ export class GameState {
    name = "Unnamed";
    flags: GameStateFlags = GameStateFlags.None;
    offlineTime = 0;
+}
+
+function toHashString(gs: GameState): string {
+   return jsonEncode({
+      tiles: Array.from(gs.tiles.entries()).sort((a, b) => a[0] - b[0]),
+      unlockedTech: Array.from(gs.unlockedTech.values()).sort(),
+      elements: Array.from(gs.elements.entries()).sort((a, b) => a[0].localeCompare(b[0])),
+      permanentElements: Array.from(gs.permanentElements.entries()).sort((a, b) => a[0].localeCompare(b[0])),
+      selectedCatalysts: Array.from(gs.selectedCatalysts.entries()).sort((a, b) => a[0].localeCompare(b[0])),
+      selectedDirectives: Array.from(gs.selectedDirectives.entries()).sort((a, b) => a[0].localeCompare(b[0])),
+      augments: Array.from(gs.augments.entries()).sort((a, b) => a[0].localeCompare(b[0])),
+      addons: Array.from(gs.addons.entries()).sort((a, b) => a[0].localeCompare(b[0])),
+      blueprint: gs.blueprint,
+   });
 }
 
 export class GameData {
@@ -88,19 +103,6 @@ export interface ElementData {
 }
 
 const HASH_SEED = BigInt(0xdeadbeef);
-
-function toHashString(gs: GameState): string {
-   return jsonEncode({
-      tiles: Array.from(gs.tiles.entries()).sort((a, b) => a[0] - b[0]),
-      unlockedTech: Array.from(gs.unlockedTech.values()).sort(),
-      elements: Array.from(gs.elements.entries()).sort((a, b) => a[0].localeCompare(b[0])),
-      permanentElements: Array.from(gs.permanentElements.entries()).sort((a, b) => a[0].localeCompare(b[0])),
-      selectedCatalysts: Array.from(gs.selectedCatalysts.entries()).sort((a, b) => a[0].localeCompare(b[0])),
-      selectedDirectives: Array.from(gs.selectedDirectives.entries()).sort((a, b) => a[0].localeCompare(b[0])),
-      addons: Array.from(gs.addons.entries()).sort((a, b) => a[0].localeCompare(b[0])),
-      blueprint: gs.blueprint,
-   });
-}
 
 export function hashGameState(gs: GameState): bigint {
    const json = toHashString(gs);

@@ -26,10 +26,21 @@
       {
          "type": "npm",
          "script": "watch",
+         "path": ".",
+         "problemMatcher": ["$tsc-watch"],
+         "label": "npm: typecheck",
+         "isBackground": true,
+         "runOptions": {
+            "runOn": "folderOpen"
+         }
+      },
+      {
+         "type": "npm",
+         "script": "watch",
          "path": "packages/server",
          "problemMatcher": [],
          "label": "npm: watch - packages/server",
-         "isBackground": true,
+         "isBackground": true
       },
       {
          "type": "npm",
@@ -37,7 +48,7 @@
          "path": "packages/server",
          "problemMatcher": [],
          "label": "npm: sync - packages/server",
-         "isBackground": true,
+         "isBackground": true
       },
       {
          "type": "npm",
@@ -45,7 +56,7 @@
          "path": "packages/shared",
          "problemMatcher": [],
          "label": "npm: test - packages/shared",
-         "isBackground": true,
+         "isBackground": true
       }
    ]
 }

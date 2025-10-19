@@ -37,7 +37,7 @@ export async function saveGameStateToFile(gs: GameState): Promise<void> {
       suggestedName: `SS-${gs.name}-Q${resourceOf("Quantum", gs.resources).used}.ship`,
    });
    const writable = await fileHandle.createWritable();
-   await writable.write(compressToUint8Array(jsonEncode(gs)));
+   await writable.write(compressToUint8Array(jsonEncode(gs)) as Uint8Array<ArrayBuffer>);
    await writable.close();
 }
 

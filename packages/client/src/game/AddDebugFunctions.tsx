@@ -240,7 +240,7 @@ export function addDebugFunctions(): void {
    const matchmake = async (): Promise<Runtime> => {
       const me = await RPCClient.findShipV3([], [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX]);
       const [score, hp, dps] = calcShipScore(me.json);
-      const enemy = await findShip(score * 0.8, hp * 0.8, dps * 0.8);
+      const enemy = await findShip(score * 0.8, hp * 0.8, dps * 0.8, 0.5);
       if (!enemy) {
          throw new Error("Cannot find an enemy");
       }
