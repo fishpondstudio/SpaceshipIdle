@@ -1,5 +1,4 @@
 import { L, t } from "../../utils/i18n";
-import { getHP } from "../logic/BuildingLogic";
 import { AbilityFlag, AbilityRange, AbilityStatDamagePct, AbilityTiming, abilityChance, abilityStat } from "./Ability";
 import { DamageType, type IBuildingDefinition, type IBuildingProp } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
@@ -121,13 +120,10 @@ export const RC150B: IBuildingDefinition = {
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.Single,
-      effect: "LastStandRegen",
-      flag: AbilityFlag.AffectedByHPMultiplier,
-      value: (building, level, multipliers) => {
-         const hp = getHP({ type: building, level }) * multipliers.hp;
-         return hp * 0.5;
-      },
-      duration: (building, level) => 1,
+      effect: "Recover5WhenHPisBelow10",
+      flag: AbilityFlag.None,
+      value: (building, level) => 0,
+      duration: (building, level) => 5,
    },
    element: "Sr",
 };

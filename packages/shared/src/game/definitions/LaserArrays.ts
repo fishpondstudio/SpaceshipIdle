@@ -1,10 +1,8 @@
 import { L, t } from "../../utils/i18n";
-import { Config } from "../Config";
-import { getDamagePerFire } from "../logic/BuildingLogic";
 import { AbilityFlag, AbilityRange, AbilityStatDamagePct, AbilityTiming, abilityDamage, abilityStat } from "./Ability";
 import { DamageType, type IBuildingDefinition, type IBuildingProp } from "./BuildingProps";
 import { CodeNumber } from "./CodeNumber";
-import { DefaultCooldown, LaserArrayDamagePct } from "./Constant";
+import { DamageToHPMultiplier, DefaultCooldown, LaserArrayDamagePct } from "./Constant";
 import { ProjectileFlag } from "./ProjectileFlag";
 
 export const LaserArrayBaseProps: IBuildingProp = {
@@ -76,18 +74,6 @@ export const LA2: IBuildingDefinition = {
    projectileFlag: ProjectileFlag.LaserDamage,
    damageType: DamageType.Energy,
    element: "Nd",
-   ability: {
-      timing: AbilityTiming.OnHit,
-      range: AbilityRange.Single,
-      effect: "ReduceMaxHp",
-      flag: AbilityFlag.AffectedByDamageMultiplier,
-      value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IBuildingDefinition;
-         const normVal = getDamagePerFire({ type: building, level }) * multipliers.damage;
-         return (normVal * 2.5 * (1 - def.damagePct) * LaserArrayDamagePct) / 2;
-      },
-      duration: (building, level) => 2,
-   },
 };
 export const LA2A: IBuildingDefinition = {
    ...LaserArrayBaseProps,
@@ -101,12 +87,10 @@ export const LA2A: IBuildingDefinition = {
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
-      effect: "ReduceDamage",
+      effect: "ReduceMaxHp",
       flag: AbilityFlag.AffectedByDamageMultiplier,
       value: (building, level, multipliers) => {
-         const def = Config.Buildings[building] as IBuildingDefinition;
-         const normVal = getDamagePerFire({ type: building, level }) * multipliers.damage;
-         return normVal * (1 - def.damagePct) * LaserArrayDamagePct;
+         return abilityDamage(building, level, multipliers) * DamageToHPMultiplier;
       },
       duration: (building, level) => 2,
    },

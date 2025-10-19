@@ -1,8 +1,8 @@
-import { Image } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import {
    AbilityRange,
    AbilityRangeLabel,
+   AbilityRangeTexture,
    AbilityTargetLabel,
    AbilityTimingLabel,
 } from "@spaceship-idle/shared/src/game/definitions/Ability";
@@ -10,17 +10,9 @@ import type { Building } from "@spaceship-idle/shared/src/game/definitions/Build
 import { StatusEffects } from "@spaceship-idle/shared/src/game/definitions/StatusEffect";
 import { DefaultMultipliers } from "@spaceship-idle/shared/src/game/logic/IMultiplier";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import Adjacent from "../../assets/images/Adjacent.png";
-import FrontTrio from "../../assets/images/FrontTrio.png";
-import RearTrio from "../../assets/images/RearTrio.png";
 import { StatusEffectTypeIcon, StatusEffectTypeLabel } from "../../game/StatusEffectType";
 import { FloatingTip } from "./FloatingTip";
-
-export const AbilityRangeImage: Partial<Record<AbilityRange, string>> = {
-   [AbilityRange.Adjacent]: Adjacent,
-   [AbilityRange.RearTrio]: RearTrio,
-   [AbilityRange.FrontTrio]: FrontTrio,
-};
+import { TextureComp } from "./TextureComp";
 
 export function AbilityComp({
    level,
@@ -38,6 +30,7 @@ export function AbilityComp({
    }
    const ability = def.ability;
    const duration = ability.duration(building, level, DefaultMultipliers);
+   const texture = AbilityRangeTexture[ability.range];
    return (
       <>
          {title}
@@ -52,12 +45,8 @@ export function AbilityComp({
          {ability.range !== AbilityRange.Single ? (
             <div className="row g5">
                <div className="f1" />
-               <FloatingTip
-                  disabled={!AbilityRangeImage[ability.range]}
-                  label={<Image radius="sm" w={200} src={AbilityRangeImage[ability.range]} />}
-               >
-                  <div className="text-space">{AbilityRangeLabel[ability.range]()}</div>
-               </FloatingTip>
+               {texture && <TextureComp name={texture} />}
+               <div className="text-space">{AbilityRangeLabel[ability.range]()}</div>
             </div>
          ) : null}
          <div className="row g5">

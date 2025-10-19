@@ -211,12 +211,4 @@ export const MS4: IBuildingDefinition = {
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
    element: "Y",
-   ability: {
-      timing: AbilityTiming.OnFire,
-      range: AbilityRange.Single,
-      effect: "FailsafeRegen",
-      flag: AbilityFlag.None,
-      value: (building, level) => 0,
-      duration: (building, level) => 5,
-   },
 };

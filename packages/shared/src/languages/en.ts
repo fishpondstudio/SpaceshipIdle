@@ -254,8 +254,8 @@ export const EN = {
    ExplorationCostDesc: "Exploration cost is determined by the distance from you <b>(%% Victory Point per lyr)</b>",
    Explosive: "Explosive",
    ExportSpaceship: "Export Spaceship",
-   FailsafeRegen: "Failsafe Regen",
-   FailsafeRegenDesc: "Recover 5% of max HP per second when current HP is below 10%",
+   FailsafeReover5: "Failsafe Regen",
+   FailsafeReover5Desc: "Recover 5% of max HP per second when current HP is below 10%",
    FD: "Drone",
    Fennec: "Fennec",
    FindOpponent: "Find Opponent",
@@ -819,4 +819,5 @@ export const EN = {
    AllVariantXWeaponsGetXPMultiplier: "+%% XP Multiplier for %% Variant Weapons",
    BaseVariant: "Base",
    GuestWebAccountWarning: "Guest web accounts have a 48-hour probation before online features unlock. Play on Steam to skip probation and unlock background running",
+   TechLaserArrayII: "Laser Array II",
 };

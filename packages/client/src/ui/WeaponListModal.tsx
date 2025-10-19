@@ -1,6 +1,10 @@
 import { SegmentedControl } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { AbilityRangeLabel, AbilityTimingLabel } from "@spaceship-idle/shared/src/game/definitions/Ability";
+import {
+   AbilityRangeLabel,
+   AbilityRangeTexture,
+   AbilityTimingLabel,
+} from "@spaceship-idle/shared/src/game/definitions/Ability";
 import { DamageTypeLabel } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { StatusEffects } from "@spaceship-idle/shared/src/game/definitions/StatusEffect";
@@ -15,6 +19,7 @@ import { getTechForBuilding, getTechName, getTechShipClass } from "@spaceship-id
 import { formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useState } from "react";
+import { G } from "../utils/Global";
 import { BuildingInfoComp } from "./components/BuildingInfoComp";
 import { FloatingTip } from "./components/FloatingTip";
 import { TextureComp } from "./components/TextureComp";
@@ -68,6 +73,10 @@ export function WeaponListModal(): React.ReactNode {
                      if (!tech) {
                         return null;
                      }
+                     const rangeTexture = def.ability ? AbilityRangeTexture[def.ability.range] : null;
+                     if (rangeTexture && !G.textures.has(rangeTexture)) {
+                        console.error(`Texture not found for AbilityRange: ${rangeTexture}`);
+                     }
                      return (
                         <tr key={building}>
                            <td className="condensed">
@@ -113,18 +122,25 @@ export function WeaponListModal(): React.ReactNode {
                            </td>
                            <td>
                               {def.ability ? (
-                                 <div>
-                                    <div className="text-xs">{StatusEffects[def.ability.effect].name()}</div>
-                                    <div className="text-xs text-space">
-                                       {t(
-                                          L.AbilityDurationSeconds,
-                                          def.ability.duration(building, 1, DefaultMultipliers),
-                                       )}
-                                       {" / "}
-                                       {AbilityRangeLabel[def.ability.range]()}
-                                       {" / "}
-                                       {AbilityTimingLabel[def.ability.timing]()}
+                                 <div className="row g5">
+                                    <div className="f1">
+                                       <div className="text-xs">{StatusEffects[def.ability.effect].name()}</div>
+                                       <div className="text-xs text-space">
+                                          {t(
+                                             L.AbilityDurationSeconds,
+                                             def.ability.duration(building, 1, DefaultMultipliers),
+                                          )}
+                                          {" / "}
+                                          {AbilityRangeLabel[def.ability.range]()}
+                                          {" / "}
+                                          {AbilityTimingLabel[def.ability.timing]()}
+                                       </div>
                                     </div>
+                                    {rangeTexture && G.textures.has(rangeTexture) && (
+                                       <FloatingTip label={AbilityRangeLabel[def.ability.range]()}>
+                                          <TextureComp name={rangeTexture} />
+                                       </FloatingTip>
+                                    )}
                                  </div>
                               ) : null}
                            </td>

@@ -68,6 +68,17 @@ export const AbilityRangeLabel: Record<AbilityRange, () => string> = {
    [AbilityRange.Column]: () => t(L.AbilityRangeColumn),
 };
 
+export const AbilityRangeTexture: Partial<Record<AbilityRange, string>> = {
+   [AbilityRange.Adjacent]: "Others/Adjacent",
+   [AbilityRange.Front]: "Others/Front",
+   [AbilityRange.FrontTrio]: "Others/FrontTrio",
+   [AbilityRange.Rear]: "Others/Rear",
+   [AbilityRange.RearTrio]: "Others/RearTrio",
+   [AbilityRange.FrontAndRear]: "Others/FrontAndRear",
+   [AbilityRange.Flanks]: "Others/Flanks",
+   [AbilityRange.Range1]: "Others/Range1",
+};
+
 export interface Ability {
    timing: AbilityTiming;
    range: AbilityRange;

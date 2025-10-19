@@ -359,9 +359,9 @@ export const StatusEffects = {
          rs.props.runtimeFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
       },
    },
-   FailsafeRegen: {
-      name: () => t(L.FailsafeRegen),
-      desc: (value) => t(L.FailsafeRegenDesc),
+   Recover5WhenHPisBelow10: {
+      name: () => t(L.FailsafeReover5),
+      desc: (value) => t(L.FailsafeReover5Desc),
       flag: StatusEffectFlag.Positive,
       type: StatusEffectType.Electrical,
       onTick: (se, rs) => {
