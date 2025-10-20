@@ -207,7 +207,7 @@ export const MS4: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Dove),
    code: CodeNumber.MS,
-   damagePct: 0.9,
+   damagePct: 0.5,
    damageType: DamageType.Explosive,
    fireCooldown: 6,
    element: "Y",
