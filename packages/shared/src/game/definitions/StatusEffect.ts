@@ -365,7 +365,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Positive,
       type: StatusEffectType.Electrical,
       onTick: (se, rs) => {
-         rs.props.runtimeFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
+         rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
       },
    },
    Recover5WhenHPisBelow10: {

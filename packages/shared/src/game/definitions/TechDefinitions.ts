@@ -285,8 +285,9 @@ export class TechDefinitions {
 
    D10: ITechDefinition = {
       position: { x: 11, y: 1 },
-      name: () => "",
-      requires: [],
+      name: () => t(L.TechPrecisionLaser),
+      requires: ["D6"],
+      unlockBuildings: ["LA2B"],
    };
 
    D11: ITechDefinition = {

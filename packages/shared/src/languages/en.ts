@@ -823,4 +823,5 @@ export const EN = {
    TechKineticBarrier: "Kinetic Barrier",
    KineticImmune: "Kinetic Immune",
    KineticImmuneDesc: "Immune to all Kinetic Damage",
+   TechPrecisionLaser: "Precision Laser",
 };

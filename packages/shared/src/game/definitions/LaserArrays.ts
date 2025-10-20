@@ -69,7 +69,7 @@ export const LA2: IBuildingDefinition = {
    ...LaserArrayBaseProps,
    pet: () => t(L.Perch),
    code: CodeNumber.LA,
-   damagePct: 0.5 * LaserArrayDamagePct,
+   damagePct: LaserArrayDamagePct,
    fireCooldown: 3.5,
    projectileFlag: ProjectileFlag.LaserDamage,
    damageType: DamageType.Energy,
@@ -93,6 +93,24 @@ export const LA2A: IBuildingDefinition = {
          return abilityDamage(building, level, multipliers) * DamageToHPMultiplier;
       },
       duration: (building, level) => 2,
+   },
+};
+export const LA2B: IBuildingDefinition = {
+   ...LaserArrayBaseProps,
+   pet: () => t(L.Pike),
+   code: CodeNumber.LA,
+   damagePct: LaserArrayDamagePct * AbilityStatDamagePct,
+   fireCooldown: 4,
+   projectileFlag: ProjectileFlag.LaserDamage,
+   damageType: DamageType.Energy,
+   element: "Sm",
+   ability: {
+      timing: AbilityTiming.OnFire,
+      range: AbilityRange.Single,
+      effect: "IgnoreEvasion",
+      flag: AbilityFlag.None,
+      value: (building, level, multipliers) => 0,
+      duration: (building, level) => 4,
    },
 };
 // export const LA2B: IBuildingDefinition = {
