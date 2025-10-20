@@ -2,7 +2,8 @@ import { Select } from "@mantine/core";
 import { type Blueprint, Blueprints } from "@spaceship-idle/shared/src/game/definitions/Blueprints";
 import { ShipClass, ShipClassList } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { calculateAABB, getFullShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
-import { cls, iMapOf, type Tile, tileToPoint } from "@spaceship-idle/shared/src/utils/Helper";
+import { getBuildingsWithinShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
+import { cls, iMapOf, randOne, type Tile, tileToPoint } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useState } from "react";
 import { G } from "../utils/Global";
@@ -16,6 +17,20 @@ export function ShipBlueprintModal() {
    const desc = Blueprints[blueprint].desc;
    return (
       <>
+         {import.meta.env.DEV && (
+            <button
+               className="btn mx10 mt10"
+               onClick={() => {
+                  G.save.state.tiles.clear();
+                  const buildings = getBuildingsWithinShipClass(shipClass);
+                  Blueprints[blueprint].blueprint[shipClass].forEach((tile) => {
+                     G.save.state.tiles.set(tile, { type: randOne(buildings), level: 1 });
+                  });
+               }}
+            >
+               Load
+            </button>
+         )}
          <Select
             className="m10"
             checkIconPosition="right"

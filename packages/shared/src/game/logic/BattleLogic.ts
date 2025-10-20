@@ -9,6 +9,7 @@ import {
    type Tile,
    tileToPoint,
 } from "../../utils/Helper";
+import { L, t } from "../../utils/i18n";
 import { TypedEvent } from "../../utils/TypedEvent";
 import type { IHaveXY } from "../../utils/Vector2";
 import { Config } from "../Config";
@@ -39,13 +40,13 @@ import { getBuildingsWithinShipClass, getMaxQuantumForShipClass } from "./TechLo
 interface IProjectileHit {
    position: IHaveXY;
    tile: Tile;
-   critical: boolean;
 }
 
 export const OnWeaponFire = new TypedEvent<{ from: Tile; to: Tile }>();
 export const OnProjectileHit = new TypedEvent<IProjectileHit>();
 export const OnDamaged = new TypedEvent<{ tile: Tile; amount: number }>();
-export const OnEvasion = new TypedEvent<{ tile: Tile }>();
+export const RequestTextIndicator = new TypedEvent<{ tile: Tile; text: string; tint: number }>();
+// export const OnEvasion = new TypedEvent<{ tile: Tile }>();
 export const RequestFloater = new TypedEvent<{ tile: Tile; amount: number }>();
 
 export function tickProjectiles(
@@ -103,7 +104,7 @@ export function tickProjectiles(
                );
             });
          }
-         runtime.emit(OnProjectileHit, { position: pos, tile: tile, critical: projectile.critical });
+         runtime.emit(OnProjectileHit, { position: pos, tile: tile });
          const damage = damageTarget.takeDamage(
             projectile.damage * factor,
             projectile.damageType,
@@ -114,6 +115,9 @@ export function tickProjectiles(
             const damageSource = runtime.get(projectile.fromTile);
             damageTarget.onTakingDamage(damage, projectile.damageType, damageSource);
             damageSource?.onDealingDamage(damage, projectile.damageType, damageTarget);
+            if (projectile.critical) {
+               runtime.emit(RequestTextIndicator, { tile, text: t(L.CriticalParticle), tint: 0xe74c3c });
+            }
          }
          if (damageTarget.isDead) {
             runtime.destroy(tile);

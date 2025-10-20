@@ -328,3 +328,22 @@ table {
       }
    }
 }
+
+.health-bar {
+   background-color: var(--mantine-color-dark-4);
+   height: 10px;
+   border-radius: 5px;
+   overflow: hidden;
+   position: relative;
+   .fill,
+   .damage {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 10px;
+   }
+   .damage {
+      background: var(--mantine-color-yellow-filled);
+      transition: width 0.5s ease-in;
+   }
+}

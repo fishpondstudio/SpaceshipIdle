@@ -1,4 +1,4 @@
-import { Progress } from "@mantine/core";
+import { type DefaultMantineColor, getThemeColor, useMantineTheme } from "@mantine/core";
 import { DamageType, DamageTypeLabel } from "@spaceship-idle/shared/src/game/definitions/BuildingProps";
 import { SuddenDeathSeconds, SuddenDeathUndamagedSec } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
@@ -48,6 +48,16 @@ export function BattlePanel({ side }: { side: Side }): React.ReactNode {
    );
 }
 
+function HealthBarComp({ value, color }: { value: number; color: DefaultMantineColor }): React.ReactNode {
+   const theme = useMantineTheme();
+   return (
+      <div className="health-bar">
+         <div className="damage" style={{ width: `${value}%` }} />
+         <div className="fill" style={{ background: getThemeColor(color, theme), width: `${value}%` }} />
+      </div>
+   );
+}
+
 function HPComponent({ side }: { side: Side }): React.ReactNode {
    const hpStat = side === Side.Left ? G.runtime.leftStat : G.runtime.rightStat;
    return (
@@ -68,7 +78,7 @@ function HPComponent({ side }: { side: Side }): React.ReactNode {
          }}
       >
          <div className="h5"></div>
-         <Progress color={side === Side.Left ? "green" : "red"} value={(100 * hpStat.currentHp) / hpStat.maxHp} />
+         <HealthBarComp color={side === Side.Left ? "green" : "red"} value={(100 * hpStat.currentHp) / hpStat.maxHp} />
          <div className="h5"></div>
          <div className="row g5">
             <div className="f1">{t(L.HP)}</div>

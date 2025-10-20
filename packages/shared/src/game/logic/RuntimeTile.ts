@@ -1,4 +1,5 @@
 import { forEach, hasFlag, mapSafeAdd, safeAdd, type Tile } from "../../utils/Helper";
+import { L, t } from "../../utils/i18n";
 import { TypedEvent } from "../../utils/TypedEvent";
 import { Config } from "../Config";
 import type { Addon } from "../definitions/Addons";
@@ -22,7 +23,7 @@ import {
    damageAfterShield,
    evasionChance,
    OnDamaged,
-   OnEvasion,
+   RequestTextIndicator,
 } from "./BattleLogic";
 import { getDamagePerFire, getHP } from "./BuildingLogic";
 import type { Multipliers } from "./IMultiplier";
@@ -123,7 +124,7 @@ export class RuntimeTile {
          this.props.evasion > 0 &&
          this.runtime.random() < evasionChance(this.props.evasion)
       ) {
-         this.runtime.emit(OnEvasion, { tile: this.tile });
+         this.runtime.emit(RequestTextIndicator, { tile: this.tile, tint: 0x2ecc71, text: t(L.EvasionParticle) });
          return 0;
       }
 

@@ -3,6 +3,7 @@ import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { GridSize, tileToPosCenter } from "@spaceship-idle/shared/src/game/Grid";
 import type { ITileData } from "@spaceship-idle/shared/src/game/ITileData";
 import { RuntimeFlag } from "@spaceship-idle/shared/src/game/logic/RuntimeFlag";
+import { isEnemy } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { clamp, formatNumber, hasFlag, lookAt, type Tile, type ValueOf } from "@spaceship-idle/shared/src/utils/Helper";
 import type { Disposable } from "@spaceship-idle/shared/src/utils/TypedEvent";
 import {
@@ -37,6 +38,7 @@ export class TileVisual extends Container {
    private _sprite: Sprite;
    private _transform = { x: 0, y: 0, rotation: 0 };
    private _healthBar: NineSlicePlane;
+   private _healthBarDamage: NineSlicePlane;
    private _floaterValue = 0;
    private _damageValue = 0;
    private _floaterTimer = 0;
@@ -83,9 +85,15 @@ export class TileVisual extends Container {
       this._healthBarBg.position.set(-40, -41);
       this._healthBarBg.width = 80;
 
+      this._healthBarDamage = this._healthBarBg.addChild(
+         new NineSlicePlane(G.textures.get("Misc/HealthBar")!, 4, 0, 4, 0),
+      );
+      this._healthBarDamage.width = 80;
+      this._healthBarDamage.tint = 0xffeaa7;
+
       this._healthBar = this._healthBarBg.addChild(new NineSlicePlane(G.textures.get("Misc/HealthBar")!, 4, 0, 4, 0));
       this._healthBar.width = 80;
-      this._healthBar.tint = 0x2ecc71;
+      this._healthBar.tint = isEnemy(this._tile) ? 0xe74c3c : 0x2ecc71;
 
       this._buff = this.addChild(
          new BitmapText("", {
@@ -222,7 +230,7 @@ export class TileVisual extends Container {
       this._floaterTimer += dt;
       if (this._floaterTimer >= G.speed) {
          this._floaterTimer = 0;
-         this.flushFloater();
+         this._flushFloater();
       }
    }
 
@@ -249,7 +257,7 @@ export class TileVisual extends Container {
       this._damageValue += value;
    }
 
-   private flushFloater(): void {
+   private _flushFloater(): void {
       if (this._floaterValue > 0) {
          const t = ShipScene.TooltipPool.allocate();
          t.text = `+${formatNumber(this._floaterValue)}`;
@@ -284,6 +292,7 @@ export class TileVisual extends Container {
             }),
          ).start();
       }
+      to(this._healthBarDamage, { width: this._healthBar.width }, 0.25, Easing.InQuad).start();
    }
 
    fire(target: Tile): void {

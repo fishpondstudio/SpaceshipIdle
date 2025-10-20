@@ -17,10 +17,10 @@ import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
 import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import {
    OnDamaged,
-   OnEvasion,
    OnProjectileHit,
    OnWeaponFire,
    RequestFloater,
+   RequestTextIndicator,
 } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleType } from "@spaceship-idle/shared/src/game/logic/BattleType";
 import { getBuildingCost, getTotalBuildingCost } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
@@ -194,10 +194,10 @@ export class ShipScene extends Scene {
          this._tileVisuals.get(tile)?.addDamage(amount);
       });
 
-      OnEvasion.on(({ tile }) => {
+      RequestTextIndicator.on(({ tile, text, tint }) => {
          const tooltip = ShipScene.TooltipPool.allocate();
-         tooltip.text = t(L.EvasionParticle);
-         tooltip.tint = 0x2ecc71;
+         tooltip.text = text;
+         tooltip.tint = tint;
          tooltip.alpha = 0.5;
          tooltip.anchor.set(0.5, 0.5);
          tooltip.scale.set(1, 1);
@@ -213,7 +213,7 @@ export class ShipScene extends Scene {
          ).start();
       });
 
-      OnProjectileHit.on(({ position, tile, critical }) => {
+      OnProjectileHit.on(({ position, tile }) => {
          const visual = this._tileVisuals.get(tile);
          if (visual) {
             const shield = ShipScene.ShieldPool.allocate();
@@ -227,25 +227,6 @@ export class ShipScene extends Scene {
                   ShipScene.ShieldPool.release(shield);
                }),
             ).start();
-
-            if (critical) {
-               const tooltip = ShipScene.TooltipPool.allocate();
-               tooltip.text = t(L.CriticalParticle);
-               tooltip.tint = 0xe74c3c;
-               tooltip.alpha = 0.5;
-               tooltip.anchor.set(0.5, 0.5);
-               tooltip.scale.set(1, 1);
-               tooltip.position = tileToPosCenter(tile);
-               sequence(
-                  to(tooltip, { scale: { x: 1.5, y: 1.5 }, alpha: 1 }, 0.5, Easing.OutCubic),
-                  delay(0.25),
-                  to(tooltip, { scale: { x: 2, y: 2 }, alpha: 0 }, 0.25, Easing.InCubic),
-                  runFunc(() => {
-                     tooltip.scale.set(1, 1);
-                     ShipScene.TooltipPool.release(tooltip);
-                  }),
-               ).start();
-            }
          }
       });
 
