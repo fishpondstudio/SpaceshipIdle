@@ -51,6 +51,11 @@ export interface ICriticalDamage {
    multiplier: number;
 }
 
+export interface IAddonState {
+   type: Addon;
+   tick: number;
+}
+
 export const OnStatusEffectsChanged = new TypedEvent<{ tile: Tile; buff: number; debuff: number }>();
 
 export class RuntimeTile {
@@ -60,7 +65,7 @@ export class RuntimeTile {
    public buff = 0;
    public debuff = 0;
 
-   public addon: Addon | null = null;
+   public addon: IAddonState | null = null;
 
    public readonly hpMultiplier = new TrackedValue(1);
    public readonly damageMultiplier = new TrackedValue(1);

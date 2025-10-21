@@ -1,4 +1,4 @@
-import { forEach, shuffle } from "../../utils/Helper";
+import { forEach, shuffle, type Tile } from "../../utils/Helper";
 import type { IHaveXY } from "../../utils/Vector2";
 import { type Addon, Addons, getAddonEffect } from "../definitions/Addons";
 import type { Blueprint } from "../definitions/Blueprints";
@@ -9,21 +9,28 @@ import type { Runtime } from "./Runtime";
 import { getShipClass } from "./TechLogic";
 
 export function tickAddon(gs: GameState, rt: Runtime): void {
+   const addonTiles = new Set<Tile>();
+   for (const [addon, data] of gs.addons) {
+      if (!data.tile) {
+         continue;
+      }
+      const rs = rt.get(data.tile);
+      if (!rs) {
+         continue;
+      }
+      addonTiles.add(data.tile);
+      if (!rs.addon) {
+         rs.addon = { type: addon, tick: 0 };
+      } else {
+         rs.addon.tick++;
+      }
+      const def = Addons[addon];
+      def.tick(getAddonEffect(data.amount), data.tile, rs.addon, rt);
+   }
    gs.tiles.forEach((data, tile) => {
       const rs = rt.get(tile);
-      if (!rs) {
-         return;
-      }
-      rs.addon = null;
-   });
-   gs.addons.forEach((data, addon) => {
-      if (data.tile) {
-         const rs = rt.get(data.tile);
-         if (rs) {
-            rs.addon = addon;
-         }
-         const def = Addons[addon];
-         def.tick(getAddonEffect(data.amount), data.tile, rt);
+      if (rs && !addonTiles.has(tile)) {
+         rs.addon = null;
       }
    });
 }

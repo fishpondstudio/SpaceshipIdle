@@ -3,7 +3,7 @@ import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { parseBuildingCode } from "../logic/BuildingLogic";
 import type { Runtime } from "../logic/Runtime";
-import type { RuntimeTile } from "../logic/RuntimeTile";
+import type { IAddonState, RuntimeTile } from "../logic/RuntimeTile";
 import { AbilityRange, abilityTarget } from "./Ability";
 import type { Blueprint } from "./Blueprints";
 import type { Building } from "./Buildings";
@@ -13,7 +13,7 @@ import type { ShipClass } from "./ShipClass";
 export interface IAddonDefinition {
    name: () => string;
    desc: (value: number) => string;
-   tick: (value: number, tile: Tile, runtime: Runtime) => void;
+   tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => void;
    shipClass: ShipClass;
    blueprint?: Blueprint;
 }
@@ -22,7 +22,7 @@ export const _Addons = {
    Evasion1: {
       name: () => t(L.EvasionDiversity),
       desc: (value: number) => t(L.EvasionDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
+      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
          diversityEffect(tile, runtime, (rs) => {
             rs.props.evasion += value / 2;
          });
@@ -32,7 +32,7 @@ export const _Addons = {
    Damage1: {
       name: () => t(L.DamageContrast),
       desc: (value: number) => t(L.DamageContrastDesc, formatNumber(value), formatNumber(value)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
+      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
          contrastEffect(tile, runtime, (rs) => {
             rs.damageMultiplier.add(value, t(L.SourceAddon, t(L.DamageContrast)));
          });
@@ -42,7 +42,7 @@ export const _Addons = {
    HP1: {
       name: () => t(L.HPArray),
       desc: (value: number) => t(L.HPArrayDesc, formatNumber(value), formatNumber(value)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
+      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
          arrayEffect(tile, runtime, (rs) => {
             rs.hpMultiplier.add(value, t(L.SourceAddon, t(L.HPArray)));
          });
@@ -52,7 +52,7 @@ export const _Addons = {
    HP2: {
       name: () => t(L.RecoveryDiversity),
       desc: (value: number) => t(L.RecoveryDiversityDesc, formatNumber(value * 10), formatNumber(value * 10)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
+      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
          diversityEffect(tile, runtime, (rs) => {
             rs.recoverHp(value * 10);
          });
@@ -62,7 +62,7 @@ export const _Addons = {
    Damage2: {
       name: () => t(L.PrecisionDiversity),
       desc: (value: number) => t(L.PrecisionDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
+      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
          diversityEffect(tile, runtime, (rs) => {
             rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
             rs.damageMultiplier.add(value / 2, t(L.SourceAddon, t(L.PrecisionDiversity)));
@@ -73,7 +73,7 @@ export const _Addons = {
    HP3: {
       name: () => t(L.LaserBlockMatrix),
       desc: (value: number) => t(L.LaserBlockMatrixDesc, formatNumber(value / 2), formatNumber(value / 2)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
+      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
          matrixEffect(tile, runtime, (rs) => {
             rs.hpMultiplier.add(value / 2, t(L.SourceAddon, t(L.LaserBlockMatrix)));
          });
@@ -83,7 +83,7 @@ export const _Addons = {
    HP4: {
       name: () => t(L.HPDiversity),
       desc: (value: number) => t(L.HPDiversityDesc, formatNumber(value), formatNumber(value)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
+      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
          diversityEffect(tile, runtime, (rs) => {
             rs.hpMultiplier.add(value, t(L.SourceAddon, t(L.HPDiversity)));
          });
@@ -93,7 +93,7 @@ export const _Addons = {
    Damage3: {
       name: () => t(L.DamageDiversity),
       desc: (value: number) => t(L.DamageDiversityDesc, formatNumber(value), formatNumber(value)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
+      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
          diversityEffect(tile, runtime, (rs) => {
             rs.damageMultiplier.add(value, t(L.SourceAddon, t(L.DamageDiversity)));
          });
@@ -103,7 +103,7 @@ export const _Addons = {
    Damage4: {
       name: () => t(L.TrueStrikeArray),
       desc: (value: number) => t(L.TrueStrikeArrayDesc, formatNumber(value / 2), formatNumber(value / 2)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
+      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
          arrayEffect(tile, runtime, (rs) => {
             rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.TrueDamage);
             rs.damageMultiplier.add(value / 2, t(L.SourceAddon, t(L.TrueStrikeArray)));
@@ -114,10 +114,20 @@ export const _Addons = {
    Damage5: {
       name: () => t(L.PrecisionMatrix),
       desc: (value: number) => t(L.PrecisionMatrixDesc, formatNumber(value / 2), formatNumber(value / 2)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
+      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
          matrixEffect(tile, runtime, (rs) => {
             rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
             rs.damageMultiplier.add(value / 2, t(L.SourceAddon, t(L.PrecisionMatrixDesc)));
+         });
+      },
+      shipClass: "Frigate",
+   },
+   HP5: {
+      name: () => t(L.PurifierDiversity),
+      desc: (value: number) => t(L.PurifierDiversityDesc, formatNumber(value), formatNumber(value)),
+      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         diversityEffect(tile, runtime, (rs) => {
+            rs.hpMultiplier.add(value, t(L.SourceAddon, t(L.HPDiversity)));
          });
       },
       shipClass: "Frigate",
