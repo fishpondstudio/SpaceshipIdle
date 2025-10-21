@@ -111,6 +111,17 @@ export const _Addons = {
       },
       shipClass: "Corvette",
    },
+   Damage5: {
+      name: () => t(L.PrecisionMatrix),
+      desc: (value: number) => t(L.PrecisionMatrixDesc, formatNumber(value / 2), formatNumber(value / 2)),
+      tick: (value: number, tile: Tile, runtime: Runtime) => {
+         matrixEffect(tile, runtime, (rs) => {
+            rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
+            rs.damageMultiplier.add(value / 2, t(L.SourceAddon, t(L.PrecisionMatrixDesc)));
+         });
+      },
+      shipClass: "Frigate",
+   },
 } as const satisfies Record<string, IAddonDefinition>;
 
 export type Addon = keyof typeof _Addons;

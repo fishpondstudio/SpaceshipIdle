@@ -86,7 +86,7 @@ export function AddonPage(): React.ReactNode {
                                     <div>
                                        {amount} / +{formatNumber(effect)}
                                     </div>
-                                    <FloatingTip label={html(def.desc(effect || 1))}>
+                                    <FloatingTip w={350} label={html(def.desc(effect || 1))}>
                                        <div className="mi sm">info</div>
                                     </FloatingTip>
                                  </div>

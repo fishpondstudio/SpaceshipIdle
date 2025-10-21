@@ -827,4 +827,7 @@ export const EN = {
    TechEMPDrone: "EMP Drone",
    Parvicursor: "Parvicursor",
    NullifierDrone: "Nullifier Drone",
+   PrecisionMatrix: "Precision Matrix",
+   PrecisionMatrixDesc:
+      "<b>Equipped module</b> gains Precision Strike and +%% Damage Multiplier. <b>Adjacent modules</b> also gain Precision Strike and +%% Damage Multiplier if they are unlocked in a different ship class from the equipped module<br><small>Precision Strike: Projectile damage ignores target's evasion</small>",
 };
