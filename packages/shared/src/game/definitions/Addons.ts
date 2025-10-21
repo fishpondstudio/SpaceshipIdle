@@ -19,6 +19,26 @@ export interface IAddonDefinition {
 }
 
 export const _Addons = {
+   Evasion1: {
+      name: () => t(L.EvasionDiversity),
+      desc: (value: number) => t(L.EvasionDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
+      tick: (value: number, tile: Tile, runtime: Runtime) => {
+         diversityEffect(tile, runtime, (rs) => {
+            rs.props.evasion += value / 2;
+         });
+      },
+      shipClass: "Skiff",
+   },
+   Damage1: {
+      name: () => t(L.DamageContrast),
+      desc: (value: number) => t(L.DamageContrastDesc, formatNumber(value), formatNumber(value)),
+      tick: (value: number, tile: Tile, runtime: Runtime) => {
+         contrastEffect(tile, runtime, (rs) => {
+            rs.damageMultiplier.add(value, t(L.SourceAddon, t(L.DamageContrast)));
+         });
+      },
+      shipClass: "Skiff",
+   },
    HP1: {
       name: () => t(L.HPArray),
       desc: (value: number) => t(L.HPArrayDesc, formatNumber(value), formatNumber(value)),
@@ -35,6 +55,17 @@ export const _Addons = {
       tick: (value: number, tile: Tile, runtime: Runtime) => {
          diversityEffect(tile, runtime, (rs) => {
             rs.recoverHp(value * 10);
+         });
+      },
+      shipClass: "Scout",
+   },
+   Damage2: {
+      name: () => t(L.PrecisionDiversity),
+      desc: (value: number) => t(L.PrecisionDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
+      tick: (value: number, tile: Tile, runtime: Runtime) => {
+         diversityEffect(tile, runtime, (rs) => {
+            rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
+            rs.damageMultiplier.add(value / 2, t(L.SourceAddon, t(L.PrecisionDiversity)));
          });
       },
       shipClass: "Scout",
@@ -59,27 +90,6 @@ export const _Addons = {
       },
       shipClass: "Corvette",
    },
-   Damage1: {
-      name: () => t(L.DamageContrast),
-      desc: (value: number) => t(L.DamageContrastDesc, formatNumber(value), formatNumber(value)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
-         contrastEffect(tile, runtime, (rs) => {
-            rs.damageMultiplier.add(value, t(L.SourceAddon, t(L.DamageContrast)));
-         });
-      },
-      shipClass: "Skiff",
-   },
-   Damage2: {
-      name: () => t(L.PrecisionDiversity),
-      desc: (value: number) => t(L.PrecisionDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
-         diversityEffect(tile, runtime, (rs) => {
-            rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
-            rs.damageMultiplier.add(value / 2, t(L.SourceAddon, t(L.PrecisionDiversity)));
-         });
-      },
-      shipClass: "Scout",
-   },
    Damage3: {
       name: () => t(L.DamageDiversity),
       desc: (value: number) => t(L.DamageDiversityDesc, formatNumber(value), formatNumber(value)),
@@ -100,16 +110,6 @@ export const _Addons = {
          });
       },
       shipClass: "Corvette",
-   },
-   Evasion1: {
-      name: () => t(L.EvasionDiversity),
-      desc: (value: number) => t(L.EvasionDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
-      tick: (value: number, tile: Tile, runtime: Runtime) => {
-         diversityEffect(tile, runtime, (rs) => {
-            rs.props.evasion += value / 2;
-         });
-      },
-      shipClass: "Skiff",
    },
 } as const satisfies Record<string, IAddonDefinition>;
 

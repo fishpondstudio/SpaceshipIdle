@@ -43,3 +43,42 @@ export const FD1A: IBuildingDefinition = {
       duration: (building, level) => 5,
    },
 };
+export const FD1B: IBuildingDefinition = {
+   ...DroneBaseProps,
+   pet: () => t(L.Parvicursor),
+   code: CodeNumber.FD,
+   damagePct: 0.5,
+   damageType: DamageType.Explosive,
+   projectileFlag: ProjectileFlag.DroneDamage,
+   element: "Ge",
+   fireCooldown: 4,
+   ability: {
+      timing: AbilityTiming.OnHit,
+      range: AbilityRange.Single,
+      effect: "Blackout",
+      flag: AbilityFlag.None,
+      value: (building, level) => {
+         return 0;
+      },
+      duration: (building, level) => 2,
+   },
+};
+
+export const FD1C: IBuildingDefinition = {
+   ...DroneBaseProps,
+   pet: () => t(L.Parvicursor),
+   code: CodeNumber.FD,
+   damagePct: 0.5,
+   damageType: DamageType.Explosive,
+   projectileFlag: ProjectileFlag.DroneDamage,
+   element: "As",
+   fireCooldown: 4,
+   ability: {
+      timing: AbilityTiming.OnHit,
+      range: AbilityRange.RearTrio,
+      effect: "NullifyBuff",
+      flag: AbilityFlag.None,
+      value: (building, level) => 0,
+      duration: (building, level) => 1,
+   },
+};

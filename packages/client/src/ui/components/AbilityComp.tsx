@@ -4,6 +4,7 @@ import {
    AbilityRangeLabel,
    AbilityRangeTexture,
    AbilityTargetLabel,
+   AbilityTiming,
    AbilityTimingLabel,
 } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
@@ -40,6 +41,11 @@ export function AbilityComp({
          </div>
          <div className="row g5">
             <div className="f1">{t(L.AbilityTarget)}</div>
+            {ability.timing === AbilityTiming.OnHit ? (
+               <div className="mi sm text-red">target</div>
+            ) : (
+               <div className="mi sm text-green">account_circle</div>
+            )}
             <div>{AbilityTargetLabel[ability.timing]()}</div>
          </div>
          {ability.range !== AbilityRange.Single ? (

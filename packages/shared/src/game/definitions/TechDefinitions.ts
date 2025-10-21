@@ -144,7 +144,7 @@ export class TechDefinitions {
    B11: ITechDefinition = {
       position: { x: 5, y: 2 },
       requires: ["B7", "B8"],
-      name: () => t(L.TechDebuffDispel),
+      name: () => t(L.TechDebuffPurifier),
       unlockBuildings: ["MS2B"],
    };
    // B12: ITechDefinition = {
@@ -174,7 +174,7 @@ export class TechDefinitions {
    C4: ITechDefinition = {
       position: { x: 6, y: 3 },
       requires: ["B11"],
-      name: () => t(L.TechBuffDispel),
+      name: () => t(L.TechBuffNullifier),
       unlockBuildings: ["MS3"],
    };
 
@@ -216,7 +216,7 @@ export class TechDefinitions {
    };
    C11: ITechDefinition = {
       position: { x: 8, y: 2 },
-      name: () => t(L.TechWeaponDisarm),
+      name: () => t(L.TechEMPMissile),
       requires: ["C8"],
       unlockBuildings: ["MS3B"],
    };
@@ -292,14 +292,16 @@ export class TechDefinitions {
 
    D11: ITechDefinition = {
       position: { x: 11, y: 2 },
-      name: () => "",
-      requires: [],
+      name: () => t(L.TechEMPDrone),
+      requires: ["D7"],
+      unlockBuildings: ["FD1B"],
    };
 
    D12: ITechDefinition = {
       position: { x: 11, y: 3 },
-      name: () => "",
-      requires: [],
+      name: () => t(L.NullifierDrone),
+      requires: ["D7", "D8"],
+      unlockBuildings: ["FD1C"],
    };
 
    E1: ITechDefinition = {

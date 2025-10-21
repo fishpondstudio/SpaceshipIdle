@@ -275,9 +275,9 @@ export const StatusEffects = {
          rs.props.damagePerProjectile *= 1 + se.value;
       },
    },
-   DispelBuff: {
-      name: () => t(L.DispelBuff),
-      desc: (value) => t(L.DispelBuffDesc),
+   NullifyBuff: {
+      name: () => t(L.NullifyBuff),
+      desc: (value) => t(L.NullifyBuffDesc),
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Electrical,
       onTick: (se, rs) => {
@@ -291,9 +291,9 @@ export const StatusEffects = {
          }
       },
    },
-   DispelDebuff: {
-      name: () => t(L.DispelDebuff),
-      desc: (value) => t(L.DispelDebuffDesc),
+   PurifyDebuff: {
+      name: () => t(L.PurifyDebuff),
+      desc: (value) => t(L.PurifyDebuffDesc),
       flag: StatusEffectFlag.Positive,
       type: StatusEffectType.Electrical,
       onTick: (se, rs) => {
@@ -323,9 +323,9 @@ export const StatusEffects = {
          rs.props.hp *= 1 + 0.1 * count;
       },
    },
-   Disarm: {
-      name: () => t(L.Disarm),
-      desc: (value) => t(L.DisarmDesc),
+   Blackout: {
+      name: () => t(L.EMPBlackout),
+      desc: (value) => t(L.EMPBlackoutDesc),
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Electrical,
       onTick: (se, rs) => {

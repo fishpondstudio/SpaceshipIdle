@@ -141,7 +141,7 @@ export const MS2B: IBuildingDefinition = {
    ability: {
       timing: AbilityTiming.OnFire,
       range: AbilityRange.FrontTrio,
-      effect: "DispelDebuff",
+      effect: "PurifyDebuff",
       flag: AbilityFlag.None,
       value: (building, level) => 0,
       duration: (building, level) => 1,
@@ -158,7 +158,7 @@ export const MS3: IBuildingDefinition = {
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.RearTrio,
-      effect: "DispelBuff",
+      effect: "NullifyBuff",
       flag: AbilityFlag.None,
       value: (building, level) => 0,
       duration: (building, level) => 1,
@@ -193,7 +193,7 @@ export const MS3B: IBuildingDefinition = {
    ability: {
       timing: AbilityTiming.OnHit,
       range: AbilityRange.Single,
-      effect: "Disarm",
+      effect: "Blackout",
       flag: AbilityFlag.None,
       value: (building, level) => {
          return 0;
