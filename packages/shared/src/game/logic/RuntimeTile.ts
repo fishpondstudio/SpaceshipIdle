@@ -267,9 +267,10 @@ export class RuntimeTile {
       for (const [tile, se] of this.statusEffects) {
          if (se.timeLeft <= 0) {
             this.statusEffects.delete(tile);
+         } else {
+            statusEffectOf(se.statusEffect).onTick?.(se, this);
+            se.timeLeft -= StatusEffectTickInterval;
          }
-         statusEffectOf(se.statusEffect).onTick?.(se, this);
-         se.timeLeft -= StatusEffectTickInterval;
       }
       this._tabulate();
    }

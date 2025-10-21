@@ -190,7 +190,7 @@ export class TileVisual extends Container {
          this._bottomLeftSprite.texture = G.textures.get("Status/NoFire")!;
       } else if (rs?.addon) {
          this._bottomLeftSprite.visible = true;
-         this._bottomLeftSprite.texture = G.textures.get(`Addon/${rs.addon}`)!;
+         this._bottomLeftSprite.texture = G.textures.get(`Addon/${rs.addon.type}`)!;
       } else {
          this._bottomLeftSprite.visible = false;
       }

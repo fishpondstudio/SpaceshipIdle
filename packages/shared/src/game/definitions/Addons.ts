@@ -126,9 +126,12 @@ export const _Addons = {
       name: () => t(L.PurifierDiversity),
       desc: (value: number) => t(L.PurifierDiversityDesc, formatNumber(value), formatNumber(value)),
       tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-         diversityEffect(tile, runtime, (rs) => {
-            rs.hpMultiplier.add(value, t(L.SourceAddon, t(L.HPDiversity)));
-         });
+         if (state.tick >= 5) {
+            diversityEffect(tile, runtime, (rs) => {
+               rs.addStatusEffect("PurifyDebuff", tile, rs.data.type, 0, 1);
+            });
+            state.tick = 0;
+         }
       },
       shipClass: "Frigate",
    },

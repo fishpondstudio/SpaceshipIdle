@@ -630,7 +630,7 @@ export class ShipScene extends Scene {
 
       for (const tile of this._selectedTiles) {
          const tileData = G.save.state.tiles.get(tile);
-         console.log(tileData);
+         console.log(tile, tileData);
          break;
       }
 
