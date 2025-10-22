@@ -15,7 +15,8 @@ import { addonStatusEffectKey } from "./StatusEffect";
 export interface IAddonDefinition {
    name: () => string;
    desc: (value: number) => string;
-   tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => void;
+   tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => void;
+   range: AbilityRange;
    shipClass: ShipClass;
    blueprint?: Blueprint;
 }
@@ -24,31 +25,34 @@ export const _Addons = {
    Evasion1: {
       name: () => t(L.EvasionDiversity),
       desc: (value: number) => t(L.EvasionDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
-      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-         diversityEffect(tile, runtime, (rs) => {
+      tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         diversityEffect(tile, self.range, runtime, (rs) => {
             rs.props.evasion += value / 2;
          });
       },
+      range: AbilityRange.Adjacent,
       shipClass: "Skiff",
    },
    Damage1: {
       name: () => t(L.DamageContrast),
       desc: (value: number) => t(L.DamageContrastDesc, formatNumber(value), formatNumber(value)),
-      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-         contrastEffect(tile, runtime, (rs) => {
+      tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         contrastEffect(tile, self.range, runtime, (rs) => {
             rs.damageMultiplier.add(value, t(L.SourceAddon, t(L.DamageContrast)));
          });
       },
+      range: AbilityRange.Adjacent,
       shipClass: "Skiff",
    },
    HP1: {
       name: () => t(L.HPArray),
       desc: (value: number) => t(L.HPArrayDesc, formatNumber(value), formatNumber(value)),
-      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-         arrayEffect(tile, runtime, (rs) => {
+      tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         arrayEffect(tile, self.range, runtime, (rs) => {
             rs.hpMultiplier.add(value, t(L.SourceAddon, t(L.HPArray)));
          });
       },
+      range: AbilityRange.Adjacent,
       shipClass: "Scout",
    },
    HP2: {
@@ -57,85 +61,92 @@ export const _Addons = {
          const percent = formatPercent(Math.min(0.04 + 0.01 * value, 0.25));
          return t(L.RecoveryDiversityDesc, percent, percent);
       },
-      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-         diversityEffect(tile, runtime, (rs) => {
+      tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         diversityEffect(tile, self.range, runtime, (rs) => {
             rs.recoverHp(Math.min(0.04 + 0.01 * value, 0.25) * rs.props.hp);
          });
       },
+      range: AbilityRange.Adjacent,
       shipClass: "Scout",
    },
    Damage2: {
       name: () => t(L.PrecisionDiversity),
       desc: (value: number) => t(L.PrecisionDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
-      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-         diversityEffect(tile, runtime, (rs) => {
+      tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         diversityEffect(tile, self.range, runtime, (rs) => {
             rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
             rs.damageMultiplier.add(value / 2, t(L.SourceAddon, t(L.PrecisionDiversity)));
          });
       },
+      range: AbilityRange.Adjacent,
       shipClass: "Scout",
    },
    HP3: {
       name: () => t(L.LaserBlockMatrix),
       desc: (value: number) => t(L.LaserBlockMatrixDesc, formatNumber(value / 2), formatNumber(value / 2)),
-      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-         matrixEffect(tile, runtime, (rs) => {
+      tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         matrixEffect(tile, self.range, runtime, (rs) => {
             rs.hpMultiplier.add(value / 2, t(L.SourceAddon, t(L.LaserBlockMatrix)));
          });
       },
+      range: AbilityRange.Adjacent,
       shipClass: "Corvette",
    },
    HP4: {
       name: () => t(L.HPDiversity),
       desc: (value: number) => t(L.HPDiversityDesc, formatNumber(value), formatNumber(value)),
-      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-         diversityEffect(tile, runtime, (rs) => {
+      tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         diversityEffect(tile, self.range, runtime, (rs) => {
             rs.hpMultiplier.add(value, t(L.SourceAddon, t(L.HPDiversity)));
          });
       },
+      range: AbilityRange.Adjacent,
       shipClass: "Corvette",
    },
    Damage3: {
       name: () => t(L.DamageDiversity),
       desc: (value: number) => t(L.DamageDiversityDesc, formatNumber(value), formatNumber(value)),
-      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-         diversityEffect(tile, runtime, (rs) => {
+      tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         diversityEffect(tile, self.range, runtime, (rs) => {
             rs.damageMultiplier.add(value, t(L.SourceAddon, t(L.DamageDiversity)));
          });
       },
+      range: AbilityRange.Adjacent,
       shipClass: "Corvette",
    },
    Damage4: {
       name: () => t(L.TrueStrikeArray),
       desc: (value: number) => t(L.TrueStrikeArrayDesc, formatNumber(value / 2), formatNumber(value / 2)),
-      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-         arrayEffect(tile, runtime, (rs) => {
+      tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         arrayEffect(tile, self.range, runtime, (rs) => {
             rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.TrueDamage);
             rs.damageMultiplier.add(value / 2, t(L.SourceAddon, t(L.TrueStrikeArray)));
          });
       },
+      range: AbilityRange.Adjacent,
       shipClass: "Corvette",
    },
    Damage5: {
       name: () => t(L.PrecisionMatrix),
       desc: (value: number) => t(L.PrecisionMatrixDesc, formatNumber(value / 2), formatNumber(value / 2)),
-      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-         matrixEffect(tile, runtime, (rs) => {
+      tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         matrixEffect(tile, self.range, runtime, (rs) => {
             rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
             rs.damageMultiplier.add(value / 2, t(L.SourceAddon, t(L.PrecisionMatrixDesc)));
          });
       },
+      range: AbilityRange.Adjacent,
       shipClass: "Frigate",
    },
    HP5: {
       name: () => t(L.PurifierManifold),
       desc: (value: number) => t(L.PurifierManifoldDesc, formatNumber(value / 2), formatNumber(value / 2)),
-      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-         diversityEffect(tile, runtime, (rs) => {
+      tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         diversityEffect(tile, self.range, runtime, (rs) => {
             rs.hpMultiplier.add(value / 2, t(L.SourceAddon, t(L.PurifierManifold)));
          });
          if (state.tick >= 5) {
-            diversityEffect(tile, runtime, (rs) => {
+            diversityEffect(tile, self.range, runtime, (rs) => {
                rs.addStatusEffect(addonStatusEffectKey(tile), {
                   statusEffect: "PurifyDebuff",
                   source: t(L.SourceAddon, t(L.PurifierManifold)),
@@ -146,13 +157,14 @@ export const _Addons = {
             state.tick = 0;
          }
       },
+      range: AbilityRange.Adjacent,
       shipClass: "Frigate",
    },
    Damage6: {
       name: () => t(L.CriticalStrikeDiversity),
       desc: (value: number) => t(L.CriticalStrikeDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
-      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-         matrixEffect(tile, runtime, (rs) => {
+      tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         matrixEffect(tile, self.range, runtime, (rs) => {
             rs.addStatusEffect(addonStatusEffectKey(tile), {
                statusEffect: "CriticalDamage2",
                source: t(L.SourceAddon, t(L.CriticalStrikeDiversity)),
@@ -162,6 +174,18 @@ export const _Addons = {
             rs.damageMultiplier.add(value / 2, t(L.SourceAddon, t(L.CriticalStrikeDiversity)));
          });
       },
+      range: AbilityRange.Adjacent,
+      shipClass: "Frigate",
+   },
+   HP6: {
+      name: () => t(L.HPArrayRow),
+      desc: (value: number) => t(L.HPArrayRowDesc, formatNumber(value), formatNumber(value)),
+      tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         arrayEffect(tile, self.range, runtime, (rs) => {
+            rs.hpMultiplier.add(value, t(L.SourceAddon, t(L.HPArray)));
+         });
+      },
+      range: AbilityRange.Row,
       shipClass: "Frigate",
    },
 } as const satisfies Record<string, IAddonDefinition>;
@@ -180,7 +204,7 @@ export function getAddonEffect(amount: number): number {
    return result;
 }
 
-function contrastEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile) => void): void {
+function contrastEffect(tile: Tile, range: AbilityRange, runtime: Runtime, effect: (rs: RuntimeTile) => void): void {
    const rs = runtime.get(tile);
    if (!rs) {
       return;
@@ -191,7 +215,7 @@ function contrastEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile) 
       return;
    }
    const { side, state } = result;
-   abilityTarget(side, AbilityRange.Adjacent, tile, state.tiles).forEach((target) => {
+   abilityTarget(side, range, tile, state.tiles).forEach((target) => {
       if (target === tile) {
          return;
       }
@@ -202,7 +226,7 @@ function contrastEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile) 
    });
 }
 
-function arrayEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile) => void): void {
+function arrayEffect(tile: Tile, range: AbilityRange, runtime: Runtime, effect: (rs: RuntimeTile) => void): void {
    const rs = runtime.get(tile);
    if (!rs) {
       return;
@@ -214,7 +238,7 @@ function arrayEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile) => 
    }
    const { side, state } = result;
    const { series } = parseBuildingCode(rs.data.type);
-   abilityTarget(side, AbilityRange.Adjacent, tile, state.tiles).forEach((target) => {
+   abilityTarget(side, range, tile, state.tiles).forEach((target) => {
       if (target === tile) {
          return;
       }
@@ -225,7 +249,7 @@ function arrayEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile) => 
    });
 }
 
-function matrixEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile) => void): void {
+function matrixEffect(tile: Tile, range: AbilityRange, runtime: Runtime, effect: (rs: RuntimeTile) => void): void {
    const rs = runtime.get(tile);
    if (!rs) {
       return;
@@ -237,7 +261,7 @@ function matrixEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile) =>
    }
    const { side, state } = result;
    const shipClass = Config.BuildingToShipClass[rs.data.type];
-   abilityTarget(side, AbilityRange.Adjacent, tile, state.tiles).forEach((target) => {
+   abilityTarget(side, range, tile, state.tiles).forEach((target) => {
       if (target === tile) {
          return;
       }
@@ -248,7 +272,7 @@ function matrixEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile) =>
    });
 }
 
-function diversityEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile) => void): void {
+function diversityEffect(tile: Tile, range: AbilityRange, runtime: Runtime, effect: (rs: RuntimeTile) => void): void {
    const rs = runtime.get(tile);
    if (!rs) {
       return;
@@ -259,7 +283,7 @@ function diversityEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile)
       return;
    }
    const { side, state } = result;
-   const targetTiles = abilityTarget(side, AbilityRange.Adjacent, tile, state.tiles);
+   const targetTiles = abilityTarget(side, range, tile, state.tiles);
    const uniqueBuildingTypes = new Set<Building>();
    targetTiles.forEach((target) => {
       const targetRs = runtime.get(target);
@@ -281,7 +305,7 @@ function diversityEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile)
    });
 }
 
-function manifoldEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile) => void): void {
+function manifoldEffect(tile: Tile, range: AbilityRange, runtime: Runtime, effect: (rs: RuntimeTile) => void): void {
    const rs = runtime.get(tile);
    if (!rs) {
       return;
@@ -292,7 +316,7 @@ function manifoldEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile) 
       return;
    }
    const { side, state } = result;
-   const targetTiles = abilityTarget(side, AbilityRange.Adjacent, tile, state.tiles);
+   const targetTiles = abilityTarget(side, range, tile, state.tiles);
    const uniqueTypes = new Set<BuildingType>();
    targetTiles.forEach((target) => {
       const targetRs = runtime.get(target);

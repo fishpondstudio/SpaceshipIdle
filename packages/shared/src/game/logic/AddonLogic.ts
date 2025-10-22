@@ -25,7 +25,7 @@ export function tickAddon(gs: GameState, rt: Runtime): void {
          rs.addon.tick++;
       }
       const def = Addons[addon];
-      def.tick(getAddonEffect(data.amount), data.tile, rs.addon, rt);
+      def.tick(def, getAddonEffect(data.amount), data.tile, rs.addon, rt);
    }
    gs.tiles.forEach((data, tile) => {
       const rs = rt.get(tile);

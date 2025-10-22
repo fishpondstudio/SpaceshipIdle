@@ -1,4 +1,5 @@
 import { Badge } from "@mantine/core";
+import { AbilityRangeLabel, AbilityRangeTexture } from "@spaceship-idle/shared/src/game/definitions/Ability";
 import { Addons, getAddonEffect } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
@@ -55,6 +56,7 @@ export function AddonPage(): React.ReactNode {
                      if (def.shipClass !== k) {
                         return null;
                      }
+                     const texture = AbilityRangeTexture[def.range];
                      return (
                         <div key={addons} className="panel m10 row">
                            <TextureComp name={`Addon/${addons}`} width={16 * 2} />
@@ -86,7 +88,17 @@ export function AddonPage(): React.ReactNode {
                                     <div>
                                        {amount} / +{formatNumber(effect)}
                                     </div>
-                                    <FloatingTip w={350} label={html(def.desc(effect || 1))}>
+                                    <FloatingTip
+                                       w={350}
+                                       label={
+                                          <>
+                                             {html(def.desc(effect || 1))}
+                                             <div className="divider dashed my5 mx-10"></div>
+                                             {texture ? <TextureComp name={texture} className="inline-middle" /> : null}{" "}
+                                             {AbilityRangeLabel[def.range]()}
+                                          </>
+                                       }
+                                    >
                                        <div className="mi sm">info</div>
                                     </FloatingTip>
                                  </div>

@@ -836,4 +836,6 @@ export const EN = {
    CriticalStrikeDiversity: "Critical Strike Diversity",
    CriticalStrikeDiversityDesc: "<b>Equipped module</b> gains 25% chance to deal 2x damage and +%% Damage Multiplier. <b>Adjacent modules</b> also gain 25% chance to deal 2x damage and +%% Damage Multiplier if each one is a different weapon model from both the equipped module and from each other",
    Issue: "Issue",
+   HPArrayRow: "HP Array Row",
+   HPArrayRowDesc: "<b>Equipped module</b> gains +%% HP Multiplier. <b>Modules on the same row</b> also gain +%% HP Multiplier if they have different series from the equipped module<br><small>e.g. AC76A: Series = 76; MS2B: Series = 2</small>",
 };

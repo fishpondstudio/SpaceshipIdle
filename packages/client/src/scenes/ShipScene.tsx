@@ -1,6 +1,7 @@
 import { computePosition, flip, offset, shift } from "@floating-ui/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import { AbilityTiming, abilityTarget } from "@spaceship-idle/shared/src/game/definitions/Ability";
+import { Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { ProjectileFlag } from "@spaceship-idle/shared/src/game/definitions/ProjectileFlag";
 import { GameOptionFlag } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated, type Tiles } from "@spaceship-idle/shared/src/game/GameState";
@@ -616,11 +617,18 @@ export class ShipScene extends Scene {
             this._selectors.set(tile, selector);
          }
          if (this._selectedTiles.size === 1) {
-            const tileData = G.save.state.tiles.get(tile);
-            if (tileData && !isEnemy(tile)) {
-               const def = Config.Buildings[tileData.type];
-               if ("ability" in def && def.ability && def.ability.timing === AbilityTiming.OnFire) {
-                  abilityTarget(Side.Left, def.ability.range, tile, G.save.state.tiles).forEach((highlight) => {
+            const rs = G.runtime.get(tile);
+            if (rs) {
+               const def = Config.Buildings[rs.data.type];
+               const r = G.runtime.getGameState(tile);
+               if (r && "ability" in def && def.ability && def.ability.timing === AbilityTiming.OnFire) {
+                  abilityTarget(r.side, def.ability.range, tile, r.state.tiles).forEach((highlight) => {
+                     this._highlightedTiles.add(highlight);
+                  });
+               }
+               if (r && rs.addon) {
+                  const def = Addons[rs.addon.type];
+                  abilityTarget(r.side, def.range, tile, r.state.tiles).forEach((highlight) => {
                      this._highlightedTiles.add(highlight);
                   });
                }

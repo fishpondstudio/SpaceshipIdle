@@ -75,7 +75,9 @@ export const AbilityRangeTexture: Partial<Record<AbilityRange, string>> = {
    [AbilityRange.Rear]: "Others/Rear",
    [AbilityRange.RearTrio]: "Others/RearTrio",
    [AbilityRange.FrontAndRear]: "Others/FrontAndRear",
+   [AbilityRange.Row]: "Others/FrontAndRear",
    [AbilityRange.Flanks]: "Others/Flanks",
+   [AbilityRange.Column]: "Others/Flanks",
    [AbilityRange.Range1]: "Others/Range1",
 };
 
