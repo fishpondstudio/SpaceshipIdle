@@ -1,6 +1,7 @@
-import { clamp, formatNumber, formatPercent, hasFlag, setFlag, type ValueOf } from "../../utils/Helper";
+import { clamp, formatNumber, formatPercent, hasFlag, setFlag, type Tile, type ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
+import { MaxTile } from "../Grid";
 import { RuntimeFlag } from "../logic/RuntimeFlag";
 import type { IRuntimeEffect, RuntimeTile } from "../logic/RuntimeTile";
 import { AbilityRange, abilityTarget } from "./Ability";
@@ -55,7 +56,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Chemical,
       onTick: (se, rs) => {
-         rs.takeDamage(se.value, DamageType.Explosive, ProjectileFlag.None, se.sourceType);
+         rs.takeDamage(se.value, DamageType.Explosive, ProjectileFlag.None, se.building);
       },
    },
    TickEnergyDamage: {
@@ -64,7 +65,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Chemical,
       onTick: (se, rs) => {
-         rs.takeDamage(se.value, DamageType.Energy, ProjectileFlag.None, se.sourceType);
+         rs.takeDamage(se.value, DamageType.Energy, ProjectileFlag.None, se.building);
       },
    },
    TickKineticDamage: {
@@ -73,7 +74,7 @@ export const StatusEffects = {
       flag: StatusEffectFlag.Negative,
       type: StatusEffectType.Mechanical,
       onTick: (se, rs) => {
-         rs.takeDamage(se.value, DamageType.Kinetic, ProjectileFlag.None, se.sourceType);
+         rs.takeDamage(se.value, DamageType.Kinetic, ProjectileFlag.None, se.building);
       },
    },
    RecoverHp: {
@@ -406,6 +407,20 @@ export const StatusEffects = {
 
 export function statusEffectOf(key: StatusEffect): IStatusEffect {
    return StatusEffects[key];
+}
+
+export function buildingStatusEffectKey(tile: Tile): number {
+   if (import.meta.env.DEV && tile > MaxTile) {
+      throw new Error(`Tile: ${tile} is out of range. Max: ${MaxTile}`);
+   }
+   return (tile << 1) | 1;
+}
+
+export function addonStatusEffectKey(tile: Tile): number {
+   if (import.meta.env.DEV && tile > MaxTile) {
+      throw new Error(`Tile: ${tile} is out of range. Max: ${MaxTile}`);
+   }
+   return (tile << 1) | 0;
 }
 
 export type StatusEffect = keyof typeof StatusEffects;

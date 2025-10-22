@@ -19,13 +19,14 @@ import type { Building } from "../definitions/Buildings";
 import { BattleTickInterval, DefaultCooldown, MaxBattleTick as MaxBattleSeconds } from "../definitions/Constant";
 import { ProjectileFlag } from "../definitions/ProjectileFlag";
 import { type ShipClass, ShipClassList } from "../definitions/ShipClass";
+import { buildingStatusEffectKey } from "../definitions/StatusEffect";
 import { GameOption } from "../GameOption";
 import { GameData, GameState } from "../GameState";
 import { posToTile } from "../Grid";
 import { getAddonsWithinClass } from "./AddonLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType, type BattleVictoryType } from "./BattleType";
-import { getUnlockableBuildings } from "./BuildingLogic";
+import { getBuildingName, getUnlockableBuildings } from "./BuildingLogic";
 import { Projectile } from "./Projectile";
 import { quantumToXP } from "./QuantumElementLogic";
 import { addResource, calcSpaceshipXP } from "./ResourceLogic";
@@ -95,13 +96,13 @@ export function tickProjectiles(
             abilityTarget(side, ability.range, tile, targets.tiles).forEach((target) => {
                const statusEffectTarget = runtime.get(target);
                if (!statusEffectTarget) return;
-               statusEffectTarget.addStatusEffect(
-                  ability.effect,
-                  projectile.fromTile,
-                  projectile.building,
-                  ability.value(projectile.building, projectile.level, projectile.multipliers) * factor,
-                  ability.duration(projectile.building, projectile.level, projectile.multipliers),
-               );
+               statusEffectTarget.addStatusEffect(buildingStatusEffectKey(projectile.fromTile), {
+                  statusEffect: ability.effect,
+                  source: getBuildingName(projectile.building),
+                  value: ability.value(projectile.building, projectile.level, projectile.multipliers) * factor,
+                  timeLeft: ability.duration(projectile.building, projectile.level, projectile.multipliers),
+                  building: projectile.building,
+               });
             });
          }
          runtime.emit(OnProjectileHit, { position: pos, tile: tile });
@@ -205,13 +206,13 @@ export function tickTiles(
             abilityTarget(side, ability.range, tile, from.tiles).forEach((target) => {
                const statusEffectTarget = rt.get(target);
                if (!statusEffectTarget) return;
-               statusEffectTarget.addStatusEffect(
-                  ability.effect,
-                  tile,
-                  rs.data.type,
-                  ability.value(rs.data.type, rs.data.level, rs.multipliers),
-                  ability.duration(rs.data.type, rs.data.level, rs.multipliers),
-               );
+               statusEffectTarget.addStatusEffect(buildingStatusEffectKey(tile), {
+                  statusEffect: ability.effect,
+                  source: getBuildingName(rs.data.type),
+                  value: ability.value(rs.data.type, rs.data.level, rs.multipliers),
+                  timeLeft: ability.duration(rs.data.type, rs.data.level, rs.multipliers),
+                  building: rs.data.type,
+               });
             });
          }
          rt.emit(OnWeaponFire, { from: tile, to: target });

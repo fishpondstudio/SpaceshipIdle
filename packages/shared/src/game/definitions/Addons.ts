@@ -9,6 +9,7 @@ import type { Blueprint } from "./Blueprints";
 import type { Building } from "./Buildings";
 import { ProjectileFlag } from "./ProjectileFlag";
 import type { ShipClass } from "./ShipClass";
+import { addonStatusEffectKey } from "./StatusEffect";
 
 export interface IAddonDefinition {
    name: () => string;
@@ -124,11 +125,19 @@ export const _Addons = {
    },
    HP5: {
       name: () => t(L.PurifierDiversity),
-      desc: (value: number) => t(L.PurifierDiversityDesc, formatNumber(value), formatNumber(value)),
+      desc: (value: number) => t(L.PurifierDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
       tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         diversityEffect(tile, runtime, (rs) => {
+            rs.hpMultiplier.add(value / 2, t(L.SourceAddon, t(L.PurifierDiversity)));
+         });
          if (state.tick >= 5) {
             diversityEffect(tile, runtime, (rs) => {
-               rs.addStatusEffect("PurifyDebuff", tile, rs.data.type, 0, 1);
+               rs.addStatusEffect(addonStatusEffectKey(tile), {
+                  statusEffect: "PurifyDebuff",
+                  source: t(L.SourceAddon, t(L.PurifierDiversity)),
+                  value: value / 2,
+                  timeLeft: 1,
+               });
             });
             state.tick = 0;
          }

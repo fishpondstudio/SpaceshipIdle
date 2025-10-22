@@ -4,6 +4,10 @@ import type { IHaveXY } from "../utils/Vector2";
 export const GridSize = 100;
 export const MaxX = 200;
 export const MaxY = 100;
+// Here max bits is 30 instead of 31 because we need last bit for our own tagging
+// It was 31 instead of 32 because V8 uses the last bit for small integer tagging
+export const MaxTileBits = 30;
+export const MaxTile = (1 << MaxTileBits) - 1;
 
 export function getSize() {
    return { width: MaxX * GridSize, height: MaxY * GridSize };

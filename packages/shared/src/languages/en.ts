@@ -832,5 +832,5 @@ export const EN = {
       "<b>Equipped module</b> gains Precision Strike and +%% Damage Multiplier. <b>Adjacent modules</b> also gain Precision Strike and +%% Damage Multiplier if they are unlocked in a different ship class from the equipped module<br><small>Precision Strike: Projectile damage ignores target's evasion</small>",
    PurifierDiversity: "Purifier Diversity",
    PurifierDiversityDesc:
-      "<b>Equipped module</b> gets purified every 5 seconds and gains +%% Damage Multiplier. <b>Adjacent modules</b> gets purified every 5 seconds and gains +%% Damage Multiplier if each one is a different weapon model from both the equipped module and from each other<br><small>Purify: Remove all negative status effects</small>",
+      "<b>Equipped module</b> gets purified every 5 seconds and gains +%% HP Multiplier. <b>Adjacent modules</b> gets purified every 5 seconds and gains +%% HP Multiplier if each one is a different weapon model from both the equipped module and from each other<br><small>Purify: Remove all negative status effects</small>",
 };

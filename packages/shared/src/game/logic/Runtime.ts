@@ -15,6 +15,7 @@ import {
 } from "../definitions/Constant";
 import { ProjectileFlag } from "../definitions/ProjectileFlag";
 import { ShipClass } from "../definitions/ShipClass";
+import { buildingStatusEffectKey } from "../definitions/StatusEffect";
 import {
    type GameState,
    GameStateUpdated,
@@ -29,6 +30,7 @@ import type { BattleInfo } from "./BattleInfo";
 import { generateShip, tickProjectiles, tickTiles } from "./BattleLogic";
 import { BattleStatus } from "./BattleStatus";
 import { BattleType } from "./BattleType";
+import { getBuildingName } from "./BuildingLogic";
 import { tickCatalyst } from "./CatalystLogic";
 import { tickGalaxy } from "./GalaxyLogic";
 import type { Projectile } from "./Projectile";
@@ -127,7 +129,13 @@ export class Runtime {
          const rs = this.get(tile);
          if (rs) {
             rs.props.runtimeFlag = setFlag(rs.props.runtimeFlag, RuntimeFlag.Blackout);
-            rs.addStatusEffect("Wreckage", tile, rs.data.type, 1, Number.POSITIVE_INFINITY);
+            rs.addStatusEffect(buildingStatusEffectKey(tile), {
+               statusEffect: "Wreckage",
+               source: getBuildingName(rs.data.type),
+               value: 1,
+               timeLeft: Number.POSITIVE_INFINITY,
+               building: rs.data.type,
+            });
          }
       }
    }
@@ -428,18 +436,18 @@ export class Runtime {
       const leftDamage = this.suddenDeathDamage(Side.Left);
       if (leftDamage > 0) {
          this.left.tiles.forEach((_data, tile) => {
-            this.get(tile)?.takeDamage(leftDamage, DamageType.Kinetic, ProjectileFlag.None, null);
-            this.get(tile)?.takeDamage(leftDamage, DamageType.Explosive, ProjectileFlag.None, null);
-            this.get(tile)?.takeDamage(leftDamage, DamageType.Energy, ProjectileFlag.None, null);
+            this.get(tile)?.takeDamage(leftDamage, DamageType.Kinetic, ProjectileFlag.None);
+            this.get(tile)?.takeDamage(leftDamage, DamageType.Explosive, ProjectileFlag.None);
+            this.get(tile)?.takeDamage(leftDamage, DamageType.Energy, ProjectileFlag.None);
          });
       }
 
       const rightDamage = this.suddenDeathDamage(Side.Right);
       if (rightDamage > 0) {
          this.right.tiles.forEach((_data, tile) => {
-            this.get(tile)?.takeDamage(rightDamage, DamageType.Kinetic, ProjectileFlag.None, null);
-            this.get(tile)?.takeDamage(rightDamage, DamageType.Explosive, ProjectileFlag.None, null);
-            this.get(tile)?.takeDamage(rightDamage, DamageType.Energy, ProjectileFlag.None, null);
+            this.get(tile)?.takeDamage(rightDamage, DamageType.Kinetic, ProjectileFlag.None);
+            this.get(tile)?.takeDamage(rightDamage, DamageType.Explosive, ProjectileFlag.None);
+            this.get(tile)?.takeDamage(rightDamage, DamageType.Energy, ProjectileFlag.None);
          });
       }
    }

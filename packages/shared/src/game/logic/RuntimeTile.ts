@@ -35,9 +35,10 @@ import { TrackedValue } from "./TrackedValue";
 
 export interface IRuntimeEffect {
    statusEffect: StatusEffect;
-   sourceType: Building;
+   source: string;
    value: number;
    timeLeft: number;
+   building?: Building;
 }
 
 export type RuntimeProps = Omit<BuildingProp, "damagePct"> & {
@@ -61,7 +62,7 @@ export const OnStatusEffectsChanged = new TypedEvent<{ tile: Tile; buff: number;
 export class RuntimeTile {
    public target: Tile | undefined;
    public cooldown = 0;
-   public readonly statusEffects = new Map<Tile, IRuntimeEffect>();
+   public readonly statusEffects = new Map<number, IRuntimeEffect>();
    public buff = 0;
    public debuff = 0;
 
@@ -120,7 +121,7 @@ export class RuntimeTile {
       damage: number,
       damageType: DamageType,
       projectileFlag: ProjectileFlag,
-      source: Building | null,
+      source?: Building,
    ): number {
       const stat = isEnemy(this.tile) ? this.runtime.rightStat : this.runtime.leftStat;
 
@@ -252,15 +253,9 @@ export class RuntimeTile {
       }
    }
 
-   public addStatusEffect(
-      effect: StatusEffect,
-      source: Tile,
-      sourceType: Building,
-      value: number,
-      duration: number,
-   ): void {
-      this.statusEffects.set(source, { statusEffect: effect, sourceType, value: value, timeLeft: duration });
-      statusEffectOf(effect).onAdded?.(value, this);
+   public addStatusEffect(key: number, data: IRuntimeEffect): void {
+      this.statusEffects.set(key, data);
+      statusEffectOf(data.statusEffect).onAdded?.(data.value, this);
    }
 
    public tickStatusEffect(): void {
