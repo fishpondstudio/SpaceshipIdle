@@ -1,4 +1,4 @@
-import { formatNumber, setFlag, type Tile } from "../../utils/Helper";
+import { formatNumber, formatPercent, setFlag, type Tile } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { parseBuildingCode } from "../logic/BuildingLogic";
@@ -7,6 +7,7 @@ import type { IAddonState, RuntimeTile } from "../logic/RuntimeTile";
 import { AbilityRange, abilityTarget } from "./Ability";
 import type { Blueprint } from "./Blueprints";
 import type { Building } from "./Buildings";
+import type { BuildingType } from "./CodeNumber";
 import { ProjectileFlag } from "./ProjectileFlag";
 import type { ShipClass } from "./ShipClass";
 import { addonStatusEffectKey } from "./StatusEffect";
@@ -52,10 +53,13 @@ export const _Addons = {
    },
    HP2: {
       name: () => t(L.RecoveryDiversity),
-      desc: (value: number) => t(L.RecoveryDiversityDesc, formatNumber(value * 10), formatNumber(value * 10)),
+      desc: (value: number) => {
+         const percent = formatPercent(Math.min(0.04 + 0.01 * value, 0.25));
+         return t(L.RecoveryDiversityDesc, percent, percent);
+      },
       tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
          diversityEffect(tile, runtime, (rs) => {
-            rs.recoverHp(value * 10);
+            rs.recoverHp(Math.min(0.04 + 0.01 * value, 0.25) * rs.props.hp);
          });
       },
       shipClass: "Scout",
@@ -124,23 +128,39 @@ export const _Addons = {
       shipClass: "Frigate",
    },
    HP5: {
-      name: () => t(L.PurifierDiversity),
-      desc: (value: number) => t(L.PurifierDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
+      name: () => t(L.PurifierManifold),
+      desc: (value: number) => t(L.PurifierManifoldDesc, formatNumber(value / 2), formatNumber(value / 2)),
       tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
          diversityEffect(tile, runtime, (rs) => {
-            rs.hpMultiplier.add(value / 2, t(L.SourceAddon, t(L.PurifierDiversity)));
+            rs.hpMultiplier.add(value / 2, t(L.SourceAddon, t(L.PurifierManifold)));
          });
          if (state.tick >= 5) {
             diversityEffect(tile, runtime, (rs) => {
                rs.addStatusEffect(addonStatusEffectKey(tile), {
                   statusEffect: "PurifyDebuff",
-                  source: t(L.SourceAddon, t(L.PurifierDiversity)),
+                  source: t(L.SourceAddon, t(L.PurifierManifold)),
                   value: value / 2,
                   timeLeft: 1,
                });
             });
             state.tick = 0;
          }
+      },
+      shipClass: "Frigate",
+   },
+   Damage6: {
+      name: () => t(L.CriticalStrikeDiversity),
+      desc: (value: number) => t(L.CriticalStrikeDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
+      tick: (value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
+         matrixEffect(tile, runtime, (rs) => {
+            rs.addStatusEffect(addonStatusEffectKey(tile), {
+               statusEffect: "CriticalDamage2",
+               source: t(L.SourceAddon, t(L.CriticalStrikeDiversity)),
+               value: 0.25,
+               timeLeft: Number.POSITIVE_INFINITY,
+            });
+            rs.damageMultiplier.add(value / 2, t(L.SourceAddon, t(L.CriticalStrikeDiversity)));
+         });
       },
       shipClass: "Frigate",
    },
@@ -248,6 +268,40 @@ function diversityEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile)
       }
    });
    if (uniqueBuildingTypes.size !== targetTiles.length) {
+      return;
+   }
+   targetTiles.forEach((target) => {
+      if (target === tile) {
+         return;
+      }
+      const targetRs = runtime.get(target);
+      if (targetRs) {
+         effect(targetRs);
+      }
+   });
+}
+
+function manifoldEffect(tile: Tile, runtime: Runtime, effect: (rs: RuntimeTile) => void): void {
+   const rs = runtime.get(tile);
+   if (!rs) {
+      return;
+   }
+   effect(rs);
+   const result = runtime.getGameState(tile);
+   if (!result) {
+      return;
+   }
+   const { side, state } = result;
+   const targetTiles = abilityTarget(side, AbilityRange.Adjacent, tile, state.tiles);
+   const uniqueTypes = new Set<BuildingType>();
+   targetTiles.forEach((target) => {
+      const targetRs = runtime.get(target);
+      if (targetRs) {
+         const type = Config.Buildings[targetRs.data.type].type;
+         uniqueTypes.add(type);
+      }
+   });
+   if (uniqueTypes.size !== targetTiles.length) {
       return;
    }
    targetTiles.forEach((target) => {

@@ -272,7 +272,7 @@ export class TechDefinitions {
    D8: ITechDefinition = {
       position: { x: 10, y: 3 },
       requires: ["D3"],
-      name: () => t(L.TechKineticBarrier),
+      name: () => t(L.TechKineticImmune),
       unlockBuildings: ["MS4"],
    };
 

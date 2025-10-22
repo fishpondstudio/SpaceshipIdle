@@ -1,5 +1,5 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { CodeLabel } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
+import { BuildingTypeLabel } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
@@ -24,7 +24,7 @@ export function BuildingPage({ tile, gs, readonly }: ITileWithGameState & { read
       return null;
    }
    const def = Config.Buildings[data?.type];
-   const codeLabel = CodeLabel[def.code]();
+   const codeLabel = BuildingTypeLabel[def.type]();
    return (
       <SidebarComp
          title={

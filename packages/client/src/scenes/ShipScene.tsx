@@ -396,7 +396,7 @@ export class ShipScene extends Scene {
             visual = this._projectileContainer.addChild(
                new Sprite(
                   G.textures.get(`Projectile/${projectile.building}`) ??
-                     G.textures.get(`Projectile/${Config.Buildings[projectile.building].code}`),
+                     G.textures.get(`Projectile/${Config.Buildings[projectile.building].type}`),
                ),
             );
             this._projectileVisuals.set(id, visual);

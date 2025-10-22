@@ -4,7 +4,7 @@ import { Config } from "../Config";
 import { MaxX, MaxY } from "../Grid";
 import type { Runtime } from "../logic/Runtime";
 import { Bonus } from "./Bonus";
-import { CodeNumber } from "./CodeNumber";
+import { BuildingType } from "./CodeNumber";
 import { Horizon } from "./Horizon";
 import { Intrepid } from "./Intrepid";
 import { Majestic } from "./Majestic";
@@ -48,7 +48,7 @@ export const _Blueprints = {
       desc: () => t(L.HorizonDesc),
       tick: (runtime: Runtime) => {
          runtime.left.tiles.forEach((data, tile) => {
-            if (Config.Buildings[data.type].code === CodeNumber.AC) {
+            if (Config.Buildings[data.type].type === BuildingType.AC) {
                runtime.get(tile)?.xpMultiplier.add(1, t(L.SpaceshipPrefix, t(L.Horizon)));
             }
          });

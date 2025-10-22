@@ -1,7 +1,7 @@
 import { L, t } from "../../utils/i18n";
 import { AbilityFlag, AbilityRange, AbilityStatDamagePct, AbilityTiming, abilityDamage, abilityStat } from "./Ability";
 import { DamageType, type IBuildingDefinition, type IBuildingProp } from "./BuildingProps";
-import { CodeNumber } from "./CodeNumber";
+import { BuildingType } from "./CodeNumber";
 import { DamageToHPMultiplier, DefaultCooldown, LaserArrayDamagePct } from "./Constant";
 import { ProjectileFlag } from "./ProjectileFlag";
 
@@ -21,7 +21,7 @@ export const LaserArrayBaseProps: IBuildingProp = {
 export const LA1: IBuildingDefinition = {
    ...LaserArrayBaseProps,
    pet: () => t(L.Goby),
-   code: CodeNumber.LA,
+   type: BuildingType.LA,
    damagePct: LaserArrayDamagePct,
    fireCooldown: 4,
    projectileFlag: ProjectileFlag.LaserDamage,
@@ -32,7 +32,7 @@ export const LA1: IBuildingDefinition = {
 export const LA1A: IBuildingDefinition = {
    ...LaserArrayBaseProps,
    pet: () => t(L.Tetra),
-   code: CodeNumber.LA,
+   type: BuildingType.LA,
    damagePct: 0.1 * LaserArrayDamagePct,
    fireCooldown: 4,
    projectileFlag: ProjectileFlag.LaserDamage,
@@ -50,7 +50,7 @@ export const LA1A: IBuildingDefinition = {
 export const LA1B: IBuildingDefinition = {
    ...LaserArrayBaseProps,
    pet: () => t(L.Danio),
-   code: CodeNumber.LA,
+   type: BuildingType.LA,
    damagePct: LaserArrayDamagePct * AbilityStatDamagePct,
    fireCooldown: 4,
    projectileFlag: ProjectileFlag.LaserDamage,
@@ -68,7 +68,7 @@ export const LA1B: IBuildingDefinition = {
 export const LA2: IBuildingDefinition = {
    ...LaserArrayBaseProps,
    pet: () => t(L.Perch),
-   code: CodeNumber.LA,
+   type: BuildingType.LA,
    damagePct: LaserArrayDamagePct,
    fireCooldown: 3.5,
    projectileFlag: ProjectileFlag.LaserDamage,
@@ -78,7 +78,7 @@ export const LA2: IBuildingDefinition = {
 export const LA2A: IBuildingDefinition = {
    ...LaserArrayBaseProps,
    pet: () => t(L.Pike),
-   code: CodeNumber.LA,
+   type: BuildingType.LA,
    damagePct: 0.5 * LaserArrayDamagePct,
    fireCooldown: 3.5,
    projectileFlag: ProjectileFlag.LaserDamage,
@@ -98,7 +98,7 @@ export const LA2A: IBuildingDefinition = {
 export const LA2B: IBuildingDefinition = {
    ...LaserArrayBaseProps,
    pet: () => t(L.Pike),
-   code: CodeNumber.LA,
+   type: BuildingType.LA,
    damagePct: LaserArrayDamagePct * AbilityStatDamagePct,
    fireCooldown: 4,
    projectileFlag: ProjectileFlag.LaserDamage,

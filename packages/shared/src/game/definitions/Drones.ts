@@ -1,7 +1,7 @@
 import { L, t } from "../../utils/i18n";
 import { AbilityFlag, AbilityRange, AbilityTiming, abilityDamage } from "./Ability";
 import { DamageType, type IBuildingDefinition, type IBuildingProp } from "./BuildingProps";
-import { CodeNumber } from "./CodeNumber";
+import { BuildingType } from "./CodeNumber";
 import { ProjectileFlag } from "./ProjectileFlag";
 
 export const DroneBaseProps: IBuildingProp = {
@@ -20,7 +20,7 @@ export const DroneBaseProps: IBuildingProp = {
 export const FD1: IBuildingDefinition = {
    ...DroneBaseProps,
    pet: () => t(L.Eoraptor),
-   code: CodeNumber.FD,
+   type: BuildingType.FD,
    damageType: DamageType.Explosive,
    projectileFlag: ProjectileFlag.DroneDamage,
    element: "B",
@@ -29,7 +29,7 @@ export const FD1: IBuildingDefinition = {
 export const FD1A: IBuildingDefinition = {
    ...DroneBaseProps,
    pet: () => t(L.Eoraptor),
-   code: CodeNumber.FD,
+   type: BuildingType.FD,
    damagePct: 0.5,
    damageType: DamageType.Explosive,
    projectileFlag: ProjectileFlag.DroneDamage,
@@ -46,7 +46,7 @@ export const FD1A: IBuildingDefinition = {
 export const FD1B: IBuildingDefinition = {
    ...DroneBaseProps,
    pet: () => t(L.Parvicursor),
-   code: CodeNumber.FD,
+   type: BuildingType.FD,
    damagePct: 0.5,
    damageType: DamageType.Explosive,
    projectileFlag: ProjectileFlag.DroneDamage,
@@ -67,7 +67,7 @@ export const FD1B: IBuildingDefinition = {
 export const FD1C: IBuildingDefinition = {
    ...DroneBaseProps,
    pet: () => t(L.Parvicursor),
-   code: CodeNumber.FD,
+   type: BuildingType.FD,
    damagePct: 0.5,
    damageType: DamageType.Explosive,
    projectileFlag: ProjectileFlag.DroneDamage,

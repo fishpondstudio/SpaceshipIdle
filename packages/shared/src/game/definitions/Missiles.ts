@@ -9,7 +9,7 @@ import {
    criticalDamagePct,
 } from "./Ability";
 import { DamageType, type IBuildingDefinition, type IBuildingProp } from "./BuildingProps";
-import { CodeNumber } from "./CodeNumber";
+import { BuildingType } from "./CodeNumber";
 import { DamageToHPMultiplier, DefaultCooldown } from "./Constant";
 import { ProjectileFlag } from "./ProjectileFlag";
 
@@ -29,7 +29,7 @@ export const MissileBaseProps: IBuildingProp = {
 export const MS1: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Wren),
-   code: CodeNumber.MS,
+   type: BuildingType.MS,
    damagePct: 0.5,
    damageType: DamageType.Explosive,
    fireCooldown: 5,
@@ -46,7 +46,7 @@ export const MS1: IBuildingDefinition = {
 export const MS1A: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Lark),
-   code: CodeNumber.MS,
+   type: BuildingType.MS,
    damagePct: 0.5,
    damageType: DamageType.Explosive,
    fireCooldown: 5,
@@ -64,7 +64,7 @@ export const MS1A: IBuildingDefinition = {
 export const MS1B: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Shrike),
-   code: CodeNumber.MS,
+   type: BuildingType.MS,
    damagePct: 0.5,
    damageType: DamageType.Explosive,
    fireCooldown: 5,
@@ -83,7 +83,7 @@ export const MS1B: IBuildingDefinition = {
 export const MS1C: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Robin),
-   code: CodeNumber.MS,
+   type: BuildingType.MS,
    damagePct: criticalDamagePct(0.2, 2),
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -100,7 +100,7 @@ export const MS1C: IBuildingDefinition = {
 export const MS2: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Pipit),
-   code: CodeNumber.MS,
+   type: BuildingType.MS,
    damagePct: 0.8,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -117,7 +117,7 @@ export const MS2: IBuildingDefinition = {
 export const MS2A: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Warbler),
-   code: CodeNumber.MS,
+   type: BuildingType.MS,
    damagePct: 0.75,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -134,7 +134,7 @@ export const MS2A: IBuildingDefinition = {
 export const MS2B: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Tanager),
-   code: CodeNumber.MS,
+   type: BuildingType.MS,
    damagePct: AbilityStatDamagePct,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -151,7 +151,7 @@ export const MS2B: IBuildingDefinition = {
 export const MS3: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Gull),
-   code: CodeNumber.MS,
+   type: BuildingType.MS,
    damagePct: AbilityStatDamagePct,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -168,7 +168,7 @@ export const MS3: IBuildingDefinition = {
 export const MS3A: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Jay),
-   code: CodeNumber.MS,
+   type: BuildingType.MS,
    damagePct: 0.8,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -186,7 +186,7 @@ export const MS3A: IBuildingDefinition = {
 export const MS3B: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Dove),
-   code: CodeNumber.MS,
+   type: BuildingType.MS,
    damagePct: 0.5,
    damageType: DamageType.Explosive,
    fireCooldown: 4.5,
@@ -206,7 +206,7 @@ export const MS3B: IBuildingDefinition = {
 export const MS4: IBuildingDefinition = {
    ...MissileBaseProps,
    pet: () => t(L.Dove),
-   code: CodeNumber.MS,
+   type: BuildingType.MS,
    damagePct: 0.5,
    damageType: DamageType.Explosive,
    fireCooldown: 6,

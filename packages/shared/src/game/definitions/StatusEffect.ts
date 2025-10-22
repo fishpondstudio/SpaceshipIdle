@@ -6,7 +6,7 @@ import { RuntimeFlag } from "../logic/RuntimeFlag";
 import type { IRuntimeEffect, RuntimeTile } from "../logic/RuntimeTile";
 import { AbilityRange, abilityTarget } from "./Ability";
 import { DamageType } from "./BuildingProps";
-import { CodeNumber } from "./CodeNumber";
+import { BuildingType } from "./CodeNumber";
 import { ProjectileFlag } from "./ProjectileFlag";
 
 export const StatusEffectFlag = {
@@ -317,7 +317,7 @@ export const StatusEffects = {
          let count = 0;
          abilityTarget(rs.side, AbilityRange.Adjacent, rs.tile, rs.runtime.tiles).forEach((tile) => {
             const building = rs.runtime.tiles.get(tile)?.data.type;
-            if (building && Config.Buildings[building].code === CodeNumber.AC) {
+            if (building && Config.Buildings[building].type === BuildingType.AC) {
                ++count;
             }
          });

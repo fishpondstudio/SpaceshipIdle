@@ -1,7 +1,7 @@
 import { Badge } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
-import { CodeLabel, type CodeNumber } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
+import { type BuildingType, BuildingTypeLabel } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
 import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
 import {
@@ -27,7 +27,7 @@ import { NotWithinExtentPage } from "./NotWithinExtentPage";
 import { playError } from "./Sound";
 
 export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
-   const [selected, setSelected] = useState(new Set<CodeNumber>());
+   const [selected, setSelected] = useState(new Set<BuildingType>());
    if (!isWithinShipExtent(tile, gs)) {
       return <NotWithinExtentPage />;
    }
@@ -41,7 +41,7 @@ export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
    return (
       <SidebarComp title={t(L.Build)}>
          <div className="row g5 m10" style={{ flexWrap: "wrap", justifyContent: "flex-start" }}>
-            {entriesOf(CodeLabel)
+            {entriesOf(BuildingTypeLabel)
                .sort(([a, al], [b, bl]) => al().localeCompare(bl()))
                .map(([code, label]) => {
                   return (
@@ -73,7 +73,7 @@ export function ConstructionPage({ tile, gs }: ITileWithGameState): ReactNode {
                if (selected.size === 0) {
                   return true;
                }
-               return selected.has(def.code);
+               return selected.has(def.type);
             })
             .map((b) => {
                return <BuildingComp constructed={constructed.get(b) ?? 0} key={b} building={b} gs={gs} tile={tile} />;
@@ -94,7 +94,7 @@ function BuildingComp({
    gs: GameState;
 }): React.ReactNode {
    const def = Config.Buildings[building];
-   const label = CodeLabel[def.code]();
+   const label = BuildingTypeLabel[def.type]();
    const canBuild = canSpendResources({ XP: getBuildingCost(building, 1), Quantum: 1 }, gs.resources);
    return (
       <FloatingTip

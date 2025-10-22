@@ -424,7 +424,7 @@ export const EN = {
    RecoverHpOnTakingDamage2x: "Reactive Regen (2x)",
    RecoverHpOnTakingDamage2xDesc: "%% chance to recover 2x damage taken when taking damage",
    RecoveryDiversity: "Recovery Diversity",
-   RecoveryDiversityDesc: "<b>Equipped module</b> recovers %% HP/s. <b>Adjacent modules</b> also recover %% HP/s if each one is a different weapon model from both the equipped module and from each other",
+   RecoveryDiversityDesc: "<b>Equipped module</b> recovers %% max HP every second. <b>Adjacent modules</b> also recover %% max HP every second if each one is a different weapon model from both the equipped module and from each other.<br><small>Max Recovery: 25% max HP every second</small>",
    ReduceArmor: "Armor Reduction",
    ReduceArmorAndDeflection: "Armor and Deflection Reduction",
    ReduceArmorAndDeflectionDesc: "Reduce %% Armor and Deflection",
@@ -820,7 +820,7 @@ export const EN = {
    BaseVariant: "Base",
    GuestWebAccountWarning: "Guest web accounts have a 48-hour probation before online features unlock. Play on Steam to skip probation and unlock background running",
    TechLaserArrayII: "Laser Array II",
-   TechKineticBarrier: "Kinetic Barrier",
+   TechKineticImmune: "Kinetic Immune",
    KineticImmune: "Kinetic Immune",
    KineticImmuneDesc: "Immune to all Kinetic Damage",
    TechPrecisionLaser: "Precision Laser",
@@ -830,7 +830,10 @@ export const EN = {
    PrecisionMatrix: "Precision Matrix",
    PrecisionMatrixDesc:
       "<b>Equipped module</b> gains Precision Strike and +%% Damage Multiplier. <b>Adjacent modules</b> also gain Precision Strike and +%% Damage Multiplier if they are unlocked in a different ship class from the equipped module<br><small>Precision Strike: Projectile damage ignores target's evasion</small>",
-   PurifierDiversity: "Purifier Diversity",
-   PurifierDiversityDesc:
-      "<b>Equipped module</b> gets purified every 5 seconds and gains +%% HP Multiplier. <b>Adjacent modules</b> gets purified every 5 seconds and gains +%% HP Multiplier if each one is a different weapon model from both the equipped module and from each other<br><small>Purify: Remove all negative status effects</small>",
+   PurifierManifold: "Purifier Manifold",
+   PurifierManifoldDesc:
+      "<b>Equipped module</b> gets purified every 5 seconds and gains +%% HP Multiplier. <b>Adjacent modules</b> gets purified every 5 seconds and gains +%% HP Multiplier if each one is a different weapon type from both the equipped module and from each other<br><small>Purify: Remove all negative status effects</small><br><small>Types: AC (autocannon), MS (missile), RC (rail cannon), LA (laser array) ...</small>",
+   CriticalStrikeDiversity: "Critical Strike Diversity",
+   CriticalStrikeDiversityDesc: "<b>Equipped module</b> gains 25% chance to deal 2x damage and +%% Damage Multiplier. <b>Adjacent modules</b> also gain 25% chance to deal 2x damage and +%% Damage Multiplier if each one is a different weapon model from both the equipped module and from each other",
+   Issue: "Issue",
 };

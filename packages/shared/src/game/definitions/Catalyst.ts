@@ -3,7 +3,7 @@ import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import type { Multipliers } from "../logic/IMultiplier";
 import type { Building } from "./Buildings";
-import { CodeNumber } from "./CodeNumber";
+import { BuildingType } from "./CodeNumber";
 
 export interface ICatalystDefinition {
    trait: () => string;
@@ -15,7 +15,7 @@ export interface ICatalystDefinition {
 export const _Catalyst = {
    A1: {
       trait: () => t(L.AC),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.AC,
       amount: 3,
       multipliers: {
          damage: 1,
@@ -23,7 +23,7 @@ export const _Catalyst = {
    },
    A2: {
       trait: () => t(L.AC),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.AC,
       amount: 3,
       multipliers: {
          hp: 1,
@@ -31,7 +31,7 @@ export const _Catalyst = {
    },
    A3: {
       trait: () => t(L.MS),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.MS,
       amount: 3,
       multipliers: {
          damage: 1,
@@ -39,7 +39,7 @@ export const _Catalyst = {
    },
    A4: {
       trait: () => t(L.MS),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.MS,
       amount: 3,
       multipliers: {
          hp: 1,
@@ -113,7 +113,7 @@ export const _Catalyst = {
    },
    B4: {
       trait: () => t(L.MS),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.MS,
       amount: 6,
       multipliers: {
          damage: 2,
@@ -121,7 +121,7 @@ export const _Catalyst = {
    },
    B5: {
       trait: () => t(L.MS),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.MS,
       amount: 6,
       multipliers: {
          hp: 2,
@@ -129,7 +129,7 @@ export const _Catalyst = {
    },
    B6: {
       trait: () => t(L.MS),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.MS,
       amount: 6,
       multipliers: {
          damage: 1,
@@ -138,7 +138,7 @@ export const _Catalyst = {
    },
    B7: {
       trait: () => t(L.AC),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.AC,
       amount: 6,
       multipliers: {
          damage: 1,
@@ -147,7 +147,7 @@ export const _Catalyst = {
    },
    B8: {
       trait: () => t(L.AC),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.AC,
       amount: 6,
       multipliers: {
          damage: 2,
@@ -155,7 +155,7 @@ export const _Catalyst = {
    },
    B9: {
       trait: () => t(L.AC),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.AC,
       amount: 6,
       multipliers: {
          hp: 2,
@@ -163,7 +163,7 @@ export const _Catalyst = {
    },
    B10: {
       trait: () => t(L.RC),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.RC,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.RC,
       amount: 3,
       multipliers: {
          damage: 1,
@@ -171,7 +171,7 @@ export const _Catalyst = {
    },
    B11: {
       trait: () => t(L.RC),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.RC,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.RC,
       amount: 3,
       multipliers: {
          hp: 1,
@@ -204,7 +204,7 @@ export const _Catalyst = {
    },
    C4: {
       trait: () => t(L.MS),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.MS,
       amount: 9,
       multipliers: {
          damage: 3,
@@ -212,7 +212,7 @@ export const _Catalyst = {
    },
    C5: {
       trait: () => t(L.MS),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.MS,
       amount: 9,
       multipliers: {
          hp: 3,
@@ -220,7 +220,7 @@ export const _Catalyst = {
    },
    C6: {
       trait: () => t(L.MS),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.MS,
       amount: 9,
       multipliers: {
          damage: 1,
@@ -229,7 +229,7 @@ export const _Catalyst = {
    },
    C7: {
       trait: () => t(L.MS),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.MS,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.MS,
       amount: 9,
       multipliers: {
          damage: 2,
@@ -238,7 +238,7 @@ export const _Catalyst = {
    },
    C8: {
       trait: () => t(L.AC),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.AC,
       amount: 9,
       multipliers: {
          damage: 3,
@@ -246,7 +246,7 @@ export const _Catalyst = {
    },
    C9: {
       trait: () => t(L.AC),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.AC,
       amount: 9,
       multipliers: {
          hp: 3,
@@ -254,7 +254,7 @@ export const _Catalyst = {
    },
    C10: {
       trait: () => t(L.AC),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.AC,
       amount: 9,
       multipliers: {
          damage: 1,
@@ -263,7 +263,7 @@ export const _Catalyst = {
    },
    C11: {
       trait: () => t(L.AC),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.AC,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.AC,
       amount: 9,
       multipliers: {
          damage: 2,
@@ -272,7 +272,7 @@ export const _Catalyst = {
    },
    C12: {
       trait: () => t(L.LA),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.LA,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.LA,
       amount: 3,
       multipliers: {
          damage: 1,
@@ -280,7 +280,7 @@ export const _Catalyst = {
    },
    C13: {
       trait: () => t(L.LA),
-      filter: (b: Building) => Config.Buildings[b].code === CodeNumber.LA,
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.LA,
       amount: 3,
       multipliers: {
          hp: 1,

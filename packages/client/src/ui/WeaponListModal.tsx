@@ -31,7 +31,7 @@ export function WeaponListModal(): React.ReactNode {
    const buildings = getUnlockableBuildings();
    if (sortBy === "type") {
       buildings.sort((a, b) => {
-         return Config.Buildings[a].code.localeCompare(Config.Buildings[b].code);
+         return Config.Buildings[a].type.localeCompare(Config.Buildings[b].type);
       });
    }
    return (

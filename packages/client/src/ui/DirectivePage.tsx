@@ -4,7 +4,7 @@ import { ShipClass, ShipClassList } from "@spaceship-idle/shared/src/game/defini
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { getDirectives, hasUnlockedDirective } from "@spaceship-idle/shared/src/game/logic/DirectiveLogic";
 import { getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { formatHMS, formatNumber, getElementCenter, HOUR, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
+import { cls, formatHMS, formatNumber, getElementCenter, HOUR, SECOND } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import React from "react";
 import { G } from "../utils/Global";
@@ -54,7 +54,7 @@ export function DirectivePage(): React.ReactNode {
                   key={shipClass}
                   label={html(t(L.UnlockDirectiveDescHTML, def.name()), "render-html")}
                >
-                  <div className="panel m10 p0">
+                  <div className={cls("panel m10 p0", unlocked ? null : "text-dimmed")}>
                      <div className="row m10">
                         <div className="f1">{t(L.XClassDirective, def.name())}</div>
                         {unlocked ? null : <div className="mi">lock</div>}
@@ -87,7 +87,7 @@ export function DirectivePage(): React.ReactNode {
                                        GameStateUpdated.emit();
                                     }}
                                  >
-                                    Issue
+                                    {t(L.Issue)}
                                  </button>
                               </div>
                            </React.Fragment>

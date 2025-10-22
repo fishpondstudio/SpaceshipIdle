@@ -13,7 +13,7 @@ export function checkBuildingTextures(): void {
             console.warn(`Texture not found for Building: ${b}`);
          }
       }
-      console.assert(G.textures.has(`Projectile/${def.code}`), `Texture not found for Projectile: ${def.code}`);
+      console.assert(G.textures.has(`Projectile/${def.type}`), `Texture not found for Projectile: ${def.type}`);
    });
 
    G.textures.forEach((_, key) => {

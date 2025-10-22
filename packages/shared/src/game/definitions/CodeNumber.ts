@@ -1,8 +1,7 @@
 import type { ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 
-export const CodeNumber = {
-   None: "None",
+export const BuildingType = {
    AC: "AC",
    MS: "MS",
    RC: "RC",
@@ -11,14 +10,13 @@ export const CodeNumber = {
    FD: "FD",
 } as const;
 
-export type CodeNumber = ValueOf<typeof CodeNumber>;
+export type BuildingType = ValueOf<typeof BuildingType>;
 
-export const CodeLabel: Record<CodeNumber, () => string> = {
-   [CodeNumber.None]: () => t(L.Misc),
-   [CodeNumber.AC]: () => t(L.AC),
-   [CodeNumber.MS]: () => t(L.MS),
-   [CodeNumber.RC]: () => t(L.RC),
-   [CodeNumber.PC]: () => t(L.PC),
-   [CodeNumber.LA]: () => t(L.LA),
-   [CodeNumber.FD]: () => t(L.FD),
+export const BuildingTypeLabel: Record<BuildingType, () => string> = {
+   [BuildingType.AC]: () => t(L.AC),
+   [BuildingType.MS]: () => t(L.MS),
+   [BuildingType.RC]: () => t(L.RC),
+   [BuildingType.PC]: () => t(L.PC),
+   [BuildingType.LA]: () => t(L.LA),
+   [BuildingType.FD]: () => t(L.FD),
 };
