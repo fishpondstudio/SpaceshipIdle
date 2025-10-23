@@ -4,9 +4,10 @@ import { Config } from "../Config";
 import { MaxTile } from "../Grid";
 import { RuntimeFlag } from "../logic/RuntimeFlag";
 import type { IRuntimeEffect, RuntimeTile } from "../logic/RuntimeTile";
-import { AbilityRange, abilityTarget } from "./Ability";
+import { abilityTarget } from "./Ability";
+import { AbilityRange } from "./AbilityRange";
 import { DamageType } from "./BuildingProps";
-import { BuildingType } from "./CodeNumber";
+import { BuildingType } from "./BuildingType";
 import { ProjectileFlag } from "./ProjectileFlag";
 
 export const StatusEffectFlag = {

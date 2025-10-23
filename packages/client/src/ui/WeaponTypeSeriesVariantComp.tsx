@@ -1,6 +1,6 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
-import { BuildingTypeLabel } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
+import { BuildingTypeLabel } from "@spaceship-idle/shared/src/game/definitions/BuildingType";
 import { parseBuildingCode } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";

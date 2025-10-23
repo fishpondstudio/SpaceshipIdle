@@ -1,5 +1,5 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
-import { BuildingTypeLabel } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
+import { BuildingTypeLabel } from "@spaceship-idle/shared/src/game/definitions/BuildingType";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { getBuildingName } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";

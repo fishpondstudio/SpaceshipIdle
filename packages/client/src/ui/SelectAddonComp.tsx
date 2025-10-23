@@ -4,13 +4,13 @@ import { ShipClass, ShipClassList } from "@spaceship-idle/shared/src/game/defini
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import type React from "react";
 import { G } from "../utils/Global";
+import { AddonComp } from "./components/AddonComp";
 import { FloatingTip } from "./components/FloatingTip";
-import { html } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
 
 function AddonRow({ addon }: { addon: Addon }): React.ReactNode {
    return (
-      <FloatingTip label={html(Addons[addon].desc(1))}>
+      <FloatingTip label={<AddonComp addon={addon} amount={1} showDetails />}>
          <div className="row g5">
             <TextureComp name={`Addon/${addon}`} />
             <div>{Addons[addon].name()}</div>

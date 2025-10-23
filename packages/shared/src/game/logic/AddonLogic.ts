@@ -1,6 +1,7 @@
 import { forEach, shuffle, type Tile } from "../../utils/Helper";
 import type { IHaveXY } from "../../utils/Vector2";
-import { type Addon, Addons, getAddonEffect } from "../definitions/Addons";
+import { abilityTarget } from "../definitions/Ability";
+import { type Addon, AddonRequirementFunc, Addons, getAddonEffect } from "../definitions/Addons";
 import type { Blueprint } from "../definitions/Blueprints";
 import { type ShipClass, ShipClassList } from "../definitions/ShipClass";
 import type { GameState } from "../GameState";
@@ -14,18 +15,39 @@ export function tickAddon(gs: GameState, rt: Runtime): void {
       if (!data.tile) {
          continue;
       }
-      const rs = rt.get(data.tile);
-      if (!rs) {
+      const equippedRs = rt.get(data.tile);
+      if (!equippedRs) {
          continue;
       }
       addonTiles.add(data.tile);
-      if (!rs.addon) {
-         rs.addon = { type: addon, tick: 0 };
+      if (!equippedRs.addon) {
+         equippedRs.addon = { type: addon, tick: 0, conditionalTargets: 0 };
       } else {
-         rs.addon.tick++;
+         equippedRs.addon.tick++;
       }
       const def = Addons[addon];
-      def.tick(def, getAddonEffect(data.amount), data.tile, rs.addon, rt);
+      if (equippedRs.addon.tick >= def.cooldown) {
+         equippedRs.addon.tick = 0;
+         equippedRs.addon.conditionalTargets = 0;
+         def.effect(def, getAddonEffect(data.amount), equippedRs);
+         const gs = rt.getGameState(data.tile);
+         if (!gs) {
+            return;
+         }
+         const { side, state } = gs;
+         abilityTarget(side, def.range, data.tile, state.tiles).forEach((target) => {
+            if (target === data.tile) {
+               return;
+            }
+            const targetRs = rt.get(target);
+            if (targetRs && AddonRequirementFunc[def.requirement](targetRs, equippedRs)) {
+               def.effect(def, getAddonEffect(data.amount), targetRs);
+               if (equippedRs.addon) {
+                  equippedRs.addon.conditionalTargets++;
+               }
+            }
+         });
+      }
    }
    gs.tiles.forEach((data, tile) => {
       const rs = rt.get(tile);

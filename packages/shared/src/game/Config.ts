@@ -1,11 +1,10 @@
-import { entriesOf, forEach, formatNumber, keysOf, sizeOf, tileToString } from "../utils/Helper";
+import { forEach, formatNumber, keysOf, sizeOf, tileToString } from "../utils/Helper";
 import { L, t } from "../utils/i18n";
-import { Addons } from "./definitions/Addons";
 import { Blueprints } from "./definitions/Blueprints";
 import { type Building, Buildings } from "./definitions/Buildings";
 import { MaxBattleTick } from "./definitions/Constant";
 import { Resources } from "./definitions/Resource";
-import { ShipClass, ShipClassList } from "./definitions/ShipClass";
+import { type ShipClass } from "./definitions/ShipClass";
 import { type StatusEffect, StatusEffects } from "./definitions/StatusEffect";
 import { type Tech, TechDefinitions } from "./definitions/TechDefinitions";
 import { techColumnToShipClass } from "./logic/TechLogic";
@@ -79,17 +78,6 @@ function initConfig(): void {
       console.log(
          "Unused Elements",
          keysOf(PeriodicTable).filter((e) => !Config.Elements.has(e)),
-      );
-      const temp = document.createElement("div");
-      console.log(
-         "Addons:\n" +
-            entriesOf(Addons)
-               .sort(([_a, a], [_b, b]) => ShipClassList.indexOf(a.shipClass) - ShipClassList.indexOf(b.shipClass))
-               .map(([_k, v]) => {
-                  temp.innerHTML = v.desc(1);
-                  return `- ${v.name()} (${ShipClass[v.shipClass].name()}): ${temp.textContent}`;
-               })
-               .join("\n"),
       );
    }
 }

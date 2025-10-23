@@ -55,6 +55,7 @@ export interface ICriticalDamage {
 export interface IAddonState {
    type: Addon;
    tick: number;
+   conditionalTargets: number;
 }
 
 export const OnStatusEffectsChanged = new TypedEvent<{ tile: Tile; buff: number; debuff: number }>();

@@ -4,6 +4,7 @@ import { Config } from "../Config";
 import { getDamagePerFire } from "../logic/BuildingLogic";
 import type { Multipliers } from "../logic/IMultiplier";
 import { Side } from "../logic/Side";
+import { AbilityRange } from "./AbilityRange";
 import type { Building } from "./Buildings";
 import { LaserArrayDamagePct } from "./Constant";
 import { ProjectileFlag } from "./ProjectileFlag";
@@ -25,24 +26,6 @@ export const AbilityTargetLabel: Record<AbilityTiming, () => string> = {
 };
 
 export type AbilityTiming = ValueOf<typeof AbilityTiming>;
-
-export const AbilityRange = {
-   Single: 0,
-   Adjacent: 1,
-   Front: 2,
-   FrontTrio: 3,
-   Rear: 4,
-   RearTrio: 5,
-   FrontAndRear: 6,
-   Flanks: 7,
-   Range1: 8,
-   Range2: 9,
-   Range3: 10,
-   Row: 11,
-   Column: 12,
-} as const;
-
-export type AbilityRange = ValueOf<typeof AbilityRange>;
 
 export const AbilityFlag = {
    None: 0,

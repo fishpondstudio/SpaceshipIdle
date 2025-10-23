@@ -1,7 +1,8 @@
 import { L, t } from "../../utils/i18n";
-import { AbilityFlag, AbilityRange, AbilityTiming, abilityDamage } from "./Ability";
+import { AbilityFlag, AbilityTiming, abilityDamage } from "./Ability";
+import { AbilityRange } from "./AbilityRange";
 import { DamageType, type IBuildingDefinition, type IBuildingProp } from "./BuildingProps";
-import { BuildingType } from "./CodeNumber";
+import { BuildingType } from "./BuildingType";
 import { ProjectileFlag } from "./ProjectileFlag";
 
 export const DroneBaseProps: IBuildingProp = {

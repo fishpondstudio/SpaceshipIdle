@@ -1,7 +1,7 @@
 import { Badge } from "@mantine/core";
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
-import { type BuildingType, BuildingTypeLabel } from "@spaceship-idle/shared/src/game/definitions/CodeNumber";
+import { type BuildingType, BuildingTypeLabel } from "@spaceship-idle/shared/src/game/definitions/BuildingType";
 import { type GameState, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { makeTile } from "@spaceship-idle/shared/src/game/ITileData";
 import {

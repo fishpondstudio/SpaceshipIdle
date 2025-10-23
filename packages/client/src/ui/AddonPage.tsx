@@ -1,16 +1,16 @@
-import { Badge } from "@mantine/core";
-import { AbilityRangeLabel, AbilityRangeTexture } from "@spaceship-idle/shared/src/game/definitions/Ability";
-import { Addons, getAddonEffect } from "@spaceship-idle/shared/src/game/definitions/Addons";
+import { Switch } from "@mantine/core";
+import { Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
+import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { formatNumber, mapOf, reduceOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { clearFlag, hasFlag, mapOf, reduceOf, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import React from "react";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { showModal } from "../utils/ToggleModal";
+import { AddonComp } from "./components/AddonComp";
 import { FloatingTip } from "./components/FloatingTip";
-import { html } from "./components/RenderHTMLComp";
 import { SidebarComp } from "./components/SidebarComp";
 import { TextureComp } from "./components/TextureComp";
 import { ReforgeAddonModal } from "./ReforgeAddonModal";
@@ -18,6 +18,7 @@ import { playClick } from "./Sound";
 
 export function AddonPage(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
+   refreshOnTypedEvent(GameOptionUpdated);
    return (
       <SidebarComp
          title={
@@ -39,6 +40,24 @@ export function AddonPage(): React.ReactNode {
                <div>{t(L.ReforgeAddOns)}</div>
             </button>
          </div>
+         <div className="divider" />
+         <div className="m10 text-sm row">
+            <div>Hide Add-on Details</div>
+            <div className="f1" />
+            <Switch
+               size="xs"
+               checked={hasFlag(G.save.options.flag, GameOptionFlag.HideAddonDetails)}
+               onChange={(e) => {
+                  playClick();
+                  if (e.target.checked) {
+                     G.save.options.flag = setFlag(G.save.options.flag, GameOptionFlag.HideAddonDetails);
+                  } else {
+                     G.save.options.flag = clearFlag(G.save.options.flag, GameOptionFlag.HideAddonDetails);
+                  }
+                  GameOptionUpdated.emit();
+               }}
+            />
+         </div>
          {mapOf(ShipClass, (k, v) => {
             if (reduceOf(Addons, (prev, _, def) => prev + (def.shipClass === k ? 1 : 0), 0) === 0) {
                return null;
@@ -48,59 +67,49 @@ export function AddonPage(): React.ReactNode {
                   <div className="divider my10" />
                   <div className="title">{t(L.XClass, v.name())}</div>
                   <div className="divider my10" />
-                  {mapOf(Addons, (addons) => {
-                     const def = Addons[addons];
-                     const amount = G.save.state.addons.get(addons)?.amount ?? 0;
-                     const tile = G.save.state.addons.get(addons)?.tile;
-                     const effect = getAddonEffect(amount);
+                  {mapOf(Addons, (addon) => {
+                     const def = Addons[addon];
+                     const amount = G.save.state.addons.get(addon)?.amount ?? 0;
+                     const tile = G.save.state.addons.get(addon)?.tile;
                      if (def.shipClass !== k) {
                         return null;
                      }
-                     const texture = AbilityRangeTexture[def.range];
                      return (
-                        <div key={addons} className="panel m10 row">
-                           <TextureComp name={`Addon/${addons}`} width={16 * 2} />
-                           <div className="f1">
+                        <FloatingTip
+                           disabled={!hasFlag(G.save.options.flag, GameOptionFlag.HideAddonDetails)}
+                           key={addon}
+                           w={350}
+                           label={<AddonComp addon={addon} amount={amount} showDetails />}
+                        >
+                           <div className="panel m10">
                               <div className="row">
-                                 <div>
-                                    {import.meta.env.DEV || amount > 0 ? (
-                                       def.name()
-                                    ) : (
-                                       <div className="mi">indeterminate_question_box</div>
-                                    )}
-                                 </div>
-                                 <div className="f1" />
-                                 {amount > 0 && tile === null ? (
-                                    <Badge color="red" variant="outline">
-                                       <div className="row g5 text-xs">
-                                          <div className="mi xs">error</div>
-                                          <div className="">{t(L.Unequipped)}</div>
+                                 <TextureComp name={`Addon/${addon}`} width={16 * 2} />
+                                 <div className="f1">
+                                    <div className="row">
+                                       <div>
+                                          {import.meta.env.DEV || amount > 0 ? (
+                                             def.name()
+                                          ) : (
+                                             <div className="mi">indeterminate_question_box</div>
+                                          )}
                                        </div>
-                                    </Badge>
-                                 ) : null}
+                                       <div className="f1" />
+                                       {amount > 0 && tile === null ? (
+                                          <FloatingTip label={t(L.Unequipped)}>
+                                             <div className="mi text-red">error</div>
+                                          </FloatingTip>
+                                       ) : null}
+                                    </div>
+                                 </div>
                               </div>
+                              <div className="divider mx-10 my5 dashed" />
                               {import.meta.env.DEV || amount > 0 ? (
-                                 <div className="row g5 text-sm text-dimmed stretch">
-                                    <div>
-                                       {t(L.Amount)} / {t(L.Effect)}
-                                    </div>
-                                    <div className="f1" />
-                                    <div>
-                                       {amount} / +{formatNumber(effect)}
-                                    </div>
-                                    <FloatingTip
-                                       w={350}
-                                       label={
-                                          <>
-                                             {html(def.desc(effect || 1))}
-                                             <div className="divider dashed my5 mx-10"></div>
-                                             {texture ? <TextureComp name={texture} className="inline-middle" /> : null}{" "}
-                                             {AbilityRangeLabel[def.range]()}
-                                          </>
-                                       }
-                                    >
-                                       <div className="mi sm">info</div>
-                                    </FloatingTip>
+                                 <div className="text-sm">
+                                    <AddonComp
+                                       addon={addon}
+                                       amount={amount}
+                                       showDetails={!hasFlag(G.save.options.flag, GameOptionFlag.HideAddonDetails)}
+                                    />
                                  </div>
                               ) : (
                                  <div className="row text-sm text-dimmed">
@@ -108,7 +117,7 @@ export function AddonPage(): React.ReactNode {
                                  </div>
                               )}
                            </div>
-                        </div>
+                        </FloatingTip>
                      );
                   })}
                </React.Fragment>

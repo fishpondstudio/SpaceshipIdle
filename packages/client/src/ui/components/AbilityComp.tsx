@@ -1,12 +1,12 @@
 import { Config } from "@spaceship-idle/shared/src/game/Config";
 import {
-   AbilityRange,
    AbilityRangeLabel,
    AbilityRangeTexture,
    AbilityTargetLabel,
    AbilityTiming,
    AbilityTimingLabel,
 } from "@spaceship-idle/shared/src/game/definitions/Ability";
+import { AbilityRange } from "@spaceship-idle/shared/src/game/definitions/AbilityRange";
 import type { Building } from "@spaceship-idle/shared/src/game/definitions/Buildings";
 import { StatusEffects } from "@spaceship-idle/shared/src/game/definitions/StatusEffect";
 import { DefaultMultipliers } from "@spaceship-idle/shared/src/game/logic/IMultiplier";

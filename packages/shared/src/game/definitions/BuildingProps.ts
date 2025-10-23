@@ -2,7 +2,7 @@ import type { ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import type { ElementSymbol } from "../PeriodicTable";
 import type { Ability } from "./Ability";
-import type { BuildingType } from "./CodeNumber";
+import type { BuildingType } from "./BuildingType";
 import type { ProjectileFlag } from "./ProjectileFlag";
 
 export type DamageType = ValueOf<typeof DamageType>;

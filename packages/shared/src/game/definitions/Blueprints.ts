@@ -4,7 +4,7 @@ import { Config } from "../Config";
 import { MaxX, MaxY } from "../Grid";
 import type { Runtime } from "../logic/Runtime";
 import { Bonus } from "./Bonus";
-import { BuildingType } from "./CodeNumber";
+import { BuildingType } from "./BuildingType";
 import { Horizon } from "./Horizon";
 import { Intrepid } from "./Intrepid";
 import { Majestic } from "./Majestic";

@@ -1,7 +1,8 @@
 import { L, t } from "../../utils/i18n";
-import { AbilityFlag, AbilityRange, AbilityStatDamagePct, AbilityTiming, abilityStat } from "./Ability";
+import { AbilityFlag, AbilityStatDamagePct, AbilityTiming, abilityStat } from "./Ability";
+import { AbilityRange } from "./AbilityRange";
 import { DamageType, type IBuildingDefinition, type IBuildingProp } from "./BuildingProps";
-import { BuildingType } from "./CodeNumber";
+import { BuildingType } from "./BuildingType";
 import { DefaultCooldown } from "./Constant";
 import { ProjectileFlag } from "./ProjectileFlag";
 

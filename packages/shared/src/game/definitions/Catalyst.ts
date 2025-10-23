@@ -3,7 +3,7 @@ import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import type { Multipliers } from "../logic/IMultiplier";
 import type { Building } from "./Buildings";
-import { BuildingType } from "./CodeNumber";
+import { BuildingType } from "./BuildingType";
 
 export interface ICatalystDefinition {
    trait: () => string;

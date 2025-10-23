@@ -1,5 +1,5 @@
 import { Popover } from "@mantine/core";
-import { type Addon, Addons, getAddonEffect } from "@spaceship-idle/shared/src/game/definitions/Addons";
+import { type Addon, Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { hasUnequippedAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
 import {
@@ -21,8 +21,9 @@ import { G } from "../../utils/Global";
 import { useShortcut } from "../../utils/ShortcutHook";
 import type { ITileWithGameState } from "../ITileWithGameState";
 import { playClick, playError } from "../Sound";
+import { AddonComp } from "./AddonComp";
 import { FloatingTip } from "./FloatingTip";
-import { html, RenderHTML } from "./RenderHTMLComp";
+import { html } from "./RenderHTMLComp";
 import { ResourceListComp } from "./ResourceListComp";
 import { TextureComp } from "./TextureComp";
 
@@ -172,10 +173,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   <TextureComp name={`Addon/${addon}`} />
                   <FloatingTip
                      label={
-                        <RenderHTML
-                           html={Addons[addon].desc(getAddonEffect(G.save.state.addons.get(addon)?.amount ?? 0))}
-                           className="text-sm"
-                        />
+                        <AddonComp addon={addon} amount={G.save.state.addons.get(addon)?.amount ?? 0} showDetails />
                      }
                   >
                      <div>{Addons[addon].name()}</div>
@@ -187,7 +185,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             ) : (
                <div className="f1 text-dimmed">{t(L.NoEquippedAddon)}</div>
             )}
-            <Popover width={300} position="bottom-end" shadow="md" classNames={{ dropdown: "col stretch p0" }}>
+            <Popover width={350} position="bottom-end" shadow="md" classNames={{ dropdown: "col stretch p0" }}>
                <Popover.Target>
                   <div className="mi pointer">rule_settings</div>
                </Popover.Target>
