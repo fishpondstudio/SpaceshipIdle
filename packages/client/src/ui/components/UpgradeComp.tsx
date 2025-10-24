@@ -171,11 +171,7 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
             {addon ? (
                <>
                   <TextureComp name={`Addon/${addon}`} />
-                  <FloatingTip
-                     label={
-                        <AddonComp addon={addon} amount={G.save.state.addons.get(addon)?.amount ?? 0} showDetails />
-                     }
-                  >
+                  <FloatingTip label={<AddonComp addon={addon} showDetails showCraft={false} />}>
                      <div>{Addons[addon].name()}</div>
                   </FloatingTip>
                   <div className="f1" />

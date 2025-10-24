@@ -136,7 +136,7 @@ export function keysOf<T extends {}>(obj: T): Array<keyof T> {
    return Object.keys(obj) as Array<keyof T>;
 }
 
-export function entriesOf<K extends string, V>(obj: Record<K, V>): [K, V][] {
+export function entriesOf<K extends string, V>(obj: Partial<Record<K, V>>): [K, V][] {
    return Object.entries(obj) as [K, V][];
 }
 
@@ -289,15 +289,17 @@ export function clearObject<K extends string | number | symbol>(obj: Record<K, u
 
 export function mapOf<K extends string | number | symbol, V, T>(
    obj: Partial<Record<K, V>> | undefined | null,
-   func: (key: K, value: V) => T,
+   func: (key: K, value: V, index: number) => T,
    ifEmpty: () => T[] = () => [],
 ): T[] {
    const result: T[] = [];
    if (!obj) {
       return result;
    }
+   let index = 0;
    forEach(obj, (k, v) => {
-      result.push(func(k, v));
+      result.push(func(k, v, index));
+      ++index;
    });
    if (result.length === 0) {
       return ifEmpty();

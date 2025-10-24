@@ -10,7 +10,7 @@ import { TextureComp } from "./components/TextureComp";
 
 function AddonRow({ addon }: { addon: Addon }): React.ReactNode {
    return (
-      <FloatingTip label={<AddonComp addon={addon} amount={1} showDetails />}>
+      <FloatingTip label={<AddonComp addon={addon} showDetails showCraft={false} />}>
          <div className="row g5">
             <TextureComp name={`Addon/${addon}`} />
             <div>{Addons[addon].name()}</div>

@@ -851,4 +851,8 @@ export const EN = {
    DamageLinkSpectrum: "Damage Link Spectrum",
    ThisAddonCanBeOnlyBeCraftedFromTheFollowingRecipe: "This add-on can <b>only</b> be crafted from the following recipe",
    ThisAddOnCanBeCraftedIntoTheFollowingAddOns: "This add-on is used in the craft recipe of the following add-ons:",
+   CraftFrom: "Craft From",
+   CraftInto: "Craft Into",
+   Craft: "Craft",
+   BaseEffect: "Base Effect",
 };

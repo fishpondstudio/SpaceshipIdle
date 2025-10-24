@@ -8,22 +8,29 @@ import {
    Addons,
    getAddonEffect,
 } from "@spaceship-idle/shared/src/game/definitions/Addons";
+import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
+import { canCraftAddon, craftAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
 import { formatNumber, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { Fragment } from "react/jsx-runtime";
 import { G } from "../../utils/Global";
+import { refreshOnTypedEvent } from "../../utils/Hook";
+import { playUpgrade } from "../Sound";
 import { FloatingTip } from "./FloatingTip";
 import { html } from "./RenderHTMLComp";
 import { TextureComp } from "./TextureComp";
 
 export function AddonComp({
    addon,
-   amount,
    showDetails,
+   showCraft,
 }: {
    addon: Addon;
-   amount: number;
-   showDetails?: boolean;
+   showDetails: boolean;
+   showCraft: boolean;
 }): React.ReactNode {
+   refreshOnTypedEvent(GameStateUpdated);
+   const amount = G.save.state.addons.get(addon)?.amount ?? 0;
    const def = Addons[addon];
    const texture = AbilityRangeTexture[def.range];
    let count = 0;
@@ -44,10 +51,15 @@ export function AddonComp({
          </div>
          <div className="row">
             <div className="f1">{t(L.Effect)}</div>
-            <div>{def.effectDesc(getAddonEffect(amount))}</div>
+            <div>
+               <div>{def.effectDesc(getAddonEffect(amount))}</div>
+            </div>
          </div>
          {showDetails && (
             <>
+               <div className="text-sm text-space">
+                  - {t(L.BaseEffect)}: {def.effectDesc(getAddonEffect(1))}
+               </div>
                <div className="row g5">
                   <div>{t(L.UnconditionalTarget)}</div>
                   <FloatingTip label={html(t(L.AddonEffectTooltipHTML))}>
@@ -70,44 +82,10 @@ export function AddonComp({
                      </Badge>
                   </FloatingTip>
                </div>
-               <div className="text-space">
-                  {t(L.Condition)}: {AddonRequirementLabel[def.requirement]()}
+               <div className="text-space text-sm">
+                  - {t(L.Condition)}: {AddonRequirementLabel[def.requirement]()}
                </div>
                <div className="divider dashed my5 mx-10" />
-               {recipe && (
-                  <FloatingTip
-                     w={300}
-                     label={
-                        <>
-                           <div>{html(t(L.ThisAddonCanBeOnlyBeCraftedFromTheFollowingRecipe))}</div>
-                           <div className="h5" />
-                           <div className="flex-table mx-10">
-                              {mapOf(recipe, (addon, count) => {
-                                 return (
-                                    <div className="row" key={addon}>
-                                       <TextureComp className="inline-middle" name={`Addon/${addon}`} />
-                                       <div className="f1">{Addons[addon].name()}</div>
-                                       <div>{count}</div>
-                                    </div>
-                                 );
-                              })}
-                           </div>
-                        </>
-                     }
-                  >
-                     <div className="row">
-                        <div>Craft From</div>
-                        <div className="f1" />
-                        {mapOf(recipe, (addon, count) => {
-                           return (
-                              <div key={addon}>
-                                 {count} <TextureComp className="inline-middle" name={`Addon/${addon}`} />
-                              </div>
-                           );
-                        })}
-                     </div>
-                  </FloatingTip>
-               )}
                {craftInfo && (
                   <FloatingTip
                      w={300}
@@ -129,7 +107,7 @@ export function AddonComp({
                      }
                   >
                      <div className="row">
-                        <div>Craft Into</div>
+                        <div>{t(L.CraftInto)}</div>
                         <div className="f1" />
                         {craftInfo.map((addon) => {
                            return (
@@ -141,8 +119,89 @@ export function AddonComp({
                      </div>
                   </FloatingTip>
                )}
+               {recipe && (
+                  <FloatingTip
+                     w={300}
+                     label={
+                        <>
+                           <div>{html(t(L.ThisAddonCanBeOnlyBeCraftedFromTheFollowingRecipe))}</div>
+                           <div className="h5" />
+                           <div className="flex-table mx-10">
+                              {mapOf(recipe, (addon, count) => {
+                                 return (
+                                    <div className="row" key={addon}>
+                                       <TextureComp className="inline-middle" name={`Addon/${addon}`} />
+                                       <div className="f1">{Addons[addon].name()}</div>
+                                       <div>{count}</div>
+                                       {(G.save.state.addons.get(addon)?.amount ?? 0) >= count ? (
+                                          <div className="mi sm text-green">check_circle</div>
+                                       ) : (
+                                          <div className="mi sm text-red">cancel</div>
+                                       )}
+                                    </div>
+                                 );
+                              })}
+                           </div>
+                        </>
+                     }
+                  >
+                     <div>
+                        <div className="row">
+                           <div>{t(L.CraftFrom)}</div>
+                           <div className="f1" />
+                           {mapOf(recipe, (addon, count) => {
+                              return (
+                                 <div key={addon}>
+                                    {count} <TextureComp className="inline-middle" name={`Addon/${addon}`} />
+                                 </div>
+                              );
+                           })}
+                        </div>
+                        {showCraft && (
+                           <div className="panel mt5">
+                              <div className="row">
+                                 {mapOf(recipe, (addon, count, index) => {
+                                    return (
+                                       <Fragment key={addon}>
+                                          {index > 0 && <div className="mi lg">add</div>}
+                                          <AddonCraftItem addon={addon} count={count} />
+                                       </Fragment>
+                                    );
+                                 })}
+                                 <div className="f1 cc">
+                                    <div className="mi lg">arrow_right_alt</div>
+                                 </div>
+                                 <AddonCraftItem addon={addon} count={1} />
+                              </div>
+                              <button
+                                 className="btn filled w100 mt10"
+                                 disabled={!canCraftAddon(addon, G.save.state)}
+                                 onClick={() => {
+                                    playUpgrade();
+                                    craftAddon(addon, G.save.state);
+                                    GameStateUpdated.emit();
+                                 }}
+                              >
+                                 <div className="mi inline">build</div> {t(L.Craft)}
+                              </button>
+                           </div>
+                        )}
+                     </div>
+                  </FloatingTip>
+               )}
             </>
          )}
       </>
+   );
+}
+
+function AddonCraftItem({ addon, count }: { addon: Addon; count: number }): React.ReactNode {
+   return (
+      <div className="row g5 addon-craft-item">
+         {count > 1 && <div>{count}</div>}
+         <div className="texture">
+            <TextureComp name={`Addon/${addon}`} width={16 * 2} />
+         </div>
+      </div>
    );
 }

@@ -1,7 +1,7 @@
-import { forEach, shuffle, type Tile } from "../../utils/Helper";
+import { entriesOf, forEach, shuffle, type Tile } from "../../utils/Helper";
 import type { IHaveXY } from "../../utils/Vector2";
 import { abilityTarget } from "../definitions/Ability";
-import { type Addon, AddonRequirementFunc, Addons, getAddonEffect } from "../definitions/Addons";
+import { type Addon, AddonCraftRecipe, AddonRequirementFunc, Addons, getAddonEffect } from "../definitions/Addons";
 import type { Blueprint } from "../definitions/Blueprints";
 import { type ShipClass, ShipClassList } from "../definitions/ShipClass";
 import type { GameState } from "../GameState";
@@ -153,4 +153,31 @@ export function deductAddon(addon: Addon, amount: number, gs: GameState): void {
    } else {
       console.error("Trying to deduct undiscovered addon(s), check whether there's an addon before deducting!");
    }
+}
+
+export function canCraftAddon(addon: Addon, gs: GameState): boolean {
+   const recipe = AddonCraftRecipe[addon];
+   if (!recipe) {
+      return false;
+   }
+   for (const [addon, count] of entriesOf(recipe)) {
+      if ((gs.addons.get(addon)?.amount ?? 0) < count) {
+         return false;
+      }
+   }
+   return true;
+}
+
+export function craftAddon(addon: Addon, gs: GameState): void {
+   const recipe = AddonCraftRecipe[addon];
+   if (!recipe) {
+      return;
+   }
+   if (!canCraftAddon(addon, gs)) {
+      return;
+   }
+   for (const [addon, count] of entriesOf(recipe)) {
+      deductAddon(addon, count, gs);
+   }
+   addAddon(addon, 1, gs);
 }
