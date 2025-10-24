@@ -15,7 +15,7 @@ import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { Fragment } from "react/jsx-runtime";
 import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
-import { playUpgrade } from "../Sound";
+import { playError, playUpgrade } from "../Sound";
 import { FloatingTip } from "./FloatingTip";
 import { html } from "./RenderHTMLComp";
 import { TextureComp } from "./TextureComp";
@@ -46,33 +46,27 @@ export function AddonComp({
    return (
       <>
          <div className="row">
-            <div className="f1">{t(L.Amount)}</div>
+            <div className="f1 text-dimmed">{t(L.Amount)}</div>
             <div>{formatNumber(amount)}</div>
          </div>
-         <div className="row">
-            <div className="f1">{t(L.Effect)}</div>
-            <div>
-               <div>{def.effectDesc(getAddonEffect(amount))}</div>
-            </div>
+         <div className="row fstart wrap">
+            <div className="text-dimmed">{t(L.Effect)}</div>
+            <div className="f1"></div>
+            <div>{def.effectDesc(getAddonEffect(amount))}</div>
          </div>
          {showDetails && (
             <>
                <div className="text-sm text-space">
-                  - {t(L.BaseEffect)}: {def.effectDesc(getAddonEffect(1))}
+                  <div className="mi inline sm">info</div> {t(L.BaseEffect)}: {def.effectDesc(getAddonEffect(1))}
                </div>
+               <div className="divider dashed my10 mx-10" />
                <div className="row g5">
-                  <div>{t(L.UnconditionalTarget)}</div>
-                  <FloatingTip label={html(t(L.AddonEffectTooltipHTML))}>
-                     <div className="mi sm text-dimmed">help</div>
-                  </FloatingTip>
+                  <div className="text-dimmed">{t(L.UnconditionalTarget)}</div>
                   <div className="f1" />
                   <div>{t(L.EquippedModule)}</div>
                </div>
                <div className="row g5">
-                  <div>{t(L.ConditionalTarget)}</div>
-                  <FloatingTip label={html(t(L.AddonEffectTooltipHTML))}>
-                     <div className="mi sm text-dimmed">help</div>
-                  </FloatingTip>
+                  <div className="text-dimmed">{t(L.ConditionalTarget)}</div>
                   <div className="f1" />
                   {texture && <TextureComp name={texture} />}
                   <div>{AbilityRangeLabel[def.range]()}</div>
@@ -82,10 +76,14 @@ export function AddonComp({
                      </Badge>
                   </FloatingTip>
                </div>
-               <div className="text-space text-sm">
-                  - {t(L.Condition)}: {AddonRequirementLabel[def.requirement]()}
+               <div className="row wrap">
+                  <div className="f1 text-dimmed">{t(L.Condition)}</div>
+                  <div>{AddonRequirementLabel[def.requirement]()}</div>
                </div>
-               <div className="divider dashed my5 mx-10" />
+               <div className="text-sm text-space">
+                  <div className="mi inline sm">info</div> {t(L.AddonEffectTooltip)}
+               </div>
+               <div className="divider dashed my10 mx-10" />
                {craftInfo && (
                   <FloatingTip
                      w={300}
@@ -107,7 +105,7 @@ export function AddonComp({
                      }
                   >
                      <div className="row">
-                        <div>{t(L.CraftInto)}</div>
+                        <div className="text-dimmed">{t(L.CraftInto)}</div>
                         <div className="f1" />
                         {craftInfo.map((addon) => {
                            return (
@@ -147,7 +145,7 @@ export function AddonComp({
                   >
                      <div>
                         <div className="row">
-                           <div>{t(L.CraftFrom)}</div>
+                           <div className="text-dimmed">{t(L.CraftFrom)}</div>
                            <div className="f1" />
                            {mapOf(recipe, (addon, count) => {
                               return (
@@ -177,6 +175,10 @@ export function AddonComp({
                                  className="btn filled w100 mt10"
                                  disabled={!canCraftAddon(addon, G.save.state)}
                                  onClick={() => {
+                                    if (!canCraftAddon(addon, G.save.state)) {
+                                       playError();
+                                       return;
+                                    }
                                     playUpgrade();
                                     craftAddon(addon, G.save.state);
                                     GameStateUpdated.emit();

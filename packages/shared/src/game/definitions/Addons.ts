@@ -1,10 +1,11 @@
-import { forEach, formatNumber, safePush, type ValueOf } from "../../utils/Helper";
+import { forEach, formatNumber, formatPercent, safePush, setFlag, type ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { parseBuildingCode } from "../logic/BuildingLogic";
 import type { RuntimeTile } from "../logic/RuntimeTile";
 import { AbilityRange } from "./AbilityRange";
 import type { Blueprint } from "./Blueprints";
+import { ProjectileFlag } from "./ProjectileFlag";
 import type { ShipClass } from "./ShipClass";
 
 export interface IAddonDefinition {
@@ -29,15 +30,15 @@ export const AddonRequirement = {
 export type AddonRequirement = ValueOf<typeof AddonRequirement>;
 
 export const AddonRequirementLabel: Record<AddonRequirement, () => string> = {
-   [AddonRequirement.Distinction]: () => "if weapon model is different from the equipped weapon",
+   [AddonRequirement.Distinction]: () => "If weapon model is different from the equipped weapon",
    [AddonRequirement.Diversity]: () =>
-      "if weapon type is different from the equipped weapon (e.g. MS1A: Type = MS, AC30: Type = AC)",
+      "If weapon type is different from the equipped weapon (e.g. MS1A: Type = MS, AC30: Type = AC)",
    [AddonRequirement.Spectrum]: () =>
-      "if weapon series is different from the equipped weapon (e.g. MS1A: Series = 1, AC30: Series = 30)",
+      "If weapon series is different from the equipped weapon (e.g. MS1A: Series = 1, AC30: Series = 30)",
    [AddonRequirement.Variant]: () =>
-      "if weapon variant is different from the equipped weapon (e.g. MS1A: Variant = A, AC30: Variant = Base)",
+      "If weapon variant is different from the equipped weapon (e.g. MS1A: Variant = A, AC30: Variant = Base)",
    [AddonRequirement.Cohort]: () =>
-      "if weapon class is different from the equipped weapon (e.g. MS1A: Skiff Class, AC76: Scout Class)",
+      "If weapon class is different from the equipped weapon (e.g. MS1A: Skiff Class, AC76: Scout Class)",
 };
 export const AddonRequirementFunc: Record<AddonRequirement, (current: RuntimeTile, equipped: RuntimeTile) => boolean> =
    {
@@ -115,43 +116,65 @@ export const _Addons = {
       range: AbilityRange.Adjacent,
       shipClass: "Skiff",
    },
-   // HP1: {
-   //    name: () => t(L.HPArray),
-   //    desc: (value: number) => t(L.HPArrayDesc, formatNumber(value), formatNumber(value)),
-   //    tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-   //       arrayEffect(tile, self.range, runtime, (rs) => {
-   //          rs.hpMultiplier.add(value, t(L.SourceAddon, t(L.HPArray)));
-   //       });
-   //    },
-   //    range: AbilityRange.Adjacent,
-   //    shipClass: "Scout",
-   // },
-   // HP2: {
-   //    name: () => t(L.RecoveryDiversity),
-   //    desc: (value: number) => {
-   //       const percent = formatPercent(Math.min(0.04 + 0.01 * value, 0.25));
-   //       return t(L.RecoveryDiversityDesc, percent, percent);
-   //    },
-   //    tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-   //       diversityEffect(tile, self.range, runtime, (rs) => {
-   //          rs.recoverHp(Math.min(0.04 + 0.01 * value, 0.25) * rs.props.hp);
-   //       });
-   //    },
-   //    range: AbilityRange.Adjacent,
-   //    shipClass: "Scout",
-   // },
-   // Damage2: {
-   //    name: () => t(L.PrecisionDiversity),
-   //    desc: (value: number) => t(L.PrecisionDiversityDesc, formatNumber(value / 2), formatNumber(value / 2)),
-   //    tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-   //       diversityEffect(tile, self.range, runtime, (rs) => {
-   //          rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
-   //          rs.damageMultiplier.add(value / 2, t(L.SourceAddon, t(L.PrecisionDiversity)));
-   //       });
-   //    },
-   //    range: AbilityRange.Adjacent,
-   //    shipClass: "Scout",
-   // },
+   HP1: {
+      name: () => t(L.HPArcDistinction),
+      effectDesc: (value: number) => t(L.PlusXHPMultiplier, formatNumber(value)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.hpMultiplier.add(value, t(L.SourceAddon, self.name()));
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Distinction,
+      range: AbilityRange.Flanks,
+      shipClass: "Scout",
+   },
+   HP2: {
+      name: () => t(L.RecoveryArcDiversity),
+      effectDesc: (value: number) => t(L.RecoverXHPPerSec, formatPercent(Math.min(0.05 * value, 0.5))),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.recoverHp(Math.min(0.05 * value, 0.5) * rs.props.hp);
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Diversity,
+      range: AbilityRange.Adjacent,
+      shipClass: "Scout",
+   },
+   Damage3: {
+      name: () => t(L.PrecisionSpanSpectrum),
+      effectDesc: (value: number) => t(L.GainPrecisionStrikeAndDamageMultiplier, formatNumber(value / 2)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
+         rs.damageMultiplier.add(value / 2, t(L.SourceAddon, self.name()));
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Spectrum,
+      range: AbilityRange.FrontAndRear,
+      shipClass: "Scout",
+   },
+   Damage4: {
+      name: () => t(L.PrecisionLinkDistinction),
+      effectDesc: (value: number) => t(L.GainPrecisionStrikeAndDamageMultiplier, formatNumber(value / 2)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
+         rs.damageMultiplier.add(value / 2, t(L.SourceAddon, self.name()));
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Distinction,
+      range: AbilityRange.Adjacent,
+      shipClass: "Scout",
+   },
+   HP3: {
+      name: () => t(L.VitalLinkSpectrum),
+      effectDesc: (value: number) =>
+         t(L.RecoverXHPPerSecAndHPMultiplier, formatPercent(Math.min(0.05 * value, 0.5)), formatNumber(value)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.hpMultiplier.add(value, t(L.SourceAddon, self.name()));
+         rs.recoverHp(Math.min(0.05 * value, 0.5) * rs.props.hp);
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Spectrum,
+      range: AbilityRange.Adjacent,
+      shipClass: "Scout",
+   },
    // HP3: {
    //    name: () => t(L.LaserBlockMatrix),
    //    desc: (value: number) => t(L.LaserBlockMatrixDesc, formatNumber(value / 2), formatNumber(value / 2)),
@@ -279,6 +302,14 @@ export const AddonCraftRecipe: Partial<Record<Addon, Partial<Record<Addon, numbe
    Damage2: {
       Evasion1: 1,
       Damage1: 1,
+   },
+   Damage4: {
+      Damage2: 2,
+      Damage3: 1,
+   },
+   HP3: {
+      HP1: 2,
+      HP2: 2,
    },
 } as const;
 

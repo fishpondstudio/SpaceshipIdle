@@ -1,4 +1,4 @@
-import { Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
+import { AddonCraftRecipe, Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
@@ -72,32 +72,25 @@ export function AddonPage(): React.ReactNode {
                            >
                               <div className="row">
                                  <TextureComp name={`Addon/${addon}`} width={16 * 2} />
-                                 <div className="f1">
-                                    <div className="row">
-                                       <div>
-                                          {import.meta.env.DEV || amount > 0 ? (
-                                             def.name()
-                                          ) : (
-                                             <div className="mi">indeterminate_question_box</div>
-                                          )}
-                                       </div>
-                                       <div className="f1" />
-                                       {amount > 0 && tile === null ? (
-                                          <FloatingTip label={t(L.Unequipped)}>
-                                             <div className="mi text-red">error</div>
-                                          </FloatingTip>
-                                       ) : null}
-                                    </div>
-                                 </div>
+                                 <div>{def.name()}</div>
+                                 {AddonCraftRecipe[addon] ? <div className="mi text-space">build</div> : null}
+                                 <div className="f1" />
+                                 {amount > 0 && tile === null ? (
+                                    <FloatingTip label={t(L.Unequipped)}>
+                                       <div className="mi text-red">error</div>
+                                    </FloatingTip>
+                                 ) : null}
                               </div>
                               <div className="divider mx-10 my5 dashed" />
-                              {import.meta.env.DEV || amount > 0 ? (
+                              {amount > 0 ? (
                                  <div className="text-sm">
                                     <AddonComp addon={addon} showDetails={false} showCraft={false} />
                                  </div>
                               ) : (
                                  <div className="row text-sm text-dimmed">
-                                    <div className="f1">{t(L.NotDiscovered)}</div>
+                                    <div className="f1">
+                                       {AddonCraftRecipe[addon] ? t(L.NotCrafted) : t(L.NotDiscovered)}
+                                    </div>
                                  </div>
                               )}
                            </div>
