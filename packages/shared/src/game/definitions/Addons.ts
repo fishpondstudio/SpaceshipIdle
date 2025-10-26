@@ -1,4 +1,4 @@
-import { forEach, formatNumber, formatPercent, safePush, setFlag, type ValueOf } from "../../utils/Helper";
+import { formatNumber, formatPercent, setFlag, type ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { parseBuildingCode } from "../logic/BuildingLogic";
@@ -7,6 +7,7 @@ import { AbilityRange } from "./AbilityRange";
 import type { Blueprint } from "./Blueprints";
 import { ProjectileFlag } from "./ProjectileFlag";
 import type { ShipClass } from "./ShipClass";
+import { addonStatusEffectKey } from "./StatusEffect";
 
 export interface IAddonDefinition {
    name: () => string;
@@ -106,13 +107,13 @@ export const _Addons = {
       shipClass: "Skiff",
    },
    Damage2: {
-      name: () => t(L.DamageLinkSpectrum),
+      name: () => t(L.DamageLinkDistinction),
       effectDesc: (value: number) => t(L.PlusXDamageMultiplier, formatNumber(value)),
       effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
          rs.damageMultiplier.add(value, t(L.SourceAddon, self.name()));
       },
       cooldown: 1,
-      requirement: AddonRequirement.Spectrum,
+      requirement: AddonRequirement.Distinction,
       range: AbilityRange.Adjacent,
       shipClass: "Skiff",
    },
@@ -150,35 +151,23 @@ export const _Addons = {
       range: AbilityRange.FrontAndRear,
       shipClass: "Scout",
    },
-   Damage4: {
-      name: () => t(L.PrecisionLinkDistinction),
-      effectDesc: (value: number) => t(L.GainPrecisionStrikeAndDamageMultiplier, formatNumber(value / 2)),
-      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
-         rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
-         rs.damageMultiplier.add(value / 2, t(L.SourceAddon, self.name()));
-      },
-      cooldown: 1,
-      requirement: AddonRequirement.Distinction,
-      range: AbilityRange.Adjacent,
-      shipClass: "Scout",
-   },
    HP3: {
-      name: () => t(L.VitalLinkSpectrum),
+      name: () => t(L.VitalArcDistinction),
       effectDesc: (value: number) =>
-         t(L.RecoverXHPPerSecAndHPMultiplier, formatPercent(Math.min(0.05 * value, 0.5)), formatNumber(value)),
+         t(L.RecoverXHPPerSecAndHPMultiplier, formatPercent(Math.min(0.05 * value, 0.5)), formatNumber(value / 2)),
       effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
          rs.hpMultiplier.add(value, t(L.SourceAddon, self.name()));
          rs.recoverHp(Math.min(0.05 * value, 0.5) * rs.props.hp);
       },
       cooldown: 1,
-      requirement: AddonRequirement.Spectrum,
-      range: AbilityRange.Adjacent,
+      requirement: AddonRequirement.Distinction,
+      range: AbilityRange.Flanks,
       shipClass: "Scout",
    },
    HP4: {
       name: () => t(L.VitalLinkCohort),
       effectDesc: (value: number) =>
-         t(L.RecoverXHPPerSecAndHPMultiplier, formatPercent(Math.min(0.05 * value, 0.5)), formatNumber(value)),
+         t(L.RecoverXHPPerSecAndHPMultiplier, formatPercent(Math.min(0.05 * value, 0.5)), formatNumber(value / 2)),
       effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
          rs.hpMultiplier.add(value, t(L.SourceAddon, self.name()));
          rs.recoverHp(Math.min(0.05 * value, 0.5) * rs.props.hp);
@@ -189,10 +178,33 @@ export const _Addons = {
       shipClass: "Corvette",
    },
    Damage5: {
-      name: () => t(L.TrueStrikeArcSpectrum),
+      name: () => t(L.TrueStrikeArcDiversity),
       effectDesc: (value: number) => t(L.GainTrueStrikeAndDamageMultiplier, formatNumber(value / 2)),
       effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
          rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.TrueDamage);
+         rs.damageMultiplier.add(value / 2, t(L.SourceAddon, self.name()));
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Diversity,
+      range: AbilityRange.Flanks,
+      shipClass: "Corvette",
+   },
+   Evasion2: {
+      name: () => t(L.EvasionLinkDiversity),
+      effectDesc: (value: number) => t(L.PlusXEvasion, formatNumber(value / 2)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.props.evasion += value / 2;
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Diversity,
+      range: AbilityRange.Adjacent,
+      shipClass: "Corvette",
+   },
+   Damage4: {
+      name: () => t(L.PrecisionLinkSpectrum),
+      effectDesc: (value: number) => t(L.GainPrecisionStrikeAndDamageMultiplier, formatNumber(value / 2)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
          rs.damageMultiplier.add(value / 2, t(L.SourceAddon, self.name()));
       },
       cooldown: 1,
@@ -200,6 +212,48 @@ export const _Addons = {
       range: AbilityRange.Adjacent,
       shipClass: "Corvette",
    },
+   Damage6: {
+      name: () => t(L.TrueStrikeLinkDiversity),
+      effectDesc: (value: number) => t(L.GainTrueStrikeAndDamageMultiplier, formatNumber(value / 2)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.TrueDamage);
+         rs.damageMultiplier.add(value / 2, t(L.SourceAddon, self.name()));
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Diversity,
+      range: AbilityRange.Adjacent,
+      shipClass: "Corvette",
+   },
+   HP5: {
+      name: () => t(L.PurifierSpanDistinction),
+      effectDesc: (value: number) => t(L.PurifyEvery5SecondsAndHPMultiplier, formatNumber(value / 2)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.hpMultiplier.add(value, t(L.SourceAddon, self.name()));
+         rs.recoverHp(Math.min(0.05 * value, 0.5) * rs.props.hp);
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Cohort,
+      range: AbilityRange.Adjacent,
+      shipClass: "Frigate",
+   },
+   Damage7: {
+      name: () => t(L.CriticalStrikeSpanSpectrum),
+      effectDesc: (value: number) => t(L.GainCriticalStrikeAndDamageMultiplier, formatNumber(value / 2)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.addStatusEffect(addonStatusEffectKey(rs.tile), {
+            statusEffect: "CriticalDamage2",
+            source: t(L.SourceAddon, self.name()),
+            value: 0.25,
+            timeLeft: Number.POSITIVE_INFINITY,
+         });
+         rs.damageMultiplier.add(value / 2, t(L.SourceAddon, self.name()));
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Spectrum,
+      range: AbilityRange.FrontAndRear,
+      shipClass: "Frigate",
+   },
+
    // Damage4: {
    //    name: () => t(L.TrueStrikeArray),
    //    desc: (value: number) => t(L.TrueStrikeArrayDesc, formatNumber(value / 2), formatNumber(value / 2)),
@@ -289,26 +343,3 @@ export function getAddonEffect(amount: number): number {
    }
    return result;
 }
-
-export const AddonCraftRecipe: Partial<Record<Addon, Partial<Record<Addon, number>>>> = {
-   Damage2: {
-      Evasion1: 1,
-      Damage1: 1,
-   },
-   Damage4: {
-      Damage2: 2,
-      Damage3: 1,
-   },
-   HP3: {
-      HP1: 2,
-      HP2: 2,
-   },
-} as const;
-
-export const AddonCraftInfo: Partial<Record<Addon, Addon[]>> = {};
-
-forEach(AddonCraftRecipe, (craftInfo, recipe) => {
-   forEach(recipe, (craftFrom, amount) => {
-      safePush(AddonCraftInfo, craftFrom, craftInfo);
-   });
-});

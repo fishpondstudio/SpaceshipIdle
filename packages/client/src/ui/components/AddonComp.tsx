@@ -1,9 +1,8 @@
 import { Badge } from "@mantine/core";
 import { AbilityRangeLabel, AbilityRangeTexture } from "@spaceship-idle/shared/src/game/definitions/Ability";
+import { AddonCraftInfo, AddonCraftRecipe } from "@spaceship-idle/shared/src/game/definitions/AddonCraftRecipe";
 import {
    type Addon,
-   AddonCraftInfo,
-   AddonCraftRecipe,
    AddonRequirementLabel,
    Addons,
    getAddonEffect,
@@ -45,6 +44,7 @@ export function AddonComp({
    const craftInfo = AddonCraftInfo[addon];
    return (
       <>
+         {import.meta.env.DEV && <div>ID: {addon}</div>}
          <div className="row">
             <div className="f1 text-dimmed">{t(L.Amount)}</div>
             <div>{formatNumber(amount)}</div>

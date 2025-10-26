@@ -1,4 +1,5 @@
-import { AddonCraftRecipe, Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
+import { AddonCraftRecipe } from "@spaceship-idle/shared/src/game/definitions/AddonCraftRecipe";
+import { Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";

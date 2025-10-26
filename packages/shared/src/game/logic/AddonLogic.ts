@@ -1,7 +1,8 @@
 import { entriesOf, forEach, shuffle, type Tile } from "../../utils/Helper";
 import type { IHaveXY } from "../../utils/Vector2";
 import { abilityTarget } from "../definitions/Ability";
-import { type Addon, AddonCraftRecipe, AddonRequirementFunc, Addons, getAddonEffect } from "../definitions/Addons";
+import { AddonCraftRecipe } from "../definitions/AddonCraftRecipe";
+import { type Addon, AddonRequirementFunc, Addons, getAddonEffect } from "../definitions/Addons";
 import type { Blueprint } from "../definitions/Blueprints";
 import { type ShipClass, ShipClassList } from "../definitions/ShipClass";
 import type { GameState } from "../GameState";

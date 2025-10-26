@@ -5,7 +5,8 @@ import { L, t } from "../../utils/i18n";
 import { Generator } from "../../utils/NameGen";
 import { srand } from "../../utils/Random";
 import type { IHaveXY } from "../../utils/Vector2";
-import { type Addon, AddonCraftRecipe } from "../definitions/Addons";
+import { AddonCraftRecipe } from "../definitions/AddonCraftRecipe";
+import type { Addon } from "../definitions/Addons";
 import { Bonus } from "../definitions/Bonus";
 import {
    ExploreCostPerLightYear,
