@@ -44,7 +44,24 @@ export function AddonComp({
    const craftInfo = AddonCraftInfo[addon];
    return (
       <>
-         {import.meta.env.DEV && <div>ID: {addon}</div>}
+         {showDetails && (
+            <>
+               <div className="row g5">
+                  <div className="f1">{def.name()}</div>
+                  <TextureComp name={`Addon/${addon}`} width={16} />
+               </div>
+               {AddonCraftRecipe[addon] ? (
+                  <div className="text-space">
+                     <div className="mi inline sm">build</div> {t(L.ThisAddOnCanOnlyBeCrafted)}
+                  </div>
+               ) : null}
+               {amount > 0 && data && data.tile === null ? (
+                  <div className="text-red">
+                     <div className="mi inline sm">error</div> {t(L.ThisAddOnIsNotEquipped)}
+                  </div>
+               ) : null}
+            </>
+         )}
          <div className="row">
             <div className="f1 text-dimmed">{t(L.Amount)}</div>
             <div>{formatNumber(amount)}</div>
@@ -191,6 +208,7 @@ export function AddonComp({
                      </div>
                   </FloatingTip>
                )}
+               {import.meta.env.DEV && <div className="panel mt10 text-mono text-sm">ID: {addon}</div>}
             </>
          )}
       </>

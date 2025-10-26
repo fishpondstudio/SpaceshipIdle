@@ -366,6 +366,14 @@
    color: var(--mantine-color-red-5);
 }
 
+.text-yellow {
+   color: var(--mantine-color-yellow-5);
+}
+
+.text-orange {
+   color: var(--mantine-color-orange-5);
+}
+
 .text-blue {
    color: var(--mantine-color-blue-5);
 }

@@ -164,19 +164,6 @@ export const _Addons = {
       range: AbilityRange.Flanks,
       shipClass: "Scout",
    },
-   HP4: {
-      name: () => t(L.VitalLinkCohort),
-      effectDesc: (value: number) =>
-         t(L.RecoverXHPPerSecAndHPMultiplier, formatPercent(Math.min(0.05 * value, 0.5)), formatNumber(value / 2)),
-      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
-         rs.hpMultiplier.add(value, t(L.SourceAddon, self.name()));
-         rs.recoverHp(Math.min(0.05 * value, 0.5) * rs.props.hp);
-      },
-      cooldown: 1,
-      requirement: AddonRequirement.Cohort,
-      range: AbilityRange.Adjacent,
-      shipClass: "Corvette",
-   },
    Damage5: {
       name: () => t(L.TrueStrikeArcDiversity),
       effectDesc: (value: number) => t(L.GainTrueStrikeAndDamageMultiplier, formatNumber(value / 2)),
@@ -197,6 +184,17 @@ export const _Addons = {
       },
       cooldown: 1,
       requirement: AddonRequirement.Diversity,
+      range: AbilityRange.Adjacent,
+      shipClass: "Corvette",
+   },
+   HP4: {
+      name: () => t(L.HPLinkDistinction),
+      effectDesc: (value: number) => t(L.PlusXHPMultiplier, formatNumber(value)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.hpMultiplier.add(value, t(L.SourceAddon, self.name()));
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Distinction,
       range: AbilityRange.Adjacent,
       shipClass: "Corvette",
    },
@@ -225,6 +223,19 @@ export const _Addons = {
       shipClass: "Corvette",
    },
    HP5: {
+      name: () => t(L.VitalLinkCohort),
+      effectDesc: (value: number) =>
+         t(L.RecoverXHPPerSecAndHPMultiplier, formatPercent(Math.min(0.05 * value, 0.5)), formatNumber(value / 2)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.hpMultiplier.add(value, t(L.SourceAddon, self.name()));
+         rs.recoverHp(Math.min(0.05 * value, 0.5) * rs.props.hp);
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Cohort,
+      range: AbilityRange.Adjacent,
+      shipClass: "Frigate",
+   },
+   HP6: {
       name: () => t(L.PurifierSpanDistinction),
       effectDesc: (value: number) => t(L.PurifyEvery5SecondsAndHPMultiplier, formatNumber(value / 2)),
       effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
@@ -266,7 +277,34 @@ export const _Addons = {
       range: AbilityRange.Adjacent,
       shipClass: "Frigate",
    },
-
+   Damage9: {
+      name: () => t(L.CriticalStrikeLinkSpectrum),
+      effectDesc: (value: number) => t(L.GainCriticalStrikeAndDamageMultiplier, formatNumber(value / 2)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.addStatusEffect(addonStatusEffectKey(rs.tile), {
+            statusEffect: "CriticalDamage2",
+            source: t(L.SourceAddon, self.name()),
+            value: 0.25,
+            timeLeft: Number.POSITIVE_INFINITY,
+         });
+         rs.damageMultiplier.add(value / 2, t(L.SourceAddon, self.name()));
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Spectrum,
+      range: AbilityRange.Adjacent,
+      shipClass: "Frigate",
+   },
+   Damage10: {
+      name: () => t(L.DamageArrayDistinction),
+      effectDesc: (value: number) => t(L.PlusXDamageMultiplier, formatNumber(value)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.damageMultiplier.add(value, t(L.SourceAddon, self.name()));
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Distinction,
+      range: AbilityRange.Row,
+      shipClass: "Frigate",
+   },
    // Damage4: {
    //    name: () => t(L.TrueStrikeArray),
    //    desc: (value: number) => t(L.TrueStrikeArrayDesc, formatNumber(value / 2), formatNumber(value / 2)),

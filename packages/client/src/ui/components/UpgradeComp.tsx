@@ -1,4 +1,4 @@
-import { Popover } from "@mantine/core";
+import { Popover, ScrollArea } from "@mantine/core";
 import { type Addon, Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { hasUnequippedAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
@@ -186,23 +186,25 @@ export function UpgradeComp({ tile, gs }: ITileWithGameState): React.ReactNode {
                   <div className="mi pointer">rule_settings</div>
                </Popover.Target>
                <Popover.Dropdown>
-                  {mMapOf(G.save.state.addons, (addon, data, idx) => {
-                     if (data.amount <= 0) {
-                        return null;
-                     }
-                     return (
-                        <Fragment key={addon}>
-                           {idx > 0 ? <div className="divider" /> : null}
-                           <div className="row p10">
-                              <TextureComp name={`Addon/${addon}`} />
-                              <div>{Addons[addon].name()}</div>
-                              <div className="f1" />
-                              <AddonOpButton addon={addon} me={tile} />
-                           </div>
-                        </Fragment>
-                     );
-                  })}
-                  {G.save.state.addons.size === 0 ? <div className="f1">{t(L.NoAvailableAddons)}</div> : null}
+                  <ScrollArea.Autosize mah="50vh">
+                     {mMapOf(G.save.state.addons, (addon, data, idx) => {
+                        if (data.amount <= 0) {
+                           return null;
+                        }
+                        return (
+                           <Fragment key={addon}>
+                              {idx > 0 ? <div className="divider" /> : null}
+                              <div className="row p10">
+                                 <TextureComp name={`Addon/${addon}`} />
+                                 <div>{Addons[addon].name()}</div>
+                                 <div className="f1" />
+                                 <AddonOpButton addon={addon} me={tile} />
+                              </div>
+                           </Fragment>
+                        );
+                     })}
+                     {G.save.state.addons.size === 0 ? <div className="p10">{t(L.NoAvailableAddons)}</div> : null}
+                  </ScrollArea.Autosize>
                </Popover.Dropdown>
             </Popover>
          </div>

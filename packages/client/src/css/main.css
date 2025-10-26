@@ -356,3 +356,11 @@ table {
       border-radius: 5px;
    }
 }
+
+.addon-grid-view {
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   gap: 10px;
+   margin: 0 10px;
+}

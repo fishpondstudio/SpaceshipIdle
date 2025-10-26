@@ -1,11 +1,12 @@
+import { Indicator, SegmentedControl, TextInput } from "@mantine/core";
 import { AddonCraftRecipe } from "@spaceship-idle/shared/src/game/definitions/AddonCraftRecipe";
 import { Addons } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
-import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
+import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { mapOf, reduceOf } from "@spaceship-idle/shared/src/utils/Helper";
+import { clearFlag, cls, entriesOf, hasFlag, mapOf, reduceOf, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
-import React from "react";
+import React, { useState } from "react";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { showModal } from "../utils/ToggleModal";
@@ -19,6 +20,8 @@ import { playClick } from "./Sound";
 export function AddonPage(): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
    refreshOnTypedEvent(GameOptionUpdated);
+   const [search, setSearch] = useState("");
+   const isGridView = hasFlag(G.save.options.flag, GameOptionFlag.AddonGridView);
    return (
       <SidebarComp
          title={
@@ -28,76 +31,132 @@ export function AddonPage(): React.ReactNode {
             </div>
          }
       >
+         <div className="row m10">
+            <TextInput
+               leftSection={<div className="mi sm">search</div>}
+               rightSection={
+                  search.length > 0 ? (
+                     <div className="mi sm pointer" onClick={() => setSearch("")}>
+                        clear
+                     </div>
+                  ) : null
+               }
+               onKeyDown={(event) => {
+                  if (event.key === "Escape") {
+                     setSearch("");
+                  }
+               }}
+               className="f1"
+               value={search}
+               onChange={(event) => setSearch(event.currentTarget.value)}
+            />
+            <SegmentedControl
+               data={[
+                  { label: <div className="mi sm">list_alt</div>, value: "list" },
+                  { label: <div className="mi sm">grid_view</div>, value: "grid" },
+               ]}
+               value={isGridView ? "grid" : "list"}
+               onChange={(value) => {
+                  G.save.options.flag =
+                     value === "grid"
+                        ? setFlag(G.save.options.flag, GameOptionFlag.AddonGridView)
+                        : clearFlag(G.save.options.flag, GameOptionFlag.AddonGridView);
+                  GameOptionUpdated.emit();
+               }}
+            />
+         </div>
          {mapOf(ShipClass, (k, v, i) => {
             if (reduceOf(Addons, (prev, _, def) => prev + (def.shipClass === k ? 1 : 0), 0) === 0) {
                return null;
             }
             return (
                <React.Fragment key={k}>
-                  {i > 0 ? <div className="divider my10" /> : <div className="h10" />}
+                  <div className="divider my10" />
                   <div className="title">{t(L.XClass, v.name())}</div>
                   <div className="divider my10" />
-                  {mapOf(Addons, (addon) => {
-                     const def = Addons[addon];
-                     const amount = G.save.state.addons.get(addon)?.amount ?? 0;
-                     const tile = G.save.state.addons.get(addon)?.tile;
-                     if (def.shipClass !== k) {
-                        return null;
-                     }
-                     return (
-                        <FloatingTip
-                           key={addon}
-                           w={350}
-                           label={<AddonComp addon={addon} showDetails showCraft={false} />}
-                        >
-                           <div
-                              className="panel m10 pointer"
-                              onClick={() => {
-                                 playClick();
-                                 showModal({
-                                    children: <AddonModal addon={addon} />,
-                                    size: "md",
-                                    title: (
-                                       <>
-                                          <TextureComp
-                                             name={`Addon/${addon}`}
-                                             width={16 * 2}
-                                             className="inline-middle"
-                                          />{" "}
-                                          {Addons[addon].name()}
-                                       </>
-                                    ),
-                                    dismiss: true,
-                                 });
-                              }}
-                           >
-                              <div className="row">
-                                 <TextureComp name={`Addon/${addon}`} width={16 * 2} />
-                                 <div>{def.name()}</div>
-                                 {AddonCraftRecipe[addon] ? <div className="mi text-space">build</div> : null}
-                                 <div className="f1" />
-                                 {amount > 0 && tile === null ? (
-                                    <FloatingTip label={t(L.Unequipped)}>
-                                       <div className="mi text-red">error</div>
-                                    </FloatingTip>
-                                 ) : null}
-                              </div>
-                              <div className="divider mx-10 my5 dashed" />
-                              {amount > 0 ? (
-                                 <div className="text-sm">
-                                    <AddonComp addon={addon} showDetails={false} showCraft={false} />
-                                 </div>
-                              ) : (
-                                 <div className="row text-sm text-dimmed">
-                                    <div className="f1">
-                                       {AddonCraftRecipe[addon] ? t(L.NotCrafted) : t(L.NotDiscovered)}
+                  <div className={cls(isGridView ? "addon-grid-view" : null)}>
+                     {entriesOf(Addons)
+                        .filter(
+                           ([_, def]) =>
+                              def.shipClass === k && def.name().toLowerCase().includes(search.trim().toLowerCase()),
+                        )
+                        .map(([addon, def]) => {
+                           const amount = G.save.state.addons.get(addon)?.amount ?? 0;
+                           const tile = G.save.state.addons.get(addon)?.tile;
+                           const showAddonModal = () => {
+                              playClick();
+                              showModal({
+                                 children: <AddonModal addon={addon} />,
+                                 size: "md",
+                                 title: (
+                                    <>
+                                       <TextureComp name={`Addon/${addon}`} width={16 * 2} className="inline-middle" />{" "}
+                                       {Addons[addon].name()}
+                                    </>
+                                 ),
+                                 dismiss: true,
+                              });
+                           };
+                           if (isGridView) {
+                              return (
+                                 <FloatingTip
+                                    key={addon}
+                                    w={350}
+                                    label={<AddonComp addon={addon} showDetails showCraft={false} />}
+                                 >
+                                    <Indicator
+                                       label={amount}
+                                       size={20}
+                                       disabled={amount <= 0}
+                                       offset={5}
+                                       color={amount > 0 && tile === null ? "yellow" : "space"}
+                                    >
+                                       <div className="panel pointer" onClick={showAddonModal}>
+                                          <TextureComp name={`Addon/${addon}`} width={16 * 2} />
+                                       </div>
+                                    </Indicator>
+                                 </FloatingTip>
+                              );
+                           }
+                           return (
+                              <FloatingTip
+                                 key={addon}
+                                 w={350}
+                                 label={<AddonComp addon={addon} showDetails showCraft={false} />}
+                              >
+                                 <div className="panel m10 pointer" onClick={showAddonModal}>
+                                    <div className="row g5">
+                                       <TextureComp name={`Addon/${addon}`} width={16 * 2} />
+                                       <div>{def.name()}</div>
+                                       <div className="f1" />
+                                       {AddonCraftRecipe[addon] ? (
+                                          <FloatingTip label={t(L.ThisAddOnCanOnlyBeCrafted)}>
+                                             <div className="mi text-space">build</div>
+                                          </FloatingTip>
+                                       ) : null}
+                                       {amount > 0 && tile === null ? (
+                                          <FloatingTip label={t(L.ThisAddOnIsNotEquipped)}>
+                                             <div className="mi text-red">error</div>
+                                          </FloatingTip>
+                                       ) : null}
                                     </div>
+                                    <div className="divider mx-10 my5 dashed" />
+                                    {amount > 0 ? (
+                                       <div className="text-sm">
+                                          <AddonComp addon={addon} showDetails={false} showCraft={false} />
+                                       </div>
+                                    ) : (
+                                       <div className="row text-sm text-dimmed">
+                                          <div className="f1">
+                                             {AddonCraftRecipe[addon] ? t(L.NotCrafted) : t(L.NotDiscovered)}
+                                          </div>
+                                       </div>
+                                    )}
                                  </div>
-                              )}
-                           </div>
-                        </FloatingTip>
-                     );
-                  })}
+                              </FloatingTip>
+                           );
+                        })}
+                  </div>
                </React.Fragment>
             );
          })}

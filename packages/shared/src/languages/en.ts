@@ -876,4 +876,9 @@ export const EN = {
    CriticalStrikeSpanSpectrum: "Critical Strike Span Spectrum",
    PerfectStrikeLinkSpectrum: "Perfect Strike Link Spectrum",
    GainPrecisionStrikeTrueStrikeAndDamageMultiplier: "Precision Strike (damage ignores target's evasion), True Strike (damage ignores target's armor, shield and deflection) and +%% Damage Multiplier",
+   HPLinkDistinction: "HP Link Distinction",
+   CriticalStrikeLinkSpectrum: "Critical Strike Link Spectrum",
+   DamageArrayDistinction: "Damage Array Distinction",
+   ThisAddOnCanOnlyBeCrafted: "This add-on can only be crafted",
+   ThisAddOnIsNotEquipped: "This add-on is not equipped",
 };
