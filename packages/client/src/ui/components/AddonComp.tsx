@@ -83,7 +83,7 @@ export function AddonComp({
                <div className="text-sm text-space">
                   <div className="mi inline sm">info</div> {t(L.AddonEffectTooltip)}
                </div>
-               <div className="divider dashed my10 mx-10" />
+               {(recipe || craftInfo) && <div className="divider dashed my10 mx-10" />}
                {craftInfo && (
                   <FloatingTip
                      w={300}

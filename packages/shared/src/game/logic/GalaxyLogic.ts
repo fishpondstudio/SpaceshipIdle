@@ -5,7 +5,7 @@ import { L, t } from "../../utils/i18n";
 import { Generator } from "../../utils/NameGen";
 import { srand } from "../../utils/Random";
 import type { IHaveXY } from "../../utils/Vector2";
-import type { Addon } from "../definitions/Addons";
+import { type Addon, AddonCraftRecipe } from "../definitions/Addons";
 import { Bonus } from "../definitions/Bonus";
 import {
    ExploreCostPerLightYear,
@@ -60,14 +60,16 @@ export function findStarSystem(id: number, galaxy: Galaxy): StarSystem | undefin
 
 export function getAddonReward(seed: string, gs: GameState): Addon[] {
    const shipClass = getShipClass(gs);
-   const addons = getAddonsInClass(shipClass, gs.blueprint);
+   const addons = getAddonsInClass(shipClass, gs.blueprint).filter((addon) => !AddonCraftRecipe[addon]);
    const random = srand(seed);
    shuffle(addons, random);
    const [addon, ...candidates] = addons;
    const previousShipClass = getPreviousShipClass(shipClass);
    if (previousShipClass) {
       getAddonsInClass(previousShipClass, gs.blueprint).forEach((b) => {
-         candidates.push(b);
+         if (!AddonCraftRecipe[b]) {
+            candidates.push(b);
+         }
       });
    }
    shuffle(candidates, random);

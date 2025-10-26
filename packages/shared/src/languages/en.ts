@@ -861,8 +861,11 @@ export const EN = {
    RecoverXHPPerSec: "Recover %% HP every second",
    PrecisionSpanSpectrum: "Precision Span Spectrum",
    GainPrecisionStrikeAndDamageMultiplier: "Precision Strike (damage ignores target's evasion) and +%% Damage Multiplier",
+   GainTrueStrikeAndDamageMultiplier: "True Strike (damage ignores target's armor, shield and deflection) and +%% Damage Multiplier",
    PrecisionLinkDistinction: "Precision Link Distinction",
    VitalLinkSpectrum: "Vital Link Spectrum",
    RecoverXHPPerSecAndHPMultiplier: "Recover %% HP every second and +%% HP Multiplier",
    NotCrafted: "Not Crafted",
+   VitalLinkCohort: "Vital Link Cohort",
+   TrueStrikeArcSpectrum: "True Strike Arc Spectrum",
 };

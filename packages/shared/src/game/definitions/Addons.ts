@@ -175,39 +175,31 @@ export const _Addons = {
       range: AbilityRange.Adjacent,
       shipClass: "Scout",
    },
-   // HP3: {
-   //    name: () => t(L.LaserBlockMatrix),
-   //    desc: (value: number) => t(L.LaserBlockMatrixDesc, formatNumber(value / 2), formatNumber(value / 2)),
-   //    tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-   //       matrixEffect(tile, self.range, runtime, (rs) => {
-   //          rs.hpMultiplier.add(value / 2, t(L.SourceAddon, t(L.LaserBlockMatrix)));
-   //       });
-   //    },
-   //    range: AbilityRange.Adjacent,
-   //    shipClass: "Corvette",
-   // },
-   // HP4: {
-   //    name: () => t(L.HPDiversity),
-   //    desc: (value: number) => t(L.HPDiversityDesc, formatNumber(value), formatNumber(value)),
-   //    tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-   //       diversityEffect(tile, self.range, runtime, (rs) => {
-   //          rs.hpMultiplier.add(value, t(L.SourceAddon, t(L.HPDiversity)));
-   //       });
-   //    },
-   //    range: AbilityRange.Adjacent,
-   //    shipClass: "Corvette",
-   // },
-   // Damage3: {
-   //    name: () => t(L.DamageDiversity),
-   //    desc: (value: number) => t(L.DamageDiversityDesc, formatNumber(value), formatNumber(value)),
-   //    tick: (self: IAddonDefinition, value: number, tile: Tile, state: IAddonState, runtime: Runtime) => {
-   //       diversityEffect(tile, self.range, runtime, (rs) => {
-   //          rs.damageMultiplier.add(value, t(L.SourceAddon, t(L.DamageDiversity)));
-   //       });
-   //    },
-   //    range: AbilityRange.Adjacent,
-   //    shipClass: "Corvette",
-   // },
+   HP4: {
+      name: () => t(L.VitalLinkCohort),
+      effectDesc: (value: number) =>
+         t(L.RecoverXHPPerSecAndHPMultiplier, formatPercent(Math.min(0.05 * value, 0.5)), formatNumber(value)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.hpMultiplier.add(value, t(L.SourceAddon, self.name()));
+         rs.recoverHp(Math.min(0.05 * value, 0.5) * rs.props.hp);
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Cohort,
+      range: AbilityRange.Adjacent,
+      shipClass: "Corvette",
+   },
+   Damage5: {
+      name: () => t(L.TrueStrikeArcSpectrum),
+      effectDesc: (value: number) => t(L.GainTrueStrikeAndDamageMultiplier, formatNumber(value / 2)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.TrueDamage);
+         rs.damageMultiplier.add(value / 2, t(L.SourceAddon, self.name()));
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Distinction,
+      range: AbilityRange.Adjacent,
+      shipClass: "Corvette",
+   },
    // Damage4: {
    //    name: () => t(L.TrueStrikeArray),
    //    desc: (value: number) => t(L.TrueStrikeArrayDesc, formatNumber(value / 2), formatNumber(value / 2)),
