@@ -17,6 +17,10 @@ export const AddonCraftRecipe: Partial<Record<Addon, Partial<Record<Addon, numbe
    Damage6: {
       Damage5: 2,
    },
+   Damage8: {
+      Damage4: 1,
+      Damage6: 1,
+   },
 } as const;
 
 export const AddonCraftInfo: Partial<Record<Addon, Addon[]>> = {};

@@ -253,6 +253,19 @@ export const _Addons = {
       range: AbilityRange.FrontAndRear,
       shipClass: "Frigate",
    },
+   Damage8: {
+      name: () => t(L.PerfectStrikeLinkSpectrum),
+      effectDesc: (value: number) => t(L.GainPrecisionStrikeTrueStrikeAndDamageMultiplier, formatNumber(value / 2)),
+      effect: (self: IAddonDefinition, value: number, rs: RuntimeTile) => {
+         rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.NoEvasion);
+         rs.props.projectileFlag = setFlag(rs.props.projectileFlag, ProjectileFlag.TrueDamage);
+         rs.damageMultiplier.add(value / 2, t(L.SourceAddon, self.name()));
+      },
+      cooldown: 1,
+      requirement: AddonRequirement.Spectrum,
+      range: AbilityRange.Adjacent,
+      shipClass: "Frigate",
+   },
 
    // Damage4: {
    //    name: () => t(L.TrueStrikeArray),

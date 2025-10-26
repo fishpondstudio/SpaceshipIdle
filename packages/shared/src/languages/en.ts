@@ -874,4 +874,6 @@ export const EN = {
    TrueStrikeLinkDiversity: "True Strike Link Diversity",
    PurifierSpanDistinction: "Purifier Span Distinction",
    CriticalStrikeSpanSpectrum: "Critical Strike Span Spectrum",
+   PerfectStrikeLinkSpectrum: "Perfect Strike Link Spectrum",
+   GainPrecisionStrikeTrueStrikeAndDamageMultiplier: "Precision Strike (damage ignores target's evasion), True Strike (damage ignores target's armor, shield and deflection) and +%% Damage Multiplier",
 };
