@@ -881,4 +881,5 @@ export const EN = {
    DamageArrayDistinction: "Damage Array Distinction",
    ThisAddOnCanOnlyBeCrafted: "This add-on can only be crafted",
    ThisAddOnIsNotEquipped: "This add-on is not equipped",
+   ConstructionCost: "Construction Cost",
 };

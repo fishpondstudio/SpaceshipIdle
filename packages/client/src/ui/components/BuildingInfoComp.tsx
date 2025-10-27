@@ -4,10 +4,11 @@ import type { Building } from "@spaceship-idle/shared/src/game/definitions/Build
 import { getDamagePerFire, getHP } from "@spaceship-idle/shared/src/game/logic/BuildingLogic";
 import { formatNumber } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { memo } from "react";
 import { WeaponTypeSeriesVariantComp } from "../WeaponTypeSeriesVariantComp";
 import { AbilityComp } from "./AbilityComp";
 
-export function BuildingInfoComp({ building }: { building: Building }): React.ReactNode {
+function _BuildingInfoComp({ building }: { building: Building }): React.ReactNode {
    const def = Config.Buildings[building];
    const dmgPerFire = getDamagePerFire({ type: building, level: 1 });
    return (
@@ -60,3 +61,5 @@ export function BuildingInfoComp({ building }: { building: Building }): React.Re
       </>
    );
 }
+
+export const BuildingInfoComp = memo(_BuildingInfoComp, (prev, next) => prev.building === next.building);

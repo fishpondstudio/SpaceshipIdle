@@ -286,6 +286,72 @@ export const _Catalyst = {
          hp: 1,
       },
    },
+   D1: {
+      trait: () => t(L.XClassWeapon, t(L.TechFrigate)),
+      filter: (b: Building) => Config.BuildingToShipClass[b] === "Frigate",
+      amount: 6,
+      multipliers: {
+         hp: 1,
+         damage: 1,
+      },
+   },
+   D2: {
+      trait: () => t(L.XClassWeapon, t(L.TechFrigate)),
+      filter: (b: Building) => Config.BuildingToShipClass[b] === "Frigate",
+      amount: 6,
+      multipliers: {
+         hp: 2,
+      },
+   },
+   D3: {
+      trait: () => t(L.XClassWeapon, t(L.TechFrigate)),
+      filter: (b: Building) => Config.BuildingToShipClass[b] === "Frigate",
+      amount: 6,
+      multipliers: {
+         damage: 2,
+      },
+   },
+   D4: {
+      trait: () => t(L.RC),
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.RC,
+      amount: 6,
+      multipliers: {
+         damage: 1,
+         hp: 1,
+      },
+   },
+   D5: {
+      trait: () => t(L.RC),
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.RC,
+      amount: 6,
+      multipliers: {
+         damage: 2,
+      },
+   },
+   D6: {
+      trait: () => t(L.RC),
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.RC,
+      amount: 6,
+      multipliers: {
+         hp: 2,
+      },
+   },
+   D7: {
+      trait: () => t(L.FD),
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.FD,
+      amount: 3,
+      multipliers: {
+         damage: 1,
+      },
+   },
+   D8: {
+      trait: () => t(L.FD),
+      filter: (b: Building) => Config.Buildings[b].type === BuildingType.FD,
+      amount: 3,
+      multipliers: {
+         hp: 1,
+      },
+   },
 } as const satisfies Record<string, ICatalystDefinition>;
 
 export type Catalyst = keyof typeof _Catalyst;

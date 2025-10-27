@@ -11,6 +11,7 @@ import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { canCraftAddon, craftAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
 import { formatNumber, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { memo } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { G } from "../../utils/Global";
 import { refreshOnTypedEvent } from "../../utils/Hook";
@@ -19,7 +20,7 @@ import { FloatingTip } from "./FloatingTip";
 import { html } from "./RenderHTMLComp";
 import { TextureComp } from "./TextureComp";
 
-export function AddonComp({
+function _AddonComp({
    addon,
    showDetails,
    showCraft,
@@ -225,3 +226,7 @@ function AddonCraftItem({ addon, count }: { addon: Addon; count: number }): Reac
       </div>
    );
 }
+
+export const AddonComp = memo(_AddonComp, (prev, next) => {
+   return prev.addon === next.addon && prev.showDetails === next.showDetails && prev.showCraft === next.showCraft;
+});

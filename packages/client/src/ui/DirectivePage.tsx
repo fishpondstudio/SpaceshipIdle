@@ -77,12 +77,13 @@ export function DirectivePage(): React.ReactNode {
                                  <button
                                     className="btn text-sm"
                                     onClick={(e) => {
-                                       playUpgrade();
                                        G.save.state.selectedDirectives.set(shipClass, bonus);
                                        const action = Bonus[bonus].onStart;
                                        if (action) {
                                           playBling();
                                           action(G.runtime, getElementCenter(e.target as HTMLElement));
+                                       } else {
+                                          playUpgrade();
                                        }
                                        GameStateUpdated.emit();
                                     }}

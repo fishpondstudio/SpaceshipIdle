@@ -49,7 +49,7 @@ export function AugmentPage(): React.ReactNode {
                <div className="panel m10" key={augment}>
                   {starSystem.discovered ? (
                      <>
-                        <div className="row">
+                        <div className="row fstart">
                            <TextureComp name={`Galaxy/${starSystem.texture}`} />
                            <div className="f1">{Augments[augment].desc(1, G.runtime)}</div>
                         </div>

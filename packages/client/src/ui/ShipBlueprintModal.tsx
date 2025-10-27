@@ -1,6 +1,7 @@
 import { Select } from "@mantine/core";
 import { type Blueprint, Blueprints } from "@spaceship-idle/shared/src/game/definitions/Blueprints";
 import { ShipClass, ShipClassList } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
+import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { calculateAABB, getFullShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { getBuildingsWithinShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { cls, iMapOf, randOne, type Tile, tileToPoint } from "@spaceship-idle/shared/src/utils/Helper";
@@ -22,10 +23,13 @@ export function ShipBlueprintModal() {
                className="btn mx10 mt10"
                onClick={() => {
                   G.save.state.tiles.clear();
+                  G.save.state.blueprint = blueprint;
                   const buildings = getBuildingsWithinShipClass(shipClass);
                   Blueprints[blueprint].blueprint[shipClass].forEach((tile) => {
                      G.save.state.tiles.set(tile, { type: randOne(buildings), level: 1 });
+                     G.runtime.expire(tile);
                   });
+                  GameStateUpdated.emit();
                }}
             >
                Load

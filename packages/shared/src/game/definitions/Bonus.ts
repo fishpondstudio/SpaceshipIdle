@@ -23,6 +23,8 @@ export const Bonus = {
    ScoutClass2XPMultiplier: shipClassXPMultiplier("Scout", 2),
    CorvetteClass1XPMultiplier: shipClassXPMultiplier("Corvette", 1),
    CorvetteClass2XPMultiplier: shipClassXPMultiplier("Corvette", 2),
+   FrigateClass1XPMultiplier: shipClassXPMultiplier("Frigate", 1),
+   FrigateClass2XPMultiplier: shipClassXPMultiplier("Frigate", 2),
 
    Reduce10WarmongerPerSec: reduceWarmongerPerSec(1),
    Reduce15WarmongerPerSec: reduceWarmongerPerSec(1.5),
@@ -30,6 +32,7 @@ export const Bonus = {
    Reduce1MinWarmonger: reduceMinWarmonger(1),
    Reduce2MinWarmonger: reduceMinWarmonger(2),
    Reduce3MinWarmonger: reduceMinWarmonger(3),
+   Reduce4MinWarmonger: reduceMinWarmonger(4),
 
    Get5ExtraXPPerSec: extraXPPerSec(0.05),
    Get10ExtraXPPerSec: extraXPPerSec(0.1),
@@ -45,14 +48,17 @@ export const Bonus = {
    Get8VictoryPointOnExp: victoryPointOnExpiration(8),
    Get10VictoryPointOnExp: victoryPointOnExpiration(10),
    Get12VictoryPointOnExp: victoryPointOnExpiration(12),
+   Get14VictoryPointOnExp: victoryPointOnExpiration(14),
 
    Get3VictoryPointOnDeclExp: victoryPointOnDeclarationAndExpiration(3),
    Get4VictoryPointOnDeclExp: victoryPointOnDeclarationAndExpiration(4),
    Get5VictoryPointOnDeclExp: victoryPointOnDeclarationAndExpiration(5),
+   Get6VictoryPointOnDeclExp: victoryPointOnDeclarationAndExpiration(6),
 
    Get4VictoryPointOnDecl: victoryPointOnDeclaration(4),
    Get5VictoryPointOnDecl: victoryPointOnDeclaration(5),
    Get6VictoryPointOnDecl: victoryPointOnDeclaration(6),
+   Get7VictoryPointOnDecl: victoryPointOnDeclaration(7),
 
    Get100hWarpOnExp: hoursOfWarpOnExpiration(1),
    Get125hWarpOnExp: hoursOfWarpOnExpiration(1.25),
@@ -63,10 +69,12 @@ export const Bonus = {
    GetSkiffClassXPOnDecl: shipClassOneTimeXP("Skiff"),
    GetScoutClassXPOnDecl: shipClassOneTimeXP("Scout"),
    GetCorvetteClassXPOnDecl: shipClassOneTimeXP("Corvette"),
+   GetFrigateClassXPOnDecl: shipClassOneTimeXP("Frigate"),
 
    Get20VictoryPointOnDecl: victoryPointOnDeclaration(20),
    Get30VictoryPointOnDecl: victoryPointOnDeclaration(30),
    Get40VictoryPointOnDecl: victoryPointOnDeclaration(40),
+   Get50VictoryPointOnDecl: victoryPointOnDeclaration(50),
 
    ResetBackstabberOnDecl: resetBackstabberOnDeclaration(),
    ResetWarmongerOnDecl: resetWarmongerOnDeclaration(),
@@ -74,6 +82,7 @@ export const Bonus = {
    Get8hWarpOnDecl: hoursOfWarpOnDeclaration(8),
    Get12hWarpOnDecl: hoursOfWarpOnDeclaration(12),
    Get16hWarpOnDecl: hoursOfWarpOnDeclaration(16),
+   Get20hWarpOnDecl: hoursOfWarpOnDeclaration(20),
 } as const satisfies Record<string, IBonusDefinition>;
 
 export type Bonus = keyof typeof Bonus;

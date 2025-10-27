@@ -18,6 +18,7 @@ export const GameOptionFlag = {
    LinearCooldownIndicator: 1 << 7,
    DisableWeaponFireAnimation: 1 << 8,
    AddonGridView: 1 << 9,
+   BuildingGridView: 1 << 10,
 };
 
 export type GameOptionFlag = ValueOf<typeof GameOptionFlag>;

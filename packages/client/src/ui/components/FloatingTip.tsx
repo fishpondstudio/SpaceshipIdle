@@ -107,23 +107,26 @@ export const FloatingTip = factory<
       };
    }, [setOpened]);
 
+   const shouldShow = !disabled && opened;
+
    return (
       <>
          <Portal reuseTargetNode>
-            <div
-               className="floating-tip"
-               style={{
-                  ...style,
-                  display: !disabled && opened ? "block" : "none",
-                  top: (y && Math.round(y)) ?? "",
-                  left: (x && Math.round(x)) ?? "",
-                  width: w,
-                  maxWidth: w,
-               }}
-               ref={floating}
-            >
-               {label}
-            </div>
+            {shouldShow && (
+               <div
+                  className="floating-tip"
+                  style={{
+                     ...style,
+                     top: (y && Math.round(y)) ?? "",
+                     left: (x && Math.round(x)) ?? "",
+                     width: w,
+                     maxWidth: w,
+                  }}
+                  ref={floating}
+               >
+                  {label}
+               </div>
+            )}
          </Portal>
 
          {cloneElement(children, {

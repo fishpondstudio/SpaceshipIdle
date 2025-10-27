@@ -134,8 +134,8 @@ function CatalystItem({ catalyst, cat }: { catalyst: Catalyst; cat: CatalystCat 
                         label={
                            <>
                               <div className="row g5">
+                                 <div className="f1">{getBuildingName(b)}</div>
                                  <TextureComp name={`Building/${b}`} />
-                                 <div className="text-lg">{getBuildingName(b)}</div>
                               </div>
                               <BuildingInfoComp building={b} />
                            </>

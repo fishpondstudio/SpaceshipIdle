@@ -81,9 +81,10 @@ forEach(Blueprints, (key, def) => {
    const design = def.blueprint;
    forEach(design, (shipClass, layout) => {
       if (key === "Orion") {
+         const expected = Math.floor((Odyssey[shipClass].length * 1.1) / 2) * 2;
          console.assert(
-            layout.length === Math.floor((Odyssey[shipClass].length * 1.1) / 2) * 2,
-            `Design ${key}: ${shipClass} class has ${layout.length} tiles, expected ${Odyssey[shipClass].length}`,
+            layout.length === expected,
+            `Design ${key}: ${shipClass} class has ${layout.length} tiles, expected ${expected}`,
          );
          return;
       }
