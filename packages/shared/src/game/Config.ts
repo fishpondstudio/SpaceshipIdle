@@ -1,10 +1,12 @@
 import { forEach, formatNumber, keysOf, sizeOf, tileToString } from "../utils/Helper";
 import { L, t } from "../utils/i18n";
+import { AddonCraftInfo } from "./definitions/AddonCraftRecipe";
+import { Addons } from "./definitions/Addons";
 import { Blueprints } from "./definitions/Blueprints";
 import { type Building, Buildings } from "./definitions/Buildings";
 import { MaxBattleTick } from "./definitions/Constant";
 import { Resources } from "./definitions/Resource";
-import { type ShipClass } from "./definitions/ShipClass";
+import type { ShipClass } from "./definitions/ShipClass";
 import { type StatusEffect, StatusEffects } from "./definitions/StatusEffect";
 import { type Tech, TechDefinitions } from "./definitions/TechDefinitions";
 import { techColumnToShipClass } from "./logic/TechLogic";
@@ -78,6 +80,10 @@ function initConfig(): void {
       console.log(
          "Unused Elements",
          keysOf(PeriodicTable).filter((e) => !Config.Elements.has(e)),
+      );
+      console.log(
+         "Addons not used in any craft recipe:",
+         keysOf(Addons).filter((addon) => !AddonCraftInfo[addon]),
       );
    }
 }

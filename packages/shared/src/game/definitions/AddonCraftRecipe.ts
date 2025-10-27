@@ -1,5 +1,5 @@
-import { forEach, keysOf, safePush } from "../../utils/Helper";
-import { type Addon, Addons } from "./Addons";
+import { forEach, safePush } from "../../utils/Helper";
+import { type Addon } from "./Addons";
 
 export const AddonCraftRecipe: Partial<Record<Addon, Partial<Record<Addon, number>>>> = {
    Damage2: {
@@ -41,8 +41,3 @@ forEach(AddonCraftRecipe, (craftInfo, recipe) => {
       safePush(AddonCraftInfo, craftFrom, craftInfo);
    });
 });
-
-console.log(
-   "Addons not used in any craft recipe:",
-   keysOf(Addons).filter((addon) => !AddonCraftInfo[addon]),
-);
