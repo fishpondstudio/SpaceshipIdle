@@ -280,13 +280,14 @@ export class TileVisual extends Container {
          t.text = `${this._damageValue >= 0 ? "-" : "+"}${formatNumber(Math.abs(this._damageValue))}`;
          t.tint = this._damageValue > 0 ? 0xe74c3c : 0x2ecc71;
          this._damageValue = 0;
-         t.alpha = 0;
          t.anchor.set(0.5, 0.5);
          t.x = this.x;
          t.y = this.y - 30;
+         t.alpha = 1;
+         t.scale.set(0);
          sequence(
-            to(t, { y: t.y - 10, alpha: 1 }, 0.25, Easing.OutQuad),
-            to(t, { y: t.y - 50, alpha: 0 }, 1.25, Easing.InQuad),
+            to(t, { y: t.y - 30, scale: { x: 1, y: 1 } }, 0.25, Easing.OutQuad),
+            to(t, { alpha: 0 }, 1.25, Easing.InQuad),
             runFunc(() => {
                ShipScene.TooltipPool.release(t);
             }),
