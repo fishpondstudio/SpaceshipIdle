@@ -3,10 +3,9 @@ import type { Circle } from "../../utils/Circle";
 import { CURRENCY_EPSILON, capitalize, clamp, hasFlag, rand, randomAlphaNumeric, shuffle } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Generator } from "../../utils/NameGen";
-import { srand } from "../../utils/Random";
 import type { IHaveXY } from "../../utils/Vector2";
 import { AddonCraftRecipe } from "../definitions/AddonCraftRecipe";
-import type { Addon } from "../definitions/Addons";
+import { type Addon, Addons } from "../definitions/Addons";
 import { Bonus } from "../definitions/Bonus";
 import {
    ExploreCostPerLightYear,
@@ -59,10 +58,9 @@ export function findStarSystem(id: number, galaxy: Galaxy): StarSystem | undefin
    return undefined;
 }
 
-export function getAddonReward(seed: string, gs: GameState): Addon[] {
+export function getAddonReward(random: () => number, gs: GameState): Addon[] {
    const shipClass = getShipClass(gs);
    const addons = getAddonsInClass(shipClass, gs.blueprint).filter((addon) => !AddonCraftRecipe[addon]);
-   const random = srand(seed);
    shuffle(addons, random);
    const [addon, ...candidates] = addons;
    const previousShipClass = getPreviousShipClass(shipClass);
@@ -76,7 +74,9 @@ export function getAddonReward(seed: string, gs: GameState): Addon[] {
    shuffle(candidates, random);
    const result = candidates.slice(0, 2);
    result.unshift(addon);
-   return result;
+   return result.sort(
+      (a, b) => ShipClassList.indexOf(Addons[b].shipClass) - ShipClassList.indexOf(Addons[a].shipClass),
+   );
 }
 
 interface ValueBreakdown {

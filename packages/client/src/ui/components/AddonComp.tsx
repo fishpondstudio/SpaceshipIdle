@@ -9,6 +9,7 @@ import {
 } from "@spaceship-idle/shared/src/game/definitions/Addons";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { canCraftAddon, craftAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
+import { showSuccess } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { formatNumber, mapOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { memo } from "react";
@@ -19,6 +20,8 @@ import { playError, playUpgrade } from "../Sound";
 import { FloatingTip } from "./FloatingTip";
 import { html } from "./RenderHTMLComp";
 import { TextureComp } from "./TextureComp";
+
+const ShowAddonId = import.meta.env.DEV && false;
 
 function _AddonComp({
    addon,
@@ -94,7 +97,7 @@ function _AddonComp({
                      </Badge>
                   </FloatingTip>
                </div>
-               <div className="row wrap">
+               <div className="row wrap fstart">
                   <div className="f1 text-dimmed">{t(L.Condition)}</div>
                   <div>{AddonRequirementLabel[def.requirement]()}</div>
                </div>
@@ -200,6 +203,7 @@ function _AddonComp({
                                     playUpgrade();
                                     craftAddon(addon, G.save.state);
                                     GameStateUpdated.emit();
+                                    showSuccess(t(L.AddOnCraftedSuccessfully, Addons[addon].name()));
                                  }}
                               >
                                  <div className="mi inline">build</div> {t(L.Craft)}
@@ -209,7 +213,7 @@ function _AddonComp({
                      </div>
                   </FloatingTip>
                )}
-               {import.meta.env.DEV && <div className="panel mt10 text-mono text-sm">ID: {addon}</div>}
+               {ShowAddonId && <div className="text-sm text-dimmed">ID: {addon}</div>}
             </>
          )}
       </>

@@ -1,4 +1,4 @@
-import { formatNumber, formatPercent, setFlag, type ValueOf } from "../../utils/Helper";
+import { formatNumber, formatPercent, keysOf, setFlag, type ValueOf } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { Config } from "../Config";
 import { parseBuildingCode } from "../logic/BuildingLogic";
@@ -383,6 +383,7 @@ export const _Addons = {
 
 export type Addon = keyof typeof _Addons;
 export const Addons: Record<Addon, IAddonDefinition> = _Addons;
+export const AddonList = keysOf(Addons);
 
 export function getAddonEffect(amount: number): number {
    if (amount <= 0) {

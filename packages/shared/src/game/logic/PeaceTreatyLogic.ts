@@ -2,16 +2,11 @@ import { clamp, rollDice } from "../../utils/Helper";
 import { L, t } from "../../utils/i18n";
 import { type Addon, Addons } from "../definitions/Addons";
 import type { BattleResult } from "../definitions/Galaxy";
-import { ShipClassList } from "../definitions/ShipClass";
 import type { GameState } from "../GameState";
 import { getVictoryType } from "./BattleLogic";
 import { BattleVictoryTypeLabel } from "./BattleType";
 import { addResource, getStat } from "./ResourceLogic";
 import { getShipClass } from "./TechLogic";
-
-export function getBaseValue(amount: number): number {
-   return clamp((amount - 1) * 50, 0, Number.POSITIVE_INFINITY);
-}
 
 export interface Breakdown {
    label: string;
@@ -24,16 +19,19 @@ export function calculateRewardValue(result: BattleResult, gs: GameState): [numb
    const breakdown: Breakdown[] = [];
    const vp = result.resources.get("VictoryPoint");
    if (vp) {
-      const valueFromVictoryPoint = getBaseValue(vp);
+      const valueFromVictoryPoint = (vp - 1) * 50;
       value += valueFromVictoryPoint;
       breakdown.push({ label: t(L.VictoryPoint), value: valueFromVictoryPoint });
    }
    let totalAddons = 0;
    let differentAddons = 0;
    let undiscoveredAddons = 0;
+   let maxAddonFactor = 0;
    result.addons.forEach((count, addon) => {
       if (count > 0) {
-         totalAddons += count * getAddonFactor(addon, gs);
+         const addonFactor = getAddonFactor(addon, gs);
+         maxAddonFactor = Math.max(maxAddonFactor, addonFactor);
+         totalAddons += count * addonFactor;
          ++differentAddons;
          if ((gs.addons.get(addon)?.amount ?? 0) === 0) {
             ++undiscoveredAddons;
@@ -41,7 +39,7 @@ export function calculateRewardValue(result: BattleResult, gs: GameState): [numb
       }
    });
    if (totalAddons > 0) {
-      const valueFromAddons = Math.round(getBaseValue(totalAddons));
+      const valueFromAddons = Math.round((totalAddons - maxAddonFactor) * 50);
       value += valueFromAddons;
       breakdown.push({ label: t(L.Addons), value: valueFromAddons });
    }
@@ -61,7 +59,11 @@ export function calculateRewardValue(result: BattleResult, gs: GameState): [numb
 function getAddonFactor(Addon: Addon, gs: GameState): number {
    const shipClass = Addons[Addon].shipClass;
    const currentShipClass = getShipClass(gs);
-   return 2 ** (ShipClassList.indexOf(shipClass) - ShipClassList.indexOf(currentShipClass));
+   // return 2 ** (ShipClassList.indexOf(shipClass) - ShipClassList.indexOf(currentShipClass));
+   if (shipClass === currentShipClass) {
+      return 1;
+   }
+   return 0.8;
 }
 
 export function getWarmongerPenalty(gs: GameState): number {

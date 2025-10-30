@@ -882,4 +882,5 @@ export const EN = {
    ThisAddOnCanOnlyBeCrafted: "This add-on can only be crafted",
    ThisAddOnIsNotEquipped: "This add-on is not equipped",
    ConstructionCost: "Construction Cost",
+   AddOnCraftedSuccessfully: "%% crafted successfully",
 };

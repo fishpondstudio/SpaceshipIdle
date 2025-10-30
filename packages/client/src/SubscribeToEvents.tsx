@@ -11,7 +11,6 @@ import { addStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
 import { OnBattleStatusChanged } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { getDOMRectCenter } from "@spaceship-idle/shared/src/utils/Helper";
 import type { IHaveXY } from "@spaceship-idle/shared/src/utils/Vector2";
-import type React from "react";
 import { saveGame } from "./game/LoadSave";
 import { onSteamClose } from "./rpc/SteamClient";
 import { getTextureSpriteStyle } from "./ui/components/TextureComp";
@@ -26,17 +25,9 @@ import { showModal } from "./utils/ToggleModal";
 export function subscribeToEvents(): void {
    OnBattleStatusChanged.on(({ status, prevStatus }) => {
       if (prevStatus === BattleStatus.InProgress && status !== BattleStatus.InProgress) {
-         let modal: React.ReactNode = null;
          switch (G.runtime.battleType) {
             case BattleType.Battle: {
                const stat = G.runtime.leftStat;
-               modal = (
-                  <PeaceTreatyModal
-                     battleScore={Math.floor((100 * stat.currentHp) / stat.maxHp)}
-                     name={G.runtime.right.name}
-                     battleInfo={G.runtime.battleInfo}
-                  />
-               );
                if (G.runtime.battleStatus === BattleStatus.RightWin) {
                   addStat("Defeat", 1, G.save.state.stats);
                   G.save.state.stats.set("WinningStreak", 0);
@@ -44,17 +35,22 @@ export function subscribeToEvents(): void {
                   addStat("Victory", 1, G.save.state.stats);
                   addStat("WinningStreak", 1, G.save.state.stats);
                }
+               showModal({
+                  children: (
+                     <PeaceTreatyModal
+                        battleScore={Math.floor((100 * stat.currentHp) / stat.maxHp)}
+                        name={G.runtime.right.name}
+                        battleInfo={G.runtime.battleInfo}
+                     />
+                  ),
+                  size: "xl",
+                  dismiss: false,
+               });
+               G.speed = 0;
+               saveGame(G.save);
                break;
             }
          }
-
-         G.speed = 0;
-         saveGame(G.save);
-         showModal({
-            children: modal,
-            size: "lg",
-            dismiss: false,
-         });
       }
    });
 

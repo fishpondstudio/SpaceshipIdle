@@ -249,7 +249,7 @@ function _BuildingGridComp({
    return (
       <FloatingTip w={300} label={<BuildingTooltip building={building} />}>
          <div className={cls("item", canBuild ? null : "disabled")} onClick={onClick.bind(null, building)}>
-            <TextureComp name={`Building/${building}`} width={24 * 2} />
+            <TextureComp name={`Building/${building}`} width={32} />
          </div>
       </FloatingTip>
    );

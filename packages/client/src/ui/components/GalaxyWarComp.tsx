@@ -28,7 +28,7 @@ import { TextureComp } from "./TextureComp";
 export function GalaxyWarComp({ planet }: { planet: Planet }): React.ReactNode {
    refreshOnTypedEvent(GameStateUpdated);
 
-   const rewards = getAddonReward(planet.seed, G.save.state);
+   const rewards = getAddonReward(srand(planet.seed), G.save.state);
 
    if (planet.battleResult) {
       const victoryType = getVictoryType(planet.battleResult.battleScore);

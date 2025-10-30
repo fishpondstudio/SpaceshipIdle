@@ -358,15 +358,17 @@ table {
 }
 
 .addon-grid-view {
-   display: flex;
-   flex-direction: row;
-   flex-wrap: wrap;
+   display: grid;
+   grid-template-columns: repeat(6, 1fr);
    gap: 10px;
    margin: 0 10px;
    & .item {
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
       border: 1px solid var(--mantine-color-default-border);
-      padding: 10px;
       border-radius: 5px;
       &:hover {
          border-color: var(--mantine-color-space-5);
@@ -375,15 +377,17 @@ table {
 }
 
 .building-grid-view {
-   display: flex;
-   flex-direction: row;
-   flex-wrap: wrap;
+   display: grid;
+   grid-template-columns: repeat(6, 1fr);
    gap: 10px;
    margin: 10px;
    & .item {
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
       border: 1px solid var(--mantine-color-default-border);
-      padding: 5px;
       border-radius: 5px;
       &.disabled {
          cursor: not-allowed;

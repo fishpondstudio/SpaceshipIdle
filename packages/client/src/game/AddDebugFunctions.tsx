@@ -102,7 +102,7 @@ export function addDebugFunctions(): void {
    globalThis.peaceTreaty = (score: number) => {
       showModal({
          children: <PeaceTreatyModal battleScore={score} name="Enemy" battleInfo={{}} />,
-         size: "lg",
+         size: "xl",
          dismiss: false,
       });
    };
