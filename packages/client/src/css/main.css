@@ -362,7 +362,7 @@ table {
    grid-template-columns: repeat(6, 1fr);
    gap: 10px;
    margin: 0 10px;
-   & .item {
+   .item {
       aspect-ratio: 1 / 1;
       display: flex;
       align-items: center;
@@ -372,6 +372,9 @@ table {
       border-radius: 5px;
       &:hover {
          border-color: var(--mantine-color-space-5);
+      }
+      &.dashed {
+         border-style: dashed;
       }
    }
 }

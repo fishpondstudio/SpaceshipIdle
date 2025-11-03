@@ -146,7 +146,10 @@ const AddonGridComp = memo(
                offset={5}
                color={notEquipped ? "yellow" : "space"}
             >
-               <div className="item" onClick={onClick.bind(null, addon)}>
+               <div
+                  className={cls("item", AddonCraftRecipe[addon] ? "dashed" : null)}
+                  onClick={onClick.bind(null, addon)}
+               >
                   <TextureComp name={`Addon/${addon}`} width={16 * 2} />
                </div>
             </Indicator>
