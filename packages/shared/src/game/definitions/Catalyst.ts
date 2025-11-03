@@ -370,6 +370,10 @@ export const CatalystCat = {
       name: () => t(L.CatalystCatX, numberToRoman(3)!),
       candidates: ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10", "C11", "C12", "C13"],
    },
+   C4: {
+      name: () => t(L.CatalystCatX, numberToRoman(4)!),
+      candidates: ["D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8"],
+   },
 } as const satisfies Record<string, { name: () => string; candidates: Catalyst[] }>;
 
 export const CatalystCatList = keysOf(CatalystCat);

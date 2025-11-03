@@ -411,15 +411,15 @@ export function statusEffectOf(key: StatusEffect): IStatusEffect {
 }
 
 export function buildingStatusEffectKey(tile: Tile): number {
-   if (import.meta.env.DEV && tile > MaxTile) {
-      throw new Error(`Tile: ${tile} is out of range. Max: ${MaxTile}`);
+   if (tile > MaxTile) {
+      console.error(`Tile: ${tile} is out of range. Max: ${MaxTile}`);
    }
    return (tile << 1) | 1;
 }
 
 export function addonStatusEffectKey(tile: Tile): number {
-   if (import.meta.env.DEV && tile > MaxTile) {
-      throw new Error(`Tile: ${tile} is out of range. Max: ${MaxTile}`);
+   if (tile > MaxTile) {
+      console.error(`Tile: ${tile} is out of range. Max: ${MaxTile}`);
    }
    return (tile << 1) | 0;
 }
