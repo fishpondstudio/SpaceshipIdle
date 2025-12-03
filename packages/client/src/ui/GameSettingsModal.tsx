@@ -98,23 +98,6 @@ function GeneralTab(): React.ReactNode {
          </div>
          <div className="h10" />
          <div className="row">
-            <div>{t(L.LinearCooldownIndicator)}</div>
-            <FloatingTip label={t(L.LinearCooldownIndicatorTooltip)}>
-               <div className="mi sm text-space">info</div>
-            </FloatingTip>
-            <div className="f1" />
-            <Switch
-               checked={hasFlag(G.save.options.flag, GameOptionFlag.LinearCooldownIndicator)}
-               onChange={(e) => {
-                  G.save.options.flag = e.target.checked
-                     ? setFlag(G.save.options.flag, GameOptionFlag.LinearCooldownIndicator)
-                     : clearFlag(G.save.options.flag, GameOptionFlag.LinearCooldownIndicator);
-                  GameOptionUpdated.emit();
-               }}
-            />
-         </div>
-         <div className="h10" />
-         <div className="row">
             <div>{t(L.DisableWeaponFireAnimation)}</div>
             <div className="f1" />
             <Switch

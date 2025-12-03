@@ -15,7 +15,7 @@ export const GameOptionFlag = {
    HideSteamIcon: 1 << 4,
    HideDiscordIcon: 1 << 5,
    CooldownIndicatorOutsideBattle: 1 << 6,
-   LinearCooldownIndicator: 1 << 7,
+   // LinearCooldownIndicator: 1 << 7,
    DisableWeaponFireAnimation: 1 << 8,
    AddonGridView: 1 << 9,
    BuildingGridView: 1 << 10,

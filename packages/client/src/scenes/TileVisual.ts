@@ -6,15 +6,7 @@ import { RuntimeFlag } from "@spaceship-idle/shared/src/game/logic/RuntimeFlag";
 import { isEnemy } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import { clamp, formatNumber, hasFlag, lookAt, type Tile, type ValueOf } from "@spaceship-idle/shared/src/utils/Helper";
 import type { Disposable } from "@spaceship-idle/shared/src/utils/TypedEvent";
-import {
-   BitmapText,
-   type ColorSource,
-   Container,
-   Graphics,
-   type IDestroyOptions,
-   NineSlicePlane,
-   Sprite,
-} from "pixi.js";
+import { BitmapText, type ColorSource, Container, type IDestroyOptions, NineSlicePlane, Sprite } from "pixi.js";
 import { Fonts } from "../assets";
 import type { Action } from "../utils/actions/Action";
 import { runFunc, sequence, to } from "../utils/actions/Actions";
@@ -51,8 +43,7 @@ export class TileVisual extends Container {
    private _buff: BitmapText;
    private _debuff: BitmapText;
 
-   private _progressMask: Graphics;
-   private _progressBg: Sprite;
+   private progressIndicator: NineSlicePlane;
    private _fireAction: Action | undefined;
 
    constructor(
@@ -69,6 +60,15 @@ export class TileVisual extends Container {
       this._background = this.addChild(new Sprite(G.textures.get("Misc/FrameFilled")));
       this._background.position.set(-GridSize / 2, -GridSize / 2);
       this._background.alpha = AlphaNormal;
+
+      this.progressIndicator = this.addChild(new NineSlicePlane(G.textures.get("Misc/FrameFill")!, 8, 8, 8, 8));
+      this.progressIndicator.tint = 0xffffff;
+      this.progressIndicator.alpha = 0.2;
+      this.progressIndicator.position.set(
+         -this.progressIndicator.texture.width / 2,
+         this.progressIndicator.texture.height / 2,
+      );
+      this.progressIndicator.height = 0;
 
       this._sprite = this.addChild(new Sprite(texture));
       this._sprite.position.set(0, 0);
@@ -136,13 +136,6 @@ export class TileVisual extends Container {
 
       this._disposables.push(GameOptionUpdated.on(this.onGameOptionUpdated.bind(this)));
       this._disposables.push(GameStateUpdated.on(this.onGameStateUpdated.bind(this)));
-
-      this._progressBg = this.addChild(new Sprite(G.textures.get("Misc/FrameFilled")));
-      this._progressBg.anchor.set(0.5);
-      this._progressBg.tint = 0x000000;
-      this._progressBg.alpha = 0.4;
-      this._progressMask = this.addChild(new Graphics());
-      this._progressBg.mask = this._progressMask;
 
       if (hasFlag(flag, TileVisualFlag.Static)) {
          this._healthBarBg.visible = false;
@@ -349,51 +342,8 @@ export class TileVisual extends Container {
    }
 
    public set progress(value: number) {
-      if (value <= 0) {
-         this._progressMask.visible = false;
-         return;
-      }
-      if (hasFlag(G.save.options.flag, GameOptionFlag.LinearCooldownIndicator)) {
-         this.linearProgress(value);
-      } else {
-         this.radialProgress(value);
-      }
-   }
-
-   private linearProgress(value: number) {
-      this._progressMask.visible = true;
-      this._progressMask.clear();
-      this._progressMask.beginFill(0xffffff);
-      const y = -value * 90 + 45;
-      this._progressMask.moveTo(-45, y);
-      this._progressMask.lineTo(45, y);
-      this._progressMask.lineTo(45, -45);
-      this._progressMask.lineTo(-45, -45);
-      this._progressMask.endFill();
-   }
-
-   private radialProgress(value: number) {
-      this._progressMask.visible = true;
-      const toAngle = Math.PI * 2 * clamp(value, 0, 1) - Math.PI / 2;
-      const fromAngle = 0 - Math.PI / 2;
-      const radius = 45 * 1.5;
-      const x1 = Math.cos(fromAngle) * radius;
-      const y1 = Math.sin(fromAngle) * radius;
-      const x2 = Math.cos(toAngle) * radius;
-      const y2 = Math.sin(toAngle) * radius;
-      this._progressMask.clear();
-      this._progressMask.beginFill(0xffffff);
-      this._progressMask.moveTo(0, 0);
-      this._progressMask.lineTo(x1, y1);
-      this._progressMask.lineTo(-radius, y1);
-      if (x2 > 0) {
-         this._progressMask.lineTo(-radius, radius);
-         this._progressMask.lineTo(radius, radius);
-      }
-      this._progressMask.lineTo(x2 < 0 ? -radius : radius, y1);
-      this._progressMask.lineTo(x2 < 0 ? -radius : radius, y2);
-      this._progressMask.lineTo(x2, y2);
-      this._progressMask.lineTo(0, 0);
-      this._progressMask.endFill();
+      this.progressIndicator.y =
+         this.progressIndicator.texture.height / 2 - this.progressIndicator.texture.height * value;
+      this.progressIndicator.height = this.progressIndicator.texture.height * value;
    }
 }
