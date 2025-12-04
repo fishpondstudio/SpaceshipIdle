@@ -16,6 +16,7 @@ import { Sidebar } from "./ui/Sidebar";
 import { TopPanel } from "./ui/TopPanel";
 import { G } from "./utils/Global";
 import { ModalManager } from "./utils/ModalManager";
+import { Highlighter } from "./ui/Highlighter";
 
 const spaceColors = [
    "#f0f4fa",
@@ -88,6 +89,7 @@ createRoot(root).render(
       <Popover />
       <ModalManager />
       <LoadingComp />
+      <Highlighter />
    </MantineProvider>,
 );
 

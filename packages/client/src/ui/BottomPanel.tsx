@@ -1,5 +1,12 @@
 import { Indicator, Progress, SegmentedControl } from "@mantine/core";
-import { AddonElementId, FriendshipBaseCost } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import {
+   AddonTabElementId,
+   CatalystTabElementId,
+   ElementTabElementId,
+   FriendshipBaseCost,
+   GalaxyTabElementId,
+   ResearchTabElementId,
+} from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameState, GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { hasUnequippedAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
@@ -41,6 +48,7 @@ import { hideLoading, showLoading } from "./components/LoadingComp";
 import { html } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
 import { DirectivePage } from "./DirectivePage";
+import { RequestHighlighter } from "./Highlighter";
 import { hideSidebar, setSidebar } from "./Sidebar";
 import { playClick } from "./Sound";
 import { TutorialProgressModal } from "./TutorialProgressModal";
@@ -125,6 +133,12 @@ function Tutorial(): React.ReactNode {
             padding: "5px 6px",
             left: `calc(50vw - ${sceneWidth / 2}px)`,
             background: "var(--mantine-color-dark-8)",
+         }}
+         onMouseEnter={() => {
+            RequestHighlighter.emit(tutorial.elementId ?? null);
+         }}
+         onMouseLeave={() => {
+            RequestHighlighter.emit(null);
          }}
       >
          <div className="mi lg">flag</div>
@@ -244,7 +258,7 @@ function SceneSwitcher(): React.ReactNode {
                {
                   label: (
                      <FloatingTip position="top" label={t(L.TabResearch)}>
-                        <TextureComp name="Others/Research24" />
+                        <TextureComp id={ResearchTabElementId} name="Others/Research24" />
                      </FloatingTip>
                   ),
                   value: Scenes.TechTreeScene,
@@ -325,14 +339,14 @@ function GalaxyTabLabel(): React.ReactNode {
             ))}
          >
             <Indicator color="red" processing>
-               <TextureComp name="Others/Galaxy24" />
+               <TextureComp id={GalaxyTabElementId} name="Others/Galaxy24" />
             </Indicator>
          </FloatingTip>
       );
    }
    return (
       <FloatingTip position="top" label={t(L.TabGalaxy)}>
-         <TextureComp name="Others/Galaxy24" />
+         <TextureComp id={GalaxyTabElementId} name="Others/Galaxy24" />
       </FloatingTip>
    );
 }
@@ -343,14 +357,14 @@ function CatalystTabLabel(): React.ReactNode {
       return (
          <FloatingTip position="top" label={t(L.YouHaveCatalystToChooseTooltip)}>
             <Indicator color="red" processing>
-               <TextureComp name="Others/Catalyst24" />
+               <TextureComp id={CatalystTabElementId} name="Others/Catalyst24" />
             </Indicator>
          </FloatingTip>
       );
    }
    return (
       <FloatingTip position="top" label={t(L.TabCatalyst)}>
-         <TextureComp name="Others/Catalyst24" />
+         <TextureComp id={CatalystTabElementId} name="Others/Catalyst24" />
       </FloatingTip>
    );
 }
@@ -361,7 +375,7 @@ function ElementTabLabel(): React.ReactNode {
       return (
          <FloatingTip position="top" label={t(L.YouHaveUnassignedElementTooltip)}>
             <Indicator color="red" processing>
-               <TextureComp name="Others/Element24" />
+               <TextureComp id={ElementTabElementId} name="Others/Element24" />
             </Indicator>
          </FloatingTip>
       );
@@ -370,7 +384,7 @@ function ElementTabLabel(): React.ReactNode {
       return (
          <FloatingTip position="top" label={t(L.YouHaveUpgradeableElementTooltip)}>
             <Indicator color="red" processing>
-               <TextureComp name="Others/Element24" />
+               <TextureComp id={ElementTabElementId} name="Others/Element24" />
             </Indicator>
          </FloatingTip>
       );
@@ -388,14 +402,14 @@ function AddonTabLabel(): React.ReactNode {
       return (
          <FloatingTip position="top" label={t(L.YouHaveUnequippedAddonTooltip)}>
             <Indicator color="red" processing>
-               <TextureComp id={AddonElementId} name="Others/Addon24" />
+               <TextureComp id={AddonTabElementId} name="Others/Addon24" />
             </Indicator>
          </FloatingTip>
       );
    }
    return (
       <FloatingTip position="top" label={t(L.TabAddon)}>
-         <TextureComp id={AddonElementId} name="Others/Addon24" />
+         <TextureComp id={AddonTabElementId} name="Others/Addon24" />
       </FloatingTip>
    );
 }

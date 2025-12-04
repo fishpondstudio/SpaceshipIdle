@@ -1,7 +1,7 @@
 import { getDefaultZIndex, type MantineColor } from "@mantine/core";
 import { clamp } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import { AddonElementId } from "@spaceship-idle/shared/src/game/definitions/Constant";
+import { AddonTabElementId } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { Resources } from "@spaceship-idle/shared/src/game/definitions/Resource";
 import { OnAlert, showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
@@ -117,7 +117,7 @@ export function subscribeToEvents(): void {
             clamp(data.amount, 1, MaxParticleCount),
          );
       } else if ("addon" in data) {
-         const target = document.getElementById(AddonElementId)?.getBoundingClientRect();
+         const target = document.getElementById(AddonTabElementId)?.getBoundingClientRect();
          if (!target) {
             return;
          }

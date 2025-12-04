@@ -6,6 +6,7 @@ import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
 import { FloatingTip } from "./components/FloatingTip";
 import { html, RenderHTML } from "./components/RenderHTMLComp";
+import { RequestHighlighter } from "./Highlighter";
 import { playClick } from "./Sound";
 
 export function TutorialProgressModal(): React.ReactNode {
@@ -21,7 +22,16 @@ export function TutorialProgressModal(): React.ReactNode {
                   active = true;
                }
                return (
-                  <div className="f1 row" key={i}>
+                  <div
+                     className="f1 row"
+                     key={i}
+                     onMouseEnter={() => {
+                        RequestHighlighter.emit(step.elementId ?? null);
+                     }}
+                     onMouseLeave={() => {
+                        RequestHighlighter.emit(null);
+                     }}
+                  >
                      {progress >= total && !unfinished ? (
                         <div className="mi fstart text-green">check_circle</div>
                      ) : (

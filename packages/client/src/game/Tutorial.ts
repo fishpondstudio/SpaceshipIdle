@@ -1,3 +1,10 @@
+import {
+   CatalystTabElementId,
+   ElementTabElementId,
+   GalaxyTabElementId,
+   ResearchTabElementId,
+   WarpElementId,
+} from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { PlanetFlags, PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { type GameState, GameStateFlags } from "@spaceship-idle/shared/src/game/GameState";
 import { getStat, resourceOf } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
@@ -15,6 +22,7 @@ export interface ITutorial {
    name: () => string;
    desc: () => string;
    progress: (gs: GameState, rt: Runtime) => [number, number];
+   elementId?: string;
 }
 
 export const Tutorial: ITutorial[] = [
@@ -42,6 +50,7 @@ export const Tutorial: ITutorial[] = [
       progress: (gs) => {
          return [gs.unlockedTech.size, 4];
       },
+      elementId: ResearchTabElementId,
    },
    {
       name: () => t(L.TutorialPickCatalyst, t(L.CatalystCatX, numberToRoman(1)!)),
@@ -49,6 +58,7 @@ export const Tutorial: ITutorial[] = [
       progress: (gs) => {
          return [gs.selectedCatalysts.size, 1];
       },
+      elementId: CatalystTabElementId,
    },
    {
       name: () => t(L.TutorialActivateCatalyst, t(L.CatalystCatX, numberToRoman(1)!)),
@@ -73,6 +83,7 @@ export const Tutorial: ITutorial[] = [
       progress: (gs) => {
          return [mReduceOf(gs.elements, (prev, k, v) => prev + (k === "H" ? v.amount : v.hp + v.damage), 0), 1];
       },
+      elementId: ElementTabElementId,
    },
    {
       name: () => t(L.TutorialUseTimeWarp),
@@ -80,6 +91,7 @@ export const Tutorial: ITutorial[] = [
       progress: (gs) => {
          return [hasFlag(gs.flags, GameStateFlags.UsedWarp) ? 1 : 0, 1];
       },
+      elementId: WarpElementId,
    },
    {
       name: () => t(L.TutorialBuildXModules, 20),
@@ -102,6 +114,7 @@ export const Tutorial: ITutorial[] = [
          }
          return [0, 1];
       },
+      elementId: GalaxyTabElementId,
    },
    {
       name: () => t(L.TutorialNegotiateWarReparation),

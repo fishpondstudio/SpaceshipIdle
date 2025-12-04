@@ -400,3 +400,20 @@ table {
       }
    }
 }
+
+.element-highlighter {
+   position: absolute;
+   background-color: var(--mantine-color-yellow-3);
+   opacity: 0.5;
+   border-radius: 5px;
+   animation: 0.5s ease infinite alternate highlighter;
+}
+
+@keyframes highlighter {
+   0% {
+      transform: scale(1);
+   }
+   100% {
+      transform: scale(1.5);
+   }
+}
