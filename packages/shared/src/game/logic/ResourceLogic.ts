@@ -136,7 +136,7 @@ export function getMaxTimeWarp(gs: GameState): [number, Breakdown[]] {
    }
    const permanent = gs.permanentElements.get("H");
    if (permanent) {
-      result.push({ label: t(L.ElementPermanent, "H"), value: permanent.amount });
+      result.push({ label: t(L.ElementPermanent, "H"), value: permanent.hp });
    }
    return [result.reduce((a, b) => a + b.value, 0), result];
 }

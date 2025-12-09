@@ -11,7 +11,8 @@ export function OfflineTimeModal({ offlineTime }: { offlineTime: number }): Reac
    const warp = Math.floor(offlineTime / SECOND);
    const [max, breakdown] = getMaxTimeWarp(G.save.state);
    const currentWarp = resourceOf("Warp", G.save.state.resources).current;
-   const warpToAdd = clamp(clamp(warp + currentWarp, 0, max * 3600) - currentWarp, 0, Number.POSITIVE_INFINITY);
+   const targetWarp = clamp(warp + currentWarp, 0, max * 3600);
+   const warpToAdd = clamp(targetWarp - currentWarp, 0, Number.POSITIVE_INFINITY);
    return (
       <div className="m10">
          <div className="text-center text-sm text-dimmed">{t(L.OfflineTime)}</div>
