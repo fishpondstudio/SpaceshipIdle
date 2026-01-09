@@ -82,10 +82,10 @@ export function hasUnequippedAddon(gs: GameState): boolean {
    return false;
 }
 
-export function getAddonsInClass(shipClass: ShipClass, blueprint: Blueprint): Addon[] {
+export function getAddonsInClasses(shipClasses: Set<ShipClass>, blueprint: Blueprint): Addon[] {
    const candidates: Addon[] = [];
    forEach(Addons, (addon, def) => {
-      if (def.shipClass === shipClass && (!def.blueprint || def.blueprint === blueprint)) {
+      if (shipClasses.has(def.shipClass) && (!def.blueprint || def.blueprint === blueprint)) {
          candidates.push(addon);
       }
    });

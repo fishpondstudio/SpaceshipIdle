@@ -24,14 +24,14 @@ import {
 } from "../definitions/Galaxy";
 import { ShipClass, ShipClassList } from "../definitions/ShipClass";
 import type { GameState, SaveGame } from "../GameState";
-import { getAddonsInClass } from "./AddonLogic";
+import { getAddonsInClasses } from "./AddonLogic";
 import { showInfo } from "./AlertLogic";
 import { getVictoryType } from "./BattleLogic";
 import { BattleVictoryTypeLabel } from "./BattleType";
 import { getWarmongerPenalty } from "./PeaceTreatyLogic";
 import { getStat, trySpendResource } from "./ResourceLogic";
 import type { Runtime } from "./Runtime";
-import { getPreviousShipClass, getShipClass } from "./TechLogic";
+import { getPreviousShipClasses, getShipClass } from "./TechLogic";
 
 export function findMyself(galaxy: Galaxy): Planet | undefined {
    for (const starSystem of galaxy.starSystems) {
@@ -60,17 +60,15 @@ export function findStarSystem(id: number, galaxy: Galaxy): StarSystem | undefin
 
 export function getAddonReward(random: () => number, gs: GameState): Addon[] {
    const shipClass = getShipClass(gs);
-   const addons = getAddonsInClass(shipClass, gs.blueprint).filter((addon) => !AddonCraftRecipe[addon]);
+   const addons = getAddonsInClasses(new Set([shipClass]), gs.blueprint).filter((addon) => !AddonCraftRecipe[addon]);
    shuffle(addons, random);
    const [addon, ...candidates] = addons;
-   const previousShipClass = getPreviousShipClass(shipClass);
-   if (previousShipClass) {
-      getAddonsInClass(previousShipClass, gs.blueprint).forEach((b) => {
-         if (!AddonCraftRecipe[b]) {
-            candidates.push(b);
-         }
-      });
-   }
+   const previousShipClasses = getPreviousShipClasses(shipClass);
+   getAddonsInClasses(new Set(previousShipClasses), gs.blueprint).forEach((b) => {
+      if (!AddonCraftRecipe[b]) {
+         candidates.push(b);
+      }
+   });
    shuffle(candidates, random);
    const result = candidates.slice(0, 2);
    result.unshift(addon);

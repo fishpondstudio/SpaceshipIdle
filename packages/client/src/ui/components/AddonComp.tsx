@@ -7,6 +7,7 @@ import {
    Addons,
    getAddonEffect,
 } from "@spaceship-idle/shared/src/game/definitions/Addons";
+import { ShipClass } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { canCraftAddon, craftAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
 import { showSuccess } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
@@ -51,8 +52,9 @@ function _AddonComp({
          {showDetails && (
             <>
                <div className="row g5">
-                  <div className="f1">{def.name()}</div>
                   <TextureComp name={`Addon/${addon}`} width={16} />
+                  <div className="f1">{def.name()}</div>
+                  <div className="text-dimmed">{ShipClass[def.shipClass].name()}</div>
                </div>
                {AddonCraftRecipe[addon] ? (
                   <div className="text-space">

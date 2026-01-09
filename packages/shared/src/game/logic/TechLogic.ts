@@ -35,12 +35,13 @@ export function hasUnlockedShipClass(shipClass: ShipClass, gs: GameState): boole
    return ShipClassList.indexOf(shipClass) <= ShipClassList.indexOf(currentShipClass);
 }
 
-export function getPreviousShipClass(shipClass: ShipClass): ShipClass | undefined {
-   const idx = ShipClassList.indexOf(shipClass) - 1;
-   if (idx >= 0 && idx < ShipClassList.length) {
-      return ShipClassList[idx];
+export function getPreviousShipClasses(shipClass: ShipClass): ShipClass[] {
+   const idx = ShipClassList.indexOf(shipClass);
+   const result: ShipClass[] = [];
+   for (let i = 0; i < idx; ++i) {
+      result.push(ShipClassList[i]);
    }
-   return undefined;
+   return result;
 }
 
 export function getNextShipClass(shipClass: ShipClass): ShipClass | undefined {

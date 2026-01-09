@@ -1,4 +1,4 @@
-import { flip, getOverflowAncestors, offset, type Placement, shift, useFloating } from "@floating-ui/react";
+import { autoPlacement, getOverflowAncestors, offset, type Placement, shift, useFloating } from "@floating-ui/react";
 import { type Factory, factory, getRefProp, isElement, Portal } from "@mantine/core";
 import { useMergedRef } from "@mantine/hooks";
 import { cloneElement, useCallback, useEffect, useRef, useState } from "react";
@@ -10,13 +10,13 @@ export function useFloatingTooltip<T extends HTMLElement = any>({ position }: { 
    const { x, y, elements, refs, update, placement } = useFloating({
       placement: position,
       middleware: [
-         offset(10),
-         // autoPlacement(),
+         offset(20),
+         autoPlacement(),
          shift(),
-         flip({
-            crossAxis: "alignment",
-            fallbackAxisSideDirection: "end",
-         }),
+         // flip({
+         //    crossAxis: "alignment",
+         //    fallbackAxisSideDirection: "end",
+         // }),
       ],
    });
 
