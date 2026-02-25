@@ -25,6 +25,7 @@ export function startGameLoop(): void {
 
    G.runtime = new Runtime(G.save, new GameState());
    G.runtime.createXPTarget();
+   G.save.state.lastOnlineAt = Date.now();
 
    G.pixi.ticker.add(() => {
       const unscaled = G.pixi.ticker.deltaMS / 1000;

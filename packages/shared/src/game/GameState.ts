@@ -69,6 +69,7 @@ export class GameState {
    name = "Unnamed";
    flags: GameStateFlags = GameStateFlags.None;
    offlineTime = 0;
+   lastOnlineAt = 0;
 }
 
 function toHashString(gs: GameState): string {
