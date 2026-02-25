@@ -25,7 +25,6 @@ export function startGameLoop(): void {
 
    G.runtime = new Runtime(G.save, new GameState());
    G.runtime.createXPTarget();
-   G.save.state.lastOnlineAt = Date.now();
 
    G.pixi.ticker.add(() => {
       const unscaled = G.pixi.ticker.deltaMS / 1000;
@@ -39,6 +38,15 @@ export function startGameLoop(): void {
       G.scene.getCurrent(ShipScene)?.render(G.runtime, dt, G.runtime.battleTimer);
       G.scene.getCurrent(GalaxyScene)?.render(dt, unscaled);
       G.starfield.update();
+
+      if (G.save.state.lastOnlineAt) {
+         const offlineTime = Date.now() - G.save.state.lastOnlineAt;
+         if (offlineTime > 0) {
+            G.save.state.offlineTime += offlineTime;
+         }
+      }
+      G.save.state.lastOnlineAt = Date.now();
+
       clientUpdate(unscaled);
       if (filter) {
          filter.time += unscaled * 5;

@@ -101,13 +101,6 @@ export async function bootstrap(): Promise<void> {
       addResource("Warp", 60 * 5, G.save.state.resources);
    }
 
-   if (G.save.state.lastOnlineAt) {
-      const offlineTime = Date.now() - G.save.state.lastOnlineAt;
-      if (offlineTime > 0) {
-         G.save.state.offlineTime += offlineTime;
-      }
-   }
-
    checkPatchNotes(G.save.options);
    setLanguage(G.save.options.language);
    subscribeToEvents();
