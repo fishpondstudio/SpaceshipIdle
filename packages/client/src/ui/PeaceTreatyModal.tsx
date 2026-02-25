@@ -25,6 +25,7 @@ import { NumberSelect } from "./components/NumberInput";
 import { html } from "./components/RenderHTMLComp";
 import { TextureComp } from "./components/TextureComp";
 import { playBling } from "./Sound";
+import { AddonComp } from "./components/AddonComp";
 
 export function PeaceTreatyModal({
    battleScore,
@@ -125,9 +126,11 @@ export function PeaceTreatyModal({
                {mMapOf(battleResult.current.addons, (addon, count) => {
                   return (
                      <div key={addon} className="row">
-                        <div className="f1">
-                           <TextureComp name={`Addon/${addon}`} className="inline-middle" /> {Addons[addon].name()}
-                        </div>
+                        <FloatingTip label={<AddonComp addon={addon} showDetails showCraft={false} />}>
+                           <div className="f1">
+                              <TextureComp name={`Addon/${addon}`} className="inline-middle" /> {Addons[addon].name()}
+                           </div>
+                        </FloatingTip>
                         <NumberSelect
                            value={count}
                            canIncrease={(value) => victoryType !== "Defeated" && value < 9}
