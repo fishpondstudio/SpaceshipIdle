@@ -1,27 +1,21 @@
-import { Input, SegmentedControl, Slider, Switch } from "@mantine/core";
+import { Input, SegmentedControl, Slider, Switch, TextInput } from "@mantine/core";
 import { useForceUpdate } from "@mantine/hooks";
 import { DiscordUrl, SteamUrl, TranslationUrl } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionFlag, GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateFlags, GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
-import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { getShortcutKey, isShortcutEqual, makeShortcut, Shortcut } from "@spaceship-idle/shared/src/game/Shortcut";
 import { clearFlag, forEach, hasFlag, mapOf, noop, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { useState } from "react";
 import MouseControl from "../assets/images/MouseControl.png";
-import { loadGameStateFromFile, resetGame, saveGame, saveGameStateToFile } from "../game/LoadSave";
+import { resetGame, saveGameStateToFile } from "../game/LoadSave";
 import { getVersion } from "../game/Version";
-import { RPCClient } from "../rpc/RPCClient";
 import { openUrl } from "../rpc/SteamClient";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
-import { showModal } from "../utils/ToggleModal";
 import { ChangeLanguageComp } from "./ChangeLanguageComp";
-import { DevOrAdminOnly } from "./components/DevOnly";
 import { FloatingTip } from "./components/FloatingTip";
 import { RenderHTML } from "./components/RenderHTMLComp";
-import { playError } from "./Sound";
-import { ViewShipModal } from "./ViewShipModal";
 
 interface TabContent {
    content: () => React.ReactNode;
@@ -62,6 +56,16 @@ function GeneralTab(): React.ReactNode {
             <div className="mi sm">open_in_new</div>
             <div>{t(L.HelpImproveTranslation)}</div>
          </div>
+         <div className="divider my10 mx-10" />
+         <div className="text-sm text-dimmed mb5">{t(L.SpaceshipName)}</div>
+         <TextInput
+            className="f1"
+            value={G.save.state.name}
+            onChange={(e) => {
+               G.save.state.name = e.target.value;
+               GameStateUpdated.emit();
+            }}
+         />
          <div className="divider my10 mx-10" />
          <div className="row">
             <div>{t(L.HideXpProductionPerCycle)}</div>
@@ -247,56 +251,6 @@ function GeneralTab(): React.ReactNode {
                {t(L.ExportSpaceship)}
             </button>
          </div>
-         <DevOrAdminOnly>
-            <>
-               <div className="divider my10 mx-10" />
-               <div className="row text-sm">
-                  <button
-                     className="btn f1"
-                     onClick={async () => {
-                        try {
-                           G.save.state = await loadGameStateFromFile();
-                           await saveGame(G.save);
-                           window.location.reload();
-                        } catch (e) {
-                           playError();
-                           showError(String(e));
-                        }
-                     }}
-                  >
-                     Load
-                  </button>
-                  <button
-                     className="btn f1"
-                     onClick={() => {
-                        saveGameStateToFile(G.save.state);
-                     }}
-                  >
-                     Export
-                  </button>
-                  <button
-                     className="btn f1"
-                     onClick={async () => {
-                        try {
-                           const ship = await loadGameStateFromFile();
-                           const id = await RPCClient.saveShipV2(ship);
-                           showModal({
-                              title: t(L.ViewShip),
-                              children: <ViewShipModal id={id} />,
-                              size: "md",
-                              dismiss: true,
-                           });
-                        } catch (e) {
-                           playError();
-                           showError(String(e));
-                        }
-                     }}
-                  >
-                     Set Baseline
-                  </button>
-               </div>
-            </>
-         </DevOrAdminOnly>
          <div className="divider my10 mx-10" />
          <div className="text-center text-sm text-dimmed">
             <RenderHTML html={t(L.VersionNumber, getVersion())} />

@@ -2,9 +2,8 @@ import * as Sentry from "@sentry/browser";
 import { SaveFileVersion, SentryDSN } from "@spaceship-idle/shared/src/game/definitions/Constant";
 import { GameOptionUpdated } from "@spaceship-idle/shared/src/game/GameOption";
 import { GameStateFlags, initSaveGame, SaveGame } from "@spaceship-idle/shared/src/game/GameState";
-import { showError } from "@spaceship-idle/shared/src/game/logic/AlertLogic";
 import { addResource } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import { forEach, rejectIn, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
+import { forEach, setFlag } from "@spaceship-idle/shared/src/utils/Helper";
 import { Assets, BitmapFont, SCALE_MODES, type Spritesheet, type TextStyleFontWeight, type Texture } from "pixi.js";
 import { FontFaces, Fonts } from "./assets";
 import { checkBuildingTextures } from "./CheckBuildingTextures";
@@ -15,8 +14,6 @@ import { showBootstrapModal } from "./game/ShowBootstrapModal";
 import { getVersion } from "./game/Version";
 import { loadGameScene } from "./LoadGameScene";
 import { migrateSave } from "./MigrateSave";
-import { OnConnectionChanged } from "./rpc/HandleMessage";
-import { connectWebSocket } from "./rpc/RPCClient";
 import { subscribeToEvents } from "./SubscribeToEvents";
 import { Starfield } from "./scenes/Starfield";
 import { checkPatchNotes } from "./ui/CheckPatchNotes";
@@ -110,13 +107,6 @@ export async function bootstrap(): Promise<void> {
    loadSounds();
    addDebugFunctions();
    checkBuildingTextures();
-   connectWebSocket();
-   try {
-      await Promise.race([OnConnectionChanged.toPromise((connected) => connected), rejectIn(10)]);
-   } catch (error) {
-      console.error(error);
-      showError(String(error));
-   }
    loadGameScene();
    startGameLoop();
    GameOptionUpdated.emit();

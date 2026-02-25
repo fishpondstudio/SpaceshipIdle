@@ -8,7 +8,6 @@ import { refreshOnTypedEvent } from "../../utils/Hook";
 import { showModal } from "../../utils/ToggleModal";
 import { AlertPage } from "../AlertPage";
 import { GameSettingsModal } from "../GameSettingsModal";
-import { PlayerProfileModal } from "../PlayerProfileModal";
 import { PrestigeModal } from "../PrestigeModal";
 import { PrestigeReason } from "../PrestigeReason";
 import { ShipBlueprintModal } from "../ShipBlueprintModal";
@@ -72,19 +71,6 @@ export function _HamburgerMenuComp(): React.ReactNode {
                }}
             >
                {t(L.WeaponList)}
-            </Menu.Item>
-            <Menu.Item
-               leftSection={<div className="mi">person</div>}
-               onClick={() => {
-                  showModal({
-                     children: <PlayerProfileModal />,
-                     title: t(L.PlayerProfile),
-                     size: "md",
-                     dismiss: true,
-                  });
-               }}
-            >
-               {t(L.PlayerProfile)}
             </Menu.Item>
             <Menu.Item
                leftSection={<div className="mi">settings</div>}

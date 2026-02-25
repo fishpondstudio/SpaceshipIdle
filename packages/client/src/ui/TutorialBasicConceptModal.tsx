@@ -1,6 +1,8 @@
+import { TextInput } from "@mantine/core";
+import { GameStateUpdated } from "@spaceship-idle/shared/src/game/GameState";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
+import { G } from "../utils/Global";
 import { hideModal } from "../utils/ToggleModal";
-import { ChangePlayerHandleComp } from "./ChangePlayerHandleComp";
 import { RenderHTML } from "./components/RenderHTMLComp";
 
 export function TutorialBasicConceptModal(): React.ReactNode {
@@ -10,39 +12,23 @@ export function TutorialBasicConceptModal(): React.ReactNode {
             <RenderHTML className="render-html" html={t(L.TutorialIntro)} />
          </div>
          <div className="h10" />
-         <div className="row">
-            <div className="fstart">
-               <div className="mi" style={{ fontSize: 50 }}>
-                  web_traffic
-               </div>
-            </div>
-            <div className="f1">
-               <div className="text-lg text-space">{t(L.TutorialGameControl)}</div>
-               <RenderHTML className="render-html" html={t(L.TutorialGameControlContent)} />
-               <div className="h5" />
-               <div className="text-dimmed panel p5 text-sm row g5 bg-dark">
-                  <div className="mi lg fstart">mouse</div>
-                  <RenderHTML className="render-html" html={t(L.TutorialAdvancedGameControlContent)} />
-               </div>
-            </div>
+         <RenderHTML className="render-html" html={t(L.TutorialGameControlContent)} />
+         <div className="h5" />
+         <div className="text-dimmed panel p5 text-sm row g5 bg-dark">
+            <div className="mi lg fstart">mouse</div>
+            <RenderHTML className="render-html" html={t(L.TutorialAdvancedGameControlContent)} />
          </div>
+         <div className="divider my10 mx-10" />
+         <div className="text-dimmed mb5">{t(L.SpaceshipName)}</div>
+         <TextInput
+            className="f1"
+            value={G.save.state.name}
+            onChange={(e) => {
+               G.save.state.name = e.target.value;
+               GameStateUpdated.emit();
+            }}
+         />
          <div className="h10" />
-         <div className="row">
-            <div className="fstart">
-               <div className="mi" style={{ fontSize: 50 }}>
-                  chat
-               </div>
-            </div>
-            <div className="f1">
-               <div className="text-lg text-space">{t(L.TutorialChat)}</div>
-               <RenderHTML className="render-html" html={t(L.TutorialChatContent)} />
-               <div className="h10" />
-               <div className="panel bg-dark">
-                  <ChangePlayerHandleComp />
-               </div>
-               <div className="h10" />
-            </div>
-         </div>
          <button className="btn filled text-lg w100 py5 row" onClick={hideModal}>
             {t(L.StartPlaying)}
          </button>

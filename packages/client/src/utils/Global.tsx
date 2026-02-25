@@ -5,7 +5,6 @@ import type { ValueOf } from "@spaceship-idle/shared/src/utils/Helper";
 import { L } from "@spaceship-idle/shared/src/utils/i18n";
 import { TypedEvent } from "@spaceship-idle/shared/src/utils/TypedEvent";
 import type { Application, Texture } from "pixi.js";
-import { UserUpdated } from "../rpc/HandleMessage";
 import type { Starfield } from "../scenes/Starfield";
 import type { SceneManager } from "./SceneManager";
 
@@ -45,7 +44,3 @@ export function setLanguage(lang: keyof typeof Languages) {
    Object.assign(L, Languages[lang]);
    OnLanguageChanged.emit();
 }
-
-UserUpdated.on((user) => {
-   G.save.state.name = user.handle;
-});

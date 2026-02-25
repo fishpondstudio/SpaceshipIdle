@@ -883,4 +883,5 @@ export const EN = {
    ThisAddOnIsNotEquipped: "This add-on is not equipped",
    ConstructionCost: "Construction Cost",
    AddOnCraftedSuccessfully: "%% crafted successfully",
+   SpaceshipName: "Spaceship Name",
 };

@@ -8,15 +8,14 @@ import { createRoot } from "react-dom/client";
 import { bootstrap } from "./Bootstrap";
 import "./css/main.css";
 import { BottomPanel } from "./ui/BottomPanel";
-import { ChatPanel } from "./ui/ChatPanel";
 import { LoadingComp } from "./ui/components/LoadingComp";
 import { FullScreen } from "./ui/FullScreen";
+import { Highlighter } from "./ui/Highlighter";
 import { Popover } from "./ui/Popover";
 import { Sidebar } from "./ui/Sidebar";
 import { TopPanel } from "./ui/TopPanel";
 import { G } from "./utils/Global";
 import { ModalManager } from "./utils/ModalManager";
-import { Highlighter } from "./ui/Highlighter";
 
 const spaceColors = [
    "#f0f4fa",
@@ -85,7 +84,6 @@ createRoot(root).render(
       <Sidebar />
       <TopPanel />
       <BottomPanel />
-      <ChatPanel />
       <Popover />
       <ModalManager />
       <LoadingComp />

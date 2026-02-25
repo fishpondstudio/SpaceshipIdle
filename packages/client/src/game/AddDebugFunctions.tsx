@@ -5,7 +5,7 @@ import { PlanetType } from "@spaceship-idle/shared/src/game/definitions/Galaxy";
 import { type ShipClass, ShipClassList } from "@spaceship-idle/shared/src/game/definitions/ShipClass";
 import { GameState } from "@spaceship-idle/shared/src/game/GameState";
 import { addAddon } from "@spaceship-idle/shared/src/game/logic/AddonLogic";
-import { calcShipScore, simulateBattle } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
+import { calcShipScore } from "@spaceship-idle/shared/src/game/logic/BattleLogic";
 import { BattleStatus } from "@spaceship-idle/shared/src/game/logic/BattleStatus";
 import { generateGalaxy } from "@spaceship-idle/shared/src/game/logic/GalaxyLogic";
 import {
@@ -14,17 +14,15 @@ import {
    quantumToXP,
 } from "@spaceship-idle/shared/src/game/logic/QuantumElementLogic";
 import { addStat, calcSpaceshipXP, getStat } from "@spaceship-idle/shared/src/game/logic/ResourceLogic";
-import type { Runtime } from "@spaceship-idle/shared/src/game/logic/Runtime";
 import { getShipBlueprint } from "@spaceship-idle/shared/src/game/logic/ShipLogic";
 import {
    getBuildingsWithinShipClass,
    getShipClass,
    getTechWithinShipClass,
 } from "@spaceship-idle/shared/src/game/logic/TechLogic";
-import { enumOf, equal, forEach, INT32_MAX, randOne, round } from "@spaceship-idle/shared/src/utils/Helper";
+import { forEach, randOne } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { jsonEncode } from "@spaceship-idle/shared/src/utils/Serialization";
-import { RPCClient } from "../rpc/RPCClient";
 import { ShipScene } from "../scenes/ShipScene";
 import { BalancingModal } from "../ui/BalancingModal";
 import { NewPlayerModal } from "../ui/NewPlayerModal";
@@ -33,12 +31,10 @@ import { PeaceTreatyModal } from "../ui/PeaceTreatyModal";
 import { PreBattleModal } from "../ui/PreBattleModal";
 import { PrestigeModal } from "../ui/PrestigeModal";
 import { PrestigeReason } from "../ui/PrestigeReason";
-import { ViewShipModal } from "../ui/ViewShipModal";
 import { idbClear } from "../utils/BrowserStorage";
 import { G } from "../utils/Global";
 import { hideModal, showModal } from "../utils/ToggleModal";
 import { loadGameStateFromFile, loadSaveGameFromFile, saveGame } from "./LoadSave";
-import { findShip } from "./Matchmaking";
 
 export function addDebugFunctions(): void {
    if (!import.meta.env.DEV) return;
@@ -219,15 +215,6 @@ export function addDebugFunctions(): void {
    // @ts-expect-error
    globalThis.hideModal = hideModal;
    // @ts-expect-error
-   globalThis.viewShip = (id: string) => {
-      showModal({
-         title: t(L.ViewShip),
-         children: <ViewShipModal id={id} />,
-         size: "md",
-         dismiss: true,
-      });
-   };
-   // @ts-expect-error
    globalThis.battle = async () => {
       const gs = await loadGameStateFromFile();
       showModal({
@@ -235,83 +222,5 @@ export function addDebugFunctions(): void {
          size: "lg",
          dismiss: true,
       });
-   };
-
-   const matchmake = async (): Promise<Runtime> => {
-      const me = await RPCClient.findShipV3([], [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX], [0, INT32_MAX]);
-      const [score, hp, dps] = calcShipScore(me.json);
-      const enemy = await findShip(score * 0.8, hp * 0.8, dps * 0.8, 0.5);
-      if (!enemy) {
-         throw new Error("Cannot find an enemy");
-      }
-      const [enemyScore, enemyHp, enemyDps] = calcShipScore(enemy.json);
-      const now = performance.now();
-      const rt = simulateBattle(me.json, enemy.json);
-      if (!equal(enemyScore, enemy.score)) {
-         console.error(`Score mismatch: Client: ${enemyScore} vs Server: ${enemy.score}`);
-      }
-      if (!equal(enemyHp, enemy.hp)) {
-         console.error(`HP mismatch: Client: ${enemyHp} vs Server: ${enemy.hp}`);
-      }
-      if (!equal(enemyDps, enemy.dps)) {
-         console.error(`DPS mismatch: Client: ${enemyDps} vs Server: ${enemy.dps}`);
-      }
-
-      let scoreMatch = "❌";
-      let hpMatch = "❌";
-      let dpsMatch = "❌";
-      if (rt.battleStatus === BattleStatus.LeftWin) {
-         if (score > enemyScore) {
-            scoreMatch = "✅";
-         }
-         if (hp > enemyHp) {
-            hpMatch = "✅";
-         }
-         if (dps > enemyDps) {
-            dpsMatch = "✅";
-         }
-      }
-      if (rt.battleStatus === BattleStatus.RightWin) {
-         if (score < enemyScore) {
-            scoreMatch = "✅";
-         }
-         if (hp < enemyHp) {
-            hpMatch = "✅";
-         }
-         if (dps < enemyDps) {
-            dpsMatch = "✅";
-         }
-      }
-      console.log(
-         `*Opponent: ${enemy.shipId}\n`,
-         `${rt.battleStatus === BattleStatus.LeftWin ? "👈" : "👉"} Result: ${enumOf(BattleStatus, rt.battleStatus)} (${Math.round(performance.now() - now)}ms)\n`,
-         `${scoreMatch} Score: ${round(score, 2)} vs ${round(enemyScore, 2)}\n`,
-         `${hpMatch} HP: ${round(hp, 2)} vs ${round(enemyHp, 2)}\n`,
-         `${dpsMatch} DPS: ${round(dps, 2)} vs ${round(enemyDps, 2)}\n`,
-      );
-      // showModal({
-      //    children: <MatchMakingModal key={Math.random()} enemy={ship.json} />,
-      //    size: "lg",
-      //    dismiss: true,
-      // });
-      return rt;
-   };
-
-   // @ts-expect-error
-   globalThis.matchmake = matchmake;
-
-   // @ts-expect-error
-   globalThis.testMatchmake = async (count: number) => {
-      let leftWin = 0;
-      let rightWin = 0;
-      for (let i = 0; i < count; i++) {
-         const rt = await matchmake();
-         if (rt.battleStatus === BattleStatus.RightWin) {
-            rightWin++;
-         } else {
-            leftWin++;
-         }
-      }
-      console.log(`Left Win: ${leftWin}, Right Win: ${rightWin}`);
    };
 }

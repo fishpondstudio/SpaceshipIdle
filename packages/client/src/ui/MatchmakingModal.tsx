@@ -17,8 +17,6 @@ import { getShipClass } from "@spaceship-idle/shared/src/game/logic/TechLogic";
 import { capitalize, divide, enumOf, formatNumber, iSumOf, resolveIn } from "@spaceship-idle/shared/src/utils/Helper";
 import { L, t } from "@spaceship-idle/shared/src/utils/i18n";
 import { Generator } from "@spaceship-idle/shared/src/utils/NameGen";
-import { findShip } from "../game/Matchmaking";
-import { RPCClient } from "../rpc/RPCClient";
 import { G } from "../utils/Global";
 import { refreshOnTypedEvent } from "../utils/Hook";
 import { hideModal, showModal } from "../utils/ToggleModal";
@@ -122,22 +120,16 @@ export function MatchmakingModal(): React.ReactNode {
                   playClick();
                   showLoading();
                   const [score, hp, dps] = calcShipScore(G.save.state);
-                  if (score > 0) {
-                     RPCClient.saveShipV2(G.save.state).catch(console.error);
-                  }
                   const victory = getStat("Victory", G.save.state.stats);
                   const defeat = getStat("Defeat", G.save.state.stats);
                   const victoryRate = divide(victory, victory + defeat);
-                  let ship = (await findShip(score, hp, dps, victoryRate))?.json;
-                  if (!ship) {
-                     const level = Math.ceil(
-                        iSumOf(G.save.state.tiles, ([_, data]) => data.level) / G.save.state.tiles.size,
-                     );
-                     const shipClass = getShipClass(G.save.state);
-                     ship = generateMatchmakingShip(shipClass, level, score, hp, dps, victoryRate, Math.random);
-                     ship.name = capitalize(new Generator("ssV").toString());
-                     console.log("Matchmaking: generate enemy ship", ship);
-                  }
+                  const level = Math.ceil(
+                     iSumOf(G.save.state.tiles, ([_, data]) => data.level) / G.save.state.tiles.size,
+                  );
+                  const shipClass = getShipClass(G.save.state);
+                  const ship = generateMatchmakingShip(shipClass, level, score, hp, dps, victoryRate, Math.random);
+                  ship.name = capitalize(new Generator("ssV").toString());
+                  console.log("Matchmaking: generate enemy ship", ship);
                   await resolveIn(1, null);
 
                   if (import.meta.env.DEV) {
